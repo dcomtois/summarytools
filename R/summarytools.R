@@ -433,5 +433,3 @@ properties <- function(x, echo=TRUE, style="grid", justify="left",
   return(list(df.attributes=df.attributes,var.attributes=var.attributes))
 
 }
-
-properties(women)
