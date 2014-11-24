@@ -69,7 +69,7 @@ Frequencies
 
 
 ## Descriptive (univariate) statistics with <u>desc()</u>
-`desc` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it will just ignore non-numerical data.
+`desc()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it will just ignore non-numerical data.
 
 #### desc() on the iris dataframe
 
@@ -108,7 +108,7 @@ Observations
 
 #### desc() has a "transpose" option
 
-If your eyes (or brain?) prefers seeing things the other way around, you just set `transpose` to `TRUE`:
+If your eyes (or brain?) prefer seeing things the other way around, you just set `transpose` to `TRUE`:
 
 ```r
 > desc(iris, transpose=TRUE)
@@ -138,7 +138,7 @@ Observations
 
 ## Dataframe summaries
 
-`dfSummary` generates a table containing variable information (class and type), labels if any, common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also added.
+`dfSummary()` generates a table containing variable information (class and type), labels if any, common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also added.
 
 
 ```r
