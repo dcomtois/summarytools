@@ -20,7 +20,6 @@ All three functions:
 
 For the most **up-to-date version**, first install the `devtools` package and then install `summarytools`via `install_github`:
 
-
 ```r
 > install.packages("devtools")
 > library(devtools)
@@ -110,6 +109,8 @@ Observations
 
 #### desc() has a "transpose" option
 
+If your eyes (or brain?) prefers seeing things the other way around, you just set `transpose` to `TRUE`:
+
 ```r
 > desc(iris, transpose=TRUE)
 ```
@@ -138,7 +139,7 @@ Observations
 
 ## Dataframe summaries
 
-`dfSummary` generates a table containing as many rows as there are columns in the dataframe, each row giving variable information (class and type), labels if any, common statistics for numerical data and frequency tables for any type of data (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call), along with number and proportion of valid (non-missing) values. 
+`dfSummary` generates a table containing variable information (class and type), labels if any, common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also added.
 
 
 ```r
@@ -172,7 +173,7 @@ num   variable.name   properties    factor.values.or.stats            frequencie
 ```
 
 
-# Markdown-ready
+# All functions markdown-ready
 
 All functions will printout markdown text easily. Here an example using `freq()`:
 
