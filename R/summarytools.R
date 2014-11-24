@@ -1,9 +1,3 @@
-# TODO:
-# make frequencies more lapply-friendly: can it detect that it was called by lapply? If so:
-        # - make the name appear, as opposed to x[[1]], x[[2]], etc.
-        # - prevent double displaying (the "silent" return doesn't seem to work unless assignment takes place)
-# make frequencies by-friendly and replace dd[x, ] with the actual variable name
-
 freq <- function(x, round.digits=2, echo=TRUE, style="simple", justify="right",
                  plain.ascii=TRUE, file=NA, append=FALSE, ...) {
 
