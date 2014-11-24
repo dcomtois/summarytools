@@ -10,8 +10,8 @@ It also aims at making R _a little_ easier to use for newcomers.
 
 All three functions:
 
-- Will display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package. 
-- Will easily redirect their output to text files rather than console.
+- Will display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package
+- Will easily redirect their output to text files rather than console
 - Support `Hmisc` and `rapportools` variable labels
 - Return matrix objects for further manipulation if needed
 
@@ -39,8 +39,7 @@ You can also get the source code and documentation on the official R site [here]
 
 ## Frequency tables with <u>freq()</u>
 
-`freq()` will generate a table of frequencies with counts and percentages (including cumulative).
-
+`freq()` will generate a table of frequencies with counts and percentages (raw and cumulative).
 
 ```r
 > library(summarytools)
