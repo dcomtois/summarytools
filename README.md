@@ -196,4 +196,4 @@ Frequencies
 
 #### More customization
 
-All functions also accept additionnal parameters which will be passed on to pander. See the [pander package](pander](https://github.com/Rapporter/pande) documentation for details.
+All functions also accept additionnal parameters which will be passed on to pander. See the [pander package](https://github.com/Rapporter/pander) documentation for details.
