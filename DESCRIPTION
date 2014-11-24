@@ -5,7 +5,7 @@ Title: Dataframe Summaries, Frequency Tables and Numerical Summaries with
 Version: 0.2
 Date: 2014-11-23
 Author: Dominic Comtois
-Maintainer: Dominic Comtois <dominic.comtois at gmail.com>
+Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Includes 3 summarizing functions; one for categorical data (freq),
     one for numerical (uni or multidimensional) data (desc), and one exclusively for
     dataframes. 'freq' generates frequency tables with valid and total
