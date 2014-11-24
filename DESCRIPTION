@@ -1,12 +1,24 @@
 Package: summarytools
 Type: Package
-Title: Dataframe Summaries, Frequency Tables and Numerical Summaries with Customizable Output
-Version: 0.1
-Date: 2014-08-06
+Title: Dataframe Summaries, Frequency Tables and Numerical Summaries with
+    Customizable Output
+Version: 0.2
+Date: 2014-11-23
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
-Description: Includes 4 summarizing functions; two are to be used with uni-dimensional data, and the two others with dataframes. For uni-dimensional data, 'unistats' will generate common central tendency statistics and measures of dispersion for numerical data and 'frequencies' will generate a table of frequencies with counts and percentages (including cumulative). Both functions report number and proportion of valid values vs NA values. For dataframes, 'dfSummary' will generate a table containing as many rows as there are columns in the dataframe, each row giving variable information (class and type), labels if any, common statistics for numerical data and frequency tables for any type of data, along with number and proportion of valid (non-missing) values. Finally, 'properties' will conveniently report attributes of a dataframe object itself and also of all its individual components (columns).
-Imports: Hmisc, pander, timeDate
+Description: Includes 4 summarizing functions; one for categorical data (freq),
+    one for uni or multidimensional data (desc), and two exclusively for
+    dataframes. 'freq' generates frequency tables with valid and total
+    proportions. 'desc' generates common central tendency statistics and
+    measures of dispersion for numerical data. For dataframes, 'dfSummary' will
+    generate a table containing as many rows as there are columns, each row
+    giving variable information (class and type), labels if any, common
+    statistics for numerical data and frequency tables for any type of data,
+    along with number and proportion of valid (non-missing) values. Finally,
+    'prop' will conveniently report attributes of a dataframe object itself and
+    also of all its individual components (columns).
+Imports:
+    pander,
+    rapportools
 License: GPL-2
-Changes: Improvements to documentation (NOT SURE WHERE TO PUT THIS); default is now to "simple" rather than "grid"
-Bugfixes: Ignore display.label when no label exists (NOT SURE WHERE TO PUT THIS)
+URL: https://github.com/dcomtois/summarytools

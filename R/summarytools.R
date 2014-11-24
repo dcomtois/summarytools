@@ -1,167 +1,228 @@
-frequencies <- function(x, round.digits=2, echo=TRUE, style="grid", justify="right",
-                        plain.ascii=TRUE, display.label=FALSE, na.info=FALSE, ...) {
+# TODO:
+# make frequencies more lapply-friendly: can it detect that it was called by lapply? If so:
+        # - make the name appear, as opposed to x[[1]], x[[2]], etc.
+        # - prevent double displaying (the "silent" return doesn't seem to work unless assignment takes place)
+# make frequencies by-friendly and replace dd[x, ] with the actual variable name
 
-  if(!is.atomic(x) || !is.null(dim(x))) {
-    stop("argument must be atomic and uni-dimensional; for dataframes, try lapply(x,frequencies)")
-  }
+freq <- function(x, round.digits=2, echo=TRUE, style="simple", justify="right",
+                 plain.ascii=TRUE, file=NA, append=FALSE, ...) {
 
-  if(display.label && !("Hmisc" %in% rownames(installed.packages()))) {
-    stop("to display labels, package Hmisc must be installed")
+  if(!is.factor(x) && !is.vector(x)) {
+    stop("argument must be a vector or a factor; for dataframes, use lapply(x,freq)")
   }
 
   if(echo && !("pander" %in% rownames(installed.packages()))) {
     stop("with echo = TRUE, package pander must be installed")
   }
 
-  # Create empty list for output
-  output <- list()
-
-  output$name <- substitute(x)
-
-  # Isolate variable label to avoid problems later on
-  if("labelled" %in% class(x)) {
-    x.label <- Hmisc::label(x)
-    class(x) <- setdiff(class(x),"labelled")
-    attr(x,"label") <- NULL
-  } else {
-    display.label <- FALSE
-  }
-
-  if(display.label) {
-    output$label <- x.label
-  }
+  # Make sure no sink() is left open (in case of an error occuring)
+  on.exit(expr = if(sink.number()) sink())
 
   # Replace NaN's by NA's
+  # This simplifies matters a lot
   if(NaN %in% x)  {
-    message("vector or factor contains", sum(is.nan(x)), "NaN -- converting to NA\n")
+    message("vector or factor contains ", sum(is.nan(x)), " NaN values -- converting to NA\n")
+    msg.nan <- paste("Note:", sum(is.nan(x)), "NaN value(s) converted to NA\n")
     x[is.nan(x)] <- NA
   }
 
-  freq.table <- table(x, useNA = "always") # create a basic frequency table, including NA row
-  names(freq.table)[length(freq.table)] <- '<NA>' # Avoids problems with display later on
+  # create a basic frequency table, including NA row
+  freq.table <- table(x, useNA = "always")
+
+  # Change the name of the NA item to avoid potential problems when echoing to console
+  names(freq.table)[length(freq.table)] <- '<NA>'
 
   # calculate proportions (valid)
   P.valid <- prop.table(table(x, useNA="no"))*100
-  P.valid['<NA>'] <- NA   # this is to avoid having vectors of different lengths when binding columns
+
+  # Add '<NA>' item to the proportions vector to make the vector
+  # the proper length when cbind'ing later on
+  P.valid['<NA>'] <- NA
+
+  # Calculate cumulative proportions
   P.valid.cum <- cumsum(P.valid)
   P.valid.cum['<NA>'] <- NA
 
   # calculate proportions (total)
-  P.tot <- prop.table(table(x, useNA="always"))*100 # get proportions
+  P.tot <- prop.table(table(x, useNA="always"))*100
   P.tot.cum <- cumsum(P.tot)
 
-  # The actual frequency table
-  output$frequencies <- cbind(freq.table,
-                              P.valid,
-                              P.valid.cum,
-                              P.tot,
-                              P.tot.cum)
+  # Build the actual frequency table
+  output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
+  output <- rbind(output, c(length(x), rep(100,4)))
+  output <- round(output, round.digits)
+  colnames(output) <- c("N","%Valid","%Cum.Valid","%Total","%Cum.Total")
+  rownames(output) <- c(names(freq.table),"Total")
 
-  output$frequencies <- rbind(output$frequencies, c(length(x), rep(100,4)))
-  output$frequencies <- round(output$frequencies, round.digits)
-  colnames(output$frequencies) <- c("N","%Valid","%Cum.Valid","%Total","%Cum.Total")
-  rownames(output$frequencies) <- c(names(freq.table),"Total")
+  # Write to file when file argument is supplied
+  if(!is.na(file)) {
 
-  # Report missing vs valid data
-  n.valid <- rbind(sum(!is.na(x)),sum(is.na(x)))
-  n.valid.prop <- prop.table(n.valid)
-
-  if(na.info) {
-    output$observations <- cbind(n.valid, round(n.valid.prop*100,digits=round.digits))
-    output$observations <- rbind(output$observations, colSums(output$observations))
-    rownames(output$observations) <- c("Valid", "<NA>", "Total")
-    colnames(output$observations) <- c("N","%")
-  }
-
-  if(echo) {
-    cat("\n")
-    print(output$name)
-    if(display.label) print(output$label[1])
-    cat("\nFrequencies")
-    pander::pander(output$frequencies, split.table=Inf, style=style, plain.ascii=plain.ascii, justify=justify, ...)
-    if(na.info) {
-      cat("\nObservations")
-      pander::pander(output$observations, split.table=Inf, style=style, plain.ascii=plain.ascii, justify=justify, ...)
-    }
+    sink(file = file, append = append)
+    cat("\nVariable name: ", as.character(match.call()[2]))
+    if("label" %in% names(attributes(x)))
+      cat("\nVariable label:", rapportools::label(x))
+    cat("\n\nFrequencies")
+    pander::pander(output, split.table=Inf,
+                   style=style, plain.ascii=plain.ascii, justify=justify, ...)
+    if(exists("msg.nan"))
+      cat(msg.nan)
+    sink()
+    cat("Output successfully written to ", normalizePath(file))
     return(invisible(output))
+
+  } else if(echo) {
+
+    cat("\nVariable name: ", as.character(match.call()[2]))
+    if("label" %in% names(attributes(x)))
+      cat("\nVariable label:", rapportools::label(x))
+    cat("\n\nFrequencies")
+    pander::pander(output, split.table=Inf,
+                   style=style, plain.ascii=plain.ascii, justify=justify, ...)
+    if(exists("msg.nan"))
+      cat(msg.nan)
+
+    return(invisible(output))
+
   }
 
+  # When echo=FALSE and file=NA, the returned output is made visible
   return(output)
 
 }
 
 
-unistats <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE,
-                     style="simple", justify="right", plain.ascii=TRUE,
-                     display.label=FALSE, ...) {
+desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
+                 style="simple", justify="right", plain.ascii=TRUE, file=NA,
+                 append=FALSE, ...) {
 
-  if(!is.atomic(x) || !is.numeric(x) || is.factor(x)) {
-    stop("x must be atomic, uni-dimensional and numeric; for dataframes, use lapply(x,unistats). For matrices, use as.vector(x)")
+  if( (echo||file) && !("pander" %in% rownames(installed.packages()))) {
+    stop("to write to file or with echo=TRUE, package pander must be installed")
   }
 
-  if(echo && !("pander" %in% rownames(installed.packages()))) {
-    stop("to use echo = TRUE, package pander must be installed")
-  }
+  # Make sure sink() is terminated (in case of an error occuring)
+  on.exit(expr = if(sink.number()) sink())
 
-  if(display.label && !("Hmisc" %in% rownames(installed.packages()))) {
-    stop("to display labels, package Hmisc must be installed")
-  }
+  # Make sure x is of type "list" to allow proper iteration
+  if(is.atomic(x))
+    x <- list(x)
 
-  output <- list()
+  # recup the argument
+  arg.str <- as.character(match.call()[2])
 
-  output$name <- substitute(x)
-
-  # Isolate variable label to avoid problems later on
-  if("labelled" %in% class(x)) {
-    x.label <- Hmisc::label(x)
-    class(x) <- setdiff(class(x),"labelled")
-    attr(x,"label") <- NULL
+  # According to type of argument, get the variable names
+  if(length(grep("\\$",arg.str))==1) {
+    varnames <- arg.str
+  } else if(length(grep("dd\\[x", arg.str))==1) {
+    varnames <- arg.str
+  } else if(length(grep("\\[", arg.str))==1) {
+    varnames <- names(eval(parse(text=arg.str)))
+  } else if(length(grep("c\\(", arg.str))==1) {
+    varnames <- ""
   } else {
-    display.label <- FALSE
+    varnames <- names(get(arg.str))
   }
 
-  if(display.label) {
-    output$label <- x.label
+  # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
+  stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Max=numeric(),
+                      Median=numeric(), MAD=numeric(), IQR=numeric(), CV=numeric(), Skewness=numeric(),
+                      SE.Skewness=numeric(), Kurtosis=numeric())
+  observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(),check.names = FALSE)
+
+  # Iterate over variables present in x
+  i <- 1
+  for(variable in x) {
+
+    if(!is.numeric(variable)) {
+      varnames <- varnames[-i]
+      next()
+    }
+
+    # Remove variable label to avoid potential problems
+    if("label" %in% names(attributes(x))) {
+      # remove Hmisc's "labelled" class if present
+      class(variable) <- setdiff(class(variable),"labelled")
+      attr(variable,"label") <- NULL
+    }
+
+    variable <- variable * 1.0 # prevents potential problems
+
+    n <- sum(!is.na(variable))
+
+    stats[i,] <- round(c(x.mean<-mean(variable,na.rm=na.rm),
+                         x.sd<-sd(variable,na.rm=na.rm),
+                         min(variable,na.rm=na.rm),
+                         max(variable,na.rm=na.rm),
+                         median(variable,na.rm=na.rm),
+                         mad(variable,na.rm=na.rm),
+                         IQR(variable,na.rm=na.rm),
+                         x.mean/x.sd,
+                         rapportools::skewness(variable,na.rm=na.rm),
+                         sqrt((6*n*(n-1))/((n-2)*(n+1)*(n+3))),
+                         rapportools::kurtosis(variable,na.rm=na.rm)),digits=round.digits)
+
+    # Insert stats into stats table
+    rownames(stats)[i] <- varnames[i]
+
+    # Report number of missing vs valid data
+    n.valid <- sum(!is.na(variable))
+    p.valid <- round(n.valid / length(variable) * 100, digits = round.digits)
+    n.NA <- sum(is.na(variable))
+    p.NA <- round(n.NA / length(variable) * 100, digits = round.digits)
+
+    # Insert into observ table
+    observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
+                    paste(n.NA, " (", p.NA, "%)",sep=""),
+                    length(variable))
+
+    rownames(observ)[i] <- varnames[i]
+    i <- i+1
   }
 
-  x <- x*1.0 # prevents a mysterious problem
-  n <- sum(!is.na(x))
-  output$unistats <- rbind(round(mean(x,na.rm=na.rm),digits=round.digits),
-                               round(sd(x,na.rm=na.rm),digits=round.digits),
-                               min(x,na.rm=na.rm),
-                               max(x,na.rm=na.rm),
-                               median(x,na.rm=na.rm),
-                               IQR(x,na.rm=na.rm),
-                               timeDate::skewness(x,na.rm=na.rm),
-                               sqrt((6*n*(n-1))/((n-2)*(n+1)*(n+3))),
-                               timeDate::kurtosis(x,na.rm=na.rm))
-  colnames(output$unistats) <- ""
-  rownames(output$unistats) <- c("Mean","Std.Dev.","Min.","Max.","Median","I.Q.R.",
-                                     "Skewness","SE skewness", "Kurtosis")
+  if(nrow(stats)==0) {
+    warning("No numerical variable were given as arguments. Returning NA")
+    return(NA)
+  }
 
-  # Report number of missing vs valid data
-  n.valid <- rbind(sum(!is.na(x)),sum(is.na(x)))
-  n.valid.prop <- prop.table(n.valid)
-  output$observations <- cbind(n.valid, round(n.valid.prop*100,digits=round.digits))
-  output$observations <- rbind(output$observations, colSums(output$observations))
-  rownames(output$observations) <- c("Valid", "<NA>", "Total")
-  colnames(output$observations) <- c("N","%")
+  if(transpose) {
+    stats <- t(stats)
+    observ <- t(observ)
+  }
 
-  # Tweak to avoid ugly output when using by()
-  if(output$name=="dd[x, ]")
-    output$name <- NULL
+  if(!is.na(file)) {
 
-  if(echo) {
-    cat("\n")
-    print(output$name)
-    if(display.label) print(output$label[1])
-    cat("\nUnivariate Statistics")
-    pander::pander(output$unistats, split.table=Inf, style=style, plain.ascii=plain.ascii, justify=justify, ...)
+    sink(file = file, append = append)
+
+    cat("Univariate Statistics (summarytools::desc)\n")
+    cat("Written", as.character(Sys.time()))
+
+    pander::pander(stats, style=style, plain.ascii=plain.ascii, justify=justify,
+                   split.table=Inf, ...)
+
     cat("\nObservations")
-    pander::pander(output$observations, split.table=Inf, style=style, plain.ascii=plain.ascii, justify=justify, ...)
-    return(invisible(output))
+    pander::pander(observ, style=style, plain.ascii=plain.ascii, justify=justify,
+                   split.table=Inf, ...)
+    sink()
+
+    cat(paste("Output successfully written to", normalizePath(file)))
+
+    return(invisible(list(stats,observ)))
+
+  } else if(echo) {
+
+    cat("\nUnivariate Statistics")
+    pander::pander(stats, style=style, plain.ascii=plain.ascii, justify=justify,
+                   split.table=Inf, ...)
+    cat("\nObservations")
+    pander::pander(observ, style=style, plain.ascii=plain.ascii, justify=justify,
+                   split.table=Inf, ...)
+    return(invisible(list(stats,observ)))
+
+  } else {
+
+    return(list(stats=stats, observ=observ))
+
   }
-  return(output)
+
 }
 
 
@@ -179,10 +240,10 @@ dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
 
 
   if((!is.na(file)|!is.na(echo)) && !"pander" %in% rownames(installed.packages()))
-    stop("to display or write pander output to disk, package pander must first be installed")
+    stop("to display pander tables or write output to disk, package pander must first be installed")
 
-  if(display.labels && !("Hmisc" %in% rownames(installed.packages())))
-    stop("to display labels, package Hmisc must first be installed")
+  if(display.labels && !("rapportools" %in% rownames(installed.packages())))
+    stop("to display labels, package rapportools must first be installed")
 
   # create an output dataframe
   output <- data.frame(num=numeric(),
@@ -207,7 +268,7 @@ dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
 
     # Add column label (if applicable)
     if(display.labels)
-      output[i,3] <- Hmisc::label(x[i])
+      output[i,3] <- rapportools::label(x[i])
 
     # Add variable properties (typeof, class)
     output[i,4] <- paste("type:",typeof(column.data),
@@ -302,20 +363,20 @@ dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
                    style=style, justify=justify, ...)
   }
 
-  if(echo | !is.na(file))
+  if(echo || !is.na(file))
     return(invisible(output))
   else
     return(output)
 }
 
-properties <- function(x, echo=TRUE, style="grid", justify="left",
+prop <- function(x, echo=TRUE, style="grid", justify="left",
                        plain.ascii=TRUE, display.labels=FALSE, ...) {
 
   if(!is.data.frame(x)) {
     stop("x is not a dataframe. Try properties(as.data.frame(x)).")
   }
-  if(display.labels && !("Hmisc" %in% rownames(installed.packages())))
-    stop("to display labels, package Hmisc must be installed")
+  if(display.labels && !("rapportools" %in% rownames(installed.packages())))
+    stop("to display labels, package rapportools must be installed")
 
   # declare a function that avoids some redundancy
   bind.names <- function(item) {
@@ -386,7 +447,7 @@ properties <- function(x, echo=TRUE, style="grid", justify="left",
   var.attributes$first.obs <- as.vector(t(x[1,]))
 
   if(display.labels) {
-    var.attributes$label <- Hmisc::label(x)
+    var.attributes$label <- rapportools::label(x)
   } else {
     var.attributes$label <- NULL
   }
@@ -434,4 +495,7 @@ properties <- function(x, echo=TRUE, style="grid", justify="left",
 
 }
 
-properties(women)
+# Shortcuts for backward-compatibility
+frequencies <- freq
+unistats <- desc
+properties <- prop

@@ -1,1 +1,1 @@
-export("frequencies","unistats","dfSummary","properties")
+export("freq", "frequencies","desc", "unistats", "dfSummary", "prop", "properties")

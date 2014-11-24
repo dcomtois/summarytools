@@ -1,0 +1,14 @@
+Version 0.2
+-----------
+Several major changes since version 0.1
+
+  - 'unistats' is now called 'desc'.
+  - 'frequencies' is now called 'freq'.
+  - 'properties' is now called 'prop'.
+  - shortcuts have been added to keep backward-compatibility.
+  - 'desc' now accepts dataframes as first argument; factors and character columns will be ignored.
+  - 'desc' can be transposed to suit one's preferences.
+  - 'freq' just returns a matrix-table, not a list anymore.
+  - in 'desc' and 'freq', no more argument 'display.label'. Those are displayed automatically when present.
+  - rapportools is used instead of Hmisc for variable labels
+
