@@ -2,7 +2,7 @@
 \alias{freq}
 \alias{frequencies}
 \title{Frequency Tables for Discrete Data and Factors}
-\description{Displays frequencies as well as valid/missing observation information. Optionally uses package 'pander' for prettier tables.}
+\description{Displays frequencies as well as valid/missing observation information.}
 \usage{
 freq(x, round.digits=2, echo=TRUE, style="simple", justify="right",
             plain.ascii=TRUE, file=NA, append=FALSE, ...)

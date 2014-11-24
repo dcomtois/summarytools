@@ -1,7 +1,7 @@
 \name{dfSummary}
 \alias{dfSummary}
 \title{Dataframe Summary}
-\description{Summary of a dataframe consisting of: variable names and labels, factor levels, frequencies or numerical summary statistics, and valid/missing observations information. Optionally uses package 'pander' to display pretty tables.}
+\description{Summary of a dataframe consisting of: variable names and labels, factor levels, frequencies or numerical summary statistics, and valid/missing observations information.}
 \usage{
 dfSummary(x, echo=TRUE, style="multiline", justify="left",
           max.distinct.values=10, str.distinct.values="distinct values",
