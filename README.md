@@ -193,3 +193,7 @@ Frequencies
 |    **virginica** |  46 |    33.58 |          100 |    30.67 |        91.33 |
 |       **\<NA\>** |  13 |       NA |           NA |     8.67 |          100 |
 |        **Total** | 150 |      100 |          100 |      100 |          100 |
+
+#### More customization
+
+All functions also accept additionnal parameters which will be passed on to pander. See the [pander package]([pander](https://github.com/Rapporter/pander#pander-options)'s documentation for details.
