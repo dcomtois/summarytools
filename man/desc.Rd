@@ -1,8 +1,8 @@
 \name{desc}
 \alias{desc}
 \alias{unistats}
-\title{Descriptive univariate Statistics for Numerical Data}
-\description{Calculates mean, standard deviation, min, max, median, MAD, IQR, CV, skewness, SE.skewness, and kurtosis. Optionally uses package 'pander' for prettier tables.}
+\title{Descriptive Univariate Statistics for Numerical Data}
+\description{Calculates mean, standard deviation, min, max, median, MAD, IQR, CV, skewness, SE.skewness, and kurtosis.}
 \usage{
 desc(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE, style="simple",
      justify="right", plain.ascii=TRUE, file=NA, append=FALSE, ...)}
@@ -21,7 +21,7 @@ desc(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE, style="simple",
 }
 \value{A list with 2 elements; first one in a matrix (table) containing all the stats. if applicable, table of statistics and table of counts (valid vs <NA> observations).}
 \references{\url{https://github.com/dcomtois/summarytools}}
-\author{Dominic Comtois <dominic.comtois @ gmail.com>}
+\author{Dominic Comtois <dominic.comtois at gmail.com>}
 \examples{
 data(iris)
 desc(iris)

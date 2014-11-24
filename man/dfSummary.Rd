@@ -24,9 +24,11 @@ dfSummary(x, echo=TRUE, style="multiline", justify="left",
 }
 %\details{}
 \value{A dataframe containing as many rows as there are columns in x.}
-\author{Dominic Comtois <dominic.comtois@gmail.com>}
+\author{Dominic Comtois <dominic.comtois at gmail.com>}
+\references{\url{https://github.com/dcomtois/summarytools}}
 \seealso{\code{\link{summary.data.frame}}}
 \examples{
+  data(iris)
   dfSummary(iris)
 }
 \keyword{ data.frame }

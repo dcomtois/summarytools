@@ -20,10 +20,11 @@ freq(x, round.digits=2, echo=TRUE, style="simple", justify="right",
 }
 \value{A frequency table of class 'matrix'.}
 \author{Dominic Comtois <dominic.comtois at gmail.com>}
+\references{\url{https://github.com/dcomtois/summarytools}}
 \examples{
-data(iris)
-freq(iris$Species)
-freq(iris$Species, style="rmarkdown")
+  data(iris)
+  freq(iris$Species)
+  freq(iris$Species, style="rmarkdown")
 }
 \keyword{ frequencies }
 \keyword{ frequency }
