@@ -21,9 +21,9 @@ freq(x, round.digits=2, echo=TRUE, style="simple", justify="right",
 \value{A frequency table of class 'matrix'.}
 \author{Dominic Comtois <dominic.comtois at gmail.com>}
 \examples{
-colors <- c("blue","red","blue","yellow",NA)
-frequencies(colors)
-frequencies(colors, echo=TRUE)
+data(iris)
+freq(iris$Species)
+freq(iris$Species, style="rmarkdown")
 }
 \keyword{ frequencies }
 \keyword{ frequency }

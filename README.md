@@ -8,7 +8,7 @@
 
 It also aims at making R _a little_ easier to use for newcomers.
 
-All functions:
+All three functions:
 
 - Will display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package. 
 - Will easily redirect their output to text files rather than console.
@@ -18,15 +18,16 @@ All functions:
 
 # Installation
 
-For the most **up-to-date version**, I do encourage you install the `devtools` package and install `summarytools`via `install_github`:
+For the most **up-to-date version**, first install the `devtools` package and then install `summarytools`via `install_github`:
 
-```
-install.packages("devtools")
-library(devtools)
-install_github('dcomtois/summarytools')
+
+```r
+> install.packages("devtools")
+> library(devtools)
+> install_github('dcomtois/summarytools')
 ```
 
-If you would rather just install the latest **stable** version of `summarytools`, you can do so easily. But since this package is in its early developments, some important features might be missing.
+If you would rather just install the latest **stable** version of `summarytools`, you can do so easily. But some key features might be missing.
 
 Type into your R console: 
 
@@ -35,7 +36,6 @@ Type into your R console:
 ```
 
 You can also get the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
-
 
 
 ## Frequency tables with <u>freq()</u>
@@ -47,12 +47,16 @@ You can also get the source code and documentation on the official R site [here]
 > library(summarytools)
 > data(iris)
 > # We'll insert some NA values for illustration purposes
-> is.na(iris) <- matrix(sample(x = c(TRUE,FALSE), size = 150*5, replace = T, prob = c(.1,.9)),nrow = 150)
+> is.na(iris) <- matrix(sample(x = c(TRUE,FALSE), size = 150*5, 
++                              replace = T, prob = c(.1,.9)),nrow = 150)
+> # ... and a variable label for the Species column
+> rapportools::label(iris$Species) <- "The Species (duh)"
 > freq(iris$Species)
 ```
 
 ```r
 Variable name:  iris$Species
+Variable label: The Species (duh)
 
 Frequencies
 
@@ -99,12 +103,12 @@ Observations
               Sepal.Length   Sepal.Width   Petal.Length   Petal.Width
 ----------- -------------- ------------- -------------- -------------
       Valid   134 (89.33%)     138 (92%)   134 (89.33%)  134 (89.33%)
-     \<NA\>    16 (10.67%)       12 (8%)    16 (10.67%)   16 (10.67%)
+       <NA>    16 (10.67%)       12 (8%)    16 (10.67%)   16 (10.67%)
       Total            150           150            150           150
 ```
 
 
-#### desc()'s transpose option allows for easy transposition
+#### desc() has a "transpose" option
 
 ```r
 > desc(iris, transpose=TRUE)
@@ -123,7 +127,7 @@ Descriptive Statistics
 
 Observations
 
-                          Valid      \<NA\>   Total
+                          Valid        <NA>   Total
 ------------------ ------------ ----------- -------
       Sepal.Length 134 (89.33%) 16 (10.67%)     150
        Sepal.Width    138 (92%)     12 (8%)     150
@@ -134,7 +138,7 @@ Observations
 
 ## Dataframe summaries
 
-'dfSummary' generates a table containing as many rows as there are columns in the dataframe, each row giving variable information (class and type), labels if any, common statistics for numerical data and frequency tables for any type of data (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call), along with number and proportion of valid (non-missing) values. 
+`dfSummary` generates a table containing as many rows as there are columns in the dataframe, each row giving variable information (class and type), labels if any, common statistics for numerical data and frequency tables for any type of data (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call), along with number and proportion of valid (non-missing) values. 
 
 
 ```r
@@ -174,30 +178,18 @@ All functions will printout markdown text easily. Here an example using `freq()`
 
 
 ```r
-> freq(iris$Species, style="rmarkdown")
+> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE)
 ```
 
 Variable name:  iris$Species
+Variable label: The Species
 
 Frequencies
 
-|                  |   N |   %Valid |   %Cum.Valid |   %Total |   %Cum.Total |
+|           &nbsp; |   N |   %Valid |   %Cum.Valid |   %Total |   %Cum.Total |
 |-----------------:|----:|---------:|-------------:|---------:|-------------:|
-|           setosa |  50 |    33.33 |        33.33 |    33.33 |        33.33 |
-|       versicolor |  50 |    33.33 |        66.67 |    33.33 |        66.67 |
-|        virginica |  50 |    33.33 |          100 |    33.33 |          100 |
-|           \<NA\> |   0 |       NA |           NA |        0 |          100 |
-|            Total | 150 |      100 |          100 |      100 |          100 |
-
-
-Variable name:  iris$Species
-
-Frequencies
-
-                   N   %Valid   %Cum.Valid   %Total   %Cum.Total
----------------- --- -------- ------------ -------- ------------
-          setosa  46    33.58        33.58    30.67        30.67
-      versicolor  45    32.85        66.42       30        60.67
-       virginica  46    33.58          100    30.67        91.33
-            <NA>  13       NA           NA     8.67          100
-           Total 150      100          100      100          100
+|       **setosa** |  46 |    33.58 |        33.58 |    30.67 |        30.67 |
+|   **versicolor** |  45 |    32.85 |        66.42 |       30 |        60.67 |
+|    **virginica** |  46 |    33.58 |          100 |    30.67 |        91.33 |
+|         **<NA>** |  13 |       NA |           NA |     8.67 |          100 |
+|        **Total** | 150 |      100 |          100 |      100 |          100 |

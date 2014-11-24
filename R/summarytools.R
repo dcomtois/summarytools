@@ -177,7 +177,10 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
     return(NA)
   }
 
-  if(transpose) {
+  # Transpose when transpose is FALSE; even though this is counter-intuitive,
+  # we prefer that the transposed version be the default one and that at the
+  # same time, the default value for transpose be FALSE.
+  if(!transpose) {
     stats <- t(stats)
     observ <- t(observ)
   }
@@ -186,7 +189,7 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
 
     sink(file = file, append = append)
 
-    cat("Univariate Statistics (summarytools::desc)\n")
+    cat("Descriptive Statistics (summarytools::desc)\n")
     cat("Written", as.character(Sys.time()))
 
     pander::pander(stats, style=style, plain.ascii=plain.ascii, justify=justify,
@@ -203,7 +206,7 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
 
   } else if(echo) {
 
-    cat("\nUnivariate Statistics")
+    cat("\nDescriptive Statistics")
     pander::pander(stats, style=style, plain.ascii=plain.ascii, justify=justify,
                    split.table=Inf, ...)
     cat("\nObservations")
@@ -220,7 +223,7 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
 }
 
 
-dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
+dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
                       max.distinct.values=10, str.distinct.values="distinct values", trim.strings=FALSE,
                       max.string.width=15, round.digits=2, file=NA, display.labels=FALSE, ...) {
 
@@ -285,7 +288,7 @@ dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
       }
     }
 
-    # For numeric data, display a column of univariate stats and a column of frequencies
+    # For numeric data, display a column of descriptive stats and a column of frequencies
     else if(is.numeric(column.data)) {
       output[i,5] <- paste("avg (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
                            " (",round(sd(column.data,na.rm=TRUE),round.digits), ")\n",
@@ -363,133 +366,6 @@ dfSummary <- function(x, echo=TRUE, style="grid", justify="left",
     return(output)
 }
 
-prop <- function(x, echo=TRUE, style="grid", justify="left",
-                       plain.ascii=TRUE, display.labels=FALSE, ...) {
-
-  if(!is.data.frame(x)) {
-    stop("x is not a dataframe. Try properties(as.data.frame(x)).")
-  }
-  if(display.labels && !("rapportools" %in% rownames(installed.packages())))
-    stop("to display labels, package rapportools must be installed")
-
-  # declare a function that avoids some redundancy
-  bind.names <- function(item) {
-    if(!is.null(names(item)))
-       return(paste(names(item),sQuote(item), sep=" = ", collapse=",\n"))
-       else
-         return(paste(sQuote(item), collapse=", "))
-  }
-
-  # set the stringsAsFactors to FALSE to prevent problems
-  op <- options("stringsAsFactors")
-  options(stringsAsFactors=FALSE)
-  on.exit(options(op))
-
-  # extract dataframe attributes
-  x.attr <- attributes(x)
-
-  df.attributes <- character(0)
-
-  # iterate over every root-level item
-  for(i in seq(along.with=x.attr)) {
-
-    if(is.atomic(x.attr[[i]]))
-      df.attributes[labels(x.attr)[[i]]] <- bind.names(x.attr[[i]])
-
-    # iterate over item when not atomic
-    else {
-      for(j in seq(along.with=x.attr[[i]])) {
-
-        # when it's not a new list, output it
-        if(is.atomic(x.attr[[i]][[j]]))
-          df.attributes[paste(labels(x.attr)[[i]],
-                              labels(x.attr[[i]])[[j]],
-                              sep=" | ")] <- bind.names(x.attr[[i]][[j]])
-
-        # and when it's another list, get at its elements
-        else {
-          for(k in seq(along.with=x.attr[[i]][[j]])) {
-            if(!is.atomic(x.attr[[i]][[j]][[k]])) {
-              stop("dataframe attributes has over 3 levels of nested lists. Set df.attributes to FALSE to get variable attributes.")
-            }
-            df.attributes[paste(labels(x.attr)[[i]],
-                                labels(x.attr[[i]])[[j]],
-                                labels(x.attr[[i]][[j]])[[k]],
-                                sep=" | ")] <- bind.names(x.attr[[i]][[j]][[k]])
-          }
-        }
-      }
-    }
-  }
-
-  # check that row.names are not insanely long
-  if(nchar(df.attributes["row.names"]) > 500)
-    df.attributes["row.names"] <- paste(substr(df.attributes["row.names"],start = 1,stop = 500),
-                                        "\n ... [ truncated at 500 characters ]")
-
-  df.attributes <- data.frame(value=df.attributes)
-
-  # extract Variable attributes
-  n.cols <- ncol(x)
-  var.attributes <- data.frame(name=character(n.cols),label=character(n.cols),
-                               type=character(n.cols),class=character(n.cols),
-                               other.attributes=character(n.cols),
-                               first.obs=character(n.cols))
-
-  # Add items that don't need iteration ("for" loop)
-  var.attributes$name <- names(x)
-  var.attributes$first.obs <- as.vector(t(x[1,]))
-
-  if(display.labels) {
-    var.attributes$label <- rapportools::label(x)
-  } else {
-    var.attributes$label <- NULL
-  }
-
-  # Iterate over columns in dataframe for other items
-  for(i in 1:n.cols) {
-    var.attributes$type[i] <- typeof(x[[i]])
-    var.attributes$class[i] <- paste(class(x[[i]]),collapse="\n",sep="")
-
-    # additional attributes (tricky part)
-    tmp.attributes <- attributes(x[[i]])
-    # tmp.attributes[["class"]] <- NULL # remove class to avoid redundancy with previous column
-
-    # loop over attributes so that names items can be extracted properly
-
-    for(j in seq(along.with=tmp.attributes)) {
-      var.attributes$other.attributes[i] <- paste(var.attributes$other.attributes[i],
-                                                  paste(paste("$",names(tmp.attributes[j]), sep=""),
-                                                        bind.names(tmp.attributes[[j]]),
-                                                        sep="\n", collapse="\n"),
-                                                  sep="\n")
-      # little hack to clean up line breaks
-      var.attributes$other.attributes[i] <- sub("\\A\\n","",var.attributes$other.attributes[i],perl=TRUE)
-      var.attributes$other.attributes[i] <- gsub("\\n\\$","\n\n$",var.attributes$other.attributes[i],perl=TRUE)
-      var.attributes$other.attributes[i] <- gsub("\\n\\n\\n","\n\n",var.attributes$other.attributes[i],perl=TRUE)
-    }
-  }
-
-  if(echo==TRUE) {
-    if(!"pander" %in% rownames(installed.packages())) {
-      stop("Please install package pander first: install.packages('pander')")
-    }
-
-    pander::pander(df.attributes, split.table=Inf, split.cells=60,
-                   keep.line.breaks=TRUE, plain.ascii=plain.ascii, style=style,
-                   justify=justify, ...)
-    pander::pander(var.attributes, split.table=Inf, split.cells=45,
-                   keep.line.breaks=TRUE, plain.ascii=plain.ascii, style=style,
-                   justify=justify, ...)
-
-    return(invisible(list(df.attributes=df.attributes,var.attributes=var.attributes)))
-  }
-
-  return(list(df.attributes=df.attributes,var.attributes=var.attributes))
-
-}
-
 # Shortcuts for backward-compatibility
 frequencies <- freq
 unistats <- desc
-properties <- prop

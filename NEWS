@@ -11,4 +11,5 @@ Several major changes since version 0.1
   - 'freq' just returns a matrix-table, not a list anymore.
   - in 'desc' and 'freq', no more argument 'display.label'. Those are displayed automatically when present.
   - rapportools is used instead of Hmisc for variable labels
+  - function 'properties' was removed for now. Maybe reintegrated in a future update.
 

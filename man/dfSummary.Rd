@@ -3,7 +3,7 @@
 \title{Dataframe Summary}
 \description{Summary of a dataframe consisting of: variable names and labels, factor levels, frequencies or numerical summary statistics, and valid/missing observations information. Optionally uses package 'pander' to display pretty tables.}
 \usage{
-dfSummary(x, echo=TRUE, style="grid", justify="left",
+dfSummary(x, echo=TRUE, style="multiline", justify="left",
           max.distinct.values=10, str.distinct.values="distinct values",
           trim.strings=FALSE, max.string.width=15, round.digits=2,
           file=NA, display.labels=FALSE, ...)
@@ -11,7 +11,7 @@ dfSummary(x, echo=TRUE, style="grid", justify="left",
 \arguments{
   \item{x}{A dataframe.}
   \item{echo}{If TRUE (default), pander tables will be displayed and resulting dataframe will be returned silently.}
-  \item{style}{The style to be used in pander table. Defaults to "grid".}
+  \item{style}{The style to be used in pander table. Defaults to "multiline". Alternately, use "grid"; other styles ("simple" and "rmarkdown") are not supported.}
   \item{justify}{Pander argument. Defaults to "left".}
   \item{max.distinct.values}{The maximum number of items to be displayed in the frequency cell. If variable has more distinct values, no frequency will be shown (only a message stating the number of distinct values).}
   \item{str.distinct.values}{For internationalization; defaults to "distinct values".}
