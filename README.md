@@ -182,6 +182,7 @@ All functions will printout markdown text easily. Here an example using `freq()`
 ```
 
 Variable name:  iris$Species
+
 Variable label: The Species
 
 Frequencies
