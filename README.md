@@ -181,9 +181,8 @@ All functions will printout markdown text easily. Here an example using `freq()`
 > freq(iris$Species, style="rmarkdown", plain.ascii=FALSE)
 ```
 
-Variable name:  iris$Species
-
-Variable label: The Species
+Variable name:  iris$Species  
+Variable label: The Species (duh)
 
 Frequencies
 
