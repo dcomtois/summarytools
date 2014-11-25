@@ -6,7 +6,8 @@
 dfSummary(x, echo=TRUE, style="multiline", justify="left",
           max.distinct.values=10, trim.strings=FALSE,
           max.string.width=15, round.digits=2,
-          file=NA, display.labels=FALSE, ...)
+          file=NA, display.labels=FALSE,
+          n.total="after", ...)
 }
 \arguments{
   \item{x}{A dataframe.}
@@ -19,6 +20,7 @@ dfSummary(x, echo=TRUE, style="multiline", justify="left",
   \item{round.digits}{Number of digits for rounding (used in numerical stats and in freq tables).}
   \item{file}{The text file to be written to disk. Defaults to NA.}
   \item{display.labels}{If TRUE,a column containing Hmisc-type labels will be displayed. Defaults to FALSE.}
+  \item{n.total}{Where should the total number of rows be displayed. One of three options: "after" the table (default), "before" the table, or "heading" to make the heading name contain that number (c.g. "n.valid.on.250")}
   \item{\dots}{Additional arguments passed to pander().}
 }
 %\details{}

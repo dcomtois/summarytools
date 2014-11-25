@@ -5,8 +5,8 @@ freq <- function(x, round.digits=2, echo=TRUE, style="simple", justify="right",
     stop("argument must be a vector or a factor; for dataframes, use lapply(x,freq)")
   }
 
-  if(echo && !("pander" %in% rownames(installed.packages()))) {
-    stop("with echo = TRUE, package pander must be installed")
+  if((echo || !is.na(file)) && !("pander" %in% rownames(installed.packages()))) {
+    stop("with echo = TRUE or file argument specified, package pander must be installed")
   }
 
   # Make sure no sink() is left open (in case of an error occuring)
@@ -89,8 +89,8 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
                  style="simple", justify="right", plain.ascii=TRUE, file=NA,
                  append=FALSE, ...) {
 
-  if( (echo||file) && !("pander" %in% rownames(installed.packages()))) {
-    stop("to write to file or with echo=TRUE, package pander must be installed")
+  if((echo || !is.na(file)) && !("pander" %in% rownames(installed.packages()))) {
+    stop("with echo = TRUE or file argument specified, package pander must be installed")
   }
 
   # Make sure sink() is terminated (in case of an error occuring)
@@ -226,7 +226,7 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
 dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
                       max.distinct.values=10, trim.strings=FALSE,
                       max.string.width=15, round.digits=2, file=NA,
-                      display.labels=FALSE, ...) {
+                      display.labels=FALSE, n.total="after", ...) {
 
   if(!is.data.frame(x))
     stop("x must be a dataframe")
@@ -235,7 +235,6 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
   op <- options("stringsAsFactors")
   options(stringsAsFactors=FALSE)
   on.exit(options(op))
-
 
   if((!is.na(file)|!is.na(echo)) && !"pander" %in% rownames(installed.packages()))
     stop("to display pander tables or write output to disk, package pander must first be installed")
@@ -248,7 +247,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
                        variable.name=character(),
                        label=character(),
                        properties=character(),
-                       factor.values.or.stats=character(),
+                       factor.levels.or.stats=character(),
                        frequencies=character(),
                        n.valid=numeric())
 
@@ -274,17 +273,17 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
 
     # For factors, display a column of levels and a column of frequencies
     if(is.factor(column.data)) {
-      n <- nlevels(column.data)
-      if(n <= max.distinct.values) {
-        output[i,5] <- paste(1:n,". ", levels(column.data), collapse="\n", sep="")
+      n.levels <- nlevels(column.data)
+      if(n.levels <= max.distinct.values) {
+        output[i,5] <- paste(1:n.levels,". ", levels(column.data), collapse="\n", sep="")
 
         fr <- table(column.data,useNA="no") # raw freqs
         pct <- round(prop.table(fr)*100,1) # percentage
-        names(fr) <- 1:nlevels(column.data)
+        names(fr) <- 1:n.levels
         output[i,6] <- paste(names(fr),": ", fr," (",pct,"%)",sep="",collapse="\n")
       } else {
         output[i,5] <- paste(1:max.distinct.values,". ", levels(column.data)[1:max.distinct.values], collapse="\n", sep="")
-        output[i,5] <- paste(output[i,5], paste(n - max.distinct.values, "Other levels (not displayed)"),sep="\n")
+        output[i,5] <- paste(output[i,5], paste(n.levels - max.distinct.values, "Other levels (not displayed)"),sep="\n")
         output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
       }
     }
@@ -350,21 +349,47 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
   if(!display.labels)
     output$label <- NULL
 
-  if(!is.na(file)) {
-    capture.output(pander::pander(output, split.table=Inf, split.cells=Inf,
-                                  keep.line.breaks=TRUE, style=style, justify=justify, ...),
-                   file = file)
+  # Insert number of rows into heading for last column when n.total = "heading"
+  if(n.total=="heading") {
+    colnames(output)[ncol(output)] <- paste("n.valid.on.", nrow(x), sep="")
   }
 
-  if(echo) {
+  # Write to file when file argument is supplied; no echo to console will occur and resulting df will be returned silently.
+  if(!is.na(file)) {
+
+    sink(file=file)
+
+    if(n.total=="before")
+      cat("Total number of observations:", nrow(x))
+
+    pander::pander(output, split.table=Inf, split.cells=Inf,
+                   keep.line.breaks=TRUE, style=style, justify=justify, ...)
+
+    if(n.total=="after")
+      cat("Total number of observations:", nrow(x))
+
+    sink()
+
+    cat(paste("Output successfully written to", normalizePath(file)))
+
+    return(invisible(output))
+
+  } else if(echo) {
+
+    if(n.total=="before")
+      cat("\nTotal number of observations:", nrow(x))
+
     pander::pander(output, split.table=Inf, split.cells=Inf, keep.line.breaks=TRUE,
                    style=style, justify=justify, ...)
+
+    if(n.total=="after")
+      cat("Total number of observations:", nrow(x))
+
+    return(invisible(output))
+
   }
 
-  if(echo || !is.na(file))
-    return(invisible(output))
-  else
-    return(output)
+  return(output)
 }
 
 # Shortcuts for backward-compatibility
