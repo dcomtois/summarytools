@@ -4,8 +4,9 @@
 \title{Frequency Tables for Discrete Data and Factors}
 \description{Displays frequencies as well as valid/missing observation information.}
 \usage{
-freq(x, round.digits=2, echo=TRUE, style="simple", justify="right",
-            plain.ascii=TRUE, file=NA, append=FALSE, ...)
+freq(x, round.digits=2, echo=TRUE, style="simple",
+     justify="right", plain.ascii=TRUE, file=NA,
+     append=FALSE, ...)
 }
 \arguments{
   \item{x}{Vector of discrete (categorical) data.}
@@ -19,7 +20,7 @@ freq(x, round.digits=2, echo=TRUE, style="simple", justify="right",
   \item{\dots}{Additional arguments passed to pander().}
 }
 \value{A frequency table of class 'matrix'.}
-\author{Dominic Comtois <dominic.comtois at gmail.com>}
+\author{Dominic Comtois <dominic.comtois@gmail.com>}
 \references{\url{https://github.com/dcomtois/summarytools}}
 \examples{
   data(iris)

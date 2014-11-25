@@ -224,8 +224,9 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
 
 
 dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
-                      max.distinct.values=10, str.distinct.values="distinct values", trim.strings=FALSE,
-                      max.string.width=15, round.digits=2, file=NA, display.labels=FALSE, ...) {
+                      max.distinct.values=10, trim.strings=FALSE,
+                      max.string.width=15, round.digits=2, file=NA,
+                      display.labels=FALSE, ...) {
 
   if(!is.data.frame(x))
     stop("x must be a dataframe")
@@ -284,7 +285,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
       } else {
         output[i,5] <- paste(1:max.distinct.values,". ", levels(column.data)[1:max.distinct.values], collapse="\n", sep="")
         output[i,5] <- paste(output[i,5], paste(n - max.distinct.values, "Other levels (not displayed)"),sep="\n")
-        output[i,6] <- paste(as.character(length(unique(column.data))),str.distinct.values)
+        output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
       }
     }
 
@@ -305,7 +306,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
         output[i,6] <- paste(round(as.numeric(names(fr)),round.digits),": ", fr," (",pct,"%)",sep="",collapse="\n")
       }
       else {
-        output[i,6] <- paste(as.character(length(unique(column.data))),str.distinct.values)
+        output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
       }
     }
 
@@ -324,7 +325,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
         output[i,6] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
       }
-      else output[i,6] <- paste(as.character(length(unique(column.data.tmp))),str.distinct.values)
+      else output[i,6] <- paste(as.character(length(unique(column.data.tmp))),"distinct values")
     }
 
     # For data that does not fit in previous categories (numeric, character, factor)
@@ -336,7 +337,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
         output[i,6] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
       }
-      else output[i,6] <- paste(as.character(length(unique(column.data))),str.distinct.values)
+      else output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
     }
 
     # Add missing data info
