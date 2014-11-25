@@ -61,8 +61,8 @@ freq <- function(x, round.digits=2, echo=TRUE, style="simple", justify="right",
     if(exists("msg.nan"))
       cat(msg.nan)
     sink()
-    cat("Output successfully written to ", normalizePath(file))
-    return(invisible(output))
+    cat("Output successfully written to file.")
+    return(normalizePath(file))
 
   } else if(echo) {
 
@@ -200,9 +200,9 @@ desc <- function(x, na.rm=TRUE, round.digits=2, echo=TRUE, transpose=FALSE,
                    split.table=Inf, ...)
     sink()
 
-    cat(paste("Output successfully written to", normalizePath(file)))
+    cat("Output successfully written to file")
 
-    return(invisible(list(stats,observ)))
+    return(normalizePath(file))
 
   } else if(echo) {
 
@@ -370,9 +370,9 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
 
     sink()
 
-    cat(paste("Output successfully written to", normalizePath(file)))
+    cat(paste("Output successfully written to file")
 
-    return(invisible(output))
+    return(normalizePath(file))
 
   } else if(echo) {
 
