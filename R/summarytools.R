@@ -370,7 +370,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
 
     sink()
 
-    cat(paste("Output successfully written to file")
+    cat("Output successfully written to file")
 
     return(normalizePath(file))
 
