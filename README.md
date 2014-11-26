@@ -179,7 +179,7 @@ Here is an **example** of a markdown table, as processed by GitHub, using `freq(
 
 
 ```r
-> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="")
+> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="---")
 ```
 
 Variable name:  iris$Species  
@@ -192,14 +192,19 @@ Frequencies
 |       **setosa** |  46 |    33.58 |        33.58 |    30.67 |        30.67 |
 |   **versicolor** |  45 |    32.85 |        66.42 |       30 |        60.67 |
 |    **virginica** |  46 |    33.58 |          100 |    30.67 |        91.33 |
-|       **\<NA\>** |  13 |          |              |     8.67 |          100 |
+|       **\<NA\>** |  13 |      --- |          --- |     8.67 |          100 |
 |        **Total** | 150 |      100 |          100 |      100 |          100 |
 
-Note that we also used the option `missing=""` to show that if we don't like seeing `NA`'s in our tables, it's quite easy to get rid of them.
+###### Two things to note here:
+
+  1. We specified `plain.ascii=FALSE`. This allows additional markup in the text (here, the bold-typed row names)
+  2. We used the option `missing="---"`, to show that if we don't like seeing `NA`'s in our tables, it's quite easy to get rid of them or replace them with any character (or combination of characters).
+
+To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/).
 
 #### Multiline-cell tables
 
-Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to html.
+Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to other formats; this part is still under development. And maybe more interesting is the soon-to-come `view()` function will directly generate _html_ files using the [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package, supporting custom _css_.
 
 #### More customization
 
