@@ -10,21 +10,21 @@ It also aims at making R _a little_ easier to use for newcomers.
 
 All three functions:
 
-- Will display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package
-- Will easily redirect their output to text files rather than console
+- Display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package
+- Optionnaly redirect their output to text files rather than to console
 - Support `Hmisc` and `rapportools` variable labels
 - Return table (matrix) objects for further manipulation if needed
 
 
 # Installation
 
-To install the latest **stable** version of `summarytools`, you can do so easily. Just type into your R console: 
+To install the **latest stable version** of `summarytools`, just type into your R console: 
 
 ```r
 > install.packages("summarytools")
 ```
 
-For the most **up-to-date version** that has all the latest features **but** might also have bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
+For the most **up-to-date version** that has all the latest features **but** might also contain bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
 
 ```r
 > install.packages("devtools")
@@ -32,9 +32,7 @@ For the most **up-to-date version** that has all the latest features **but** mig
 > install_github('dcomtois/summarytools')
 ```
 
-You can also get the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
-
-The package comes with no guarantees. It is a work in progress and feedback / feature requests are all welcome.
+You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
 ## Frequency tables with <u>freq()</u>
 
@@ -213,3 +211,7 @@ All functions also accept additionnal parameters which will be passed on to pand
 ## What's coming next?
 
 Under development is a function to make `summarytools` tables appear in RStudio's Viewer, in an html version with a minimal [bootstrap css](http://getbootstrap.com/) header. Of course, the function will also allow one to save the resulting html file.
+
+## Final notes
+
+The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome.
