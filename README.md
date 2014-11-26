@@ -3,7 +3,7 @@
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished it was included in base R:
 
 - Painless **frequency tables** with proportions and missing data info
-- Painless **descriptive statistics** with all common stats for numerical variables
+- Painless **descriptive statistics** with all common univariate stats for numerical variables
 - Painless **dataframe summaries** that facilitate data cleaning and quick evaluation
 
 It also aims at making R _a little_ easier to use for newcomers.
@@ -18,7 +18,13 @@ All three functions:
 
 # Installation
 
-For the most **up-to-date version**, first install the `devtools` package and then install `summarytools`via `install_github`:
+To install the latest **stable** version of `summarytools`, you can do so easily. Just type into your R console: 
+
+```r
+> install.packages("summarytools")
+```
+
+For the most **up-to-date version** that has all the latest features **but** might also have bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
 
 ```r
 > install.packages("devtools")
@@ -26,16 +32,9 @@ For the most **up-to-date version**, first install the `devtools` package and th
 > install_github('dcomtois/summarytools')
 ```
 
-If you would rather just install the latest **stable** version of `summarytools`, you can do so easily. But some key features might be missing.
-
-Type into your R console: 
-
-```r
-> install.packages("summarytools")
-```
-
 You can also get the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
+The package comes with no guarantees. It is a work in progress and feedback / feature requests are all welcome.
 
 ## Frequency tables with <u>freq()</u>
 
@@ -147,7 +146,7 @@ Observations
 
 ```r
 ----------------------------------------------------------------------------------------------------
-num   variable.name   properties    factor.values.or.stats            frequencies        n.valid    
+num   variable.name   properties    factor.levels.or.stats            frequencies        n.valid    
 ----- --------------- ------------- --------------------------------- ------------------ -----------
 1     Sepal.Length    type:double   avg (sd) = 5.88 (0.84)            35 distinct values 134 (89.3%)
                       class:numeric min < med < max = 4.3 < 5.8 < 7.9                               
@@ -197,3 +196,7 @@ Frequencies
 #### More customization
 
 All functions also accept additionnal parameters which will be passed on to pander. See the [pander package](https://github.com/Rapporter/pander) documentation for details.
+
+## What's coming next?
+
+Under development is a function to make `summarytools` tables appear in RStudio's Viewer, in an html version with a minimal [bootstrap css](http://getbootstrap.com/) header. Of course, the function will also allow one to save the resulting html file.
