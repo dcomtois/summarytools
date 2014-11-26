@@ -204,7 +204,7 @@ To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane
 
 #### Multiline-cell tables
 
-Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to other formats; this part is still under development. And maybe more interesting is the soon-to-come `view()` function will directly generate _html_ files using the [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package, supporting custom _css_.
+Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to other formats; this part is still under development. And maybe more interesting is the soon-to-come `view()` function which will directly generate _html_ files using the [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package, supporting custom _css_.
 
 #### More customization
 
