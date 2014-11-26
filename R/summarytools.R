@@ -290,7 +290,7 @@ dfSummary <- function(x, echo=TRUE, style="multiline", justify="left",
 
     # For numeric data, display a column of descriptive stats and a column of frequencies
     else if(is.numeric(column.data)) {
-      output[i,5] <- paste("avg (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
+      output[i,5] <- paste("mean (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
                            " (",round(sd(column.data,na.rm=TRUE),round.digits), ")\n",
                            "min < med < max = ", round(min(column.data,na.rm=TRUE),round.digits),
                            " < ", round(median(column.data,na.rm=TRUE),round.digits),

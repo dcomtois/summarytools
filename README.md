@@ -13,7 +13,7 @@ All three functions:
 - Will display neatly formatted tables in plain text or [markdown](http://daringfireball.net/projects/markdown/) text thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package
 - Will easily redirect their output to text files rather than console
 - Support `Hmisc` and `rapportools` variable labels
-- Return matrix objects for further manipulation if needed
+- Return table (matrix) objects for further manipulation if needed
 
 
 # Installation
@@ -148,19 +148,19 @@ Observations
 ----------------------------------------------------------------------------------------------------
 num   variable.name   properties    factor.levels.or.stats            frequencies        n.valid    
 ----- --------------- ------------- --------------------------------- ------------------ -----------
-1     Sepal.Length    type:double   avg (sd) = 5.88 (0.84)            35 distinct values 134 (89.3%)
+1     Sepal.Length    type:double   mean (sd) = 5.88 (0.84)           35 distinct values 134 (89.3%)
                       class:numeric min < med < max = 4.3 < 5.8 < 7.9                               
                                     IQR (CV) = 1.38 (0.14)                                          
 
-2     Sepal.Width     type:double   avg (sd) = 3.05 (0.44)            23 distinct values 138 (92.0%)
+2     Sepal.Width     type:double   mean (sd) = 3.05 (0.44)           23 distinct values 138 (92.0%)
                       class:numeric min < med < max = 2 < 3 < 4.4                                   
                                     IQR (CV) = 0.5 (0.14)                                           
 
-3     Petal.Length    type:double   avg (sd) = 3.75 (1.76)            43 distinct values 134 (89.3%)
+3     Petal.Length    type:double   mean (sd) = 3.75 (1.76)           43 distinct values 134 (89.3%)
                       class:numeric min < med < max = 1 < 4.4 < 6.9                                 
                                     IQR (CV) = 3.5 (0.47)                                           
 
-4     Petal.Width     type:double   avg (sd) = 1.2 (0.77)             22 distinct values 134 (89.3%)
+4     Petal.Width     type:double   mean (sd) = 1.2 (0.77)            22 distinct values 134 (89.3%)
                       class:numeric min < med < max = 0.1 < 1.3 < 2.5                               
                                     IQR (CV) = 1.5 (0.64)                                           
 
@@ -171,13 +171,15 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 ```
 
 
-# All functions markdown-ready
+# All functions markdown-compatible
 
-All functions will printout markdown text easily. Here an example using `freq()`:
+All functions will printout markdown with option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files actually displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can also convert markdown text files into a wide choice of common formats such as _.pdf_, _.docx_, _.odt_, _.html_, and many more. 
+
+Here is an **example** of a markdown table, as processed by GitHub, using `freq()`:
 
 
 ```r
-> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE)
+> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="")
 ```
 
 Variable name:  iris$Species  
@@ -190,8 +192,14 @@ Frequencies
 |       **setosa** |  46 |    33.58 |        33.58 |    30.67 |        30.67 |
 |   **versicolor** |  45 |    32.85 |        66.42 |       30 |        60.67 |
 |    **virginica** |  46 |    33.58 |          100 |    30.67 |        91.33 |
-|       **\<NA\>** |  13 |       NA |           NA |     8.67 |          100 |
+|       **\<NA\>** |  13 |          |              |     8.67 |          100 |
 |        **Total** | 150 |      100 |          100 |      100 |          100 |
+
+Note that we also used the option `missing=""` to show that if we don't like seeing `NA`'s in our tables, it's quite easy to get rid of them.
+
+#### Multiline-cell tables
+
+Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to html.
 
 #### More customization
 
