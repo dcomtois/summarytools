@@ -2,9 +2,9 @@
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished it was included in base R:
 
-- Painless **frequency tables** with proportions and missing data info
-- Painless **descriptive statistics** with all common univariate stats for numerical variables
-- Painless **dataframe summaries** that facilitate data cleaning and quick evaluation
+- Painless **frequency tables** with proportions and missing data information
+- Painless **descriptive statistics** with all common univariate statistics for numerical vectors
+- Painless **dataframe summaries** that facilitate data cleaning and firsthand evaluation
 
 It also aims at making R _a little_ easier to use for newcomers.
 
@@ -195,7 +195,7 @@ Frequencies
 
 ###### Two things to note here:
 
-  1. We specified `plain.ascii=FALSE`. This allows additional markup in the text (here, the bold-typed row names)
+  1. We specified `plain.ascii=FALSE`. This allows additional markup in the text (here, the bold-typed row names, added automatically by [pander](https://github.com/Rapporter/pander)).
   2. We used the option `missing="---"`, to show that if we don't like seeing `NA`'s in our tables, it's quite easy to get rid of them or replace them with any character (or combination of characters).
 
 To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/).
@@ -206,7 +206,7 @@ Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to oth
 
 #### More customization
 
-All functions also accept additionnal parameters which will be passed on to pander. See the [pander package](https://github.com/Rapporter/pander) documentation for details.
+All functions also accept additionnal parameters which will be passed on to _pander_. See the [pander package](https://github.com/Rapporter/pander) documentation for details.
 
 ## What's coming next?
 
