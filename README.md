@@ -171,7 +171,7 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 
 # All functions markdown-compatible
 
-All functions will printout markdown with option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files actually displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can also convert markdown text files into a wide choice of common formats such as _.pdf_, _.docx_, _.odt_, _.html_, and many more. 
+All functions will printout [markdown](http://daringfireball.net/projects/markdown/) text when setting option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are actually displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can also convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_, _.odt_, _.html_, among others. 
 
 Here is an **example** of a markdown table, as processed by GitHub, using `freq()`:
 
