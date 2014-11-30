@@ -1,0 +1,9 @@
+/* Add here any custom settings. Since this is called after bootstrap.min.css, this file has priority */
+td { white-space:pre }
+body {
+  margin: 20px;
+  line-height: 85%;
+}
+th {
+  text-align: center;
+}

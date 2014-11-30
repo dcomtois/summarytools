@@ -1,3 +1,21 @@
+Version 0.3
+-----------
+Another round of major changes.
+
+  - Bringing in html table built with htmltools and viewable in RStudio's Viewer
+  - "print.st.output" function is now used for displaying the results;
+  - argument "echo" is deprecated; either display with pander or use as.table().Otherwise use view()
+  - Returned objects are now of class "st.output" and have the following attributes to inform print.st.output
+	* st.type : one of "freq", "desc" and "dfSummary"
+	* date.time : date & time at which the function was called
+	* var.name : for 'freq', and also 'desc' when a single vector is used.
+	* var.label : same conditions as var.name
+	* pander.args : arguments such as 'style', 'justify', 'plain.ascii', 'split.table'
+  - print function has 2 possible methods: "pander", "plain", or "viewer" which uses RStudio's viewer pane
+    to display an html version of the output, using bootstrap's css (getbootstrap.com)
+
+
+
 Version 0.2
 -----------
 Several major changes since version 0.1

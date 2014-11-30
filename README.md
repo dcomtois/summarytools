@@ -202,7 +202,7 @@ To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane
 
 #### Multiline-cell tables
 
-Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to other formats; this part is still under development. And maybe more interesting is the soon-to-come `view()` function which will directly generate _html_ files using the [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package, supporting custom _css_.
+Multiline-cell tables such as `dfSummary`'s are a bit trickier to convert to other formats; this part is still under development. And maybe more interesting is the soon-to-come `view()` function which will directly generate _html_ files using the [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package, supporting custom _css_ (see _What's coming next_ section below).
 
 #### More customization
 
@@ -210,7 +210,7 @@ All functions also accept additionnal parameters which will be passed on to _pan
 
 ## What's coming next?
 
-Under development is a function to make `summarytools` tables appear in RStudio's Viewer, in an html version with a minimal [bootstrap css](http://getbootstrap.com/) header. Of course, the function will also allow one to save the resulting html file.
+Under development is a function to make _summarytools_ tables appear in RStudio's Viewer, in an _html_ version with a minimal [bootstrap css](http://getbootstrap.com/) header. Of course, the function will also allow one to save the resulting html file.
 
 ## Final notes
 
