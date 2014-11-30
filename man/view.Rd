@@ -1,34 +1,31 @@
 \name{view}
 \alias{view}
-\title{Wrapper function for \code{print.summarytools} to facilitate creating \emph{html} files.}
+\title{Wrapper function around \code{print.summarytools} to facilitate generation of \emph{html} files.}
 \description{
-  takes a \code{summarytools} object as arguement and calls its print method using (by default) \code{method="viewer"}, which will display the html generated file in RStudio's Viewer pane.}
+  Takes a \code{summarytools} object as argument and calls its print method using \code{method="viewer"} by default. This generates an \emph{html} file in the session's temporary directory and displays this file in \emph{RStudio}'s Viewer pane, falling back to default browser when used outside \emph{RStudio}.}
 \usage{
   view(x, method = "viewer", ...)
 }
 \arguments{
-  \item{x}{A \code{summarytools} object created with one of \emph{freq} (or \emph{frequencies}), \emph{desc} (or \emph{unistats}), and \emph{dfSummary}.}
-  \item{method}{One of 3 possibilities: \dQuote{viewer} (default), \dQuote{browser}, \dQuote{pander}. To display the table without any formatting, use \code{as.table(x)}}
+  \item{x}{A \code{summarytools} object created with one of \code{freq}, \code{descr} and \code{dfSummary}.}
+  \item{method}{One of the 3 following: \dQuote{viewer} (default), \dQuote{browser}, \dQuote{pander}. Note: To display \code{x} without any formatting at all, simply use \code{as.table(x)}}
   \item{\dots}{Not used for now.}
 }
 
-\details{This function makes it easier to generate html files with a single line of code, for instance \code{view(freq(iris$Species))}. This create an html file in the user's temp directory, and the path to this file is returned as a string.}
+\details{This function makes it more practical to generate html files with a single line of code, such as in \code{view(freq(iris$Species))}.}
 
 \value{
-    For \code{method=="pander"}, nothing \code{NULL} is returned; on the other hand. Using any of the two other methods (\dQuote{viewer} and \dQuote{browser}) will return the \emph{html} absolute file path in the temporary session directory.}
+    For \code{method=="pander"}, nothing (\code{NULL}) is returned. With the two other methods (\dQuote{viewer} and \dQuote{browser}), returns the \emph{html} file's absolute path.}
 
 \author{
   Dominic Comtois <dominic.comtois@gmail.com>
 }
 
-\note{
-Don't confuse \code{view} (lowercase) with the \code{utils::View} (capital V) function which allows visionning dataframes inside an RStudio pane. \code{view} allows one to quickly build a short formatted short report with the results of any of the 3 main \emph{summarytools} functions at hand.}
-
 \examples{
   data(iris)
-%  view(freq(iris$Species))
-  view(desc(iris,transpose=TRUE), "pander")
-  view(dfSummary(iris), "pander")
+  \dontrun{view(dfSummary(iris))}
+  \dontrun{view(descr(iris,transpose=TRUE), "browser")}
+  view(freq(iris$Species), "pander")
 }
 
 \keyword{ html }

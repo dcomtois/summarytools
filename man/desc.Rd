@@ -1,10 +1,9 @@
-\name{desc}
-\alias{desc}
-\alias{unistats}
+\name{descr}
+\alias{descr}
 \title{Descriptive Univariate Statistics for Numerical Data}
 \description{Calculates mean, standard deviation, min, max, median, MAD, IQR, CV, skewness, SE.skewness, and kurtosis.}
 \usage{
-desc(x, na.rm=TRUE, style="simple", round.digits=2,
+descr(x, na.rm=TRUE, style="simple", round.digits=2,
      justify="right", plain.ascii=TRUE, file=NA,
      append=FALSE, transpose=FALSE, ...)}
 \arguments{
@@ -24,8 +23,8 @@ desc(x, na.rm=TRUE, style="simple", round.digits=2,
 \author{Dominic Comtois <dominic.comtois@gmail.com>}
 \examples{
 data(iris)
-desc(iris)
-desc(iris, transpose=TRUE)
+descr(iris)
+descr(iris, transpose=TRUE)
 }
 \keyword{univariate}
 \keyword{descriptives}

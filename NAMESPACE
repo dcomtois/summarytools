@@ -1,7 +1,5 @@
 export(freq)
-export(frequencies)
-export(desc)
-export(unistats)
+export(descr)
 export(dfSummary)
 export(.parse.arg.x)
 export(print.summarytools)
