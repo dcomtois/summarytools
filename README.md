@@ -8,9 +8,9 @@
 
 It also aims at making R a little easier to use for newcomers. With just a few lines of code, one can get a pretty good picture of the data at hand.
 
-### An example? 
+### An example
 
-Well, with just 2 lines of code, get a summary report of a dataframe, displayed directly in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
+With 2 lines of code, get a summary report of a dataframe, displayed directly in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
 
 ```r
 > library(summarytools)
@@ -18,17 +18,17 @@ Well, with just 2 lines of code, get a summary report of a dataframe, displayed 
 ```
 
 `view(dfSummary(iris))`
-![alt text](inst/includes/screenshots/dfSummary_in_RStudio_Viewer.png)
+![alt text](img/dfSummary_in_RStudio_Viewer.png)
 
-Building on the strengths of several packages and tools, the tables produced by _summarytools_ can be routed to either:
+##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by _summarytools_ can be:
 
-- The R console
-- Plain text files, or markdown text files (credits to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package.)
-- Stylized _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser.
+- Displayed as plain text in the R console 
+- Written to plain text files / markdown text files 
+- Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser. 
 
-Also, all functions:
-- Support `Hmisc` and `rapportools` _variable labels_
-- Return table or dataframe objects for further manipulation if needed
+##### Also, all functions:
+- Support `Hmisc` and `rapportools` _variable labels_. 
+- Return table or dataframe objects for further manipulation if needed. 
 
 # Installation
 
@@ -118,7 +118,7 @@ Observations
 ```
 
 
-#### descr() has a "transpose" option
+##### descr() has a "transpose" option
 
 If your eyes/brain prefer seeing things the other way around, you just set `transpose` to `TRUE`:
 
@@ -185,7 +185,7 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 ```
 
 
-# All functions markdown-compatible
+# All functions markdown-ready
 
 All functions can printout [markdown](http://daringfireball.net/projects/markdown/) text when setting option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are actually displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can also convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_, _.odt_, _.html_, among others. 
 
