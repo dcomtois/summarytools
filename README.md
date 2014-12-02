@@ -280,7 +280,7 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 
 ## What's coming next?
 
-Customization of css.
+Stats split by subgroups of data & customization of css.
 
 ## Final notes
 
