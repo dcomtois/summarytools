@@ -1,9 +1,20 @@
 /* Add here any custom settings. Since this is called after bootstrap.min.css, this file has priority */
-td { white-space:pre }
 body {
   margin: 20px;
-  line-height: 85%;
+  /*line-height: 85%;*/
 }
+
+.table {
+  width: auto;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
 th {
   text-align: center;
+}
+
+td {
+  white-space:pre; /* Allows multiline cells */
+  min-width: 150px;
 }

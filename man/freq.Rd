@@ -1,6 +1,5 @@
 \name{freq}
 \alias{freq}
-\alias{frequencies}
 \title{Frequency Tables for Factors and other Discrete Data}
 \description{Displays frequencies as well as valid/missing observation information.}
 \usage{

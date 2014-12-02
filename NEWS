@@ -11,7 +11,8 @@ Another round of major changes.
   	* var.name & var.label : for 'freq', and also 'desc' when a single vector is used.
   	* pander.args : 'style', 'justify', 'plain.ascii', 'split.table'
   - print.summarytools has argument "method" that can be one of "pander", "viewer", or "browser", the last two being used to display an html version of the output, using bootstrap's css (getbootstrap.com)
-
+  - rows indexing is "detected" and reported (function .parse.arg.x takes care of this)
+  - rounding now only occurs at the printing stage
 
 
 Version 0.2

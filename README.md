@@ -88,7 +88,10 @@ Frequencies
 > data(iris)
 > descr(iris)
 
-Descriptive Statistics
+Descriptive Univariate Statistics
+
+Dataframe name: iris
+          Date: 2014-11-30
 
                     Sepal.Length   Sepal.Width   Petal.Length   Petal.Width
 ----------------- -------------- ------------- -------------- -------------
@@ -123,6 +126,9 @@ If your eyes/brain prefer seeing things the other way around, you just set `tran
 > descr(iris, transpose=TRUE)
 
 Descriptive Statistics
+
+Dataframe name: iris
+          Date: 2014-11-30
 
                      Mean   Std.Dev   Min   Max   Median   MAD   IQR   CV   Skewness   SE.Skewness   Kurtosis
 ------------------ ------ --------- ----- ----- -------- ----- ----- ---- ---------- ------------- ----------
@@ -272,22 +278,12 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 - "plain.ascii": whether to use markdown tags (always `FALSE` by default)
 - ... and any of the other numerous [pander options](https://github.com/Rapporter/pander#pander-options)
 
-### Example
-
-
-to you can use a whole slew of also accept additionnal parameters which will be passed on to _pander_. See the [pander package](https://github.com/Rapporter/pander) documentation for details.
-
 ## What's coming next?
 
-Under development is a function to make _summarytools_ tables appear in RStudio's Viewer, in an _html_ version with a minimal [bootstrap css](http://getbootstrap.com/) header. Of course, the function will also allow one to save the resulting html file.
+Customization of css.
 
 ## Final notes
 
 The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome.
 
-
-
-## _summarytools_ builds on these great tools
- - John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/) and its _R_ implementation, Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package.
- - The [markdown](http://daringfireball.net/projects/markdown/) markup language
  

@@ -1,110 +1,31 @@
-freq <- function(x, round.digits=2, style="simple", justify="right",
-                 plain.ascii=TRUE, file=NA, append=FALSE, ...) {
 
-  # If x is a data.frame with 1 column, convert it to vector
-  if(!is.null(ncol(x)) && ncol(x)==1) {
-    x <- x[[1]]
-    message("x converted to vector")
-  }
-
-  if(!is.factor(x) && !is.vector(x)) {
-    stop("argument must be a vector or a factor; for dataframes, use lapply(x,freq)")
-  }
-
-  # Replace NaN's by NA's
-  # This simplifies matters a lot
-  if(NaN %in% x)  {
-    msg.nan <- paste(sum(is.nan(x)), "NaN value(s) converted to NA\n")
-    x[is.nan(x)] <- NA
-  }
-
-  # create a basic frequency table, always including the NA row
-  freq.table <- table(x, useNA = "always")
-
-  # Change the name of the NA item (last) to avoid potential problems when echoing to console
-  names(freq.table)[length(freq.table)] <- '<NA>'
-
-  # calculate proportions (valid, i.e excluding NA's)
-  P.valid <- prop.table(table(x, useNA="no")) * 100
-
-  # Add '<NA>' item to the proportions; this assures
-  # proper length when cbind'ing later on
-  P.valid['<NA>'] <- NA
-
-  # Calculate cumulative proportions
-  P.valid.cum <- cumsum(P.valid)
-  P.valid.cum['<NA>'] <- NA
-
-  # calculate proportions (total, i.e. including NA's)
-  P.tot <- prop.table(table(x, useNA="always"))*100
-  P.tot.cum <- cumsum(P.tot)
-
-  # Build the actual frequency table
-  output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
-  output <- rbind(output, c(length(x), rep(100,4)))
-  colnames(output) <- c("N","%Valid","%Cum.Valid","%Total","%Cum.Total")
-  rownames(output) <- c(names(freq.table),"Total")
-
-  # Set the class and attributes of the output object
-  class(output) <- c("summarytools", class(output))
-  attr(output, "type") <- "freq"
-
-  # Set additionnal attributes from the parsing function
-  tmp.attr <- .parse.arg.x(as.character(match.call()[2]))
-  for(item in names(tmp.attr))
-    attr(output, item) <- tmp.attr[item]
-  if("label" %in% names(attributes(x)))
-    attr(output, "var.label") <- rapportools::label(x)
-
-  # Add other attributes
-  attr(output, "date") <- Sys.Date()
-  attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
-                                      justify=justify, split.table=Inf, ...=...)
-  if(exists("msg.nan"))
-    attr(output, "notes") <- msg.nan
-
-  # Write to file when file argument is supplied
-  if(!is.na(file)) {
-    capture.output(output, file = file, append = append)
-    message("Output successfully written to file ", normalizePath(file))
-  }
-
-  return(output)
-}
-
-
+#### DESCR ###################################################################################
 descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
-                 justify="right", plain.ascii=TRUE, file=NA,
-                 append=FALSE, transpose=FALSE, ...) {
+                  justify="right", plain.ascii=TRUE, file=NA,
+                  append=FALSE, transpose=FALSE, ...) {
 
   if(is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
-  # Initialise output list and set basic class/attributes
+  if(is.atomic(x)) {
+    x <- data.frame(x)
+  }
+
+  # Initialise output list and set the class/attributes
   output <- list()
+
   class(output) <- c("summarytools", class(output))
   attr(output, "type") <- "descr"
 
-  # if x is atomic, convert to dataframe with a single element and use regex techniques
-  # to recuperate the column's name (and df's name when present)
-  if(is.atomic(x)) {
+  tmp.attr <- .parse.arg(as.character(match.call()[2]))
+  for(item in names(tmp.attr))
+    attr(output, item) <- tmp.attr[[item]]
 
-    x <- data.frame(x)
-    tmp.attr <- .parse.arg.x(as.character(match.call()[2]))
-    for(item in names(tmp.attr))
-      attr(output, item) <- tmp.attr[item]
+  # Add label to attributes if present
+  if("label" %in% names(attributes(x)))
+    attr(stats, "var.label") <- rapportools::label(x)
 
-    # Add label to attributes if present
-    if("label" %in% names(attributes(x)))
-      attr(stats, "var.label") <- rapportools::label(x)
-
-  } else {
-    # x not atomic; we must extract dataframe name from function call
-    attr(output, "df.name") <- as.character(match.call()[2])
-  }
-
-  # Still more attributes
-  attr(output, "date") <- Sys.time()
+  attr(output, "date") <- Sys.Date()
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
                                       justify=justify, split.table=Inf, ...=...)
 
@@ -116,26 +37,25 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(),check.names = FALSE)
 
 
-  # Identify non-numerical columns
+  # Identify and exclude non-numerical columns
   to.be.removed <- numeric()
   for(i in seq_along(x)) {
     if(!is.numeric(x[[i]]))
       to.be.removed <- append(to.be.removed, i)
   }
 
-  # Remove identified non-numerical columns
   if(length(to.be.removed)>0) {
-    attr(output,"notes") <- paste("Non-numerical variables ignored:", paste(colnames(x)[to.be.removed], collapse=", "))
+    attr(output,"notes") <- paste("Non-numerical variable(s) ignored:", paste(colnames(x)[to.be.removed], collapse=", "))
     x <- x[-to.be.removed]
+    attr(output, "col.names") <- attr(output, "col.names")[-to.be.removed]
     rm(to.be.removed)
   }
 
   if(ncol(x)==0) {
-    warning("No numerical variable were given as arguments. Returning nothing.")
-    return()
+    stop("No numerical variable were given as arguments.")
   }
 
-  # Iterate over variables in x
+  # Iterate over columns in x
   i <- 1
   for(variable in x) {
 
@@ -150,20 +70,25 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     n <- sum(!is.na(variable))
 
     # Insert stats into stats table
-    output$stats[i,] <- round(c(x.mean<-mean(variable,na.rm=na.rm),
-                                x.sd<-sd(variable,na.rm=na.rm),
-                                min(variable,na.rm=na.rm),
-                                max(variable,na.rm=na.rm),
-                                median(variable,na.rm=na.rm),
-                                mad(variable,na.rm=na.rm),
-                                IQR(variable,na.rm=na.rm),
-                                x.mean/x.sd,
-                                rapportools::skewness(variable,na.rm=na.rm),
-                                sqrt((6*n*(n-1))/((n-2)*(n+1)*(n+3))),
-                                rapportools::kurtosis(variable,na.rm=na.rm)),digits=round.digits)
+    output$stats[i,] <- c(x.mean<-mean(variable,na.rm=na.rm),
+                          x.sd<-sd(variable,na.rm=na.rm),
+                          min(variable,na.rm=na.rm),
+                          max(variable,na.rm=na.rm),
+                          median(variable,na.rm=na.rm),
+                          mad(variable,na.rm=na.rm),
+                          IQR(variable,na.rm=na.rm),
+                          x.mean/x.sd,
+                          rapportools::skewness(variable,na.rm=na.rm),
+                          sqrt((6*n*(n-1))/((n-2)*(n+1)*(n+3))),
+                          rapportools::kurtosis(variable,na.rm=na.rm))
 
-    # Insert proper row name (from var.names)
-    rownames(output$stats)[i] <- colnames(x)[i]
+    # Insert proper row names (from col.names/var.name of the parse function)
+
+    rownames(output$stats)[i] <-
+      ifelse(!is.null(attr(output,"var.name")[i]), attr(output,"var.name")[i],
+             attr(output,"col.names")[i])
+    #rownames(output$stats)[i] <- attr(output,"col.names")[i]
+    #rownames(output$stats)[i] <- attr(output,"var.name")[i]
 
     # Report number of missing vs valid data
     n.valid <- sum(!is.na(variable))
@@ -181,7 +106,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     i <- i+1
   }
 
-
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the transposed version be the default one and that at the
   # same time, the default value for transpose be FALSE.
@@ -189,9 +113,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     output$stats <- t(output$stats)
     output$observ <- t(output$observ)
   }
-
-  #   # Make sure sink() is terminated (in case of an error occuring)
-  #   on.exit(expr = if(sink.number()) sink())
 
   if(!is.na(file)) {
     capture.output(output, file = file, append = append)
@@ -201,6 +122,8 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   return(output)
 }
 
+#### dfSUMMARY #####################################################################
+
 dfSummary <- function(x, style="multiline", justify="left",
                       max.distinct.values=10, trim.strings=FALSE,
                       max.string.width=15, round.digits=2, file=NA,
@@ -208,7 +131,7 @@ dfSummary <- function(x, style="multiline", justify="left",
 
   if(!is.data.frame(x)) {
     x <- try(as.data.frame(x))
-    if(class(x)=="try-error")
+    if(inherits(x, "try-error"))
       message("x is not a dataframe and attempted conversion failed")
     else
       message("x was converted to a dataframe")
@@ -228,10 +151,14 @@ dfSummary <- function(x, style="multiline", justify="left",
                        n.valid=numeric())
 
   # Set additional attributes
-  #class(output) <- append(class(output), "st.output")
   class(output) <- c("summarytools", class(output))
   attr(output, "type") <- "dfSummary"
-  attr(output, "df.name") <- substitute(x)
+
+  # Set additionnal attributes from the parsing function
+  tmp.attr <- .parse.arg(as.character(match.call()[2]))
+  for(item in names(tmp.attr))
+    attr(output, item) <- tmp.attr[[item]]
+
   attr(output, "n.obs") <- nrow(x)
   attr(output, "date") <- Sys.Date()
   attr(output, "pander.args") <- list(style=style, round=round.digits, justify=justify,
@@ -347,105 +274,137 @@ dfSummary <- function(x, style="multiline", justify="left",
 }
 
 
+#### FREQ #############################################################################
+
+freq <- function(x, round.digits=2, style="simple", justify="right",
+                 plain.ascii=TRUE, file=NA, append=FALSE, ...) {
+
+  # If x is a data.frame with 1 column, convert it to vector
+  if(!is.null(ncol(x)) && ncol(x)==1) {
+    x <- x[[1]]
+    message("x converted to vector")
+  }
+
+  if(!is.factor(x) && !is.vector(x)) {
+    stop("argument must be a vector or a factor; for dataframes, use lapply(x,freq)")
+  }
+
+  # Replace NaN's by NA's
+  # This simplifies matters a lot
+  if(NaN %in% x)  {
+    msg.nan <- paste(sum(is.nan(x)), "NaN value(s) converted to NA\n")
+    x[is.nan(x)] <- NA
+  }
+
+  # create a basic frequency table, always including the NA row
+  freq.table <- table(x, useNA = "always")
+
+  # Change the name of the NA item (last) to avoid potential problems when echoing to console
+  names(freq.table)[length(freq.table)] <- '<NA>'
+
+  # calculate proportions (valid, i.e excluding NA's)
+  P.valid <- prop.table(table(x, useNA="no")) * 100
+
+  # Add '<NA>' item to the proportions; this assures
+  # proper length when cbind'ing later on
+  P.valid['<NA>'] <- NA
+
+  # Calculate cumulative proportions
+  P.valid.cum <- cumsum(P.valid)
+  P.valid.cum['<NA>'] <- NA
+
+  # calculate proportions (total, i.e. including NA's)
+  P.tot <- prop.table(table(x, useNA="always"))*100
+  P.tot.cum <- cumsum(P.tot)
+
+  # Build the actual frequency table
+  output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
+  output <- rbind(output, c(length(x), rep(100,4)))
+  colnames(output) <- c("N","%Valid","%Cum.Valid","%Total","%Cum.Total")
+  rownames(output) <- c(names(freq.table),"Total")
+
+
+  # Set the class and attributes of the output object
+  class(output) <- c("summarytools", class(output))
+  attr(output, "type") <- "freq"
+  attr(output, "fn.call") <- as.character(match.call()[2])
+
+  # Set additionnal attributes from the parsing function
+  tmp.attr <- .parse.arg(as.character(match.call()[2]))
+  for(item in names(tmp.attr))
+    attr(output, item) <- tmp.attr[[item]]
+
+  # Add variable label if any
+  if("label" %in% names(attributes(x)))
+    attr(output, "var.label") <- rapportools::label(x)
+
+  # Add other attributes to the output
+  attr(output, "date") <- Sys.Date()
+  attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
+                                      justify=justify, split.table=Inf, ...=...)
+  attr(output, "n.obs") <- length(x)
+
+  if(exists("msg.nan"))
+    attr(output, "notes") <- msg.nan
+
+  # Write to file when file argument is supplied
+  if(!is.na(file)) {
+    capture.output(output, file = file, append = append)
+    message("Output successfully written to file ", normalizePath(file))
+  }
+
+  return(output)
+}
+
+#### PRINT.SUMMARYTOOLS ################################################################
+
 print.summarytools <- function(x, method="pander", ...) {
 
-  # Check that when method=="viewer", the function is actually called from RStudio
-  if(grepl("v|View", method) && !nzchar(Sys.getenv("RSTUDIO_USER_IDENTITY"))) {
-    message("method 'viewer' can only be used within RStudio. Switching method to 'browser'")
-    method <- "browser"
-  }
+  # Build info.table and prepare the field  ----------------------------------------
 
-  info.table <- ""
-  for(a in c("var.name", "df.name", "var.label", "rows.subset", "date")) {
-    if(a %in% names(attributes(x)))
-      info.table <- paste(info.table,
-                          paste(a, ":", as.character(attr(x, a)), sep = ""),
-                          sep="\n")
-  }
-
-  info.table <- sub("\ndf.name:",    "\nDataframe name: ", info.table)
-  info.table <- sub("\nvar.name:",   "\n Variable name: ", info.table)
-  info.table <- sub("\nvar.label:",  "\nVariable label: ", info.table)
-  info.table <- sub("\nrows.subset:","\n   Rows subset: ", info.table)
-  info.table <- sub("\ndate:",       "\n          Date: ", info.table)
-
-
-  notes <- ifelse("notes" %in% names(attributes(x)), yes = paste("Notes:", attr(x,"notes")), no = "")
-
-  html.footer.line = paste("Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> package version",
-                           packageVersion(pkg = "summarytools"),
-                           "(<a href='http://www.r-project.org/'>R</a>", getRversion(), ")",
-                           "on", Sys.Date())
-
-  # Frequency tables
-  # Type = 'freq'
-  if(attr(x, "type") == "freq") {
-
-    if(method=="pander") {
-
-      cat("\nFrequencies\n")
-
-      cat(info.table)
-
-      pander.args <- append(attr(x, "pander.args"), list(x=quote(x)))
-      do.call(pander::pander, pander.args)
-
-      cat(notes)
-
-      #return(invisible())
+  if(method=="pander") {
+    info.table <- ""
+    for(a in c("df.name", "col.names", "var.name", "var.label", "rows.subset", "date")) {
+      if(a %in% names(attributes(x)))
+        info.table <- paste(info.table,
+                            paste(a, ":", as.character(attr(x, a)), sep = ""),
+                            sep="\n")
     }
 
-    else if(grepl("([v|V]iew)|(brow)",method)) {
-
-        freq.table.html <-
-        xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
-                                            digits = c(0,0,rep(attr(x, "pander.args")$round,4))),
-                             type = "html", print.results = FALSE,
-                             html.table.attributes = 'class="table table-striped table-bordered"')
-
-
-      stpath <- find.package("summarytools")
-
-      html.content <- tags$html(
-        tags$header(
-          includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
-          includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
-        ),
-        tags$body(
-          div(class="container", style="width:80%",
-              h1("Frequencies"),
-              p(info.table),
-              br(),
-              HTML(gsub("<td> ", "<td>", freq.table.html)),
-              p(notes),
-              HTML(text = html.footer.line)
-          )
-        )
-      )
-      htmlfile <- paste(tempfile(),".html",sep="")
-      capture.output(html.content, file = htmlfile)
-
-    }
+    info.table <- sub("\ndf.name:",    "\nDataframe name: ", info.table)
+    info.table <- sub("\nvar.name:",  "\n Variable name: ", info.table)
+    info.table <- sub("\nvar.label:",  "\nVariable label: ", info.table)
+    info.table <- sub("\nrows.subset:","\n   Rows subset: ", info.table)
+    info.table <- sub("\ndate:",       "\n          Date: ", info.table)
   }
 
-  # Descriptive Stats
-  # type = 'descr'
-  else if(attr(x, "type") == "descr") {
+  # for methods browser / viewer
+  else {
+    html.footer.line = paste("Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> package version ",
+                             packageVersion(pkg = "summarytools"),
+                             " (<a href='http://www.r-project.org/'>R</a> version ", getRversion(), ")",
+                             "<br/>", Sys.Date(), sep="")
+  }
 
+  notes <- ifelse("notes" %in% names(attributes(x)),
+                  yes = paste("Notes -- ", attr(x,"notes")), no = "")
+
+  # Printing descr objects --------------------------------------------------------------
+  if(attr(x, "type") == "descr") {
+
+    # With method pander --------------------------------------
     if(method=="pander") {
 
-      cat("\nDescriptive Univariate Statistics\n\n")
-
+      cat("\nDescriptive (Univariate) Statistics\n")
       cat(info.table)
-
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x$stats)))
       do.call(pander::pander, pander.args)
-
       cat("Observations")
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x$observ)))
       do.call(pander::pander, pander.args)
     }
 
+    # With method viewer / browser --------------------------
     else if(grepl("(v|view)|(B|brow)",method)) {
 
       descr.table.html <-
@@ -468,9 +427,12 @@ print.summarytools <- function(x, method="pander", ...) {
           includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
         ),
         tags$body(
-          div(class="container", style="width:80%",
-              h1("Descriptive Univariate Statistics"),
-              p(info.table),
+          div(class="container", # style="width:80%",
+              h3("Descriptive Univariate Statistics"),
+              h2(attr(x, "df.name")),
+              if("rows.subset" %in% names(attributes(x)))
+                p("Rows subset:",attr(x,"rows.subset")),
+              #h4("Number of rows: ", attr(x, "n.obs")),
               br(),
               HTML(gsub("<td> ", "<td>", descr.table.html)),
               h3("Observations"),
@@ -486,9 +448,10 @@ print.summarytools <- function(x, method="pander", ...) {
     }
   }
 
-  # Objet de type 'dfSummary'
+  # Printing dfSummary objects ------------------------------------------------------
   else if(attr(x, "type") == "dfSummary") {
 
+    # With method pander --------------------------
     if(method=="pander") {
       cat("\nDataframe summary\n\n")
 
@@ -498,6 +461,7 @@ print.summarytools <- function(x, method="pander", ...) {
       do.call(pander::pander, pander.args)
     }
 
+    # with method viewer or browser ---------------
     else if(grepl("(v|view)|(B|brow)",method)) {
 
       sanitize.colnames <- function(x) {
@@ -526,7 +490,6 @@ print.summarytools <- function(x, method="pander", ...) {
               h3("Dataframe Summary"),
               h2(attr(x, "df.name")),
               h4("Number of rows: ", attr(x, "n.obs")),
-              #p(attr(x, "date")),
               br(),
               HTML(gsub("<td> ", "<td>", dfSummary.html)),
               p(notes),
@@ -540,15 +503,65 @@ print.summarytools <- function(x, method="pander", ...) {
     }
   }
 
-  # Open the output html file when relevant
+  # printing freq objects ---------------------------------------------------------------
+  else if(attr(x, "type") == "freq") {
+
+    # with method pander -----------------------------
+    if(method=="pander") {
+      cat("\nFrequencies\n")
+      cat(info.table)
+      pander.args <- append(attr(x, "pander.args"), list(x=quote(x)))
+      do.call(pander::pander, pander.args)
+      cat(notes)
+    }
+
+    # with method viewer / browser --------------------
+    else if(grepl("([v|V]iew)|(brow)",method)) {
+
+      sanitize.colnames <- function(x) {
+        x <- gsub("\\.", " ", x)
+        x <- sub("\\%", "% ", x)
+        return(x)
+      }
+
+      freq.table.html <-
+        xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
+                                            digits = c(0,0,rep(attr(x, "pander.args")$round,4))),
+                             type = "html", print.results = FALSE,
+                             sanitize.colnames.function = sanitize.colnames,
+                             html.table.attributes = 'class="table table-striped table-bordered"')
+
+      stpath <- find.package("summarytools")
+
+      html.content <- tags$html(
+        tags$header(
+          includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
+          includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
+        ),
+        tags$body(
+          div(class="container", style="width:80%",
+              h1("Frequencies"),
+              br(),
+              HTML(gsub("<td> ", "<td>", freq.table.html)), # To avoid initial space in cells
+              p(notes),
+              HTML(text = html.footer.line)
+          )
+        )
+      )
+      htmlfile <- paste(tempfile(),".html",sep="")
+      capture.output(html.content, file = htmlfile)
+    }
+  }
+
+
+  # Open the output html file --------------------------------------------
   if(grepl("v|View",method)) {
     rstudio::viewer(htmlfile)
   } else if(grepl("b|Brow", method)) {
     shell.exec(htmlfile)
   }
 
-  # Return differently according to method; with browser and viewer, we want the file path
-  # to be returned, silently?
+  # return file path -----------------------------------------------------
   if(grepl("P|pand", method)) {
     return(invisible())
   } else if(grepl("V|view", "B|brow")) {
@@ -556,92 +569,166 @@ print.summarytools <- function(x, method="pander", ...) {
   }
 }
 
-# When called from within a function with .parse.arg.x(as.character(match.call)[2]),
-# it returns a list of identified structures: df.name if any & var.name
-# it is assumed that the data referred to by arg.str is an atomic structure
-.parse.arg.x <- function(arg.str) {
+# .parse.arg ####################################################################
+#
+# This function takes a string referring to existing data and parses it
+# to get information on the data structure.
+#
+# info returned: df.name, var.name, col.names, rows.subset, col.index, data.struct
+#
+# Example:
+#
+# > .parse.arg("iris[1:200,c(1,4)]")
+# $arg.str
+# [1] "iris[1:200,c(1,4)]"
+#
+# $rows.subset
+# [1] "1:200"
+#
+# $col.index
+# [1] "c(1,4)"
+#
+# $df.name
+# [1] "iris"
+#
+# $col.names
+# [1] "Sepal.Length" "Petal.Width"
 
-  # First get rid of any space characters
-  arg.str <- gsub("\\s","",arg.str)
+.parse.arg <- function(arg.str) {
+
+  # Check if arg.str is a string
+  if(!is.character(arg.str))
+    stop("arg.str must be a string")
+
+  # Recuperate the object designated by arg.str; this is to allow further work
+  x <- try(eval(parse(text=arg.str)))
+  if(inherits(x, "try-error")) {
+    message("arg.str must match an existing object")
+    return()
+  }
+
+  if(!is.data.frame(x) && !is.atomic(x)) {
+    message("arg.str must match an atomic structure (vector/factor) or a dataframe")
+    return()
+  }
 
   # Initialise output list
   output <- list()
 
-  # Simplest case: variable name alone, no $ nor [ ]'s
-  if(!grepl(pattern = "\\$|\\[", x = arg.str)) {
-     output$var.name <- arg.str
-     return(output)
+  # Store a copy of the arg.str in output object
+  output$arg.str <- arg.str
+
+  # Trim the string removing leading/trailing blanks
+  arg.str <- gsub("^\\s+|\\s+$", "", arg.str)
+
+  # Get rid of spaces next to brackets and next to comma in indexing brackets.
+  # Note: that way assures us to not remove any spaces in quoted structures
+  # such as ['var name']
+  arg.str <- gsub("\\s*\\[\\s*","[", arg.str, perl=TRUE) # spaces near [
+  arg.str <- gsub("\\s*\\]\\s*","]", arg.str, perl=TRUE) # spaces near ]
+  arg.str <- gsub("^(.*)(\\[\\d+:\\d+)?\\s?,\\s?(.+)$", "\\1\\2,\\3", arg.str, perl=TRUE)
+
+  # Change [[]] to [] for the last pair of brackets; this simplifies the work
+  arg.str <- sub("\\[{2}(.*)\\]{2}$", "[\\1]", arg.str, perl=TRUE)
+
+  # Change references to data with ['name'] or [['name']] into $name, also to simplify matters
+  re.brack <- '\\[{1,2}[\'\"]'
+  if(grepl(re.brack, arg.str)) {
+    arg.str <- gsub('\\[{1,2}[\'\"]', "$", arg.str, perl=TRUE)
+    arg.str <- gsub('[\'\"]\\]{1,2}', "", arg.str, perl=TRUE)
   }
 
-  # Second simplest case: df.name$var.name without [ ] 's;
-  # there can be more than one $, but we'll consider only the 2
-  # last elements from the split list
-  if(grepl(".*\\$.*", arg.str) && !grepl("\\[", arg.str)) {
-    tmp.split <- strsplit(arg.str,"\\$")[[1]]
-    output$df.name <- tmp.split[length(tmp.split)-1]
-    output$var.name <- tmp.split[length(tmp.split)]
-    return(output)
+  # Next we'll isolate indexing in the last brackets
+  re.index <- "(.*?)\\[(.*?)\\]$"
+
+  if(grepl(re.index, arg.str)) {
+    indexes <- sub(re.index, "\\2", arg.str, perl=TRUE)
+
+    # Further decompose the indexes
+    # indexing having 2 elements (rows, columns), will be identified by this regex
+    # [1:10,] or [,"Species] will also match
+    re.split.index <- "^(.+)?,+(c\\(.*\\)|\\d+|\\d+:\\d+|'.*'|\".+\")$"
+    if(grepl(re.split.index, indexes, perl = TRUE)) {
+      output$rows.subset <- sub(re.split.index, "\\1", indexes, perl=TRUE)
+      output$col.index <- sub(re.split.index, "\\2", indexes, perl=TRUE)
+
+      # Remove any empty string
+      if(nchar(output$rows.subset) == 0)
+        output$rows.subset <- NULL
+      if(nchar(output$col.index) == 0)
+        output$col.index <- NULL
+    }
+
+    # When previous regex does not match, it means the index has only 1 element,
+    # either row or column. When a comma is present:
+    else if(substring(indexes,1,1) == ",")
+      output$col.indexes <- sub("^,", "", indexes, perl = TRUE)
+
+    else if(substring(indexes,nchar(indexes),nchar(indexes)) == ",")
+      output$rows.subset <- sub(",$", "", indexes, perl = TRUE)
+
+    # When there is no comma, we'll check if x is a dataframe or not.
+    # If it is, the index refers to columns, and otherwise, to rows
+    else {
+      # first we need to reevaluate the arg.str
+      x.tmp <- eval(parse(text = arg.str))
+      if(is.data.frame(x.tmp))
+        output$col.index <- indexes
+      else
+        output$rows.subset <- indexes
+    }
+
+    # Update the string to remove what's already accounted for
+    arg.str <- sub(re.index, "\\1", arg.str, perl=TRUE)
   }
 
-  # Now we know there are some [ ] 's ;
-  # A more complex case: df.name$var.name[1:10]
-  if(grepl(".*\\$.*\\[.*\\:.*\\]$", arg.str)) {
-    str.ind <- sub(".*\\$.*\\[(.*\\:.*)\\]$", "\\1", arg.str)
-    str.no.ind <- sub("(.*\\$.*)\\[.*\\:.*\\]$", "\\1", arg.str)
-    tmp.split <- strsplit(str.no.ind,"\\$")[[1]]
-    output$df.name <- tmp.split[length(tmp.split)-1]
-    output$var.name <- tmp.split[length(tmp.split)]
-    output$rows.subset <- str.ind
-    return(output)
+  # Split arg.str by "$" to identify structures
+  output$data.struct <- strsplit(arg.str, "$", fixed = TRUE)[[1]]
 
+  # If type of x is dataframe, normally the last element in the data structures
+  # should be the df name
+  if(is.data.frame(x)) {
+    output$df.name <- tail(output$data.struct,1)
+    output$col.names <- colnames(x)
   }
 
-  # When arg.str end with ]] -- and thus should have the form df.name[[4]] or df.name[["var.name"]],
-  # we'll turn this into df.name[4] or df.name["var.name"] to access colnames;
-  # there is some redundancy in getting colnames in the case the var.name is already
-  # given, but for the sake of practicallity we'll leave it as is, at least for now
-  if(grepl("\\]\\]$", arg.str)) {
+  # Otherwise, depending on the situation, we'll try to get at the df name and its colnames()
+  else {
 
-    modif.str <- sub("\\[(\\[.*\\])\\]", replacement = "\\1", x = arg.str)
+    # If vector is referred to via column indexing, recup the column's name
+    # by an evaluation of the form df[col.index]
+    if("col.index" %in% names(output)) {
+      output$var.name <- eval(parse(text=paste("colnames(",arg.str,"[",output$col.index,"])")))
+      #output$col.names <- eval(parse(text=paste("colnames(",arg.str,"[",output$col.index,"])")))
+      output$df.name <- tail(output$data.struct,1)
+    }
 
-    # Evaluate the string to get the column name
-    output$var.name <- colnames(eval(parse(text=modif.str)))
-
-    # Extract the df.name (eliminating "parent" elements to the left of any other $)
-    output$df.name <- sub("(.*\\$)?(.*)\\[.*\\]$", "\\2", modif.str)
-
-    # Extract row indexing
-    output$rows.subset <- sub(".*\\[(.*)\\,.*\\]$", "\\1", arg.str)
-
-    return(output)
+    # If there is no column indexing, it means the vector's name is in the
+    # data.struc list, along with the df name one level higher, unless the vector
+    # was "standalone"
+    else {
+      output$var.name <- tail(output$data.struct,1)
+      #output$col.names <- tail(output$data.struct,1)
+      if(length(output$data.struct)>1)
+        output$df.name <- output$data.struct[length(output$data.struct)-1]
+    }
   }
 
-  # when arg.str is in the form df.name[,4], we turn this into df.name[4];
-  # this is to allow access to colnames
-  # We also identify & remove any row indexing (ex: df.name[1:10,4] will also become df.name[4])
-  if(grepl(".*\\[(.*)?\\,\\d*\\]$", arg.str)) {
+  # remove last item from data.struct when it's the same as var.name to avoid redundancy
+  output$data.struct <- setdiff(output$data.struct, output$var.name)
+  #output$data.struct <- setdiff(output$data.struct, output$col.names)
 
-    modif.str <- sub("(.*\\[)(.*)?\\,)?(\\d*)(\\])$", replacement = "\\1\\3\\4", x = arg.str)
-    # Evaluate the string to get the column names
-    output$var.name <- colnames(eval(parse(text=modif.str)))
+  # same with df.name and data.struct
+  output$data.struct <- setdiff(output$data.struct, output$df.name)
 
-    # Extract the df.name (eliminating "parent" elements to the left of any other $)
-    output$df.name <- sub("(.*\\$)?(.*)\\[.*\\]$", "\\2", modif.str)
+  # cleanup
+  if(length(output$data.struct)==0)
+    output$data.struct <- NULL
 
-    # Extract row indexes
-    output$rows.subset <- sub(".*\\[(.*)\\,.*\\]$", "\\1", arg.str)
-
-      sub("(.*\\[)(.*)?\\,)?(\\d*)(\\])$", replacement = "\\1\\3\\4", x = arg.str)
-    return(output)
-  }
-
-  output$var.name <- NA
   return(output)
-
 }
 
 # view is a wrapper function for print(x, "view"). Allows alternate "browser" or "pander" methods as well.
 view <- function(x, method="viewer", ...) {
   print(x, method=method, ...)
 }
-
