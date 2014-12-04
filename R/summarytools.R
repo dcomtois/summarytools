@@ -15,7 +15,7 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   output <- list()
 
   class(output) <- c("summarytools", class(output))
-  attr(output, "type") <- "descr"
+  attr(output, "st.type") <- "descr"
 
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
   for(item in names(tmp.attr))
@@ -126,8 +126,9 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
 
 dfSummary <- function(x, style="multiline", justify="left",
                       max.distinct.values=10, trim.strings=FALSE,
-                      max.string.width=15, round.digits=2, file=NA,
-                      display.labels=FALSE, ...) {
+                      max.string.width=15, round.digits=2,
+                      display.labels=FALSE, file=NA, append=FALSE,
+                      escape.pipe=FALSE, ...) {
 
   if(!is.data.frame(x)) {
     x <- try(as.data.frame(x))
@@ -137,10 +138,10 @@ dfSummary <- function(x, style="multiline", justify="left",
       message("x was converted to a dataframe")
   }
 
-  # set the stringsAsFactors to FALSE to prevent problems
-  op <- options("stringsAsFactors")
-  options(stringsAsFactors=FALSE)
-  on.exit(options(op))
+  # set the stringsAsFactors to FALSE to prevent potential problems
+  # op <- options("stringsAsFactors")
+  # options(stringsAsFactors=FALSE)
+  # on.exit(options(op))
 
   # create an output dataframe
   output <- data.frame(variable=character(),
@@ -148,11 +149,12 @@ dfSummary <- function(x, style="multiline", justify="left",
                        properties=character(),
                        factor.levels.or.stats=character(),
                        frequencies=character(),
-                       n.valid=numeric())
+                       n.valid=numeric(),
+                       stringsAsFactors=FALSE)
 
   # Set additional attributes
   class(output) <- c("summarytools", class(output))
-  attr(output, "type") <- "dfSummary"
+  attr(output, "st.type") <- "dfSummary"
 
   # Set additionnal attributes from the parsing function
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
@@ -162,7 +164,7 @@ dfSummary <- function(x, style="multiline", justify="left",
   attr(output, "n.obs") <- nrow(x)
   attr(output, "date") <- Sys.Date()
   attr(output, "pander.args") <- list(style=style, round=round.digits, justify=justify,
-                                      split.table=Inf, ...=...)
+                                      split.table=Inf, keep.line.breaks=TRUE, ...=...)
 
   # iterate over dataframe columns
   for(i in seq_len(ncol(x))) {
@@ -262,12 +264,15 @@ dfSummary <- function(x, style="multiline", justify="left",
   if(!display.labels)
     output$label <- NULL
 
-  # Write to file when file argument is supplied;
+  # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
+
+  #   if(style=="grid" && escape.pipe && !is.na(file))
+  #     output <- paste(gsub("\\|","\\\\|",capture.output(output)), sep="\n")
+
   if(!is.na(file)) {
-    sink(file=file)
-    print(output)
-    sink()
+    capture.output(output, file = file, append = append)
     message("Output successfully written to file ", normalizePath(file))
+    return(invisible(output))
   }
 
   return(output)
@@ -326,7 +331,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
 
   # Set the class and attributes of the output object
   class(output) <- c("summarytools", class(output))
-  attr(output, "type") <- "freq"
+  attr(output, "st.type") <- "freq"
   attr(output, "fn.call") <- as.character(match.call()[2])
 
   # Set additionnal attributes from the parsing function
@@ -363,19 +368,21 @@ print.summarytools <- function(x, method="pander", ...) {
   # Build info.table and prepare the field  ----------------------------------------
 
   if(method=="pander") {
-    info.table <- ""
-    for(a in c("df.name", "col.names", "var.name", "var.label", "rows.subset", "date")) {
+    info.table <- c()
+    for(a in c("df.name", "var.name", "var.label", "rows.subset", "date")) {
       if(a %in% names(attributes(x)))
-        info.table <- paste(info.table,
-                            paste(a, ":", as.character(attr(x, a)), sep = ""),
-                            sep="\n")
+        info.table <- append(info.table, paste(a, ":", paste(as.character(attr(x, a)),
+                                                             collapse=", "),
+                                               sep=""))
     }
 
-    info.table <- sub("\ndf.name:",    "\nDataframe name: ", info.table)
-    info.table <- sub("\nvar.name:",  "\n Variable name: ", info.table)
-    info.table <- sub("\nvar.label:",  "\nVariable label: ", info.table)
-    info.table <- sub("\nrows.subset:","\n   Rows subset: ", info.table)
-    info.table <- sub("\ndate:",       "\n          Date: ", info.table)
+    info.table <- sub("^df\\.name:",    "Dataframe name: ", info.table)
+    info.table <- sub("^nvar\\.name:",  " Variable name: ", info.table)
+    info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
+    info.table <- sub("^var\\.label:",  "Variable label: ", info.table)
+    info.table <- sub("^rows\\.subset:","   Rows subset: ", info.table)
+    info.table <- sub("^date:",         "          Date: ", info.table)
+    info.table <- paste(info.table, collapse="\n")
   }
 
   # for methods browser / viewer
@@ -390,7 +397,7 @@ print.summarytools <- function(x, method="pander", ...) {
                   yes = paste("Notes -- ", attr(x,"notes")), no = "")
 
   # Printing descr objects --------------------------------------------------------------
-  if(attr(x, "type") == "descr") {
+  if(attr(x, "st.type") == "descr") {
 
     # With method pander --------------------------------------
     if(method=="pander") {
@@ -449,14 +456,12 @@ print.summarytools <- function(x, method="pander", ...) {
   }
 
   # Printing dfSummary objects ------------------------------------------------------
-  else if(attr(x, "type") == "dfSummary") {
+  else if(attr(x, "st.type") == "dfSummary") {
 
     # With method pander --------------------------
     if(method=="pander") {
-      cat("\nDataframe summary\n\n")
-
+      cat("\nDataframe summary\n")
       cat(info.table)
-
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x)))
       do.call(pander::pander, pander.args)
     }
@@ -504,7 +509,7 @@ print.summarytools <- function(x, method="pander", ...) {
   }
 
   # printing freq objects ---------------------------------------------------------------
-  else if(attr(x, "type") == "freq") {
+  else if(attr(x, "st.type") == "freq") {
 
     # with method pander -----------------------------
     if(method=="pander") {
