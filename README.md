@@ -79,8 +79,8 @@ Frequencies
 ```
 
 
-## Descriptive (univariate) statistics with <u>descr()</u>
-`descr()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it will just ignore non-numerical data.
+## Descriptive Univariate Statistics with <u>descr()</u>
+`descr()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it will just ignore non-numerical columns.
 
 #### descr() on the iris dataframe
 
@@ -120,7 +120,7 @@ Observations
 
 ##### descr() has a "transpose" option
 
-If your eyes/brain prefer seeing things the other way around, you just set `transpose` to `TRUE`:
+If your eyes/brain prefer seeing things the other way around, just set `transpose` to `TRUE`:
 
 ```r
 > descr(iris, transpose=TRUE)
@@ -151,7 +151,7 @@ Observations
 
 ## Dataframe summaries
 
-`dfSummary()` generates a table containing variable information (class and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also added, and variable labels can optionnaly be included as well.
+`dfSummary()` generates a table containing variable information (class and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also reported, and variable labels can optionnaly be included as well.
 
 
 ```r
@@ -187,7 +187,7 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 
 # All functions markdown-ready
 
-All functions can printout [markdown](http://daringfireball.net/projects/markdown/) text when setting option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are actually displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can also convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_, _.odt_, _.html_, among others. 
+Thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package, all functions can printout [markdown](http://daringfireball.net/projects/markdown/); just use the option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are converted and displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can further convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_ and _.odt_, among others. 
 
 Here is an **example** of a markdown table, as processed by GitHub, using `freq()`:
 
@@ -195,9 +195,10 @@ Here is an **example** of a markdown table, as processed by GitHub, using `freq(
 ```r
 > freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="---")
 ```
-
-Variable name:  iris$Species  
+Dataframe name: iris
+ Variable name: Species
 Variable label: The Species (duh)
+          Date: 2014-12-05
 
 Frequencies
 
@@ -220,8 +221,8 @@ To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane
 
 Version 0.3 of _summarytools_ combines the strengths of the following packages and tools to generate basic html reports:
 
- - _RStudio_'s [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html) package
- - The [xtable](http://cran.r-project.org/web/packages/xtable/index.html) package
+ - _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html)
+ - The [xtable package](http://cran.r-project.org/web/packages/xtable/index.html)
  - [Bootstrap](http://getbootstrap.com/) cascading stylesheets
 
 ### How it works
@@ -242,7 +243,7 @@ You can achieve this in just one operation, but let's have a detailed walkthroug
 > print(my.freq.table, method="browser")
 ```
 
-- Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` is included; it just calls `print()` specifying `method="viewer"`. It does also allow you to change the `method`, in which case it behaves exactly like `print()`. You can stick to `print()` altogether if you prefer.
+- Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` calls `print()` specifying `method="viewer"`. See the example in the screen capture at the top of this page. The `view()` function also allows you to change the `method`, in which case it behaves exactly like `print()`. You can stick to `print()` altogether if you prefer.
 
 ## Customizing output
 
@@ -256,7 +257,7 @@ Frequencies
 
  Variable name: Species  
 Dataframe name: The IRIS Dataframe  
-          Date: 2014-11-30 00:33:50 
+          Date: 2014-11-30
 
                    N   %Valid   %Cum.Valid   %Total   %Cum.Total
 ---------------- --- -------- ------------ -------- ------------
@@ -272,11 +273,11 @@ Dataframe name: The IRIS Dataframe
 
 When displaying _summarytools_ objects in the console (as opposed to generating _html_ reports), many other arguments can be specified so you get the format that you want. The most common are:
 
-- "style": one of "simple" (default), "grid", "rmarkdown" and "multiline"
-- "justify": one of "left", "center", and "right"
-- "round.digits": how many decimals to show. This argument is also used for _html_ reports
-- "plain.ascii": whether to use markdown tags (always `FALSE` by default)
-- ... and any of the other numerous [pander options](https://github.com/Rapporter/pander#pander-options)
+- **"style"**: one of "simple" (default), "grid", "rmarkdown" and "multiline"
+- **"justify"**: one of "left", "center", and "right"
+- **"round.digits"**: how many decimals to show. This argument is also used for _html_ reports
+- **"plain.ascii"**: whether to use markdown tags (always `FALSE` by default)
+- **...** and any of the other [pander options](https://github.com/Rapporter/pander#pander-options)
 
 ## What's coming next?
 
@@ -284,6 +285,4 @@ Stats split by subgroups of data & customization of css.
 
 ## Final notes
 
-The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome.
-
- 
+The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) in case you find a bug.
