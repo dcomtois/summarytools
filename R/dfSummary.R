@@ -4,12 +4,15 @@ dfSummary <- function(x, style="multiline", justify="left",
                       display.labels=FALSE, file=NA, append=FALSE,
                       escape.pipe=FALSE, ...) {
 
+  df.convers <- FALSE
   if(!is.data.frame(x)) {
     x <- try(as.data.frame(x))
-    if(inherits(x, "try-error"))
+    if(inherits(x, "try-error")) {
       message("x is not a dataframe and attempted conversion failed")
-    else
+    } else {
       message("x was converted to a dataframe")
+      df.convers <- TRUE # in this case df.name will be taken from var.name
+    }
   }
 
   # create an output dataframe
@@ -27,8 +30,17 @@ dfSummary <- function(x, style="multiline", justify="left",
 
   # Set additionnal attributes from the parsing function
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
-  for(item in names(tmp.attr))
+  for(item in names(tmp.attr)) {
     attr(output, item) <- tmp.attr[[item]]
+  }
+
+  if(df.convers) {
+    attr(output, "df.name") <- attr(output, "var.name")
+    attr(output, "notes") <- paste(attr(output, "df.name"), "was converted from",
+                                   typeof(x), "to data.frame")
+    attr(output, "var.name") <- NULL
+
+  }
 
   attr(output, "n.obs") <- nrow(x)
   attr(output, "date") <- Sys.Date()
@@ -139,7 +151,12 @@ dfSummary <- function(x, style="multiline", justify="left",
   #     output <- paste(gsub("\\|","\\\\|",capture.output(output)), sep="\n")
 
   if(!is.na(file)) {
-    capture.output(output, file = file, append = append)
+    if(grepl("\\.html$",file)) {
+      file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file))
+      cat("OK")
+    } else {
+      capture.output(output, file = file, append = append)
+    }
     message("Output successfully written to file ", normalizePath(file))
     return(invisible(output))
   }

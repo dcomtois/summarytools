@@ -1,10 +1,11 @@
-print.summarytools <- function(x, method="pander", ...) {
+print.summarytools <- function(x, method="pander", open=TRUE, ...) {
 
   # Build info.table and prepare the field  ----------------------------------------
 
   if(method=="pander") {
     info.table <- c()
-    for(a in c("df.name", "var.name", "var.label", "rows.subset", "date")) {
+    for(a in c("df.name", "var.name", "var.label", "rows.subset")) {
+      # other possible items are "date" and "col.names"
       if(a %in% names(attributes(x)))
         info.table <- append(info.table, paste(a, ":", paste(as.character(attr(x, a)),
                                                              collapse=", "),
@@ -16,8 +17,11 @@ print.summarytools <- function(x, method="pander", ...) {
    #info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
     info.table <- sub("^var\\.label:",  "Variable label: ", info.table)
     info.table <- sub("^rows\\.subset:","   Rows subset: ", info.table)
-    info.table <- sub("^date:",         "          Date: ", info.table)
+   #info.table <- sub("^date:",         "          Date: ", info.table)
     info.table <- paste(info.table, collapse="\n")
+
+   if(nchar(info.table)==0)
+     info.table <- attr(x, "arg.str")
   }
 
   # for methods browser / viewer
@@ -37,13 +41,14 @@ print.summarytools <- function(x, method="pander", ...) {
     # With method pander --------------------------------------
     if(method=="pander") {
 
-      cat("\nDescriptive (Univariate) Statistics\n")
+      cat("\nDescriptive (Univariate) Statistics\n\n")
       cat(info.table)
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x$stats)))
       do.call(pander::pander, pander.args)
       cat("Observations")
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x$observ)))
       do.call(pander::pander, pander.args)
+      cat(notes, "\n")
     }
 
     # With method viewer / browser --------------------------
@@ -150,7 +155,7 @@ print.summarytools <- function(x, method="pander", ...) {
 
     # with method pander -----------------------------
     if(method=="pander") {
-      cat("\nFrequencies\n")
+      cat("\nFrequencies\n\n")
       cat(info.table)
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x)))
       do.call(pander::pander, pander.args)
@@ -205,13 +210,13 @@ print.summarytools <- function(x, method="pander", ...) {
   if(grepl("v|View",method)) {
     rstudio::viewer(htmlfile)
   } else if(grepl("b|Brow", method)) {
-    shell.exec(htmlfile)
+    if(open)  shell.exec(htmlfile)
   }
 
-  # return file path -----------------------------------------------------
-  if(grepl("P|pand", method)) {
+  # return file path for browser/viewer ---------------------------------
+  if(grepl("(B|brow)|(V|view)", method)) {
+    return(normalizePath(htmlfile))
+  } else {
     return(invisible())
-  } else if(grepl("V|view", "B|brow")) {
-    return(htmlfile)
   }
 }

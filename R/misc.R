@@ -29,23 +29,19 @@
   if(!is.character(arg.str))
     stop("arg.str must be a string")
 
-  # Recuperate the object designated by arg.str; this is to allow further work
-  x <- try(eval(parse(text=arg.str)))
+  # Initialise output list
+  output <- list()
+  output$arg.str <- arg.str
+
+  # Recuperate the object designated by arg.str
+  x <- try(eval(parse(text=arg.str)),silent = TRUE)
   if(inherits(x, "try-error")) {
-    message("arg.str must match an existing object")
-    return()
+    return(output)
   }
 
   if(!is.data.frame(x) && !is.atomic(x)) {
-    message("arg.str must match an atomic structure (vector/factor) or a dataframe")
-    return()
+    return(output)
   }
-
-  # Initialise output list
-  output <- list()
-
-  # Store a copy of the arg.str in output object
-  output$arg.str <- arg.str
 
   # Trim the string removing leading/trailing blanks
   arg.str <- gsub("^\\s+|\\s+$", "", arg.str)
@@ -53,8 +49,10 @@
   # Get rid of spaces next to brackets and next to comma in indexing brackets.
   # Note: that way assures us to not remove any spaces in quoted structures
   # such as ['var name']
-  arg.str <- gsub("\\s*\\[\\s*","[", arg.str, perl=TRUE) # spaces near [
-  arg.str <- gsub("\\s*\\]\\s*","]", arg.str, perl=TRUE) # spaces near ]
+  arg.str <- gsub("\\s*\\[\\s*","[", arg.str, perl=TRUE) # remove blanks near [
+  arg.str <- gsub("\\s*\\]\\s*","]", arg.str, perl=TRUE) # remove blanks near ]
+
+  # remove blanks around comma
   arg.str <- gsub("^(.*)(\\[\\d+:\\d+)?\\s?,\\s?(.+)$", "\\1\\2,\\3", arg.str, perl=TRUE)
 
   # Change [[]] to [] for the last pair of brackets; this simplifies the work
@@ -67,7 +65,7 @@
     arg.str <- gsub('[\'\"]\\]{1,2}', "", arg.str, perl=TRUE)
   }
 
-  # Next we'll isolate indexing in the last brackets
+  # Isolate indexing in the last brackets
   re.index <- "(.*?)\\[(.*?)\\]$"
 
   if(grepl(re.index, arg.str)) {
@@ -89,11 +87,12 @@
     }
 
     # When previous regex does not match, it means the index has only 1 element,
-    # either row or column. When a comma is present:
-    else if(substring(indexes,1,1) == ",")
+    # either row or column.
+    # When indexing starts with a comma:
+    else if(substring(indexes, 1, 1) == ",")
       output$col.indexes <- sub("^,", "", indexes, perl = TRUE)
-
-    else if(substring(indexes,nchar(indexes),nchar(indexes)) == ",")
+    # When indexing ends with a comma:
+    else if(substring(indexes, nchar(indexes), nchar(indexes)) == ",")
       output$rows.subset <- sub(",$", "", indexes, perl = TRUE)
 
     # When there is no comma, we'll check if x is a dataframe or not.
@@ -114,16 +113,17 @@
   # Split arg.str by "$" to identify structures
   output$data.struct <- strsplit(arg.str, "$", fixed = TRUE)[[1]]
 
-  # If type of x is dataframe, normally the last element in the data structures
-  # should be the df name
   if(is.data.frame(x)) {
-    output$df.name <- tail(output$data.struct,1)
+    # If x is a dataframe, we can set the col.names
     output$col.names <- colnames(x)
+
+    # normally the last element in the data structures
+    # should be the df name; unless it's nested in a list and referred to by [[n]]
+    output$df.name <- tail(output$data.struct,1)
   }
 
-  # Otherwise, depending on the situation, we'll try to get at the df name and its colnames()
+  # Otherwise, depending on the situation, we'll try to get at the df name and its colnames
   else {
-
     # If vector is referred to via column indexing, recup the column's name
     # by an evaluation of the form df[col.index]
     if("col.index" %in% names(output)) {
@@ -137,7 +137,6 @@
     # was "standalone"
     else {
       output$var.name <- tail(output$data.struct,1)
-      #output$col.names <- tail(output$data.struct,1)
       if(length(output$data.struct)>1)
         output$df.name <- output$data.struct[length(output$data.struct)-1]
     }
@@ -145,7 +144,6 @@
 
   # remove last item from data.struct when it's the same as var.name to avoid redundancy
   output$data.struct <- setdiff(output$data.struct, output$var.name)
-  #output$data.struct <- setdiff(output$data.struct, output$col.names)
 
   # same with df.name and data.struct
   output$data.struct <- setdiff(output$data.struct, output$df.name)
@@ -153,6 +151,13 @@
   # cleanup
   if(length(output$data.struct)==0)
     output$data.struct <- NULL
+
+  # Further validate the items to return;
+  if(isTRUE(grepl('[\\(\\[]', output$df.name)))
+    output$df.name <- NULL
+
+  if(isTRUE(grepl('[\\(\\[]', output$var.name)))
+    output$var.name <- NULL
 
   return(output)
 }

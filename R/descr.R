@@ -5,8 +5,17 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   if(is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
-  if(is.atomic(x)) {
+  if(is.array(x)) {
     x <- data.frame(x)
+    notes <- paste(substitute(x), "was converted to data.frame")
+  } else if(is.atomic(x)) {
+    x <- data.frame(x)
+  } else {
+    notes <- character()
+  }
+
+  if(!is.data.frame(x)) {
+    stop("x must be a data frame or a single vector, and attempted conversion failed")
   }
 
   # Initialise output list and set the class/attributes
@@ -15,9 +24,32 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   class(output) <- c("summarytools", class(output))
   attr(output, "st.type") <- "descr"
 
+  # Get dataframe name and subset from parsing function
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
-  for(item in names(tmp.attr))
-    attr(output, item) <- tmp.attr[[item]]
+  attr(output, "df.name") <- tmp.attr$df.name
+  attr(output, "rows.subset") <- tmp.attr$rows.subset
+
+  # Identify and exclude non-numerical columns
+  to.be.removed <- numeric()
+  for(i in seq_along(x)) {
+    if(!is.numeric(x[[i]]))
+      to.be.removed <- append(to.be.removed, i)
+  }
+
+  if(length(to.be.removed)>0) {
+    notes <- append(notes, paste("Non-numerical variable(s) ignored:",
+                                 paste(colnames(x)[to.be.removed], collapse=", ")))
+    x <- x[-to.be.removed]
+    rm(to.be.removed)
+  }
+
+
+  if(ncol(x)==0) {
+    stop("No numerical variable were given as arguments.")
+  }
+
+  attr(output, "col.names") <- colnames(x)
+
 
   # Add label to attributes if present
   if("label" %in% names(attributes(x)))
@@ -34,24 +66,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                              Skewness=numeric(), SE.Skewness=numeric(), Kurtosis=numeric())
   output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(),check.names = FALSE)
 
-
-  # Identify and exclude non-numerical columns
-  to.be.removed <- numeric()
-  for(i in seq_along(x)) {
-    if(!is.numeric(x[[i]]))
-      to.be.removed <- append(to.be.removed, i)
-  }
-
-  if(length(to.be.removed)>0) {
-    attr(output,"notes") <- paste("Non-numerical variable(s) ignored:", paste(colnames(x)[to.be.removed], collapse=", "))
-    x <- x[-to.be.removed]
-    attr(output, "col.names") <- attr(output, "col.names")[-to.be.removed]
-    rm(to.be.removed)
-  }
-
-  if(ncol(x)==0) {
-    stop("No numerical variable were given as arguments.")
-  }
 
   # Iterate over columns in x
   i <- 1
@@ -81,7 +95,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                           rapportools::kurtosis(variable,na.rm=na.rm))
 
     # Insert proper row names (from col.names/var.name of the parse function)
-
     rownames(output$stats)[i] <-
       ifelse(!is.null(attr(output,"var.name")[i]), attr(output,"var.name")[i],
              attr(output,"col.names")[i])
@@ -100,7 +113,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     rownames(output$observ)[i] <-
       ifelse(!is.null(attr(output,"var.name")[i]), attr(output,"var.name")[i],
              attr(output,"col.names")[i])
-
     i <- i+1
   }
 
@@ -115,6 +127,10 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   if(!is.na(file)) {
     capture.output(output, file = file, append = append)
     message("Output successfully written to file ", normalizePath(file))
+  }
+
+  if(length(notes) > 0) {
+    attr(output, "notes") <- paste(notes)
   }
 
   return(output)
