@@ -12,8 +12,8 @@ print.summarytools <- function(x, method="pander", ...) {
     }
 
     info.table <- sub("^df\\.name:",    "Dataframe name: ", info.table)
-    info.table <- sub("^nvar\\.name:",  " Variable name: ", info.table)
-    info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
+    info.table <- sub("^var\\.name:",   " Variable name: ", info.table)
+   #info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
     info.table <- sub("^var\\.label:",  "Variable label: ", info.table)
     info.table <- sub("^rows\\.subset:","   Rows subset: ", info.table)
     info.table <- sub("^date:",         "          Date: ", info.table)
@@ -29,7 +29,7 @@ print.summarytools <- function(x, method="pander", ...) {
   }
 
   notes <- ifelse("notes" %in% names(attributes(x)),
-                  yes = paste("Notes -- ", attr(x,"notes")), no = "")
+                  yes = paste(attr(x,"notes")), no = "")
 
   # Printing descr objects --------------------------------------------------------------
   if(attr(x, "st.type") == "descr") {
@@ -126,9 +126,11 @@ print.summarytools <- function(x, method="pander", ...) {
           includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
         ),
         tags$body(
-          div(class="container", style="width:80%",
+          div(class="container", #style="width:80%",
               h3("Dataframe Summary"),
               h2(attr(x, "df.name")),
+              if("rows.subset" %in% names(attributes(x)))
+                p("Rows subset:",attr(x,"rows.subset")),
               h4("Number of rows: ", attr(x, "n.obs")),
               br(),
               HTML(gsub("<td> ", "<td>", dfSummary.html)),
@@ -179,8 +181,13 @@ print.summarytools <- function(x, method="pander", ...) {
           includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
         ),
         tags$body(
-          div(class="container", style="width:80%",
-              h1("Frequencies"),
+          div(class="container", #style="width:80%",
+              h3("Frequencies"),
+              h2(attr(x,"var.name")),
+              if("rows.subset" %in% names(attributes(x)))
+                p("Dataframe:",attr(x,"df.name")),
+              if("rows.subset" %in% names(attributes(x)))
+                p("Rows subset:",attr(x,"rows.subset")),
               br(),
               HTML(gsub("<td> ", "<td>", freq.table.html)), # To avoid initial space in cells
               p(notes),

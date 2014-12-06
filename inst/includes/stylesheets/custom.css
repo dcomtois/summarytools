@@ -16,5 +16,5 @@ th {
 
 td {
   white-space:pre; /* Allows multiline cells */
-  min-width: 150px;
+  min-width: 120px;
 }

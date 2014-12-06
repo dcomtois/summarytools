@@ -85,8 +85,6 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     rownames(output$stats)[i] <-
       ifelse(!is.null(attr(output,"var.name")[i]), attr(output,"var.name")[i],
              attr(output,"col.names")[i])
-    #rownames(output$stats)[i] <- attr(output,"col.names")[i]
-    #rownames(output$stats)[i] <- attr(output,"var.name")[i]
 
     # Report number of missing vs valid data
     n.valid <- sum(!is.na(variable))
@@ -99,7 +97,9 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                            paste(n.NA, " (", p.NA, "%)",sep=""),
                            length(variable))
 
-    rownames(output$observ)[i] <- colnames(x)[i]
+    rownames(output$observ)[i] <-
+      ifelse(!is.null(attr(output,"var.name")[i]), attr(output,"var.name")[i],
+             attr(output,"col.names")[i])
 
     i <- i+1
   }
