@@ -17,13 +17,12 @@ With 2 lines of code, get a summary report of a dataframe, displayed directly in
 > view(dfSummary(iris))
 ```
 
-`view(dfSummary(iris))`
 ![alt text](img/dfSummary_in_RStudio_Viewer.png)
 
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by _summarytools_ can be:
 
 - Displayed as plain text in the R console 
-- Written to plain text files / markdown text files 
+- Written to plain text files / [markdown](http://daringfireball.net/projects/markdown/) text files 
 - Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser. 
 
 ##### Also, all functions:
