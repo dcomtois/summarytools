@@ -234,9 +234,9 @@ You can achieve this in just one operation, but let's have a detailed walkthroug
 ```
 
 - Next, use `print()`, specifying the `method` argument which can take one of the following values:
-  + `method='browser'`: This creates an _html_ report on-the-fly and makes it fire up in your system's default browser. The path to the report is returned.
-  + `method='viewer'`: Same as "browser", except the report opens up in _RStudio_'s Viewer pane (as demonstrated at the top of this page.)
-  + `method='pander'`: This is the **default** value for `method` and will _not_ produce an _html_ file. It will rather direct output to the console.
+  + `method='browser'` This creates an _html_ report on-the-fly and makes it fire up in your system's default browser. The path to the report is returned.
+  + `method='viewer'` Same as "browser", except the report opens up in _RStudio_'s Viewer pane (as demonstrated at the top of this page.)
+  + `method='pander'` This is the **default** value for `method` and will _not_ produce an _html_ file. It will rather direct output to the console.
 
 ```r
 > print(my.freq.table, method="browser")
@@ -272,10 +272,10 @@ Dataframe name: The IRIS Dataframe
 
 When displaying _summarytools_ objects in the console (as opposed to generating _html_ reports), many other arguments can be specified so you get the format that you want. The most common are:
 
-- `style`: one of "simple" (default), "grid", "rmarkdown" and "multiline"
-- `justify`: one of "left", "center", and "right"
-- `round.digits`: how many decimals to show. This argument is also used for _html_ reports
-- `plain.ascii`: whether to use markdown tags (always `FALSE` by default)
+- `style` one of "simple" (default), "grid", "rmarkdown" and "multiline"
+- `justify` one of "left", "center", and "right"
+- `round.digits` how many decimals to show. This argument is also used for _html_ reports
+- `plain.ascii` whether to use markdown tags (always `FALSE` by default)
 - `...` and any of the other [pander options](https://github.com/Rapporter/pander#pander-options)
 
 ## What's coming next?
