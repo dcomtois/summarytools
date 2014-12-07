@@ -1,16 +1,16 @@
 # summarytools
 
-*summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished it was included in base R:
+*summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
-- Painless **frequency tables** with proportions and missing data information
-- Painless **descriptive statistics** with all common univariate statistics for numerical vectors
-- Painless **dataframe summaries** that facilitate data cleaning and firsthand evaluation
+- **frequency tables** with proportions, cumulative proportions and missing data information
+- **descriptive statistics** with all common univariate statistics for numerical vectors
+- **dataframe summaries** that facilitate data cleaning and firsthand evaluation
 
-It also aims at making R a little easier to use for newcomers. With just a few lines of code, one can get a pretty good picture of the data at hand.
+It also aims at making R _a little easier_ to use for newcomers. With just a few lines of code, one can get a pretty good picture of the data at hand.
 
 ### An example
 
-With 2 lines of code, get a summary report of a dataframe, displayed directly in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
+With just 2 lines of code, get a summary report of a dataframe, displayed directly in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
 
 ```r
 > library(summarytools)
