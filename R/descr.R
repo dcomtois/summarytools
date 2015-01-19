@@ -28,6 +28,7 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
   attr(output, "df.name") <- tmp.attr$df.name
   attr(output, "rows.subset") <- tmp.attr$rows.subset
+  attr(output, "var.name") <- tmp.attr$var.name
 
   # Identify and exclude non-numerical columns
   to.be.removed <- numeric()
