@@ -17,6 +17,7 @@ dfSummary(x, style="multiline", justify="left",
   \item{trim.strings}{For character variables, remove any white space at the beginning or end of the string. This will impact the frequencies so interpret the frequencies cell accordingly. Defaults to \code{FALSE}.}
   \item{max.string.width}{Limits the number of characters to display in the frequency tables. Defaults to \code{15}.}
   \item{round.digits}{Number of digits for rounding (used in numerical stats and in frequency tables).}
+  \item{split.cells}{\pkg{pander} argument. Number of characters allowed on a line before splitting the cell. Defaults to 40.}
   \item{display.labels}{If \code{TRUE}, variable (as defined with \pkg{rapportools} or \pkg{Hmisc}'s \code{label} function) labels will be displayed. Defaults to FALSE.}
   \item{file}{The text file to be written to disk. Defaults to \code{NA}.}
   \item{append}{When \dQuote{file} argument is supplied, this indicates whether to append output to existing file (\code{TRUE}) or to overwrite any existing file (\code{FALSE}, default). If \code{TRUE} and no file exists, a new file will be created.}

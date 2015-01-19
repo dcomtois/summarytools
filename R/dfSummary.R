@@ -1,6 +1,6 @@
 dfSummary <- function(x, style="multiline", justify="left",
                       max.distinct.values=10, trim.strings=FALSE,
-                      max.string.width=15, round.digits=2,
+                      max.string.width=15, round.digits=2, split.cells=40,
                       display.labels=FALSE, file=NA, append=FALSE,
                       escape.pipe=FALSE, ...) {
 
@@ -28,7 +28,7 @@ dfSummary <- function(x, style="multiline", justify="left",
   class(output) <- c("summarytools", class(output))
   attr(output, "st.type") <- "dfSummary"
 
-  # Set additionnal attributes from the parsing function
+  # use the parsing function to identify particularities such as row indexing
   tmp.attr <- .parse.arg(as.character(match.call()[2]))
   for(item in names(tmp.attr)) {
     attr(output, item) <- tmp.attr[[item]]
@@ -39,22 +39,19 @@ dfSummary <- function(x, style="multiline", justify="left",
     attr(output, "notes") <- paste(attr(output, "df.name"), "was converted from",
                                    typeof(x), "to data.frame")
     attr(output, "var.name") <- NULL
-
   }
 
   attr(output, "n.obs") <- nrow(x)
   attr(output, "date") <- Sys.Date()
   attr(output, "pander.args") <- list(style=style, round=round.digits, justify=justify,
-                                      split.table=Inf, keep.line.breaks=TRUE, ...=...)
+                                      split.table=Inf, keep.line.breaks=TRUE,
+                                      split.cells=split.cells, ...=...)
 
   # iterate over dataframe columns
   for(i in seq_len(ncol(x))) {
 
     # extract data
     column.data <- x[[i]]
-
-    # Add column number to output dataframe
-    # output[i,1] <- i
 
     # Add column name
     output[i,1] <- paste(i, names(x)[i], sep=". ")
@@ -147,13 +144,14 @@ dfSummary <- function(x, style="multiline", justify="left",
 
   # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
 
-  #   if(style=="grid" && escape.pipe && !is.na(file))
-  #     output <- paste(gsub("\\|","\\\\|",capture.output(output)), sep="\n")
-
   if(!is.na(file)) {
-    if(grepl("\\.html$",file)) {
+
+    if(style=="grid" && escape.pipe) {
+      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+      capture.output(cat(output.esc.pipes), file = file, append = append)
+    }
+    else if(grepl("\\.html$",file)) {
       file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file))
-      cat("OK")
     } else {
       capture.output(output, file = file, append = append)
     }
@@ -163,3 +161,4 @@ dfSummary <- function(x, style="multiline", justify="left",
 
   return(output)
 }
+

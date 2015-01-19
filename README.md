@@ -90,7 +90,6 @@ Frequencies
 Descriptive Univariate Statistics
 
 Dataframe name: iris
-          Date: 2014-11-30
 
                     Sepal.Length   Sepal.Width   Petal.Length   Petal.Width
 ----------------- -------------- ------------- -------------- -------------
@@ -114,6 +113,8 @@ Observations
       Valid   134 (89.33%)     138 (92%)   134 (89.33%)  134 (89.33%)
        <NA>    16 (10.67%)       12 (8%)    16 (10.67%)   16 (10.67%)
       Total            150           150            150           150
+
+Non-numerical variable(s) ignored: Species 
 ```
 
 
@@ -127,7 +128,6 @@ If your eyes/brain prefer seeing things the other way around, just set `transpos
 Descriptive Statistics
 
 Dataframe name: iris
-          Date: 2014-11-30
 
                      Mean   Std.Dev   Min   Max   Median   MAD   IQR   CV   Skewness   SE.Skewness   Kurtosis
 ------------------ ------ --------- ----- ----- -------- ----- ----- ---- ---------- ------------- ----------
@@ -145,6 +145,8 @@ Observations
        Sepal.Width    138 (92%)     12 (8%)     150
       Petal.Length 134 (89.33%) 16 (10.67%)     150
        Petal.Width 134 (89.33%) 16 (10.67%)     150
+
+Non-numerical variable(s) ignored: Species 
 ```
 
 
@@ -224,9 +226,9 @@ Version 0.3 of _summarytools_ combines the strengths of the following packages a
  - The [xtable package](http://cran.r-project.org/web/packages/xtable/index.html)
  - [Bootstrap](http://getbootstrap.com/) cascading stylesheets
 
-### How it works
+### Walkthrough
 
-You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with _summarytools_.
+When you become familiar with the method, You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with _summarytools_.
 
 - First, generate a _summarytools_ object using one of `descr()`, `freq()` or `dfSummary()`:
 ```r
@@ -242,7 +244,20 @@ You can achieve this in just one operation, but let's have a detailed walkthroug
 > print(my.freq.table, method="browser")
 ```
 
-- Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` calls `print()` specifying `method="viewer"`. See the example in the screen capture at the top of this page. The `view()` function also allows you to change the `method`, in which case it behaves exactly like `print()`. You can stick to `print()` altogether if you prefer.
+- Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` calls `print()` specifying `method="viewer"`. You can stick to `print()` altogether if you prefer.
+
+### An alternative way to produce html (or text) reports
+
+There is another way to generate output right at the first function call to `descr()`, `dfSummary()` or `freq()`; it is to supply the argument `file` to any of those. For instance, the two following function calls will generate a markdown report, and then an html report from `dfSummary()`:
+
+```r
+> dfSummary(iris, style="grid", file="~/iris_dfSummary.md", escape.pipes=TRUE)
+Output successfully written to file D:\Documents\iris_dfSummary.md
+> dfSummary(iris, file="~/iris_dfSummary.html") # With html files, most of the other arguments are omitted.
+Output successfully written to file D:\Documents\iris_dfSummary.html
+```
+
+**Note** `The escape.pipes=TRUE` argument makes it so that Pandoc, in converting to alternative formats, handles correctly multiline cells in dfSummary tables.
 
 ## Customizing output
 

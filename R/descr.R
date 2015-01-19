@@ -129,9 +129,10 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     message("Output successfully written to file ", normalizePath(file))
   }
 
-  if(length(notes) > 0) {
+  if(exists("notes") && length(notes) > 0) {
     attr(output, "notes") <- paste(notes)
   }
 
   return(output)
 }
+
