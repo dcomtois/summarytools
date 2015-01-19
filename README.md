@@ -188,7 +188,7 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 
 # All functions markdown-ready
 
-Thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package, all functions can printout [markdown](http://daringfireball.net/projects/markdown/); just use the option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are converted and displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can further convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_ and _.odt_, among others. 
+Thanks to Gergely DarÃ³czi's [pander](https://github.com/Rapporter/pander) package, all functions can printout [markdown](http://daringfireball.net/projects/markdown/); just use the option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are converted and displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can further convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_ and _.odt_, among others. 
 
 Here is an **example** of a markdown table, as processed by GitHub, using `freq()`:
 
@@ -290,7 +290,7 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 - `style` one of "simple" (default), "grid", "rmarkdown" and "multiline"
 - `justify` one of "left", "center", and "right"
 - `round.digits` how many decimals to show. This argument is also used for _html_ reports
-- `plain.ascii` whether to use markdown tags (always `FALSE` by default)
+- `plain.ascii` when `TRUE`, no markdown tags are used
 - `...` and any of the other [pander options](https://github.com/Rapporter/pander#pander-options)
 
 ## What's coming next?
