@@ -299,4 +299,6 @@ Stats split by subgroups of data & customization of css.
 
 ## Final notes
 
+Visit my professionnal site to learn more about what I do and services I offer: [www.statconseil.com](http://www.statconseil.com)
+
 The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) in case you find a bug.
