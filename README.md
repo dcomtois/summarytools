@@ -31,18 +31,18 @@ With just 2 lines of code, get a summary report of a dataframe, displayed direct
 
 # Installation
 
-To install the **latest stable version** of `summarytools`, just type into your R console: 
-
-```r
-> install.packages("summarytools")
-```
-
 For the most **up-to-date version** that has all the latest features **but** might also contain bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
 
 ```r
 > install.packages("devtools")
 > library(devtools)
 > install_github('dcomtois/summarytools')
+```
+
+To install the **latest stable version** of `summarytools` (which won't necessarily contain all the functions listed on this readme; hence I encourage you to use the devtools way describes above) just type into your R console: 
+
+```r
+> install.packages("summarytools")
 ```
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
@@ -298,7 +298,7 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 ### Function `what.is()` helps you figure out quickly what an object is by...
 
 - Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table;
-- Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.`;
+- Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.` -- see [this post on StackOverflow](http://stackoverflow.com/questions/8855589/a-comprehensive-survey-of-the-types-of-things-in-r-mode-and-class-and-type/26435993#26435993) for details;
 - Giving a list of the object's attributes names and length (c.g. rownames, dimnames, labels, etc.)
 
 #### Some examples
