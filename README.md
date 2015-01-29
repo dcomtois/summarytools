@@ -293,9 +293,54 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 - `plain.ascii` when `TRUE`, no markdown tags are used
 - `...` and any of the other [pander options](https://github.com/Rapporter/pander#pander-options)
 
-## What's coming next?
+## What else?
 
-Stats split by subgroups of data & customization of css.
+### Function `what.is()` helps you figure out quickly what an object is by...
+
+- Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table;
+- Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.`;
+- Giving a list of the object's attributes names and length (c.g. rownames, dimnames, labels, etc.)
+
+#### Some examples
+
+```r
+> what.is(iris)
+$obj.properties
+      property      value
+1        class data.frame
+2       typeof       list
+3         mode       list
+4 storage.mode       list
+5          dim    150 x 5
+6       length          5
+7  object.size 7088 Bytes
+
+$identifiers
+[1] "is.data.frame" "is.list"       "is.object"     "is.recursive"  "is.unsorted"  
+
+$attributes
+    names row.names     class 
+        5       150         1 
+        
+
+> what.is(NaN)
+$obj.properties
+      property    value
+1        class  numeric
+2       typeof   double
+3         mode  numeric
+4 storage.mode   double
+5          dim         
+6       length        1
+7  object.size 48 Bytes
+
+$identifiers
+[1] "is.atomic"  "is.double"  "is.na"      "is.nan"     "is.numeric" "is.vector" 
+
+$attributes
+list()
+```
+
 
 ## Final notes
 
