@@ -12,54 +12,52 @@ what.is <- function(x, show.all.tests=FALSE) {
 
 
   # Part 2. Test object against all "is.[...]" functions
-  # Find all 'is.' functions (excluding the assignment ones)
-  list.identifier.functions <- grep(methods(is), pattern = "<-", invert = TRUE, value = TRUE)
-  identifiers <- c()
+  # Look for all relevant functions
+  list.id.fun <- grep(methods(is), pattern = "<-", invert = TRUE, value = TRUE)
 
-  # loop over all "is.(...)" functions and store the results
-  for(fun in list.identifier.functions) {
-    res <- try(eval(call(fun,x)),silent=TRUE)
-    if(isTRUE(res))
-      identifiers <- append(identifiers, fun)
-  }
+  # remove is.R which is not relevant and can take a lot of time
+  list.id.fun <- setdiff(list.id.fun, "is.R")
 
-  # Part 3. Make a list of all the object's attribute and their length
-  obj.attributes <- sapply(attributes(x),length)
-
-
-  if(show.all.tests) {
+  # loop over all functions with x as argument, and store the results
+  if(!show.all.tests) {
+    identifiers <- c()
+    for(fun in list.id.fun) {
+      res <- try(eval(call(fun,x)),silent=TRUE)
+      if(isTRUE(res))
+        identifiers <- append(identifiers, fun)
+    }
+  } else {
 
     # Generate table of all identifier tests
-    identifiers.full <- data.frame(test=character(), value=character(),
+    identifiers <- data.frame(test=character(), value=character(),
                                    warnings=character(), stringsAsFactors = FALSE)
 
-    # loop over all "is.(...)" functions and store the results
-    for(fun in list.identifier.functions) {
-      res <- try(eval(call(fun,x)),silent=TRUE)
-      if(class(res)=="try-error") {
+    # loop over all functions with x as argument, and store the results
+    for(fun in list.id.fun) {
+      value <- try(eval(call(fun,x)),silent=TRUE)
+      if(class(value)=="try-error") {
         next() # ignore tests that yield an error
-      } else if (length(res)>1) {
-        warn <- "*Applies only to the first element of the provided object"
-        value <- paste(res,sep="")
-        #value <- paste(res,"*",sep="")
+      } else if (length(value)>1) {
+        warn <- "!!! Logical value applies only to the first element of the provided object !!!"
+        value <- paste(value,sep="")
       } else {
         warn <- ""
-        value <- res
       }
-      identifiers.full[nrow(identifiers.full)+1,] <- list(fun, value, warn)
+      identifiers[nrow(identifiers)+1,] <- list(fun, value, warn)
     }
 
-    # sort the results
-    identifiers.full <- identifiers.full[order(identifiers.full$value, identifiers.full$warnings=="", decreasing = TRUE),]
+    # sort the results according to the results and warnings if any
+    identifiers <- identifiers[order(identifiers$value, identifiers$warnings=="", decreasing = TRUE),]
   }
+
+  # Part 3. Make a list of all x's attribute and their length
+  obj.attributes <- sapply(attributes(x),length)
+
 
   output <- list()
   output$obj.properties <- obj.properties
   output$identifiers <- identifiers
-  if(show.all.tests)
-    output$identifiers.full <- identifiers.full
   output$attributes <- obj.attributes
   return(output)
 
 }
-
