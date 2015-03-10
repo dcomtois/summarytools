@@ -196,10 +196,10 @@ Here is an **example** of a markdown table, as processed by GitHub, using `freq(
 ```r
 > freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="---")
 ```
-Dataframe name: iris
- Variable name: Species
-Variable label: The Species (duh)
-          Date: 2014-12-05
+Dataframe name: iris  
+ Variable name: Species  
+Variable label: The Species (duh)  
+          Date: 2014-12-05  
 
 Frequencies
 
