@@ -166,3 +166,4 @@
 view <- function(x, method="viewer", ...) {
   print(x, method=method, ...)
 }
+
