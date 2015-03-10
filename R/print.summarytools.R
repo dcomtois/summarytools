@@ -208,9 +208,14 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
 
   # Open the output html file --------------------------------------------
   if(grepl("v|View",method)) {
-    rstudio::viewer(htmlfile)
+    if(!is.null(getOption("viewer")))
+      rstudioapi::viewer(htmlfile)
+    else
+      utils::browseURL(htmlfile)
   } else if(grepl("b|Brow", method)) {
-    if(open)  shell.exec(htmlfile)
+    if(open)
+      utils::browseURL(htmlfile)
+      #shell.exec(htmlfile)
   }
 
   # return file path for browser/viewer ----------------------------------
