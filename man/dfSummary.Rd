@@ -6,7 +6,8 @@
 dfSummary(x, style="multiline", justify="left",
           max.distinct.values=10, trim.strings=FALSE,
           max.string.width=15, round.digits=2,
-          display.labels=FALSE, file=NA, append=FALSE,
+          split.cells=40, display.labels=FALSE,
+          file=NA, append=FALSE,
           escape.pipe=FALSE, ...)
 }
 \arguments{

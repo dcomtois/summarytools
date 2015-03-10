@@ -9,7 +9,7 @@
 \arguments{
   \item{x}{Any object.}
   \item{show.all}{When \code{TRUE}, all logical results from the \dQuote{is.} identifier functions will be displayed, accompanied by a warning when only the result applies only to the first element in the structure. \code{FALSE} by default.}
-  \item{ignore.size.warn}{Set to \code{TRUE} to force execution of the function for large (>10K) objects. Defaults to \code{FALSE}.}
+  \item{ignore.size.warn}{Set to \code{TRUE} to force execution of the function for large (>20 Kbytes) objects. Defaults to \code{FALSE}.}
 }
 
 \details{The function is an attempt to centralize the most common \dQuote{macro-level} functions that describe the data at hand. Instead of calling, in turn, \code{class}, \code{typeof}, \code{dim}, and so on, a single call to \code{what.is} will readily give all that information.}

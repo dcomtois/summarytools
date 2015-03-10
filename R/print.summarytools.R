@@ -1,6 +1,6 @@
 print.summarytools <- function(x, method="pander", open=TRUE, ...) {
 
-  # Build info.table and prepare the field  ----------------------------------------
+  # Build info.table and prepare the field  -----------------------------------
 
   if(method=="pander") {
     info.table <- c()
@@ -35,7 +35,7 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
   notes <- ifelse("notes" %in% names(attributes(x)),
                   yes = paste(attr(x,"notes")), no = "")
 
-  # Printing descr objects --------------------------------------------------------------
+  # Printing descr objects ----------------------------------------------------
   if(attr(x, "st.type") == "descr") {
 
     # With method pander --------------------------------------
@@ -95,7 +95,7 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
     }
   }
 
-  # Printing dfSummary objects ------------------------------------------------------
+  # Printing dfSummary objects ------------------------------------------------
   else if(attr(x, "st.type") == "dfSummary") {
 
     # With method pander --------------------------
@@ -150,7 +150,7 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
     }
   }
 
-  # printing freq objects ---------------------------------------------------------------
+  # printing freq objects -----------------------------------------------------
   else if(attr(x, "st.type") == "freq") {
 
     # with method pander -----------------------------
@@ -213,7 +213,7 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
     if(open)  shell.exec(htmlfile)
   }
 
-  # return file path for browser/viewer ---------------------------------
+  # return file path for browser/viewer ----------------------------------
   if(grepl("(B|brow)|(V|view)", method)) {
     return(normalizePath(htmlfile))
   } else {

@@ -1,6 +1,6 @@
 what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
-  if(object.size(x) > 10000 && ignore.size.warn == FALSE) {
+  if(object.size(x) > 20000 && ignore.size.warn == FALSE) {
     stop("object.size(x) is greater than 10K; computing time might be long. Set argument ignore.size.warn to TRUE to force execution anyway")
   }
   # set the warn option to -1 to temporarily ignore warnings
@@ -22,7 +22,7 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
   list.id.fun <- setdiff(list.id.fun, "is.R")
 
   # loop over all functions with x as argument, and store the results
-  if(!show.all.tests) {
+  if(!show.all) {
     identifiers <- c()
     for(fun in list.id.fun) {
       res <- try(eval(call(fun,x)),silent=TRUE)

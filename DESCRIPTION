@@ -13,7 +13,9 @@ Description: Generates formatted summary tables for vectors and dataframes.
     for numerical data; 3) 'dfSummary' which attemps to give as much
     information as possible about a dataframe and its components in a clear,
     legible table. All three functions can either display plain text tables
-    in the console or write markdown, text or html files to disk.
+    in the console or write markdown, text or html files to disk. An
+    additionnal misc function, 'what.is', extends base 'is' function,
+    checking the object against all 'is' functions.
 Depends:
     htmltools
 Imports:
