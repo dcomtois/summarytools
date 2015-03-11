@@ -3,18 +3,18 @@ Type: Package
 Title: Dataframe Summaries, Frequency Tables and Numerical Summaries with
     Customizable Output
 Version: 0.3
-Date: 2014-11-29
+Date: 2015-03-10
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Generates formatted summary tables for vectors and dataframes.
     Three summarizing functions: 1) 'freq' generates frequency tables
     reporting counts and proportions (including cumulative); 2) 'descr'
     gives common central tendency statistics and measures of dispersion
-    for numerical data; 3) 'dfSummary' which attemps to give as much
+    for numerical data; 3) 'dfSummary' which attempts to give as much
     information as possible about a dataframe and its components in a clear,
     legible table. All three functions can either display plain text tables
     in the console or write markdown, text or html files to disk. An
-    additionnal misc function, 'what.is', extends base 'is' function,
+    additional misc function, 'what.is', extends base 'is' function,
     checking the object against all 'is' functions.
 Depends:
     htmltools
