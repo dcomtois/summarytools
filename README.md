@@ -31,18 +31,18 @@ With just 2 lines of code, get a summary report of a dataframe, displayed direct
 
 # Installation
 
+To install the **latest stable version** of `summarytools`, just type into your R console: 
+
+```r
+> install.packages("summarytools")
+```
+
 For the most **up-to-date version** that has all the latest features **but** might also contain bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
 
 ```r
 > install.packages("devtools")
 > library(devtools)
 > install_github('dcomtois/summarytools')
-```
-
-To install the **latest stable version** of `summarytools` (which won't necessarily contain all the functions listed on this readme; hence I encourage you to use the devtools way describes above) just type into your R console: 
-
-```r
-> install.packages("summarytools")
 ```
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
