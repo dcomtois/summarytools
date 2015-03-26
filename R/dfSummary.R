@@ -76,7 +76,7 @@ dfSummary <- function(x, style="multiline", justify="left",
         output[i,5] <- paste(names(fr),": ", fr," (",pct,"%)",sep="",collapse="\n")
       } else {
         output[i,4] <- paste(1:max.distinct.values,". ", levels(column.data)[1:max.distinct.values], collapse="\n", sep="")
-        output[i,4] <- paste(output[i,5], paste(n.levels - max.distinct.values, "Other levels (not displayed)"),sep="\n")
+        output[i,4] <- paste(output[i,4], paste(n.levels - max.distinct.values, "Other levels (not displayed)"),sep="\n")
         output[i,5] <- paste(as.character(length(unique(column.data))),"distinct values")
       }
     }
