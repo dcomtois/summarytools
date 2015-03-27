@@ -1,4 +1,4 @@
-print.summarytools <- function(x, method="pander", open=TRUE, ...) {
+print.summarytools <- function(x, method="pander", ...) {
 
   # Build info.table and prepare the field  -----------------------------------
 
@@ -213,7 +213,6 @@ print.summarytools <- function(x, method="pander", open=TRUE, ...) {
     else
       utils::browseURL(htmlfile)
   } else if(grepl("b|Brow", method)) {
-    if(open)
       utils::browseURL(htmlfile)
       #shell.exec(htmlfile)
   }
