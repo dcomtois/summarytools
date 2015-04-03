@@ -304,43 +304,29 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 #### Some examples
 
 ```r
-> what.is(iris)
+> what.is(c)
 $properties
-      property      value
-1        class data.frame
-2       typeof       list
-3         mode       list
-4 storage.mode       list
-5          dim    150 x 5
-6       length          5
-7  object.size 7088 Bytes
-
-$attributes.lengths
-    names row.names     class 
-        5       150         1 
+      property    value
+1        class function
+2       typeof  builtin
+3         mode function
+4 storage.mode function
+5          dim         
+6       length        1
+7  object.size 56 Bytes
 
 $extensive.is
-[1] "is.data.frame" "is.list"       "is.object"     "is.recursive"  "is.unsorted"  
+[1] "is.function"  "is.primitive" "is.recursive"
 
-$object.type
-[1] "S3"
+$function.type
+[1] "primitive" "generic"  
 
-$obj.class.methods
-$obj.class.methods$data.frame
- [1] $.data.frame             $<-.data.frame           [.data.frame             [[.data.frame           
- [5] [[<-.data.frame          [<-.data.frame           aggregate.data.frame     anyDuplicated.data.frame
- [9] as.data.frame.data.frame as.list.data.frame       as.matrix.data.frame     by.data.frame           
-[13] cbind.data.frame         dim.data.frame           dimnames.data.frame      dimnames<-.data.frame   
-[17] droplevels.data.frame    duplicated.data.frame    edit.data.frame*         format.data.frame       
-[21] formula.data.frame*      head.data.frame*         is.na.data.frame         Math.data.frame         
-[25] merge.data.frame         na.exclude.data.frame*   na.omit.data.frame*      Ops.data.frame          
-[29] plot.data.frame*         print.data.frame         prompt.data.frame*       rbind.data.frame        
-[33] row.names.data.frame     row.names<-.data.frame   rowsum.data.frame        split.data.frame        
-[37] split<-.data.frame       stack.data.frame*        str.data.frame*          subset.data.frame       
-[41] summary.data.frame       Summary.data.frame       t.data.frame             tail.data.frame*        
-[45] transform.data.frame     unique.data.frame        unstack.data.frame*      within.data.frame       
+$generic.function.methods
+[1] c.bibentry*       c.Date            c.noquote         c.numeric_version c.person*         c.POSIXct        
+[7] c.POSIXlt         c.warnings       
 
    Non-visible functions are asterisked
+   
    
 > what.is(NaN)
 $properties
