@@ -305,7 +305,7 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 
 ```r
 > what.is(iris)
-$obj.properties
+$properties
       property      value
 1        class data.frame
 2       typeof       list
@@ -315,16 +315,35 @@ $obj.properties
 6       length          5
 7  object.size 7088 Bytes
 
-$identifiers
-[1] "is.data.frame" "is.list"       "is.object"     "is.recursive"  "is.unsorted"  
-
-$attributes
+$attributes.lengths
     names row.names     class 
         5       150         1 
-        
 
+$extensive.is
+[1] "is.data.frame" "is.list"       "is.object"     "is.recursive"  "is.unsorted"  
+
+$object.type
+[1] "S3"
+
+$obj.class.methods
+$obj.class.methods$data.frame
+ [1] $.data.frame             $<-.data.frame           [.data.frame             [[.data.frame           
+ [5] [[<-.data.frame          [<-.data.frame           aggregate.data.frame     anyDuplicated.data.frame
+ [9] as.data.frame.data.frame as.list.data.frame       as.matrix.data.frame     by.data.frame           
+[13] cbind.data.frame         dim.data.frame           dimnames.data.frame      dimnames<-.data.frame   
+[17] droplevels.data.frame    duplicated.data.frame    edit.data.frame*         format.data.frame       
+[21] formula.data.frame*      head.data.frame*         is.na.data.frame         Math.data.frame         
+[25] merge.data.frame         na.exclude.data.frame*   na.omit.data.frame*      Ops.data.frame          
+[29] plot.data.frame*         print.data.frame         prompt.data.frame*       rbind.data.frame        
+[33] row.names.data.frame     row.names<-.data.frame   rowsum.data.frame        split.data.frame        
+[37] split<-.data.frame       stack.data.frame*        str.data.frame*          subset.data.frame       
+[41] summary.data.frame       Summary.data.frame       t.data.frame             tail.data.frame*        
+[45] transform.data.frame     unique.data.frame        unstack.data.frame*      within.data.frame       
+
+   Non-visible functions are asterisked
+   
 > what.is(NaN)
-$obj.properties
+$properties
       property    value
 1        class  numeric
 2       typeof   double
@@ -334,11 +353,18 @@ $obj.properties
 6       length        1
 7  object.size 48 Bytes
 
-$identifiers
+$extensive.is
 [1] "is.atomic"  "is.double"  "is.na"      "is.nan"     "is.numeric" "is.vector" 
 
-$attributes
-list()
+$object.type
+[1] "base"
+
+$obj.class.methods
+$obj.class.methods$numeric
+[1] all.equal.numeric     as.data.frame.numeric as.Date.numeric       as.POSIXct.numeric   
+[5] as.POSIXlt.numeric    as.raster.numeric*   
+
+   Non-visible functions are asterisked
 ```
 
 
