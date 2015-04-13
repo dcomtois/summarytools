@@ -52,7 +52,7 @@ print.summarytools <- function(x, method="pander", ...) {
     }
 
     # With method viewer / browser --------------------------
-    else if(grepl("(v|view)|(B|brow)",method)) {
+    else if(grepl("(v|view(er)?)|(B|brow(ser)?)",method)) {
 
       descr.table.html <-
         xtable::print.xtable(xtable::xtable(x = x$stats, align = paste("r", paste(rep("c",ncol(x$stats)),collapse=""),sep=""),
@@ -107,7 +107,7 @@ print.summarytools <- function(x, method="pander", ...) {
     }
 
     # with method viewer or browser ---------------
-    else if(grepl("(v|view)|(B|brow)",method)) {
+    else if(grepl("(v|view(er)?)|(B|brow(ser)?)",method)) {
 
       sanitize.colnames <- function(x) {
         x <- gsub("\\.", " ", x)
@@ -207,18 +207,18 @@ print.summarytools <- function(x, method="pander", ...) {
 
 
   # Open the output html file --------------------------------------------
-  if(grepl("v|View",method)) {
+  if(grepl("v|view(er)?",method)) {
     if(!is.null(getOption("viewer")))
       rstudioapi::viewer(htmlfile)
     else
       utils::browseURL(htmlfile)
-  } else if(grepl("b|Brow", method)) {
+  } else if(grepl("b|Brow(ser)?", method)) {
       utils::browseURL(htmlfile)
       #shell.exec(htmlfile)
   }
 
   # return file path for browser/viewer ----------------------------------
-  if(grepl("(B|brow)|(V|view)", method)) {
+  if(grepl("(B|brow(ser)?)|(V|view(er)?)", method)) {
     return(normalizePath(htmlfile))
   } else {
     return(invisible())

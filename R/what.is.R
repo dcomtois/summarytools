@@ -63,8 +63,9 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   function.type <- NULL
 	generic.function.methods <- NULL
-	object.type <- NULL
 	obj.class.methods <- NULL
+
+  object.type <- pryr::otype(x)
 
   if(is.function(x)) {
 
@@ -74,7 +75,6 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   } else {
 
-  	object.type <- pryr::otype(x)
   	obj.class.methods <- lapply(class(x), function(cl) methods(class=cl))
   	names(obj.class.methods) <- class(x)
   }
