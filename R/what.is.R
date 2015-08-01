@@ -9,9 +9,11 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
   on.exit(options(op))
 
   # Part 1. Data Properties - class, typeof, mode, storage.mode
-  properties <- data.frame(property=c("class", "typeof", "mode", "storage.mode", "dim", "length", "object.size"),
-                               value = c(paste(class(x),collapse=" "), typeof(x), mode(x), storage.mode(x),
-                                         paste(dim(x), collapse = " x "), length(x), paste(object.size(x), "Bytes")))
+  properties <- data.frame(property=c("class", "typeof", "mode", "storage.mode", "dim", "length",
+                                      "is.object","object.type","object.size"),
+                           value = c(paste(class(x),collapse=" "), typeof(x), mode(x), storage.mode(x),
+                                     paste(dim(x), collapse = " x "), length(x),
+                                     base::is.object(x), pryr::otype(x), paste(object.size(x), "Bytes")))
 
 
   # Part 2. Make a list of all x's attribute and their length
@@ -64,8 +66,8 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
   function.type <- NULL
 	generic.function.methods <- NULL
 	obj.class.methods <- NULL
-
-  object.type <- pryr::otype(x)
+  #obj.is.object <- base::is.object(x)
+  #obj.otype <- pryr::otype(x)
 
   if(is.function(x)) {
 
@@ -85,7 +87,8 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
   output$extensive.is <- extensive.is
   output$function.type <- function.type
   output$generic.function.methods <- generic.function.methods
-  output$object.type <- object.type
+  #output$is.object <- obj.is.object
+  #output$object.type <- obj.otype
   output$obj.class.methods <- obj.class.methods
   return(output)
 
