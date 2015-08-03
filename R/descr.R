@@ -125,13 +125,29 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     output$observ <- t(output$observ)
   }
 
-  if(!is.na(file)) {
-    capture.output(output, file = file, append = append)
-    message("Output successfully written to file ", normalizePath(file))
-  }
+#   if(!is.na(file)) {
+#     capture.output(output, file = file, append = append)
+#     message("Output successfully written to file ", normalizePath(file))
+#   }
 
   if(exists("notes") && length(notes) > 0) {
     attr(output, "notes") <- paste(notes)
+  }
+
+  if(!is.na(file)) {
+
+    if(style=="grid" && escape.pipe) {
+      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+      capture.output(cat(output.esc.pipes), file = file, append = append)
+    }
+    else if(grepl("\\.html$",file)) {
+      if(isTRUE(append)) message("Append is not supported for html files. This parameter will be ignored")
+      file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file, mustWork = FALSE))
+    } else {
+      capture.output(output, file = file, append = append)
+    }
+    message("Output successfully written to file ", normalizePath(file))
+    return(invisible(output))
   }
 
   return(output)

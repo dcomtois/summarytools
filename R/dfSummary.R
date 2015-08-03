@@ -151,7 +151,8 @@ dfSummary <- function(x, style="multiline", justify="left",
       capture.output(cat(output.esc.pipes), file = file, append = append)
     }
     else if(grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file))
+      if(isTRUE(append)) message("Append is not supported for html files. This parameter will be ignored")
+      file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file, mustWork = FALSE))
     } else {
       capture.output(output, file = file, append = append)
     }
