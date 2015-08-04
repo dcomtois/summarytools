@@ -1,6 +1,7 @@
 descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                   justify="right", plain.ascii=TRUE, file=NA,
-                  append=FALSE, transpose=FALSE, ...) {
+                  append=FALSE, transpose=FALSE,
+                  escape.pipe=FALSE, ...) {
 
   if(is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")

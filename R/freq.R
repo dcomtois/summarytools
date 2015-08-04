@@ -1,5 +1,6 @@
 freq <- function(x, round.digits=2, style="simple", justify="right",
-                 plain.ascii=TRUE, file=NA, append=FALSE, ...) {
+                 plain.ascii=TRUE, file=NA, append=FALSE,
+                 escape.pipe=FALSE, ...) {
 
   # If x is a data.frame with 1 column, convert it to vector
   if(!is.null(ncol(x)) && ncol(x)==1) {

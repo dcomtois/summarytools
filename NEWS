@@ -1,3 +1,7 @@
+Version 0.4
+-----------
+Added cat() functions to fully support knitr's document generation. Also added sample datasets so that users can experiment using summarytools functions with them.
+
 Version 0.3
 -----------
 Another round of major changes.

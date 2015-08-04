@@ -2,8 +2,8 @@ Package: summarytools
 Type: Package
 Title: Dataframe Summaries, Frequency Tables and Numerical Summaries with
     Customizable Output
-Version: 0.3
-Date: 2015-03-10
+Version: 0.4
+Date: 2015-08-04
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Generates formatted summary tables for vectors and dataframes.
