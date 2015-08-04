@@ -214,11 +214,11 @@ print.summarytools <- function(x, method="pander", ...) {
       utils::browseURL(htmlfile)
   } else if(grepl("b|Brow(ser)?", method)) {
       utils::browseURL(htmlfile)
-      #shell.exec(htmlfile)
   }
 
   # return file path for browser/viewer ----------------------------------
   if(grepl("(B|brow(ser)?)|(V|view(er)?)", method)) {
+    message("Temporary html file created. To remove file from filesystem, please use file.remove(.Last.value)")
     return(normalizePath(htmlfile))
   } else {
     return(invisible())

@@ -31,6 +31,7 @@ dfSummary(x, style="multiline", justify="left",
 \references{\url{https://github.com/dcomtois/summarytools}}
 \seealso{\code{\link{summary.data.frame}}}
 \examples{
+  \dontrun{view(dfSummary(iris))}
   data(smokers)
   dfSummary(smokers)
 }

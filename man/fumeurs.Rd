@@ -20,7 +20,6 @@ This is merely a sample dataframe to allow users to experiment with summarytools
 }
 \examples{
 data(fumeurs)
-descr(fumeurs$imc)
-view(dfSummary(fumeurs))
+freq(fumeurs$sexe)
 }
 \keyword{datasets}

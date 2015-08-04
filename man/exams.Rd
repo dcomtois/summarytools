@@ -21,8 +21,6 @@ This is merely a sample dataframe to allow users to experiment with summarytools
 }
 \examples{
 data(exams)
-descr(exams, transpose = TRUE)
-view(descr(exams))
-dfSummary(exams)
+descr(exams)
 }
 \keyword{datasets}

@@ -164,6 +164,6 @@
 
 # view is a wrapper function for print(x, "view"). Allows alternate "browser" or "pander" methods as well.
 view <- function(x, method="viewer", ...) {
-  print(x, method=method, ...)
+  print.summarytools(x, method=method, ...)
 }
 
