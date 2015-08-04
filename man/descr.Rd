@@ -5,7 +5,8 @@
 \usage{
 descr(x, na.rm=TRUE, style="simple", round.digits=2,
      justify="right", plain.ascii=TRUE, file=NA,
-     append=FALSE, transpose=FALSE, ...)}
+     append=FALSE, transpose=FALSE,
+     escape.pipes=FALSE, ...)}
 \arguments{
   \item{x}{Numerical vector.}
   \item{na.rm}{argument to be passed to statistical functions. Defaults to \code{TRUE}.}

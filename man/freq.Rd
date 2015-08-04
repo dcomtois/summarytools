@@ -4,7 +4,8 @@
 \description{Displays frequencies as well as valid/missing observation information.}
 \usage{
 freq(x, round.digits=2, style="simple", justify="right",
-     plain.ascii=TRUE, file=NA, append=FALSE, ...)
+     plain.ascii=TRUE, file=NA, append=FALSE,
+     escape.pipes=FALSE, ...)
 }
 \arguments{
   \item{x}{Vector of discrete (categorical) data.}
