@@ -16,6 +16,7 @@ descr(x, na.rm=TRUE, style="simple", round.digits=2,
   \item{file}{File name to write output to. Defaults to \code{NA}. To append output to an existing text file, use \code{append=TRUE}.}
   \item{append}{When \dQuote{file} argument is supplied, this indicates whether to append output to existing file (\code{TRUE}) or to overwrite any existing file (\code{FALSE}, default). If \code{TRUE} and no file exists, a new file will be created.}
   \item{transpose}{Makes variables appears as columns, and stats as rows. Defaults to \code{FALSE}.}
+  \item{escape.pipe}{Only useful when \code{style='grid'} and \code{file} argument is not \code{NA}, in which case it will escape the pipe character (|) to allow Pandoc to correctly convert multiline cells.}
   \item{\dots}{Additional arguments passed to \pkg{pander}.}
 }
 \value{A list with 2 elements; first one in a matrix (table) containing all the stats. Second, a table of statistics and table of counts (valid vs \code{<NA>} observations).}
