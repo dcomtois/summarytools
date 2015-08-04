@@ -6,7 +6,7 @@
 descr(x, na.rm=TRUE, style="simple", round.digits=2,
      justify="right", plain.ascii=TRUE, file=NA,
      append=FALSE, transpose=FALSE,
-     escape.pipes=FALSE, ...)}
+     escape.pipe=FALSE, ...)}
 \arguments{
   \item{x}{Numerical vector.}
   \item{na.rm}{argument to be passed to statistical functions. Defaults to \code{TRUE}.}
@@ -24,9 +24,9 @@ descr(x, na.rm=TRUE, style="simple", round.digits=2,
 \references{\url{https://github.com/dcomtois/summarytools}}
 \author{Dominic Comtois <dominic.comtois@gmail.com>}
 \examples{
-data(iris)
-descr(iris)
-descr(iris, transpose=TRUE)
+data(exams)
+descr(exams)
+descr(exams, transpose=TRUE)
 }
 \keyword{univariate}
 \keyword{descriptives}

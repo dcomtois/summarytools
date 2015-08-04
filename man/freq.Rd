@@ -5,7 +5,7 @@
 \usage{
 freq(x, round.digits=2, style="simple", justify="right",
      plain.ascii=TRUE, file=NA, append=FALSE,
-     escape.pipes=FALSE, ...)
+     escape.pipe=FALSE, ...)
 }
 \arguments{
   \item{x}{Vector of discrete (categorical) data.}
