@@ -54,7 +54,7 @@ dfSummary <- function(x, style="multiline", justify="left",
     column.data <- x[[i]]
 
     # Add column name
-    output[i,1] <- paste(i, names(x)[i], sep=". ")
+    output[i,1] <- paste(i, names(x)[i], sep=".\n")
 
     # Add column label (if applicable)
     if(display.labels)
@@ -77,7 +77,7 @@ dfSummary <- function(x, style="multiline", justify="left",
       } else {
         output[i,4] <- paste(1:max.distinct.values,". ", levels(column.data)[1:max.distinct.values], collapse="\n", sep="")
         output[i,4] <- paste(output[i,4], paste(n.levels - max.distinct.values, "Other levels (not displayed)"),sep="\n")
-        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct values")
+        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
       }
     }
 
@@ -98,7 +98,7 @@ dfSummary <- function(x, style="multiline", justify="left",
         output[i,5] <- paste(round(as.numeric(names(fr)),round.digits),": ", fr," (",pct,"%)",sep="",collapse="\n")
       }
       else {
-        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct values")
+        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
       }
     }
 
@@ -107,7 +107,7 @@ dfSummary <- function(x, style="multiline", justify="left",
       output[i,4] <- ""
 
       if(trim.strings)
-        column.data.tmp <- sub(pattern="\\A\\s*(.+?)\\s*\\z",replacement="\\1",x=column.data,perl=TRUE)
+        column.data.tmp <- sub(pattern="\\A\\s*(.+?)\\s*\\z", replacement="\\1", x=column.data, perl=TRUE)
       else
         column.data.tmp <- column.data
 
@@ -117,7 +117,7 @@ dfSummary <- function(x, style="multiline", justify="left",
         output[i,5] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
       }
-      else output[i,5] <- paste(as.character(length(unique(column.data.tmp))),"distinct values")
+      else output[i,5] <- paste(as.character(length(unique(column.data.tmp))),"distinct val")
     }
 
     # For data that does not fit in previous categories (numeric, character, factor)
@@ -129,14 +129,16 @@ dfSummary <- function(x, style="multiline", justify="left",
         output[i,5] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
       }
-      else output[i,5] <- paste(as.character(length(unique(column.data))),"distinct values")
+      else output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
     }
 
-    # Add missing data info
+    # Add valid data info
     n.nas <- sum(is.na(column.data))
     n.val <- nrow(x) - n.nas
 
-    output[i,6] <- paste(n.val," (",format(n.val/nrow(x)*100,digits=1,nsmall=1),"%)",collapse="",sep="")
+    output[i,6] <- paste(n.val,"/", nrow(x),"\n",
+                         "(", format(n.val/nrow(x)*100, digits=1, nsmall=1), "%)",
+                         sep="", collapse = "\n")
   }
 
   if(!display.labels)
