@@ -22,9 +22,9 @@ freq(x, round.digits=2, style="simple", justify="right",
 \author{Dominic Comtois <dominic.comtois@gmail.com>}
 \references{\url{https://github.com/dcomtois/summarytools}}
 \examples{
-  data(iris)
-  freq(iris$Species)
-  freq(iris$Species, style="rmarkdown")
+  data(smokers)
+  freq(smokers$gender)
+  freq(smokers$gender, style="rmarkdown")
 }
 \keyword{ frequencies }
 \keyword{ frequency }
