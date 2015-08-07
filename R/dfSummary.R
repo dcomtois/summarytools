@@ -83,22 +83,26 @@ dfSummary <- function(x, style="multiline", justify="left",
 
     # For numeric data, display a column of descriptive stats and a column of frequencies
     else if(is.numeric(column.data)) {
-      output[i,4] <- paste("mean (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
-                           " (",round(sd(column.data,na.rm=TRUE),round.digits), ")\n",
-                           "min < med < max = ", round(min(column.data,na.rm=TRUE),round.digits),
-                           " < ", round(median(column.data,na.rm=TRUE),round.digits),
-                           " < ", round(max(column.data,na.rm=TRUE),round.digits),"\n",
-                           "IQR (CV) = ", round(IQR(column.data,na.rm=TRUE),round.digits),
-                           " (", round(sd(column.data,na.rm=TRUE)/mean(column.data,na.rm=TRUE),round.digits),
-                           ")", collapse="",sep="")
+      if(identical(unique(column.data), as.numeric(NA))) {
+        output[i,4] <- "Vector contains only NA's"
+        output[i,5] <- ""
+      } else {
+        output[i,4] <- paste("mean (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
+                             " (",round(sd(column.data,na.rm=TRUE),round.digits), ")\n",
+                             "min < med < max = ", round(min(column.data,na.rm=TRUE),round.digits),
+                             " < ", round(median(column.data,na.rm=TRUE),round.digits),
+                             " < ", round(max(column.data,na.rm=TRUE),round.digits),"\n",
+                             "IQR (CV) = ", round(IQR(column.data,na.rm=TRUE),round.digits),
+                             " (", round(sd(column.data,na.rm=TRUE)/mean(column.data,na.rm=TRUE),round.digits),
+                             ")", collapse="",sep="")
 
-      if(length(unique(column.data)) <= max.distinct.values) {
-        fr <- table(column.data,useNA="no") # raw freqs
-        pct <- round(prop.table(fr)*100,1)
-        output[i,5] <- paste(round(as.numeric(names(fr)),round.digits),": ", fr," (",pct,"%)",sep="",collapse="\n")
-      }
-      else {
-        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
+        if(length(unique(column.data)) <= max.distinct.values) {
+          fr <- table(column.data,useNA="no") # raw freqs
+          pct <- round(prop.table(fr)*100,1)
+          output[i,5] <- paste(round(as.numeric(names(fr)),round.digits),": ", fr," (",pct,"%)",sep="",collapse="\n")
+        } else {
+          output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
+        }
       }
     }
 
@@ -111,25 +115,33 @@ dfSummary <- function(x, style="multiline", justify="left",
       else
         column.data.tmp <- column.data
 
-      if(length(unique(column.data.tmp)) <= max.distinct.values) {
+      if(identical(unique(column.data), as.character(NA))) {
+        output[i,4] <- "Vector contains only NA's"
+        output[i,5] <- ""
+      } else if(length(unique(column.data.tmp)) <= max.distinct.values) {
         fr <- table(column.data.tmp,useNA="no")
         pct <- round(prop.table(fr)*100,1)
         output[i,5] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
+      } else {
+        output[i,5] <- paste(as.character(length(unique(column.data.tmp))),"distinct val")
       }
-      else output[i,5] <- paste(as.character(length(unique(column.data.tmp))),"distinct val")
     }
 
-    # For data that does not fit in previous categories (numeric, character, factor)
+    # For data that does not fit in previous categories (neither numeric, character, or factor)
     else {
       output[i,4] <- ""
-      if(length(unique(column.data)) <= max.distinct.values) {
+      if(identical(as.logical(unique(column.data)), NA)) {
+        output[i,4] <- "Vector contains only NA's"
+        output[i,5] <- ""
+      } else if(length(unique(column.data)) <= max.distinct.values) {
         fr <- table(column.data,useNA="no")
         pct <- round(prop.table(fr)*100,1)
         output[i,5] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
+      } else {
+        output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
       }
-      else output[i,5] <- paste(as.character(length(unique(column.data))),"distinct val")
     }
 
     # Add valid data info
