@@ -4,7 +4,7 @@ print.summarytools <- function(x, method="pander", ...) {
 
   if(method=="pander") {
     info.table <- c()
-    for(a in c("df.name", "var.name", "var.label", "rows.subset")) {
+    for(a in c("df.name", "var.name", "var.label", "rows.subset", "weights.var")) {
       # other possible items are "date" and "col.names"
       if(a %in% names(attributes(x)))
         info.table <- append(info.table, paste(a, ":", paste(as.character(attr(x, a)),
@@ -17,6 +17,7 @@ print.summarytools <- function(x, method="pander", ...) {
    #info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
     info.table <- sub("^var\\.label:",  "Variable label: ", info.table)
     info.table <- sub("^rows\\.subset:","   Rows subset: ", info.table)
+    info.table <- sub("^weights\\.var:","   Weights var: ", info.table)
    #info.table <- sub("^date:",         "          Date: ", info.table)
     info.table <- paste(info.table, collapse="\n")
 
@@ -155,7 +156,11 @@ print.summarytools <- function(x, method="pander", ...) {
 
     # with method=="pander"
     if(method=="pander") {
-      cat("\nFrequencies\n\n")
+      if("weights" %in% names(attributes(x)))
+        cat("\nWeighted Frequencies\n\n")
+      else
+        cat("\nFrequencies\n\n")
+
       cat(info.table)
       pander.args <- append(attr(x, "pander.args"), list(x=quote(x)))
       cat(do.call(pander::pander, pander.args))
@@ -180,6 +185,8 @@ print.summarytools <- function(x, method="pander", ...) {
 
       stpath <- find.package("summarytools")
 
+      page.title <- ifelse("weights" %in% names(attributes(x)), "Weighted Frequencies", "Frequencies")
+
       html.content <- tags$html(
         tags$header(
           includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
@@ -187,12 +194,14 @@ print.summarytools <- function(x, method="pander", ...) {
         ),
         tags$body(
           div(class="container", #style="width:80%",
-              h3("Frequencies"),
+              h3(page.title),
               h2(attr(x,"var.name")),
               if("rows.subset" %in% names(attributes(x)))
                 p("Dataframe:",attr(x,"df.name")),
               if("rows.subset" %in% names(attributes(x)))
                 p("Rows subset:",attr(x,"rows.subset")),
+              if("weights.var" %in% names(attributes(x)))
+                p("Weights var:", attr(x, "weights.var")),
               br(),
               HTML(gsub("<td> ", "<td>", freq.table.html)), # To avoid initial space in cells
               p(notes),

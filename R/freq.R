@@ -1,6 +1,7 @@
 freq <- function(x, round.digits=2, style="simple", justify="right",
                  plain.ascii=TRUE, file=NA, append=FALSE,
-                 escape.pipe=FALSE, ...) {
+                 escape.pipe=FALSE, weights=NA,
+                 rescale.weights=TRUE, ...) {
 
   # If x is a data.frame with 1 column, convert it to vector
   if(!is.null(ncol(x)) && ncol(x)==1) {
@@ -20,10 +21,26 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   }
 
   # create a basic frequency table, always including the NA row
-  freq.table <- table(x, useNA = "always")
+  if(is.null(weights)) {
+    freq.table <- table(x, useNA = "always")
+    # Change the name of the NA item (last) to avoid potential problems when echoing to console
+    names(freq.table)[length(freq.table)] <- '<NA>'
 
-  # Change the name of the NA item (last) to avoid potential problems when echoing to console
-  names(freq.table)[length(freq.table)] <- '<NA>'
+  } else {
+
+    # Check that there are enough weights
+    if(length(weights)!=length(x)) {
+      stop("weights vector must be of same length as x")
+    } else if(isTRUE(rescale.weights)) {
+      wgts <- weights/sum(weights)*length(x)
+    } else {
+      wgts <- weights
+    }
+
+    freq.table <- xtabs(wgts ~ x)
+    freq.table["<NA>"] <- sum(wgts) - sum(xtabs(wgts ~ x))
+
+  }
 
   # calculate proportions (valid, i.e excluding NA's)
   P.valid <- prop.table(table(x, useNA="no")) * 100
@@ -42,7 +59,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
 
   # Build the actual frequency table
   output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
-  output <- rbind(output, c(length(x), rep(100,4)))
+  output <- rbind(output, c(colSums(output,na.rm = TRUE)[1:2], rep(100,3)))
   colnames(output) <- c("N","%Valid","%Cum.Valid","%Total","%Cum.Total")
   rownames(output) <- c(names(freq.table),"Total")
 
@@ -66,9 +83,15 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
                                       justify=justify, split.table=Inf, ...=...)
   attr(output, "n.obs") <- length(x)
+  attr(output, "weights.var") <- deparse(substitute(weights))
+  attr(output, "weights") <- wgts
 
   if(exists("msg.nan"))
     attr(output, "notes") <- msg.nan
+
+#   if(exists("wgts"))
+#     attr(output, "notes") <-
+#       append(attr(output, "notes"), "Weights were applied; see attributes of the returned object to see weights")
 
   if(!is.na(file)) {
 
@@ -85,7 +108,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
     message("Output successfully written to file ", normalizePath(file))
     return(invisible(output))
   }
-
+  #print(wgts[1:20])
   return(output)
 
 }
