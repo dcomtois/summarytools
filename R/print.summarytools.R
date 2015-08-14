@@ -1,5 +1,10 @@
 print.summarytools <- function(x, method="pander", ...) {
 
+  if("weights" %in% names(attributes(x)))
+    wgts <- 1
+  else
+    wgts <- 0
+
   # Build info.table and prepare the field  -----------------------------------
 
   if(method=="pander") {
@@ -12,13 +17,13 @@ print.summarytools <- function(x, method="pander", ...) {
                                                sep=""))
     }
 
-    info.table <- sub("^df\\.name:",    "Dataframe name: ", info.table)
-    info.table <- sub("^var\\.name:",   " Variable name: ", info.table)
-   #info.table <- sub("^col\\.names:",  "  Column names: ", info.table)
-    info.table <- sub("^var\\.label:",  "Variable label: ", info.table)
-    info.table <- sub("^rows\\.subset:","   Rows subset: ", info.table)
-    info.table <- sub("^weights\\.var:","   Weights var: ", info.table)
-   #info.table <- sub("^date:",         "          Date: ", info.table)
+    info.table <- sub("^df\\.name:",    "  Dataframe name: ", info.table)
+    info.table <- sub("^var\\.name:",   "   Variable name: ", info.table)
+   #info.table <- sub("^col\\.names:",  "    Column names: ", info.table)
+    info.table <- sub("^var\\.label:",  "  Variable label: ", info.table)
+    info.table <- sub("^rows\\.subset:","     Rows subset: ", info.table)
+    info.table <- sub("^weights\\.var:","Weights variable: ", info.table)
+   #info.table <- sub("^date:",         "            Date: ", info.table)
     info.table <- paste(info.table, collapse="\n")
 
    if(nchar(info.table)==0)
@@ -178,7 +183,7 @@ print.summarytools <- function(x, method="pander", ...) {
 
       freq.table.html <-
         xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
-                                            digits = c(0,0,rep(attr(x, "pander.args")$round,4))),
+                                            digits = c(0,wgts,rep(attr(x, "pander.args")$round,4))),
                              type = "html", print.results = FALSE,
                              sanitize.colnames.function = sanitize.colnames,
                              html.table.attributes = 'class="table table-striped table-bordered"')
