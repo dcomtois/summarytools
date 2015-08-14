@@ -1,6 +1,6 @@
 freq <- function(x, round.digits=2, style="simple", justify="right",
                  plain.ascii=TRUE, file=NA, append=FALSE,
-                 escape.pipe=FALSE, weights=NA,
+                 escape.pipe=FALSE, weights=NULL,
                  rescale.weights=TRUE, ...) {
 
   # If x is a data.frame with 1 column, convert it to vector
@@ -26,6 +26,17 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
     # Change the name of the NA item (last) to avoid potential problems when echoing to console
     names(freq.table)[length(freq.table)] <- '<NA>'
 
+    # calculate proportions (valid, i.e excluding NA's)
+    P.valid <- prop.table(table(x, useNA="no")) * 100
+
+    # Add '<NA>' item to the proportions; this assures
+    # proper length when cbind'ing later on
+    P.valid['<NA>'] <- NA
+
+    # calculate proportions (total, i.e. including NA's)
+    P.tot <- prop.table(table(x, useNA="always"))*100
+
+
   } else {
 
     # Check that there are enough weights
@@ -38,24 +49,18 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
     }
 
     freq.table <- xtabs(wgts ~ x)
+    P.valid <- prop.table(freq.table) * 100
+    P.valid["<NA>"] <- NA
     freq.table["<NA>"] <- sum(wgts) - sum(xtabs(wgts ~ x))
+    P.tot <- prop.table(freq.table) * 100
 
   }
-
-  # calculate proportions (valid, i.e excluding NA's)
-  P.valid <- prop.table(table(x, useNA="no")) * 100
-
-  # Add '<NA>' item to the proportions; this assures
-  # proper length when cbind'ing later on
-  P.valid['<NA>'] <- NA
 
   # Calculate cumulative proportions
   P.valid.cum <- cumsum(P.valid)
   P.valid.cum['<NA>'] <- NA
-
-  # calculate proportions (total, i.e. including NA's)
-  P.tot <- prop.table(table(x, useNA="always"))*100
   P.tot.cum <- cumsum(P.tot)
+
 
   # Build the actual frequency table
   output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
@@ -83,8 +88,11 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
                                       justify=justify, split.table=Inf, ...=...)
   attr(output, "n.obs") <- length(x)
-  attr(output, "weights.var") <- deparse(substitute(weights))
-  attr(output, "weights") <- wgts
+
+  if(exists("wgts")) {
+    attr(output, "weights") <- wgts
+    attr(output, "weights.var") <- deparse(substitute(weights))
+  }
 
   if(exists("msg.nan"))
     attr(output, "notes") <- msg.nan
