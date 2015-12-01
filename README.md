@@ -2,7 +2,7 @@
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
-- **frequency tables** with proportions, cumulative proportions and missing data information
+- **frequency tables** with proportions, cumulative proportions and missing data information. Newest version introduces weights (only through `install_github()`, read further!).
 - **descriptive statistics** with all common univariate statistics for numerical vectors
 - **dataframe summaries** that facilitate data cleaning and firsthand evaluation
 
@@ -321,13 +321,7 @@ $extensive.is
 $function.type
 [1] "primitive" "generic"  
 
-$generic.function.methods
-[1] c.bibentry*       c.Date            c.noquote         c.numeric_version c.person*         c.POSIXct        
-[7] c.POSIXlt         c.warnings       
 
-   Non-visible functions are asterisked
-   
-   
 > what.is(NaN)
 $properties
       property    value
@@ -345,12 +339,6 @@ $extensive.is
 $object.type
 [1] "base"
 
-$obj.class.methods
-$obj.class.methods$numeric
-[1] all.equal.numeric     as.data.frame.numeric as.Date.numeric       as.POSIXct.numeric   
-[5] as.POSIXlt.numeric    as.raster.numeric*   
-
-   Non-visible functions are asterisked
 ```
 
 
