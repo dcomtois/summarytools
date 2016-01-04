@@ -4,16 +4,17 @@
 \description{Summary of a dataframe consisting of: variable names and labels, factor levels, frequencies or numerical summary statistics, and valid/missing observations information.}
 \usage{
 dfSummary(x, style="multiline", justify="left",
-          max.distinct.values=10, trim.strings=FALSE,
-          max.string.width=15, round.digits=2,
-          split.cells=40, display.labels=FALSE,
-          file=NA, append=FALSE,
+          varnumbers=FALSE, max.distinct.values=10,
+          trim.strings=FALSE, max.string.width=15,
+          round.digits=2, split.cells=40,
+          display.labels=FALSE, file=NA, append=FALSE,
           escape.pipe=FALSE, ...)
 }
 \arguments{
   \item{x}{A dataframe.}
   \item{style}{The style to be used in pander table. Defaults to \dQuote{multiline}. Alternatively, use \dQuote{grid}; other styles (\dQuote{simple} and \dQuote{rmarkdown} are not supported.}
   \item{justify}{\pkg{pander} argument. Defaults to \dQuote{left}.}
+  \item{varnumbers}{Should a column with column number be included? Defaults to {FALSE}.}
   \item{max.distinct.values}{The maximum number of items to be displayed in the frequency cell. If variable has more distinct values, no frequency will be shown (only a message stating the number of distinct values).}
   \item{trim.strings}{For character variables, remove any white space at the beginning or end of the string. This will impact the frequencies so interpret the frequencies cell accordingly. Defaults to \code{FALSE}.}
   \item{max.string.width}{Limits the number of characters to display in the frequency tables. Defaults to \code{15}.}
@@ -32,8 +33,8 @@ dfSummary(x, style="multiline", justify="left",
 \seealso{\code{\link{summary.data.frame}}}
 \examples{
   \dontrun{view(dfSummary(iris))}
-  data(smokers)
-  dfSummary(smokers)
+  data(tobacco)
+  dfSummary(tobacco)
 }
 \keyword{ data.frame }
 \keyword{ summary }

@@ -1,0 +1,12 @@
+.Rprofile
+.Rhistory
+summarytools.Rproj
+.Rbuildignore
+.Rproj.user
+TODO.md
+COPYING
+README.rmd
+README.html
+prepare_archive.*
+RUsers*
+test_*.R
