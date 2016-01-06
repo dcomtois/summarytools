@@ -9,7 +9,7 @@
 It also aims at making R _a little easier_ to use for newcomers. With just a few lines of code, one can get a pretty good picture of the data at hand.
 
 ## Weighted statistics
-Newer version (0.5 and above) support weights for freq() and descr(). Use devtools::install_github() to get the latest version (see *How to install* for detailed instructions).
+Newer versions (0.5 and above) support weights for freq() and descr(). Use `devtools::install_github()` to get the latest version (see **How to install** for detailed instructions).
 
 ### An example
 
@@ -22,25 +22,25 @@ With just 2 lines of code, get a summary report of a dataframe, displayed direct
 
 ![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
 
-##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by _summarytools_ can be:
+##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by summarytools can be:
 
 - Displayed as plain text in the R console 
 - Written to plain text files / [markdown](http://daringfireball.net/projects/markdown/) text files 
 - Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser. 
 
 ##### Also, all functions:
-- Support `Hmisc` and `rapportools` _variable labels_. 
+- Support **Hmisc** and **rapportools** _variable labels_. 
 - Return table or dataframe objects for further manipulation if needed. 
 
 # How to install
 
-To install the **latest stable version** of `summarytools`, just type into your R console: 
+To install the **latest stable version** of **summarytools**, just type into your R console: 
 
 ```r
 > install.packages("summarytools")
 ```
 
-For the most **up-to-date version** that has all the latest features **but** might also contain bugs, I invite you to first install the `devtools` package and then install it through `install_github`:
+For the most **up-to-date version** that has all the latest features **but** might also contain bugs, I invite you to first install the **devtools** package and then install **summarytools** through `install_github()`:
 
 ```r
 > install.packages("devtools")
@@ -50,9 +50,9 @@ For the most **up-to-date version** that has all the latest features **but** mig
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
-## Frequency tables with <u>freq()</u>
+## Frequency tables with freq()
 
-`freq()` generates a table of frequencies with counts and percentages (including cumulative).
+The `freq()` function generates a table of frequencies with counts and percentages (including cumulative).
 
 ```r
 > library(summarytools)
@@ -80,8 +80,8 @@ Frequencies
 ```
 
 
-## Descriptive statistics with <u>descr()</u>
-`descr()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it just ignores non-numerical columns.
+## Descriptive statistics with descr()
+The `descr()` function generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it just ignores non-numerical columns.
 
 #### descr() on the iris dataframe
 
@@ -122,7 +122,7 @@ Observations
 
 ##### descr() has a "transpose" option
 
-If your eyes/brain prefer seeing things the other way around, just set `transpose` to `TRUE`:
+If your eyes/brain prefer seeing things the other way around, just use "transpose=TRUE":
 
 ```r
 > descr(iris, transpose=TRUE)
@@ -154,7 +154,7 @@ Observations
 
 ## Dataframe summaries
 
-`dfSummary()` generates a table containing variable information (class(es) and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values are also reported, and variable labels can optionnaly be included.
+The `dfSummary()` function generates a table containing variable information (class(es) and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values are also reported, and variable labels can optionnaly be included.
 
 
 ```r
@@ -162,29 +162,29 @@ Observations
 ```
 
 ```r
-----------------------------------------------------------------------------------------------------
-num   variable.name   properties    factor.levels.or.stats            frequencies        n.valid    
------ --------------- ------------- --------------------------------- ------------------ -----------
-1     Sepal.Length    type:double   mean (sd) = 5.88 (0.84)           35 distinct values 134 (89.3%)
-                      class:numeric min < med < max = 4.3 < 5.8 < 7.9                               
-                                    IQR (CV) = 1.38 (0.14)                                          
+----------------------------------------------------------------------------------------------
+variable.name   properties    factor.levels.or.stats            frequencies        n.valid    
+--------------- ------------- --------------------------------- ------------------ -----------
+Sepal.Length    type:double   mean (sd) = 5.88 (0.84)           35 distinct values 134 (89.3%)
+                class:numeric min < med < max = 4.3 < 5.8 < 7.9                               
+                              IQR (CV) = 1.38 (0.14)                                          
 
-2     Sepal.Width     type:double   mean (sd) = 3.05 (0.44)           23 distinct values 138 (92.0%)
-                      class:numeric min < med < max = 2 < 3 < 4.4                                   
-                                    IQR (CV) = 0.5 (0.14)                                           
+Sepal.Width     type:double   mean (sd) = 3.05 (0.44)           23 distinct values 138 (92.0%)
+                class:numeric min < med < max = 2 < 3 < 4.4                                   
+                              IQR (CV) = 0.5 (0.14)                                           
 
-3     Petal.Length    type:double   mean (sd) = 3.75 (1.76)           43 distinct values 134 (89.3%)
-                      class:numeric min < med < max = 1 < 4.4 < 6.9                                 
-                                    IQR (CV) = 3.5 (0.47)                                           
+Petal.Length    type:double   mean (sd) = 3.75 (1.76)           43 distinct values 134 (89.3%)
+                class:numeric min < med < max = 1 < 4.4 < 6.9                                 
+                              IQR (CV) = 3.5 (0.47)                                           
 
-4     Petal.Width     type:double   mean (sd) = 1.2 (0.77)            22 distinct values 134 (89.3%)
-                      class:numeric min < med < max = 0.1 < 1.3 < 2.5                               
-                                    IQR (CV) = 1.5 (0.64)                                           
+Petal.Width     type:double   mean (sd) = 1.2 (0.77)            22 distinct values 134 (89.3%)
+                class:numeric min < med < max = 0.1 < 1.3 < 2.5                               
+                              IQR (CV) = 1.5 (0.64)                                           
 
-5     Species         type:integer  1. setosa                         1: 46 (33.6%)      137 (91.3%)
-                      class:factor  2. versicolor                     2: 45 (32.8%)                 
-                                    3. virginica                      3: 46 (33.6%)                 
-----------------------------------------------------------------------------------------------------
+Species         type:integer  1. setosa                         1: 46 (33.6%)      137 (91.3%)
+                class:factor  2. versicolor                     2: 45 (32.8%)                 
+                              3. virginica                      3: 46 (33.6%)                 
+----------------------------------------------------------------------------------------------
 ```
 
 
@@ -192,7 +192,7 @@ num   variable.name   properties    factor.levels.or.stats            frequencie
 
 Thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package, all functions can printout [markdown](http://daringfireball.net/projects/markdown/); just use the option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are converted and displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can further convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_ and _.odt_, among others. 
 
-Here is an **example** of a markdown table, as processed by GitHub, using `freq()`:
+Here is an **example** of a markdown table, as processed by GitHub, using freq():
 
 
 ```r
@@ -230,7 +230,7 @@ Version 0.5 of _summarytools_ combines the strengths of the following packages a
 
 ### Walkthrough
 
-When you become familiar with the method, You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with _summarytools_.
+When you become familiar with the method, You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with **summarytools**.
 
 - First, generate a _summarytools_ object using one of `descr()`, `freq()` or `dfSummary()`:
 ```r
@@ -240,7 +240,7 @@ When you become familiar with the method, You can achieve this in just one opera
 - Next, use `print()`, specifying the `method` argument which can take one of the following values:
   + `method='browser'` This creates an _html_ report on-the-fly and makes it fire up in your system's default browser. The path to the report is returned.
   + `method='viewer'` Same as "browser", except the report opens up in _RStudio_'s Viewer pane (as demonstrated at the top of this page.)
-  + `method='pander'` This is the **default** value for `method` and will _not_ produce an _html_ file. It will rather direct output to the console.
+  + `method='pander'` This is the **default** value for `method` and will **not** produce an _html_ file. It will rather direct output to the console.
 
 ```r
 > print(my.freq.table, method="browser")
@@ -250,7 +250,7 @@ When you become familiar with the method, You can achieve this in just one opera
 
 ### An alternative way to produce html (or text) reports
 
-There is another way to generate output right at the first function call to `descr()`, `dfSummary()` or `freq()`; it is to supply the argument `file` to any of those. For instance, the two following function calls will generate a markdown report, and then an html report from `dfSummary()`:
+There is another way to generate output right at the first function call to `descr()`, `dfSummary()` or `freq()`; it is to supply the argument "file" to any of those. For instance, the two following function calls will generate a markdown report, and then an _html_ report from `dfSummary()`:
 
 ```r
 > dfSummary(iris, style="grid", file="~/iris_dfSummary.md", escape.pipes=TRUE)
@@ -259,11 +259,11 @@ Output successfully written to file D:\Documents\iris_dfSummary.md
 Output successfully written to file D:\Documents\iris_dfSummary.html
 ```
 
-**Note** `The escape.pipes=TRUE` argument makes it so that Pandoc, in converting to alternative formats, handles correctly multiline cells in dfSummary tables.
+**Note** The "escape.pipes=TRUE" argument makes it so that **Pandoc**, in converting to alternative formats, handles correctly multiline cells in `dfSummary()` reports.
 
 ## Customizing output
 
-Some attributes attached to _summarytools_ objects can be modified in order to change one of the elements displayed -- this is most usefull when generating _html_ reports. In particular, you may want to change `df.name`, `var.name` or `date`. To do so, you would use _R_'s `attr()` function in the following manner:
+Some attributes attached to **summarytools** objects can be modified in order to change one of the elements displayed -- this is most usefull when generating _html_ reports. In particular, you may want to change "df.name", "var.name" or "date". To do so, you would use _R_'s `attr()` function in the following manner:
 
 ```r
 > attr(my.freq.table, "df.name") <- "The IRIS Dataframe"
@@ -286,7 +286,7 @@ Variable: Species
 
 ## Tables customization
 
-When displaying _summarytools_ objects in the console (as opposed to generating _html_ reports), many other arguments can be specified so you get the format that you want. The most common are:
+When displaying **summarytools** objects in the console (as opposed to generating _html_ reports), many other arguments can be specified so you get the format that you want. The most common are:
 
 - `style` one of "simple" (default), "grid", "rmarkdown" and "multiline"
 - `justify` one of "left", "center", and "right"
@@ -296,7 +296,7 @@ When displaying _summarytools_ objects in the console (as opposed to generating 
 
 ## What else?
 
-### Function `what.is()` helps you figure out quickly what an object is by...
+### Function what.is() helps you figure out quickly what an object is by...
 
 - Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table;
 - Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.` -- see [this post on StackOverflow](http://stackoverflow.com/questions/8855589/a-comprehensive-survey-of-the-types-of-things-in-r-mode-and-class-and-type/26435993#26435993) for details;
@@ -346,4 +346,4 @@ $object.type
 
 Visit my professionnal site to learn more about what I do and services I offer: [www.statconseil.com](http://www.statconseil.com)
 
-The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) in case you find a bug.
+The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
