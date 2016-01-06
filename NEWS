@@ -1,6 +1,10 @@
+Version 0.5
+-----------
+Function descr() now also supports weights. Output from what.is() has been simplified. Other changes are transparent to the user (but make the internals more consistent across functions).
+
 Version 0.4
 -----------
-Added cat() functions to fully support knitr's document generation. Also added sample datasets so that users can experiment using summarytools functions with them.
+Added cat() functions to fully support knitr's document generation. Also added sample datasets so that users can experiment using summarytools functions with them. freq() now supports weights.
 
 Version 0.3
 -----------
