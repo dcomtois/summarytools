@@ -37,19 +37,12 @@ print.summarytools <- function(x, method="pander", ...) {
     # with method viewer / browser --------------------
     else {
 
-      # sanitize.colnames <- function(x) {
-      #   x <- gsub("\\.", " ", x)
-      #   x <- sub("\\%", "% ", x)
-      #   return(x)
-      # }
-
       freq.table.html <-
         xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
                                             digits = c(0,
                                                        attr(x, "pander.args")$round * as.numeric("weights" %in% names(attributes(x))),
                                                        rep(attr(x, "pander.args")$round, 4))),
                              type = "html", print.results = FALSE,
-                             #sanitize.colnames.function = sanitize.colnames,
                              html.table.attributes = 'class="table table-striped table-bordered"')
 
       stpath <- find.package("summarytools")

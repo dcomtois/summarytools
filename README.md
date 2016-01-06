@@ -2,11 +2,14 @@
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
-- **frequency tables** with proportions, cumulative proportions and missing data information. Newest version introduces weights (only through `install_github()`, read further!).
+- **frequency tables** with proportions, cumulative proportions and missing data information.
 - **descriptive statistics** with all common univariate statistics for numerical vectors
 - **dataframe summaries** that facilitate data cleaning and firsthand evaluation
 
 It also aims at making R _a little easier_ to use for newcomers. With just a few lines of code, one can get a pretty good picture of the data at hand.
+
+## Weighted statistics
+Newer version (0.5 and above) support weights for freq() and descr(). Use devtools::install_github() to get the latest version (see *How to install* for detailed instructions).
 
 ### An example
 
@@ -17,7 +20,7 @@ With just 2 lines of code, get a summary report of a dataframe, displayed direct
 > view(dfSummary(iris))
 ```
 
-![alt text](img/dfSummary_in_RStudio_Viewer.png)
+![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
 
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by _summarytools_ can be:
 
@@ -29,7 +32,7 @@ With just 2 lines of code, get a summary report of a dataframe, displayed direct
 - Support `Hmisc` and `rapportools` _variable labels_. 
 - Return table or dataframe objects for further manipulation if needed. 
 
-# Installation
+# How to install
 
 To install the **latest stable version** of `summarytools`, just type into your R console: 
 
@@ -61,10 +64,9 @@ You can also see the source code and documentation on the official R site [here]
 > rapportools::label(iris$Species) <- "The Species (duh)"
 > freq(iris$Species)
 
- Variable name: Species
-Dataframe name: iris
-Variable label: The Species (duh)
-          Date: 2014-11-30
+Dataframe: iris
+Variable: Species
+Label: The Species (duh)
           
 Frequencies
 
@@ -78,14 +80,15 @@ Frequencies
 ```
 
 
-## Descriptive Univariate Statistics with <u>descr()</u>
-`descr()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it will just ignore non-numerical columns.
+## Descriptive statistics with <u>descr()</u>
+`descr()` generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it just ignores non-numerical columns.
 
 #### descr() on the iris dataframe
 
 ```r
 > data(iris)
 > descr(iris)
+Non-numerical variable(s) ignored: Species 
 
 Descriptive Univariate Statistics
 
@@ -114,7 +117,6 @@ Observations
        <NA>    16 (10.67%)       12 (8%)    16 (10.67%)   16 (10.67%)
       Total            150           150            150           150
 
-Non-numerical variable(s) ignored: Species 
 ```
 
 
@@ -124,6 +126,7 @@ If your eyes/brain prefer seeing things the other way around, just set `transpos
 
 ```r
 > descr(iris, transpose=TRUE)
+Non-numerical variable(s) ignored: Species 
 
 Descriptive Statistics
 
@@ -146,13 +149,12 @@ Observations
       Petal.Length 134 (89.33%) 16 (10.67%)     150
        Petal.Width 134 (89.33%) 16 (10.67%)     150
 
-Non-numerical variable(s) ignored: Species 
 ```
 
 
 ## Dataframe summaries
 
-`dfSummary()` generates a table containing variable information (class and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values is also reported, and variable labels can optionnaly be included as well.
+`dfSummary()` generates a table containing variable information (class(es) and type), common statistics for numerical data and frequency counts (as long as there are not too many distinct values -- and yes, you can specify the limit in the function call). Number and proportion of valid (non-missing) values are also reported, and variable labels can optionnaly be included.
 
 
 ```r
@@ -220,7 +222,7 @@ To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane
 
 ## Create and view html reports
 
-Version 0.3 of _summarytools_ combines the strengths of the following packages and tools to generate basic html reports:
+Version 0.5 of _summarytools_ combines the strengths of the following packages and tools to generate basic html reports:
 
  - _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html)
  - The [xtable package](http://cran.r-project.org/web/packages/xtable/index.html)
@@ -269,9 +271,8 @@ Some attributes attached to _summarytools_ objects can be modified in order to c
 
 Frequencies
 
- Variable name: Species  
-Dataframe name: The IRIS Dataframe  
-          Date: 2014-11-30
+Dataframe: The IRIS Dataframe  
+Variable: Species  
 
                    N   %Valid   %Cum.Valid   %Total   %Cum.Total
 ---------------- --- -------- ------------ -------- ------------
@@ -340,7 +341,6 @@ $object.type
 [1] "base"
 
 ```
-
 
 ## Final notes
 

@@ -3,6 +3,7 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
   if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {
     stop("object.size(x) is greater than 10K; computing time might be long. Set argument ignore.size.warn to TRUE to force execution anyway")
   }
+
   # set the warn option to -1 to temporarily ignore warnings
   op <- options("warn")
   options(warn = -1)
