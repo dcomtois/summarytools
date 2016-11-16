@@ -22,6 +22,5 @@
   print(freq(iris$Species))
 }
 
-\keyword{ print }
+\keyword{ formatted output }
 \keyword{ RStudio viewer }
-\keyword{ html }

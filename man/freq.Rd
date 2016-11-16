@@ -25,9 +25,9 @@ freq(x, round.digits=2, style="simple", justify="right",
 \author{Dominic Comtois <dominic.comtois@gmail.com>}
 \references{\url{https://github.com/dcomtois/summarytools}}
 \examples{
-  data(tobacco)
-  freq(tobacco$gender)
-  freq(tobacco$gender, style="rmarkdown")
+data(tobacco)
+freq(tobacco$gender)
+freq(tobacco$gender, style="rmarkdown")
+with(tobacco, by(smoker, gender, freq))
 }
 \keyword{ frequencies }
-\keyword{ frequency }

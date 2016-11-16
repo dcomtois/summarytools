@@ -1,3 +1,7 @@
+Version 0.6
+-----------
+Few minor (invisible) changes from 0.5, but now on R-CRAN and not only on github.
+
 Version 0.5
 -----------
 Function descr() now also supports weights. Output from what.is() has been simplified. Other changes are transparent to the user (but make the internals more consistent across functions).

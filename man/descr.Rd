@@ -30,6 +30,8 @@ descr(x, na.rm=TRUE, style="simple", round.digits=2,
 data(exams)
 descr(exams)
 descr(exams, transpose=TRUE)
+data(tobacco)
+with(tobacco, by(age, smoker, descr))
 }
 \keyword{univariate}
 \keyword{descriptives}

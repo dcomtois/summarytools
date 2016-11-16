@@ -2,7 +2,7 @@
 \alias{tabagisme}
 \docType{data}
 \title{
-  tabagisme sample data (French)
+  tabagisme -- Sample Data (French)
 }
 \description{
 This is merely a sample dataframe to allow users to experiment with summarytools. An english equivalent called 'tobacco' is also available.
@@ -19,9 +19,5 @@ This is merely a sample dataframe to allow users to experiment with summarytools
     \item{\code{malade}}{Factor with 2 levels (diseased)}
 
   }
-}
-\examples{
-data(tabagisme)
-freq(tabagisme$sexe)
 }
 \keyword{datasets}

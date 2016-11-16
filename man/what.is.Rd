@@ -32,6 +32,3 @@
 \keyword{ class }
 \keyword{ type }
 \keyword{ mode }
-\keyword{ storage.mode }
-\keyword{ length }
-\keyword{ dim }

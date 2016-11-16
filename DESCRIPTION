@@ -1,9 +1,9 @@
 Package: summarytools
 Type: Package
-Title: Dataframe Summaries, Frequency Tables and Descreptive Stats with
+Title: Dataframe Summaries, Frequency Tables and Descriptive Stats with
     Weight Capabilities and Customizable Output
-Version: 0.5
-Date: 2016-01-04
+Version: 0.6
+Date: 2016-11-11
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Generates formatted summary tables for vectors and dataframes.
@@ -13,10 +13,10 @@ Description: Generates formatted summary tables for vectors and dataframes.
     for numerical data; 3) 'dfSummary' gives as much information
     as possible about a dataframe and its components in a clear,
     legible table. All three functions can either display plain text tables
-    in the console or write markdown, text or html files to disk. 'freq' and
+    in the console or write markdown, text or .html files to disk. 'freq' and
     'desc' can display weighted stats as well. An additional misc function,
     'what.is', extends base 'is' function, checking the object against all
-    'is' functions and gives a variety of other informations on the object.
+    'is' functions and gives a variety of other info on the object.
 Depends:
     htmltools
 Imports:
@@ -31,3 +31,4 @@ Imports:
     matrixStats
 License: GPL-2
 URL: https://github.com/dcomtois/summarytools
+BugReports: https://github.com/dcomtois/summarytools/issues

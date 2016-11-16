@@ -29,5 +29,4 @@
 }
 
 \keyword{ html }
-\keyword{ stylized output }
-\keyword{ formatted print }
+\keyword{ formatted output }

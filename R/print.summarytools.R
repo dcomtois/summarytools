@@ -182,18 +182,27 @@ print.summarytools <- function(x, method="pander", ...) {
     if(!is.null(getOption("viewer")))
       rstudioapi::viewer(htmlfile)
     else
-      utils::browseURL(htmlfile)
+      utils::browseURL(paste0("file://",htmlfile))
   }
 
   else if(method=="browser") {
-      utils::browseURL(htmlfile)
+      utils::browseURL(paste0("file://",htmlfile))
   }
 
   # return file path for browser/viewer ----------------------------------
-  if(method %in% c("browser", "viewer")) {
-    Sys.sleep(1)
-    unlink(htmlfile)
+  if(grepl("(B|brow(ser)?)|(V|view(er)?)", method)) {
+    message("Temporary html file created. To remove file from filesystem, please use file.remove(.Last.value)")
+    return(normalizePath(htmlfile))
   } else {
     return(invisible())
   }
 }
+
+#   # return file path for browser/viewer ----------------------------------
+#   if(method %in% c("browser", "viewer")) {
+#     Sys.sleep(1)
+#     unlink(htmlfile)
+#   } else {
+#     return(invisible())
+#   }
+# }
