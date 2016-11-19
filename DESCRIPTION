@@ -14,7 +14,7 @@ Description: Generates formatted summary tables for vectors and dataframes.
     as possible about a dataframe and its components in a clear,
     legible table. All three functions can either display plain text tables
     in the console or write markdown, text or .html files to disk. 'freq' and
-    'desc' can display weighted stats as well. An additional misc function,
+    'descr' can display weighted stats as well. An additional misc function,
     'what.is', extends base 'is' function, checking the object against all
     'is' functions and gives a variety of other info on the object.
 Depends:

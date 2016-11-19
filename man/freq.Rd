@@ -1,6 +1,6 @@
 \name{freq}
 \alias{freq}
-\title{Frequency Tables for Factors and other Discrete Data}
+\title{Frequency Tables for Factors and Other Discrete Data}
 \description{Displays weighted or unweighted frequencies including <NA> counts and proportions.}
 \usage{
 freq(x, round.digits=2, style="simple", justify="right",
@@ -22,12 +22,13 @@ freq(x, round.digits=2, style="simple", justify="right",
   \item{\dots}{Additional arguments passed to \pkg{pander}.}
 }
 \value{A frequency table of class \code{matrix} with attributes used by \pkg{summarytool}'s print method.}
-\author{Dominic Comtois <dominic.comtois@gmail.com>}
 \references{\url{https://github.com/dcomtois/summarytools}}
+\author{Dominic Comtois <dominic.comtois@gmail.com>}
 \examples{
 data(tobacco)
 freq(tobacco$gender)
 freq(tobacco$gender, style="rmarkdown")
 with(tobacco, by(smoker, gender, freq))
 }
-\keyword{ frequencies }
+\keyword{ univar }
+\keyword{ classes category }

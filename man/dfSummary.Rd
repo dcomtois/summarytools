@@ -28,15 +28,14 @@ dfSummary(x, style="multiline", justify="left",
 }
 
 \value{A dataframe containing as many rows as there are columns in \code{x}.}
-\author{Dominic Comtois <dominic.comtois@gmail.com>}
 \references{\url{https://github.com/dcomtois/summarytools}}
+\author{Dominic Comtois <dominic.comtois@gmail.com>}
 \seealso{\code{\link{summary.data.frame}}}
 \examples{
   \dontrun{view(dfSummary(iris))}
   data(tobacco)
   dfSummary(tobacco)
 }
-\keyword{ data.frame }
-\keyword{ summary }
-\keyword{ numerical summary }
-
+\keyword{ univar }
+\keyword{ attribute }
+\keyword{ classes }

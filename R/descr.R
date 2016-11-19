@@ -16,7 +16,7 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   }
 
   # Get into about x from parsing function
-  var.info <- .parse.arg(as.character(match.call()[2]))
+  var.info <- .parse_arg(as.character(match.call()[2]))
 
   # Identify and exclude non-numerical columns
   col.to.remove <- which(!sapply(x, is.numeric))

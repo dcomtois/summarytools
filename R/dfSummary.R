@@ -5,7 +5,7 @@ dfSummary <- function(x, style="multiline", justify="left", varnumbers=FALSE,
                       escape.pipe=FALSE, ...) {
 
   # use the parsing function to identify particularities such as row indexing
-  tmp.info <- .parse.arg(as.character(match.call()[2]))
+  tmp.info <- .parse_arg(as.character(match.call()[2]))
 
   if(!is.data.frame(x)) {
     x <- try(as.data.frame(x))

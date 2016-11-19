@@ -1,6 +1,6 @@
 \name{what.is}
 \alias{what.is}
-\title{Obtain most common information on data structures.}
+\title{Obtain Extended Properties of Objects.}
 \description{
   Takes any object as argument and returns (1) a dataframe with the class(es), type, mode and storage mode of the object as well as the dim, length and object.size; (2) a character vector of all the identifier functions (starting with "is.") that yield TRUE with the provided object; (3) a named character vector giving all attributes (for instance, "names", "row.names", "class", "dim", and so on) along with their lengths.}
 \usage{
@@ -27,8 +27,6 @@
   what.is(iris3)
 }
 
-\keyword{ attributes }
-\keyword{ is }
-\keyword{ class }
-\keyword{ type }
-\keyword{ mode }
+\keyword{ attribute }
+\keyword{ classes }
+\keyword{ utilities }
