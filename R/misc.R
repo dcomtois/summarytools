@@ -1,4 +1,10 @@
-# .parse.arg ####################################################################
+# Initialise vector containing paths to temporary html files generated when viewing in browser or
+# in RStudio visualisation pane. Will be updated whenever print.summarytools() / cleartmp() are called.
+.st.env <- new.env(parent = emptyenv())
+.st.env$tmpfiles <- c()
+
+
+# .parse_arg ####################################################################
 #
 # This function takes a string referring to existing data and parses it
 # to get information on the data structure.
@@ -7,7 +13,7 @@
 #
 # Example:
 #
-# > .parse.arg("iris[1:200,c(1,4)]")
+# > .parse_arg("iris[1:200,c(1,4)]")
 # $arg.str
 # [1] "iris[1:200,c(1,4)]"
 #
@@ -23,7 +29,7 @@
 # $var.names
 # [1] "Sepal.Length" "Petal.Width"
 
-.parse.arg <- function(arg.str) {
+.parse_arg <- function(arg.str) {
 
   # Check if arg.str is a string
   if(!is.character(arg.str))
@@ -167,25 +173,27 @@ view <- function(x, method="viewer", ...) {
 }
 
 
-# by.st <- function(data, INDICES, FUN, ..., simplify = TRUE) {
-#   dd <- as.data.frame(data)
-#   #if (length(dim(data)))
-#   #  by(dd, INDICES, FUN, ..., simplify = simplify)
-#   #else {
-#   if (!is.list(INDICES)) {
-#     IND <- vector("list", 1L)
-#     IND[[1L]] <- INDICES
-#     names(IND) <- deparse(substitute(INDICES))[1L]
-#   }
-#   else
-#     IND <- INDICES
-#   by.call = as.character(match.call()[2])
-#   # TODO: creer une colonne qui indique le groupe, qui peut etre forme d'une combinaison de facteurs
-#   #FUNx <- function(x) FUN(dd, by.call, ...)
-#   #nd <- nrow(dd)
-#   structure(eval(substitute(tapply(seq_len(nd), IND, FUNx, by.call=by.call,
-#                                    simplify = simplify)), dd),
-#             call = match.call(),
-#             class = c("summarytools", "by"))
-#   #}
-# }
+cleartmp <- function(what="last", silent=FALSE) {
+  if(length(.st.env$tmpfiles) == 0) {
+    message("No temporary files to delete.")
+  } else if(what == "all") {
+    nfiles <- 0
+    for(tmpfile in .st.env$tmpfiles) {
+      nfiles <- nfiles + 1
+      if(!silent)
+        message(paste('Deleting', tmpfile))
+      unlink(tmpfile)
+    }
+    .st.env$tmpfiles <- c()
+    if(!silent)
+      message(paste(nfiles, "file(s) deleted"))
+  } else if(what == "last") {
+    tmpfile <- tail(.st.env$tmpfiles, 1)
+    if(!silent)
+      message(paste('Deleting', tmpfile))
+    unlink(tmpfile)
+    .st.env$tmpfiles <- .st.env$tmpfiles[-length(.st.env$tmpfiles)]
+  } else {
+    message("The 'what' argument can only take values 'last' (default) or 'all'")
+  }
+}

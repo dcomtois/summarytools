@@ -33,5 +33,4 @@ descr(exams, transpose=TRUE)
 data(tobacco)
 with(tobacco, by(age, smoker, descr))
 }
-\keyword{univariate}
-\keyword{descriptives}
+\keyword{univar}

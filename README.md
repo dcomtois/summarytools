@@ -1,4 +1,4 @@
-# summarytools
+# summarytools -- UPDATE: 0.6 is ready!
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
