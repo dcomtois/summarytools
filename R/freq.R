@@ -12,6 +12,10 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
     stop("argument must be a vector or a factor; for dataframes, use lapply(x, freq)")
   }
 
+  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
+    stop("Append is not supported for html files. No file has been written.")
+  }
+  
   # Replace NaN's by NA's (This simplifies matters a lot!)
   if(NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
@@ -100,15 +104,15 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
     }
 
     else if(grepl("\\.html$",file)) {
-      if(isTRUE(append)) message("Append is not supported for html files. This parameter will be ignored")
-      file.copy(from=print(output, method="browser", open=FALSE), to=normalizePath(file, mustWork = FALSE))
+      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+      cleartmp(silent=TRUE)
     }
 
     else {
       capture.output(output, file = file, append = append)
     }
 
-    message("Output successfully written to file ", normalizePath(file))
+    message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
     return(invisible(output))
   }
 

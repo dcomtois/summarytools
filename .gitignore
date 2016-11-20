@@ -7,6 +7,4 @@ TODO.md
 COPYING
 README.rmd
 README.html
-prepare_archive.*
-RUsers*
-test_*.R
+inst/doc

@@ -1,22 +1,21 @@
 Package: summarytools
 Type: Package
 Title: Dataframe Summaries, Frequency Tables and Descriptive Stats with
-    Weight Capabilities and Customizable Output
+    Flexible Output Methods
 Version: 0.6
-Date: 2016-11-11
+Date: 2016-11-19
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
-Description: Generates formatted summary tables for vectors and dataframes.
-    Three summarizing functions: 1) 'freq' generates frequency tables
-    reporting counts and proportions (including cumulative); 2) 'descr'
-    gives common central tendency statistics and measures of dispersion
-    for numerical data; 3) 'dfSummary' gives as much information
-    as possible about a dataframe and its components in a clear,
-    legible table. All three functions can either display plain text tables
-    in the console or write markdown, text or .html files to disk. 'freq' and
-    'descr' can display weighted stats as well. An additional misc function,
-    'what.is', extends base 'is' function, checking the object against all
-    'is' functions and gives a variety of other info on the object.
+Description: summarytools is built around three key functions: 1) 'freq' generates
+    frequency tables reporting counts and proportions (including cumulative) for factors
+    and other discrete data; 2) 'descr' gives common central tendency statistics and 
+    measures of dispersion for numerical data; 3) 'dfSummary' gives as much information
+    as possible on a dataframe's columns in a legible table. 'freq' and
+    'descr' support weights, and all three functions support Hmisc or pander labels.  
+    A variety of formatting options are available (plain text, rmarkdown and HTML).
+    An additional misc function, 'what.is', displays all common properties of an object
+    (its class, type, mode, attributes, etc.) and extends the base 'is' function, 
+    checking the object against most 'is.' functions.
 Depends:
     htmltools
 Imports:
@@ -32,3 +31,6 @@ Imports:
 License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

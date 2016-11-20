@@ -1,6 +1,6 @@
 print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
 
-  if(!method %in% c("pander", "browser", "viewer"))
+  if(!method %in% c("pander", "browser", "viewer", "html_noshow"))
     stop("method must be one of 'pander', 'browser' or 'viewer'")
 
   # Build info.table and prepare the field  -----------------------------------
@@ -34,7 +34,7 @@ print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
       cat(do.call(pander::pander, pander.args))
     }
 
-    # with method viewer / browser --------------------
+    # with method viewer / browser / html_noshow --------------------
     else {
 
       freq.table.html <-
@@ -83,7 +83,7 @@ print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
       cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x=quote(x$observ)))))
     }
 
-    # With method viewer / browser --------------------------
+    # With method viewer / browser / html_noshow --------------------------
     else {
 
       descr.table.html <-
@@ -135,7 +135,7 @@ print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
       cat(do.call(pander::pander, pander.args))
     }
 
-    # with method viewer or browser ---------------
+    # with method viewer / browser / html_noshow ---------------
     else {
 
       dfSummary.html <-
@@ -171,7 +171,7 @@ print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
   }
 
   # Create and open the output html file --------------------------------------------
-  if(method!="pander") {
+  if(method %in% c('browser', 'viewer', 'html_noshow')) {
     htmlfile <- paste0(tempfile(),".html")
     html.content.utf8 <- iconv(as.character(html.content, from=getOption("encoding"), to="UTF-8"))
     capture.output(cat("<!DOCTYPE html>\n", html.content.utf8), file = htmlfile)
@@ -190,13 +190,13 @@ print.summarytools <- function(x, method="pander", silent=FALSE, ...) {
   # For method "browser", we don't use utils::browseURL() because of compatibility issues with RStudio
   if(method=="browser") {
     switch(Sys.info()[['sysname']],
-           Windows = {shell.exec(file = paste0("file:///",htmlfile))},
+           Windows = {shell.exec(file = paste0("file:///", htmlfile))},
            Linux   = {system(paste('/usr/bin/xdg-open', htmlfile), wait = FALSE, ignore.stdout = TRUE)},
            Darwin  = {system(paste('open', htmlfile), wait = FALSE, ignore.stderr = TRUE)})
   }
 
   # return file path and update tmpfiles vector when method = browser or viewer ----------------------
-  if(grepl("(B|brow(ser)?)|(V|view(er)?)", method)) {
+  if(method %in% c("browser", "viewer", "html_noshow")) {
     if(!silent)
       message(paste0("Temporary file created: ", htmlfile, '. To delete, use cleartmp().'))
     .st.env$tmpfiles <- c(.st.env$tmpfiles, htmlfile)

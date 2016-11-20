@@ -18,6 +18,10 @@ dfSummary <- function(x, style="multiline", justify="left", varnumbers=FALSE,
     tmp.info$df.name <- tmp.info$var.name
   }
 
+  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
+    stop("Append is not supported for html files. No file has been written.")
+  }  
+  
   # Initialise the output dataframe
   output <- data.frame(No.=numeric(),
                        Variable=character(),
@@ -168,12 +172,12 @@ dfSummary <- function(x, style="multiline", justify="left", varnumbers=FALSE,
       capture.output(cat(output.esc.pipes), file = file, append = append)
     }
     else if(grepl("\\.html$",file)) {
-      if(isTRUE(append)) message("Append is not supported for html files. This parameter will be ignored")
-      file.copy(from=print(output, method="browser",open=FALSE),to=normalizePath(file, mustWork = FALSE))
+      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+      cleartmp(silent=TRUE)
     } else {
       capture.output(output, file = file, append = append)
     }
-    message("Output successfully written to file ", normalizePath(file))
+    message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
     return(invisible(output))
   }
 
