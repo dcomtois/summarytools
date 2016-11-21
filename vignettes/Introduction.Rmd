@@ -75,8 +75,8 @@ descr(exams, style='rmarkdown')
 
 To rather see variables in rows and stats in columns, we use `transpose=TRUE`:
 
-```{r descr_md2, results='asis'}
-descr(exams, round.digits = 1, style = 'rmarkdown', transpose = TRUE)
+```{r descr_md2, eval=FALSE}
+descr(exams, style = 'rmarkdown', transpose = TRUE)
 ```
 
 
@@ -119,11 +119,12 @@ view(dfSummary(tobacco))                       # Same as line above -- view() is
 Using `file=` argument with an .html extension will simply generate an HTML document (without opening it).
 
 ```{r create_html, eval=FALSE}
-dfSummary(iris, file = "~/Documents/iris_summary.html")
+dfSummary(tobacco, file = "~/Documents/tobacco_summary.html")
 ```
 
 Resulting document:
-![dfSummary screen capture](/home/dominic/R/summarytools/vignettes/dfSummary.png)
+
+<img src="dfSummary.png" alt="dfSummary in HTML format" style="width: 680px;"/>
 
 #### Removing Temporary Files With `cleartmp()`
 When calling `print()` or `view()`, a temporary HTML file is created in R's temporary directory. To delete the last such file, use `cleartmp()`; to remove all temporary files generated in the Session, use `cleartmp('all')`.
@@ -137,9 +138,11 @@ When developing, we often use a number functions to obtain an object's propertie
 what.is(iris)
 ```
 
-## Staying up-to-date
+## Learn more and stay up-to-date
 
-To install the package in its development version, use `devtools::install_github(dcomtois/summarytools)`. Check the [project's page](https://github.com/dcomtois/summarytools) to submit feature requests or to signal problems you might encounter.
+Check the [project's page](https://github.com/dcomtois/summarytools) for more examples; from there you can also submit feature requests or signal problems you might encounter.
+
+To install the package in its development version, use `devtools::install_github(dcomtois/summarytools)`. 
 
 ### Final note
 The source of this document is an .Rmd file; _knitr_'s chunk option `results` has been set to `'asis'`, to make sure formatting is not coming from _knitr_ itself.
