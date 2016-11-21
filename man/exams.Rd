@@ -11,7 +11,7 @@ A sample dataframe to allow users to experiment with summarytools. A French equi
 \format{
   A data frame with 25 observations with the following 6 variables.
   \describe{
-    \item{\code{sex}}{a factor with levels "F" and "M"}
+    \item{\code{gender}}{a factor with levels "F" and "M"}
     \item{\code{english}}{a numeric vector}
     \item{\code{math}}{a numeric vector}
     \item{\code{geography}}{a numeric vector}

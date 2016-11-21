@@ -1,6 +1,7 @@
-descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
-                  justify="right", plain.ascii=TRUE,
-                  file=NA, append=FALSE, transpose=FALSE,
+
+descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", 
+                  justify="right", plain.ascii=TRUE, file=NA,
+                  append=FALSE, transpose=FALSE,
                   escape.pipe=FALSE, weights=NA,
                   rescale.weights=FALSE, ...) {
 
@@ -10,6 +11,11 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
   if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
     stop("Append is not supported for html files. No file has been written.")
   }  
+
+  # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
+  if(style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+    plain.ascii <- FALSE
+  }
   
   # convert x to data.frame
   if(is.array(x) || is.atomic(x))
@@ -84,7 +90,12 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                             rapportools::skewness(variable, na.rm=na.rm),
                             sqrt((6*n.valid*(n.valid-1))/((n.valid-2)*(n.valid+1)*(n.valid+3))),
                             rapportools::kurtosis(variable, na.rm=na.rm))
-
+      
+      # Insert valid/missing info into output dataframe
+      output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
+                             paste(n.NA, " (", p.NA, "%)",sep=""),
+                             paste(n.valid + n.NA, "(100%)"))
+      
     }
   }
 
@@ -130,15 +141,16 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
                               matrixStats::weightedMedian(variable, weights, refine = TRUE),
                               matrixStats::weightedMad(variable, weights, refine = TRUE),
                               variable.mean/variable.sd)
-
+        
+        # Insert valid/missing info into output dataframe
+        output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
+                               paste(n.NA, " (", p.NA, "%)",sep=""),
+                               paste(n.valid + n.NA, "(100%)"))
+        
       }
   }
 
   for(i in seq_along(x)) {
-    # Insert valid/missing info into output dataframe
-    output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
-                           paste(n.NA, " (", p.NA, "%)",sep=""),
-                           paste(n.valid + n.NA, "(100%)"))
 
     # Add row names (from col.names/var.name of the parse function)
     if("var.names" %in% names(var.info)) {
@@ -149,7 +161,7 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     }
     rownames(output$observ)[i] <- rownames(output$stats)[i]
   }
-
+  
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
@@ -158,6 +170,13 @@ descr <- function(x, na.rm=TRUE, style="simple", round.digits=2,
     output$observ <- t(output$observ)
   }
 
+  # Change <NA> for \<NA\> in markdown tables
+  if(style=="rmarkdown" && !plain.ascii && !transpose) {
+    rownames(output$observ)[2] <- "\\<NA\\>"
+  } else if(style=="rmarkdown" && !plain.ascii && transpose){
+    colnames(output$observ)[2] <- "\\<NA\\>"
+  }
+  
   if(!is.na(file)) {
 
     if(style=="grid" && escape.pipe) {

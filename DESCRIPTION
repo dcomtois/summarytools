@@ -3,7 +3,7 @@ Type: Package
 Title: Dataframe Summaries, Frequency Tables and Descriptive Stats with
     Flexible Output Methods
 Version: 0.6
-Date: 2016-11-19
+Date: 2016-11-21
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: summarytools is built around three key functions: 1) 'freq' generates
@@ -31,6 +31,7 @@ Imports:
 License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues
-Suggests: knitr,
+Suggests:
+    knitr,
     rmarkdown
 VignetteBuilder: knitr

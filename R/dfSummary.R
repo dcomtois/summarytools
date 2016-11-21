@@ -1,9 +1,9 @@
-dfSummary <- function(x, style="multiline", justify="left", varnumbers=FALSE,
-                      max.distinct.values=10, trim.strings=FALSE,
-                      max.string.width=15, round.digits=2, split.cells=40,
-                      display.labels=FALSE, file=NA, append=FALSE,
-                      escape.pipe=FALSE, ...) {
-
+dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
+                      plain.ascii=TRUE, file=NA, append=FALSE, 
+                      varnumbers=FALSE, display.labels=FALSE, max.distinct.values=10, 
+                      trim.strings=FALSE, max.string.width=15,
+                      split.cells=40, escape.pipe=FALSE, ...) {
+  
   # use the parsing function to identify particularities such as row indexing
   tmp.info <- .parse_arg(as.character(match.call()[2]))
 
@@ -163,8 +163,26 @@ dfSummary <- function(x, style="multiline", justify="left", varnumbers=FALSE,
   if(!varnumbers)
     output$No. <- NULL
 
+  # Escape symbols for words between <>'s in some columns to allow <NA> or factor levels such as
+  # <ABC> to be rendered correctly 
+  if(!plain.ascii) {
+    if(isTRUE(display.labels)) {
+      output$Label <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
+                           x = output$Label, perl=TRUE)
+    }
+    
+    output[["Stats or Factor Levels"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
+                                               x = output[["Stats or Factor Levels"]], perl=TRUE)
+    output[["Stats or Factor Levels"]] <- gsub(pattern = "\n", replacement = " \\\\ \n", 
+                                               x = output[["Stats or Factor Levels"]], perl=TRUE)
+    output$Frequencies <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
+                               x = output$Frequencies, perl=TRUE)
+    output$Frequencies <- gsub(pattern = "\n", replacement = " \\\\ \n", x = output$Frequencies, perl=TRUE)
+  }
+  
+  
+  
   # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
-
   if(!is.na(file)) {
 
     if(style=="grid" && escape.pipe) {

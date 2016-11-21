@@ -2,7 +2,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
                  plain.ascii=TRUE, file=NA, append=FALSE,
                  escape.pipe=FALSE, weights=NA,
                  rescale.weights=FALSE, ...) {
-
+  
   # If x is a data.frame with 1 column, extract this column as x
   if(!is.null(ncol(x)) && ncol(x)==1) {
     x <- x[[1]]
@@ -14,6 +14,11 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
 
   if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
     stop("Append is not supported for html files. No file has been written.")
+  }
+
+  # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
+  if(style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+    plain.ascii <- FALSE
   }
   
   # Replace NaN's by NA's (This simplifies matters a lot!)
@@ -66,14 +71,20 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   P.valid.cum <- cumsum(P.valid)
   P.valid.cum['<NA>'] <- NA
   P.tot.cum <- cumsum(P.tot)
-
+  
   # Combine the info to build the final frequency table
   output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
   output <- rbind(output, c(colSums(output,na.rm = TRUE)[1:2], rep(100,3)))
   colnames(output) <- c("N","% Valid","% Cum.Valid","% Total","% Cum.Total")
   rownames(output) <- c(names(freq.table),"Total")
 
-
+  # Escape < and > when used in pairs in rownames, so that <NA> or <ABCD> are rendered correctly 
+  # with style "rmarkdown" or "grid"
+  if(!plain.ascii && style %in% c('rmarkdown', 'grid')) {
+    row.names(output) <- gsub(pattern = '<',replacement = '\\<',x = row.names(output), fixed = TRUE)
+    row.names(output) <- gsub(pattern = '>',replacement = '\\>',x = row.names(output), fixed = TRUE)
+  }
+    
   # Update the output class and attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st.type") <- "freq"
