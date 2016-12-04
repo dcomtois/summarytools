@@ -1,5 +1,7 @@
 # summarytools version 0.6
 
+[![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
+
 NEWS: Version 0.6 has been submitted to cran and should be available very soon. The new version includes a vignette which complements the introduction on this page. You can find the vignette here: http://rpubs.com/dcomtois/summarytools_vignette
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
