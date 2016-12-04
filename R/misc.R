@@ -119,6 +119,11 @@
   # Split arg.str by "$" to identify structures
   output$data.struct <- strsplit(arg.str, "$", fixed = TRUE)[[1]]
 
+  # If data.struct has length one, check to see if it's an array, in which case
+  # convert it to data.frame
+  if(length(output$data.struct)==1 && is.array(x))
+    x <- as.data.frame(x)
+  
   if(is.data.frame(x)) {
     # If x is a dataframe, we can set the var.names
     output$var.names <- colnames(x)
@@ -168,8 +173,8 @@
 }
 
 # view is a wrapper function for print(x, "view"). Allows alternate "browser" or "pander" methods as well.
-view <- function(x, method="viewer", ...) {
-  print.summarytools(x, method=method, ...)
+view <- function(x, method="viewer", include.footer=TRUE, silent=FALSE, ...) {
+  print.summarytools(x, method=method, silent=silent, ...)
 }
 
 

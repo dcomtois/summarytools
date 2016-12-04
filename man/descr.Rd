@@ -3,11 +3,9 @@
 \title{Descriptive Univariate Statistics for Numerical Data}
 \description{Calculates mean, standard deviation, min, max, median, mad, IQR (non-weighted only), CV, skewness (non-weighted only), SE.skewness (non-weighted only), and kurtosis (non-weighted only)}
 \usage{
-descr(x, na.rm=TRUE, round.digits=2, style="simple", 
-     justify="right", plain.ascii=TRUE, file=NA,
-     append=FALSE, transpose=FALSE,
-     escape.pipe=FALSE, weights=NA,
-     rescale.weights=FALSE, ...)}
+descr(x, na.rm=TRUE, round.digits=2, style="simple", justify="right",
+      plain.ascii=TRUE, file=NA, append=FALSE, transpose=FALSE,
+      escape.pipe=FALSE, weights=NA, rescale.weights=FALSE, ...)}
 \arguments{
   \item{x}{Numerical vector.}
   \item{na.rm}{argument to be passed to statistical functions. Defaults to \code{TRUE}.}

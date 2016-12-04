@@ -24,7 +24,7 @@ freq(x, round.digits=2, style="simple", justify="right",
 \details{
 The default \code{plain.ascii=TRUE} option is there to make results appear clean in the console, but creates problems when generating markdown documents. For this reason, whenever \code{style='rmarkdown'}, the option is set to FALSE, unless \code{plain.ascii=TRUE} is stated explicitly. On the other hand, with \code{style='grid'}, if the intent is to produce markdown text, then the user needs to explicitly set \code{plain.ascii=FALSE}.
 }
-\value{A frequency table of class \code{matrix} with attributes used by \pkg{summarytool}'s print method.}
+\value{A frequency table of class \code{matrix} with attributes used by \pkg{summarytool}'s \emph{print} method.}
 \references{\url{https://github.com/dcomtois/summarytools}}
 \author{Dominic Comtois <dominic.comtois@gmail.com>}
 \examples{

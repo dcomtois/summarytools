@@ -1,9 +1,9 @@
 dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
-                      plain.ascii=TRUE, file=NA, append=FALSE, 
-                      varnumbers=FALSE, display.labels=FALSE, max.distinct.values=10, 
-                      trim.strings=FALSE, max.string.width=15,
+                      plain.ascii=TRUE, file=NA, append=FALSE, varnumbers=FALSE, 
+                      display.labels=any(sapply(X = x, FUN = Hmisc::label) != ""),
+                      max.distinct.values=10, trim.strings=FALSE, max.string.width=15,
                       split.cells=40, escape.pipe=FALSE, ...) {
-  
+
   # use the parsing function to identify particularities such as row indexing
   tmp.info <- .parse_arg(as.character(match.call()[2]))
 
@@ -22,17 +22,20 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     stop("Append is not supported for html files. No file has been written.")
   }  
   
+  if(style=="rmarkdown") {
+    message("'rmarkdown' style not supported - using 'multiline' instead.")
+    style <- 'multiline'
+  }
   # Initialise the output dataframe
   output <- data.frame(No.=numeric(),
                        Variable=character(),
                        Label=character(),
                        Properties=character(),
-                       "Stats or Factor Levels"=character(),
+                       Stats=character(),
                        Frequencies=character(),
-                       "N Valid"=numeric(),
+                       N.Valid=numeric(),
                        stringsAsFactors=FALSE,
                        check.names = FALSE)
-
 
   # Set output's attributes
   class(output) <- c("summarytools", class(output))
@@ -45,12 +48,13 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
      attr(output, "subset") <- tmp.info$subset
   attr(output, "pander.args") <- list(style=style, round=round.digits, justify=justify,
                                       split.table=Inf, keep.line.breaks=TRUE,
-                                      split.cells=split.cells, ...=...)
-
-  # iterate over dataframe columns
+                                      split.cells=split.cells, plain.ascii=plain.ascii, 
+                                      ...=...)
+  
+  # iterate over columns
   for(i in seq_len(ncol(x))) {
 
-    # extract data
+    # extract column data
     column.data <- x[[i]]
 
     # Add column number
@@ -70,18 +74,83 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
 
     # For factors, display a column of levels and a column of frequencies
     if(is.factor(column.data)) {
+      
       n.levels <- nlevels(column.data)
+      
       if(n.levels <= max.distinct.values) {
-        output[i,5] <- paste(1:n.levels,". ", levels(column.data), collapse="\n", sep="")
-
-        fr <- table(column.data,useNA="no") # raw freqs
-        pct <- round(prop.table(fr)*100,1) # percentage
+        output[i,5] <- paste0(1:n.levels,". ", levels(column.data), collapse="\n")
+        fr <- table(column.data, useNA="no")
+        pct <- round(prop.table(fr)*100, 1)
         names(fr) <- 1:n.levels
-        output[i,6] <- paste(names(fr),": ", fr," (",pct,"%)",sep="",collapse="\n")
-      } else {
-        output[i,5] <- paste(1:max.distinct.values,". ", levels(column.data)[1:max.distinct.values], collapse="\n", sep="")
-        output[i,5] <- paste(output[i,4], paste(n.levels - max.distinct.values, "Other levels (not displayed)"),sep="\n")
-        output[i,6] <- paste(as.character(length(unique(column.data))),"distinct val")
+        output[i,6] <- paste0(names(fr),": ", fr, " (", pct, "%)", collapse="\n")
+      } 
+      
+      # more levels than allowed by max.distinct.values
+      else {
+        output[i,5] <- paste0(1:max.distinct.values,". ", 
+                              levels(column.data)[1:max.distinct.values], 
+                              collapse="\n")
+        output[i,5] <- paste(output[i,5], 
+                             paste("...", n.levels - max.distinct.values, "other levels"),
+                             sep="\n")
+        fr <- table(column.data, useNA="no")
+        pct <- round(prop.table(fr)*100, 1)
+        output[i,6] <- paste(paste0(1:max.distinct.values, ": ", fr[1:max.distinct.values],
+                                    " (", pct[1:max.distinct.values], "%)", collapse="\n"), 
+                             paste0("others: ", tmp.sum <- sum(fr[(max.distinct.values+1):length(fr)]), 
+                                    " (", round(tmp.sum/length(column.data)*100,1), "%)"), 
+                             sep="\n")
+      }
+    }
+
+    # For character data, display frequencies whenever possible
+    else if(is.character(column.data)) {
+      trimmed <- sub(pattern="\\A\\s*(.+?)\\s*\\z", replacement="\\1", x=column.data, perl=TRUE)
+      
+      if(trim.strings)
+        column.data <- trimmed
+
+      # Report if column contains only empty strings
+      if(identical(unique(trimmed),"")) {
+        output[i,5] <- "Column contains only empty strings"
+        output[i,6] <- ""
+      }
+        
+      # Report if column contains only NA's      
+      else if(identical(unique(column.data), as.character(NA))) {
+        output[i,5] <- "Column contains only NA's"
+        output[i,6] <- ""
+      }
+      
+      else {
+        # Generate a frequency table
+        fr <- table(column.data, useNA = "no")
+
+        # Report all frequencies when allowed by max.distinct.values        
+        if(length(fr) <= max.distinct.values) {
+          output[i,5] <- paste0(1:length(fr),". ", dQuote(names(fr)), collapse="\n")
+          pct <- round(prop.table(fr)*100,1)
+          output[i,6] <- paste0(1:length(fr),": ", fr," (", pct, "%)", collapse="\n")
+        } 
+        
+        # Report most common strings otherwise
+        else {
+          fr <- sort(fr, decreasing = TRUE)
+          output[i,5] <- paste("Most frequent:\n", 
+                               paste0(1:max.distinct.values,". ", 
+                                      dQuote(substr(names(fr), 1, max.string.width)[1:max.distinct.values]),
+                                      collapse="\n"),
+                               paste("\n...", length(fr)-max.distinct.values, "other values"))
+          pct <- round(prop.table(fr)*100,1)
+          output[i,6] <- paste("-",
+                               paste0(1:max.distinct.values,": ",
+                                     fr[1:max.distinct.values],
+                                     " (", pct[1:max.distinct.values], "%)",
+                                     collapse="\n"),
+                               paste0("others: ", tmp.sum <- sum(fr[(max.distinct.values+1):length(fr)]), 
+                                      " (", round(tmp.sum/length(column.data)*100,1), "%)"),
+                               sep="\n")
+        }
       }
     }
 
@@ -101,38 +170,17 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                              ")", collapse="",sep="")
 
         if(length(unique(column.data)) <= max.distinct.values) {
-          fr <- table(column.data,useNA="no") # raw freqs
-          pct <- round(prop.table(fr)*100,1)
-          output[i,6] <- paste(round(as.numeric(names(fr)),round.digits),": ", fr," (",pct,"%)",sep="",collapse="\n")
+          fr <- table(column.data, useNA="no")
+          pct <- round(prop.table(fr)*100, 1)
+          output[i,6] <- paste(round(as.numeric(names(fr)), round.digits), ": ", fr,
+                               " (",pct,"%)",sep="",collapse="\n")
         } else {
-          output[i,6] <- paste(as.character(length(unique(column.data))),"distinct val")
+          output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
         }
       }
     }
 
-    # For text data, skip a column and display a column of frequencies
-    else if(is.character(column.data)) {
-      output[i,5] <- ""
-
-      if(trim.strings)
-        column.data.tmp <- sub(pattern="\\A\\s*(.+?)\\s*\\z", replacement="\\1", x=column.data, perl=TRUE)
-      else
-        column.data.tmp <- column.data
-
-      if(identical(unique(column.data), as.character(NA))) {
-        output[i,5] <- "Vector contains only NA's"
-        output[i,6] <- ""
-      } else if(length(unique(column.data.tmp)) <= max.distinct.values) {
-        fr <- table(column.data.tmp,useNA="no")
-        pct <- round(prop.table(fr)*100,1)
-        output[i,6] <- paste(substr(names(fr),1,max.string.width),": ",
-                             fr," (",pct,"%)",sep="",collapse="\n")
-      } else {
-        output[i,6] <- paste(as.character(length(unique(column.data.tmp))),"distinct val")
-      }
-    }
-
-    # For data that does not fit in previous categories (neither numeric, character, or factor)
+    # Data does not fit in previous categories (neither numeric, character, or factor)
     else {
       output[i,5] <- ""
       if(identical(as.logical(unique(column.data)), NA)) {
@@ -144,7 +192,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
         output[i,6] <- paste(substr(names(fr),1,max.string.width),": ",
                              fr," (",pct,"%)",sep="",collapse="\n")
       } else {
-        output[i,6] <- paste(as.character(length(unique(column.data))),"distinct val")
+        output[i,6] <- paste(as.character(length(unique(column.data))),"distinct values")
       }
     }
 
@@ -157,12 +205,6 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                          sep="", collapse = "\n")
   }
 
-  if(!display.labels)
-    output$Label <- NULL
-
-  if(!varnumbers)
-    output$No. <- NULL
-
   # Escape symbols for words between <>'s in some columns to allow <NA> or factor levels such as
   # <ABC> to be rendered correctly 
   if(!plain.ascii) {
@@ -171,15 +213,23 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                            x = output$Label, perl=TRUE)
     }
     
-    output[["Stats or Factor Levels"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
-                                               x = output[["Stats or Factor Levels"]], perl=TRUE)
-    output[["Stats or Factor Levels"]] <- gsub(pattern = "\n", replacement = " \\\\ \n", 
-                                               x = output[["Stats or Factor Levels"]], perl=TRUE)
+    output$Stats <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
+                         x = output$Stats, perl=TRUE)
+    output$Stats <- gsub(pattern = "\n", replacement = " \\\\ \n", 
+                         x = output$Stats, perl=TRUE)
     output$Frequencies <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>", 
                                x = output$Frequencies, perl=TRUE)
     output$Frequencies <- gsub(pattern = "\n", replacement = " \\\\ \n", x = output$Frequencies, perl=TRUE)
   }
   
+  names(output) <- c("No.", "Variable", "Label", "Properties", "Stats / Values",
+                     "Freqs, % Valid", "N Valid")
+  
+  if(!display.labels)
+    output$Label <- NULL
+
+  if(!varnumbers)
+    output$No. <- NULL
   
   
   # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)

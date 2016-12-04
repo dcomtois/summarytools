@@ -142,7 +142,7 @@ what.is(iris)
 
 Check the [project's page](https://github.com/dcomtois/summarytools) for more examples; from there you can also submit feature requests or signal problems you might encounter.
 
-To install the package in its development version, use `devtools::install_github(dcomtois/summarytools)`. 
+To install the package in its development version, use `devtools::install_github('dcomtois/summarytools')`. 
 
 ### Final note
 The source of this document is an .Rmd file; _knitr_'s chunk option `results` has been set to `'asis'`, to make sure formatting is not coming from _knitr_ itself.

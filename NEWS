@@ -1,6 +1,10 @@
+Version 0.65
+------------
+Fixed a problem with dfSummary() which arose when number of factors exceeded max.distinct.values. Improved the way dfSummary() reports frequencies on character variables. Fixed problems with outputs when using weights. Added hashtags to table headings to improve markdown integration. Added an option to generic print() function to suppress the footer in HTML outputs. 
+
 Version 0.6
 -----------
-Added Introduction vignette. Fixed markdown output that would not render strings such as <NA>. Improved multiline tables linefeeds. Introduced cleartmp() function to delete temporary html files used with print method "viewer" or "browser". Modifications to sample datasets. Bootstrap stylesheets now only include table-specific elements. Changed the way method="browser" sends file path to browser for better cross-platform compatibility. Improved results when using by(). Since version 0.5 was only made available through devtools::install_github(), please see changes for that version if updating from CRAN.
+Added Introduction vignette. Fixed markdown output that would not render strings such as <NA>. Improved multiline tables linefeeds. Introduced cleartmp() function to delete temporary HTML files used with print method "viewer" or "browser". Modifications to sample datasets. Bootstrap stylesheets now only include table-specific elements. Changed the way method="browser" sends file path to browser for better cross-platform compatibility. Improved results when using by(). Since version 0.5 was only made available through devtools::install_github(), please see changes for that version if updating from CRAN.
 
 Version 0.5
 -----------
@@ -14,7 +18,7 @@ Version 0.3
 -----------
 Another round of major changes.
 
-  - Bringing in html table built with htmltools and viewable in RStudio's Viewer
+  - Bringing in HTML table built with htmltools and viewable in RStudio's Viewer
   - function desc is renamed descr (mainly to avoid conflict with plyr's desc)
   - argument "echo" is deprecated; either display with pander or use as.table()
   - Returned objects are now of class "summarytools" and have several attributes that are used by print.summarytools
@@ -22,7 +26,7 @@ Another round of major changes.
   	* date : date at which the function was called
   	* var.name & var.label : for 'freq', and also 'desc' when a single vector is used.
   	* pander.args : 'style', 'justify', 'plain.ascii', 'split.table'
-  - print.summarytools has argument "method" that can be one of "pander", "viewer", or "browser", the last two being used to display an html version of the output, using bootstrap's css (getbootstrap.com)
+  - print.summarytools has argument "method" that can be one of "pander", "viewer", or "browser", the last two being used to display an HTML version of the output, using bootstrap's css (getbootstrap.com)
   - rows indexing is "detected" and reported (function .parse.arg.x takes care of this)
   - rounding now only occurs at the printing stage
 

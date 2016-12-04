@@ -1,9 +1,6 @@
-
-descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", 
-                  justify="right", plain.ascii=TRUE, file=NA,
-                  append=FALSE, transpose=FALSE,
-                  escape.pipe=FALSE, weights=NA,
-                  rescale.weights=FALSE, ...) {
+descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right", 
+                  plain.ascii=TRUE, file=NA, append=FALSE, transpose=FALSE,
+                  escape.pipe=FALSE, weights=NA, rescale.weights=FALSE, ...) {
 
   if(is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
@@ -17,10 +14,9 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple",
     plain.ascii <- FALSE
   }
   
-  # convert x to data.frame
-  if(is.array(x) || is.atomic(x))
-    x <- data.frame(x)
-
+  # convert x to data.frame (useful is objet is a tible or data.table)
+  x <- as.data.frame(x)
+  
   if(!is.data.frame(x)) {
     stop("x must be a data frame or a single vector, and attempted conversion failed")
   }
@@ -32,8 +28,8 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple",
   col.to.remove <- which(!sapply(x, is.numeric))
 
   if(length(col.to.remove) > 0) {
-    message("Non-numerical variable(s) ignored: ",
-            paste(colnames(x)[col.to.remove], collapse=", "))
+    ignored <- paste(colnames(x)[col.to.remove], collapse=", ")
+    # message("Non-numerical variable(s) ignored: ", ignored)
     x <- x[-col.to.remove]
     var.info$var.names <- var.info$var.names[-col.to.remove]
   }
@@ -54,12 +50,13 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple",
                                 Label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
                                                Hmisc::label(x), NA),
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
-                                Weights = ifelse(!is.na(weights), deparse(substitute(weights)), NA))
-
+                                Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
+  if(exists("ignored"))
+     attr(output, "ignored") <- ignored
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
                                       justify=justify, split.table=Inf, ...=...)
 
-  if(is.na(weights)) {
+  if(identical(weights, NA)) {
 
     # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
     output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Max=numeric(),
@@ -116,7 +113,7 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple",
         weights <- weights / sum(weights) * nrow(x)
 
       # Add weights to output object attributes
-      attr(output, "weights") <- weights
+      # attr(output, "weights") <- weights
 
       for(i in seq_along(x)) {
         variable <- as.numeric(x[,i])
@@ -183,7 +180,8 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple",
       output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
       capture.output(cat(output.esc.pipes), file = file, append = append)
     } else if(grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+      file.copy(from=print(output, method="html_noshow", silent=TRUE), 
+                to=normalizePath(file), overwrite = TRUE)
       cleartmp(silent=TRUE)
     } else {
       capture.output(output, file = file, append = append)

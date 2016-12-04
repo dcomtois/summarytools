@@ -1,7 +1,6 @@
 freq <- function(x, round.digits=2, style="simple", justify="right",
-                 plain.ascii=TRUE, file=NA, append=FALSE,
-                 escape.pipe=FALSE, weights=NA,
-                 rescale.weights=FALSE, ...) {
+                 plain.ascii=TRUE, file=NA, append=FALSE, escape.pipe=FALSE, 
+                 weights=NA, rescale.weights=FALSE, ...) {
   
   # If x is a data.frame with 1 column, extract this column as x
   if(!is.null(ncol(x)) && ncol(x)==1) {
@@ -28,7 +27,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   }
 
   # create a basic frequency table, always including the NA row
-  if(is.na(weights)) {
+  if(identical(NA, weights)) {
     freq.table <- table(x, useNA = "always")
     # Change the name of the NA item (last) to avoid potential problems when echoing to console
     names(freq.table)[length(freq.table)] <- '<NA>'
@@ -96,7 +95,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
                                 Variable = ifelse("var.names" %in% names(var.info), var.info$var.names, NA),
                                 Label = ifelse(Hmisc::label(x) != "", Hmisc::label(x), NA),
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
-                                Weights = ifelse(!is.na(weights), deparse(substitute(weights)), NA))
+                                Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
 
   attr(output, "pander.args") <- list(style = style,
                                       round = round.digits,
