@@ -12,11 +12,11 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
     else
       paste(paste0(rep("#",n), collapse = ""), string)
   }
-
+  
   if(attr(x, "st.type") %in% c("freq", "descr")) {
     var.info <- attr(x, "var.info")
     var.info <- var.info[!is.na(var.info)]
-
+    
     if(method=="pander")
       var.info <- paste(addHash(names(var.info)), var.info, sep=": ", collapse="\n")
     else
@@ -41,10 +41,8 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
     if(method == "pander") {
       cat("\n", addHash(report.title, 3), "\n\n", var.info, sep = "")
       cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = quote(x)))))
-    }
-
-    # method = viewer / browser / html_noshow ----------------------------------
-    else {
+    } else {
+      # method = viewer / browser / html_noshow ------------------------------
       freq.table.html <-
         xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
                                             digits = c(0,

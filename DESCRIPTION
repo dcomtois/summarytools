@@ -2,7 +2,7 @@ Package: summarytools
 Type: Package
 Title: Dataframe Summaries, Frequency Tables and Descriptive Stats with
     Various Output Formats
-Version: 0.65
+Version: 0.6.5
 Date: 2016-12-04
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>

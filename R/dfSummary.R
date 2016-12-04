@@ -112,13 +112,13 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
 
       # Report if column contains only empty strings
       if(identical(unique(trimmed),"")) {
-        output[i,5] <- "Column contains only empty strings"
+        output[i,5] <- "Contains only empty strings"
         output[i,6] <- ""
       }
         
       # Report if column contains only NA's      
       else if(identical(unique(column.data), as.character(NA))) {
-        output[i,5] <- "Column contains only NA's"
+        output[i,5] <- "Contains only NA's"
         output[i,6] <- ""
       }
       
@@ -157,7 +157,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     # For numeric data, display a column of descriptive stats and a column of frequencies
     else if(is.numeric(column.data)) {
       if(identical(unique(column.data), as.numeric(NA))) {
-        output[i,5] <- "Vector contains only NA's"
+        output[i,5] <- "Contains only NA's"
         output[i,6] <- ""
       } else {
         output[i,5] <- paste("mean (sd) = ",round(mean(column.data,na.rm=TRUE),round.digits),
@@ -184,7 +184,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     else {
       output[i,5] <- ""
       if(identical(as.logical(unique(column.data)), NA)) {
-        output[i,5] <- "Vector contains only NA's"
+        output[i,5] <- "Contains only NA's"
         output[i,6] <- ""
       } else if(length(unique(column.data)) <= max.distinct.values) {
         fr <- table(column.data,useNA="no")

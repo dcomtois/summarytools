@@ -1,6 +1,6 @@
-Version 0.65
+Version 0.6.5
 ------------
-Fixed a problem with dfSummary() which arose when number of factors exceeded max.distinct.values. Improved the way dfSummary() reports frequencies on character variables. Fixed problems with outputs when using weights. Added hashtags to table headings to improve markdown integration. Added an option to generic print() function to suppress the footer in HTML outputs. 
+Fixed a problem with dfSummary() which arose when number of factors exceeded max.distinct.values. Improved the way dfSummary() reports frequencies on character variables. Fixed problems with outputs when using weights. Added hashtags to table headings to improve markdown integration. Added an option to generic print() function to suppress the footer in HTML outputs.
 
 Version 0.6
 -----------
