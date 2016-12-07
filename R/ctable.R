@@ -33,10 +33,21 @@ ctable <- function(x, y, round.digits=2, style="simple", justify="right", prop =
   
   if(isTRUE(totals)) {
     freq.table <- addmargins(freq.table)
-    if(!is.null(proportions)) 
-      proportions <- addmargins(proportions) 
+    rownames(freq.table)[nrow(freq.table)] <- "Total"
+    colnames(freq.table)[ncol(freq.table)] <- "Total"
+    if(!is.null(proportions)) {
+      if(prop=="t") {
+        proportions <- addmargins(proportions)
+      } else if(prop=="r") {
+        proportions <- addmargins(proportions, 2)
+        proportions <- rbind(proportions, NA)
+      } else if(prop=="c") {
+        proportions <- addmargins(proportions, 1)
+        proportions <- cbind(proportions, NA)
+      }
+    }
   }
-  
+    
   # Change the name of NA items to avoid potential problems when echoing to console
   rownames(freq.table)[is.na(rownames(freq.table))] <- "<NA>"
   colnames(freq.table)[is.na(colnames(freq.table))] <- "<NA>"
@@ -76,27 +87,30 @@ ctable <- function(x, y, round.digits=2, style="simple", justify="right", prop =
 
 #pander::pander(output, style=style, plain.ascii=plain.ascii) 
 
-(ct <- ctable(tobacco$gender, tobacco$smoker))
-(p <- prop.table(ct))
+#(ct <- ctable(tobacco$gender, tobacco$smoker))
+#(p <- prop.table(ct))
 #paste(ct, p)
-(ct[1,1] <- paste0(ct[1,1], " (", round(p[1,1]*100, 2), "%)"))
+#(ct[1,1] <- paste0(ct[1,1], " (", round(p[1,1]*100, 2), "%)"))
 #
+#tmp <- paste(ct$ctable,
+#             sprintf(paste0("(%.", round.digits, "f%%)"), ct$prop*100))
+#(tmp2 <- matrix(data = tmp, nrow = nrow(ct$ctable), dimnames = dimnames(ct$ctable)))
 
-ff <- function(x) {
-  print(quote(x))
-  #print(deparse(x))
-  print(substitute(x))
-}
+#ff <- function(x) {
+#  print(quote(x))
+#  #print(deparse(x))
+#  print(substitute(x))
+#}
 
-ff(tobacco$gender)
+#ff(tobacco$gender)
 
-CrossTable()
-x <- tobacco$gender
-y <- tobacco$smoker
+#CrossTable()
+#x <- tobacco$gender
+#y <- tobacco$smoker
 
-ft <- table(x,y)
-labels(ft)
-names(dimnames(ft)) <- c("Gender","Smoker")
+#ft <- table(x,y)
+#labels(ft)
+#names(dimnames(ft)) <- c("Gender","Smoker")
 
 
 # Paste raw freqs with 

@@ -72,6 +72,60 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
     }
   }
 
+  # printing ctable objects -----------------------------------------------------
+  if(attr(x, "st.type") == "ctable") {
+    report.title <- "Cross-Tabulation"
+    
+    if(!is.na(attr(x, "prop.type"))) {
+      temp_table <- paste0(x$ctable,
+                           sub(pattern = "\\((\\d[\\.\\%])", replacement = "( \\1", 
+                               x = sprintf(paste0(" (%.", attr(x, "round.digits"), "f%%)"), x$prop*100)))
+      temp_table <- sub(pattern = "(NA%)", replacement = "(-----)", x = temp_table, fixed = TRUE)
+      temp_table <- matrix(data = temp_table, nrow = nrow(x$ctable), dimnames = dimnames(x$ctable))
+    } else {
+      temp_table <- x$ctable
+    }
+    
+    #formatC(as.vector(x$prop*100), digits = attr(x, "round.digits"), 
+                                   #width = 3 + attr(x, "round.digits"), format = "f", flag = "0"),
+                           #"%)")
+    
+    if(method == "pander") {
+      cat("\n", addHash(report.title, 3), "\n\n", 
+          paste(names(dimnames(x$ctable)), collapse = " X "), 
+          sep = "")
+      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = temp_table))))
+    } else {
+      # method = viewer / browser / html_noshow ------------------------------
+      freq.table.html <-
+        xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
+                                            digits = c(0,
+                                                       attr(x, "pander.args")$round * as.numeric("weights" %in% names(attributes(x))),
+                                                       rep(attr(x, "pander.args")$round, 4))),
+                             type = "html", print.results = FALSE,
+                             html.table.attributes = 'class="table table-striped table-bordered"')
+
+      stpath <- find.package("summarytools")
+
+      html.content <- tags$html(
+        HTML(text = "<head>"),
+        tags$meta(charset="UTF-8"),
+        includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
+        includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/")),
+        HTML(text = "</head>"),
+        tags$body(
+          div(class="container", # style="width:80%",
+              h2(report.title),
+              apply(var.info, 1, h4),
+              br(),
+              HTML(gsub("<td> ", "<td>", freq.table.html)), # To avoid initial space in cells
+              HTML(text = htmlfooter)
+          )
+        )
+      )
+    }
+  }
+  
   # Printing descr objects ----------------------------------------------------
   if(attr(x, "st.type") == "descr") {
 
