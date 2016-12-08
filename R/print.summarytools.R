@@ -77,13 +77,13 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
     report.title <- "Cross-Tabulation"
     
     if(attr(x, "prop.type") %in% c("r", "c", "t")) {
-      temp_table <- paste0(x$ctable,
-                           sub(pattern = "\\((\\d[\\.\\%])", replacement = "( \\1", 
-                               x = sprintf(paste0(" (%.", attr(x, "round.digits"), "f%%)"), x$prop*100)))
-      temp_table <- matrix(temp_table, nrow = nrow(x$ctable), 
-                           dimnames = dimnames(x$ctable), byrow = FALSE)
+      c_table <- paste0(x$ctable,
+                        sub(pattern = "\\((\\d[\\.\\%])", replacement = "( \\1", 
+                            x = sprintf(paste0(" (%.", attr(x, "round.digits"), "f%%)"), x$prop*100)))
+      c_table <- matrix(c_table, nrow = nrow(x$ctable), 
+                        dimnames = dimnames(x$ctable), byrow = FALSE)
     } else {
-      temp_table <- x$ctable
+      c_table <- x$ctable
     }
     
     #formatC(as.vector(x$prop*100), digits = attr(x, "round.digits"), 
@@ -95,17 +95,27 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
           addHash(paste(names(dimnames(x$ctable)), collapse = " X "), 4), "\n",
           addHash("Proportions: ", 4), switch(attr(x, "prop.type"), r="Rows", c="Columns", t="Total"),
           sep = "")
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = temp_table))))
+      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = c_table))))
     } else {
       # method = viewer / browser / html_noshow ------------------------------
-      freq.table.html <-
-        xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
-                                            digits = c(0,
-                                                       attr(x, "pander.args")$round * as.numeric("weights" %in% names(attributes(x))),
-                                                       rep(attr(x, "pander.args")$round, 4))),
-                             type = "html", print.results = FALSE,
+      dnn <- names(dimnames(c_table))
+      addtorow <- list()
+      addtorow$pos <- list(0, 0)
+      colnames(c_table)[colnames(c_table)=="<NA>"] <- "&lt;NA&gt;"
+      addtorow$command <- c(paste0('<tr> <th> </th> <th colspan=', ncol(c_table)-1,'>',dnn[2],'</th><th></th></tr>'),
+                            paste0('<tr> <th>', dnn[1], '</th> <th>', 
+                                   paste(colnames(c_table), collapse = "</th> <th>"),
+                                   '</th></tr>'))
+      
+      ctable.html <-
+        xtable::print.xtable(xtable::xtable(x = c_table,
+                                            align = paste0("r", paste(rep("c", ncol(c_table)),
+                                                                      collapse=""))),
+                                            #digits = c(0,rep(attr(x, "pander.args")$round,
+                                            #                 ncol(x$stats)))),
+                             type = "html", print.results = TRUE,
+                             add.to.row = addtorow, include.colnames = FALSE,
                              html.table.attributes = 'class="table table-striped table-bordered"')
-
       stpath <- find.package("summarytools")
 
       html.content <- tags$html(
@@ -117,9 +127,9 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
         tags$body(
           div(class="container", # style="width:80%",
               h2(report.title),
-              apply(var.info, 1, h4),
+              h4(paste(names(dimnames(x$ctable)), collapse = " X ")),
               br(),
-              HTML(gsub("<td> ", "<td>", freq.table.html)), # To avoid initial space in cells
+              HTML(gsub("<td> ", "<td>", ctable.html)), # To avoid initial space in cells
               HTML(text = htmlfooter)
           )
         )

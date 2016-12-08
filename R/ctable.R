@@ -1,4 +1,4 @@
-ctable <- function(x, y, round.digits=2, style="simple", justify="right", prop = "t", useNA = "ifany",
+ctable <- function(x, y, round.digits=1, style="simple", justify="right", prop = "t", useNA = "ifany",
                    totals=TRUE, plain.ascii=TRUE, dnn=c(substitute(x), substitute(y)), file=NA, 
                    append=FALSE, escape.pipe=FALSE, ...) {
 
@@ -87,50 +87,4 @@ ctable <- function(x, y, round.digits=2, style="simple", justify="right", prop =
   return(output)
 }
 
-#pander::pander(output, style=style, plain.ascii=plain.ascii) 
 
-#(ct <- ctable(tobacco$gender, tobacco$smoker))
-#(p <- prop.table(ct))
-#paste(ct, p)
-#(ct[1,1] <- paste0(ct[1,1], " (", round(p[1,1]*100, 2), "%)"))
-#
-#tmp <- paste(ct$ctable,
-#             sprintf(paste0("(%.", round.digits, "f%%)"), ct$prop*100))
-#(tmp2 <- matrix(data = tmp, nrow = nrow(ct$ctable), dimnames = dimnames(ct$ctable)))
-
-#ff <- function(x) {
-#  print(quote(x))
-#  #print(deparse(x))
-#  print(substitute(x))
-#}
-
-#ff(tobacco$gender)
-
-#CrossTable()
-#x <- tobacco$gender
-#y <- tobacco$smoker
-
-#ft <- table(x,y)
-#labels(ft)
-#names(dimnames(ft)) <- c("Gender","Smoker")
-
-
-# Paste raw freqs with 
-# Add row totals
-#  if (totals %in% c("b", "r")) {
-#    output <- addmargins(output, 1)
-#    rownames(output)[nrow(output)] <- "Total"
-#  }
-
-# Add col totals
-#  if(totals %in% c("b", "c")) {
-#    output <- addmargins(output, 2)
-#    colnames(output)[ncol(output)] <- "Total"
-#  }
-#  
-# Add proportions - total
-#  if(prop == "t") {
-#    # for rows
-#    if(isTRUE(totals) {
-#      for(i in seq_len(nrow(output)))
-#    }

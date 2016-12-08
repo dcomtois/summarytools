@@ -19,7 +19,7 @@ descr(x, na.rm=TRUE, round.digits=2, style="simple", justify="right",
   \item{escape.pipe}{Only useful when \code{style='grid'} and \code{file} argument is not \code{NA}, in which case it will escape the pipe character (|) in order for \emph{Pandoc} to correctly display table cells.}
   \item{weights}{Vector of weights, having same length as x}
   \item{rescale.weights}{Logical parameter. When \code{TRUE}, the function makes the sum of weights equal to the length of x, so that the total N remains unchanged. \code{FALSE} by default.}
-  \item{\dots}{Additional arguments passed to \pkg{pander}.}
+  \item{\dots}{Additional arguments passed to \code{pander::pander()}.}
 }
 \details{
 The default \code{plain.ascii=TRUE} option is there to make results appear clean in the console, but creates problems when generating markdown documents. For this reason, whenever \code{style='rmarkdown'}, the option is set to FALSE, unless \code{plain.ascii=TRUE} is stated explicitly. On the other hand, with \code{style='grid'}, if the intent is to produce markdown text, then the user needs to explicitly set \code{plain.ascii=FALSE}. 
