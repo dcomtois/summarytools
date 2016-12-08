@@ -76,12 +76,12 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
   if(attr(x, "st.type") == "ctable") {
     report.title <- "Cross-Tabulation"
     
-    if(!is.na(attr(x, "prop.type"))) {
+    if(attr(x, "prop.type") %in% c("r", "c", "t")) {
       temp_table <- paste0(x$ctable,
                            sub(pattern = "\\((\\d[\\.\\%])", replacement = "( \\1", 
                                x = sprintf(paste0(" (%.", attr(x, "round.digits"), "f%%)"), x$prop*100)))
-      temp_table <- sub(pattern = "(NA%)", replacement = "(-----)", x = temp_table, fixed = TRUE)
-      temp_table <- matrix(data = temp_table, nrow = nrow(x$ctable), dimnames = dimnames(x$ctable))
+      temp_table <- matrix(temp_table, nrow = nrow(x$ctable), 
+                           dimnames = dimnames(x$ctable), byrow = FALSE)
     } else {
       temp_table <- x$ctable
     }
@@ -92,7 +92,8 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
     
     if(method == "pander") {
       cat("\n", addHash(report.title, 3), "\n\n", 
-          paste(names(dimnames(x$ctable)), collapse = " X "), 
+          addHash(paste(names(dimnames(x$ctable)), collapse = " X "), 4), "\n",
+          addHash("Proportions: ", 4), switch(attr(x, "prop.type"), r="Rows", c="Columns", t="Total"),
           sep = "")
       cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = temp_table))))
     } else {

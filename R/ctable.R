@@ -40,10 +40,12 @@ ctable <- function(x, y, round.digits=2, style="simple", justify="right", prop =
         proportions <- addmargins(proportions)
       } else if(prop=="r") {
         proportions <- addmargins(proportions, 2)
-        proportions <- rbind(proportions, NA)
+        sumprops <- c(prop.table(freq.table[nrow(freq.table),-ncol(freq.table)]), Total=1)
+        proportions <- rbind(proportions, sumprops)
       } else if(prop=="c") {
         proportions <- addmargins(proportions, 1)
-        proportions <- cbind(proportions, NA)
+        sumprops <- c(prop.table(freq.table[-nrow(freq.table),ncol(freq.table)]), Total=1)
+        proportions <- cbind(proportions, sumprops)
       }
     }
   }
