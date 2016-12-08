@@ -1,10 +1,10 @@
-# summarytools version 0.6.5
+# summarytools version 0.6.9
 
-[![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
+CRAN stats: [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 
-CRAN statistics: [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+Other stats: [![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
 
-NEWS: Version 0.6.5 has been submitted to cran and should be available very soon. The new version includes a vignette which complements the introduction on this page. You can find the vignette here: http://rpubs.com/dcomtois/summarytools_vignette
+NEWS: Version 0.6.9 (in development) adds a new cross-tabulation function, `ctable()`. 
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
