@@ -2,7 +2,7 @@ Package: summarytools
 Type: Package
 Title: Detailed Dataframe Summaries, Frequency Tables, Cross-Tabulations and Descriptive Stats in plain ascii, 'rmarkdown' or HTML
 Version: 0.6.9
-Date: 2016-12-07
+Date: 2016-12-18
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Four main functions: 1) freq() generates frequency tables reporting counts and

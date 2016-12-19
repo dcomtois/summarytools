@@ -1,7 +1,7 @@
 descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right", 
                   plain.ascii=TRUE, file=NA, append=FALSE, transpose=FALSE,
                   escape.pipe=FALSE, weights=NA, rescale.weights=FALSE, ...) {
-
+  
   if(is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
@@ -14,16 +14,16 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
     plain.ascii <- FALSE
   }
   
-  # convert x to data.frame (useful is objet is a tible or data.table)
+  # convert x to data.frame (useful is objet is a tibble or data.table)
   x <- as.data.frame(x)
   
   if(!is.data.frame(x)) {
-    stop("x must be a data frame or a single vector, and attempted conversion failed")
+    stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
   }
 
   # Get into about x from parsing function
-  var.info <- .parse_arg(as.character(match.call()[2]))
-
+  var.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  
   # Identify and exclude non-numerical columns
   col.to.remove <- which(!sapply(x, is.numeric))
 
@@ -50,7 +50,10 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
                                 Label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
                                                Hmisc::label(x), NA),
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
+                                Group = ifelse("by.group" %in% names(var.info), var.info$by.group, NA),
                                 Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
+
+  #if(is.na(attr(x, "var.info")['Dataframe']) && is.na(attr(x, "var.info")['Variable']))
   if(exists("ignored"))
      attr(output, "ignored") <- ignored
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,

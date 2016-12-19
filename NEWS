@@ -1,6 +1,6 @@
-Version 0.7.0
+Version 0.6.9
 -------------
-Introduced ctable() for cross-tabulations.
+Introduced ctable() for cross-tabulations. Added support for by() and with(); variable names and by-groups are now labelled correctly.
 
 Version 0.6.5
 ------------

@@ -90,11 +90,13 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
   attr(output, "fn.call") <- as.character(match.call()) #as.character(match.call()[2])
   attr(output, "date") <- Sys.Date()
 
-  var.info <- .parse_arg(as.character(match.call()[2]))
+  var.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  
   attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(var.info), var.info$df.name, NA),
                                 Variable = ifelse("var.names" %in% names(var.info), var.info$var.names, NA),
                                 Label = ifelse(Hmisc::label(x) != "", Hmisc::label(x), NA),
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
+                                Group = ifelse("by.group" %in% names(var.info), var.info$by.group, NA),
                                 Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
 
   attr(output, "pander.args") <- list(style = style,
