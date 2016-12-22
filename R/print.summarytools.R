@@ -3,6 +3,11 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
   if(!method %in% c("pander", "browser", "viewer", "html_noshow"))
     stop("method must be one of 'pander', 'browser' or 'viewer'")
 
+  # Dispatch objects of class "by"
+  if("by" %in% class(x)) {
+    lapply(x, print.summarytools)
+  }
+  
   # Build info.table and prepare the field  -----------------------------------
 
   # Function to add '#' in non-plain-ascii pander tables
@@ -95,7 +100,7 @@ print.summarytools <- function(x, method="pander", include.footer=TRUE, silent=F
           addHash(paste(names(dimnames(x$ctable)), collapse = " X "), 4), "\n",
           addHash("Proportions: ", 4), switch(attr(x, "prop.type"), r="Rows", c="Columns", t="Total"),
           sep = "")
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = c_table))))
+      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = ftable(c_table)))))
     } else {
       # method = viewer / browser / html_noshow ------------------------------
       dnn <- names(dimnames(c_table))
