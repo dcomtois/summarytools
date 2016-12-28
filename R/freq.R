@@ -1,33 +1,33 @@
-freq <- function(x, round.digits=2, style="simple", justify="right",
-                 plain.ascii=TRUE, file=NA, append=FALSE, escape.pipe=FALSE, 
-                 weights=NA, rescale.weights=FALSE, ...) {
+freq <- function(x, round.digits = 2, style = "simple", justify = "right",
+                 plain.ascii = TRUE, file = "", append = FALSE, escape.pipe = FALSE, 
+                 weights = NA, rescale.weights = FALSE, ...) {
   
   # If x is a data.frame with 1 column, extract this column as x
-  if(!is.null(ncol(x)) && ncol(x)==1) {
+  if (!is.null(ncol(x)) && ncol(x)==1) {
     x <- x[[1]]
   }
 
-  if(!is.atomic(x)) {
+  if (!is.atomic(x)) {
     stop("argument must be a vector or a factor; for dataframes, use lapply(x, freq)")
   }
 
-  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written.")
+  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
+    stop("Append is not supported for html files. No file has been written; create a list and use view() instead (see documentation)")
   }
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if(style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style == 'rmarkdown' && isTRUE(plain.ascii) && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
   # Replace NaN's by NA's (This simplifies matters a lot!)
-  if(NaN %in% x)  {
+  if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
     x[is.nan(x)] <- NA
   }
 
   # create a basic frequency table, always including the NA row
-  if(identical(NA, weights)) {
+  if (identical(NA, weights)) {
     freq.table <- table(x, useNA = "always")
     # Change the name of the NA item (last) to avoid potential problems when echoing to console
     names(freq.table)[length(freq.table)] <- '<NA>'
@@ -41,18 +41,17 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
 
     # calculate proportions (total, i.e. including NA's)
     P.tot <- prop.table(table(x, useNA="always"))*100
-
   }
 
   # Weights are used
   else {
 
     # Check that weights vector is of the right length
-    if(length(weights)!=length(x)) {
+    if (length(weights)!=length(x)) {
       stop("weights vector must be of same length as x")
     }
 
-    if(isTRUE(rescale.weights)) {
+    if (isTRUE(rescale.weights)) {
       wgts <- weights/sum(weights)*length(x)
     } else {
       wgts <- weights
@@ -79,7 +78,7 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
 
   # Escape < and > when used in pairs in rownames, so that <NA> or <ABCD> are rendered correctly 
   # with style "rmarkdown" or "grid"
-  if(!plain.ascii && style %in% c('rmarkdown', 'grid')) {
+  if (!plain.ascii && style %in% c('rmarkdown', 'grid')) {
     row.names(output) <- gsub(pattern = '<',replacement = '\\<',x = row.names(output), fixed = TRUE)
     row.names(output) <- gsub(pattern = '>',replacement = '\\>',x = row.names(output), fixed = TRUE)
   }
@@ -105,15 +104,15 @@ freq <- function(x, round.digits=2, style="simple", justify="right",
                                       justify = justify,
                                       split.table = Inf,
                                       ... = ...)
-  if(exists("wgts"))
+  if (exists("wgts"))
      attr(output, "weights") <- wgts
 
 
-  if(!is.na(file)) {
-    if(style=="grid" && escape.pipe) {
+  if (file != "") {
+    if (style=="grid" && escape.pipe) {
       output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
       capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if(grepl("\\.html$",file)) {
+    } else if (grepl("\\.html$",file)) {
       file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
       cleartmp(silent=TRUE)
     } else {

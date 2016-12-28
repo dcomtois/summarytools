@@ -1,23 +1,24 @@
-ctable <- function(x, y, round.digits=1, style="simple", justify="right", prop = "t", useNA = "ifany",
-                   totals=TRUE, plain.ascii=TRUE, dnn=c(substitute(x), substitute(y)), file=NA, 
-                   append=FALSE, escape.pipe=FALSE, ...) {
+ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", prop = "t", 
+                   useNA = "ifany", totals = TRUE, plain.ascii = TRUE, 
+                   dnn=c(substitute(x), substitute(y)), file="", append=FALSE, 
+                   escape.pipe=FALSE, ...) {
 
-  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written.")
+  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
+    stop("Append is not supported for html files. No file has been written. Create a list and use view() instead (see documentation)")
   }
   
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if(style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
   # Replace NaN's by NA's (This simplifies matters a lot!)
-  if(NaN %in% x)  {
+  if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA in x\n"))
     x[is.nan(x)] <- NA
   }
   
-  if(NaN %in% y)  {
+  if (NaN %in% y)  {
     message(paste(sum(is.nan(y)), "NaN value(s) converted to NA in y\n"))
     y[is.nan(y)] <- NA
   }
@@ -31,18 +32,18 @@ ctable <- function(x, y, round.digits=1, style="simple", justify="right", prop =
                         r = prop.table(freq.table, 1),
                         c = prop.table(freq.table, 2))
   
-  if(isTRUE(totals)) {
+  if (isTRUE(totals)) {
     freq.table <- addmargins(freq.table)
     rownames(freq.table)[nrow(freq.table)] <- "Total"
     colnames(freq.table)[ncol(freq.table)] <- "Total"
-    if(!is.null(proportions)) {
-      if(prop=="t") {
+    if (!is.null(proportions)) {
+      if (prop=="t") {
         proportions <- addmargins(proportions)
-      } else if(prop=="r") {
+      } else if (prop=="r") {
         proportions <- addmargins(proportions, 2)
         sumprops <- c(prop.table(freq.table[nrow(freq.table),-ncol(freq.table)]), Total=1)
         proportions <- rbind(proportions, sumprops)
-      } else if(prop=="c") {
+      } else if (prop=="c") {
         proportions <- addmargins(proportions, 1)
         sumprops <- c(prop.table(freq.table[-nrow(freq.table),ncol(freq.table)]), Total=1)
         proportions <- cbind(proportions, sumprops)
@@ -69,13 +70,14 @@ ctable <- function(x, y, round.digits=1, style="simple", justify="right", prop =
                                       split.table = Inf,
                                       ... = ...)
   
-  if(!is.na(file)) {
-    if(style=="grid" && escape.pipe) {
+  if (file != "") {
+    if (style=="grid" && escape.pipe && !grepl("\\.html$",file)) {
       output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
       capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if(grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-      cleartmp(silent=TRUE)
+    } else if (grepl("\\.html$",file)) {
+      #file.copy(from=print(output, method = "html_file", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+      #cleartmp(silent=TRUE)
+      print(x = output, method = 'html_file', silent = TRUE, file = file, append = append) 
     } else {
       capture.output(output, file = file, append = append)
     }
@@ -83,8 +85,5 @@ ctable <- function(x, y, round.digits=1, style="simple", justify="right", prop =
     message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
     return(invisible(output))
   }
-  
   return(output)
 }
-
-

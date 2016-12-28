@@ -7,11 +7,11 @@
 Deletes temporary files created when using \code{method='browser'}, \code{method='viewer'}, or \code{view()} function.
 }
 \usage{
-cleartmp(what = "last", silent = FALSE)
+cleartmp(all = FALSE, silent = FALSE)
 }
 \arguments{
-  \item{what}{
-Either "last" (default) or "all".
+  \item{all}{
+logical. When TRUE, all temporary summarytools files will be deleted. When FALSE (default), only the latest will.
 }
   \item{silent}{
 Hide confirmation messages (FALSE by default).

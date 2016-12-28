@@ -1,23 +1,24 @@
-descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right", 
-                  plain.ascii=TRUE, file=NA, append=FALSE, transpose=FALSE,
-                  escape.pipe=FALSE, weights=NA, rescale.weights=FALSE, ...) {
+descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "simple", 
+                  justify = "right", plain.ascii = TRUE, file = "", append = FALSE, 
+                  transpose = FALSE, escape.pipe = FALSE, weights = NA, 
+                  rescale.weights = FALSE, ...) {
   
-  if(is.atomic(x) && !is.numeric(x))
+  if (is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
-  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written.")
+  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
+    stop("Append is not supported for html files. No file has been written. Create a list a use view() instead (see documentation)")
   }  
 
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if(style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
   # convert x to data.frame (useful is objet is a tibble or data.table)
   x <- as.data.frame(x)
   
-  if(!is.data.frame(x)) {
+  if (!is.data.frame(x)) {
     stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
   }
 
@@ -27,14 +28,14 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
   # Identify and exclude non-numerical columns
   col.to.remove <- which(!sapply(x, is.numeric))
 
-  if(length(col.to.remove) > 0) {
+  if (length(col.to.remove) > 0) {
     ignored <- paste(colnames(x)[col.to.remove], collapse=", ")
     # message("Non-numerical variable(s) ignored: ", ignored)
     x <- x[-col.to.remove]
     var.info$var.names <- var.info$var.names[-col.to.remove]
   }
 
-  if(ncol(x) == 0) {
+  if (ncol(x) == 0) {
     stop("no numerical variable(s) given as argument")
   }
 
@@ -53,17 +54,17 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
                                 Group = ifelse("by.group" %in% names(var.info), var.info$by.group, NA),
                                 Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
 
-  #if(is.na(attr(x, "var.info")['Dataframe']) && is.na(attr(x, "var.info")['Variable']))
-  if(exists("ignored"))
+  #if (is.na(attr(x, "var.info")['Dataframe']) && is.na(attr(x, "var.info")['Variable']))
+  if (exists("ignored"))
      attr(output, "ignored") <- ignored
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
                                       justify=justify, split.table=Inf, ...=...)
 
-  if(identical(weights, NA)) {
+  if (identical(weights, NA)) {
 
     # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
-    output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Max=numeric(),
-                               Median=numeric(), mad=numeric(), IQR=numeric(), CV=numeric(),
+    output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
+                               Max=numeric(), MAD=numeric(), IQR=numeric(), CV=numeric(),
                                Skewness=numeric(), SE.Skewness=numeric(), Kurtosis=numeric())
     output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(),check.names = FALSE)
 
@@ -82,8 +83,8 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
       output$stats[i,] <- c(variable.mean <- mean(variable, na.rm=na.rm),
                             variable.sd <- sd(variable, na.rm=na.rm),
                             min(variable, na.rm=na.rm),
-                            max(variable, na.rm=na.rm),
                             median(variable, na.rm=na.rm),
+                            max(variable, na.rm=na.rm),
                             mad(variable, na.rm=na.rm),
                             IQR(variable, na.rm=na.rm),
                             variable.mean/variable.sd,
@@ -103,16 +104,16 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
   else {
 
     # Check that weights vector has the right length
-    if(length(weights) != nrow(x))
+    if (length(weights) != nrow(x))
       stop("weights vector must have the same length as x")
 
       # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
-      output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Max=numeric(),
-                                 Median=numeric(), mad=numeric(), CV=numeric())
+      output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
+                                 Max=numeric(),  MAD=numeric(), CV=numeric())
       output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
 
       # Rescale weights if necessary
-      if(rescale.weights)
+      if (rescale.weights)
         weights <- weights / sum(weights) * nrow(x)
 
       # Add weights to output object attributes
@@ -137,8 +138,8 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
         output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
                               variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
                               min(variable),
-                              max(variable),
                               matrixStats::weightedMedian(variable, weights, refine = TRUE),
+                              max(variable),
                               matrixStats::weightedMad(variable, weights, refine = TRUE),
                               variable.mean/variable.sd)
         
@@ -146,14 +147,13 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
         output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
                                paste(n.NA, " (", p.NA, "%)",sep=""),
                                paste(n.valid + n.NA, "(100%)"))
-        
       }
   }
 
   for(i in seq_along(x)) {
 
     # Add row names (from col.names/var.name of the parse function)
-    if("var.names" %in% names(var.info)) {
+    if ("var.names" %in% names(var.info)) {
       rownames(output$stats)[i] <- var.info$var.names[i]
     } else {
       # this is necessary in order to support by()
@@ -162,27 +162,35 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
     rownames(output$observ)[i] <- rownames(output$stats)[i]
   }
   
+  # Remove unwanted stats
+  if (!identical(stats,"all")) {
+    # Check that 'stats' argument has only valid stats names
+    wrong.stats <- setdiff(stats, colnames(output$stats))
+    if (length(wrong.stats) > 0)
+      stop("allowed 'stats' are: ", paste(colnames(output$stats), collapse = ", "))
+    output$stats <- output$stats[,stats]
+  }
+
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
-  if(!transpose) {
+  if (!transpose) {
     output$stats <- t(output$stats)
     output$observ <- t(output$observ)
   }
 
   # Change <NA> for \<NA\> in markdown tables
-  if(style=="rmarkdown" && !plain.ascii && !transpose) {
+  if (style=="rmarkdown" && !plain.ascii && !transpose) {
     rownames(output$observ)[2] <- "\\<NA\\>"
-  } else if(style=="rmarkdown" && !plain.ascii && transpose){
+  } else if (style=="rmarkdown" && !plain.ascii && transpose){
     colnames(output$observ)[2] <- "\\<NA\\>"
   }
   
-  if(!is.na(file)) {
-
-    if(style=="grid" && escape.pipe) {
+  if (file != "") {
+    if (style=="grid" && escape.pipe) {
       output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
       capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if(grepl("\\.html$",file)) {
+    } else if (grepl("\\.html$",file)) {
       file.copy(from=print(output, method="html_noshow", silent=TRUE), 
                 to=normalizePath(file), overwrite = TRUE)
       cleartmp(silent=TRUE)
@@ -194,6 +202,5 @@ descr <- function(x, na.rm=TRUE, round.digits=2, style="simple", justify="right"
     return(invisible(output))
 
   }
-
   return(output)
 }
