@@ -5,7 +5,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                       split.cells=40, escape.pipe=FALSE, ...) {
 
   # use the parsing function to identify particularities such as row indexing
-  tmp.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  var.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
 
   if(!is.data.frame(x)) {
     x <- try(as.data.frame(x))
@@ -15,7 +15,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     }
 
     message("x was converted to a dataframe")
-    tmp.info$df.name <- tmp.info$var.name
+    var.info$df.name <- var.info$var.name
   }
 
   if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
@@ -40,12 +40,12 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
   # Set output's attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st.type") <- "dfSummary"
-  attr(output, "date") <- Sys.Date()
+  attr(output, "Date") <- Sys.Date()
   attr(output, "fn.call") <- as.character(match.call())
   attr(output, "n.obs") <- nrow(x)
-  attr(output, "df.name") <- tmp.info$df.name
-  if("subset" %in% names(tmp.info))
-     attr(output, "subset") <- tmp.info$subset
+  attr(output, "df.name") <- var.info$df.name
+  if("subset" %in% names(var.info))
+     attr(output, "Subset") <- var.info$subset
   attr(output, "pander.args") <- list(style=style, round=round.digits, justify=justify,
                                       split.table=Inf, keep.line.breaks=TRUE,
                                       split.cells=split.cells, plain.ascii=plain.ascii, 

@@ -32,7 +32,6 @@
   # List of classes accepted as "dataframes"
   # classes <- c("data.frame", "data.table", "tbl")
   
-  
   # Function was called through with() ----------------------------------------------------
   # We should be able to extract:
   #  - df.name

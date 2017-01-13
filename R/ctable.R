@@ -3,9 +3,9 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
                    dnn=c(substitute(x), substitute(y)), file="", append=FALSE, 
                    escape.pipe=FALSE, ...) {
 
-  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written. Create a list and use view() instead (see documentation)")
-  }
+  #if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
+  #  stop("Append is not supported for html files. No file has been written. Create a list and use view() instead (see documentation)")
+  #}
   
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {

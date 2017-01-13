@@ -45,16 +45,15 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   attr(output, "st.type") <- "descr"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn.call") <- as.character(match.call())
+  attr(output, "Group") <- ifelse("by.group" %in% names(var.info), var.info$by.group, NA)
   attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(var.info), var.info$df.name, NA),
                                 Variable = ifelse("var.names" %in% names(var.info) && length(var.info$var.names) == 1,
                                                   var.info$var.names, NA),
                                 Label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
                                                Hmisc::label(x), NA),
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
-                                Group = ifelse("by.group" %in% names(var.info), var.info$by.group, NA),
                                 Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
 
-  #if (is.na(attr(x, "var.info")['Dataframe']) && is.na(attr(x, "var.info")['Variable']))
   if (exists("ignored"))
      attr(output, "ignored") <- ignored
   attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
@@ -96,7 +95,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
       output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
                              paste(n.NA, " (", p.NA, "%)",sep=""),
                              paste(n.valid + n.NA, "(100%)"))
-      
+
+
     }
   }
 
@@ -161,7 +161,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     }
     rownames(output$observ)[i] <- rownames(output$stats)[i]
   }
-  
+
   # Remove unwanted stats
   if (!identical(stats,"all")) {
     # Check that 'stats' argument has only valid stats names
@@ -177,6 +177,26 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   if (!transpose) {
     output$stats <- t(output$stats)
     output$observ <- t(output$observ)
+  }
+
+  # Fix alignment in Observations table
+  padleft <- function(s, n = 1, chr=" ") {
+    paste0(paste(rep(chr, n), collapse = ""), s)
+  }
+  
+  padright <- function(s, n = 1, chr=" ") {
+    paste0(s, paste(rep(chr, n), collapse = ""))
+  }
+  
+  for (c in 1:ncol(output$observ)) {
+    pos <- max(regexpr("(", output$observ[,c], fixed = TRUE))
+    for (r in 1:nrow(output$observ)) {
+      output$observ[r,c] <- padleft(output$observ[r,c], n = pos - regexpr("(",output$observ[r,c], fixed = TRUE))
+    }
+    maxlen <- max(nchar(output$observ[,c]))
+    for (r in 1:nrow(output$observ)) {
+      output$observ[r,c] <- padright(output$observ[r,c], n = maxlen - nchar(output$observ[r,c]))
+    }
   }
 
   # Change <NA> for \<NA\> in markdown tables

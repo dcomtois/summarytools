@@ -1,6 +1,6 @@
 Version 0.6.9
 -------------
-Introduced ctable() for cross-tabulations. Added support for by() and with(); variable names and by-groups are now labelled correctly.
+Introduced ctable() for cross-tabulations. Added support for by() and with(); variable names and by-groups are now labelled correctly. Append can now be used with HTML files as well. view() can print in a reasonable manner objects generated with by(). Attributes of objects can be overridden when using print() or view(). The latter two functions can now also redirect output into files.
 
 Version 0.6.5
 ------------

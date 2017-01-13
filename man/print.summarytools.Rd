@@ -5,16 +5,22 @@
 \title{Print Method for Objects of Class \code{summarytools}.}
 \description{Display \code{summarytools} objects in the console, in Web Browser or in \emph{RStudio}'s Viewer.}
 \usage{
-\method{print}{summarytools}(x, method="pander", include.footer=TRUE, silent=FALSE, \dots)
-view(x, method = "viewer", include.footer=TRUE, silent=FALSE, \dots)
+\method{print}{summarytools}(x, method = "pander", silent = FALSE,
+   footer = FALSE, file = "", append = FALSE, report.title = NA, 
+   group.only = FALSE, \dots)
+view(x, method = "viewer", silent = FALSE, footer = FALSE, 
+     file = "", append = FALSE, report.title = NA, \dots)
 }
-
 \arguments{
   \item{x}{summarytools object that was generated with \code{freq}, \code{descr} or \code{dfSummary}.}
   \item{method}{One of \dQuote{pander}, \dQuote{viewer} or \dQuote{browser}. Defaults to \dQuote{pander} with \code{print()} and to \dQuote{viewer} with \code{view()}. If \dQuote{viewer} is used outside \emph{RStudio}, Web Browser will be used instead.}
-  \item{include.footer}{Include footer (package name and version, R version, date) in HTML tables. \code{TRUE} by default. Has no effect when \code{method} is set to \dQuote{pander}.}
-  \item{silent}{Hide console messages indicating location of temporary HTML file (relevant only when \code{method} is \dQuote{viewer} or \dQuote{browser})}
-  \item{\dots}{Additional arguments (not used for now).}
+  \item{silent}{Hide console messages indicating location of temporary HTML file (relevant only when \code{method} is \dQuote{viewer} or \dQuote{browser}). Defaults to \code{FALSE}.}
+  \item{footer}{Include footer (package name and version, R version, date) in HTML tables. \code{FALSE} by default. Has no effect when \code{method} is set to \dQuote{pander}.}
+  \item{file}{File name to write output to. Defaults to \code{""}. To append output to an existing text file, use \code{append=TRUE}.}
+  \item{append}{When \dQuote{file} argument is supplied, this indicates whether to append output to existing file (\code{TRUE}) or to overwrite any existing file (\code{FALSE}, default). If \code{TRUE} and no file exists, a new file will be created.}
+  \item{report.title}{For HTML reports, this goes into the <title> tag.}
+  \item{group.only}{Used internally when printing multiple elements of a by-object.}
+  \item{\dots}{Additional arguments can be used to override properties of the summarytools object being printed. Those properties include: date, style, justify, plain.ascii, split.table, Label, Subset, Group, and Weights.}
 }
 \details{
 The \code{view()} wrapper function makes it more practical to generate HTML files with a single line of code (see examples).
@@ -36,7 +42,7 @@ HTML tables are generated using \code{xtable::print.xtable} and use Bootstrap CS
   data(iris)
   \dontrun{view(dfSummary(iris))}
   \dontrun{view(descr(iris,transpose=TRUE), "browser")}
-  print(freq(iris$Species), "pander")  
+  print(freq(iris$Species), "pander")
 }
 \keyword{ print }
 \keyword{ methods }
