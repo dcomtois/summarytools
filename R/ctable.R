@@ -1,12 +1,7 @@
 ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", prop = "t", 
                    useNA = "ifany", totals = TRUE, plain.ascii = TRUE, 
-                   dnn=c(substitute(x), substitute(y)), file="", append=FALSE, 
-                   escape.pipe=FALSE, ...) {
+                   dnn=c(substitute(x), substitute(y)), ...) {
 
-  #if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
-  #  stop("Append is not supported for html files. No file has been written. Create a list and use view() instead (see documentation)")
-  #}
-  
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
@@ -22,6 +17,9 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
     message(paste(sum(is.nan(y)), "NaN value(s) converted to NA in y\n"))
     y[is.nan(y)] <- NA
   }
+  
+  if ("file" %in% names(match.call()))
+    message("file argument is deprecated; use print() or view() function to generate files")
   
   # Add dimnames names
   freq.table <- table(x, y, useNA = useNA)
@@ -70,20 +68,21 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
                                       split.table = Inf,
                                       ... = ...)
   
-  if (file != "") {
-    if (style=="grid" && escape.pipe && !grepl("\\.html$",file)) {
-      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-      capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if (grepl("\\.html$",file)) {
-      #file.copy(from=print(output, method = "html_file", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-      #cleartmp(silent=TRUE)
-      print(x = output, method = 'html_file', silent = TRUE, file = file, append = append) 
-    } else {
-      capture.output(output, file = file, append = append)
-    }
-    
-    message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
-    return(invisible(output))
-  }
+  # if (file != "") {
+  #   if (style=="grid" && escape.pipe && !grepl("\\.html$",file)) {
+  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+  #     capture.output(cat(output.esc.pipes), file = file, append = append)
+  #   } else if (grepl("\\.html$",file)) {
+  #     #file.copy(from=print(output, method = "html_file", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+  #     #cleartmp(silent=TRUE)
+  #     print(x = output, method = 'html_file', silent = TRUE, file = file, append = append) 
+  #   } else {
+  #     capture.output(output, file = file, append = append)
+  #   }
+  #   
+  #   message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
+  #   return(invisible(output))
+  # }
+  
   return(output)
 }

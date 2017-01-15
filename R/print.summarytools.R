@@ -1,7 +1,7 @@
 print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALSE,
                                file = "", append = FALSE, report.title = NA, 
-                               group.only = FALSE, ...) {
-  
+                               group.only = FALSE, escape.pipe = FALSE, ...) {
+
   if (!method %in% c("pander", "browser", "viewer", "html_file"))
     stop("method must be one of 'pander', 'browser', 'viewer' or 'html_file'")
   
@@ -9,15 +9,22 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     stop("append is set to TRUE but no file name has been specified")
   
   if (file != "" && isTRUE(append) && !file.exists(file))
-    stop("append is set to TRUE but the file does not exist - append is only valid when file already exists.")
+    stop("append is set to TRUE but specified file does not exist")
   
+  if (file != "" && isTRUE(append) && !is.na(report.title))
+    message("Appending existing file -- 'report.title' argument will be ignored")
+
   # override x's attributes if any are passed as additional arguments
   argslst <- match.call()
   
-  if ("Date" %in% names(argslst))
-    attr(x, "date") <- argslst$Date
+  if ("date" %in% names(argslst))
+    attr(x, "date") <- argslst$date
   if ("style" %in% names(argslst))
     attr(x, "pander.args")['style'] <- argslst$style
+  if ("round" %in% names(argslst))
+    attr(x, "pander.args")['round'] <- argslst$round
+  if ("round.digits" %in% names(argslst))
+    attr(x, "pander.args")['round'] <- argslst$round.digits
   if ("justify" %in% names(argslst))
     attr(x, "pander.args")['justify'] <- argslst$justify
   if ("plain.ascii" %in% names(argslst))
@@ -29,7 +36,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if ("Subset" %in% names(argslst))
     attr(x, "var.info")['Subset'] <- argslst$Subset
   if ("Group" %in% names(argslst))
-    attr(x, "var.info")['Group'] <- argslst$Group
+    attr(x, "var.info")['by.group'] <- argslst$Group
   if ("Weights" %in% names(argslst))
     attr(x, "var.info")['Weights'] <- argslst$Weights
   
@@ -39,12 +46,15 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     plain.ascii <- FALSE
   }
   
+  if (isTRUE(group.only) && !"by.group" %in% names (attributes(x)))
+    stop("group.only can only be used with objects created using by()")
+  
   # Function to add '#' in non-plain-ascii pander tables
   addHash <- function(str, n=4) {
     if (isTRUE(attr(x, "pander.args")$plain.ascii))
       str
     else
-      paste(paste0(rep("#",n), collapse = ""), str)
+      paste(paste0(rep(x = "#", times = n), collapse = ""), str)
   }
   
   if (method %in% c("browser", "viewer", "html_file")) {
@@ -65,6 +75,18 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     var.info <- tmp[which(!is.na(tmp) && names(tmp) != "Group")]
     gr.info <- tmp['Group']
     rm(tmp)
+    
+    if(method=="pander") {
+      out.info <- paste(addHash(names(out.info)), out.info, sep=": ", collapse="\n")
+      var.info <- paste(addHash(names(var.info)), var.info, sep=": ", collapse="\n")
+      if (!is.na(gr.info))
+        gr.info <- paste(addHash("Group: "), gr.info)
+    } else {
+      var.info <- as.matrix(paste(names(var.info), var.info, sep=": "))
+      if (!is.na(gr.info))
+        gr.info <- paste("Group: ", gr.info)
+    }
+    
   } else {
     out.info <- NA
     var.info <- NA
@@ -75,7 +97,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if(attr(x, "st.type") == "freq") {
     
     # define section title
-    stitle <- ifelse("weights" %in% names(attributes(x)),
+    stitle <- ifelse("Weights" %in% names(attr(x, "var.info")),
                      "Weighted Frequencies",
                      "Frequencies")
     
@@ -185,7 +207,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     if(!silent && "ignored" %in% names(attributes(x)))
       message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
     
-    stitle <- ifelse("weights" %in% names(attributes(x)),
+    stitle <- ifelse("Weights" %in% names(attr(x, "var.info")),
                      "Weighted Descriptive Statistics",
                      "Descriptive Statistics")
     
@@ -276,8 +298,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
   }
 
-  # Create (if necessary) and open the output html file --------------------------------------------
+  # Put together output file content  --------------------------------------------
   if(method %in% c('browser', 'viewer', 'html_file')) {
+    
     if (isTRUE(append)) {
         f <- file(file, open = "r")
         htmlcontent <- paste(readLines(f, warn = FALSE, encoding = "UTF-8"), collapse="\n")
@@ -304,9 +327,10 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
     
     outfile <- ifelse(file == "", paste0(tempfile(),".html"), file)
-    if(file.exists(file))
-      unlink(file)
-    capture.output(cat(htmlcontent), file = outfile, append = append)
+    #if(file.exists(file))
+    #  unlink(file)
+    #capture.output(cat(htmlcontent), file = outfile, append = append)
+    capture.output(cat(htmlcontent), file = outfile)
 
     if(method=="viewer") {
       if(.Platform$GUI == "RStudio") 
@@ -331,6 +355,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
         message(paste0("Temporary file created: ", outfile, '\nTo delete, use cleartmp().'))
       .st.env$tmpfiles <- c(.st.env$tmpfiles, outfile)
       return(invisible(normalizePath(outfile)))
+    } else if (method == "html_file") {
+      return(invisible(normalizePath(outfile, mustWork = FALSE)))
     } else {
       return(invisible())
     }

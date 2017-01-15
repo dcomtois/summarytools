@@ -7,9 +7,9 @@
 \usage{
 \method{print}{summarytools}(x, method = "pander", silent = FALSE,
    footer = FALSE, file = "", append = FALSE, report.title = NA, 
-   group.only = FALSE, \dots)
+   group.only = FALSE, escape.pipe = FALSE, \dots)
 view(x, method = "viewer", silent = FALSE, footer = FALSE, 
-     file = "", append = FALSE, report.title = NA, \dots)
+     file = "", append = FALSE, report.title = NA, escape.pipe = FALSE, \dots)
 }
 \arguments{
   \item{x}{summarytools object that was generated with \code{freq}, \code{descr} or \code{dfSummary}.}
@@ -20,6 +20,7 @@ view(x, method = "viewer", silent = FALSE, footer = FALSE,
   \item{append}{When \dQuote{file} argument is supplied, this indicates whether to append output to existing file (\code{TRUE}) or to overwrite any existing file (\code{FALSE}, default). If \code{TRUE} and no file exists, a new file will be created.}
   \item{report.title}{For HTML reports, this goes into the <title> tag.}
   \item{group.only}{Used internally when printing multiple elements of a by-object.}
+  \item{escape.pipe}{Only useful when \code{style='grid'} and \code{file} argument is supplied, in which case it will escape the pipe character (|) in order for \emph{Pandoc} to correctly display table cells.}
   \item{\dots}{Additional arguments can be used to override properties of the summarytools object being printed. Those properties include: date, style, justify, plain.ascii, split.table, Label, Subset, Group, and Weights.}
 }
 \details{

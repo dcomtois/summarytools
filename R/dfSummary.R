@@ -1,8 +1,8 @@
 dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
-                      plain.ascii=TRUE, file=NA, append=FALSE, varnumbers=FALSE, 
+                      plain.ascii=TRUE, varnumbers=FALSE, 
                       display.labels=any(sapply(X = x, FUN = Hmisc::label) != ""),
                       max.distinct.values=10, trim.strings=FALSE, max.string.width=15,
-                      split.cells=40, escape.pipe=FALSE, ...) {
+                      split.cells=40, ...) {
 
   # use the parsing function to identify particularities such as row indexing
   var.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
@@ -18,14 +18,14 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     var.info$df.name <- var.info$var.name
   }
 
-  if(!is.na(file) && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written.")
-  }  
-  
+  if ("file" %in% names(match.call()))
+    message("file argument is deprecated; use print() or view() function to generate files")
+
   if(style=="rmarkdown") {
     message("'rmarkdown' style not supported - using 'multiline' instead.")
     style <- 'multiline'
   }
+  
   # Initialise the output dataframe
   output <- data.frame(No.=numeric(),
                        Variable=character(),
@@ -51,7 +51,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                                       split.cells=split.cells, plain.ascii=plain.ascii, 
                                       ...=...)
   
-  # iterate over columns
+  # iterate over columns of x
   for(i in seq_len(ncol(x))) {
 
     # extract column data
@@ -232,22 +232,22 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     output$No. <- NULL
   
   
-  # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
-  if(!is.na(file)) {
-
-    if(style=="grid" && escape.pipe) {
-      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-      capture.output(cat(output.esc.pipes), file = file, append = append)
-    }
-    else if(grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-      cleartmp(silent=TRUE)
-    } else {
-      capture.output(output, file = file, append = append)
-    }
-    message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
-    return(invisible(output))
-  }
+  # # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
+  # if(!is.na(file)) {
+  # 
+  #   if(style=="grid" && escape.pipe) {
+  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+  #     capture.output(cat(output.esc.pipes), file = file, append = append)
+  #   }
+  #   else if(grepl("\\.html$",file)) {
+  #     file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
+  #     cleartmp(silent=TRUE)
+  #   } else {
+  #     capture.output(output, file = file, append = append)
+  #   }
+  #   message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
+  #   return(invisible(output))
+  # }
 
   return(output)
 }

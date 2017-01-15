@@ -1,6 +1,5 @@
 freq <- function(x, round.digits = 2, style = "simple", justify = "right",
-                 plain.ascii = TRUE, file = "", append = FALSE, escape.pipe = FALSE, 
-                 weights = NA, rescale.weights = FALSE, ...) {
+                 plain.ascii = TRUE, weights = NA, rescale.weights = FALSE, ...) {
   
   # If x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1) {
@@ -11,10 +10,9 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right",
     stop("argument must be a vector or a factor; for dataframes, use lapply(x, freq)")
   }
 
-  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written; create a list and use view() instead (see documentation)")
-  }
-
+  if ("file" %in% names(match.call()))
+    message("file argument is deprecated; use print() or view() function to generate files")
+  
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style == 'rmarkdown' && isTRUE(plain.ascii) && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
@@ -102,25 +100,24 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right",
                                       plain.ascii = plain.ascii,
                                       justify = justify,
                                       split.table = Inf,
+                                      keep.trailing.zeros = TRUE,
                                       ... = ...)
-  if (exists("wgts"))
-     attr(output, "weights") <- wgts
+  #if (exists("wgts"))
+  #   attr(output, "weights") <- wgts
 
-
-  if (file != "") {
-    if (style=="grid" && escape.pipe) {
-      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-      capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if (grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-      cleartmp(silent=TRUE)
-    } else {
-      capture.output(output, file = file, append = append)
-    }
-
-    message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
-    return(invisible(output))
-  }
+  # if (file != "") {
+  #   if (grepl("\\.html$", file)) {
+  #     file.copy(from=print(output, method="html_file", report.title = report.title, append = append, silent=TRUE, ...), to=normalizePath(file), overwrite = TRUE)
+  #     cleartmp(silent=TRUE)
+  #   } else if (style=="grid" && isTRUE(escape.pipe)) {
+  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+  #     capture.output(cat(output.esc.pipes), file = file, append = append)
+  #   } else {
+  #     capture.output(output, file = file, append = append)
+  #   }
+  #   message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
+  #   return(invisible(output))
+  # }
 
   return(output)
 

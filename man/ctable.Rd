@@ -9,7 +9,7 @@ Produces a cross-tabulation with either row, column, or total proportions, as we
 \usage{
 ctable(x, y, round.digits = 1, style = "simple", justify = "right", prop = "t", 
        useNA = "ifany", totals = TRUE, plain.ascii = TRUE, dnn = c(substitute(x),
-       substitute(y)), file = "", append = FALSE, escape.pipe=FALSE, ...)
+       substitute(y)), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,9 +23,6 @@ ctable(x, y, round.digits = 1, style = "simple", justify = "right", prop = "t",
   \item{totals}{Display row and column totals (defaults to \code{TRUE})}
   \item{plain.ascii}{\pkg{pander} argument; when results are displayed in console, this avoids having \emph{markdown} markup characters in the tables. Defaults to TRUE, except when \code{style='rmarkdown'}, in which case it is set to FALSE (unless explicitly defined as TRUE).}
   \item{dnn}{Two strings corresponding to the names of x and y variables. By default, the supplied arguments for x and y are used, as strings.}
-  \item{file}{File name to write output to. Defaults to \code{""}. To append output to an existing text file, use \code{append=TRUE}.}
-  \item{append}{When \dQuote{file} argument is supplied, this indicates whether to append output to existing file (\code{TRUE}) or to overwrite any existing file (\code{FALSE}, default). If \code{TRUE} and no file exists, a new file will be created.}
-  \item{escape.pipe}{Only useful when \code{style='grid'} and \code{file} argument is not \code{NA}, in which case it will escape the pipe character (|) in order for \emph{Pandoc} to correctly display table cells.}
   \item{\dots}{Additional arguments passed to \code{pander::pander()}.}
 }
 

@@ -1,6 +1,7 @@
 # view is a wrapper function for print(x, "view"). Allows supports "browser" or "pander" as well.
 view <- function(x, method = "viewer", silent = FALSE, footer = FALSE, 
-                 file = "", append = FALSE, report.title = NA, ...) {
+                 file = "", append = FALSE, report.title = NA, 
+                 escape.pipe = FALSE, ...) {
   
   if ("summarytools" %in% class(x))
     print.summarytools(x, method = method, silent = silent, footer = footer, 
@@ -23,14 +24,17 @@ view <- function(x, method = "viewer", silent = FALSE, footer = FALSE,
     else if (method == "pander") {
       print.summarytools(x[[1]], method = "pander", silent = silent, 
                          report.title = report.title,
-                         file = file, append = FALSE, group.only = FALSE, ...)
+                         file = file, append = FALSE, group.only = FALSE, 
+                         escape.pipe = escape.pipe, ...)
       for (i in 2:len) {
         print.summarytools(x[[i]], method = "pander", silent = silent,
                            file = file, append = ifelse(file == "", FALSE, TRUE), 
-                           report.title = NA, group.only = TRUE, ...)
+                           report.title = NA, group.only = TRUE, 
+                           escape.pipe = escape.pipe, ...)
       }
     }
   }
+  
   else message(paste("x must either be a summarytools object created with freq(), descr(),",
                      "ctable(), or a list of freq() / descr() objects created using by().",
                      "Support for by() used with ctable() is due for a later release."))

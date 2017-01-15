@@ -1,19 +1,17 @@
 descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "simple", 
-                  justify = "right", plain.ascii = TRUE, file = "", append = FALSE, 
-                  transpose = FALSE, escape.pipe = FALSE, weights = NA, 
-                  rescale.weights = FALSE, ...) {
+                  justify = "right", plain.ascii = TRUE, transpose = FALSE, 
+                  weights = NA, rescale.weights = FALSE, ...) {
   
   if (is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
-
-  if (file != "" && grepl("\\.html$",file) && isTRUE(append)) {
-    stop("Append is not supported for html files. No file has been written. Create a list a use view() instead (see documentation)")
-  }  
 
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
+
+  if ("file" %in% names(match.call()))
+    message("file argument is deprecated; use print() or view() function to generate files")
   
   # convert x to data.frame (useful is objet is a tibble or data.table)
   x <- as.data.frame(x)
@@ -45,7 +43,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   attr(output, "st.type") <- "descr"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn.call") <- as.character(match.call())
-  attr(output, "Group") <- ifelse("by.group" %in% names(var.info), var.info$by.group, NA)
+  attr(output, "by.group") <- ifelse("by.group" %in% names(var.info), var.info$by.group, NA)
   attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(var.info), var.info$df.name, NA),
                                 Variable = ifelse("var.names" %in% names(var.info) && length(var.info$var.names) == 1,
                                                   var.info$var.names, NA),
@@ -56,8 +54,14 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
 
   if (exists("ignored"))
      attr(output, "ignored") <- ignored
-  attr(output, "pander.args") <- list(style=style, round=round.digits, plain.ascii=plain.ascii,
-                                      justify=justify, split.table=Inf, ...=...)
+  
+  attr(output, "pander.args") <- list(style = style, 
+                                      round = round.digits, 
+                                      plain.ascii = plain.ascii,
+                                      justify = justify, 
+                                      split.table = Inf,
+                                      keep.trailing.zeros = TRUE,
+                                      ... = ...)
 
   if (identical(weights, NA)) {
 
@@ -180,12 +184,14 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   }
 
   # Fix alignment in Observations table
-  padleft <- function(s, n = 1, chr=" ") {
+  padleft <- function(s, n = 1, chr="\u00A0") {
     paste0(paste(rep(chr, n), collapse = ""), s)
   }
   
-  padright <- function(s, n = 1, chr=" ") {
-    paste0(s, paste(rep(chr, n), collapse = ""))
+  padright <- function(s, n = 1, chr="\u00A0") {
+    sub(pattern = "(.*\\()(.+\\))", 
+        replacement = paste("\\1", "\\2", sep = paste(rep(chr, n), collapse = "")),
+        x = s)
   }
   
   for (c in 1:ncol(output$observ)) {
@@ -206,21 +212,21 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     colnames(output$observ)[2] <- "\\<NA\\>"
   }
   
-  if (file != "") {
-    if (style=="grid" && escape.pipe) {
-      output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-      capture.output(cat(output.esc.pipes), file = file, append = append)
-    } else if (grepl("\\.html$",file)) {
-      file.copy(from=print(output, method="html_noshow", silent=TRUE), 
-                to=normalizePath(file), overwrite = TRUE)
-      cleartmp(silent=TRUE)
-    } else {
-      capture.output(output, file = file, append = append)
-    }
-
-    message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
-    return(invisible(output))
-
-  }
+  # if (file != "") {
+  #   if (grepl("\\.html$",file)) {
+  #     file.copy(from=print(output, method="html_file", silent=TRUE, ), 
+  #               to=normalizePath(file), overwrite = TRUE)
+  #     cleartmp(silent=TRUE)
+  #   } else if (style=="grid" && escape.pipe) {
+  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
+  #     capture.output(cat(output.esc.pipes), file = file, append = append)
+  #   } else else {
+  #     capture.output(output, file = file, append = append)
+  #   }
+  # 
+  #   message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
+  #   return(invisible(output))
+  # }
+  
   return(output)
 }
