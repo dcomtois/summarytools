@@ -57,6 +57,31 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       paste(paste0(rep(x = "#", times = n), collapse = ""), str)
   }
   
+  align.numbers <- function(tbl) {
+    
+    padleft <- function(s, n = 1, chr="\u00A0") {
+      paste0(paste(rep(chr, n), collapse = ""), s)
+    }
+    
+    padright <- function(s, n = 1, chr="\u00A0") {
+      sub(pattern = "(.*\\()(.+\\))",
+          replacement = paste("\\1", "\\2", sep = paste(rep(chr, n), collapse = "")),
+          x = s)
+    }
+    
+    for (c in 1:ncol(tbl)) {
+      pos <- max(regexpr("(", tbl[,c], fixed = TRUE))
+      for (r in 1:nrow(tbl)) {
+        tbl[r,c] <- padleft(tbl[r,c], n = pos - regexpr("(",tbl[r,c], fixed = TRUE))
+      }
+      maxlen <- max(nchar(tbl[,c]))
+      for (r in 1:nrow(tbl)) {
+        tbl[r,c] <- padright(tbl[r,c], n = maxlen - nchar(tbl[r,c]))
+      }
+    }
+    return(tbl)
+  }
+  
   if (method %in% c("browser", "viewer", "html_file")) {
     stpath <- find.package("summarytools")
     
@@ -72,8 +97,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if ("var.info" %in% names(attributes(x))) {
     tmp <- attr(x, "var.info")
     out.info <- tmp[which(!is.na(tmp))]
-    var.info <- tmp[which(!is.na(tmp) && names(tmp) != "Group")]
-    gr.info <- tmp['Group']
+    var.info <- tmp[which(!is.na(tmp) && names(tmp) != "by.group")]
+    gr.info <- tmp['by.group']
     rm(tmp)
     
     if(method=="pander") {
@@ -88,6 +113,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
     
   } else {
+    
+    # "var.info" not in attributes
     out.info <- NA
     var.info <- NA
     gr.info <- NA
@@ -97,22 +124,28 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if(attr(x, "st.type") == "freq") {
     
     # define section title
-    stitle <- ifelse("Weights" %in% names(attr(x, "var.info")),
+    stitle <- ifelse("Weights" %in% var.info,
                      "Weighted Frequencies",
                      "Frequencies")
     
     if(method == "pander") {
       
-      if (!isTRUE(group.only))
-        cat("\n", addHash(stitle, 3), "\n\n", out.info, sep = "", 
-            file = file, append = append)
-      else 
-        cat("\n", gr.info, sep = "", 
-            file = file, append = append)
+      output <- list()
+      
+      if (isTRUE(group.only)) {
+        output[[1]] <- paste0("\n", gr.info)
+      } else { 
+        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", out.info)
+      }
+      
+      output[[2]] <- paste(capture.output(do.call(pander::pander, 
+                                                  append(attr(x, "pander.args"), 
+                                                         list(x = quote(x))))),
+                           collapse = "\n")
+      
+      if (isTRUE(escape.pipe))
+        output[[2]] <- gsub(".\\|","\\\\|", output[[2]])
 
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = quote(x)))), 
-          file = file, append = append)
-    
     } else {
 
       # method = viewer / browser / html_file ------------------------------
@@ -146,26 +179,39 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     
     stitle <- "Cross-Tabulation"
     if(attr(x, "prop.type") %in% c("r", "c", "t")) {
-      c_table <- paste0(x$ctable,
-                        sub(pattern = "\\((\\d[\\.\\%])", replacement = "( \\1", 
-                            x = sprintf(paste0(" (%.", attr(x, "round.digits"), "f%%)"), x$prop*100)))
-      c_table <- matrix(c_table, nrow = nrow(x$ctable), 
-                        dimnames = dimnames(x$ctable), byrow = FALSE)
+      c_table <- paste(unlist(x$ctable),
+                       sprintf(paste0("(%.", attr(x, "pander.args")$round, "f%%)"),
+                               unlist(x$prop*100)))
+      dim(c_table) <- dim(x$ctable)
+      dimnames(c_table) <- dimnames(x$ctable)
+      c_table <- align.numbers(c_table)
     } else {
       c_table <- x$ctable
     }
     
     if(method == "pander") {
       
-      if (!isTRUE(group.only)) 
-        cat("\n", addHash(stitle, 3), "\n", file = file, append = append)
+      output <- list()
+
+      if (isTRUE(group.only)) { 
+        output[[1]] <- ""
+      } else {
+        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n")
+      }
       
-      cat("\n", addHash(paste(names(dimnames(x$ctable)), collapse = " X "), 4), "\n",
-          addHash("Proportions: ", 4), switch(attr(x, "prop.type"), r="Rows", c="Columns", t="Total"),
-          sep = "", file = file, append = append)
-      
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x = ftable(c_table)))),
-          file = file, append = append)
+      output[[2]] <- paste0("\n", 
+                            addHash(paste0(names(dimnames(x$ctable)), collapse = " X "), 4), 
+                           "\n",
+                           addHash("Proportions: ", 4), 
+                           switch(attr(x, "prop.type"),
+                                  r="Rows", 
+                                  c="Columns",
+                                  t="Total"))
+
+      output[[3]] <- paste(capture.output(do.call(pander::pander, 
+                                                  append(attr(x, "pander.args"), 
+                                                         list(x = ftable(c_table))))),
+                           collapse = "\n")
       
     } else {
       
@@ -207,25 +253,37 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     if(!silent && "ignored" %in% names(attributes(x)))
       message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
     
-    stitle <- ifelse("Weights" %in% names(attr(x, "var.info")),
+    stitle <- ifelse("Weights" %in% var.info,
                      "Weighted Descriptive Statistics",
                      "Descriptive Statistics")
     
     if(method=="pander") {
+      
+      output <- list()
+      
       if (!isTRUE(group.only))
-        cat("\n", addHash(stitle, 3), "\n", out.info, sep = "", 
-            file = file, append = append)
+        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", out.info)
       else
-        cat("\n", gr.info, sep = "", 
-            file = file, append = append)
+        output[[1]] <- paste0("\n", gr.info)
       
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x=quote(x$stats)))),
-            file = file, append = append)
+      output[[2]] <- paste(capture.output(do.call(pander::pander, 
+                                                  append(attr(x, "pander.args"), 
+                                                         list(x=quote(x$stats))))),
+                           collapse = "\n")
+
+      output[[3]] <- paste0("\n", addHash("Observations"))
       
-      cat(addHash("Observations"), file = file, append = append)
+      obstable <- paste(unlist(x$observ), 
+                        sprintf(paste0("(%.", attr(d, "pander.args")$round, "f%%)"), 
+                                unlist(x$observ.pct*100)))
+      dim(obstable) <- dim(x$observ)
+      dimnames(obstable) <- dimnames(x$observ)
+      obstable <- align.numbers(obstable)
       
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x=quote(x$observ)))),
-          file = file, append = append)
+      output[[3]] <- paste(capture.output(do.call(pander::pander, 
+                                                  append(attr(x, "pander.args"), 
+                                                         list(x=quote(obstable))))),
+                           collapse = "\n")
       
     } else {
       
@@ -268,13 +326,15 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     
     if(method=="pander") {
       
-      cat("\n", addHash(stitle, 3), "\n", sep = "", 
-          file = file, append = append)
-      cat("\n", addHash(attr(x, "df.name"), 4), "\n", sep = "", 
-          file = file, append = append)
-      cat(do.call(pander::pander, append(attr(x, "pander.args"), list(x=quote(x)))), 
-          file = file, append = append)
+      output <- list()
       
+      output[[1]] <- paste0("\n", addHash(stitle, 3), "\n")
+      output[[2]] <- paste0("\n", addHash(attr(x, "df.name"), 4), "\n")
+      output[[3]] <- paste(capture.output(do.call(pander::pander, 
+                                                  append(attr(x, "pander.args"), 
+                                                         list(x=quote(x))))),
+                           collapse = "\n")
+
     } else {
 
       # method = viewer / browser --------------------------------
@@ -298,8 +358,16 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
   }
 
-  # Put together output file content  --------------------------------------------
-  if(method %in% c('browser', 'viewer', 'html_file')) {
+  
+  # Do the actual printing or writing to file ---------------------------------------------
+  
+  if(method == "pander") {
+    cat(do.call(paste, output), file = file, append = append)
+    #return(output)
+  }
+  
+  # Put together output file content when output has html format --------------------------
+  else {
     
     if (isTRUE(append)) {
         f <- file(file, open = "r")
@@ -327,9 +395,6 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
     
     outfile <- ifelse(file == "", paste0(tempfile(),".html"), file)
-    #if(file.exists(file))
-    #  unlink(file)
-    #capture.output(cat(htmlcontent), file = outfile, append = append)
     capture.output(cat(htmlcontent), file = outfile)
 
     if(method=="viewer") {

@@ -52,24 +52,26 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                                 Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
                                 Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
 
-  if (exists("ignored"))
-     attr(output, "ignored") <- ignored
-  
   attr(output, "pander.args") <- list(style = style, 
                                       round = round.digits, 
+                                      digits = 6,
                                       plain.ascii = plain.ascii,
                                       justify = justify, 
                                       split.table = Inf,
                                       keep.trailing.zeros = TRUE,
                                       ... = ...)
-
+  
+  if (exists("ignored"))
+    attr(output, "ignored") <- ignored
+  
   if (identical(weights, NA)) {
 
     # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
     output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
                                Max=numeric(), MAD=numeric(), IQR=numeric(), CV=numeric(),
                                Skewness=numeric(), SE.Skewness=numeric(), Kurtosis=numeric())
-    output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(),check.names = FALSE)
+    output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
+    output$observ.pct <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
 
     # Iterate over columns in x
     for(i in seq_along(x)) {
@@ -78,9 +80,9 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
 
       # Extract number and proportion of missing and valid values
       n.valid <- sum(!is.na(variable))
-      p.valid <- round(n.valid / length(variable) * 100, digits = round.digits)
+      p.valid <- n.valid / length(variable)
       n.NA <- sum(is.na(variable))
-      p.NA <- round(n.NA / length(variable) * 100, digits = round.digits)
+      p.NA <- n.NA / length(variable)
 
       # Insert stats into output dataframe
       output$stats[i,] <- c(variable.mean <- mean(variable, na.rm=na.rm),
@@ -96,11 +98,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                             rapportools::kurtosis(variable, na.rm=na.rm))
       
       # Insert valid/missing info into output dataframe
-      output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
-                             paste(n.NA, " (", p.NA, "%)",sep=""),
-                             paste(n.valid + n.NA, "(100%)"))
-
-
+      output$observ[i,] <- c(n.valid, n.NA, n.valid + n.NA)
+      output$observ.pct[i,] <- c(p.valid, p.NA, p.valid + p.NA)
     }
   }
 
@@ -115,7 +114,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
       output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
                                  Max=numeric(),  MAD=numeric(), CV=numeric())
       output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
-
+      output$observ.pct <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
+      
       # Rescale weights if necessary
       if (rescale.weights)
         weights <- weights / sum(weights) * nrow(x)
@@ -127,10 +127,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
         variable <- as.numeric(x[,i])
 
         # Extract number and proportion of missing and valid values
-        n.valid <- round(sum(weights[which(!is.na(variable))]), digits = round.digits)
-        p.valid <- round(n.valid / sum(weights) * 100, digits = round.digits)
-        n.NA <- round(sum(weights[which(is.na(variable))]), digits = round.digits)
-        p.NA <- round(n.NA / sum(weights) * 100, digits = round.digits)
+        n.valid <- sum(weights[which(!is.na(variable))])
+        p.valid <- n.valid / sum(weights)
+        n.NA <- sum(weights[which(is.na(variable))])
+        p.NA <- n.NA / sum(weights)
 
         # Remove missing values from variable and from corresponding weights
         ind <- which(!is.na(variable))
@@ -148,9 +148,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                               variable.mean/variable.sd)
         
         # Insert valid/missing info into output dataframe
-        output$observ[i,] <- c(paste(n.valid, " (", p.valid, "%)",sep=""),
-                               paste(n.NA, " (", p.NA, "%)",sep=""),
-                               paste(n.valid + n.NA, "(100%)"))
+        output$observ[i,] <- c(n.valid, n.NA, n.valid + n.NA)
+        output$observ.pct[i,] <- c(p.valid, p.NA, p.valid + p.NA)
       }
   }
 
@@ -164,6 +163,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
       rownames(output$stats)[i] <- paste0("Var",i)
     }
     rownames(output$observ)[i] <- rownames(output$stats)[i]
+    rownames(output$observ.pct)[i] <- rownames(output$stats)[i]
   }
 
   # Remove unwanted stats
@@ -181,28 +181,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   if (!transpose) {
     output$stats <- t(output$stats)
     output$observ <- t(output$observ)
-  }
-
-  # Fix alignment in Observations table
-  padleft <- function(s, n = 1, chr="\u00A0") {
-    paste0(paste(rep(chr, n), collapse = ""), s)
-  }
-  
-  padright <- function(s, n = 1, chr="\u00A0") {
-    sub(pattern = "(.*\\()(.+\\))", 
-        replacement = paste("\\1", "\\2", sep = paste(rep(chr, n), collapse = "")),
-        x = s)
-  }
-  
-  for (c in 1:ncol(output$observ)) {
-    pos <- max(regexpr("(", output$observ[,c], fixed = TRUE))
-    for (r in 1:nrow(output$observ)) {
-      output$observ[r,c] <- padleft(output$observ[r,c], n = pos - regexpr("(",output$observ[r,c], fixed = TRUE))
-    }
-    maxlen <- max(nchar(output$observ[,c]))
-    for (r in 1:nrow(output$observ)) {
-      output$observ[r,c] <- padright(output$observ[r,c], n = maxlen - nchar(output$observ[r,c]))
-    }
+    output$observ.pct <- t(output$observ.pct)
   }
 
   # Change <NA> for \<NA\> in markdown tables
@@ -211,22 +190,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   } else if (style=="rmarkdown" && !plain.ascii && transpose){
     colnames(output$observ)[2] <- "\\<NA\\>"
   }
-  
-  # if (file != "") {
-  #   if (grepl("\\.html$",file)) {
-  #     file.copy(from=print(output, method="html_file", silent=TRUE, ), 
-  #               to=normalizePath(file), overwrite = TRUE)
-  #     cleartmp(silent=TRUE)
-  #   } else if (style=="grid" && escape.pipe) {
-  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-  #     capture.output(cat(output.esc.pipes), file = file, append = append)
-  #   } else else {
-  #     capture.output(output, file = file, append = append)
-  #   }
-  # 
-  #   message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
-  #   return(invisible(output))
-  # }
   
   return(output)
 }

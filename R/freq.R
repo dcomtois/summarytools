@@ -97,28 +97,13 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right",
 
   attr(output, "pander.args") <- list(style = style,
                                       round = round.digits,
+                                      digits = 6,
                                       plain.ascii = plain.ascii,
                                       justify = justify,
                                       split.table = Inf,
                                       keep.trailing.zeros = TRUE,
                                       ... = ...)
-  #if (exists("wgts"))
-  #   attr(output, "weights") <- wgts
-
-  # if (file != "") {
-  #   if (grepl("\\.html$", file)) {
-  #     file.copy(from=print(output, method="html_file", report.title = report.title, append = append, silent=TRUE, ...), to=normalizePath(file), overwrite = TRUE)
-  #     cleartmp(silent=TRUE)
-  #   } else if (style=="grid" && isTRUE(escape.pipe)) {
-  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-  #     capture.output(cat(output.esc.pipes), file = file, append = append)
-  #   } else {
-  #     capture.output(output, file = file, append = append)
-  #   }
-  #   message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
-  #   return(invisible(output))
-  # }
-
+  
   return(output)
-
+  
 }

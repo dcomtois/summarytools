@@ -60,29 +60,13 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
   attr(output, "fn.call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
   attr(output, "prop.type") <- prop
-  attr(output, "round.digits") <- round.digits
+  #attr(output, "round.digits") <- round.digits
   attr(output, "pander.args") <- list(style = style,
-                                      #round = round.digits,
+                                      round = round.digits,
+                                      digits = 6,
                                       plain.ascii = plain.ascii,
                                       justify = justify,
                                       split.table = Inf,
                                       ... = ...)
-  
-  # if (file != "") {
-  #   if (style=="grid" && escape.pipe && !grepl("\\.html$",file)) {
-  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-  #     capture.output(cat(output.esc.pipes), file = file, append = append)
-  #   } else if (grepl("\\.html$",file)) {
-  #     #file.copy(from=print(output, method = "html_file", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-  #     #cleartmp(silent=TRUE)
-  #     print(x = output, method = 'html_file', silent = TRUE, file = file, append = append) 
-  #   } else {
-  #     capture.output(output, file = file, append = append)
-  #   }
-  #   
-  #   message('Output successfully written to file "', normalizePath(file, mustWork = FALSE), '"') 
-  #   return(invisible(output))
-  # }
-  
   return(output)
 }

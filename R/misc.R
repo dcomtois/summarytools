@@ -5,16 +5,7 @@
 .st.env$byInfo <- list()
 
 
-# .parse_arg ####################################################################
-#
-# This function takes a string referring to existing data and parses it
-# to get information on the data structure.
-#
-# info returned: df.name, var.names, rows.subset
-
-#scalls <- sys.calls()
-#sframes <- sys.frames()
-#mcall <- match.call()
+# .parse_arg() -----------------------------------------------------------
 
 .parse_arg <- function(scalls, sframes, mcall) {
   
@@ -243,6 +234,8 @@
   
   return(output[which(sapply(output, length) > 0)])
 }
+
+# cleartmp() ----------------------------------------------------------
 
 cleartmp <- function(all=FALSE, silent=FALSE) {
   if(length(.st.env$tmpfiles) == 0) {

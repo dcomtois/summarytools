@@ -230,24 +230,6 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
 
   if(!varnumbers)
     output$No. <- NULL
-  
-  
-  # # Escape pipes when needed (this is for Pandoc to correctly handle grid tables with multiline cells)
-  # if(!is.na(file)) {
-  # 
-  #   if(style=="grid" && escape.pipe) {
-  #     output.esc.pipes <- paste(gsub(".\\|","\\\\|",capture.output(output)), collapse="\n")
-  #     capture.output(cat(output.esc.pipes), file = file, append = append)
-  #   }
-  #   else if(grepl("\\.html$",file)) {
-  #     file.copy(from=print(output, method="html_noshow", silent=TRUE), to=normalizePath(file), overwrite = TRUE)
-  #     cleartmp(silent=TRUE)
-  #   } else {
-  #     capture.output(output, file = file, append = append)
-  #   }
-  #   message("Output successfully written to file ", normalizePath(file, mustWork = FALSE))
-  #   return(invisible(output))
-  # }
 
   return(output)
 }
