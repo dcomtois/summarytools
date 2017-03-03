@@ -119,7 +119,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     var.info <- NA
     gr.info <- NA
   }
-  
+
+    
   # printing freq objects -----------------------------------------------------
   if(attr(x, "st.type") == "freq") {
     
@@ -143,12 +144,13 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                                                          list(x = quote(x))))),
                            collapse = "\n")
       
-      if (isTRUE(escape.pipe))
-        output[[2]] <- gsub(".\\|","\\\\|", output[[2]])
+      if (isTRUE(escape.pipe) && attr(x, "pander.args")$style == "grid")
+        output[[2]] <- gsub("\\|","\\\\|", output[[2]])
 
+
+    # method = viewer / browser / html_file -----------------------------
     } else {
 
-      # method = viewer / browser / html_file ------------------------------
       freq.table.html <-
         xtable::print.xtable(xtable::xtable(x = x, align = "rccccc",
                                             digits = c(0,
@@ -212,10 +214,13 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                                                   append(attr(x, "pander.args"), 
                                                          list(x = ftable(c_table))))),
                            collapse = "\n")
-      
+
+      if (isTRUE(escape.pipe) && attr(x, "pander.args")$style == "grid")
+        output[[3]] <- gsub("\\|","\\\\|", output[[3]])
+
+    # method = viewer / browser  ------------------------------
     } else {
       
-      # method = viewer / browser  ------------------------------
       dnn <- names(dimnames(c_table))
       addtorow <- list()
       addtorow$pos <- list(0, 0)
@@ -285,9 +290,14 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                                                          list(x=quote(obstable))))),
                            collapse = "\n")
       
+      if (isTRUE(escape.pipe) && attr(x, "pander.args")$style == "grid") {
+        output[[2]] <- gsub("\\|","\\\\|", output[[2]])
+        output[[3]] <- gsub("\\|","\\\\|", output[[3]])
+      }
+        
+    # method = viewer / browser / html_file --------------------------
     } else {
       
-      # method = viewer / browser / html_file --------------------------
       descr.table.html <-
         xtable::print.xtable(xtable::xtable(x = x$stats,
                                             align = paste0("r", paste(rep("c",ncol(x$stats)),
@@ -335,9 +345,13 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                                                          list(x=quote(x))))),
                            collapse = "\n")
 
+      if (isTRUE(escape.pipe) && attr(x, "pander.args")$style == "grid")
+        output[[3]] <- gsub("\\|","\\\\|", output[[3]])
+
+
+    # method = viewer / browser --------------------------------
     } else {
 
-      # method = viewer / browser --------------------------------
       dfSummary.html <-
         xtable::print.xtable(xtable::xtable(x = x,digits = 0,
                                             align = paste0("c", paste(rep("l",ncol(x)),collapse=""))),
@@ -360,10 +374,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
 
   
   # Do the actual printing or writing to file ---------------------------------------------
-  
-  if(method == "pander") {
+  if (method == "pander") {
     cat(do.call(paste, output), file = file, append = append)
-    #return(output)
   }
   
   # Put together output file content when output has html format --------------------------
