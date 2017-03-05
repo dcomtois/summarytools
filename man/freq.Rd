@@ -3,7 +3,7 @@
 \title{Frequency Tables for Factors and Other Discrete Data}
 \description{Displays weighted or unweighted frequencies including <NA> counts and proportions.}
 \usage{
-freq(x, round.digits = 2, style = "simple", justify = "right",
+freq(x, round.digits = 2, style = "simple", justify = "right", order = "names",
      plain.ascii = TRUE, weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
@@ -11,6 +11,7 @@ freq(x, round.digits = 2, style = "simple", justify = "right",
   \item{round.digits}{Number of sig. digits to keep in output. Defaults to \code{2}.}
   \item{style}{Style of pander tables, one of \dQuote{simple} (default), \dQuote{grid} and \dQuote{rmarkdown}.}
   \item{justify}{\pkg{pander} argument. Defaults to "right".}
+  \item{order}{Ordering of rows in frequency table; \dQuote{names} (default), or \dQuote{freq}}
   \item{plain.ascii}{\pkg{pander} argument; when results are displayed in console, this avoids having \emph{markdown} markup characters in the tables. Defaults to TRUE, except when \code{style='rmarkdown'} (see Details).}
   \item{weights}{Vector of weights, having same length as x}
   \item{rescale.weights}{Logical parameter. When \code{TRUE}, the function makes the sum of weights equal to the length of x, so that the total N remains unchanged. \code{FALSE} by default.}

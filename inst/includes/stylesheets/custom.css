@@ -1,13 +1,6 @@
 /* Add here any custom settings. Since this is called after bootstrap.min.css, this file has priority */
 body {
   margin: 20px;
-  /*line-height: 85%;*/
-}
-
-.table {
-  width: auto;
-  max-width: 100%;
-  margin-bottom: 20px;
 }
 
 th {
@@ -17,4 +10,23 @@ th {
 td {
   white-space:pre; /* Allows multiline cells */
   min-width: 120px;
+}
+
+.table {
+  width: auto;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.monospace-cells {
+  font-family: monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+/* http://stackoverflow.com/questions/13992026/how-to-center-right-aligned-numbers-in-table-column-using-css
+.numSpan {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
 }

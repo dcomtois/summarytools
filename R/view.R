@@ -37,5 +37,5 @@ view <- function(x, method = "viewer", silent = FALSE, footer = FALSE,
   
   else message(paste("x must either be a summarytools object created with freq(), descr(),",
                      "ctable(), or a list of freq() / descr() objects created using by().",
-                     "Support for by() used with ctable() is due for a later release."))
+                     "Support for by() used with ctable() is not available yet."))
 }

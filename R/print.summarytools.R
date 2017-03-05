@@ -36,17 +36,18 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if ("Subset" %in% names(argslst))
     attr(x, "var.info")['Subset'] <- argslst$Subset
   if ("Group" %in% names(argslst))
-    attr(x, "var.info")['by.group'] <- argslst$Group
+    attr(x, "var.info")['Group'] <- argslst$Group
+    #attr(x, "Group") <- argslst$Group
   if ("Weights" %in% names(argslst))
     attr(x, "var.info")['Weights'] <- argslst$Weights
   
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (method == "pander" && attr(x, "pander.args")$style == 'rmarkdown' && 
       isTRUE(attr(x, "pander.args")$plain.ascii) && (!"plain.ascii" %in% (names(match.call())))) {
-    plain.ascii <- FALSE
+    attr(x, "pander.args")$plain.ascii <- FALSE
   }
   
-  if (isTRUE(group.only) && !"by.group" %in% names (attributes(x)))
+  if (isTRUE(group.only) && !"Group" %in% names(attr(x, "var.info")))
     stop("group.only can only be used with objects created using by()")
   
   # Function to add '#' in non-plain-ascii pander tables
@@ -91,41 +92,39 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                     " (<a href='http://www.r-project.org/'>R</a> version ", getRversion(), ")",
                     "<br/>", Sys.Date())
   }
-  
-  # Build 3 "info" elements: out.info, var.info (same as out.info but excludes Group), 
-  # and gr.info (Group alone)
+
+  # Build 3 "info" elements: all.info, var.info (same as all.info but excludes by.group), 
+  # and Group (group alone)
   if ("var.info" %in% names(attributes(x))) {
-    tmp <- attr(x, "var.info")
-    out.info <- tmp[which(!is.na(tmp))]
-    var.info <- tmp[which(!is.na(tmp) && names(tmp) != "by.group")]
-    gr.info <- tmp['by.group']
-    rm(tmp)
-    
+    vinfo <- attr(x, "var.info") # just to simplify coding below
+    vinfo <- vinfo[!is.na(vinfo)]
+    all.info <- vinfo
+    var.info <- vinfo[which(names(vinfo) != "Group")]
+    Group <- ifelse('Group' %in% names(vinfo), vinfo['Group'], NA)
+
     if(method=="pander") {
-      out.info <- paste(addHash(names(out.info)), out.info, sep=": ", collapse="\n")
+      all.info <- paste(addHash(names(all.info)), all.info, sep=": ", collapse="\n")
       var.info <- paste(addHash(names(var.info)), var.info, sep=": ", collapse="\n")
-      if (!is.na(gr.info))
-        gr.info <- paste(addHash("Group: "), gr.info)
+      if (!is.na(Group))
+        Group <- paste(addHash("Group: "), Group)
     } else {
-      var.info <- as.matrix(paste(names(var.info), var.info, sep=": "))
-      if (!is.na(gr.info))
-        gr.info <- paste("Group: ", gr.info)
+      var.info <- paste(names(var.info), var.info, sep=": ", collapse = "<br/>")
+      if (!is.na(Group))
+        Group <- paste("Group: ", Group)
     }
-    
+
   } else {
-    
-    # "var.info" not in attributes
-    out.info <- NA
+    # "var.info" not in names(attributes)
+    all.info <- NA
     var.info <- NA
-    gr.info <- NA
+    Group <- NA
   }
 
-    
   # printing freq objects -----------------------------------------------------
   if(attr(x, "st.type") == "freq") {
     
     # define section title
-    stitle <- ifelse("Weights" %in% var.info,
+    stitle <- ifelse("Weights" %in% names(vinfo),
                      "Weighted Frequencies",
                      "Frequencies")
     
@@ -134,9 +133,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       output <- list()
       
       if (isTRUE(group.only)) {
-        output[[1]] <- paste0("\n", gr.info)
+        output[[1]] <- paste0("\n", Group)
       } else { 
-        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", out.info)
+        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", all.info)
       }
       
       output[[2]] <- paste(capture.output(do.call(pander::pander, 
@@ -164,11 +163,10 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       doc_div <- tags$div(class="container",
                           if (!isTRUE(group.only)) 
                             h2(stitle),
-                          if (!isTRUE(group.only)) 
-                            h4(var.info),
-                          if (!is.na(gr.info))
-                            h5(gr.info),
-                          br(),
+                          if (!isTRUE(group.only))
+                            h4(HTML(text = var.info)),
+                          if (!is.na(Group))
+                            hr(), h4(Group),
                           HTML(text = gsub("<td> ", "<td>", freq.table.html)),
                           if (isTRUE(footer))
                             HTML(text = fnote))
@@ -242,10 +240,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                           if (!isTRUE(group.only)) 
                             h2(stitle),
                           if (!isTRUE(group.only)) 
-                            h4(var.info),
-                          if (!is.na(gr.info))
-                            h5(gr.info),
-                          br(),
+                            h4(HTML(text = var.info)),
+                          if (!is.na(Group))
+                            hr(), h4(Group),
                           HTML(text = gsub("<td> ", "<td>", ctable.html)),
                           if (isTRUE(footer))
                             HTML(text = fnote))
@@ -258,7 +255,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     if(!silent && "ignored" %in% names(attributes(x)))
       message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
     
-    stitle <- ifelse("Weights" %in% var.info,
+    stitle <- ifelse("Weights" %in% names(vinfo),
                      "Weighted Descriptive Statistics",
                      "Descriptive Statistics")
     
@@ -267,9 +264,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       output <- list()
       
       if (!isTRUE(group.only))
-        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", out.info)
+        output[[1]] <- paste0("\n", addHash(stitle, 3), "\n\n", all.info)
       else
-        output[[1]] <- paste0("\n", gr.info)
+        output[[1]] <- paste0("\n", Group)
       
       output[[2]] <- paste(capture.output(do.call(pander::pander, 
                                                   append(attr(x, "pander.args"), 
@@ -277,50 +274,60 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
                            collapse = "\n")
 
       output[[3]] <- paste0("\n", addHash("Observations"))
-      
-      obstable <- paste(unlist(x$observ), 
-                        sprintf(paste0("(%.", attr(d, "pander.args")$round, "f%%)"), 
+    }
+    
+    
+    if ("Weights" %in% names(vinfo)) {
+      obstable <- paste(sprintf(paste0("%.", attr(x, "pander.args")$round, "f"), 
+                                unlist(x$observ)), 
+                        sprintf(paste0("(%.", attr(x, "pander.args")$round, "f%%)"), 
                                 unlist(x$observ.pct*100)))
-      dim(obstable) <- dim(x$observ)
-      dimnames(obstable) <- dimnames(x$observ)
-      obstable <- align.numbers(obstable)
+    } else {
+      obstable <- paste(unlist(x$observ), 
+                        sprintf(paste0("(%.", attr(x, "pander.args")$round, "f%%)"), 
+                                unlist(x$observ.pct*100)))
+    }
       
-      output[[3]] <- paste(capture.output(do.call(pander::pander, 
-                                                  append(attr(x, "pander.args"), 
-                                                         list(x=quote(obstable))))),
-                           collapse = "\n")
+    dim(obstable) <- dim(x$observ)
+    dimnames(obstable) <- dimnames(x$observ)
+    obstable <- align.numbers(obstable)
+
+    if(method=="pander") {
+      output[[3]] <- paste(capture.output(
+                            do.call(pander::pander, append(attr(x, "pander.args"), 
+                                                           list(x=quote(obstable))))),
+                            collapse = "\n")
       
       if (isTRUE(escape.pipe) && attr(x, "pander.args")$style == "grid") {
         output[[2]] <- gsub("\\|","\\\\|", output[[2]])
         output[[3]] <- gsub("\\|","\\\\|", output[[3]])
       }
+    }
         
-    # method = viewer / browser / html_file --------------------------
-    } else {
-      
+  # method = viewer / browser / html_file --------------------------
+   else {
       descr.table.html <-
         xtable::print.xtable(xtable::xtable(x = x$stats,
-                                            align = paste0("r", paste(rep("c",ncol(x$stats)),
-                                                                     collapse="")),
+                                            align = paste0("r", paste(rep("c",ncol(x$stats)), collapse="")),
                                             digits = c(0,rep(attr(x, "pander.args")$round,
                                                              ncol(x$stats)))),
                              type = "html", print.results = FALSE,
                              html.table.attributes = 'class="table table-striped table-bordered"')
 
       obs.table.html <-
-        xtable::print.xtable(xtable::xtable(x = x$observ, align = paste0("r", paste(rep("c",ncol(x$observ)),collapse="")),
-                                            digits = c(0,rep(attr(x, "pander.args")$round,ncol(x$observ)))),
+        xtable::print.xtable(xtable::xtable(x = obstable, 
+                                            align = paste0("r", paste(rep("c",ncol(x$observ)), collapse="")),
+                                            digits = c(0,rep(attr(x, "pander.args")$round, ncol(x$observ)))),
                              type = "html", print.results = FALSE,
-                             html.table.attributes = 'class="table table-striped table-bordered"')
+                             html.table.attributes = 'class="table table-striped table-bordered monospace-cells"')
 
       doc_div <- tags$div(class="container",
                           if (!isTRUE(group.only))
                             h2(stitle),
                           if (!isTRUE(group.only))
-                            h4(var.info),
-                          if (!is.na(gr.info))
-                            h5(gr.info),
-                          br(),
+                            h4(HTML(text = var.info)),
+                          if (!is.na(Group))
+                            hr(), h4(Group),
                           HTML(text = gsub("<td> ", "<td>", descr.table.html)),
                           h5("Observations"),
                           HTML(gsub("<td> ", "<td>", obs.table.html)),
@@ -362,7 +369,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       doc_div <- tags$div(class="container",
                           h2(stitle),
                           h3(attr(x, "df.name")),
-                          if("rows.subset" %in% names(attributes(x)$out.info))
+                          if("rows.subset" %in% names(attributes(x)$all.info))
                             p("Rows subset:", attr(x,"subset")),
                           h4("Number of rows: ", attr(x, "n.obs")),
                           br(),
@@ -428,14 +435,21 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     
     # return file path and update tmpfiles vector when method = browser or viewer ----------------------
     if(method %in% c("browser", "viewer") && file == "") {
+      .st.env$tmpfiles <- c(.st.env$tmpfiles, outfile)
+
       if(!silent)
         message(paste0("Temporary file created: ", outfile, '\nTo delete, use cleartmp().'))
-      .st.env$tmpfiles <- c(.st.env$tmpfiles, outfile)
-      return(invisible(normalizePath(outfile)))
+      #browser()
+      return(invisible(normalizePath(outfile, winslash = "\\", mustWork = FALSE)))
+      
     } else if (method == "html_file") {
-      return(invisible(normalizePath(outfile, mustWork = FALSE)))
+      
+      return(normalizePath(outfile, winslash = "\\", mustWork = FALSE)) 
+    
     } else {
+      
       return(invisible())
+    
     }
   }
 }

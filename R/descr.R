@@ -21,7 +21,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   }
 
   # Get into about x from parsing function
-  var.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  parse.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
   
   # Identify and exclude non-numerical columns
   col.to.remove <- which(!sapply(x, is.numeric))
@@ -30,7 +30,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     ignored <- paste(colnames(x)[col.to.remove], collapse=", ")
     # message("Non-numerical variable(s) ignored: ", ignored)
     x <- x[-col.to.remove]
-    var.info$var.names <- var.info$var.names[-col.to.remove]
+    parse.info$var.names <- parse.info$var.names[-col.to.remove]
   }
 
   if (ncol(x) == 0) {
@@ -43,14 +43,15 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   attr(output, "st.type") <- "descr"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn.call") <- as.character(match.call())
-  attr(output, "by.group") <- ifelse("by.group" %in% names(var.info), var.info$by.group, NA)
-  attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(var.info), var.info$df.name, NA),
-                                Variable = ifelse("var.names" %in% names(var.info) && length(var.info$var.names) == 1,
-                                                  var.info$var.names, NA),
+  #attr(output, "Group") <- ifelse("by.group" %in% names(parse.info), parse.info$by.group, NA)
+  attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(parse.info), parse.info$df.name, NA),
+                                Variable = ifelse("var.names" %in% names(parse.info) && length(parse.info$var.names) == 1,
+                                                  parse.info$var.names, NA),
                                 Label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
                                                Hmisc::label(x), NA),
-                                Subset = ifelse("rows.subset" %in% names(var.info), var.info$rows.subset, NA),
-                                Weights = ifelse(!identical(weights,NA), substitute(weights), NA))
+                                Subset = ifelse("rows.subset" %in% names(parse.info), parse.info$rows.subset, NA),
+                                Weights = substitute(weights),
+                                Group = ifelse("by.group" %in% names(parse.info), parse.info$by.group, NA))
 
   attr(output, "pander.args") <- list(style = style, 
                                       round = round.digits, 
@@ -109,55 +110,60 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     # Check that weights vector has the right length
     if (length(weights) != nrow(x))
       stop("weights vector must have the same length as x")
+    
+    if (sum(is.na(weights)) > 0) {
+      warning("Missing values on weight variable have been detected and were treated as zeroes.")
+      weights[is.na(weights)] <- 0
+    }
 
-      # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
-      output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
-                                 Max=numeric(),  MAD=numeric(), CV=numeric())
-      output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
-      output$observ.pct <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
+    # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
+    output$stats <- data.frame(Mean=numeric(), Std.Dev=numeric(), Min=numeric(), Median=numeric(), 
+                               Max=numeric(),  MAD=numeric(), CV=numeric())
+    output$observ <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
+    output$observ.pct <- data.frame(Valid=numeric(), "<NA>"=numeric(), Total=numeric(), check.names = FALSE)
+    
+    # Rescale weights if necessary
+    if (rescale.weights)
+      weights <- weights / sum(weights) * nrow(x)
+    
+    # Add weights to output object attributes
+    # attr(output, "weights") <- weights
+    
+    for(i in seq_along(x)) {
+      variable <- as.numeric(x[,i])
       
-      # Rescale weights if necessary
-      if (rescale.weights)
-        weights <- weights / sum(weights) * nrow(x)
-
-      # Add weights to output object attributes
-      # attr(output, "weights") <- weights
-
-      for(i in seq_along(x)) {
-        variable <- as.numeric(x[,i])
-
-        # Extract number and proportion of missing and valid values
-        n.valid <- sum(weights[which(!is.na(variable))])
-        p.valid <- n.valid / sum(weights)
-        n.NA <- sum(weights[which(is.na(variable))])
-        p.NA <- n.NA / sum(weights)
-
-        # Remove missing values from variable and from corresponding weights
-        ind <- which(!is.na(variable))
-        variable <- variable[ind]
-        weights <- weights[ind]
-
-        # Fill in the output dataframe; here na.rm is redundant since na's have been removed
-        # Calculate the weighted stats
-        output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
-                              variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
-                              min(variable),
-                              matrixStats::weightedMedian(variable, weights, refine = TRUE),
-                              max(variable),
-                              matrixStats::weightedMad(variable, weights, refine = TRUE),
-                              variable.mean/variable.sd)
-        
-        # Insert valid/missing info into output dataframe
-        output$observ[i,] <- c(n.valid, n.NA, n.valid + n.NA)
-        output$observ.pct[i,] <- c(p.valid, p.NA, p.valid + p.NA)
-      }
+      # Extract number and proportion of missing and valid values
+      n.valid <- sum(weights[which(!is.na(variable))])
+      p.valid <- n.valid / sum(weights)
+      n.NA <- sum(weights[which(is.na(variable))])
+      p.NA <- n.NA / sum(weights)
+      
+      # Remove missing values from variable and from corresponding weights
+      ind <- which(!is.na(variable))
+      variable <- variable[ind]
+      weights <- weights[ind]
+      
+      # Fill in the output dataframe; here na.rm is redundant since na's have been removed
+      # Calculate the weighted stats
+      output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
+                            variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
+                            min(variable),
+                            matrixStats::weightedMedian(variable, weights, refine = TRUE),
+                            max(variable),
+                            matrixStats::weightedMad(variable, weights, refine = TRUE),
+                            variable.mean/variable.sd)
+      
+      # Insert valid/missing info into output dataframe
+      output$observ[i,] <- c(n.valid, n.NA, n.valid + n.NA)
+      output$observ.pct[i,] <- c(p.valid, p.NA, p.valid + p.NA)
+    }
   }
-
+  
   for(i in seq_along(x)) {
-
+    
     # Add row names (from col.names/var.name of the parse function)
-    if ("var.names" %in% names(var.info)) {
-      rownames(output$stats)[i] <- var.info$var.names[i]
+    if ("var.names" %in% names(parse.info)) {
+      rownames(output$stats)[i] <- parse.info$var.names[i]
     } else {
       # this is necessary in order to support by()
       rownames(output$stats)[i] <- paste0("Var",i)
