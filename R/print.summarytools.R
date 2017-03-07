@@ -179,12 +179,12 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   
   # printing ctable objects -----------------------------------------------------
   if(attr(x, "st_type") == "ctable") {
-
+    
     sect_title <- "Cross-Tabulation"
     if(attr(x, "prop_type") %in% c("r", "c", "t")) {
       ctable <- paste(unlist(x$ctable),
-                       sprintf(paste0("(%.", attr(x, "pander_args")$round, "f%%)"),
-                               unlist(x$prop*100)))
+                      sprintf(paste0("(%.", attr(x, "pander_args")$round, "f%%)"),
+                              unlist(x$prop*100)))
       dim(ctable) <- dim(x$ctable)
       ctable <- align_numbers(ctable)
       dimnames(ctable) <- dimnames(x$ctable)
