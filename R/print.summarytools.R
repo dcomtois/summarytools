@@ -420,7 +420,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       
       htmlcontent <-
         tags$html(
-          tags$head(
+          tags$header(
             tags$meta(charset="utf-8"),
             tags$title(ifelse(is.na(report.title), sect_title, report.title)),
             includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
@@ -429,7 +429,11 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
           tags$body(doc_div)
         )
       
-      htmlcontent <- paste("<!DOCTYPE html>", iconv(as.character(htmlcontent), "", "UTF-8"), sep = "\n")
+      htmlcontent <- gsub(pattern = "<(/?)(header)>", replacement = "<\\1head>",
+                          paste("<!DOCTYPE html>",
+                                iconv(as.character(htmlcontent), "", "UTF-8"),
+                                sep = "\n"))
+                         
     }
     
     outfile <- ifelse(file == "", paste0(tempfile(),".html"), file)
