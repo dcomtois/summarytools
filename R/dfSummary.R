@@ -37,26 +37,6 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
                        stringsAsFactors = FALSE,
                        check.names = FALSE)
   
-  # Set output's attributes
-  class(output) <- c("summarytools", class(output))
-  attr(output, "st_type") <- "dfSummary"
-  attr(output, "Date") <- Sys.Date()
-  attr(output, "fn_call") <- as.character(match.call())
-  attr(output, "n_obs") <- nrow(x)
-  attr(output, "df_name") <- var_info$df_name
-  if("subset" %in% names(var_info))
-    attr(output, "Subset") <- var_info$subset
-  attr(output, "pander_args") <- list(style = style,
-                                      round = round.digits,
-                                      digits = 6,
-                                      justify = justify,
-                                      split.table = Inf,
-                                      keep.line.breaks = TRUE,
-                                      split.cells = split.cells,
-                                      plain.ascii = plain.ascii,
-                                      keep.trailing.zeros = TRUE,
-                                      ... = ...)
-  
   # iterate over columns of x
   for(i in seq_len(ncol(x))) {
     
@@ -82,7 +62,7 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
     if(is.factor(column_data)) {
       
       n_levels <- nlevels(column_data)
-      
+
       if(n_levels <= max.distinct.values) {
         output[i,5] <- paste0(1:n_levels,". ", levels(column_data), collapse="\n")
         fr <- table(column_data, useNA="no")
@@ -236,6 +216,26 @@ dfSummary <- function(x, round.digits=2, style="multiline", justify="left",
   
   if(!varnumbers)
     output$No. <- NULL
+
+  # Set output's attributes
+  class(output) <- c("summarytools", class(output))
+  attr(output, "st_type") <- "dfSummary"
+  attr(output, "Date") <- Sys.Date()
+  attr(output, "fn_call") <- as.character(match.call())
+  attr(output, "n_obs") <- nrow(x)
+  attr(output, "df_name") <- var_info$df_name
+  if("subset" %in% names(var_info))
+    attr(output, "Subset") <- var_info$subset
+  attr(output, "pander_args") <- list(style = style,
+                                      round = round.digits,
+                                      digits = 6,
+                                      justify = justify,
+                                      split.table = Inf,
+                                      keep.line.breaks = TRUE,
+                                      split.cells = split.cells,
+                                      plain.ascii = plain.ascii,
+                                      keep.trailing.zeros = TRUE,
+                                      ... = ...)
   
   return(output)
 }
