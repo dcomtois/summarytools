@@ -63,12 +63,15 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   
   # Function to properly align numbers vertically in cells having format 99.99 (99.9 %).
   align_numbers <- function(tbl) {
-    
+
     space_char <- ifelse(method %in% c("browser", "viewer"), "\u00A0", " ")
+    
+    # padleft will change "9 (99%)" to " 9 (9.9%)" if needed
     padleft <- function(str, n = 1) {
       paste0(paste(rep(space_char, n), collapse = ""), str)
     }
     
+    # padright or "padmiddle" -- will change " 9 (9.9%)" to " 9 ( 9.9%)" if needed 
     padright <- function(str, n = 1) {
       sub(pattern = "(.*\\()(.+\\))",
           replacement = paste("\\1", "\\2", sep = paste(rep(space_char, n), collapse = "")),
@@ -372,8 +375,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     } else {
       
       dfSummary_html <-
-        xtable::print.xtable(xtable::xtable(x = x,digits = 0,
-                                            align = paste0("c", paste(rep("l",ncol(x)),collapse=""))),
+        xtable::print.xtable(xtable::xtable(x = x, digits = 0,
+                                            align = paste0("c", paste(rep("l", ncol(x)), collapse=""))),
                              include.rownames = FALSE, type = "html", print.results = FALSE,
                              sanitize.colnames.function = function(x) gsub("\\.", " ", x),
                              html.table.attributes = 'class="table table-striped table-bordered"')
