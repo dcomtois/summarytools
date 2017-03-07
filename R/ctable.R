@@ -21,52 +21,58 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
   
-  # Add dimnames names
-  freq.table <- table(x, y, useNA = useNA)
-  names(dimnames(freq.table)) <- dnn
+  # Add dimnames
+  freq_table <- table(x, y, useNA = useNA)
+  names(dimnames(freq_table)) <- dnn
   
-  proportions <- switch(prop,
-                        t = prop.table(freq.table),
-                        r = prop.table(freq.table, 1),
-                        c = prop.table(freq.table, 2))
+  prop <- tolower(substr(prop,1,1))
+  prop_table <- switch(prop,
+                        t = prop.table(freq_table),
+                        r = prop.table(freq_table, 1),
+                        c = prop.table(freq_table, 2))
   
   if (isTRUE(totals)) {
-    freq.table <- addmargins(freq.table)
-    rownames(freq.table)[nrow(freq.table)] <- "Total"
-    colnames(freq.table)[ncol(freq.table)] <- "Total"
-    if (!is.null(proportions)) {
-      if (prop=="t") {
-        proportions <- addmargins(proportions)
-      } else if (prop=="r") {
-        proportions <- addmargins(proportions, 2)
-        sumprops <- c(prop.table(freq.table[nrow(freq.table),-ncol(freq.table)]), Total=1)
-        proportions <- rbind(proportions, sumprops)
-      } else if (prop=="c") {
-        proportions <- addmargins(proportions, 1)
-        sumprops <- c(prop.table(freq.table[-nrow(freq.table),ncol(freq.table)]), Total=1)
-        proportions <- cbind(proportions, sumprops)
+    freq_table <- addmargins(freq_table)
+    rownames(freq_table)[nrow(freq_table)] <- "Total"
+    colnames(freq_table)[ncol(freq_table)] <- "Total"
+    if (!is.null(prop_table)) {
+      if (prop == "t") {
+        prop_table <- addmargins(prop_table)
+      } else if (prop == "r") {
+        prop_table <- addmargins(prop_table, 2)
+        sum_props <- c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
+        prop_table <- rbind(prop_table, sum_props)
+      } else if (prop == "c") {
+        prop_table <- addmargins(prop_table, 1)
+        sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
+        prop_table <- cbind(prop_table, sum_props)
       }
+      rownames(prop_table)[nrow(prop_table)] <- "Total"
+      colnames(prop_table)[ncol(prop_table)] <- "Total"
     }
   }
     
   # Change the name of NA items to avoid potential problems when echoing to console
-  rownames(freq.table)[is.na(rownames(freq.table))] <- "<NA>"
-  colnames(freq.table)[is.na(colnames(freq.table))] <- "<NA>"
-
+  rownames(freq_table)[is.na(rownames(freq_table))] <- "<NA>"
+  colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+  rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
+  colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+  
   # create output object and set class / attributes
-  output <- list(ctable=freq.table, prop=proportions)
+  output <- list(ctable=freq_table, prop=prop_table)
   class(output) <- c("summarytools", class(output))
-  attr(output, "st.type") <- "ctable"
-  attr(output, "fn.call") <- as.character(match.call())
+  attr(output, "st_type") <- "ctable"
+  attr(output, "fn_call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
-  attr(output, "prop.type") <- prop
-  #attr(output, "round.digits") <- round.digits
-  attr(output, "pander.args") <- list(style = style,
+  attr(output, "prop_type") <- prop
+
+  attr(output, "pander_args") <- list(style = style,
                                       round = round.digits,
                                       digits = 6,
                                       plain.ascii = plain.ascii,
                                       justify = justify,
                                       split.table = Inf,
+                                      #keep.trailing.zeros = TRUE, # do NOT put it -- causes issue w/ pander
                                       ... = ...)
   return(output)
 }

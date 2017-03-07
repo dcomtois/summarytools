@@ -1,18 +1,18 @@
 # Initialise vector containing paths to temporary html files generated when viewing in browser or
 # in RStudio visualisation pane. Will be updated whenever print.summarytools() / cleartmp() are called.
-.st.env <- new.env(parent = emptyenv())
-.st.env$tmpfiles <- c()
-.st.env$byInfo <- list()
+.st_env <- new.env(parent = emptyenv())
+.st_env$tmpfiles <- c()
+.st_env$byInfo <- list()
 
 
 # .parse_arg() -----------------------------------------------------------
 
 .parse_arg <- function(scalls, sframes, mcall) {
-  
-  output <- list(df.name = character(),
-                 var.names = character(),
-                 rows.subset = character(),
-                 by.group = character())
+
+  output <- list(df_name = character(),
+                 var_names = character(),
+                 rows_subset = character(),
+                 by_group = character())
   
   # Look for position of by.default(), tapply() and with.default() in sys.calls() 
   by_pos <- which(as.character(lapply(scalls, head, 1)) == "by()")
@@ -25,9 +25,9 @@
   
   # Function was called through with() ----------------------------------------------------
   # We should be able to extract:
-  #  - df.name
-  #  - var.names
-  #  - rows.subset
+  #  - df_name
+  #  - var_names
+  #  - rows_subset
   if (length(with_pos) == 1) {
     with_call <- as.list(pryr::standardise_call(scalls[[with_pos]]))
     with_objects <- ls(sframes[[with_pos + 3]])
@@ -35,40 +35,40 @@
     # Get properties when with() is not combined with by()
     if (length(by_pos) == 0) {
       if(is.data.frame(eval(with_call$data))) {
-        output$df.name <- deparse(with_call$data)
+        output$df_name <- deparse(with_call$data)
         allnames <- all.vars(with_call$expr)
         if (length(allnames) > 0)
-          output$var.names <- head(intersect(allnames,with_objects),1)
+          output$var_names <- head(intersect(allnames,with_objects),1)
         else
-          output$var.names <- with_objects
+          output$var_names <- with_objects
       } else if (is.list(eval(with_call$data))) {
         if (length(with_objects) == 1 && 
             is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
-          output$df.name <- with_objects
+          output$df_name <- with_objects
         }
       }
     } else if (length(by_pos) == 1) {
       by_call <- as.list(pryr::standardise_call(scalls[[by_pos]]))
       if(is.data.frame(eval(with_call$data))) {
-        output$df.name <- deparse(with_call$data)
-        output$var.names <- deparse(by_call$data)
+        output$df_name <- deparse(with_call$data)
+        output$var_names <- deparse(by_call$data)
       } else if (is.list(eval(with_call$data))) {
         if (length(with_objects) == 1 && 
             is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
-          output$df.name <- with_objects
+          output$df_name <- with_objects
           if (length(all.vars(by_call$data)) == 1)
-            output$var.names <- colnames(eval(with_call$data)[[output$df.name]])
+            output$var_names <- colnames(eval(with_call$data)[[output$df_name]])
           else
-            output$var.names <- setdiff(all.vars(by_call$data), output$df.name)
+            output$var_names <- setdiff(all.vars(by_call$data), output$df_name)
         }
       }
     } 
     
     if (grepl(".+\\[.+\\]$", as.character(with_call$expr[2]), perl = TRUE))
-      output$rows.subset <- sub("(.+)\\[(.+)\\]$","\\2", 
+      output$rows_subset <- sub("(.+)\\[(.+)\\]$","\\2", 
                                 as.character(with_call$expr[2]), perl = TRUE)
     else
-      output$rows.subset <- "NULL"
+      output$rows_subset <- "NULL"
   }
   
   # Function was called through by() -------------------------------------------------------
@@ -79,30 +79,31 @@
     
     # On first iteration, generate levels based on IND variables 
     # and store in package envir
-    if (length(.st.env$byInfo) == 0) {
+    if (length(.st_env$byInfo) == 0) {
       if (is.null(names(sframes[[tapply_pos]]$namelist)) || is.na(names(sframes[[tapply_pos]]$namelist)[1]))
         names(sframes[[tapply_pos]]$namelist) <- as.character(by_call$INDICES)[-1]
       by_levels <- sframes[[tapply_pos]]$namelist
-      .st.env$byInfo$by_levels <- expand.grid(by_levels, stringsAsFactors = FALSE)
-      .st.env$byInfo$iter <- 1
+      .st_env$byInfo$by_levels <- expand.grid(by_levels, stringsAsFactors = FALSE)
+      .st_env$byInfo$iter <- 1
     }
     
-    # Populate by.group item
-    output$by.group <- paste(colnames(.st.env$byInfo$by_levels), 
-                             as.character(.st.env$byInfo$by_levels[.st.env$byInfo$iter,]), 
+    # Populate by_group item
+    output$by_group <- paste(colnames(.st_env$byInfo$by_levels), 
+                             as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter,]), 
                              sep=" = ", collapse = ", ")
     
-    # On last iteration, clear .st.env$byIndo
-    if (.st.env$byInfo$iter == nrow(.st.env$byInfo$by_levels))
-      .st.env$byInfo <- list()
+    # On last iteration, clear .st_env$byIndo
+    if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels))
+      .st_env$byInfo <- list()
     else 
-      .st.env$byInfo$iter = .st.env$byInfo$iter + 1
+      .st_env$byInfo$iter = .st_env$byInfo$iter + 1
   }
   
   # From here code applies no matter how function was called ---------------------------------
-  skipvars <- FALSE # will be changed to TRUE if can't determine df.name
+  skipvars <- FALSE # will be changed to TRUE if can't determine df_name
   
   # Following regular expressions allow to split dataframe name, row indexes and column indexes
+
   # re1: when form dfname[rows,columns] is used
   re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, dataframe name (1)
                 "\\[(.+)?",           # rows indexing  (2)
@@ -130,56 +131,65 @@
                 "\\s*([\\w\\.\\_]+)\\s*",     # variable name       (2)
                 "(\\[\\s*(.+)\\s*\\])?")      # rows indexing (opt) (3) (4)
 
+  # re5: form variable[rows]
+  re5 <- paste0("\\w+",                       # variable name       (1)
+                "(\\[\\s*(.+)\\s*\\])")       # rows indexing       (2)
+  
   # Extract call as a string
   if (exists("by_call")) {
-    tmpstr <- deparse(by_call$data)
+    data_str <- deparse(by_call$data)
     allnames <- all.vars(by_call$data)
   } else {
-    tmpstr <- deparse(mcall$x)
+    data_str <- deparse(mcall$x)
     allnames <- all.vars(mcall$x)
   }
-  
-  # Extract the dataset name if not already done
-  if (length(output$df.name) == 0) {
-    
-    allnames.exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
-    
-    if (length(allnames.exist) > 0) {
-      if (length(allnames.exist) == 1 && is.data.frame(get(allnames.exist)))
-        output$df.name <- allnames.exist
-      else if (length(allnames.exist) > 1) {
-        dfindex <- which(isTRUE(sapply(sapply(allnames.exist, get),is.data.frame)))
-        if (length(dfindex) == 1 && is.data.frame(get(allnames.exist[dfindex])))
-          output$df.name <- allnames.exist[dfindex]
+
+  allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
+  if (length(output$df_name) == 0 && length(allnames_exist) == 1 && is.atomic(get(allnames_exist))) {
+    no_df <- TRUE
+    output$var_names <- allnames_exist
+  } else {
+    no_df <- FALSE
+  }
+
+  # Extract the dataset name (or unique variable name) if not already done
+  if (!no_df && length(output$df_name) == 0) {
+    if (length(allnames_exist) > 0) {
+      if (length(allnames_exist) == 1 && is.data.frame(get(allnames_exist)))
+        output$df_name <- allnames_exist
+      else if (length(allnames_exist) > 1) {
+        df_index <- which(isTRUE(sapply(sapply(allnames_exist, get), is.data.frame)))
+        if (length(df_index) == 1 && is.data.frame(get(allnames_exist[df_index])))
+          output$df_name <- allnames_exist[df_index]
       }
     }
     
     # If it fails, go the regex way
-    if (length(output$df.name) == 0) {
+    if (length(output$df_name) == 0) {
       
       # remove what follows last '['
-      tmpstr.df <- sub("(.+)\\[(.*)", "\\1", tmpstr, perl = TRUE)
+      data_str_df <- sub("(.+)\\[(.*)", "\\1", data_str, perl = TRUE)
       
       # check that structure exists and has proper class
-      if (exists(tmpstr.df) && any(class(get(tmpstr.df)) == "data.frame"))
-        output$df.name <- tmpstr.df
+      if (exists(data_str_df) && any(class(get(data_str_df)) == "data.frame"))
+        output$df_name <- data_str_df
       else {
-        getobj <- try(eval(parse(text=tmpstr.df)), silent = TRUE)
+        getobj <- try(eval(parse(text=data_str_df)), silent = TRUE)
         if (inherits(getobj, "try-error"))
           skipvars <- TRUE
         else {
           if(is.data.frame(getobj)) {
-            output$df.name <- tmpstr.df
-            tmpvarnames <- colnames(getobj)
-          } else if (grepl(re4, tmpstr)) {
-            tmpstr.df <- sub(re3, "\\1$\\2", tmpstr)
-            getobj <- try(eval(parse(text=tmpstr.df)), silent = TRUE)
+            output$df_name <- data_str_df
+            var_names_tmp <- colnames(getobj)
+          } else if (grepl(re4, data_str)) {
+            data_str_df <- sub(re3, "\\1$\\2", data_str)
+            getobj <- try(eval(parse(text=data_str_df)), silent = TRUE)
             if (inherits(getobj, "try-error"))
               skipvars <- TRUE
             else {
               if(is.data.frame(getobj)) {
-                output$df.name <- tmpstr.df
-                tmpvarnames <- sub(re4, tmpstr, "\\3")
+                output$df_name <- data_str_df
+                var_names_tmp <- sub(re4, data_str, "\\3")
               }
             }
           }
@@ -189,48 +199,53 @@
   }
   
   # Determine variables name(s) if not already done 
-  if (length(output$var.names) == 0 && !skipvars) {
-    if (exists("tmpvarnames") && !grepl(re3, tmpstr, perl = TRUE)) {
-      output$var.names <- tmpvarnames
-    } else if (grepl("^\\w+$", tmpstr, perl = TRUE)) {
-      output$var.names <- colnames(eval(parse(text=tmpstr)))
-    } else if (grepl(re1, tmpstr, perl = TRUE)) {
+  if (!no_df && length(output$var_names) == 0 && !skipvars) {
+    if (exists("var_names_tmp") && !grepl(re3, data_str, perl = TRUE)) {
+      output$var_names <- var_names_tmp
+    } else if (grepl("^\\w+$", data_str, perl = TRUE)) {
+      output$var_names <- colnames(eval(parse(text=data_str)))
+    } else if (grepl(re1, data_str, perl = TRUE)) {
       # set aside row subsetting - it will be handled further down
       # (replacing for instance "dat[1:29,4]" with "dat[4]")
-      tmpstr.var <- sub(re1,"\\1[\\4]", tmpstr, perl = TRUE)
+      data_str_var <- sub(re1,"\\1[\\4]", data_str, perl = TRUE)
       # remove brackets if subsetting is now null
-      tmpstr.var <- sub("\\[\\s*\\,?\\s*\\]","", tmpstr.var, perl = TRUE)
-      output$var.names <- colnames(eval(parse(text=tmpstr.var)))
-    } else if (grepl(re2, tmpstr, perl = TRUE)) {
+      data_str_var <- sub("\\[\\s*\\,?\\s*\\]","", data_str_var, perl = TRUE)
+      output$var_names <- colnames(eval(parse(text=data_str_var)))
+    } else if (grepl(re2, data_str, perl = TRUE)) {
       # replace double by single brackets
-      tmpstr.var <- sub("[[", "[", tmpstr, fixed = TRUE)
-      tmpstr.var <- sub("]]", "]", tmpstr.var, fixed = TRUE)
-      output$var.names <- colnames(eval(parse(text=tmpstr.var)))
-    } else if (grepl(re3, tmpstr, perl = TRUE)) {
-      output$var.names <- sub(re3, "\\3", tmpstr, perl = TRUE)
-    } else if (grepl(re4, tmpstr, perl = TRUE)) {
-      output$var.names <- sub(re4, "\\2", tmpstr, perl = TRUE)
-    } 
+      data_str_var <- sub("[[", "[", data_str, fixed = TRUE)
+      data_str_var <- sub("]]", "]", data_str_var, fixed = TRUE)
+      output$var_names <- colnames(eval(parse(text=data_str_var)))
+    } else if (grepl(re3, data_str, perl = TRUE)) {
+      output$var_names <- sub(re3, "\\3", data_str, perl = TRUE)
+    } else if (grepl(re4, data_str, perl = TRUE)) {
+      output$var_names <- sub(re4, "\\2", data_str, perl = TRUE)
+    } else if (exists(data_str) && is.atomic(get(data_str))) {
+      output$var_names <- data_str
+    }
     
-    if (length(output$var.names) == 0)
-      message("unable to identify var names: ", tmpstr)
+    if (length(output$var_names) == 0) {
+      message("unable to identify var names: ", data_str)
+    }
   }
-  
+
   # Rows subset
-  if (length(output$rows.subset) == 0) {
-    if(grepl(re1, tmpstr, perl = TRUE))
-      output$rows.subset <- sub(re1, "\\2", tmpstr, perl = TRUE)
-    else if (grepl(re2, tmpstr, perl = TRUE))
-      output$rows.subset <- ""
-    else if (grepl(re3, tmpstr, perl = TRUE))
-      output$rows.subset <- sub(re3, "\\4", tmpstr, perl = TRUE)
-    else if (grepl(re4, tmpstr, perl = TRUE))
-      output$rows.subset <- sub(re4, "\\4", tmpstr, perl = TRUE)
+  if (length(output$rows_subset) == 0) {
+    if(grepl(re1, data_str, perl = TRUE))
+      output$rows_subset <- sub(re1, "\\2", data_str, perl = TRUE)
+    else if (grepl(re2, data_str, perl = TRUE))
+      output$rows_subset <- ""
+    else if (grepl(re3, data_str, perl = TRUE))
+      output$rows_subset <- sub(re3, "\\4", data_str, perl = TRUE)
+    else if (grepl(re4, data_str, perl = TRUE))
+      output$rows_subset <- sub(re4, "\\4", data_str, perl = TRUE)
+    else if (grepl(re5, data_str, perl = TRUE))
+      output$rows_subset <- sub(re5, "\\2", data_str, perl = TRUE)
   }
   
-  if (length(output$rows.subset) == 0 || nchar(output$rows.subset) == 0 || 
-      output$rows.subset == "NULL")
-    output$rows.subset <- character()
+  if (length(output$rows_subset) == 0 || nchar(output$rows_subset) == 0 || 
+      output$rows_subset == "NULL")
+    output$rows_subset <- character()
   
   return(output[which(sapply(output, length) > 0)])
 }
@@ -238,26 +253,25 @@
 # cleartmp() ----------------------------------------------------------
 
 cleartmp <- function(all=FALSE, silent=FALSE) {
-  if(length(.st.env$tmpfiles) == 0) {
+  if(length(.st_env$tmpfiles) == 0) {
     if (!silent)
       message("No temporary files to delete.")
-  } else if(isTRUE(all)) {
+  } else if(isTRUE(all) || all == 1 || all == "all") {
     nfiles <- 0
-    for(tmpfile in .st.env$tmpfiles) {
+    for(tmpfile in .st_env$tmpfiles) {
       nfiles <- nfiles + 1
       if(!silent)
         message(paste('Deleting', tmpfile))
       unlink(tmpfile)
     }
-    .st.env$tmpfiles <- c()
+    .st_env$tmpfiles <- c()
     if(!silent)
       message(paste(nfiles, "file(s) deleted"))
   } else {
-    tmpfile <- tail(.st.env$tmpfiles, 1)
+    tmpfile <- tail(.st_env$tmpfiles, 1)
     if(!silent)
       message(paste('Deleting', tmpfile))
     unlink(tmpfile)
-    .st.env$tmpfiles <- .st.env$tmpfiles[-length(.st.env$tmpfiles)]
+    .st_env$tmpfiles <- .st_env$tmpfiles[-length(.st_env$tmpfiles)]
   }
 }
-

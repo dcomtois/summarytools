@@ -3,9 +3,9 @@ options(stringsAsFactors = FALSE)
 # tabagisme
 set.seed(783235)
 
-sexe <- factor(rep(c("F","M"), each=150))
-age <- round(runif(n=300, min=18, max=75))
-age.gr <- cut(age,
+Sexe <- factor(rep(c("F","M"), each=150))
+Age <- round(runif(n=300, min=18, max=75))
+Age.gr <- cut(Age,
               breaks = c(18,35,51,71,Inf),
               labels = c("18-34",
                          "35-50",
@@ -13,26 +13,29 @@ age.gr <- cut(age,
                          "71 +"),
               include.lowest = TRUE,
               right = FALSE)
-fumeur.tmp <- rbinom(n = 300, size = 1, prob = .35)
-fumeur <- factor(fumeur.tmp, labels = c("Non fumeur", "Fumeur"))
-smoker <- factor(fumeur.tmp, labels = c("Non-smoker", "Smoker"))
+fumeur.tmp <- sample(c(1,2), size = 300, prob = c(.35,.65), replace = TRUE)
+Fumeur <- factor(fumeur.tmp, labels = c("Oui", "Non"))
+Smoker <- factor(fumeur.tmp, labels = c("Yes", "No"))
 IMC <- numeric(300)
-IMC[1:150] <- rnorm(n = 150, mean = 19, sd = 4.8) + sqrt(age[1:150]) # Femmes
-IMC[151:300] <- rnorm(n = 150, mean = 18.5, sd = 3.7) + sqrt(age[151:300]) # Hommes
-prob.malade <- (age^3 +  IMC^3 + (fumeur=="Fumeur")*100000) # Formule improvisée!
+IMC[1:150] <- rnorm(n = 150, mean = 19, sd = 4.8) + sqrt(Age[1:150]) # Femmes
+IMC[151:300] <- rnorm(n = 150, mean = 18.5, sd = 3.7) + sqrt(Age[151:300]) # Hommes
+prob.malade <- (Age^3 +  IMC^3 + (Fumeur=="Oui")*100000) # Formule improvisée!
 # On ramène le tout sur une échelle de probabilités raisonnable (~0 à 40%)
 prob.malade <- prob.malade/(max(prob.malade)*2.5)
-malade.tmp <- rbinom(n = 300, size=1, prob = prob.malade)
-malade <- factor(malade.tmp,
-                 labels = c("En sante", "Malade"))
-diseased <- factor(malade.tmp,
-                   labels = c("Healthy", "Diseased"))
-tabagisme <- data.frame(sexe, age, age.gr, IMC, fumeur, malade)
-tobacco <- data.frame(gender=sexe, age, age.gr, BMI=IMC, smoker=smoker, diseased=diseased)
-rm(age, age.gr, fumeur, IMC, malade, sexe)
+malade.tmp <- 2 - rbinom(n = 300, size=1, prob = prob.malade)
+Malade <- factor(malade.tmp,
+                 labels = c("Oui", "Non"))
+Diseased <- factor(malade.tmp,
+                   labels = c("Yes", "No"))
+tabagisme <- data.frame(Sexe, Age, Age.gr, IMC, Fumeur, Malade)
+tobacco <- data.frame(Gender=Sexe, Age, Age.gr, BMI=IMC, Smoker, Diseased)
+rm(Age, Age.gr, Fumeur, Smoker, IMC, Malade, Diseased, Sexe, fumeur.tmp, malade.tmp, prob.malade)
 
 # View(tabagisme)
-
+is.na(tabagisme) <- matrix(data = sample(c(TRUE,FALSE), size = 1800, replace = TRUE, prob = c(0.05, 0.95)), nrow = 300)
+is.na(tobacco) <- is.na(tabagisme)
+freq(is.na(tobacco))
+ctable(tobacco$Gender, tobacco$Smoker, prop = "r")
 write.table(tabagisme, "data/tabagisme.txt", sep = "\t", dec = ".", row.names = FALSE, col.names = TRUE)
 write.table(tobacco, "data/tobacco.txt", sep = "\t", dec = ".", row.names = FALSE, col.names = TRUE)
 

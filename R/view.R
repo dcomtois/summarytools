@@ -9,7 +9,7 @@ view <- function(x, method = "viewer", silent = FALSE, footer = FALSE,
   
   else if ("by" %in% class(x) && attr(x[[1]], "st.type") %in% c("freq", "descr")) {
     len <- length(x)
-    if (method %in% c("viewer", "browser", "html_file")) {
+    if (method %in% c("viewer", "browser")) {
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       print.summarytools(x[[1]], method = method, silent = silent,
                          footer = FALSE, file = file, append = FALSE, 

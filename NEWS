@@ -1,6 +1,6 @@
 Version 0.6.9
 -------------
-Introduced ctable() for cross-tabulations. Added support for by() and with() - variable names and by-groups are now labelled correctly, and view() prints objects generated with by() in a convenient way. Appending to HTML files is now supported. Pander options stored in summarytools objects can now be overridden when using print() or view(). The file= parameter must now be used with print() or view(); its use with other functions is deprecated. freq() has an new order= parameter allowing to order rows by count rather than values sorted alphabetically. Improved alignment of numbers in descr() tables.
+Introduced ctable() for cross-tabulations. Added extended support for by() and with() - variable names and by-groups are now labelled correctly, and view() prints objects generated with by() in a convenient way if an html destination is used. Appending to HTML files is now supported. Pander options stored in summarytools objects can now be overridden when using print() or view(). freq() has an new order= parameter allowing to order rows by count rather than values sorted alphabetically. Alignment of numbers in descr() observations table has been improved. Change breaking backward compatibility: the file= parameter must now be used with print() or view(); its use with other functions is deprecated.
 
 Version 0.6.5
 ------------
