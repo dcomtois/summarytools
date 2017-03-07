@@ -65,14 +65,14 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   align_numbers <- function(tbl) {
     
     space_char <- ifelse(method %in% c("browser", "viewer"), "\u00A0", " ")
-    padleft <- function(s, n = 1, chr=space_char) {
-      paste0(paste(rep(chr, n), collapse = ""), s)
+    padleft <- function(str, n = 1) {
+      paste0(paste(rep(space_char, n), collapse = ""), str)
     }
     
-    padright <- function(s, n = 1, chr=space_char) {
+    padright <- function(str, n = 1) {
       sub(pattern = "(.*\\()(.+\\))",
-          replacement = paste("\\1", "\\2", sep = paste(rep(chr, n), collapse = "")),
-          x = s)
+          replacement = paste("\\1", "\\2", sep = paste(rep(space_char, n), collapse = "")),
+          x = str)
     }
     
     for (c in 1:ncol(tbl)) {
@@ -420,8 +420,8 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       
       htmlcontent <-
         tags$html(
-          tags$header(
-            tags$meta(charset="UTF-8"),
+          tags$head(
+            tags$meta(charset="utf-8"),
             tags$title(ifelse(is.na(report.title), sect_title, report.title)),
             includeCSS(path = paste(stpath,"includes/stylesheets/bootstrap.min.css", sep="/")),
             includeCSS(path = paste(stpath,"includes/stylesheets/custom.css", sep="/"))
