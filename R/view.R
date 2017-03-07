@@ -1,4 +1,4 @@
-# view is a wrapper function for print(x, "view"). Allows supports "browser" or "pander" as well.
+# view is a wrapper function for print(x, "viewer"). Allows supports "browser" or "pander" as well.
 view <- function(x, method = "viewer", silent = FALSE, footer = FALSE, 
                  file = "", append = FALSE, report.title = NA, 
                  escape.pipe = FALSE, ...) {

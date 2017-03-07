@@ -14,6 +14,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   if (file != "" && isTRUE(append) && !is.na(report.title))
     message("Appending existing file -- 'report.title' argument will be ignored")
   
+  if (file != "" && grepl(pattern = "\\.html$", x = file, ignore.case = TRUE, perl = TRUE))
+    method <- "viewer"
+  
   # override x's attributes if any are passed as additional arguments
   argslst <- match.call()
   
@@ -61,11 +64,12 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   # Function to properly align numbers vertically in cells having format 99.99 (99.9 %).
   align_numbers <- function(tbl) {
     
-    padleft <- function(s, n = 1, chr="\u00A0") {
+    space_char <- ifelse(method %in% c("browser", "viewer"), "\u00A0", " ")
+    padleft <- function(s, n = 1, chr=space_char) {
       paste0(paste(rep(chr, n), collapse = ""), s)
     }
     
-    padright <- function(s, n = 1, chr="\u00A0") {
+    padright <- function(s, n = 1, chr=space_char) {
       sub(pattern = "(.*\\()(.+\\))",
           replacement = paste("\\1", "\\2", sep = paste(rep(chr, n), collapse = "")),
           x = s)
@@ -101,6 +105,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     vinfo <- vinfo[!is.na(vinfo)]
     all_info <- vinfo
     var_info <- vinfo[which(names(vinfo) != "Group")]
+    #var_info <- var_info[which(!is.na(var_info))]
     Group <- ifelse('Group' %in% names(vinfo), vinfo['Group'], NA)
     
     if(method=="pander") {
@@ -164,7 +169,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       doc_div <- tags$div(class="container",
                           if (!isTRUE(group.only)) 
                             h2(sect_title),
-                          if (!isTRUE(group.only))
+                          if (!isTRUE(group.only) && !is.na(var_info))
                             h4(HTML(text = var_info)),
                           if (!is.na(Group))
                             hr(), 
@@ -242,7 +247,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       doc_div <- tags$div(class="container",
                           if (!isTRUE(group.only)) 
                             h2(sect_title),
-                          if (!isTRUE(group.only)) 
+                          if (!isTRUE(group.only) && !is.na(var_info)) 
                             h4(HTML(text = var_info)),
                           if (!is.na(Group))
                             hr(),
@@ -329,7 +334,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       doc_div <- tags$div(class="container",
                           if (!isTRUE(group.only))
                             h2(sect_title),
-                          if (!isTRUE(group.only))
+                          if (!isTRUE(group.only) && !is.na(var_info))
                             h4(HTML(text = var_info)),
                           if (!is.na(Group))
                             hr(), 
@@ -390,6 +395,13 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
   # Do the actual printing or writing to file ---------------------------------------------
   if (method == "pander") {
     cat(do.call(paste, output), file = file, append = append)
+    if (file != "") {
+      if (isTRUE(append))
+        message(paste0("Output file appended: ", file))
+      else
+        message(paste0("Output file written: ", file))
+      return(invisible())
+    }
   }
   
   # Put together output file content when output has html format --------------------------
@@ -423,7 +435,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     outfile <- ifelse(file == "", paste0(tempfile(),".html"), file)
     capture.output(cat(htmlcontent), file = outfile)
     
-    if(method=="viewer") {
+    if(file == "" && method=="viewer") {
       if(.Platform$GUI == "RStudio") 
         rstudioapi::viewer(outfile)
       else {
@@ -433,7 +445,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
     
     # For method "browser", we don't use utils::browseURL() because of compatibility issues with RStudio
-    if(method=="browser") {
+    if(file == "" && method=="browser") {
       switch(Sys.info()[['sysname']],
              Windows = {shell.exec(file = paste0("file:///", outfile))},
              Linux   = {system(paste('/usr/bin/xdg-open', outfile), wait = FALSE, ignore.stdout = TRUE)},
@@ -441,17 +453,17 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
     }
     
     # return file path and update tmpfiles vector when method = browser or viewer ----------------------
-    if(method %in% c("browser", "viewer") && file == "") {
+    if(file == "" && method %in% c("browser", "viewer")) {
       .st_env$tmpfiles <- c(.st_env$tmpfiles, outfile)
-      
       if(!silent)
         message(paste0("Temporary file created: ", outfile, '\nTo delete, use cleartmp().'))
       return(invisible(normalizePath(outfile, winslash = "\\", mustWork = FALSE)))
-      
-    } else {
-      
+    } else if (file != "") {
+      if (isTRUE(append))
+        message(paste0("Output file appended: ", outfile))
+      else
+        message(paste0("Output file written: ", outfile))
       return(invisible())
-      
-    }
+    } 
   }
 }
