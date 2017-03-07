@@ -83,7 +83,9 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       for (r in 1:nrow(tbl)) {
         tbl[r,c] <- padleft(tbl[r,c], n = pos - regexpr("(", tbl[r,c], fixed = TRUE))
       }
+      
       maxlen <- max(nchar(tbl[,c]))
+      
       for (r in 1:nrow(tbl)) {
         tbl[r,c] <- padright(tbl[r,c], n = maxlen - nchar(tbl[r,c]))
       }
@@ -432,15 +434,15 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
           tags$body(doc_div)
         )
       
-      htmlcontent <- gsub(pattern = "<(/?)(header)>", replacement = "<\\1head>",
-                          paste("<!DOCTYPE html>",
-                                iconv(as.character(htmlcontent), "", "UTF-8"),
-                                sep = "\n"))
-                         
+      htmlcontent <- paste("<!DOCTYPE html>",
+                           iconv(as.character(htmlcontent), "", "UTF-8"),
+                           sep = "\n")
+      htmlcontent <- gsub(pattern = "Â", replacement = "&nbsp;", htmlcontent)
+      htmlcontent <- gsub(pattern = "<(/?)(header)>", replacement = "<\\1head>",htmlcontent)
     }
     
     outfile <- ifelse(file == "", paste0(tempfile(),".html"), file)
-    capture.output(cat(htmlcontent), file = outfile)
+    capture.output(cat(htmlcontent, file = outfile))
     
     if(file == "" && method=="viewer") {
       if(.Platform$GUI == "RStudio") 
