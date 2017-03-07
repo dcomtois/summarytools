@@ -26,34 +26,34 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
   
   # create a basic frequency table, always including the NA row
   if (identical(NA, weights)) {
-    freq.table <- table(x, useNA = "always")
+    freq_table <- table(x, useNA = "always")
     
     # Order by frequency if needed
     if (order == "freq") {
-      freq.table <- sort(freq.table, decreasing = TRUE)
-      na.pos <- which(is.na(names(freq.table)))
-      freq.table <- c(freq.table[-na.pos], freq.table[na.pos])
+      freq_table <- sort(freq_table, decreasing = TRUE)
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
     # Change the name of the NA item (last) to avoid potential problems when echoing to console
-    names(freq.table)[length(freq.table)] <- '<NA>'
+    names(freq_table)[length(freq_table)] <- '<NA>'
 
     # calculate proportions (valid, i.e excluding NA's)
-    P.valid <- prop.table(freq.table[-length(freq.table)]) * 100
+    P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
 
     # Add '<NA>' item to the proportions; this assures
     # proper length when cbind'ing later on
-    P.valid['<NA>'] <- NA
+    P_valid['<NA>'] <- NA
 
     # calculate proportions (total, i.e. including NA's)
-    P.tot <- prop.table(freq.table) * 100
+    P_tot <- prop.table(freq_table) * 100
   }
 
   # Weights are used
   else {
 
     # Check that weights vector is of the right length
-    if (length(weights)!=length(x)) {
+    if (length(weights) != length(x)) {
       stop("weights vector must be of same length as x")
     }
 
@@ -68,29 +68,29 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
       wgts <- wgts / sum(wgts) * length(x)
     }
 
-    freq.table <- xtabs(wgts ~ x)
+    freq_table <- xtabs(wgts ~ x)
   
     # Order by frequency if needed
     if (order == "freq")
-      freq.table <- freq.table[order(freq.table, decreasing = TRUE)]
+      freq_table <- freq_table[order(freq_table, decreasing = TRUE)]
 
-    P.valid <- prop.table(freq.table) * 100
-    P.valid["<NA>"] <- NA
-    freq.table["<NA>"] <- sum(wgts) - sum(xtabs(wgts ~ x))
-    P.tot <- prop.table(freq.table) * 100
+    P_valid <- prop.table(freq_table) * 100
+    P_valid["<NA>"] <- NA
+    freq_table["<NA>"] <- sum(wgts) - sum(xtabs(wgts ~ x))
+    P_tot <- prop.table(freq_table) * 100
 
   }
 
   # Calculate cumulative proportions
-  P.valid.cum <- cumsum(P.valid)
-  P.valid.cum['<NA>'] <- NA
-  P.tot.cum <- cumsum(P.tot)
+  P_valid_cum <- cumsum(P_valid)
+  P_valid_cum['<NA>'] <- NA
+  P_tot_cum <- cumsum(P_tot)
   
   # Combine the info to build the final frequency table
-  output <- cbind(freq.table, P.valid, P.valid.cum, P.tot, P.tot.cum)
-  output <- rbind(output, c(colSums(output,na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c("N","% Valid","% Cum.Valid","% Total","% Cum.Total")
-  rownames(output) <- c(names(freq.table),"Total")
+  output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
+  output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
+  colnames(output) <- c("N", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
+  rownames(output) <- c(names(freq_table), "Total")
 
   # Escape < and > when used in pairs in rownames, so that <NA> or <ABCD> are rendered correctly 
   # with style "rmarkdown" or "grid"
@@ -98,23 +98,22 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
     row.names(output) <- gsub(pattern = '<',replacement = '\\<',x = row.names(output), fixed = TRUE)
     row.names(output) <- gsub(pattern = '>',replacement = '\\>',x = row.names(output), fixed = TRUE)
   }
-    
+
   # Update the output class and attributes
   class(output) <- c("summarytools", class(output))
-  attr(output, "st.type") <- "freq"
-  attr(output, "fn.call") <- as.character(match.call()) #as.character(match.call()[2])
+  attr(output, "st_type") <- "freq"
+  attr(output, "fn_call") <- as.character(match.call())
   attr(output, "Date") <- Sys.Date()
 
-  parse.info <- .parse_arg(sys.calls(), sys.frames(), match.call())
-  #attr(output, "Group") <- ifelse("by.group" %in% names(parse.info), parse.info$by.group, NA)
-  attr(output, "var.info") <- c(Dataframe = ifelse("df.name" %in% names(parse.info), parse.info$df.name, NA),
-                                Variable = ifelse("var.names" %in% names(parse.info), parse.info$var.names, NA),
+  parse_info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  attr(output, "var_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
+                                Variable = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
                                 Label = ifelse(Hmisc::label(x) != "", Hmisc::label(x), NA),
-                                Subset = ifelse("rows.subset" %in% names(parse.info), parse.info$rows.subset, NA),
+                                Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
                                 Weights = substitute(weights),
-                                Group = ifelse("by.group" %in% names(parse.info), parse.info$by.group, NA))
+                                Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
 
-  attr(output, "pander.args") <- list(style = style,
+  attr(output, "pander_args") <- list(style = style,
                                       round = round.digits,
                                       digits = 6,
                                       plain.ascii = plain.ascii,
