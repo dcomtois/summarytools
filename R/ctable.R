@@ -1,36 +1,36 @@
-ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", prop = "t", 
-                   useNA = "ifany", totals = TRUE, plain.ascii = TRUE, 
+ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", prop = "t",
+                   useNA = "ifany", totals = TRUE, plain.ascii = TRUE,
                    dnn=c(substitute(x), substitute(y)), ...) {
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
-  
+
   # Replace NaN's by NA's (This simplifies matters a lot!)
   if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA in x\n"))
     x[is.nan(x)] <- NA
   }
-  
+
   if (NaN %in% y)  {
     message(paste(sum(is.nan(y)), "NaN value(s) converted to NA in y\n"))
     y[is.nan(y)] <- NA
   }
-  
+
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
-  
+
   # Add dimnames
   freq_table <- table(x, y, useNA = useNA)
   names(dimnames(freq_table)) <- dnn
-  
+
   prop <- tolower(substr(prop,1,1))
   prop_table <- switch(prop,
-                        t = prop.table(freq_table),
-                        r = prop.table(freq_table, 1),
-                        c = prop.table(freq_table, 2))
-  
+                       t = prop.table(freq_table),
+                       r = prop.table(freq_table, 1),
+                       c = prop.table(freq_table, 2))
+
   if (isTRUE(totals)) {
     freq_table <- addmargins(freq_table)
     rownames(freq_table)[nrow(freq_table)] <- "Total"
@@ -51,13 +51,13 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
       colnames(prop_table)[ncol(prop_table)] <- "Total"
     }
   }
-    
+
   # Change the name of NA items to avoid potential problems when echoing to console
   rownames(freq_table)[is.na(rownames(freq_table))] <- "<NA>"
   colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
   rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
   colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
-  
+
   # create output object and set class / attributes
   output <- list(ctable=freq_table, prop=prop_table)
   class(output) <- c("summarytools", class(output))

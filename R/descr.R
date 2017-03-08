@@ -1,7 +1,7 @@
-descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "simple", 
-                  justify = "right", plain.ascii = TRUE, transpose = FALSE, 
+descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "simple",
+                  justify = "right", plain.ascii = TRUE, transpose = FALSE,
                   weights = NA, rescale.weights = FALSE, ...) {
-  
+
   if (is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
@@ -12,17 +12,17 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
 
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
-  
+
   # convert x to data.frame (useful is objet is a tibble or data.table)
   x <- as.data.frame(x)
-  
+
   if (!is.data.frame(x)) {
     stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
   }
 
   # Get into about x from parsing function
   parse_info <- .parse_arg(sys.calls(), sys.frames(), match.call())
-  
+
   # Identify and exclude non-numerical columns
   col_to_remove <- which(!sapply(x, is.numeric))
 
@@ -46,7 +46,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     output$stats <- data.frame(Mean = numeric(),
                                Std.Dev = numeric(),
                                Min = numeric(),
-                               Median = numeric(), 
+                               Median = numeric(),
                                Max = numeric(),
                                MAD = numeric(),
                                IQR = numeric(),
@@ -86,7 +86,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                             rapportools::skewness(variable, na.rm=na.rm),
                             sqrt((6*n_valid*(n_valid-1))/((n_valid-2)*(n_valid+1)*(n_valid+3))),
                             rapportools::kurtosis(variable, na.rm=na.rm))
-      
+
       # Insert valid/missing info into output dataframe
       output$observ[i,] <- c(n_valid, n_NA, n_valid + n_NA)
       output$observ_pct[i,] <- c(p_valid, p_NA, p_valid + p_NA)
@@ -99,10 +99,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     # Check that weights vector has the right length
     if (length(weights) != nrow(x))
       stop("weights vector must have the same length as x")
-    
+
     # use a copy of weights to be able to use substitute(weights) later on
     wgts <- weights
-    
+
     if (sum(is.na(wgts)) > 0) {
       warning("Missing values on weight variable have been detected and were treated as zeroes.")
       wgts[is.na(wgts)] <- 0
@@ -124,25 +124,25 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                                     "<NA>" = numeric(),
                                     Total = numeric(),
                                     check.names = FALSE)
-    
+
     # Rescale weights if necessary
     if (rescale.weights)
       wgts <- wgts / sum(wgts) * nrow(x)
-    
+
     for(i in seq_along(x)) {
       variable <- as.numeric(x[,i])
-      
+
       # Extract number and proportion of missing and valid values
       n_valid <- sum(wgts[which(!is.na(variable))])
       p_valid <- n_valid / sum(wgts)
       n_NA <- sum(wgts[which(is.na(variable))])
       p_NA <- n_NA / sum(wgts)
-      
+
       # Remove missing values from variable and from corresponding weights
       ind <- which(!is.na(variable))
       variable <- variable[ind]
       wgts <- wgts[ind]
-      
+
       # Fill in the output dataframe; here na.rm is redundant since na's have been removed
       # Calculate the weighted stats
       output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, wgts, refine = TRUE),
@@ -152,15 +152,15 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                             max(variable),
                             matrixStats::weightedMad(variable, wgts, refine = TRUE),
                             variable.mean/variable.sd)
-      
+
       # Insert valid/missing info into output dataframe
       output$observ[i,] <- c(n_valid, n_NA, n_valid + n_NA)
       output$observ_pct[i,] <- c(p_valid, p_NA, p_valid + p_NA)
     }
   }
-  
+
   for(i in seq_along(x)) {
-    
+
     # Add row names (from col.names/var.name of the parse function)
     if ("var_names" %in% names(parse_info)) {
       rownames(output$stats)[i] <- parse_info$var_names[i]
@@ -196,7 +196,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
   } else if (style=="rmarkdown" && !plain.ascii && transpose){
     colnames(output$observ)[2] <- "\\<NA\\>"
   }
-  
+
   # Set class/attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "descr"
@@ -210,18 +210,24 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                                 Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
                                 Weights = substitute(weights),
                                 Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
-  
-  attr(output, "pander_args") <- list(style = style, 
-                                      round = round.digits, 
+
+  # For future use
+  if ("by_group" %in% names(parse_info)) {
+    attr(output, "by_first") <- parse_info$by_first
+    attr(output, "by_last") <- parse_info$by_last
+  }
+
+  attr(output, "pander_args") <- list(style = style,
+                                      round = round.digits,
                                       digits = 6,
                                       plain.ascii = plain.ascii,
-                                      justify = justify, 
+                                      justify = justify,
                                       split.table = Inf,
                                       keep.trailing.zeros = TRUE,
                                       ... = ...)
-  
+
   if (exists("ignored"))
     attr(output, "ignored") <- ignored
-  
+
   return(output)
 }

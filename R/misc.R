@@ -7,31 +7,31 @@
 
 # .parse_arg() -----------------------------------------------------------
 
-.parse_arg <- function(scalls, sframes, mcall) {
+.parse_arg <- function(sys_calls, sys_frames, match_call) {
 
   output <- list(df_name = character(),
                  var_names = character(),
                  rows_subset = character(),
                  by_group = character())
-  
-  # Look for position of by.default(), tapply() and with.default() in sys.calls() 
-  by_pos <- which(as.character(lapply(scalls, head, 1)) == "by()")
-  tapply_pos <- which(as.character(lapply(scalls, head, 1)) == "tapply()")
-  with_pos <- which(as.character(lapply(scalls, head, 1)) == "with()")
-  fn_pos <- which(as.character(lapply(scalls, head, 1)) == deparse(mcall[1]))
-  
+
+  # Look for position of by.default(), tapply() and with.default() in sys.calls()
+  by_pos <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
+  tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
+  with_pos <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
+  fn_pos <- which(as.character(lapply(sys_calls, head, 1)) == deparse(match_call[1]))
+
   # List of classes accepted as "dataframes"
   # classes <- c("data.frame", "data.table", "tbl")
-  
+
   # Function was called through with() ----------------------------------------------------
   # We should be able to extract:
   #  - df_name
   #  - var_names
   #  - rows_subset
   if (length(with_pos) == 1) {
-    with_call <- as.list(pryr::standardise_call(scalls[[with_pos]]))
-    with_objects <- ls(sframes[[with_pos + 3]])
-    
+    with_call <- as.list(pryr::standardise_call(sys_calls[[with_pos]]))
+    with_objects <- ls(sys_frames[[with_pos + 3]])
+
     # Get properties when with() is not combined with by()
     if (length(by_pos) == 0) {
       if(is.data.frame(eval(with_call$data))) {
@@ -42,18 +42,18 @@
         else
           output$var_names <- with_objects
       } else if (is.list(eval(with_call$data))) {
-        if (length(with_objects) == 1 && 
+        if (length(with_objects) == 1 &&
             is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
           output$df_name <- with_objects
         }
       }
     } else if (length(by_pos) == 1) {
-      by_call <- as.list(pryr::standardise_call(scalls[[by_pos]]))
+      by_call <- as.list(pryr::standardise_call(sys_calls[[by_pos]]))
       if(is.data.frame(eval(with_call$data))) {
         output$df_name <- deparse(with_call$data)
         output$var_names <- deparse(by_call$data)
       } else if (is.list(eval(with_call$data))) {
-        if (length(with_objects) == 1 && 
+        if (length(with_objects) == 1 &&
             is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
           output$df_name <- with_objects
           if (length(all.vars(by_call$data)) == 1)
@@ -62,46 +62,55 @@
             output$var_names <- setdiff(all.vars(by_call$data), output$df_name)
         }
       }
-    } 
-    
+    }
+
     if (grepl(".+\\[.+\\]$", as.character(with_call$expr[2]), perl = TRUE))
-      output$rows_subset <- sub("(.+)\\[(.+)\\]$","\\2", 
+      output$rows_subset <- sub("(.+)\\[(.+)\\]$","\\2",
                                 as.character(with_call$expr[2]), perl = TRUE)
     else
       output$rows_subset <- "NULL"
   }
-  
+
   # Function was called through by() -------------------------------------------------------
   # This part will ensure the group-info is made part of the summarytools object
   if (length(by_pos) == 1) {
-    
-    by_call <- as.list(pryr::standardise_call(scalls[[by_pos]]))
-    
-    # On first iteration, generate levels based on IND variables 
+
+    by_call <- as.list(pryr::standardise_call(sys_calls[[by_pos]]))
+
+    # On first iteration, generate levels based on IND variables
     # and store in package envir
     if (length(.st_env$byInfo) == 0) {
-      if (is.null(names(sframes[[tapply_pos]]$namelist)) || is.na(names(sframes[[tapply_pos]]$namelist)[1]))
-        names(sframes[[tapply_pos]]$namelist) <- as.character(by_call$INDICES)[-1]
-      by_levels <- sframes[[tapply_pos]]$namelist
+      if (is.null(names(sys_frames[[tapply_pos]]$namelist)) ||
+          is.na(names(sys_frames[[tapply_pos]]$namelist)[1]))
+        names(sys_frames[[tapply_pos]]$namelist) <- as.character(by_call$INDICES)[-1]
+      by_levels <- sys_frames[[tapply_pos]]$namelist
       .st_env$byInfo$by_levels <- expand.grid(by_levels, stringsAsFactors = FALSE)
       .st_env$byInfo$iter <- 1
     }
-    
+
     # Populate by_group item
-    output$by_group <- paste(colnames(.st_env$byInfo$by_levels), 
-                             as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter,]), 
+    output$by_group <- paste(colnames(.st_env$byInfo$by_levels),
+                             as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter,]),
                              sep=" = ", collapse = ", ")
-    
-    # On last iteration, clear .st_env$byIndo
-    if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels))
+
+    # by_first and by_last are for a projected functionality
+    if (.st_env$byInfo$iter == 1) {
+      output$by_first <- TRUE
+      output$by_last <- FALSE
+    } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
+      output$by_first <- FALSE
+      output$by_last <- TRUE
       .st_env$byInfo <- list()
-    else 
+    } else {
+      output$by_first <- FALSE
+      output$by_last <- FALSE
       .st_env$byInfo$iter = .st_env$byInfo$iter + 1
+    }
   }
-  
+
   # From here code applies no matter how function was called ---------------------------------
   skipvars <- FALSE # will be changed to TRUE if can't determine df_name
-  
+
   # Following regular expressions allow to split dataframe name, row indexes and column indexes
 
   # re1: when form dfname[rows,columns] is used
@@ -115,17 +124,17 @@
                 "(\".+\")|",          # column indexing in the form [ , 'var.name' ] (9)
                 "(\\\".+\\\"))?",     # column indexing in the form [ , "var.name" ] (10)
                 "\\s*\\]")            # end of indexing
-  
+
   # re2: form dfname[[col]] is used
   re2 <- paste0("([\\w\\.\\_]+)",                # dataframe
-                "\\s*\\[\\[\\s*(.*)\\s*\\]\\]")   # variable number or name 
-  
+                "\\s*\\[\\[\\s*(.*)\\s*\\]\\]")   # variable number or name
+
   # re3: form listname$dfname$column[rows]
   re3 <- paste0("([\\w\\.\\_]+)\\s*\\$",      # list-type structure (1)
                 "\\s*([\\w\\.\\_]+)\\s*\\$",  # data.frame name     (2)
                 "\\s*([\\w\\.\\_]+)\\s*",     # variable name       (3)
-                "(\\[\\s*(.+)\\s*\\])?")      # rows indexing (opt) (4)  
-  
+                "(\\[\\s*(.+)\\s*\\])?")      # rows indexing (opt) (4)
+
   # re4: form dfname$column[rows]
   re4 <- paste0("([\\w\\.]+)\\s*\\$",         # data.frame name     (1)
                 "\\s*([\\w\\.\\_]+)\\s*",     # variable name       (2)
@@ -134,14 +143,14 @@
   # re5: form variable[rows]
   re5 <- paste0("\\w+",                       # variable name       (1)
                 "(\\[\\s*(.+)\\s*\\])")       # rows indexing       (2)
-  
+
   # Extract call as a string
   if (exists("by_call")) {
     data_str <- deparse(by_call$data)
     allnames <- all.vars(by_call$data)
   } else {
-    data_str <- deparse(mcall$x)
-    allnames <- all.vars(mcall$x)
+    data_str <- deparse(match_call$x)
+    allnames <- all.vars(match_call$x)
   }
 
   allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
@@ -163,13 +172,13 @@
           output$df_name <- allnames_exist[df_index]
       }
     }
-    
+
     # If it fails, go the regex way
     if (length(output$df_name) == 0) {
-      
+
       # remove what follows last '['
       data_str_df <- sub("(.+)\\[(.*)", "\\1", data_str, perl = TRUE)
-      
+
       # check that structure exists and has proper class
       if (exists(data_str_df) && any(class(get(data_str_df)) == "data.frame"))
         output$df_name <- data_str_df
@@ -197,8 +206,8 @@
       }
     }
   }
-  
-  # Determine variables name(s) if not already done 
+
+  # Determine variables name(s) if not already done
   if (!no_df && length(output$var_names) == 0 && !skipvars) {
     if (exists("var_names_tmp") && !grepl(re3, data_str, perl = TRUE)) {
       output$var_names <- var_names_tmp
@@ -223,7 +232,7 @@
     } else if (exists(data_str) && is.atomic(get(data_str))) {
       output$var_names <- data_str
     }
-    
+
     if (length(output$var_names) == 0) {
       message("unable to identify var names: ", data_str)
     }
@@ -242,11 +251,11 @@
     else if (grepl(re5, data_str, perl = TRUE))
       output$rows_subset <- sub(re5, "\\2", data_str, perl = TRUE)
   }
-  
-  if (length(output$rows_subset) == 0 || nchar(output$rows_subset) == 0 || 
+
+  if (length(output$rows_subset) == 0 || nchar(output$rows_subset) == 0 ||
       output$rows_subset == "NULL")
     output$rows_subset <- character()
-  
+
   return(output[which(sapply(output, length) > 0)])
 }
 
