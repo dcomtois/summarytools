@@ -28,9 +28,8 @@ While the html output is satisfying, the plain text / markdown output is far fro
 
 ## New features to try out
 
-Using the view() function, you can now
- - display (in html) objects created with `by()` 
- - append content to existing html files using `append = TRUE` 
+Using the `view()` function, you can now generate html reports for objects created with `by()` 
+Using `view()` or `print()`, append content to existing html files using `append = TRUE`. 
  
 ## Improvements to existing functions
 

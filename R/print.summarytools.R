@@ -239,7 +239,7 @@ print.summarytools <- function(x, method="pander", silent = FALSE, footer = FALS
       dnn <- names(dimnames(ctable))
       addtorow <- list()
       addtorow$pos <- list(0, 0)
-      #colnames(ctable)[colnames(ctable) == "<NA>"] <- "&lt;NA&gt;"
+      colnames(ctable)[colnames(ctable) == "<NA>"] <- "&lt;NA&gt;"
       addtorow$command <- c(paste0('<tr> <th> </th> <th colspan=', ncol(ctable)-1,'>',dnn[2],'</th><th></th></tr>'),
                             paste0('<tr> <th>', dnn[1], '</th> <th>',
                                    paste(colnames(ctable), collapse = "</th> <th>"),
