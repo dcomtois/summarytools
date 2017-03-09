@@ -1,5 +1,7 @@
 # summarytools version 0.6.9 (in development)
 
+For the stable version and thorough doc, [click here](https://github.com/dcomtois/summarytools).
+
 This development version introduces major improvements and I appeal to useRs to test it out before I can upload it to R-CRAN! The most important changes are:
   - An added cross-tabulation function 
   - Much improved support for `by()` and `with()` functions 
