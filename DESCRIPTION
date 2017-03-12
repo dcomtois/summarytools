@@ -26,6 +26,7 @@ Imports:
     rstudioapi,
     utils,
     matrixStats
+LazyData: true
 License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues

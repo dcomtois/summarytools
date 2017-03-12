@@ -6,7 +6,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     stop("x is not numerical")
 
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=='rmarkdown' && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
 

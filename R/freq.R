@@ -14,7 +14,7 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
     message("file argument is deprecated; use print(x, file=) or view(x, file=) instead")
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style == 'rmarkdown' && isTRUE(plain.ascii) && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style == "rmarkdown" && isTRUE(plain.ascii) && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
 
@@ -36,14 +36,14 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
     }
 
     # Change the name of the NA item (last) to avoid potential problems when echoing to console
-    names(freq_table)[length(freq_table)] <- '<NA>'
+    names(freq_table)[length(freq_table)] <- "<NA>"
 
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
 
     # Add '<NA>' item to the proportions; this assures
     # proper length when cbind'ing later on
-    P_valid['<NA>'] <- NA
+    P_valid["<NA>"] <- NA
 
     # calculate proportions (total, i.e. including NA's)
     P_tot <- prop.table(freq_table) * 100
@@ -83,7 +83,7 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
 
   # Calculate cumulative proportions
   P_valid_cum <- cumsum(P_valid)
-  P_valid_cum['<NA>'] <- NA
+  P_valid_cum["<NA>"] <- NA
   P_tot_cum <- cumsum(P_tot)
 
   # Combine the info to build the final frequency table
@@ -94,9 +94,9 @@ freq <- function(x, round.digits = 2, style = "simple", justify = "right", order
 
   # Escape < and > when used in pairs in rownames, so that <NA> or <ABCD> are rendered correctly
   # with style "rmarkdown" or "grid"
-  if (!plain.ascii && style %in% c('rmarkdown', 'grid')) {
-    row.names(output) <- gsub(pattern = '<',replacement = '\\<',x = row.names(output), fixed = TRUE)
-    row.names(output) <- gsub(pattern = '>',replacement = '\\>',x = row.names(output), fixed = TRUE)
+  if (!plain.ascii && style %in% c("rmarkdown", "grid")) {
+    row.names(output) <- gsub(pattern = "<",replacement = "\\<",x = row.names(output), fixed = TRUE)
+    row.names(output) <- gsub(pattern = ">",replacement = "\\>",x = row.names(output), fixed = TRUE)
   }
 
   # Update the output class and attributes
