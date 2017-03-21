@@ -1,7 +1,7 @@
-# view is a wrapper function for print(x, "viewer"). Allows supports "browser" or "pander" as well.
-view <- function(x, method = "viewer", silent = FALSE, footer = FALSE,
-                 file = "", append = FALSE, report.title = NA,
-                 escape.pipe = FALSE, ...) {
+#' @export
+view <- function(x, method = "viewer", file = "", append = FALSE,
+                 report.title = NA, group.only = FALSE, escape.pipe = FALSE,
+                 silent = FALSE, footer = FALSE, ...) {
 
   if ("summarytools" %in% class(x))
     print.summarytools(x, method = method, silent = silent, footer = footer,

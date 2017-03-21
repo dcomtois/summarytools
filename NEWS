@@ -1,6 +1,10 @@
+Version 0.7.0
+-------------
+Changes introduced in 0.6.9 have been further tested and enhanced. Improved alignment in cells having counts + proportions.  Updated the vignette to reflect latest changes and added examples using the included datasets ('exams' and 'tobacco'). dfSummary()'s last column now includes counts and percentages of both valid and missing data. Internal changes: coding style has been reviewed to be more standard; Roxygen2 is now used to generate help files.
+
 Version 0.6.9
 -------------
-Introduced ctable() for cross-tabulations. Added extended support for by() and with() - variable names and by-groups are now labelled correctly, and view() prints objects generated with by() in a convenient way if an html destination is used. Appending to HTML files is now supported. Pander options stored in summarytools objects can now be overridden when using print() or view(). freq() has an new order= parameter allowing to order rows by count rather than values sorted alphabetically. Alignment of numbers in descr() observations table has been improved. Change breaking backward compatibility: the file= parameter must now be used with print() or view(); its use with other functions is deprecated.
+(Release on GitHub only). Introduced ctable() for cross-tabulations. Added extended support for printing objects created using by() and/or with() - variable names, labels and by-groups are now displayed correctly. view() is now more than just a wrapper function build around print.summarytools(); it is the function to use when printing an object created using by(). Appending to summarytools-generated html files is now supported. Most pander options stored in summarytools objects can now be overridden when using print() or view(). freq() has an new parameter, 'order', allowing to order rows by count rather than values sorted alphabetically. Alignment of numbers in descr() observations table has been improved. An important change causing a minor break in backward compatibility: the file= parameter must now be used with print() or view(); its use with other functions is now deprecated. Environment variables keep track of all temporary html files created during session, and also make it possible to print lists of summarytools objects created using by().
 
 Version 0.6.5
 ------------

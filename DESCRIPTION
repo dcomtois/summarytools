@@ -1,22 +1,18 @@
 Package: summarytools
 Type: Package
-Title: Detailed Dataframe Summaries, Frequency Tables, Cross-Tabulations and Descriptive Stats in plain ascii, 'rmarkdown' or HTML
-Version: 0.6.9
-Date: 2016-12-18
+Title: Tools to Quickly and Neatly Summarize Data
+Version: 0.7.0
+Date: 2017-03-18
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
-Description: Four main functions: 1) freq() generates frequency tables reporting counts and
-    proportions (including cumulative); 2) descr() gives all common central tendency statistics and 
-    measures of dispersion for numerical data; 3) ctable() generates cross-tabulations between two
-    categorical variables; 4) dfSummary() gives as much information as possible about a dataframe's 
-    date in a legible table. freq() and descr() support weights, and all three functions support 
-    variable labels ('Hmisc' or 'pander'). Plain ascii, 'rmarkdown' and HTML outputs are available.
-    An additional misc function, what.is(), displays all common properties of an object
-    (its class, type, mode, attributes, etc.) and extends the base is() function, 
-    checking the object against most is.() functions.
-Depends:
-    htmltools
+Description: Data frame summaries, cross-tabulations, 
+  weight-supporting frequency tables and common univariable 
+  stats in concise tables available in a variety of
+  formats (plain-ascii, rmarkdown and html). A good point-
+  of-entry for exploring data, both for experienced and 
+  unexperienced R users.
 Imports:
+    htmltools,
     Hmisc,
     methods,
     pryr,
@@ -33,4 +29,6 @@ BugReports: https://github.com/dcomtois/summarytools/issues
 Suggests:
     knitr,
     rmarkdown
+Encoding: UTF-8
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1

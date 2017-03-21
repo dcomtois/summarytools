@@ -1,29 +1,129 @@
-descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "simple",
-                  justify = "right", plain.ascii = TRUE, transpose = FALSE,
-                  weights = NA, rescale.weights = FALSE, ...) {
+#' Univariate Statistics for Numerical Data
+#'
+#' Calculates weighted or non-weighted mean, standard deviation, min, max,
+#' median, mad, IQR*, CV, skewness*, SE.skewness*, and kurtosis* on numerical
+#' vectors. (Items marked with an * are only available for non-weighted
+#' vectors / dataframes.
+#'
+#' @param x A numerical vector or a dataframe.
+#' @param stats Which stats to produce. Either \dQuote{all} (default), or a
+#'   selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
+#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, and
+#'   \dQuote{kurtosis}.
+#' @param na.rm Argument to be passed to statistical functions. Defaults to
+#'   \code{TRUE}.
+#' @param round.digits Number of significant digits to keep. Defaults to
+#'   \code{2}.
+#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
+#'   output tables; One of \dQuote{simple} (default), \dQuote{grid} or
+#'   \dQuote{rmarkdown}.
+#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
+#'   \code{TRUE}, no markup characters will be used (useful when printing
+#'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
+#'   and \code{FALSE} otherwise.
+#' @param justify String indicating alignment of columns; one of \dQuote{left}
+#'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
+#'   (or \dQuote{r}). Defaults to \dQuote{right}.
+#' @param transpose Makes variables appears as columns, and stats as rows.
+#'   Defaults to \code{FALSE}.
+#' @param use.labels Logical. Display label instead of variable name when
+#'   label exists. Available only when \code{transpose = TRUE}.
+#' @param weights Vector of weights having same length as x. Use \code{NA}
+#'   (default) when no weights are provided.
+#' @param rescale.weights Logical parameter. When set to \code{TRUE}, the
+#'   total count will be the same as the unweighted \code{x}. \code{FALSE} by
+#'   default.
+#' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
+#'
+#' @return A list with 2 matrix elements: the stats themselves, and a summary
+#'   of valid / missing cases. The list also has attributes used by
+#'   \pkg{summarytool}'s print method.
+#'
+#' @details The default \code{plain.ascii = TRUE} option is there to make results
+#'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
+#'   option is automatically set to \code{FALSE} whenever
+#'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
+#'   explicit). If the intent is to produce markdown text using {style = "simple"},
+#'   set \code{plain.ascii} to \code{FALSE}.
+#'
+#' @examples
+#' data(exams)
+#' descr(exams)
+#' descr(exams, transpose=TRUE)
+#' descr(exams, stats = c("Mean", "Std.Dev"))
+#' data(tobacco)
+#' with(tobacco, by(age, smoker, descr))
+#'
+#' @keywords univar
+#' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+#' @export
+descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
+                  transpose = FALSE, style = "simple", plain.ascii = TRUE,
+                  justify = "right", use.labels = FALSE, weights = NA,
+                  rescale.weights = FALSE, ...) {
 
+  # Validate arguments
   if (is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
-  # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
-    plain.ascii <- FALSE
+  x <- as.data.frame(x)
+
+  if (!is.data.frame(x))
+    stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
+
+  # check that all 'stats' elements are valid
+  valid_stats <- c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "IQR", "CV",
+                   "Skewness", "SE.Skewness", "Kurtosis")
+  if (!identical(stats,"all")) {
+    stats <- tolower(stats)
+    invalid_stats <- setdiff(stats, tolower(valid_stats))
+    if (length(invalid_stats) > 0) {
+      stop("allowed 'stats' are: ", paste(valid_stats, collapse = ", "))
+    } else {
+      stats_subset <- which(tolower(valid_stats) %in% stats)
+    }
+  } else {
+    stats_subset <- valid_stats
   }
+
+  if (!na.rm %in% c(TRUE, FALSE))
+    stop("'na.rm' argument must be either TRUE or FALSE")
+
+  if (!is.numeric(round.digits) || round.digits < 1)
+    stop("'round.digits' argument must be numerical and >= 1")
+
+  if (!transpose %in% c(TRUE, FALSE))
+    stop("'transpose' argument must be either TRUE or FALSE")
+
+  if (!style %in% c("simple", "grid", "rmarkdown"))
+    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
+
+  if (!plain.ascii %in% c(TRUE, FALSE))
+    stop("'plain.ascii' argument must either TRUE or FALSE")
+
+  justify <- switch(tolower(substring(justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    m = "center", # to allow 'middle'
+                    r = "right")
+
+  if (!justify %in% c("left", "center", "right"))
+    stop("'justify' argument must be one of 'left', 'center' or 'right'")
+
+  if (isTRUE(use.labels) && !isTRUE(transpose))
+    stop("'use.labels' can be TRUE only when 'transpose' is also TRUE")
+
+  # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
+  if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call()))))
+    plain.ascii <- FALSE
 
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
 
-  # convert x to data.frame (useful is objet is a tibble or data.table)
-  x <- as.data.frame(x)
-
-  if (!is.data.frame(x)) {
-    stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
-  }
-
   # Get into about x from parsing function
-  parse_info <- .parse_arg(sys.calls(), sys.frames(), match.call())
+  parse_info <- parse_args(sys.calls(), sys.frames(), match.call())
 
-  # Identify and exclude non-numerical columns
+  # Identify and exclude non-numerical columns from x
   col_to_remove <- which(!sapply(x, is.numeric))
 
   if (length(col_to_remove) > 0) {
@@ -33,9 +133,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     parse_info$var_names <- parse_info$var_names[-col_to_remove]
   }
 
-  if (ncol(x) == 0) {
+  if (ncol(x) == 0)
     stop("no numerical variable(s) given as argument")
-  }
 
   # Initialise output list
   output <- list()
@@ -66,7 +165,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     # Iterate over columns in x
     for(i in seq_along(x)) {
 
-      variable <- as.numeric(x[,i])
+      variable <- as.numeric(x[ ,i])
 
       # Extract number and proportion of missing and valid values
       n_valid <- sum(!is.na(variable))
@@ -88,8 +187,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
                             rapportools::kurtosis(variable, na.rm=na.rm))
 
       # Insert valid/missing info into output dataframe
-      output$observ[i,] <- c(n_valid, n_NA, n_valid + n_NA)
-      output$observ_pct[i,] <- c(p_valid, p_NA, p_valid + p_NA)
+      output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
+      output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
   }
 
@@ -100,12 +199,11 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     if (length(weights) != nrow(x))
       stop("weights vector must have the same length as x")
 
-    # use a copy of weights to be able to use substitute(weights) later on
-    wgts <- weights
+    weights_string <- deparse(substitute(weights))
 
-    if (sum(is.na(wgts)) > 0) {
+    if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were treated as zeroes.")
-      wgts[is.na(wgts)] <- 0
+      weights[is.na(weights)] <- 0
     }
 
     # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
@@ -127,35 +225,35 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
 
     # Rescale weights if necessary
     if (rescale.weights)
-      wgts <- wgts / sum(wgts) * nrow(x)
+      weights <- weights / sum(weights) * nrow(x)
 
     for(i in seq_along(x)) {
-      variable <- as.numeric(x[,i])
+      variable <- as.numeric(x[ ,i])
 
       # Extract number and proportion of missing and valid values
-      n_valid <- sum(wgts[which(!is.na(variable))])
-      p_valid <- n_valid / sum(wgts)
-      n_NA <- sum(wgts[which(is.na(variable))])
-      p_NA <- n_NA / sum(wgts)
+      n_valid <- sum(weights[which(!is.na(variable))])
+      p_valid <- n_valid / sum(weights)
+      n_NA <- sum(weights[which(is.na(variable))])
+      p_NA <- n_NA / sum(weights)
 
       # Remove missing values from variable and from corresponding weights
       ind <- which(!is.na(variable))
       variable <- variable[ind]
-      wgts <- wgts[ind]
+      weights <- weights[ind]
 
       # Fill in the output dataframe; here na.rm is redundant since na's have been removed
       # Calculate the weighted stats
-      output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, wgts, refine = TRUE),
-                            variable.sd <- matrixStats::weightedSd(variable, wgts, refine = TRUE),
+      output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
+                            variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
                             min(variable),
-                            matrixStats::weightedMedian(variable, wgts, refine = TRUE),
+                            matrixStats::weightedMedian(variable, weights, refine = TRUE),
                             max(variable),
-                            matrixStats::weightedMad(variable, wgts, refine = TRUE),
+                            matrixStats::weightedMad(variable, weights, refine = TRUE),
                             variable.mean/variable.sd)
 
       # Insert valid/missing info into output dataframe
-      output$observ[i,] <- c(n_valid, n_NA, n_valid + n_NA)
-      output$observ_pct[i,] <- c(p_valid, p_NA, p_valid + p_NA)
+      output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
+      output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
   }
 
@@ -172,14 +270,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     rownames(output$observ_pct)[i] <- rownames(output$stats)[i]
   }
 
-  # Filter statistics according to stats argument
-  if (!identical(stats,"all")) {
-    # Check that 'stats' argument has only valid stats names
-    wrong.stats <- setdiff(stats, colnames(output$stats))
-    if (length(wrong.stats) > 0)
-      stop("allowed 'stats' are: ", paste(colnames(output$stats), collapse = ", "))
-    output$stats <- output$stats[,stats]
-  }
+  output$stats <- output$stats[ ,stats_subset]
 
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
@@ -190,41 +281,39 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2, style = "sim
     output$observ_pct <- t(output$observ_pct)
   }
 
-  # Change <NA> for \<NA\> in markdown tables
-  if (style=="rmarkdown" && !plain.ascii && !transpose) {
-    rownames(output$observ)[2] <- "\\<NA\\>"
-  } else if (style=="rmarkdown" && !plain.ascii && transpose){
-    colnames(output$observ)[2] <- "\\<NA\\>"
-  }
-
   # Set class/attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "descr"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- as.character(match.call())
-  attr(output, "var_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-                                Variable = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
-                                                  parse_info$var_names, NA),
-                                Label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
-                                               Hmisc::label(x), NA),
-                                Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
-                                Weights = substitute(weights),
-                                Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
 
-  # For future use
-  if ("by_group" %in% names(parse_info)) {
-    attr(output, "by_first") <- parse_info$by_first
-    attr(output, "by_last") <- parse_info$by_last
+  attr(output, "data_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
+                                 Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+                                 Variable = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
+                                                   parse_info$var_names, NA),
+                                 Variable.label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
+                                                         Hmisc::label(x), NA),
+                                 Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
+                                 Weights = ifelse(identical(weights, NA), NA, weights_string),
+                                 Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
+
+  attr(output, "formatting") <- list(style = style,
+                                     round.digits = round.digits,
+                                     plain.ascii = plain.ascii,
+                                     justify = justify,
+                                     ... = ...)
+
+  if (isTRUE(use.labels) && isTRUE(transpose)) {
+    rownames(output$stats) <- rapportools::label(x)
+    rownames(output$observ) <- rapportools::label(x)
+    rownames(output$observ_pct) <- rapportools::label(x)
   }
 
-  attr(output, "pander_args") <- list(style = style,
-                                      round = round.digits,
-                                      digits = 6,
-                                      plain.ascii = plain.ascii,
-                                      justify = justify,
-                                      split.table = Inf,
-                                      keep.trailing.zeros = TRUE,
-                                      ... = ...)
+  # For future use
+  # if ("by_group" %in% names(parse_info)) {
+  #  attr(output, "by_first") <- parse_info$by_first
+  #  attr(output, "by_last") <- parse_info$by_last
+  # }
 
   if (exists("ignored"))
     attr(output, "ignored") <- ignored

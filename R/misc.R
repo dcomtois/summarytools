@@ -1,31 +1,15 @@
-# Initialise vector containing paths to temporary html files generated when viewing in browser or
-# in RStudio visualisation pane. Will be updated whenever print.summarytools() / cleartmp() are called.
+# Initialize vector containing paths to temporary html files generated when viewing
+# in browser or in RStudio visualisation pane. Will be updated whenever
+# print.summarytools() / cleartmp() are called.
 .st_env <- new.env(parent = emptyenv())
 .st_env$tmpfiles <- c()
+
+# Initialize list used by view() when printing an object of class "by"
 .st_env$byInfo <- list()
 
-# cleartmp() ----------------------------------------------------------
-
-cleartmp <- function(all=FALSE, silent=FALSE) {
-  if(length(.st_env$tmpfiles) == 0) {
-    if (!silent)
-      message("No temporary files to delete.")
-  } else if(isTRUE(all) || all == 1 || all == "all") {
-    nfiles <- 0
-    for(tmpfile in .st_env$tmpfiles) {
-      nfiles <- nfiles + 1
-      if(!silent)
-        message(paste("Deleting", tmpfile))
-      unlink(tmpfile)
-    }
-    .st_env$tmpfiles <- c()
-    if(!silent)
-      message(paste(nfiles, "file(s) deleted"))
-  } else {
-    tmpfile <- tail(.st_env$tmpfiles, 1)
-    if(!silent)
-      message(paste("Deleting", tmpfile))
-    unlink(tmpfile)
-    .st_env$tmpfiles <- .st_env$tmpfiles[-length(.st_env$tmpfiles)]
-  }
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage(
+    paste("Temporary html files will automatically be deleted when R Session is terminated.",
+          "If you need to delete temporary files before ending R session, see ?cleartmp.", sep="\n")
+    )
 }

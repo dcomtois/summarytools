@@ -1,5 +1,53 @@
-ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", prop = "t",
-                   useNA = "ifany", totals = TRUE, plain.ascii = TRUE,
+#' Cross-Tabulations
+#'
+#' Produces a cross-tabulation (for 2 categorical variables) with either row,
+#' column, or total proportions as well as marginal sums.
+#'
+#' @param x First categorical variable - its values will appear as row names.
+#' @param y Second categorical variable - its values will appear in as column names.
+#' @param round.digits Number of significant digits to display. Defaults to
+#'   \code{1}.
+#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
+#'   \dQuote{rmarkdown}.
+#' @param justify String indicating alignment of columns; one of \dQuote{left}
+#'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
+#'   (or \dQuote{r}). Defaults to \dQuote{right}.
+#' @param prop What proportions to display; \dQuote{t} for \emph{total} (default),
+#'   \dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \code{NA} for
+#'    none.
+#' @param useNA Argument used by \code{\link[base]{table}}; One of \dQuote{ifany}
+#'   (default), \dQuote{no}, or \dQuote{always}.
+#' @param totals Should row and column totals be displayed? Defaults to \code{TRUE}.
+#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
+#'   \code{TRUE}, no markup characters will be used (useful when printing
+#'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
+#'   and \code{FALSE} otherwise.
+#' @param dnn Names to be used in output table. Vector of two strings; By default,
+#'   the character values for arguments x and y are used.
+#' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
+#'
+#' @return A frequency table of class \code{matrix} with added attributes used
+#'   by \link{print} method.
+#'
+#' @details The default \code{plain.ascii = TRUE} option is there to make results
+#'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
+#'   option is automatically set to \code{FALSE} whenever
+#'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
+#'   explicit). If the intent is to produce markdown text using {style = "simple"},
+#'   set \code{plain.ascii} to \code{FALSE}.
+#'
+#' @examples
+#' data("tobacco")
+#' with(tobacco, ctable(gender, smoker, prop="r"))
+#'
+#' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
+#'
+#' @keywords classes category
+#' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+#' @export
+ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "ifany",
+                   style = "simple", plain.ascii = TRUE, justify = "right",
                    dnn=c(substitute(x), substitute(y)), ...) {
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
@@ -22,27 +70,37 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
     message("file argument is deprecated; use print() or view() function to generate files")
 
   # Get into about x from parsing function
-  parse_info <- .parse_arg_xy(sys.calls(), sys.frames(), match.call())
+  parse_info <- parse_args(sys.calls(), sys.frames(), match.call(), y = TRUE)
 
   if (length(parse_info$df_name[["x"]]) == 1 &&
       length(parse_info$df_name[["y"]]) == 1 &&
       parse_info$df_name[["x"]] == parse_info$df_name[["y"]]) {
     df_name <- parse_info$df_name[["x"]]
-    x_name <- parse_info$var_names[["x"]]
-    y_name <- parse_info$var_names[["y"]]
+    x_name  <- parse_info$var_names[["x"]]
+    y_name  <- parse_info$var_names[["y"]]
   } else {
     x_name <- dnn[1]
     y_name <- dnn[2]
   }
 
-  if (length(parse_info$rows_subset[["x"]]) == 1)
+  if (length(parse_info$df_label[["x"]]) == 1 &&
+      length(parse_info$df_label[["y"]]) == 1 &&
+      parse_info$df_label[["x"]] == parse_info$df_label[["y"]]) {
+    df_label <- parse_info$df_label[["x"]]
+  }
+
+
+  if (length(parse_info$rows_subset[["x"]]) == 1) {
     x_subset <- parse_info$rows_subset[["x"]]
-  else
-    x_subset <- character()
-  if (length(parse_info$rows_subset[["y"]]) == 1)
+  } else {
+    x_subset <- NA
+  }
+
+  if (length(parse_info$rows_subset[["y"]]) == 1) {
     y_subset <- parse_info$rows_subset[["y"]]
-  else
-    y_subset <- character()
+  } else {
+    y_subset <- NA
+  }
 
   # Create cross-freq table
   freq_table <- table(x, y, useNA = useNA)
@@ -82,42 +140,40 @@ ctable <- function(x, y, round.digits=1, style = "simple", justify = "right", pr
   rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
   colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
 
-  # create output object and set class / attributes
-  output <- list(ctable=freq_table, prop=prop_table)
-  class(output) <- c("summarytools", class(output))
+  # Create output object
+  output <- list(cross_table = freq_table, proportions = prop_table)
 
-  # General attributes
+  # Set output object's attributes
+  class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
+  attr(output, "proportions") <- switch(prop,
+                                       r = "Rows",
+                                       c = "Columns",
+                                       t = "Total")
   attr(output, "fn_call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
-  attr(output, "prop_type") <- prop
 
-  # Data attributes
-  if (exists("df_name"))
-    attr(output, "var_info")["Dataframe"] <- df_name
-  attr(output, "var_info")["Row variable"] <- x_name
-  if (Hmisc::label(x) != "")
-    attr(output, "var_info")["Row variable Label"] <- Hmisc::label(x)
-  attr(output, "var_info")["Col variable"] <- y_name
-  if (Hmisc::label(y) != "")
-    attr(output, "var_info")["Col variable Label"] <- Hmisc::label(y)
-  if (length(x_subset) == 1 && length(y_subset) == 1 && (x_subset == y_subset)) {
-    attr(output, "var_info")["Subset"] <- x_subset
-  } else {
-    if (length(x_subset) == 1)
-      attr(output, "var_info")["Row variable"] <- paste0(attr(output, "var_info")["x_name"], " [", x_subset, "]")
-    if (length(y_subset) == 1)
-      attr(output, "var_info")["Col variable"] <- paste0(attr(output, "var_info")["y_name"], " [", y_subset, "]")
-  }
+  attr(output, "data_info") <-
+    c(Dataframe = ifelse(exists("df_name"), df_name, NA),
+      Dataframe.label = ifelse(exists("df_label"), df_label, NA),
+      Row.variable = x_name,
+      Row.variable.label = ifelse(Hmisc::label(x) != "",
+                                  Hmisc::label(x), NA),
+      Col.variable = y_name,
+      Col.variable.label = ifelse(Hmisc::label(y) != "",
+                                  Hmisc::label(y), NA),
+      Subset <- ifelse(length(x_subset) == 1 &&
+                        length(y_subset) == 1 &&
+                        x_subset == y_subset, x_subset, NA),
+      Row.variable.subset = ifelse(is.na(Subset) && length(x_subset) == 1, x_subset, NA),
+      Col.variable.subset = ifelse(is.na(Subset) && length(y_subset) == 1, y_subset, NA))
 
-  # Pander attributes
-  attr(output, "pander_args") <- list(style = style,
-                                      round = round.digits,
-                                      digits = 6,
-                                      plain.ascii = plain.ascii,
-                                      justify = justify,
-                                      split.table = Inf,
-                                      #keep.trailing.zeros = TRUE, # do NOT put it -- causes issue w/ pander
-                                      ... = ...)
+  attr(output, "formatting") <-
+    list(style = style,
+         round.digits = round.digits,
+         plain.ascii = plain.ascii,
+         justify = justify,
+         ... = ...)
+
   return(output)
 }
