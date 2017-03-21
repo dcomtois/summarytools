@@ -13,7 +13,6 @@ Description: Data frame summaries, cross-tabulations,
   unexperienced R users.
 Imports:
     htmltools,
-    Hmisc,
     methods,
     pryr,
     pander,

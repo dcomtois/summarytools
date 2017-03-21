@@ -177,7 +177,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   attr(output, "data_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
                                  Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
                                  Variable = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
-                                 Variable.label = ifelse(Hmisc::label(x) != "", Hmisc::label(x), NA),
+                                 Variable.label = label(x),
                                  Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
                                  Weights = ifelse(identical(weights, NA), NA, weights_string),
                                  Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))

@@ -242,8 +242,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     }
 
     # Extract dataframe label if any
-    if (!no_df && df_name != "" && exists(df_name) && Hmisc::label(get(df_name), self = TRUE) != "") {
-      df_label <- Hmisc::label(get(df_name), self = TRUE)
+    if (!no_df && df_name != "" && exists(df_name) && !is.na(label(get(df_name)))) {
+      df_label <- label(get(df_name))
     } else {
       df_label <- character()
     }
@@ -469,8 +469,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
 
       # Extract dataframe label if any
       if (!no_df[[XY]] && df_name[[XY]] != "" && exists(df_name[[XY]]) &&
-          Hmisc::label(get(df_name[[XY]]), self = TRUE) != "")
-        df_label[[XY]] <- Hmisc::label(get(df_name[[XY]]), self = TRUE)
+          !is.na(label(get(df_name[[XY]]))))
+        df_label[[XY]] <- label(get(df_name[[XY]]))
 
       # Determine variables name(s) if not already done
       if (!no_df[[XY]] && length(var_names[[XY]]) == 0 && !skipvars[[XY]]) {

@@ -291,8 +291,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                  Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
                                  Variable = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
                                                    parse_info$var_names, NA),
-                                 Variable.label = ifelse(length(Hmisc::label(x)) == 1 && Hmisc::label(x) != "",
-                                                         Hmisc::label(x), NA),
+                                 Variable.label = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
                                  Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
                                  Weights = ifelse(identical(weights, NA), NA, weights_string),
                                  Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
@@ -303,10 +302,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                      justify = justify,
                                      ... = ...)
 
-  if (isTRUE(use.labels) && isTRUE(transpose)) {
-    rownames(output$stats) <- rapportools::label(x)
-    rownames(output$observ) <- rapportools::label(x)
-    rownames(output$observ_pct) <- rapportools::label(x)
+  if (isTRUE(use.labels) && isTRUE(transpose) && is.data.frame(x)) {
+    rownames(output$stats) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
+    rownames(output$observ) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
+    rownames(output$observ_pct) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
   }
 
   # For future use

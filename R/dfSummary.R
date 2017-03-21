@@ -10,9 +10,9 @@
 #' @param varnumbers Should the first column contain variable number? Defaults
 #'   to \code{FALSE}.
 #' @param display.labels If \code{TRUE}, variable labels (as defined with
-#'   \pkg{rapportools} or \pkg{Hmisc}'s \code{label} functions) will be displayed.
-#'   By default, the \emph{labels} column is shown if at least one of the columns
-#'   has a defined label.
+#'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
+#'   will be displayed. By default, the \emph{labels} column is shown if at least
+#'   one of the columns has a defined label.
 #' @param style The style to be used by \code{\link[pander]{pander}} when
 #'   renderingin output table. Defaults to \dQuote{multiline}. Another option is
 #'   \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
@@ -47,8 +47,7 @@
 #'     \item{Var Number}{Number indicating the order in which column appears in
 #'       the dataframe.}
 #'     \item{Variable}{Name of the variable.}
-#'     \item{Label}{Label of the variable (set by using \code{Hmisc::label()} or
-#'        \code{rapportools::label()}).}
+#'     \item{Label}{Label of the variable.}
 #'     \item{Properties}{Type & class(es) of the variable.}
 #'     \item{Stats / Values}{For factors, a list of their values, limited by the
 #'       \code{max.distinct.values} parameter. For character variables, the most
@@ -77,7 +76,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
-                      display.labels = any(sapply(X = x, FUN = Hmisc::label) != ""),
+                      display.labels = length(label(x, all = TRUE)) > 0,
                       style = "multiline", plain.ascii = TRUE, justify = "left",
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
@@ -145,7 +144,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
 
     # Add column label (if applicable)
     if(display.labels) {
-      output[i,3] <- Hmisc::label(x[i])
+      output[i,3] <- label(x[[i]])
+      if (is.na(output[i,3]))
+        output[i,3] <- ""
     }
 
     # Add variable properties (typeof, class)

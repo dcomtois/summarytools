@@ -157,14 +157,12 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
     c(Dataframe = ifelse(exists("df_name"), df_name, NA),
       Dataframe.label = ifelse(exists("df_label"), df_label, NA),
       Row.variable = x_name,
-      Row.variable.label = ifelse(Hmisc::label(x) != "",
-                                  Hmisc::label(x), NA),
+      Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
       Col.variable = y_name,
-      Col.variable.label = ifelse(Hmisc::label(y) != "",
-                                  Hmisc::label(y), NA),
+      Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
       Subset <- ifelse(length(x_subset) == 1 &&
-                        length(y_subset) == 1 &&
-                        x_subset == y_subset, x_subset, NA),
+                         length(y_subset) == 1 &&
+                         x_subset == y_subset, x_subset, NA),
       Row.variable.subset = ifelse(is.na(Subset) && length(x_subset) == 1, x_subset, NA),
       Col.variable.subset = ifelse(is.na(Subset) && length(y_subset) == 1, y_subset, NA))
 

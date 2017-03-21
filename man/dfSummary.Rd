@@ -5,10 +5,10 @@
 \title{Dataframe Summary}
 \usage{
 dfSummary(x, round.digits = 2, varnumbers = FALSE,
-  display.labels = any(sapply(X = x, FUN = Hmisc::label) != ""),
-  style = "multiline", plain.ascii = TRUE, justify = "left",
-  max.distinct.values = 10, trim.strings = FALSE, max.string.width = 25,
-  split.cells = 40, split.table = Inf, ...)
+  display.labels = length(label(x, all = TRUE)) > 0, style = "multiline",
+  plain.ascii = TRUE, justify = "left", max.distinct.values = 10,
+  trim.strings = FALSE, max.string.width = 25, split.cells = 40,
+  split.table = Inf, ...)
 }
 \arguments{
 \item{x}{A dataframe.}
@@ -20,9 +20,9 @@ summaries and in frequency proportions. Defaults to \code{2}.}
 to \code{FALSE}.}
 
 \item{display.labels}{If \code{TRUE}, variable labels (as defined with
-\pkg{rapportools} or \pkg{Hmisc}'s \code{label} functions) will be displayed.
-By default, the \emph{labels} column is shown if at least one of the columns
-has a defined label.}
+\pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
+will be displayed. By default, the \emph{labels} column is shown if at least
+one of the columns has a defined label.}
 
 \item{style}{The style to be used by \code{\link[pander]{pander}} when
 renderingin output table. Defaults to \dQuote{multiline}. Another option is
@@ -67,8 +67,7 @@ A dataframe containing as many rows as there are columns in \code{x},
     \item{Var Number}{Number indicating the order in which column appears in
       the dataframe.}
     \item{Variable}{Name of the variable.}
-    \item{Label}{Label of the variable (set by using \code{Hmisc::label()} or
-       \code{rapportools::label()}).}
+    \item{Label}{Label of the variable.}
     \item{Properties}{Type & class(es) of the variable.}
     \item{Stats / Values}{For factors, a list of their values, limited by the
       \code{max.distinct.values} parameter. For character variables, the most
