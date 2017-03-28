@@ -41,9 +41,8 @@ with \code{by()}.}
 is to generate a text file that can be converted to other formats using
 \emph{Pandoc}.}
 
-\item{silent}{Hide console messages indicating location of temporary
-\emph{html} files. Defaults to \code{FALSE}, and has no effect when
-\code{method} is \dQuote{pander}. .}
+\item{silent}{Hide console messages (such as ignored variables or \code{NaN}
+to \code{NA} transformations).}
 
 \item{footer}{Logical. Include footer (package name & version, R version,
 date) in \emph{html} outputs. \code{TRUE} by default. Has no effect when
@@ -69,7 +68,7 @@ Display \code{summarytools} objects in the console, in Web Browser or in
 
 \strong{\emph{Html} tables} are generated via
   \code{\link[xtable]{print.xtable}}
-  and include \emph{Bootstrap Cascading StyleSheets}. To add custom
+  and include \emph{Bootstrap Cascading Style Sheets}. To add custom
   \emph{CSS}, edit the \emph{custom.css} file located in package's
   \emph{includes/stylesheets} directory.
 
@@ -81,11 +80,15 @@ The following additional arguments can be used to override
   formatting and other attributes stored in the object to be printed:
    \itemize{
      \item \code{date}
+     \item \code{style}
      \item \code{round.digits}
      \item \code{justify}
      \item \code{plain.ascii}
      \item \code{split.table}
-     \item \code{Label}
+     \item \code{Dataframe}
+     \item \code{Dataframe.label}
+     \item \code{Variable}
+     \item \code{Variable.label}
      \item \code{Subset}
      \item \code{Group}
      \item \code{Weights}

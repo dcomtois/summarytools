@@ -2,7 +2,7 @@
 % Please edit documentation in R/cleartmp.R
 \name{cleartmp}
 \alias{cleartmp}
-\title{Delete Temporary \emph{Html} Files}
+\title{Delete Temporary Html Files}
 \usage{
 cleartmp(all = FALSE, silent = FALSE)
 }

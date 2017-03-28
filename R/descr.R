@@ -3,9 +3,9 @@
 #' Calculates weighted or non-weighted mean, standard deviation, min, max,
 #' median, mad, IQR*, CV, skewness*, SE.skewness*, and kurtosis* on numerical
 #' vectors. (Items marked with an * are only available for non-weighted
-#' vectors / dataframes.
+#' vectors / data frames.
 #'
-#' @param x A numerical vector or a dataframe.
+#' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
 #'   selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
 #'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, and
@@ -69,7 +69,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   x <- as.data.frame(x)
 
   if (!is.data.frame(x))
-    stop("x must be a data.frame, a tibble, a data.table or a single vector, and attempted conversion failed")
+    stop(paste("x must be a data.frame, a tibble, a data.table or a single vector, and",
+               "attempted conversion failed"))
 
   # check that all 'stats' elements are valid
   valid_stats <- c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "IQR", "CV",
@@ -141,7 +142,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
   if (identical(weights, NA)) {
 
-    # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
+    # Build skeleton (2 empty dataframes; one for stats and other
+    # to report valid vs na counts)
     output$stats <- data.frame(Mean = numeric(),
                                Std.Dev = numeric(),
                                Min = numeric(),
@@ -174,19 +176,20 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       p_NA <- n_NA / length(variable)
 
       # Insert stats into output dataframe
-      output$stats[i,] <- c(variable.mean <- mean(variable, na.rm=na.rm),
-                            variable.sd <- sd(variable, na.rm=na.rm),
-                            min(variable, na.rm=na.rm),
-                            median(variable, na.rm=na.rm),
-                            max(variable, na.rm=na.rm),
-                            mad(variable, na.rm=na.rm),
-                            IQR(variable, na.rm=na.rm),
-                            variable.mean / variable.sd,
-                            rapportools::skewness(variable, na.rm=na.rm),
-                            sqrt((6*n_valid*(n_valid-1))/((n_valid-2)*(n_valid+1)*(n_valid+3))),
-                            rapportools::kurtosis(variable, na.rm=na.rm))
+      output$stats[i, ] <- c(variable.mean <- mean(variable, na.rm=na.rm),
+                             variable.sd <- sd(variable, na.rm=na.rm),
+                             min(variable, na.rm=na.rm),
+                             median(variable, na.rm=na.rm),
+                             max(variable, na.rm=na.rm),
+                             mad(variable, na.rm=na.rm),
+                             IQR(variable, na.rm=na.rm),
+                             variable.mean / variable.sd,
+                             rapportools::skewness(variable, na.rm=na.rm),
+                             sqrt((6*n_valid*(n_valid-1)) /
+                                    ((n_valid-2)*(n_valid+1)*(n_valid+3))),
+                             rapportools::kurtosis(variable, na.rm=na.rm))
 
-      # Insert valid/missing info into output dataframe
+      # Insert valid/missing info into output data frame
       output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
       output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
@@ -200,6 +203,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       stop("weights vector must have the same length as x")
 
     weights_string <- deparse(substitute(weights))
+    weights_label <- try(label(weights), silent = TRUE)
 
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were treated as zeroes.")
@@ -241,17 +245,17 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       variable <- variable[ind]
       weights <- weights[ind]
 
-      # Fill in the output dataframe; here na.rm is redundant since na's have been removed
-      # Calculate the weighted stats
-      output$stats[i,] <- c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
-                            variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
-                            min(variable),
-                            matrixStats::weightedMedian(variable, weights, refine = TRUE),
-                            max(variable),
-                            matrixStats::weightedMad(variable, weights, refine = TRUE),
-                            variable.mean/variable.sd)
+      # Calculate the weighted stats & fill in the row in output df
+      output$stats[i, ] <-
+        c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
+          variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
+          min(variable),
+          matrixStats::weightedMedian(variable, weights, refine = TRUE),
+          max(variable),
+          matrixStats::weightedMad(variable, weights, refine = TRUE),
+          variable.mean/variable.sd)
 
-      # Insert valid/missing info into output dataframe
+      # Insert valid/missing info into output data frame
       output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
       output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
@@ -287,14 +291,19 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- as.character(match.call())
 
-  attr(output, "data_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-                                 Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
-                                 Variable = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
-                                                   parse_info$var_names, NA),
-                                 Variable.label = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
-                                 Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
-                                 Weights = ifelse(identical(weights, NA), NA, weights_string),
-                                 Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
+  attr(output, "data_info") <-
+    c(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
+      Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+      Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
+                               parse_info$var_names, NA),
+      Variable.label  = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
+      Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
+      Weights         = ifelse(identical(weights, NA), NA, weights_string),
+      Weights.label   = ifelse(!identical(weights, NA) && class(weights_label) != "try-error",
+                               weights_label, NA),
+      Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
+      by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
+      by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA))
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,

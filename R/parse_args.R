@@ -2,7 +2,7 @@
 #'
 #' Using sys.calls(), sys.frames() and match.call(), this utility function
 #' extracts and/or deducts information about the data being processed.
-#' Dataframe name, variable names and labels if any, subsetting information,
+#' Data frame name, variable names and labels if any, subsetting information,
 #' grouping information (when by() is used) are returned by the function which
 #' tries various methods to get this information.
 #'
@@ -12,7 +12,7 @@
 #'
 #' @return A list comprised of:
 #' \itemize{
-#'   \item df_name The dataframe name when applicable.
+#'   \item df_name The data frame name when applicable.
 #'   \item var_names The variable names when applicable.
 #'   \item rows_subset The subsetting condition when applicable.
 #'   \item by_group The group, when functions are called through
@@ -39,6 +39,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     var_names = character()
     rows_subset = character()
     by_group = character()
+    by_first = logical()
+    by_last = logical()
 
     # Look for position of by.default(), tapply() and with.default() in sys.calls()
     by_pos <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
@@ -46,7 +48,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     with_pos <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
     fn_pos <- which(as.character(lapply(sys_calls, head, 1)) == deparse(match_call[1]))
 
-    # List of classes accepted as "dataframes"
+    # List of classes accepted as "data frames"
     # classes <- c("data.frame", "data.table", "tbl")
 
     # Function was called through with() ----------------------------------------------------
@@ -116,31 +118,33 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
 
       # Populate by_group item
       by_group <- paste(colnames(.st_env$byInfo$by_levels),
-                               as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter,]),
+                               as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
                                sep=" = ", collapse = ", ")
 
-      # by_first and by_last are for a projected functionality
-      # if (.st_env$byInfo$iter == 1) {
-      #   by_first <- TRUE
-      #   by_last <- FALSE
-      # } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
-      #   by_first <- FALSE
-      #   by_last <- TRUE
-      #   .st_env$byInfo <- list()
-      # } else {
-      #   by_first <- FALSE
-      #   by_last <- FALSE
-      #  .st_env$byInfo$iter = .st_env$byInfo$iter + 1
-      # }
+      # by_first and by_last are used by print.summarytools when printing objects
+      # passed by the by() function
+      if (.st_env$byInfo$iter == 1) {
+        by_first <- TRUE
+        by_last <- FALSE
+        .st_env$byInfo$iter = .st_env$byInfo$iter + 1
+      } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
+        by_first <- FALSE
+        by_last <- TRUE
+        .st_env$byInfo <- list()
+      } else {
+        by_first <- FALSE
+        by_last <- FALSE
+       .st_env$byInfo$iter = .st_env$byInfo$iter + 1
+      }
     }
 
     # From here code applies no matter how function was called ---------------------------------
     skipvars <- FALSE # will be changed to TRUE if can't determine df_name
 
-    # Following regular expressions allow to split dataframe name, row indexes and column indexes
+    # Following regular expressions allow to split data frame name, row indexes and column indexes
 
     # re1: when form dfname[rows,columns] is used
-    re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, dataframe name (1)
+    re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
                   "\\[(.+)?",           # rows indexing  (2)
                   "\\s*(,)\\s*",        # comma surrounded (or not) by spaces (3)
                   "((c\\(.*\\))|",      # column indexing in the form [ , c(...)]  (4) (5)
@@ -152,7 +156,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
                   "\\s*\\]")            # end of indexing
 
     # re2: form dfname[[col]] is used
-    re2 <- paste0("([\\w\\.\\_]+)",                 # dataframe
+    re2 <- paste0("([\\w\\.\\_]+)",                 # data frame
                   "\\s*\\[\\[\\s*(.*)\\s*\\]\\]")   # variable number or name
 
     # re3: form listname$dfname$column[rows]
@@ -187,14 +191,21 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
       allnames <- all.vars(match_call$x)
     }
 
-    allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
-    if (length(df_name) == 0 && length(allnames_exist) == 1 && is.atomic(get(allnames_exist))) {
-      no_df <- TRUE
-      var_names <- allnames_exist
+    if (length(allnames) == 0 && length(var_names) == 0) {
+      var_names <- data_str
+      if (length(df_name) == 0) {
+        no_df <- TRUE
+      }
     } else {
-      no_df <- FALSE
-    }
 
+      allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
+      if (length(df_name) == 0 && length(allnames_exist) == 1 && is.atomic(get(allnames_exist))) {
+        no_df <- TRUE
+        var_names <- allnames_exist
+      } else {
+        no_df <- FALSE
+      }
+    }
     # Extract the dataset name (or unique variable name) if not already done
     if (!no_df && length(df_name) == 0) {
       if (length(allnames_exist) > 0) {
@@ -241,8 +252,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
       }
     }
 
-    # Extract dataframe label if any
-    if (!no_df && df_name != "" && exists(df_name) && !is.na(label(get(df_name)))) {
+    # Extract data frame label if any
+    if (!no_df && length(df_name) > 0 && exists(df_name) && !is.na(label(get(df_name)))) {
       df_label <- label(get(df_name))
     } else {
       df_label <- character()
@@ -293,7 +304,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
         rows_subset <- sub(re5, "\\2", data_str, perl = TRUE)
     }
 
-    if (!no_df && df_name != "" && length(rows_subset) == 1) {
+    if (!no_df && length(df_name) > 0 && length(rows_subset) == 1) {
       rows_subset <- sub(pattern = paste0(df_name, "$"),
                                 replacement = "", x = rows_subset, fixed = TRUE)
       rows_subset <- sub(pattern = "==", replacement = "=", x = rows_subset, fixed = TRUE)
@@ -308,7 +319,9 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
                    df_label = df_label,
                    var_names = var_names,
                    rows_subset = rows_subset,
-                   by_group = by_group)
+                   by_group = by_group,
+                   by_first = by_first,
+                   by_last = by_last)
 
     output <- output[which(sapply(output, length) > 0)]
 
@@ -317,7 +330,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     with_pos <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
     fn_pos <- which(as.character(lapply(sys_calls, head, 1)) == deparse(match_call[1]))
 
-    # List of classes accepted as "dataframes"
+    # List of classes accepted as "data frames"
     # classes <- c("data.frame", "data.table", "tbl")
 
     # Initiate all objects to store data about x (pos. 1) and y (pos. 2)
@@ -360,10 +373,10 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     }
 
 
-    # Following regular expressions allow to split dataframe name, row indexes and column indexes
+    # Following regular expressions allow to split data frame name, row indexes and column indexes
 
     # re1: when form dfname[rows,columns] is used
-    re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, dataframe name (1)
+    re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
                   "\\[(.+)?",           # rows indexing  (2)
                   "\\s*(,)\\s*",        # comma surrounded (or not) by spaces (3)
                   "((c\\(.*\\))|",      # column indexing in the form [ , c(...)]  (4) (5)
@@ -375,7 +388,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
                   "\\s*\\]")            # end of indexing
 
     # re2: form dfname[[col]] is used
-    re2 <- paste0("([\\w\\.\\_]+)",                 # dataframe
+    re2 <- paste0("([\\w\\.\\_]+)",                 # data frame
                   "\\s*\\[\\[\\s*(.*)\\s*\\]\\]")   # variable number or name
 
     # re3: form listname$dfname$column[rows]
@@ -467,7 +480,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
         }
       }
 
-      # Extract dataframe label if any
+      # Extract data frame label if any
       if (!no_df[[XY]] && df_name[[XY]] != "" && exists(df_name[[XY]]) &&
           !is.na(label(get(df_name[[XY]]))))
         df_label[[XY]] <- label(get(df_name[[XY]]))

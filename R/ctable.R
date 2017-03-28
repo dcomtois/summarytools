@@ -160,11 +160,11 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
       Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
       Col.variable = y_name,
       Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-      Subset <- ifelse(length(x_subset) == 1 &&
-                         length(y_subset) == 1 &&
-                         x_subset == y_subset, x_subset, NA),
-      Row.variable.subset = ifelse(is.na(Subset) && length(x_subset) == 1, x_subset, NA),
-      Col.variable.subset = ifelse(is.na(Subset) && length(y_subset) == 1, y_subset, NA))
+      Subset = ifelse(length(x_subset) == 1 &&
+                        length(y_subset) == 1 &&
+                        x_subset == y_subset, x_subset, NA),
+      Row.variable.subset = ifelse(length(x_subset) == 1, x_subset, NA),
+      Col.variable.subset = ifelse(length(y_subset) == 1, y_subset, NA))
 
   attr(output, "formatting") <-
     list(style = style,

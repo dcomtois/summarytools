@@ -20,7 +20,7 @@ for large (> 20 K-bytes) objects. Defaults to \code{FALSE}.}
 \value{
 A list with following elements:
 \describe{
-  \item{properties}{A dataframe with the class(es), type, mode and storage
+  \item{properties}{A data frame with the class(es), type, mode and storage
     mode of the object as well as the dim, length and object.size.}
   \item{attributes.lengths}{A named character vector giving all attributes
     (\emph{c.f.} \dQuote{names}, \dQuote{row.names}, \dQuote{class},

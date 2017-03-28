@@ -1,10 +1,10 @@
-#' Dataframe Summary
+#' Data frame Summary
 #'
-#' Summary of a dataframe consisting of: variable names, labels if any, factor
+#' Summary of a data frame consisting of: variable names, labels if any, factor
 #' levels, frequencies and/or numerical summary statistics, and valid/missing
 #' observations information.
 #'
-#' @param x A dataframe.
+#' @param x A data frame.
 #' @param round.digits Number of significant digits to display in numerical
 #'   summaries and in frequency proportions. Defaults to \code{2}.
 #' @param varnumbers Should the first column contain variable number? Defaults
@@ -14,7 +14,7 @@
 #'   will be displayed. By default, the \emph{labels} column is shown if at least
 #'   one of the columns has a defined label.
 #' @param style The style to be used by \code{\link[pander]{pander}} when
-#'   renderingin output table. Defaults to \dQuote{multiline}. Another option is
+#'   rendering in output table. Defaults to \dQuote{multiline}. Another option is
 #'   \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
 #'   function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.
 #' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
@@ -40,12 +40,12 @@
 #'   width of a table. Keeping the default value (\code{Inf}) is recommended.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A dataframe containing as many rows as there are columns in \code{x},
-#'   with additionnal attributes to inform \code{print} function. Columns of the
-#'   output dataframe are:
+#' @return A data frame containing as many rows as there are columns in \code{x},
+#'   with additional attributes to inform \code{print} function. Columns of the
+#'   output data frame are:
 #'   \describe{
 #'     \item{Var Number}{Number indicating the order in which column appears in
-#'       the dataframe.}
+#'       the data frame.}
 #'     \item{Variable}{Name of the variable.}
 #'     \item{Label}{Label of the variable.}
 #'     \item{Properties}{Type & class(es) of the variable.}
@@ -89,10 +89,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
     x <- try(as.data.frame(x))
 
     if(inherits(x, "try-error")) {
-      stop("x is not a dataframe and attempted conversion failed")
+      stop("x is not a data frame and attempted conversion failed")
     }
 
-    message("x was converted to a dataframe")
+    message("x was converted to a data frame")
     parse_info$df_name <- parse_info$var_name
   }
 
@@ -119,7 +119,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
     return(res)
   }
 
-  # Initialise the output dataframe
+  # Initialize the output data frame
   output <- data.frame(No. = numeric(),
                        Variable = character(),
                        Label = character(),
@@ -151,7 +151,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
 
     # Add variable properties (typeof, class)
     output[i,4] <- paste("type:",typeof(column_data),
-                         "\nclass:",paste(class(column_data),collapse="\n + "),sep="")
+                         "\nclass:",paste(class(column_data),collapse="\n + "), sep = "")
 
     # Calculate valid vs missing data info
     n_tot <- nrow(x)
@@ -163,11 +163,11 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
     if(is.factor(column_data)) {
 
       n_levels <- nlevels(column_data)
-      counts <- table(column_data, useNA="no")
+      counts <- table(column_data, useNA = "no")
       props <- round(prop.table(counts), 3)
 
       if(n_levels <= max.distinct.values) {
-        output[i,5] <- paste0(1:n_levels,". ", levels(column_data), collapse="\n")
+        output[i,5] <- paste0(1:n_levels,". ", levels(column_data), collapse = "\n")
         counts_props <- align_numbers(counts, props)
         output[i,6] <- paste(1:n_levels, counts_props, sep = ": ", collapse = "\n")
       } else {
@@ -180,9 +180,11 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
                              sep="\n")
         counts_props <- align_numbers(counts[1:max.distinct.values], props[1:max.distinct.values])
         output[i,6] <- paste(1:max.distinct.values, counts_props, sep = ": ", collapse = "\n")
-        output[i,6] <- paste(output[i,6], paste0("Others: ", tmp.sum <- sum(counts[(max.distinct.values + 1):length(counts)]),
-                                                 " (", round(tmp.sum/n_valid*100,1), "%)"),
-                             sep="\n")
+        output[i,6] <- paste(output[i,6],
+                             paste0("Others: ",
+                                    tmp.sum <- sum(counts[(max.distinct.values + 1):length(counts)]),
+                                    " (", round(tmp.sum/n_valid*100,1), "%)"),
+                             sep = "\n")
       }
     }
 
@@ -221,17 +223,21 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
           counts <- sort(counts, decreasing = TRUE)
           output[i,5] <- paste("Most frequent:\n",
                                paste0(1:max.distinct.values,". ",
-                                      dQuote(substr(names(counts), 1, max.string.width)[1:max.distinct.values]),
+                                      dQuote(substr(names(counts), 1, max.string.width)
+                                        [1:max.distinct.values]),
                                       collapse="\n"),
                                paste0("\n... (", length(counts)-max.distinct.values, " other values)"))
           props <- round(prop.table(counts),3)
           counts_props <- align_numbers(counts[1:max.distinct.values], props[1:max.distinct.values])
 
           output[i,6] <- paste(1:max.distinct.values, counts_props, sep = ": ", collapse = "\n")
-          output[i,6] <- paste(output[i,6], paste0("Others: ", tmp.sum <- sum(counts[(max.distinct.values + 1):length(counts)]),
-                                                   " (", round(tmp.sum/n_valid*100,1), "%)"),
+          output[i,6] <- paste(output[i,6],
+                               paste0("Others: ",
+                                      tmp.sum <- sum(counts[(max.distinct.values + 1):length(counts)]),
+                                      " (", round(tmp.sum/n_valid*100,1), "%)"),
                                sep="\n")
-          output[i,6] <- paste(strrep("- ", floor(max(nchar(strsplit(output[i,6], "\n")[[1]])) / 2)), output[i,6], sep = "\n")
+          output[i,6] <- paste(strrep("- ", floor(max(nchar(strsplit(output[i,6], "\n")[[1]])) / 2)),
+                               output[i,6], sep = "\n")
         }
       }
     }
@@ -280,14 +286,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
       }
     }
 
-    if (n_valid == n_tot) {
-      output[i,7] <- "100% Valid"
-    } else if (n_valid == 0) {
-      output[i,7] <- "0% Valid"
-    } else {
-      valid_missing <- align_numbers(counts = c(n_valid, n_miss), props = c(n_valid, n_miss) / n_tot)
-      output[i,7] <- paste0("Val.: ", valid_missing[1], "\nNA's: ", valid_missing[2])
-    }
+    valid_missing <- align_numbers(counts = c(n_valid, n_miss), props = c(n_valid, n_miss) / n_tot)
+    output[i,7] <- paste0("Val: ", valid_missing[1], "\nNA : ", valid_missing[2])
+
   }
 
   names(output) <- c("No.", "Variable", "Label", "Properties", "Stats / Values",

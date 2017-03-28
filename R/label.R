@@ -1,7 +1,8 @@
 #' Get Variable or Data Frame Label
 #'
-#' This function returns character value previously stored in variable or data
+#' Returns character value previously stored in variable or data
 #' frame's \code{label} attribute, or \code{NA} if none found.
+#'
 #' @param x An R object to extract labels from
 #' @param all Logical. When x is a data frame, setting this argument to \code{TRUE} will
 #'   make the function return all variable labels. By default, its value is \code{FALSE},
@@ -91,12 +92,39 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
     }
   } else if (is.atomic(x)) {
     if (is.na(value)) {
-      attr(x, 'label') <- NA
+      attr(x, 'label') <- NULL
     } else if (length(value) > 1) {
       stop("A variable label must be a character vector of length 1")
     } else {
       attr(x, 'label') <- value
     }
+  }
+  return(x)
+}
+
+#' Clear Variable or Data Frame Label(s)
+#'
+#' Returns the object with all labels removed. Both the \dQuote{label} attribute
+#' and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
+#'
+#' Can be more practical than using \code{label(x) <- NA}, if we want to keep
+#' the label but not let it interfere with one particular task.
+#'
+#' @usage unlabel(x)
+#' @param x An R object to remove labels from.
+#' @seealso \code{link{label}}, \code{\link[rapportools]{label}},
+#'   \code{\link[Hmisc]{label}}
+#' @author
+#' Dominic Comtois, \email{dominic.comtois@@gmail.com},
+#' @export
+unlabel <- function(x) {
+  if(is.list(x)) {
+    for(i in 1 : length(x)) class(x[[i]]) <- setdiff(class(x[[i]]), 'labelled')
+    for(i in 1 : length(x)) attr(x[[i]],"label") <- NULL
+  }
+  else {
+    class(x) <- setdiff(class(x), "labelled")
+    attr(x, "label") <- NULL
   }
   return(x)
 }

@@ -10,7 +10,7 @@ descr(x, stats = "all", na.rm = TRUE, round.digits = 2,
   rescale.weights = FALSE, ...)
 }
 \arguments{
-\item{x}{A numerical vector or a dataframe.}
+\item{x}{A numerical vector or a data frame.}
 
 \item{stats}{Which stats to produce. Either \dQuote{all} (default), or a
 selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
@@ -60,7 +60,7 @@ A list with 2 matrix elements: the stats themselves, and a summary
 Calculates weighted or non-weighted mean, standard deviation, min, max,
 median, mad, IQR*, CV, skewness*, SE.skewness*, and kurtosis* on numerical
 vectors. (Items marked with an * are only available for non-weighted
-vectors / dataframes.
+vectors / data frames.
 }
 \details{
 The default \code{plain.ascii = TRUE} option is there to make results

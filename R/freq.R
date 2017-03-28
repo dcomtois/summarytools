@@ -19,6 +19,8 @@
 #'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
 #'   (or \dQuote{r}). Defaults to \dQuote{right}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
+#' @param display.labels Logical. Should variable / data frame labels be displayed?
+#'   Default is \code{TRUE}.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -47,7 +49,8 @@
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
                  plain.ascii = TRUE, justify = "right",
-                 missing = "", weights = NA, rescale.weights = FALSE, ...) {
+                 missing = "", display.labels = TRUE, weights = NA,
+                 rescale.weights = FALSE, ...) {
 
   # Validate arguments
 
@@ -56,7 +59,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     x <- x[[1]]
 
   if (!is.atomic(x))
-    stop("argument must be a vector or a factor; for dataframes, use lapply(x, freq)")
+    stop("argument must be a vector or a factor; for data frames, use lapply(x, freq)")
 
   if (!is.numeric(round.digits) || round.digits < 1)
     stop("'round.digits' argument must be numerical and >= 1")
@@ -134,6 +137,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     }
 
     weights_string <- deparse(substitute(weights))
+    weights_label <- try(label(weights), silent = TRUE)
 
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were treated as zeroes.")
@@ -174,19 +178,26 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   attr(output, "fn_call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
 
-  attr(output, "data_info") <- c(Dataframe = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-                                 Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
-                                 Variable = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
-                                 Variable.label = label(x),
-                                 Subset = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
-                                 Weights = ifelse(identical(weights, NA), NA, weights_string),
-                                 Group = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA))
+  attr(output, "data_info") <-
+    c(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
+      Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+      Variable        = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
+      Variable.label  = label(x),
+      Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
+      Weights         = ifelse(identical(weights, NA), NA, weights_string),
+      Weights.label   = ifelse(!identical(weights, NA) && class(weights_label) != "try-error",
+                               weights_label, NA),
+      Group    = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
+      by.first = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
+      by.last  = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA))
+
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,
                                      plain.ascii = plain.ascii,
                                      justify = justify,
                                      missing = missing,
+                                     display.labels = display.labels,
                                      ... = ...)
   return(output)
 }

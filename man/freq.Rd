@@ -5,8 +5,8 @@
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
 freq(x, round.digits = 2, order = "names", style = "simple",
-  plain.ascii = TRUE, justify = "right", missing = "", weights = NA,
-  rescale.weights = FALSE, ...)
+  plain.ascii = TRUE, justify = "right", missing = "",
+  display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{Factor or vector}
@@ -31,6 +31,9 @@ and \code{FALSE} otherwise.}
 (or \dQuote{r}). Defaults to \dQuote{right}.}
 
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
+
+\item{display.labels}{Logical. Should variable / data frame labels be displayed?
+Default is \code{TRUE}.}
 
 \item{weights}{Vector of weights; must be of the same length as \code{x}.}
 

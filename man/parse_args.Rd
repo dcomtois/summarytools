@@ -16,7 +16,7 @@ parse_args(sys_calls, sys_frames, match_call, y = FALSE)
 \value{
 A list comprised of:
 \itemize{
-  \item df_name The dataframe name when applicable.
+  \item df_name The data frame name when applicable.
   \item var_names The variable names when applicable.
   \item rows_subset The subsetting condition when applicable.
   \item by_group The group, when functions are called through
@@ -26,7 +26,7 @@ A list comprised of:
 \description{
 Using sys.calls(), sys.frames() and match.call(), this utility function
 extracts and/or deducts information about the data being processed.
-Dataframe name, variable names and labels if any, subsetting information,
+Data frame name, variable names and labels if any, subsetting information,
 grouping information (when by() is used) are returned by the function which
 tries various methods to get this information.
 }

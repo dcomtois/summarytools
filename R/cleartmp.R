@@ -1,4 +1,4 @@
-#' Delete Temporary \emph{Html} Files
+#' Delete Temporary Html Files
 #'
 #' Delete temporary files created when using \code{method='browser'},
 #' \code{method='viewer'}, or \code{view()} function.

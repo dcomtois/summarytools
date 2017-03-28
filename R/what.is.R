@@ -16,7 +16,7 @@
 #'
 #' @return A list with following elements:
 #' \describe{
-#'   \item{properties}{A dataframe with the class(es), type, mode and storage
+#'   \item{properties}{A data frame with the class(es), type, mode and storage
 #'     mode of the object as well as the dim, length and object.size.}
 #'   \item{attributes.lengths}{A named character vector giving all attributes
 #'     (\emph{c.f.} \dQuote{names}, \dQuote{row.names}, \dQuote{class},
@@ -47,7 +47,8 @@
 what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {
-    stop("object.size(x) is greater than 10K; computing time might be long. Set argument ignore.size.warn to TRUE to force execution anyway")
+    stop(paste("object.size(x) is greater than 10K; computing time might be long.",
+               "Set argument ignore.size.warn to TRUE to force execution anyway"))
   }
 
   # set the warn option to -1 to temporarily ignore warnings
@@ -101,11 +102,12 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
       } else {
         warn <- ""
       }
-      extensive.is[nrow(extensive.is)+1,] <- list(fun, value, warn)
+      extensive.is[nrow(extensive.is)+1, ] <- list(fun, value, warn)
     }
 
     # sort the results according to the results and warnings if any
-    extensive.is <- extensive.is[order(extensive.is$value, extensive.is$warnings=="", decreasing = TRUE),]
+    extensive.is <- extensive.is[order(extensive.is$value,
+                                       extensive.is$warnings=="", decreasing = TRUE), ]
   }
 
   # Part 4. Get info on the type of object - S3, S4, attributes / slots

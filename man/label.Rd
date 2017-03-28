@@ -21,7 +21,7 @@ when \code{TRUE}, otherwise (default) return a \code{named list} containing only
 non-NULL/non-NA elements.}
 }
 \description{
-This function returns character value previously stored in variable or data
+Returns character value previously stored in variable or data
 frame's \code{label} attribute, or \code{NA} if none found.
 }
 \note{

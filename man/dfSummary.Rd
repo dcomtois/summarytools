@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfSummary.R
 \name{dfSummary}
 \alias{dfSummary}
-\title{Dataframe Summary}
+\title{Data frame Summary}
 \usage{
 dfSummary(x, round.digits = 2, varnumbers = FALSE,
   display.labels = length(label(x, all = TRUE)) > 0, style = "multiline",
@@ -11,7 +11,7 @@ dfSummary(x, round.digits = 2, varnumbers = FALSE,
   split.table = Inf, ...)
 }
 \arguments{
-\item{x}{A dataframe.}
+\item{x}{A data frame.}
 
 \item{round.digits}{Number of significant digits to display in numerical
 summaries and in frequency proportions. Defaults to \code{2}.}
@@ -25,7 +25,7 @@ will be displayed. By default, the \emph{labels} column is shown if at least
 one of the columns has a defined label.}
 
 \item{style}{The style to be used by \code{\link[pander]{pander}} when
-renderingin output table. Defaults to \dQuote{multiline}. Another option is
+rendering in output table. Defaults to \dQuote{multiline}. Another option is
 \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
 function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.}
 
@@ -60,12 +60,12 @@ width of a table. Keeping the default value (\code{Inf}) is recommended.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A dataframe containing as many rows as there are columns in \code{x},
-  with additionnal attributes to inform \code{print} function. Columns of the
-  output dataframe are:
+A data frame containing as many rows as there are columns in \code{x},
+  with additional attributes to inform \code{print} function. Columns of the
+  output data frame are:
   \describe{
     \item{Var Number}{Number indicating the order in which column appears in
-      the dataframe.}
+      the data frame.}
     \item{Variable}{Name of the variable.}
     \item{Label}{Label of the variable.}
     \item{Properties}{Type & class(es) of the variable.}
@@ -82,7 +82,7 @@ A dataframe containing as many rows as there are columns in \code{x},
 }
 }
 \description{
-Summary of a dataframe consisting of: variable names, labels if any, factor
+Summary of a data frame consisting of: variable names, labels if any, factor
 levels, frequencies and/or numerical summary statistics, and valid/missing
 observations information.
 }

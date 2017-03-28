@@ -7,16 +7,16 @@
 \title{Extensive Summarizing Tools With Flexible Output}
 \description{
 \pkg{summarytools} provides users with functions to neatly and
-simply summarize numerical and categorical data. Dataframe
+simply summarize numerical and categorical data. Data frame
 summaries, frequency tables and cross-tabulations, as well as
 common univariate statistics can be produced in a
-straighforward manner, so that users with little to no prior
+straightforward manner, so that users with little to no prior
 R programming experience can get to know their data rapidly.
 }
 \details{
 The four \dQuote{core} functions are:
 \describe{
-  \item{dfSummary}{Extensive yet very legible data frame summmaries.}
+  \item{dfSummary}{Extensive yet very legible data frame summaries.}
   \item{freq}{Frequency tables supporting weights and displaying valid,
      and total proportions, as well as cumulative proportions.}
   \item{descr}{All common univariate descriptive stats for single vectors
