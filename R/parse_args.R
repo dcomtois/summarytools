@@ -146,8 +146,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     # re1: when form dfname[rows,columns] is used
     re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
                   "\\[(.+)?",           # rows indexing  (2)
-                  "\\s*(,)\\s*",        # comma surrounded (or not) by spaces (3)
-                  "((c\\(.*\\))|",      # column indexing in the form [ , c(...)]  (4) (5)
+                  "\\s*(,)\\s*",        # comma surrounded (or not) by spaces     (3)
+                  "((c\\(.*\\))|",      # column indexing in the form [ , c(...)] (4) (5)
                   "(\\d+)|",            # column indexing in the form [ , 9     ] (6)
                   "(\\d+\\:\\d+)|",     # column indexing in the form [ , 9:99  ] (7)
                   "(\'.*\')|",          # column indexing in the form [ , 'var.name' ] (8)
@@ -225,22 +225,22 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
         data_str_df <- sub("(.+)\\[(.*)", "\\1", data_str, perl = TRUE)
 
         # check that structure exists and has proper class
-        if (exists(data_str_df) && any(class(get(data_str_df)) == "data.frame"))
+        if (exists(data_str_df) && any(class(get(data_str_df)) == "data.frame")) {
           df_name <- data_str_df
-        else {
+        } else {
           getobj <- try(eval(parse(text=data_str_df)), silent = TRUE)
-          if (inherits(getobj, "try-error"))
+          if (inherits(getobj, "try-error")) {
             skipvars <- TRUE
-          else {
+          } else {
             if(is.data.frame(getobj)) {
               df_name <- data_str_df
               var_names_tmp <- colnames(getobj)
             } else if (grepl(re4, data_str)) {              # mismatch between re's
               data_str_df <- sub(re3, "\\1$\\2", data_str)  # mismatch between re's
               getobj <- try(eval(parse(text=data_str_df)), silent = TRUE)
-              if (inherits(getobj, "try-error"))
+              if (inherits(getobj, "try-error")) {
                 skipvars <- TRUE
-              else {
+              } else {
                 if(is.data.frame(getobj)) {
                   df_name <- data_str_df
                   var_names_tmp <- sub(re4, data_str, "\\3") # change re4 to re3 ?? 2017-03-10
@@ -372,9 +372,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
       }
     }
 
-
     # Following regular expressions allow to split data frame name, row indexes and column indexes
-
     # re1: when form dfname[rows,columns] is used
     re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
                   "\\[(.+)?",           # rows indexing  (2)
@@ -412,7 +410,6 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
     # From here code applies no matter how function was called ---------------------------------
 
     for (XY in 1:2) {
-
 
       skipvars[[XY]] <- FALSE # will be changed to TRUE if can't determine df_name
       # Extract call as a string
@@ -471,7 +468,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, y = FALSE) {
                 else {
                   if(is.data.frame(getobj[[XY]])) {
                     df_name[[XY]] <- data_str_df[[XY]]
-                    var_names_tmp[[XY]] <- sub(re4, data_str[[XY]], "\\3") # change re4 to re3 ?? 2017-03-10
+                    var_names_tmp[[XY]] <- sub(re4, data_str[[XY]], "\\3") # change re?? 2017-03-10
                   }
                 }
               }
