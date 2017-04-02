@@ -8,7 +8,7 @@
 #' @param round.digits Number of significant digits to display in numerical
 #'   summaries and in frequency proportions. Defaults to \code{2}.
 #' @param varnumbers Should the first column contain variable number? Defaults
-#'   to \code{FALSE}.
+#'   to \code{TRUE}.
 #' @param display.labels If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 #'   will be displayed. By default, the \emph{labels} column is shown if at least
@@ -44,7 +44,7 @@
 #'   with additional attributes to inform \code{print} function. Columns of the
 #'   output data frame are:
 #'   \describe{
-#'     \item{Var Number}{Number indicating the order in which column appears in
+#'     \item{No}{Number indicating the order in which column appears in
 #'       the data frame.}
 #'     \item{Variable}{Name of the variable.}
 #'     \item{Label}{Label of the variable.}
@@ -54,11 +54,11 @@
 #'       common values (in descending frequency order), also limited by
 #'       \code{max.distinct.values}. For numerical variables, common univariate
 #'       statistics (mean, std. deviation, min, med, max, IQR and CV).}
-#'     \item{Freqs, \% of Valid}{For factors and character variables, the frequencies
+#'     \item{Freqs (% of Valid)}{For factors and character variables, the frequencies
 #'       and proportions of the values listed in the previous column. For numerical
 #'       vectors, number of distinct values, or frequency of distinct values if
 #'       their number is not greater than \code{max.distinct.values}.}
-#'     \item{N Valid}{Number and proportion of valid values for the variable.}
+#'     \item{Valid / NA}{Number and proportion of valid values and NA values for the variable.}
 #' }
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
@@ -75,7 +75,7 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
+dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       display.labels = length(label(x, all = TRUE)) > 0,
                       style = "multiline", plain.ascii = TRUE, justify = "left",
                       max.distinct.values = 10, trim.strings = FALSE,
@@ -120,7 +120,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
   }
 
   # Initialize the output data frame
-  output <- data.frame(No. = numeric(),
+  output <- data.frame(No = numeric(),
                        Variable = character(),
                        Label = character(),
                        Properties = character(),
@@ -221,12 +221,12 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
         } else {
           # Two many values - report most common strings
           counts <- sort(counts, decreasing = TRUE)
-          output[i,5] <- paste("Most frequent:\n",
-                               paste0(1:max.distinct.values,". ",
-                                      dQuote(substr(names(counts), 1, max.string.width)
-                                        [1:max.distinct.values]),
-                                      collapse="\n"),
-                               paste0("\n... (", length(counts)-max.distinct.values, " other values)"))
+          output[i,5] <- paste0("Most frequent:\n",
+                                paste0(1:max.distinct.values,". ",
+                                       dQuote(substr(names(counts), 1, max.string.width)
+                                              [1:max.distinct.values]),
+                                       collapse="\n"),
+                                paste0("\n... (", length(counts)-max.distinct.values, " other values)"))
           props <- round(prop.table(counts),3)
           counts_props <- align_numbers(counts[1:max.distinct.values], props[1:max.distinct.values])
 
@@ -288,17 +288,18 @@ dfSummary <- function(x, round.digits = 2, varnumbers = FALSE,
 
     valid_missing <- align_numbers(counts = c(n_valid, n_miss), props = c(n_valid, n_miss) / n_tot)
     output[i,7] <- paste0("Val: ", valid_missing[1], "\nNA : ", valid_missing[2])
+    output[i,7] <- gsub("(100|0)\\.0%", "\\1%", output[i,7])
 
   }
 
-  names(output) <- c("No.", "Variable", "Label", "Properties", "Stats / Values",
-                     "Freqs, % of Valid", "Valid / Missing")
+  names(output) <- c("No", "Variable", "Label", "Properties", "Stats / Values",
+                     "Freqs (% of Valid)", "Valid / NA")
 
   if(!display.labels)
     output$Label <- NULL
 
   if(!varnumbers)
-    output$No. <- NULL
+    output$No <- NULL
 
   # Set output attributes
   class(output) <- c("summarytools", class(output))

@@ -1,21 +1,23 @@
 #' Extensive Summarizing Tools With Flexible Output
 #'
 #' \pkg{summarytools} provides users with functions to neatly and
-#' simply summarize numerical and categorical data. Data frame
+#' quickly summarize numerical and categorical data. Data frame
 #' summaries, frequency tables and cross-tabulations, as well as
 #' common univariate statistics can be produced in a
-#' straightforward manner, so that users with little to no prior
-#' R programming experience can get to know their data rapidly.
+#' straightforward manner. Users with little to no prior
+#' R programming experience but who are familiar with the concepts
+#' (and maybe with some procedures coming from other software packages)
+#' should find their way pretty quickly.
 #'
-#' The four \dQuote{core} functions are:
+#' There are \strong{four core functions}:
 #' \describe{
 #'   \item{dfSummary}{Extensive yet very legible data frame summaries.}
-#'   \item{freq}{Frequency tables supporting weights and displaying valid,
-#'      and total proportions, as well as cumulative proportions.}
+#'   \item{freq}{Frequency tables supporting weights and displaying proportions
+#'   of valid and of total data, and also displays cumulative proportions.}
 #'   \item{descr}{All common univariate descriptive stats for single vectors
-#'      or for all numerical vectors inside a data frame.}
+#'      or for all numerical vectors in a data frame.}
 #'   \item{ctable}{Cross-tabulations for two categorical vectors or factors.
-#'     Choose between \emph{total}, \emph{column} or \emph{row} proportions.}
+#'     Choose between \emph{Total}, \emph{Columns} or \emph{Rows} proportions.}
 #' }
 #'
 #' Output formats are:
@@ -24,7 +26,7 @@
 #'    \item{rmarkdown}{Ideal when writing short papers or presentations.}
 #'    \item{html}{This format is especially well-integrated in
 #'      \emph{RStudio} and offers an esthetically pleasant alternative to
-#'      plain ascii. Just use \code{view()} function to see results appear
+#'      plain ascii. Just use the \code{view()} function to see results appear
 #'      directly in \emph{RStudio's Viewer} or in your preferred Web Browser.}
 #'  }
 #'
