@@ -52,14 +52,18 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                  missing = "", display.labels = TRUE, weights = NA,
                  rescale.weights = FALSE, ...) {
 
-  # Validate arguments
+  # Parameter validation ---------------------------------------
 
   # If x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1)
     x <- x[[1]]
 
-  if (!is.atomic(x))
-    stop("argument must be a vector or a factor; for data frames, use lapply(x, freq)")
+  if (!is.atomic(x)) {
+    x <- try(as.vector(x), silent = TRUE)
+    if (class(x) == "try-except") {
+      stop("argument must be a vector or a factor; for data frames, use lapply(x, freq)")
+    }
+  }
 
   if (!is.numeric(round.digits) || round.digits < 1)
     stop("'round.digits' argument must be numerical and >= 1")

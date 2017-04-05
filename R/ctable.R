@@ -14,8 +14,8 @@
 #'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
 #'   (or \dQuote{r}). Defaults to \dQuote{right}.
 #' @param prop What proportions to display; \dQuote{t} for \emph{total} (default),
-#'   \dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \code{NA} for
-#'    none.
+#'   \dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \dQuote{n} for
+#'   \emph{None}.
 #' @param useNA Argument used by \code{\link[base]{table}}; One of \dQuote{ifany}
 #'   (default), \dQuote{no}, or \dQuote{always}.
 #' @param totals Should row and column totals be displayed? Defaults to \code{TRUE}.
@@ -49,6 +49,55 @@
 ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "ifany",
                    style = "simple", plain.ascii = TRUE, justify = "right",
                    dnn=c(substitute(x), substitute(y)), ...) {
+
+  # Parameter validation ---------------------------------------
+  if (!is.factor(x) && !is.atomic(x)) {
+    x <- try(as.vector(x), silent = TRUE)
+    if (class(x) == "try-except") {
+      stop("'x' argument must be a factor or an object coercible to a vector")
+    }
+  }
+
+  if (!is.factor(y) && !is.atomic(x)) {
+    y <- try(as.vector(y), silent = TRUE)
+    if (class(y) == "try-except") {
+      stop("'y' argument must be a factor or an object coercible to a vector")
+    }
+  }
+
+  prop <- switch(tolower(substring(prop, 1, 1)),
+                   t = "Total",
+                   r = "Row",
+                   c = "Column",
+                   n = "None")
+
+  if (!prop %in% c("Total", "Row", "Column", "None"))
+    stop("invalid 'prop' argument; must be one of t, r, c, or n")
+
+  if (!totals %in% c(TRUE, FALSE))
+    stop("'totals' argument must either be TRUE or FALSE")
+
+  if (!is.numeric(round.digits) || round.digits < 1)
+    stop("'round.digits' argument must be numerical and >= 1")
+
+  if (!useNA %in% c("ifany", "always", "never"))
+    stop("'useNA' must be one of 'ifany', 'always', or 'no'")
+
+  if (!style %in% c("simple", "grid", "rmarkdown"))
+    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
+
+  if (!plain.ascii %in% c(TRUE, FALSE))
+    stop("'plain.ascii' argument must either TRUE or FALSE")
+
+  justify <- switch(tolower(substring(justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    m = "center", # to allow 'middle'
+                    r = "right")
+
+  if (!justify %in% c("left", "center", "right"))
+    stop("'justify' argument must be one of 'left', 'center' or 'right'")
+
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
@@ -89,7 +138,6 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
     df_label <- parse_info$df_label[["x"]]
   }
 
-
   if (length(parse_info$rows_subset[["x"]]) == 1) {
     x_subset <- parse_info$rows_subset[["x"]]
   } else {
@@ -107,24 +155,24 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
 
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
-  prop <- tolower(substr(prop,1,1))
   prop_table <- switch(prop,
-                       t = prop.table(freq_table),
-                       r = prop.table(freq_table, 1),
-                       c = prop.table(freq_table, 2))
+                       Total = prop.table(freq_table),
+                       Row = prop.table(freq_table, 1),
+                       Column = prop.table(freq_table, 2),
+                       None = NULL)
 
   if (isTRUE(totals)) {
     freq_table <- addmargins(freq_table)
     rownames(freq_table)[nrow(freq_table)] <- "Total"
     colnames(freq_table)[ncol(freq_table)] <- "Total"
     if (!is.null(prop_table)) {
-      if (prop == "t") {
+      if (prop == "Total") {
         prop_table <- addmargins(prop_table)
-      } else if (prop == "r") {
+      } else if (prop == "Row") {
         prop_table <- addmargins(prop_table, 2)
         sum_props <- c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
         prop_table <- rbind(prop_table, sum_props)
-      } else if (prop == "c") {
+      } else if (prop == "Column") {
         prop_table <- addmargins(prop_table, 1)
         sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
         prop_table <- cbind(prop_table, sum_props)
@@ -135,21 +183,26 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   }
 
   # Change the name of NA items to avoid potential problems when echoing to console
-  rownames(freq_table)[is.na(rownames(freq_table))] <- "<NA>"
-  colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
-  rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
-  colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+  if(NA %in% rownames(freq_table)) {
+    row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
+    if (prop != "None") {
+      row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
+    }
+  }
 
+  if (NA %in% colnames(freq_table)) {
+    colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+    if (prop != "None") {
+      colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+    }
+  }
   # Create output object
   output <- list(cross_table = freq_table, proportions = prop_table)
 
   # Set output object's attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
-  attr(output, "proportions") <- switch(prop,
-                                       r = "Rows",
-                                       c = "Columns",
-                                       t = "Total")
+  attr(output, "proportions") <- prop
   attr(output, "fn_call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
 

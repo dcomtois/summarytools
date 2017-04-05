@@ -12,10 +12,28 @@ td {
   min-width: 120px;
 }
 
+.table-narrow {
+  font-family: monospace;
+}
+
+.table-narrow > thead > tr > th,
+.table-narrow > tbody > tr > td {
+  min-width: 30px;
+}
+
+/*
 .table {
   width: auto;
   max-width: 100%;
   margin-bottom: 20px;
+}
+*/
+
+.table {
+    width: 80%;
+    max-width: 1100px;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
 }
 
 .monospace-cells {
@@ -24,9 +42,25 @@ td {
   text-align: right;
 }
 
-/* http://stackoverflow.com/questions/13992026/how-to-center-right-aligned-numbers-in-table-column-using-css
+
+.cellLeft {
+  display: block;
+  text-align: right;
+  overflow: auto;
+}
+
+.cellRight {
+  width: 50%;
+  float: right;
+  text-align: left;
+}
+
 .numSpan {
     display: inline-block;
-    width: 100px;
+    width: calc(50% + 0.8em);
     text-align: right;
+}
+
+.strong {
+  font-weight: bold;
 }
