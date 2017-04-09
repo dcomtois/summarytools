@@ -161,6 +161,9 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
                        Column = prop.table(freq_table, 2),
                        None = NULL)
 
+  # When useNA = "always" and there are no NA's, we had nan's (0 div by 0)
+  prop_table[is.nan(prop_table)] <- 0
+
   if (isTRUE(totals)) {
     freq_table <- addmargins(freq_table)
     rownames(freq_table)[nrow(freq_table)] <- "Total"

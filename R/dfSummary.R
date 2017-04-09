@@ -13,6 +13,10 @@
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 #'   will be displayed. By default, the \emph{labels} column is shown if at least
 #'   one of the columns has a defined label.
+#' @param valid.col Logical. Include column indicating count and proportion of valid
+#'   (non-missing) values. \code{TRUE} by default.
+#' @param na.col  Logical. Include column indicating count and proportion of missing
+#'   (NA) values. \code{TRUE} by default.
 #' @param style The style to be used by \code{\link[pander]{pander}} when
 #'   rendering in output table. Defaults to \dQuote{multiline}. Another option is
 #'   \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
@@ -58,7 +62,8 @@
 #'       and proportions of the values listed in the previous column. For numerical
 #'       vectors, number of distinct values, or frequency of distinct values if
 #'       their number is not greater than \code{max.distinct.values}.}
-#'     \item{Valid / NA}{Number and proportion of valid values and NA values for the variable.}
+#'     \item{Valid}{Number and proportion of valid values.}
+#'     \item{Missing}{Number and proportion of missing (NA) values.}
 #' }
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
@@ -77,6 +82,7 @@
 #' @export
 dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       display.labels = length(label(x, all = TRUE)) > 0,
+                      valid.col = TRUE, na.col = TRUE,
                       style = "multiline", plain.ascii = TRUE, justify = "left",
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
@@ -126,9 +132,12 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                        Properties = character(),
                        Stats = character(),
                        Frequencies = character(),
-                       N.Valid = numeric(),
+                       Valid = character(),
+                       Missing = character(),
                        stringsAsFactors = FALSE,
                        check.names = FALSE)
+
+  n_tot <- nrow(x)
 
   # iterate over columns of x
   for(i in seq_len(ncol(x))) {
@@ -154,10 +163,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                          "\nclass:",paste(class(column_data),collapse="\n + "), sep = "")
 
     # Calculate valid vs missing data info
-    n_tot <- nrow(x)
     n_miss <- sum(is.na(column_data))
     n_valid <- n_tot - n_miss
-
 
     # For factors, display a column of levels and a column of frequencies
     if(is.factor(column_data)) {
@@ -286,14 +293,12 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       }
     }
 
-    valid_missing <- align_numbers(counts = c(n_valid, n_miss), props = c(n_valid, n_miss) / n_tot)
-    output[i,7] <- paste0("Val: ", valid_missing[1], "\nNA : ", valid_missing[2])
-    output[i,7] <- gsub("(100|0)\\.0%", "\\1%", output[i,7])
-
+    output[i,7]  <- paste0(n_valid, "\n(", round(n_valid/n_tot*100, 2), "%)")
+    output[i,8]  <- paste0(n_miss,  "\n(", round(n_miss /n_tot*100, 2), "%)")
   }
 
   names(output) <- c("No", "Variable", "Label", "Properties", "Stats / Values",
-                     "Freqs (% of Valid)", "Valid / NA")
+                     "Freqs (% of Valid)", "Valid", "Missing")
 
   if(!display.labels)
     output$Label <- NULL

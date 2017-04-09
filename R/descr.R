@@ -8,8 +8,8 @@
 #' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
 #'   selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
-#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, and
-#'   \dQuote{kurtosis}.
+#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
+#'   \dQuote{kurtosis}, \dQuote{N.Valid}, and \dQuote{Pct.Valid}.
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}.
 #' @param round.digits Number of significant digits to keep. Defaults to
@@ -73,18 +73,21 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                "attempted conversion failed"))
 
   # check that all 'stats' elements are valid
-  valid_stats <- c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "IQR", "CV",
-                   "Skewness", "SE.Skewness", "Kurtosis")
+  valid_stats <- list(no_wgts = c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "IQR", "CV",
+                                  "Skewness", "SE.Skewness", "Kurtosis", "N.Valid", "Pct.Valid"),
+                      wgts = c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "CV",
+                               "N.Valid", "Pct.Valid"))
+
   if (!identical(stats,"all")) {
     stats <- tolower(stats)
-    invalid_stats <- setdiff(stats, tolower(valid_stats))
+    invalid_stats <- setdiff(stats, tolower(valid_stats[[2 - as.numeric(identical(weights, NA))]]))
     if (length(invalid_stats) > 0) {
       stop("allowed 'stats' are: ", paste(valid_stats, collapse = ", "))
     } else {
-      stats_subset <- which(tolower(valid_stats) %in% stats)
+      stats_subset <- which(tolower(valid_stats[[2 - as.numeric(identical(weights, NA))]]) %in% stats)
     }
   } else {
-    stats_subset <- valid_stats
+    stats_subset <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
   }
 
   if (!na.rm %in% c(TRUE, FALSE))
@@ -144,30 +147,27 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
     # Build skeleton (2 empty dataframes; one for stats and other
     # to report valid vs na counts)
-    output$stats <- data.frame(Mean = numeric(),
-                               Std.Dev = numeric(),
-                               Min = numeric(),
-                               Median = numeric(),
-                               Max = numeric(),
-                               MAD = numeric(),
-                               IQR = numeric(),
-                               CV = numeric(),
-                               Skewness = numeric(),
-                               SE.Skewness = numeric(),
-                               Kurtosis = numeric())
-    output$observ <- data.frame(Valid = numeric(),
-                                "<NA>" = numeric(),
-                                Total = numeric(),
-                                check.names = FALSE)
-    output$observ_pct <- data.frame(Valid = numeric(),
-                                    "<NA>" = numeric(),
-                                    Total = numeric(),
-                                    check.names = FALSE)
+    output <- data.frame(Mean = numeric(),
+                         Std.Dev = numeric(),
+                         Min = numeric(),
+                         Median = numeric(),
+                         Max = numeric(),
+                         MAD = numeric(),
+                         IQR = numeric(),
+                         CV = numeric(),
+                         Skewness = numeric(),
+                         SE.Skewness = numeric(),
+                         Kurtosis = numeric(),
+                         N.Valid = numeric(),
+                         Pct.Valid = numeric())
 
     # Iterate over columns in x
     for(i in seq_along(x)) {
 
       variable <- as.numeric(x[ ,i])
+      if (i == 1) {
+        n_tot <- length(variable)
+      }
 
       # Extract number and proportion of missing and valid values
       n_valid <- sum(!is.na(variable))
@@ -176,27 +176,29 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       p_NA <- n_NA / length(variable)
 
       # Insert stats into output dataframe
-      output$stats[i, ] <- c(variable.mean <- mean(variable, na.rm=na.rm),
-                             variable.sd <- sd(variable, na.rm=na.rm),
-                             min(variable, na.rm=na.rm),
-                             median(variable, na.rm=na.rm),
-                             max(variable, na.rm=na.rm),
-                             mad(variable, na.rm=na.rm),
-                             IQR(variable, na.rm=na.rm),
-                             variable.mean / variable.sd,
-                             rapportools::skewness(variable, na.rm=na.rm),
-                             sqrt((6*n_valid*(n_valid-1)) /
-                                    ((n_valid-2)*(n_valid+1)*(n_valid+3))),
-                             rapportools::kurtosis(variable, na.rm=na.rm))
+      output[i, ] <- c(variable.mean <- mean(variable, na.rm=na.rm),
+                       variable.sd <- sd(variable, na.rm=na.rm),
+                       min(variable, na.rm=na.rm),
+                       median(variable, na.rm=na.rm),
+                       max(variable, na.rm=na.rm),
+                       mad(variable, na.rm=na.rm),
+                       IQR(variable, na.rm=na.rm),
+                       variable.mean / variable.sd,
+                       rapportools::skewness(variable, na.rm=na.rm),
+                       sqrt((6*n_valid*(n_valid-1)) /
+                              ((n_valid-2)*(n_valid+1)*(n_valid+3))),
+                       rapportools::kurtosis(variable, na.rm=na.rm),
+                       n_valid,
+                       p_valid * 100)
 
       # Insert valid/missing info into output data frame
-      output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
-      output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
+      # output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
+      # output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
-  }
 
-  # Weights are used
-  else {
+  } else {
+
+    # Weights are used ---------------
 
     # Check that weights vector has the right length
     if (length(weights) != nrow(x))
@@ -211,25 +213,21 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     }
 
     # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
-    output$stats <- data.frame(Mean = numeric(),
-                               Std.Dev = numeric(),
-                               Min = numeric(),
-                               Median = numeric(),
-                               Max = numeric(),
-                               MAD = numeric(),
-                               CV = numeric())
-    output$observ <- data.frame(Valid = numeric(),
-                                "<NA>" = numeric(),
-                                Total = numeric(),
-                                check.names = FALSE)
-    output$observ_pct <- data.frame(Valid = numeric(),
-                                    "<NA>" = numeric(),
-                                    Total = numeric(),
-                                    check.names = FALSE)
+    output <- data.frame(Mean = numeric(),
+                         Std.Dev = numeric(),
+                         Min = numeric(),
+                         Median = numeric(),
+                         Max = numeric(),
+                         MAD = numeric(),
+                         CV = numeric(),
+                         N.Valid = numeric(),
+                         Pct.Valid = numeric())
 
     # Rescale weights if necessary
     if (rescale.weights)
       weights <- weights / sum(weights) * nrow(x)
+
+    n_tot <- sum(weights)
 
     for(i in seq_along(x)) {
       variable <- as.numeric(x[ ,i])
@@ -246,18 +244,20 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       weights <- weights[ind]
 
       # Calculate the weighted stats & fill in the row in output df
-      output$stats[i, ] <-
+      output[i, ] <-
         c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
           variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
           min(variable),
           matrixStats::weightedMedian(variable, weights, refine = TRUE),
           max(variable),
           matrixStats::weightedMad(variable, weights, refine = TRUE),
-          variable.mean/variable.sd)
+          variable.mean/variable.sd,
+          n_valid,
+          p_valid * 100)
 
       # Insert valid/missing info into output data frame
-      output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
-      output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
+      #output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
+      #output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
   }
 
@@ -265,24 +265,22 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
     # Add row names (from col.names/var.name of the parse function)
     if ("var_names" %in% names(parse_info)) {
-      rownames(output$stats)[i] <- parse_info$var_names[i]
+      rownames(output)[i] <- parse_info$var_names[i]
     } else {
       # this is necessary in order to support by()
-      rownames(output$stats)[i] <- paste0("Var",i)
+      rownames(output)[i] <- paste0("Var",i)
     }
-    rownames(output$observ)[i] <- rownames(output$stats)[i]
-    rownames(output$observ_pct)[i] <- rownames(output$stats)[i]
+    #rownames(output$observ)[i] <- rownames(output)[i]
+    #rownames(output$observ_pct)[i] <- rownames(output)[i]
   }
 
-  output$stats <- output$stats[ ,stats_subset]
+  output <- output[ ,stats_subset]
 
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
   if (!transpose) {
-    output$stats <- t(output$stats)
-    output$observ <- t(output$observ)
-    output$observ_pct <- t(output$observ_pct)
+    output <- t(output)
   }
 
   # Set class/attributes
@@ -303,7 +301,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                weights_label, NA),
       Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
       by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
-      by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA))
+      by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
+      N.Obs           = n_tot)
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,
@@ -312,16 +311,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                      ... = ...)
 
   if (isTRUE(use.labels) && isTRUE(transpose) && is.data.frame(x)) {
-    rownames(output$stats) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
-    rownames(output$observ) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
-    rownames(output$observ_pct) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
+    rownames(output) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
+    #rownames(output$observ) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
+    #rownames(output$observ_pct) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
   }
-
-  # For future use
-  # if ("by_group" %in% names(parse_info)) {
-  #  attr(output, "by_first") <- parse_info$by_first
-  #  attr(output, "by_last") <- parse_info$by_last
-  # }
 
   if (exists("ignored"))
     attr(output, "ignored") <- ignored

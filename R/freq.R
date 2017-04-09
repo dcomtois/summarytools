@@ -162,7 +162,6 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     P_valid["<NA>"] <- NA
     freq_table["<NA>"] <- sum(weights) - sum(xtabs(weights ~ x))
     P_tot <- prop.table(freq_table) * 100
-
   }
 
   # Calculate cumulative proportions

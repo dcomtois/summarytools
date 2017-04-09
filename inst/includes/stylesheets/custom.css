@@ -1,47 +1,71 @@
-/* Add here any custom settings. Since this is called after bootstrap.min.css, this file has priority */
+* {
+  box-sizing: content-box;
+}
+
 body {
   margin: 20px;
+  /*overflow: hidden;*/
+}
+
+.table {
+    width: auto;
+    table-layout: auto;
+    max-width: 1100px;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  vertical-align: middle;
+  min-width: 135px;
+}
+
+.table > thead > tr > th {
+  vertical-align: middle;
+  min-width: 135px;
+}
+
+.table-bordered {
+  border: 1px solid #bbbbbb;
+}
+
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+  border: 1px solid #cccccc;
+}
+
+.table-bordered > thead > tr > th,
+.table-bordered > thead > tr > td,
+.table thead > tr > th {
+  border-bottom: none;
 }
 
 th {
   text-align: center;
 }
 
-td {
-  white-space:pre; /* Allows multiline cells */
-  min-width: 120px;
+.table > thead > tr {
+   background-color: #eeeeee;
 }
 
-.table-narrow {
-  font-family: monospace;
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #ffffff;
 }
 
-.table-narrow > thead > tr > th,
-.table-narrow > tbody > tr > td {
-  min-width: 30px;
+.table-striped > tbody > tr:nth-of-type(even) {
+  background-color: #fafafa;
 }
 
-/*
-.table {
-  width: auto;
-  max-width: 100%;
-  margin-bottom: 20px;
+.multiline {
+  white-space:pre;
 }
-*/
-
-.table {
-    width: 80%;
-    max-width: 1100px;
-    /*margin-left: auto;*/
-    /*margin-right: auto;*/
-}
-
-.monospace-cells {
-  font-family: monospace;
-  font-size: 13px;
-  text-align: right;
-}
-
 
 .cellLeft {
   display: block;
@@ -56,11 +80,33 @@ td {
 }
 
 .numSpan {
-    display: inline-block;
-    width: calc(50% + 0.8em);
-    text-align: right;
+  display: inline-block;
+  width: calc(50% + 0.8em);
+  text-align: right;
 }
 
-.strong {
-  font-weight: bold;
+.narrowCol {
+  min-width: 25px !important;
 }
+
+/*
+.monospace-cells {
+  font-family: monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+
+
+.table {
+  width: auto;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+
+.table-narrow > thead > tr > th,
+.table-narrow > tbody > tr > td {
+  min-width: 50px;
+}
+*/
