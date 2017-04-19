@@ -14,8 +14,8 @@ ctable(x, y, prop = "t", totals = TRUE, round.digits = 1,
 \item{y}{Second categorical variable - its values will appear in as column names.}
 
 \item{prop}{What proportions to display; \dQuote{t} for \emph{total} (default),
-\dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \code{NA} for
- none.}
+\dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \dQuote{n} for
+\emph{None}.}
 
 \item{totals}{Should row and column totals be displayed? Defaults to \code{TRUE}.}
 

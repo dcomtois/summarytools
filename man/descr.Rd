@@ -14,8 +14,8 @@ descr(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
 \item{stats}{Which stats to produce. Either \dQuote{all} (default), or a
 selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
-\dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, and
-\dQuote{kurtosis}.}
+\dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
+\dQuote{kurtosis}, \dQuote{N.Valid}, and \dQuote{Pct.Valid}.}
 
 \item{na.rm}{Argument to be passed to statistical functions. Defaults to
 \code{TRUE}.}

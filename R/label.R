@@ -21,7 +21,7 @@
 #' @export
 label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 
-  if (base::missing(x))
+  if (missing(x))
     stop('No variable / data frame provided.')
 
   if (is.null(x))
@@ -71,7 +71,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #' @export
 "label<-" <- function(x, value) {
 
-  if (base::missing(x) || base::missing(value))
+  if (missing(x) || missing(value))
     stop('Both x and value arguments must be provided')
 
   if (is.data.frame(x)) {

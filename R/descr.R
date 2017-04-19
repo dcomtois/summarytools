@@ -132,7 +132,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
   if (length(col_to_remove) > 0) {
     ignored <- paste(colnames(x)[col_to_remove], collapse=", ")
-    # message("Non-numerical variable(s) ignored: ", ignored)
     x <- x[-col_to_remove]
     parse_info$var_names <- parse_info$var_names[-col_to_remove]
   }
@@ -184,16 +183,13 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                        mad(variable, na.rm=na.rm),
                        IQR(variable, na.rm=na.rm),
                        variable.mean / variable.sd,
-                       rapportools::skewness(variable, na.rm=na.rm),
+                       skewness(variable, na.rm=na.rm),
                        sqrt((6*n_valid*(n_valid-1)) /
                               ((n_valid-2)*(n_valid+1)*(n_valid+3))),
-                       rapportools::kurtosis(variable, na.rm=na.rm),
+                       kurtosis(variable, na.rm=na.rm),
                        n_valid,
                        p_valid * 100)
 
-      # Insert valid/missing info into output data frame
-      # output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
-      # output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
 
   } else {
@@ -245,19 +241,16 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
       # Calculate the weighted stats & fill in the row in output df
       output[i, ] <-
-        c(variable.mean <- matrixStats::weightedMean(variable, weights, refine = TRUE),
-          variable.sd <- matrixStats::weightedSd(variable, weights, refine = TRUE),
+        c(variable.mean <- weightedMean(variable, weights, refine = TRUE),
+          variable.sd <- weightedSd(variable, weights, refine = TRUE),
           min(variable),
-          matrixStats::weightedMedian(variable, weights, refine = TRUE),
+          weightedMedian(variable, weights, refine = TRUE),
           max(variable),
-          matrixStats::weightedMad(variable, weights, refine = TRUE),
+          weightedMad(variable, weights, refine = TRUE),
           variable.mean/variable.sd,
           n_valid,
           p_valid * 100)
 
-      # Insert valid/missing info into output data frame
-      #output$observ[i, ] <- c(n_valid, n_NA, n_valid + n_NA)
-      #output$observ_pct[i, ] <- c(p_valid, p_NA, p_valid + p_NA)
     }
   }
 
@@ -270,8 +263,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       # this is necessary in order to support by()
       rownames(output)[i] <- paste0("Var",i)
     }
-    #rownames(output$observ)[i] <- rownames(output)[i]
-    #rownames(output$observ_pct)[i] <- rownames(output)[i]
   }
 
   output <- output[ ,stats_subset]
@@ -290,19 +281,21 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   attr(output, "fn_call") <- as.character(match.call())
 
   attr(output, "data_info") <-
-    c(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-      Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
-      Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
-                               parse_info$var_names, NA),
-      Variable.label  = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
-      Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
-      Weights         = ifelse(identical(weights, NA), NA, weights_string),
-      Weights.label   = ifelse(!identical(weights, NA) && class(weights_label) != "try-error",
-                               weights_label, NA),
-      Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
-      by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
-      by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
-      N.Obs           = n_tot)
+    list(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
+         Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+         Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
+                                  parse_info$var_names, NA),
+         Variable.label  = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
+         Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
+         Weights         = ifelse(identical(weights, NA), NA,
+                                  sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",
+                                      x = weights_string, fixed = TRUE)),
+         Weights.label   = ifelse(!identical(weights, NA) && class(weights_label) != "try-error",
+                                  weights_label, NA),
+         Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
+         by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
+         by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
+         N.Obs           = n_tot)
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,
@@ -312,8 +305,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
   if (isTRUE(use.labels) && isTRUE(transpose) && is.data.frame(x)) {
     rownames(output) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
-    #rownames(output$observ) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
-    #rownames(output$observ_pct) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
   }
 
   if (exists("ignored"))

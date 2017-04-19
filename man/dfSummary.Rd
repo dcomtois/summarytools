@@ -4,11 +4,11 @@
 \alias{dfSummary}
 \title{Data frame Summary}
 \usage{
-dfSummary(x, round.digits = 2, varnumbers = FALSE,
-  display.labels = length(label(x, all = TRUE)) > 0, style = "multiline",
-  plain.ascii = TRUE, justify = "left", max.distinct.values = 10,
-  trim.strings = FALSE, max.string.width = 25, split.cells = 40,
-  split.table = Inf, ...)
+dfSummary(x, round.digits = 2, varnumbers = TRUE,
+  display.labels = length(label(x, all = TRUE)) > 0, valid.col = TRUE,
+  na.col = TRUE, style = "multiline", plain.ascii = TRUE,
+  justify = "left", max.distinct.values = 10, trim.strings = FALSE,
+  max.string.width = 25, split.cells = 40, split.table = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -17,12 +17,18 @@ dfSummary(x, round.digits = 2, varnumbers = FALSE,
 summaries and in frequency proportions. Defaults to \code{2}.}
 
 \item{varnumbers}{Should the first column contain variable number? Defaults
-to \code{FALSE}.}
+to \code{TRUE}.}
 
 \item{display.labels}{If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 will be displayed. By default, the \emph{labels} column is shown if at least
 one of the columns has a defined label.}
+
+\item{valid.col}{Logical. Include column indicating count and proportion of valid
+(non-missing) values. \code{TRUE} by default.}
+
+\item{na.col}{Logical. Include column indicating count and proportion of missing
+(NA) values. \code{TRUE} by default.}
 
 \item{style}{The style to be used by \code{\link[pander]{pander}} when
 rendering in output table. Defaults to \dQuote{multiline}. Another option is
@@ -64,7 +70,7 @@ A data frame containing as many rows as there are columns in \code{x},
   with additional attributes to inform \code{print} function. Columns of the
   output data frame are:
   \describe{
-    \item{Var Number}{Number indicating the order in which column appears in
+    \item{No}{Number indicating the order in which column appears in
       the data frame.}
     \item{Variable}{Name of the variable.}
     \item{Label}{Label of the variable.}
@@ -74,11 +80,12 @@ A data frame containing as many rows as there are columns in \code{x},
       common values (in descending frequency order), also limited by
       \code{max.distinct.values}. For numerical variables, common univariate
       statistics (mean, std. deviation, min, med, max, IQR and CV).}
-    \item{Freqs, \% of Valid}{For factors and character variables, the frequencies
+    \item{Freqs (\% of Valid)}{For factors and character variables, the frequencies
       and proportions of the values listed in the previous column. For numerical
       vectors, number of distinct values, or frequency of distinct values if
       their number is not greater than \code{max.distinct.values}.}
-    \item{N Valid}{Number and proportion of valid values for the variable.}
+    \item{Valid}{Number and proportion of valid values.}
+    \item{Missing}{Number and proportion of missing (NA) values.}
 }
 }
 \description{

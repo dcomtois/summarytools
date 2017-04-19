@@ -13,3 +13,4 @@
           "If you need to delete temporary files before ending R session, see ?cleartmp.", sep = "\n")
     )
 }
+

@@ -25,7 +25,7 @@ body {
 
 .table > thead > tr > th {
   vertical-align: middle;
-  min-width: 135px;
+  min-width: 125px;
 }
 
 .table-bordered {
@@ -60,7 +60,7 @@ th {
 }
 
 .table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 
 .multiline {
@@ -89,24 +89,18 @@ th {
   min-width: 25px !important;
 }
 
-/*
-.monospace-cells {
-  font-family: monospace;
-  font-size: 13px;
-  text-align: right;
-}
+/*img {
+  max-width: 140px;
+}*/
 
-
-
-.table {
+.table-narrow {
   width: auto;
-  max-width: 100%;
-  margin-bottom: 20px;
 }
-
 
 .table-narrow > thead > tr > th,
+.table-narrow > thead > tr > td,
+.table-narrow > tbody > tr > th,
 .table-narrow > tbody > tr > td {
-  min-width: 50px;
+  min-width: 75px;
 }
-*/
+

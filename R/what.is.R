@@ -61,7 +61,7 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
                                       "is.object","object.type","object.size"),
                            value = c(paste(class(x),collapse=" "), typeof(x), mode(x), storage.mode(x),
                                      paste(dim(x), collapse = " x "), length(x),
-                                     base::is.object(x), pryr::otype(x), paste(object.size(x), "Bytes")))
+                                     is.object(x), otype(x), paste(object.size(x), "Bytes")))
 
 
   # Part 2. Make a list of all x's attribute and their length
@@ -112,10 +112,8 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   # Part 4. Get info on the type of object - S3, S4, attributes / slots
 
-  #obj.otype <- pryr::otype(x)
-
   if(is.function(x)) {
-  	function.type <- pryr::ftype(x)
+  	function.type <- ftype(x)
   } else {
     function.type <- NULL
   }

@@ -7,13 +7,13 @@
 \title{Print Method for Objects of Class \code{summarytools}.}
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "", append = FALSE,
-                              report.title = NA, group.only = FALSE,
-                              escape.pipe = FALSE, silent = FALSE,
-                              footer = FALSE, \dots)
+   report.title = NA, group.only = FALSE, escape.pipe = FALSE,
+   html.table.class = NA, custom.css = NA, silent = FALSE,
+   footer = FALSE, \dots)
 
- view(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-      group.only = FALSE, escape.pipe = FALSE, silent = FALSE,
-      footer = FALSE, \dots)
+view(x, method = "viewer", file = "", append = FALSE, report.title = NA,
+     group.only = FALSE, escape.pipe = FALSE, html.table.class = NA,
+     custom.css = NA, silent = FALSE, footer = FALSE, \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -40,6 +40,14 @@ with \code{by()}.}
 \code{style='grid'} and \code{file} argument is supplied if the intent
 is to generate a text file that can be converted to other formats using
 \emph{Pandoc}.}
+
+\item{html.table.class}{All \emph{Bootstrap CSS} classes can be used. It also allows
+user-defined classes (see custom.css parameter). See \emph{details} section.
+\code{NA} by default.}
+
+\item{custom.css}{Path to a user-defined \emph{.css} file. Classes
+defined in this file can be used in the \code{html.table.classes}
+parameter. \code{NA} by default.}
 
 \item{silent}{Hide console messages (such as ignored variables or \code{NaN}
 to \code{NA} transformations).}
@@ -76,6 +84,20 @@ To \strong{print objects of class \dQuote{by}}, use \code{\link{view}}. This
   function also makes it more practical to generate \emph{html} files (see
   examples).
 
+Default values for \code{html.table.attributes} are as follows:
+  \describe{
+    \item{freq}{\code{'class="table table-striped table-bordered
+      table-responsive"'}}
+    \item{ctable}{\code{'class="table table-striped table-bordered
+      monospace-cells table-responsive"'}}
+    \item{descr (stats table)}{\code{'class="table table-striped
+      table-bordered table-responsive"'}}
+    \item{descr (obs table)}{\code{'class="table table-striped
+      table-bordered monospace-cells ctable"'}}
+    \item{dfSummary}{\code{'class="table table-striped table-bordered
+      table-narrow table-responsive"'}}}
+When specifying this parameter, you must also state those attributes if you want them to be applied.
+
 The following additional arguments can be used to override
   formatting and other attributes stored in the object to be printed:
    \itemize{
@@ -84,6 +106,7 @@ The following additional arguments can be used to override
      \item \code{round.digits}
      \item \code{justify}
      \item \code{plain.ascii}
+     \item \code{missing}
      \item \code{split.table}
      \item \code{Dataframe}
      \item \code{Dataframe.label}

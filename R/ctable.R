@@ -66,10 +66,10 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   }
 
   prop <- switch(tolower(substring(prop, 1, 1)),
-                   t = "Total",
-                   r = "Row",
-                   c = "Column",
-                   n = "None")
+                 t = "Total",
+                 r = "Row",
+                 c = "Column",
+                 n = "None")
 
   if (!prop %in% c("Total", "Row", "Column", "None"))
     stop("invalid 'prop' argument; must be one of t, r, c, or n")
@@ -119,33 +119,34 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
     message("file argument is deprecated; use print() or view() function to generate files")
 
   # Get into about x from parsing function
-  parse_info <- parse_args(sys.calls(), sys.frames(), match.call(), y = TRUE)
+  parse_info_x <- parse_args(sys.calls(), sys.frames(), match.call(), var = "x")
+  parse_info_y <- parse_args(sys.calls(), sys.frames(), match.call(), var = "y")
 
-  if (length(parse_info$df_name[["x"]]) == 1 &&
-      length(parse_info$df_name[["y"]]) == 1 &&
-      parse_info$df_name[["x"]] == parse_info$df_name[["y"]]) {
-    df_name <- parse_info$df_name[["x"]]
-    x_name  <- parse_info$var_names[["x"]]
-    y_name  <- parse_info$var_names[["y"]]
+  if (length(parse_info_x$df_name) == 1 &&
+      length(parse_info_y$df_name) == 1 &&
+      parse_info_x$df_name == parse_info_y$df_name) {
+    df_name <- parse_info_x$df_name
+    x_name  <- parse_info_x$var_names
+    y_name  <- parse_info_y$var_names
   } else {
     x_name <- dnn[1]
     y_name <- dnn[2]
   }
 
-  if (length(parse_info$df_label[["x"]]) == 1 &&
-      length(parse_info$df_label[["y"]]) == 1 &&
-      parse_info$df_label[["x"]] == parse_info$df_label[["y"]]) {
-    df_label <- parse_info$df_label[["x"]]
+  if (length(parse_info_x$df_label) == 1 &&
+      length(parse_info_y$df_label) == 1 &&
+      parse_info_x$df_label == parse_info_y$df_label) {
+    df_label <- parse_info_x$df_label
   }
 
-  if (length(parse_info$rows_subset[["x"]]) == 1) {
-    x_subset <- parse_info$rows_subset[["x"]]
+  if (length(parse_info_x$rows_subset) == 1) {
+    x_subset <- parse_info_x$rows_subset
   } else {
     x_subset <- NA
   }
 
-  if (length(parse_info$rows_subset[["y"]]) == 1) {
-    y_subset <- parse_info$rows_subset[["y"]]
+  if (length(parse_info_y$rows_subset) == 1) {
+    y_subset <- parse_info_y$rows_subset
   } else {
     y_subset <- NA
   }
@@ -210,17 +211,17 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   attr(output, "date") <- Sys.Date()
 
   attr(output, "data_info") <-
-    c(Dataframe = ifelse(exists("df_name"), df_name, NA),
-      Dataframe.label = ifelse(exists("df_label"), df_label, NA),
-      Row.variable = x_name,
-      Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
-      Col.variable = y_name,
-      Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-      Subset = ifelse(length(x_subset) == 1 &&
-                        length(y_subset) == 1 &&
-                        x_subset == y_subset, x_subset, NA),
-      Row.variable.subset = ifelse(length(x_subset) == 1, x_subset, NA),
-      Col.variable.subset = ifelse(length(y_subset) == 1, y_subset, NA))
+    list(Dataframe = ifelse(exists("df_name"), df_name, NA),
+         Dataframe.label = ifelse(exists("df_label"), df_label, NA),
+         Row.variable = x_name,
+         Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
+         Col.variable = y_name,
+         Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
+         Subset = ifelse(length(x_subset) == 1 &&
+                           length(y_subset) == 1 &&
+                           x_subset == y_subset, x_subset, NA),
+         Row.variable.subset = ifelse(length(x_subset) == 1, x_subset, NA),
+         Col.variable.subset = ifelse(length(y_subset) == 1, y_subset, NA))
 
   attr(output, "formatting") <-
     list(style = style,

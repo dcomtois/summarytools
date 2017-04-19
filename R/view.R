@@ -1,7 +1,7 @@
 #' @export
-view <- function(x, method = "viewer", file = "", append = FALSE,
-                 report.title = NA, group.only = FALSE, escape.pipe = FALSE,
-                 silent = FALSE, footer = FALSE, ...) {
+view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
+                 group.only = FALSE, escape.pipe = FALSE, html.table.class = NA,
+                 custom.css = NA, silent = FALSE, footer = FALSE, ...) {
 
   if ("summarytools" %in% class(x))
     print.summarytools(x, method = method, silent = silent, footer = footer,
