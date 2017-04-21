@@ -17,7 +17,7 @@
 #'   (non-missing) values. \code{TRUE} by default.
 #' @param na.col Logical. Include column indicating count and proportion of missing
 #'   (NA) values. \code{TRUE} by default.
-#' @param graph.cal Logical. Display barplots / histograms column in \emph{html}
+#' @param graph.col Logical. Display barplots / histograms column in \emph{html}
 #'   reports. \code{TRUE} by default.
 #' @param style The style to be used by \code{\link[pander]{pander}} when
 #'   rendering in output table. Defaults to \dQuote{multiline}. Another option is
@@ -380,11 +380,14 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- as.character(match.call())
 
-  attr(output, "data_info") <- list(Dataframe = parse_info$df_name,
-                                    Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
-                                    Subset = ifelse("rows_subset" %in% names(parse_info),
-                                                    parse_info$rows_subset, NA),
-                                    N.obs = nrow(x))
+  data_info <-
+    list(Dataframe = parse_info$df_name,
+         Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+         Subset = ifelse("rows_subset" %in% names(parse_info),
+                         parse_info$rows_subset, NA),
+         N.obs = nrow(x))
+
+  attr(output, "data_info") <- data_info[!is.na(data_info)]
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,

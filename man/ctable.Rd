@@ -61,7 +61,7 @@ The default \code{plain.ascii = TRUE} option is there to make results
 }
 \examples{
 data("tobacco")
-with(tobacco, ctable(gender, smoker, prop="r"))
+ctable(tobacco$gender, tobacco$smoker, prop="r")
 
 }
 \seealso{

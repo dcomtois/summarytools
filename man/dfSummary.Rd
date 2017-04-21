@@ -5,10 +5,11 @@
 \title{Data frame Summary}
 \usage{
 dfSummary(x, round.digits = 2, varnumbers = TRUE,
-  display.labels = length(label(x, all = TRUE)) > 0, valid.col = TRUE,
-  na.col = TRUE, style = "multiline", plain.ascii = TRUE,
-  justify = "left", max.distinct.values = 10, trim.strings = FALSE,
-  max.string.width = 25, split.cells = 40, split.table = Inf, ...)
+  labels.col = length(label(x, all = TRUE)) > 0, valid.col = TRUE,
+  na.col = TRUE, graph.col = TRUE, style = "multiline",
+  plain.ascii = TRUE, justify = "left", max.distinct.values = 10,
+  trim.strings = FALSE, max.string.width = 25, split.cells = 40,
+  split.table = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -19,7 +20,7 @@ summaries and in frequency proportions. Defaults to \code{2}.}
 \item{varnumbers}{Should the first column contain variable number? Defaults
 to \code{TRUE}.}
 
-\item{display.labels}{If \code{TRUE}, variable labels (as defined with
+\item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 will be displayed. By default, the \emph{labels} column is shown if at least
 one of the columns has a defined label.}
@@ -29,6 +30,9 @@ one of the columns has a defined label.}
 
 \item{na.col}{Logical. Include column indicating count and proportion of missing
 (NA) values. \code{TRUE} by default.}
+
+\item{graph.col}{Logical. Display barplots / histograms column in \emph{html}
+reports. \code{TRUE} by default.}
 
 \item{style}{The style to be used by \code{\link[pander]{pander}} when
 rendering in output table. Defaults to \dQuote{multiline}. Another option is

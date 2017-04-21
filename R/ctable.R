@@ -39,7 +39,7 @@
 #'
 #' @examples
 #' data("tobacco")
-#' with(tobacco, ctable(gender, smoker, prop="r"))
+#' ctable(tobacco$gender, tobacco$smoker, prop="r")
 #'
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
 #'
@@ -210,7 +210,7 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   attr(output, "fn_call") <- as.character(match.call())
   attr(output, "date") <- Sys.Date()
 
-  attr(output, "data_info") <-
+  data_info <-
     list(Dataframe = ifelse(exists("df_name"), df_name, NA),
          Dataframe.label = ifelse(exists("df_label"), df_label, NA),
          Row.variable = x_name,
@@ -222,6 +222,8 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
                            x_subset == y_subset, x_subset, NA),
          Row.variable.subset = ifelse(length(x_subset) == 1, x_subset, NA),
          Col.variable.subset = ifelse(length(y_subset) == 1, y_subset, NA))
+
+  attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
   attr(output, "formatting") <-
     list(style = style,

@@ -316,7 +316,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Extract non-NA "data_info" elements from x attributes
   if ("data_info" %in% names(attributes(x))) {
     data_info <- attr(x, "data_info")
-    data_info <- data_info[!is.na(data_info)]
+    # data_info <- data_info[!is.na(data_info)]
   } else {
     data_info <- NA
   }
@@ -357,7 +357,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               c("Weights", "Weights"),
                               c("Subset", "Subset")),
                          h = 4)
-        add_head_element(list(c("Group", "Group")), h = 4)
+        if ("Group" %in% names(data_info)) {
+          add_head_element(list(c("Group", "Group")), h = 4)
+        }
       }
 
       justif <- ifelse(format_info$justify == "center", "centre", format_info$justify)
@@ -474,7 +476,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               c("Weights", "Weights"),
                               c("Subset", "Subset")),
                          h = 4)
-        add_head_element(list(c("Group", "Group")), h = 4)
+        if ("Group" %in% names(data_info)) {
+          add_head_element(list(c("Group", "Group")), h = 4)
+        }
       }
 
       div_list[[length(div_list) + 1]] <- HTML(text = freq_table_html)

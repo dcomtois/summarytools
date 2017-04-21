@@ -280,7 +280,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- as.character(match.call())
 
-  attr(output, "data_info") <-
+  data_info <-
     list(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
          Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
@@ -296,6 +296,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
          by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
          by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
          N.Obs           = n_tot)
+
+  attr(output, "data_info") <- data_info[!is.na(data_info)]
 
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,
