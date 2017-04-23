@@ -8,9 +8,11 @@ body {
 }
 
 .table {
-    width: auto;
-    table-layout: auto;
-    max-width: 1100px;
+  width: auto;
+  table-layout: auto;
+  max-width: 1100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .table > thead > tr > th,
@@ -46,8 +48,9 @@ body {
 .table thead > tr > th {
   border-bottom: none;
 }
-
-th {
+.table td,
+.table th {
+  padding: .25rem;
   text-align: center;
 }
 

@@ -333,10 +333,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     abs(x - round(x)) < tol
   }
 
-  col_has_decimals <- function(x) {
-    (colSums(apply(x, 2, is.wholenumber), na.rm = TRUE) /
-       colSums(!apply(x, 2, is.na))) < 1
-  }
+  # col_has_decimals <- function(x) {
+  #   (colSums(apply(x, 2, is.wholenumber), na.rm = TRUE) /
+  #      colSums(!apply(x, 2, is.na))) < 1
+  # }
 
   # Extract non-NA "data_info" elements from x attributes
   if ("data_info" %in% names(attributes(x))) {
@@ -443,33 +443,28 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         table_head[[length(table_head) + 1]] <- tags$th(cn, align = "center")
       }
 
-      col_has_dec <- col_has_decimals(x)
       table_rows <- list()
       for (ro in seq_len(nrow(x))) {
         table_row <- list()
         for (co in seq_len(ncol(x))) {
-          # On first column, insert row name
           if (co == 1) {
             table_row[[length(table_row) + 1]] <- tags$th(row.names(x)[ro], align = "center")
-          }
-          # cell is NA
-          if (is.na(x[ro,co])) {
-            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
-          } else {
-            # When not NA, Format cell content
-            cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-            if (col_has_dec[co]) {
-              cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
-              table_row[[length(table_row) + 1]] <-
-                tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"), class = "cellLeft"))
-            } else {
-              # Column has no decimals
-              cell <- sub(pattern = "\\.0+", replacement = "", cell, perl = TRUE)
-              table_row[[length(table_row) + 1]] <- tags$td(tags$span(cell, class="numSpan"))
+            if (!"Weights" %in% names(data_info)) {
+              cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], perl = TRUE)
+              table_row[[length(table_row) + 1]] <- tags$td(cell)
+              next
             }
           }
 
-          # On last column, insert row to table_rows list
+          if (is.na(x[ro,co])) {
+            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
+          } else {
+            cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+            cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
+            table_row[[length(table_row) + 1]] <-
+              tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"), class = "cellLeft"))
+          }
+
           if (co == ncol(x)) {
             table_rows[[length(table_rows) + 1]] <- tags$tr(table_row)
           }
@@ -954,7 +949,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       html_content <-
         tags$div(class="container",
                  tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
-                           includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.min.css", sep="/")),
+                           includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.css", sep="/")),
                            includeCSS(path = paste(stpath, "includes/stylesheets/custom.css", sep="/")),
                            if (!is.na(custom.css)) includeCSS(path = custom.css)),
                  div_list
