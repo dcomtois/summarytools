@@ -4,7 +4,7 @@
 \alias{parse_args}
 \title{Extract Data Information From Arguments Passed to Functions}
 \usage{
-parse_args(sys_calls, sys_frames, match_call, y = FALSE)
+parse_args(sys_calls, sys_frames, match_call, var = "x")
 }
 \arguments{
 \item{sys_calls}{Object created using \code{sys.calls()}.}
@@ -12,6 +12,9 @@ parse_args(sys_calls, sys_frames, match_call, y = FALSE)
 \item{sys_frames}{Object created using \code{sys.frames()}.}
 
 \item{match_call}{Object created using \code{match.call()}.}
+
+\item{var}{One of \dQuote{x} or \dQuote{y} (the latter being used only
+in \code{\link{ctable}}).}
 }
 \value{
 A list comprised of:

@@ -7,10 +7,12 @@
 # Initialize list used by view() when printing an object of class "by"
 .st_env$byInfo <- list()
 
-#.onAttach <- function(libname, pkgname) {
-#  packageStartupMessage(
-#    paste("Temporary html files will automatically be deleted when R Session is terminated.",
-#          "If you need to delete temporary files before ending R session, see ?cleartmp.", sep = "\n")
-#    )
-#}
+.onAttach <- function(libname, pkgname) {
+  pander::panderOptions("knitr.auto.asis", FALSE)
+}
+
+# packageStartupMessage(
+#   paste("Temporary html files will automatically be deleted when R Session is terminated.",
+#         "If you need to delete temporary files before ending R session, see ?cleartmp.", sep = "\n")
+# )
 

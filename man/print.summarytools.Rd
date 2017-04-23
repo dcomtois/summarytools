@@ -19,10 +19,11 @@ view(x, method = "viewer", file = "", append = FALSE, report.title = NA,
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
 \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.}
 
-\item{method}{One of \dQuote{pander}, \dQuote{viewer}, or \dQuote{browser}.
-For \code{print()}, default is \dQuote{pander}; with \code{view()}, default
-is \dQuote{viewer}. If \dQuote{viewer} is used outside \emph{RStudio},
-\dQuote{browser} will be used instead.}
+\item{method}{One of \dQuote{pander}, \dQuote{viewer}, \dQuote{browser}, or
+\dQuote{render}. For \code{print()}, default is \dQuote{pander}; for
+\code{view()}, default is \dQuote{viewer}. If \dQuote{viewer} is used
+outside \emph{RStudio}, \dQuote{browser} will be used instead. Use
+\dQuote{render} if function is called from an Rmd document.}
 
 \item{file}{File name to write output to. Defaults to \dQuote{}.}
 
