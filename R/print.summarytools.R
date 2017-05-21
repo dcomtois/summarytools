@@ -360,7 +360,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                           "<br/>", Sys.Date())
   }
 
-
   # freq objects  -----------------------------------------------------------------------------------
 
   if(attr(x, "st_type") == "freq") {
@@ -400,7 +399,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            digits = format_info$round.digits,
                            justify = justify)
 
-      # Remove .00 digits in count column when weights are not used
+      # Remove .00 digits in N (count) column when weights are not used
       if (!"Weights" %in% names(data_info))
         freq_table[ ,1] <- sub("\\.0+", "", freq_table[,1])
 
@@ -451,7 +450,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             table_row[[length(table_row) + 1]] <- tags$th(row.names(x)[ro], align = "center")
             if (!"Weights" %in% names(data_info)) {
               cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], perl = TRUE)
-              table_row[[length(table_row) + 1]] <- tags$td(cell)
+              table_row[[length(table_row) + 1]] <- tags$td(cell, class = "numSpan")
               next
             }
           }
@@ -502,9 +501,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
-        if (he_added) {
-          div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-        }
+        # if (he_added) {
+        #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
+        # }
       }
       div_list[[length(div_list) + 1]] <- HTML(text = freq_table_html)
       if (isTRUE(footer)) {
@@ -547,7 +546,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         # TODO: when Row.variable.subset != Col.variable.subset, for now nothing is shown.
       }
 
-      output[[length(output) + 1]] <- HTML(text = "<br/><br/>")
+      # output[[length(output) + 1]] <- HTML(text = "<br/><br/>")
 
       # do not use argument keep.trailing.zeros = TRUE b/c of issue with pander + ftable
       output[[length(output) + 1]] <-
@@ -653,7 +652,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
-        div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
+        #div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
       }
 
       div_list[[length(div_list) + 1]] <- HTML(text = cross_table_html)
@@ -737,18 +736,18 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (is.na(x[ro,co])) {
             table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
           } else {
-            if (rownames(x)[ro] == "N.Valid" && !"Weights" %in% names(data_info)) {
-              cell <- sub(pattern = "\\.0+", replacement = "", x = x[ro,co], perl = TRUE)
-              table_row[[length(table_row) + 1]] <-
-                tags$td(tags$span(HTML(text = paste0("&nbsp;",cell)), class = "numSpan"))
-            } else {
+            #if (rownames(x)[ro] == "N.Valid" && !"Weights" %in% names(data_info)) {
+            #  cell <- sub(pattern = "\\.0+", replacement = "", x = x[ro,co], perl = TRUE)
+            #  table_row[[length(table_row) + 1]] <-
+            #    tags$td(tags$span(HTML(text = paste0("&nbsp;",cell)), class = "numSpan"), align = "center")
+            #} else {
               # When not NA, format cell content
               cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
               cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
               table_row[[length(table_row) + 1]] <-
                 tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"),
                                   class = "cellLeft"))
-            }
+            #}
           }
           # On last column, insert row to table_rows list
           if (co == ncol(x)) {
@@ -798,9 +797,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                      h = 0)
       }
 
-      if (he_added) {
-        div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-      }
+      # if (he_added) {
+      #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
+      # }
 
       div_list[[length(div_list) + 1]] <- HTML(text = descr_table_html)
 
@@ -908,9 +907,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                         c("Subset", "Subset"),
                                         c("N.obs", "N")),
                                    h = 0)
-      if (he_added) {
-        div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-      }
+      # if (he_added) {
+      #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
+      # }
 
       div_list[[length(div_list) + 1]] <- HTML(text = dfs_table_html)
 
@@ -949,7 +948,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       html_content <-
         tags$div(class="container",
                  tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
-                           includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.css", sep="/")),
+                           includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap4.min.css", sep="/")),
                            includeCSS(path = paste(stpath, "includes/stylesheets/custom.css", sep="/")),
                            if (!is.na(custom.css)) includeCSS(path = custom.css)),
                  div_list
