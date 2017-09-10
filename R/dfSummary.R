@@ -134,9 +134,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
   encode_graph <- function(data, graph_type) {
     if (graph_type == "histogram") {
-      png(img_png <- tempfile(fileext = ".png"), width = 140, height = 85,
+      png(img_png <- tempfile(fileext = ".png"), width = 150, height = 100,
           units = "px", bg = "transparent")
-      par("mar" = c(0.05,0.05,0.05,0.05))
+      par("mar" = c(0.05,0.01,0.05,0.01))
       data <- data[!is.na(data)]
       breaks_x <- pretty(range(data), n = nclass.FD(data), min.n = 1)
       hist_values <- hist(data, breaks = breaks_x, plot = FALSE)
@@ -146,15 +146,16 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
            labels = round(range(data),6), pos = 4, cex = 1, srt = 90,
            offset = 0)
       #lines(density(data))
+
     } else if (graph_type == "barplot") {
-      png(img_png <- tempfile(fileext = ".png"), width = 140,
-          height = 20*length(data), units = "px", bg = "transparent")
-      par("mar" = c(0.05,0.05,0.05,0.05))
+      png(img_png <- tempfile(fileext = ".png"), width = 150,
+          height = 26*length(data), units = "px", bg = "transparent")
+      par("mar" = c(0.05,0.01,0.03,0.01))
       #if (i%%2 == 0) {
       #  par("bg" = "#f9f9f9")
       #}
       data <- rev(data)
-      bp_values <- barplot(data, names.arg = "", axes = FALSE, space = 0.15,
+      bp_values <- barplot(data, names.arg = "", axes = FALSE, space = 0.2,
                            col = "grey97", border = "grey65", horiz = TRUE)
       text(y = bp_values, x = 1 + (0.025*max(data)), pos = 4,
            labels = names(data), cex = 1, offset = 0)

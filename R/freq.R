@@ -6,8 +6,9 @@
 #' @param x Factor or vector
 #' @param round.digits Number of significant digits to display. Defaults
 #'   to \code{2}.
-#' @param order Ordering of rows in frequency table; \dQuote{names} (default),
-#'   or \dQuote{freq}.
+#' @param order Ordering of rows in frequency table; \dQuote{names} (default for
+#'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq}
+#'   (from most frequent to less frequent).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
 #'   \dQuote{rmarkdown}.
@@ -55,8 +56,9 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   # Parameter validation ---------------------------------------
 
   # If x is a data.frame with 1 column, extract this column as x
-  if (!is.null(ncol(x)) && ncol(x)==1)
+  if (!is.null(ncol(x)) && ncol(x)==1) {
     x <- x[[1]]
+  }
 
   if (!is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
@@ -65,21 +67,31 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     }
   }
 
-  if (!is.numeric(round.digits) || round.digits < 1)
+  if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
+  }
 
   order <- switch(tolower(substring(order, 1, 1)),
-                  n = "names",
-                  f = "freq")
+                  l = "levels",
+                  f = "freq",
+                  n = "names")
 
-  if (!order %in% c("names", "freq"))
-    stop("'order' argument must be one of 'names' or 'freq'")
+  if (!order %in% c("levels", "freq", "names")) {
+    stop("'order' argument must be one of 'level', 'freq' or 'names'")
+  }
 
-  if (!style %in% c("simple", "grid", "rmarkdown"))
+  if (order == "levels" && !is.factor(x)) {
+    stop("'order' argument can be set to 'factor' only for factors. Use 'names'
+         or 'freq', or convert object to factor.")
+  }
+
+  if (!style %in% c("simple", "grid", "rmarkdown")) {
     stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
+  }
 
-  if (!plain.ascii %in% c(TRUE, FALSE))
+  if (!plain.ascii %in% c(TRUE, FALSE)) {
     stop("'plain.ascii' argument must either TRUE or FALSE")
+  }
 
   justify <- switch(tolower(substring(justify, 1, 1)),
                     l = "left",
@@ -87,16 +99,19 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                     m = "center", # to allow 'middle'
                     r = "right")
 
-  if (!justify %in% c("left", "center", "right"))
+  if (!justify %in% c("left", "center", "right")) {
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
+  }
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style %in% c("grid", "rmarkdown") && !"plain.ascii" %in% (names(match.call())))
+  if (style %in% c("grid", "rmarkdown") && !"plain.ascii" %in% (names(match.call()))) {
     plain.ascii <- FALSE
+  }
 
-  if ("file" %in% names(match.call()))
+  if ("file" %in% names(match.call())) {
     message(paste0("'file' argument is deprecated; use for instance ",
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
+  }
 
   # Replace NaN's by NA's (This simplifies matters a lot!)
   if (NaN %in% x)  {
@@ -172,7 +187,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   # Combine the info to build the final frequency table
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c("N", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
+  colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
   rownames(output) <- c(names(freq_table), "Total")
 
   # Update the output class and attributes
@@ -186,6 +201,10 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
          Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
          Variable.label  = label(x),
+         Data.type       = ifelse(is.factor(x) && is.ordered(x), "Factor, Ordered",
+                                  ifelse(is.factor(x), "Factor, Unordered",
+                                         ifelse(is.character(x), "Character",
+                                                ifelse(is.numeric(x), "Numeric", class(x))))),
          Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
          Weights         = ifelse(identical(weights, NA), NA,
                                   sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",

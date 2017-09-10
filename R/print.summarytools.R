@@ -329,15 +329,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     return(res)
   }
 
-  is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
-    abs(x - round(x)) < tol
-  }
-
-  # col_has_decimals <- function(x) {
-  #   (colSums(apply(x, 2, is.wholenumber), na.rm = TRUE) /
-  #      colSums(!apply(x, 2, is.na))) < 1
-  # }
-
   # Extract non-NA "data_info" elements from x attributes
   if ("data_info" %in% names(attributes(x))) {
     data_info <- attr(x, "data_info")
@@ -364,17 +355,20 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   if(attr(x, "st_type") == "freq") {
 
+    sect_title <- list()
     if ("Weights" %in% names(data_info)) {
-      sect_title <- "Weighted Frequencies"
+      sect_title[[1]] <- "Weighted Frequencies"
     } else {
-      sect_title <- "Frequencies"
+      sect_title[[1]] <- "Frequencies"
     }
 
     if (all(c("Variable", "Dataframe") %in% names(data_info))) {
-      sect_title <- paste0(sect_title, ": ", data_info$Dataframe, "$", data_info$Variable)
+      sect_title[[2]] <- paste0(data_info$Dataframe, "$", data_info$Variable)
     } else if ("Variable" %in% names(data_info)) {
-      sect_title <- paste0(sect_title, ": ", data_info$Variable)
+      sect_title[[2]] <- data_info$Variable
     }
+
+    sect_title[[2]] <- paste0(sect_title[[2]], " (", data_info$Data.type, ")")
 
     if(method=="pander") {
 
@@ -384,7 +378,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
         he_added <- add_head_element(list(c("Group", "Group")), h = 4)
       } else {
-        output[[1]] <- add_hash(sect_title, 2)
+        output[[1]] <- add_hash(sect_title[[1]], 2)
+        output[[2]] <- paste0("\n",add_hash(sect_title[[2]], 3))
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
@@ -393,13 +388,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       }
 
       justify <- ifelse(format_info$justify == "center", "centre", format_info$justify)
-      freq_table <- format(x = x,
+      freq_table <- format(x = round(x, format_info$round.digits),
                            trim = FALSE,
                            nsmall = format_info$round.digits,
-                           digits = format_info$round.digits,
+                           #digits = format_info$round.digits,
                            justify = justify)
 
-      # Remove .00 digits in N (count) column when weights are not used
+      # Remove .00 digits in Freq column when weights are not used
       if (!"Weights" %in% names(data_info))
         freq_table[ ,1] <- sub("\\.0+", "", freq_table[,1])
 
@@ -432,36 +427,38 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       # freq objects - method viewer / browser / render ---------------------------------------------
 
-      if ("Variable" %in% names(data_info)) {
-        table_head <- list(tags$th(data_info$Variable, align="center"))
-      } else {
-        table_head <- list(tags$th(""))
-      }
-
-      for(cn in colnames(x)) {
-        table_head[[length(table_head) + 1]] <- tags$th(cn, align = "center")
-      }
+      table_head <- list()
+      table_head[[1]] <- list(tags$th("", colspan = 2, style="background-color:#ffffff;border:none"),
+                              tags$th("Valid", colspan = 2),
+                              tags$th("Total", colspan = 2))
+      table_head[[2]] <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
+                              tags$th("Freq"),
+                              tags$th("%"),
+                              tags$th(HTML("% Cumul")),
+                              tags$th("%"),
+                              tags$th(HTML("% Cumul")))
 
       table_rows <- list()
+
       for (ro in seq_len(nrow(x))) {
         table_row <- list()
         for (co in seq_len(ncol(x))) {
           if (co == 1) {
-            table_row[[length(table_row) + 1]] <- tags$th(row.names(x)[ro], align = "center")
+            table_row[[length(table_row) + 1]] <- tags$th(row.names(x)[ro])
             if (!"Weights" %in% names(data_info)) {
               cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], perl = TRUE)
-              table_row[[length(table_row) + 1]] <- tags$td(cell, class = "numSpan")
+              #table_row[[length(table_row) + 1]] <- tags$td(cell, align = "right")
+              table_row[[length(table_row) + 1]] <- tags$td(cell, align = format_info["justify"])
               next
             }
           }
 
           if (is.na(x[ro,co])) {
-            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
+            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align = "right")
           } else {
             cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-            cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
-            table_row[[length(table_row) + 1]] <-
-              tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"), class = "cellLeft"))
+            #table_row[[length(table_row) + 1]] <- tags$td(cell, align = "right")
+            table_row[[length(table_row) + 1]] <- tags$td(cell, align = format_info["justify"])
           }
 
           if (co == ncol(x)) {
@@ -472,11 +469,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       freq_table_html <-
         tags$table(
-          tags$thead(tags$tr(table_head)),
+          tags$thead(tags$tr(table_head[[1]]),
+                     tags$tr(table_head[[2]])),
           tags$tbody(table_rows),
           class = ifelse("html.table.class" %in% names(args_list),
                          args_list[["html.table.class"]],
-                         "table table-striped table-bordered table-narrow")
+                         "table table-striped table-bordered freq-table") #table-narrow
         )
 
       # Cleanup extra spacing and linefeeds in html to correct layout issues
@@ -495,15 +493,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       if (group.only) {
         he_added <- add_head_element("Group", h = 4)
       } else {
-        div_list[[1]] <- h3(sect_title)
+        div_list[[1]] <- h2(sect_title[[1]])
+        div_list[[2]] <- h3(sect_title[[2]])
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
-        # if (he_added) {
-        #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-        # }
+        div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
       }
       div_list[[length(div_list) + 1]] <- HTML(text = freq_table_html)
       if (isTRUE(footer)) {
@@ -826,13 +823,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                x = x[["Label"]], perl=TRUE)
         }
         x[["Stats / Values"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-                             x = x[["Stats / Values"]], perl=TRUE)
+                                      x = x[["Stats / Values"]], perl=TRUE)
         x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = " \\\\ \n",
-                             x = x[["Stats / Values"]], perl=TRUE)
+                                      x = x[["Stats / Values"]], perl=TRUE)
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-                                         x = x[["Freqs (% of Valid)"]], perl=TRUE)
+                                          x = x[["Freqs (% of Valid)"]], perl=TRUE)
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = " \\\\ \n",
-                                         x = x[["Freqs (% of Valid)"]], perl=TRUE)
+                                          x = x[["Freqs (% of Valid)"]], perl=TRUE)
       }
 
       output[[1]] <- add_hash(sect_title)
@@ -877,9 +874,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         for (co in seq_len(ncol(x))) {
           cell <- x[ro,co]
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
+            #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center", class="narrowCol")
           } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties",
                                             "Stats / Values", "Freqs (% of Valid)")) {
+            #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Graph") {
             table_row[[length(table_row) + 1]] <- tags$td(HTML(cell), align = "center", border = "0")
