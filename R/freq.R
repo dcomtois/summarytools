@@ -63,7 +63,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   if (!is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
     if (class(x) == "try-except" || !is.atomic(x)) {
-      stop("argument must be a vector or a factor; for data frames, use lapply(x, freq)")
+      stop("argument x must be a vector or a factor")
     }
   }
 

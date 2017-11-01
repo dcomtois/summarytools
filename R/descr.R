@@ -7,9 +7,9 @@
 #'
 #' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
-#'   selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{med}, \dQuote{max},
-#'   \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
-#'   \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
+#'   selection of : \dQuote{min}, \dQuote{median}, \dQuote{max}, \dQuote{mad},
+#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
+#'   \dQuote{kurtosis}, \dQuote{N.Valid}, and \dQuote{Pct.Valid}.
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}.
 #' @param round.digits Number of significant digits to keep. Defaults to
@@ -50,7 +50,7 @@
 #' data(exams)
 #' descr(exams)
 #' descr(exams, transpose=TRUE)
-#' descr(exams, stats = c("mean", "sd"))
+#' descr(exams, stats = c("Mean", "Std.Dev"))
 #' data(tobacco)
 #' with(tobacco, by(age, smoker, descr))
 #'
@@ -73,13 +73,14 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                "attempted conversion failed"))
 
   # check that all 'stats' elements are valid
-  valid_stats <- list(no_wgts = c("mean", "sd", "min", "med", "max", "mad", "iqr", "cv",
-                                  "skewness", "se.skewness", "kurtosis", "n.valid", "pct.valid"),
-                      wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", "n.valid", "pct.valid"))
+  valid_stats <- list(no_wgts = c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "IQR", "CV",
+                                  "Skewness", "SE.Skewness", "Kurtosis", "N.Valid", "Pct.Valid"),
+                      wgts = c("Mean", "Std.Dev", "Min", "Median", "Max", "MAD", "CV",
+                               "N.Valid", "Pct.Valid"))
 
   if (!identical(stats,"all")) {
     stats <- tolower(stats)
-    invalid_stats <- setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
+    invalid_stats <- setdiff(stats, tolower(valid_stats[[2 - as.numeric(identical(weights, NA))]]))
     if (length(invalid_stats) > 0) {
       stop("allowed 'stats' are: ", paste(valid_stats, collapse = ", "))
     } else {
@@ -264,7 +265,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     }
   }
 
-  # Remove unwanted stats from output
   output <- output[ ,stats_subset]
 
   # Transpose when transpose is FALSE; even though this is counter-intuitive,

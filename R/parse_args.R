@@ -68,24 +68,24 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   re4 <- paste0("\\w+",                       # variable name       (1)
                 "(\\[\\s*(.+)\\s*\\])")       # rows indexing       (2)
 
-  # re99: form listname$dfname$column[rows]
-  # re99 <- paste0("([\\w\\.\\_]+)\\s*\\$",       # list-type structure (1)
-  #               "\\s*([\\w\\.\\_]+)\\s*\\$",   # data.frame name     (2)
-  #               "\\s*([\\w\\.\\_]+)\\s*",      # variable name       (3)
-  #               "(\\[\\s*(.+)\\s*\\])?")       # rows indexing (opt) (4)
-
-  df_name = character()
-  var_names = character()
+  df_name     = character()
+  var_names   = character()
   rows_subset = character()
+
   by_group = character()
   by_first = logical()
-  by_last = logical()
+  by_last  = logical()
 
-  # Look for position of by.default(), tapply() and with.default() in sys.calls()
-  by_pos <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
+  # Look for position of by(), tapply(), with() and lapply() in sys.calls()
+  by_pos     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
   tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
-  with_pos <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
-  #fn_pos <- which(as.character(lapply(sys_calls, head, 1)) == deparse(match_call[1]))
+  with_pos   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
+
+  #lapply_var   = character()
+  #lapply_first = logical()
+  #lapply_last  = logical()
+  #lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
+
 
   # List of classes accepted as "data frames"
   # classes <- c("data.frame", "data.table", "tbl")
