@@ -169,7 +169,8 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
     freq_table <- addmargins(freq_table)
     rownames(freq_table)[nrow(freq_table)] <- "Total"
     colnames(freq_table)[ncol(freq_table)] <- "Total"
-    if (!is.null(prop_table)) {
+    #if (!is.null(prop_table)) {
+    if (length(prop_table) > 0) {
       if (prop == "Total") {
         prop_table <- addmargins(prop_table)
       } else if (prop == "Row") {
@@ -181,13 +182,14 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
         sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
         prop_table <- cbind(prop_table, sum_props)
       }
+
       rownames(prop_table)[nrow(prop_table)] <- "Total"
       colnames(prop_table)[ncol(prop_table)] <- "Total"
     }
   }
 
   # Change the name of NA items to avoid potential problems when echoing to console
-  if(NA %in% rownames(freq_table)) {
+  if (NA %in% rownames(freq_table)) {
     row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
     if (prop != "None") {
       row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
@@ -200,6 +202,7 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
       colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
     }
   }
+
   # Create output object
   output <- list(cross_table = freq_table, proportions = prop_table)
 
@@ -220,8 +223,8 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
          Subset = ifelse(length(x_subset) == 1 &&
                            length(y_subset) == 1 &&
                            x_subset == y_subset, x_subset, NA),
-         Row.variable.subset = ifelse(length(x_subset) == 1, x_subset, NA),
-         Col.variable.subset = ifelse(length(y_subset) == 1, y_subset, NA))
+         Row.variable.subset = ifelse((x_subset != y_subset) && length(x_subset) == 1, x_subset, NA),
+         Col.variable.subset = ifelse((x_subset != y_subset) && length(y_subset) == 1, y_subset, NA))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 

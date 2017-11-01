@@ -511,14 +511,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   } else if(attr(x, "st_type") == "ctable") {
 
     # ctable objects -----------------------------------------------------------------------------------------
-    sect_title <- "Cross-Tabulation"
-
+    sect_title <- list()
+    sect_title[[1]] <- "Cross-Tabulation"
+    #browser()
     if(attr(x, "proportions") %in% c("Row", "Column", "Total")) {
-      sect_title <- paste(sect_title, "with", attr(x, "proportions"), "Proportions")
+      sect_title[[1]] <- paste0(sect_title[[1]], " (", attr(x, "proportions"), " Proportions)")
       cross_table <- align_numbers(x$cross_table, x$proportions)
     } else {
       cross_table <- x$cross_table
     }
+
+    sect_title[[2]] <- paste(data_info$Row.variable, "*", data_info$Col.variable)
 
     if(method == "pander") {
       output <- list()
@@ -526,24 +529,21 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       if (group.only) {
         he_added <- add_head_element("Group", h = 4)
       } else {
-        output[[1]] <- paste0("\n", add_hash(sect_title))
-        if (!format_info[["plain.ascii"]]) {
-          output[[2]] <- paste0("\n",
-                                add_hash(paste(data_info$Row.variable,
-                                                "_x_", data_info$Col.variable),
-                                         h = 0))
+        output[[1]] <- add_hash(sect_title[[1]])
+
+        if  (isTRUE(attr(x, "formatting")$plain.ascii)) {
+          output[[2]] <- paste0("\n", sect_title[[2]])
         } else {
-          output[[2]] <- paste0("\n", data_info$Row.variable, " x ",
-                                data_info$Col.variable)
+          output[[2]] <- paste0("\n", "**", sect_title[[2]], "**")
         }
+
         he_added <- add_head_element(list(c("Dataframe", "Data Frame"),
                                           c("Subset", "Subset"),
+                                          c("Row.variable.subset", "Row Var Subset"),
+                                          c("Col.variable.subset", "Col Var Subset"),
                                           c("Group", "Group")),
                                      h = 0)
-        # TODO: when Row.variable.subset != Col.variable.subset, for now nothing is shown.
       }
-
-      # output[[length(output) + 1]] <- HTML(text = "<br/><br/>")
 
       # do not use argument keep.trailing.zeros = TRUE b/c of issue with pander + ftable
       output[[length(output) + 1]] <-
@@ -561,19 +561,19 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # ctable objects - method viewer / browser / render  ------------------------------
       dnn <- names(dimnames(cross_table))
 
-      table_head_1 <- list(tags$th(""))
-      table_head_1[[2]] <- tags$th(tags$strong(dnn[2]), align = "center",
-                                   colspan =  as.character(
-                                     ncol(cross_table) -
-                                       as.numeric("Total" %in% colnames(cross_table))))
-
+      table_head <- list()
+      table_head[[1]] <- list(tags$th("", style="background-color:#ffffff;border:none"),
+                              tags$th(dnn[2],
+                                      colspan = ncol(cross_table) -
+                                        as.numeric("Total" %in% colnames(cross_table))))
       if ("Total" %in% colnames(cross_table)) {
-        table_head_1[[3]] <- tags$th("")
+        table_head[[1]][[3]] <- tags$th("", style="background-color:#ffffff;border:none")
       }
 
-      table_head_2 <- list(tags$td(tags$strong(dnn[1]), align = "center"))
+      table_head[[2]] <-  list(tags$td(tags$strong(dnn[1]), align = "center"))
+
       for(cn in colnames(cross_table)) {
-        table_head_2[[length(table_head_2) + 1]] <- tags$th(cn, align = "center")
+        table_head[[2]][[length(table_head[[2]]) + 1]] <- tags$th(cn, align = "center")
       }
 
       table_rows <- list()
@@ -586,7 +586,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
 
           # Case where no proportions exist
-          if (is.null(x$proportions)) {
+          #if (is.null(x$proportions)) {
+          if (length(x$proportions) == 0) {
             cell <- cross_table[ro,co]
             table_row[[length(table_row) + 1]] <- tags$td(tags$span(cell, class="numSpan"))
           } else {
@@ -597,6 +598,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                 tags$span(cell[2], class="cellRight"),
                                 class = "cellLeft"))
           }
+
           # On last col, insert row into table_rows list
           if (co == ncol(cross_table)) {
             table_rows[[length(table_rows) + 1]] <- tags$tr(table_row)
@@ -607,15 +609,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       cross_table_html <-
           tags$table(
             tags$thead(
-              tags$tr(table_head_1),
-              tags$tr(table_head_2)
+              tags$tr(table_head[[1]]),
+              tags$tr(table_head[[2]])
             ),
             tags$tbody(
               table_rows
             ),
             class = ifelse("html.table.class" %in% names(args_list),
                            args_list[["html.table.class"]],
-                           "table table-bordered")
+                           "table table-bordered ctable")
           )
 
       #return(as.character(cross_table_html))
@@ -642,9 +644,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       if (group.only) {
         he_added <- add_head_element(list(c("Group", "Group")), h = 0)
       } else {
-        div_list[[1]] <- h3(sect_title)
-        div_list[[length(div_list) + 1]] <- tags$strong(data_info$Row.variable, tags$em(" x "),
-                                                        data_info$Col.variable)
+        div_list[[1]] <- h2(sect_title[[1]])
+        div_list[[2]] <- h3(sect_title[[2]])
+
         he_added <- add_head_element(list(c("Dataframe", "Data Frame"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
@@ -960,7 +962,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
     outfile_path <- ifelse(file == "", paste0(tempfile(),".html"), file)
 
-    if(isTRUE(append)) {
+    if (isTRUE(append)) {
       capture.output(cat(html_content), file = outfile_path)
     } else {
       save_html(html = html_content, file = outfile_path)

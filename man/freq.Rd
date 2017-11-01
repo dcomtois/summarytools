@@ -14,8 +14,9 @@ freq(x, round.digits = 2, order = "names", style = "simple",
 \item{round.digits}{Number of significant digits to display. Defaults
 to \code{2}.}
 
-\item{order}{Ordering of rows in frequency table; \dQuote{names} (default),
-or \dQuote{freq}.}
+\item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
+non-factors), \dQuote{levels} (default for factors), or \dQuote{freq}
+(from most frequent to less frequent).}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid} or
