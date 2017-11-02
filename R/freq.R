@@ -20,6 +20,7 @@
 #'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
 #'   (or \dQuote{r}). Defaults to \dQuote{right}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
+#' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
 #'   Default is \code{TRUE}.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
@@ -50,8 +51,8 @@
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
                  plain.ascii = TRUE, justify = "right",
-                 missing = "", display.labels = TRUE, weights = NA,
-                 rescale.weights = FALSE, ...) {
+                 missing = "", display.type = TRUE, display.labels = TRUE,
+                 weights = NA, rescale.weights = FALSE, ...) {
 
   # Parameter validation ---------------------------------------
 
@@ -120,7 +121,10 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   }
 
   # Get into about x from parsing function
-  parse_info <- parse_args(sys.calls(), sys.frames(), match.call())
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
+  if (class(parse_info) == "try-catch") {
+    parse_info <- list()
+  }
 
   # create a basic frequency table, always including the NA row
   if (identical(NA, weights)) {
@@ -167,7 +171,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
       weights <- weights / sum(weights) * length(x)
     }
 
-    freq_table <- xtabs(weights ~ x)
+    freq_table <- xtabs(formula = weights ~ x)
 
     # Order by frequency if needed
     if (order == "freq")
@@ -175,7 +179,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
 
     P_valid <- prop.table(freq_table) * 100
     P_valid["<NA>"] <- NA
-    freq_table["<NA>"] <- sum(weights) - sum(xtabs(weights ~ x))
+    freq_table["<NA>"] <- sum(weights) - sum(xtabs(formula = weights ~ x))
     P_tot <- prop.table(freq_table) * 100
   }
 
@@ -201,8 +205,8 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
          Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
          Variable.label  = label(x),
-         Data.type       = ifelse(is.factor(x) && is.ordered(x), "Factor, Ordered",
-                                  ifelse(is.factor(x), "Factor, Unordered",
+         Data.type       = ifelse(is.factor(x) && is.ordered(x), "Factor (ordered)",
+                                  ifelse(is.factor(x), "Factor (unordered)",
                                          ifelse(is.character(x), "Character",
                                                 ifelse(is.numeric(x), "Numeric", class(x))))),
          Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
@@ -222,6 +226,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                                      plain.ascii = plain.ascii,
                                      justify = justify,
                                      missing = missing,
+                                     display.type = display.type,
                                      display.labels = display.labels,
                                      ... = ...)
   return(output)

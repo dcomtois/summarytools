@@ -81,10 +81,10 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
   with_pos   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
 
-  #lapply_var   = character()
-  #lapply_first = logical()
-  #lapply_last  = logical()
-  #lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
+  lapply_var   = character()
+  lapply_first = logical()
+  lapply_last  = logical()
+  lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
 
 
   # List of classes accepted as "data frames"
@@ -99,7 +99,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     with_call <- as.list(standardise_call(sys_calls[[with_pos]]))
     with_objects <- ls(sys_frames[[with_pos + 3]])
 
-    # Get properties when with() is not combined with by()
+    # Get names when with() is not combined with by()
     if (length(by_pos) == 0) {
       if (is.data.frame(eval(with_call$data))) {
         df_name <- deparse(with_call$data)
@@ -165,13 +165,16 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
 
     # by_first and by_last are used by print.summarytools when printing objects
     # passed by the by() function
-    if (.st_env$byInfo$iter == 1) {
+    if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
       by_first <- TRUE
-      by_last <- FALSE
+      by_last  <- TRUE
+    } else if (.st_env$byInfo$iter == 1) {
+      by_first <- TRUE
+      by_last  <- FALSE
       .st_env$byInfo$iter = .st_env$byInfo$iter + 1
     } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
       by_first <- FALSE
-      by_last <- TRUE
+      by_last  <- TRUE
       .st_env$byInfo <- list()
     } else {
       by_first <- FALSE
@@ -180,9 +183,19 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
-  # From here code applies no matter how function was called ---------------------------------
-  skipvars <- FALSE # will be changed to TRUE if can't determine df_name
 
+  # Function was called through lapply() -------------------------------------------------------
+  if (length(lapply_pos) == 1 && lapply_pos == 1) {
+    lapply_call <- as.list(standardise_call(sys_calls[[1]]))
+    df_name <- as.character(lapply_call$X)
+    var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
+  }
+
+
+
+  # From here code applies no matter how function was called ---------------------------------
+  skipvars <- FALSE
+  no_df    <- FALSE
 
   # Extract call as a string
   if (exists("by_call")) {
@@ -206,13 +219,12 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
         var_names <- allnames_exist[1]
       } else if (is.data.frame(get(allnames_exist[1]))) {
         df_name <- allnames_exist[1]
-        no_df <- FALSE
       }
     }
   }
 
   # Extract the dataset name (or unique variable name) if not already done
-  if (!no_df && length(df_name) == 0) {
+  if (length(df_name) == 0 && !no_df) {
     if (length(allnames_exist) > 0) {
       if (length(allnames_exist) == 1 && is.data.frame(get(allnames_exist)))
         df_name <- allnames_exist

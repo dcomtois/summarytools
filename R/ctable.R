@@ -118,9 +118,18 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
 
-  # Get into about x from parsing function
-  parse_info_x <- parse_args(sys.calls(), sys.frames(), match.call(), var = "x")
-  parse_info_y <- parse_args(sys.calls(), sys.frames(), match.call(), var = "y")
+  # Get into about x & y from parsing function
+  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x"),
+                      silent = TRUE)
+  if (class(parse_info_x) == "try-catch") {
+    parse_info_x <- list()
+  }
+
+  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y"),
+                      silent = TRUE)
+  if (class(parse_info_y) == "try-catch") {
+    parse_info_y <- list()
+  }
 
   if (length(parse_info_x$df_name) == 1 &&
       length(parse_info_y$df_name) == 1 &&

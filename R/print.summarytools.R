@@ -30,6 +30,8 @@
 #'   will be generic.
 #' @param group.only Logical. Used internally when printing objects created
 #'   with \code{by()}.
+#' @param var.only Logical. Used internally when printing freq objects created
+#'   with \code{lapply()}.
 #' @param escape.pipe Logical. Set to \code{TRUE} when using
 #'   \code{style='grid'} and \code{file} argument is supplied if the intent
 #'   is to generate a text file that can be converted to other formats using
@@ -58,10 +60,8 @@
 #'   \code{\link[pander]{pander}}. See \emph{References} section
 #'   for a list of all available \emph{pander} options.
 #'
-#' \strong{\emph{Html} tables} are generated via
-#'   \code{\link[xtable]{print.xtable}}
-#'   and include \emph{Bootstrap Cascading Style Sheets}. To add custom
-#'   \emph{CSS}, edit the \emph{custom.css} file located in package's
+#' \strong{\emph{Html} tables} use \emph{Bootstrap Cascading Style Sheets}.
+#'   To add custom \emph{CSS}, edit the \emph{custom.css} file located in package's
 #'   \emph{includes/stylesheets} directory.
 #'
 #' To \strong{print objects of class \dQuote{by}}, use \code{\link{view}}. This
@@ -116,7 +116,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com>}
 #'
 #' @seealso
-#' \code{\link[xtable]{xtable}}, \code{\link[pander]{pander}}
+#' \code{\link[pander]{pander}}
 #'
 #' @examples
 #'   \dontrun{
@@ -131,7 +131,7 @@
 #'
 #'@export
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
-                               report.title = NA, group.only = FALSE,
+                               report.title = NA, group.only = FALSE, var.only = FALSE,
                                escape.pipe = FALSE, html.table.class = NA,
                                custom.css = NA, silent = FALSE,
                                footer = FALSE, ...) {
@@ -176,6 +176,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     stop("'group.only' must be either TRUE or FALSE")
   }
 
+  if (!var.only %in% c(TRUE, FALSE)) {
+    stop("'var.only' must be either TRUE or FALSE")
+  }
+
   if (!escape.pipe %in% c(TRUE, FALSE)) {
     stop("'escape.pipe' must be either TRUE or FALSE")
   }
@@ -205,7 +209,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Formatting attributes
   for (format_element in c("style", "round.digits", "justify", "plain.ascii",
-                           "missing", "split.table", "display.labels")) {
+                           "missing", "split.table", "display.type", "display.labels")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
     }
@@ -253,9 +257,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         if (e[[1]] %in% names(data_info)) {
           if (grepl(pattern = "label", e[[1]])) {
             if (isTRUE(format_info[["display.labels"]])) {
-            output[[length(output) + 1]] <<-
-              paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
-            element_added <- TRUE
+              output[[length(output) + 1]] <<-
+                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
+              element_added <- TRUE
+            }
+          } else if (grepl(pattern = "type", e[[1]])) {
+            if (isTRUE(format_info[["display.type"]])) {
+              output[[length(output) + 1]] <<-
+                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
+              element_added <- TRUE
             }
           } else {
             output[[length(output) + 1]] <<-
@@ -356,19 +366,24 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if(attr(x, "st_type") == "freq") {
 
     sect_title <- list()
-    if ("Weights" %in% names(data_info)) {
-      sect_title[[1]] <- "Weighted Frequencies"
+
+    if (!isTRUE(var.only)) {
+      if ("Weights" %in% names(data_info)) {
+        sect_title[[1]] <- "Weighted Frequencies"
+      } else {
+        sect_title[[1]] <- "Frequencies"
+      }
     } else {
-      sect_title[[1]] <- "Frequencies"
+      sect_title[[1]] <- ""
     }
 
     if (all(c("Variable", "Dataframe") %in% names(data_info))) {
       sect_title[[2]] <- paste0(data_info$Dataframe, "$", data_info$Variable)
     } else if ("Variable" %in% names(data_info)) {
       sect_title[[2]] <- data_info$Variable
+    } else {
+      sect_title[[2]] <- ""
     }
-
-    sect_title[[2]] <- paste0(sect_title[[2]], " (", data_info$Data.type, ")")
 
     if(method=="pander") {
 
@@ -376,11 +391,20 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       if (isTRUE(group.only) ||
           ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
-        he_added <- add_head_element(list(c("Group", "Group")), h = 4)
+        he_added <- add_head_element(list(c("Group", "Group")), h = 0)
       } else {
-        output[[1]] <- add_hash(sect_title[[1]], 2)
-        output[[2]] <- paste0("\n",add_hash(sect_title[[2]], 3))
-        he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+
+        if (sect_title[[1]] != "") {
+          output[[1]] <- add_hash(sect_title[[1]], 2)
+        }
+
+        if (sect_title[[2]] != "") {
+          output[[length(output) + 1]] <- paste0("\n",add_hash(sect_title[[2]], 3))
+        }
+
+
+        he_added <- add_head_element(list(c("Data.type", "Type"),
+                                          c("Variable.label", "Variable Label"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
@@ -420,8 +444,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                    split.table = Inf)),
           collapse = "\n")
 
-      if (isTRUE(escape.pipe) && format_info$style == "grid")
-        output[[length(output)]] <- gsub("\\|","\\\\|", output[[2]])
+      if (isTRUE(escape.pipe) && format_info$style == "grid") {
+        output[[length(output)]] <- gsub("\\|","\\\\|", output[[length(output)]])
+      }
 
     } else {
 
@@ -490,12 +515,21 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # Prepare the main "div" for the html report
       div_list <- list()
 
-      if (group.only) {
-        he_added <- add_head_element("Group", h = 4)
+      if (isTRUE(group.only)) {
+        he_added <- add_head_element(list(c("Group", "Group")), h = 0)
       } else {
-        div_list[[1]] <- h2(sect_title[[1]])
-        div_list[[2]] <- h3(sect_title[[2]])
-        he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+
+        if (sect_title[[1]] != "") {
+          div_list[[1]] <- h2(sect_title[[1]])
+        }
+
+        if (sect_title[[2]] != "") {
+          div_list[[length(div_list)+ 1]] <- h3(sect_title[[2]])
+        }
+
+
+        he_added <- add_head_element(list(c("Data.type", "Type"),
+                                          c("Variable.label", "Variable Label"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
@@ -526,8 +560,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if(method == "pander") {
       output <- list()
 
-      if (group.only) {
-        he_added <- add_head_element("Group", h = 4)
+      if (isTRUE(group.only)  ||
+          ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
+        he_added <- add_head_element(list(c("Group", "Group")), h = 0)
       } else {
         output[[1]] <- add_hash(sect_title[[1]])
 
@@ -687,8 +722,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       output <- list()
 
-      if (group.only) {
-        he_added <- add_head_element(list(c("Group", "Group")), h = 0)
+      if (isTRUE(group.only) ||
+          ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
+        he_added <- add_head_element(list(c("Group", "Group"),
+                                          c("N.Obs", "N")),
+                                     h = 0)
       } else {
         output[[1]] <- add_hash(sect_title, 2)
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
@@ -735,18 +773,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (is.na(x[ro,co])) {
             table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
           } else {
-            #if (rownames(x)[ro] == "N.Valid" && !"Weights" %in% names(data_info)) {
-            #  cell <- sub(pattern = "\\.0+", replacement = "", x = x[ro,co], perl = TRUE)
-            #  table_row[[length(table_row) + 1]] <-
-            #    tags$td(tags$span(HTML(text = paste0("&nbsp;",cell)), class = "numSpan"), align = "center")
-            #} else {
-              # When not NA, format cell content
-              cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-              cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
-              table_row[[length(table_row) + 1]] <-
-                tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"),
-                                  class = "cellLeft"))
-            #}
+            # When not NA, format cell content
+            cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+            cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
+            table_row[[length(table_row) + 1]] <-
+              tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"),
+                                class = "cellLeft"))
           }
           # On last column, insert row to table_rows list
           if (co == ncol(x)) {
@@ -785,7 +817,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       div_list <- list()
 
       if (group.only) {
-        he_added <- add_head_element("Group", h = 4)
+        he_added <- add_head_element(list(c("Group", "Group"),
+                                          c("N.Obs", "N")),
+                                     h = 0)
       } else {
         div_list[[1]] <- h3(sect_title)
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
@@ -795,10 +829,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("Group", "Group")),
                                      h = 0)
       }
-
-      # if (he_added) {
-      #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-      # }
 
       div_list[[length(div_list) + 1]] <- HTML(text = descr_table_html)
 
@@ -941,7 +971,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       close(f)
       top_part <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
-      insert_part <- paste(capture.output(tags$div(class="container", div_list)), collapse="\n")
+      insert_part <- iconv(paste(capture.output(tags$div(class="container", div_list)), collapse="\n"), to = "utf-8")
       html_content <- paste(capture.output(cat(top_part, insert_part, bottom_part)), collapse="\n")
 
     } else {
@@ -963,7 +993,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     outfile_path <- ifelse(file == "", paste0(tempfile(),".html"), file)
 
     if (isTRUE(append)) {
-      capture.output(cat(html_content), file = outfile_path)
+      capture.output(cat(html_content, "\n"), file = outfile_path)
     } else {
       save_html(html = html_content, file = outfile_path)
     }

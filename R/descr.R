@@ -86,7 +86,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       stats_subset <- which(tolower(valid_stats[[2 - as.numeric(identical(weights, NA))]]) %in% stats)
     }
   } else {
-    stats_subset <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
+    stats_subset <- seq_len(length(valid_stats[[2 - as.numeric(identical(weights, NA))]]))
   }
 
   if (!na.rm %in% c(TRUE, FALSE))
@@ -124,7 +124,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     message("file argument is deprecated; use print() or view() function to generate files")
 
   # Get into about x from parsing function
-  parse_info <- parse_args(sys.calls(), sys.frames(), match.call())
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
+  if (class(parse_info) == "try-catch") {
+    parse_info <- list()
+  }
 
   # Identify and exclude non-numerical columns from x
   col_to_remove <- which(!sapply(x, is.numeric))

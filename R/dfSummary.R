@@ -90,7 +90,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       max.string.width = 25, split.cells = 40,
                       split.table = Inf, ...) {
 
-  parse_info <- parse_args(sys.calls(), sys.frames(), match.call())
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
+  if (class(parse_info) == "try-catch") {
+    parse_info <- list()
+  }
 
   if (!is.data.frame(x)) {
     x <- try(as.data.frame(x))
@@ -101,6 +104,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
     message("x was converted to a data frame")
     parse_info$df_name <- parse_info$var_name
+
   }
 
   if ("file" %in% names(match.call())) {
@@ -136,29 +140,30 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     if (graph_type == "histogram") {
       png(img_png <- tempfile(fileext = ".png"), width = 150, height = 100,
           units = "px", bg = "transparent")
-      par("mar" = c(0.05,0.01,0.05,0.01))
+      par("mar" = c(0.03,0.01,0.07,0.01))
       data <- data[!is.na(data)]
       breaks_x <- pretty(range(data), n = nclass.FD(data), min.n = 1)
       hist_values <- hist(data, breaks = breaks_x, plot = FALSE)
       hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
            xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")
-      text(x = range(hist_values$mids), y = 0.025*max(hist_values$density),
-           labels = round(range(data),6), pos = 4, cex = 1, srt = 90,
-           offset = 0)
+      #text(x = range(hist_values$mids), y = 0.025*max(hist_values$density),
+      #     labels = round(range(data),6), pos = 4, cex = 1, srt = 90,
+      #     offset = 0)
       #lines(density(data))
 
     } else if (graph_type == "barplot") {
       png(img_png <- tempfile(fileext = ".png"), width = 150,
-          height = 26*length(data), units = "px", bg = "transparent")
-      par("mar" = c(0.05,0.01,0.03,0.01))
-      #if (i%%2 == 0) {
-      #  par("bg" = "#f9f9f9")
-      #}
+          height = 26*length(data), units = "px",
+          bg = "transparent")
+      par("mar" = c(0.03,0.01,0.05,0.01))
+      # if (i%%2 == 0) {
+      #   par("bg" = "#f9f9f9")
+      # }
       data <- rev(data)
       bp_values <- barplot(data, names.arg = "", axes = FALSE, space = 0.2,
                            col = "grey97", border = "grey65", horiz = TRUE)
-      text(y = bp_values, x = 1 + (0.025*max(data)), pos = 4,
-           labels = names(data), cex = 1, offset = 0)
+      # text(y = bp_values, x = 1 + (0.025*max(data)), pos = 4,
+      #      labels = names(data), cex = 1, offset = 0)
     }
 
     dev.off()
@@ -209,9 +214,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     }
     return(paste(graphlines, collapse = "\n"))
   }
-  #cat(txthist(tobacco$age))
-  #cat(txthist(tobacco$cigs.per.day))
-  #cat(txthist(tobacco$BMI))
+
   # Initialize the output data frame
   output <- data.frame(No = numeric(),
                        Variable = character(),
@@ -375,14 +378,24 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         if (length(counts) <= max.distinct.values && all(abs(as.numeric(names(counts))) >= 0.01)) {
           props <- round(prop.table(counts), 3)
           counts_props <- align_numbers(counts, props)
-          output[i,5] <- paste(round(as.numeric(names(counts)), round.digits),
+          output[i,5] <- paste(paste0(roundval <- round(as.numeric(names(counts)), round.digits),
+                                      ifelse(names(counts) != roundval, "*", " ")),
                                counts_props, sep = ": ", collapse = "  \n")
+          if (any(names(counts) != roundval)) {
+            extra_bottom_border <- TRUE
+            output[i,5] <- paste(output[i,5], "(*) rounded", sep = "  \n")
+          } else {
+            extra_bottom_border <- FALSE
+          }
         } else {
           output[i,5] <- paste(length(counts), "distinct val.")
         }
 
         if (length(counts) <= max.distinct.values) {
           output[i,6] <- encode_graph(counts, "barplot")
+          if (isTRUE(extra_bottom_border)) {
+            output[i,6] <- paste0(output[i,6], "  \n\n")
+          }
           output[i,7] <- txtbarplot(prop.table(counts))
         } else {
           output[i,6] <- encode_graph(column_data, "histogram")
