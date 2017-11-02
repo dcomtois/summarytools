@@ -261,7 +261,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
       n_levels <- nlevels(column_data)
       counts <- table(column_data, useNA = "no")
-      props <- round(prop.table(counts), 3)
+      props <- round(prop.table(counts), round.digits + 2)
 
 
       if (n_levels <= max.distinct.values) {
@@ -323,7 +323,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         # Report all frequencies when allowed by max.distinct.values
         if (length(counts) <= max.distinct.values) {
           output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="  \n")
-          props <- round(prop.table(counts), 3)
+          props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           output[i,5] <- paste(counts_props, collapse = "  \n")
           output[i,6] <- encode_graph(counts, "barplot")
@@ -332,7 +332,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         } else {
           # Too many values - report most common strings
           counts <- sort(counts, decreasing = TRUE)
-          props <- round(prop.table(counts), 3)
+          props <- round(prop.table(counts), round.digits + 2)
           n_extra_values <- length(counts)-max.distinct.values
           n_extra_values <- length(counts)-max.distinct.values
           output[i,4] <- paste0(paste0(1:max.distinct.values,". ",
@@ -376,16 +376,16 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         counts <- table(column_data, useNA = "no")
 
         if (length(counts) <= max.distinct.values && all(abs(as.numeric(names(counts))) >= 0.01)) {
-          props <- round(prop.table(counts), 3)
+          props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           output[i,5] <- paste(paste0(roundval <- round(as.numeric(names(counts)), round.digits),
                                       ifelse(names(counts) != roundval, "*", " ")),
                                counts_props, sep = ": ", collapse = "  \n")
           if (any(names(counts) != roundval)) {
-            extra_bottom_border <- TRUE
-            output[i,5] <- paste(output[i,5], "(*) rounded", sep = "  \n")
+            extra_space <- TRUE
+            output[i,5] <- paste(output[i,5], "* rounded", sep = "  \n")
           } else {
-            extra_bottom_border <- FALSE
+            extra_space <- FALSE
           }
         } else {
           output[i,5] <- paste(length(counts), "distinct val.")
@@ -393,7 +393,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
         if (length(counts) <= max.distinct.values) {
           output[i,6] <- encode_graph(counts, "barplot")
-          if (isTRUE(extra_bottom_border)) {
+          if (isTRUE(extra_space)) {
             output[i,6] <- paste0(output[i,6], "  \n\n")
           }
           output[i,7] <- txtbarplot(prop.table(counts))
@@ -416,7 +416,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         output[i,7] <- ""
 
       } else if (length(counts) <= max.distinct.values) {
-        props <- round(prop.table(counts), 1)
+        props <- round(prop.table(counts), round.digits + 2)
         counts_props <- align_numbers(counts, props)
         output[i,5] <- paste(counts_props, collapse = "  \n")
 
@@ -427,8 +427,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       output[i,7] <- ""
     }
 
-    output[i,8]  <- paste0(n_valid, "  \n(", round(n_valid / n_tot * 100, 2), "%)")
-    output[i,9]  <- paste0(n_miss,  "  \n(", round(n_miss  / n_tot * 100, 2), "%)")
+    output[i,8]  <- paste0(n_valid, "  \n(", round(n_valid / n_tot * 100, round.digits), "%)")
+    output[i,9]  <- paste0(n_miss,  "  \n(", round(n_miss  / n_tot * 100, round.digits), "%)")
   }
 
   names(output) <- c("No", "Variable", "Label", "Stats / Values",
