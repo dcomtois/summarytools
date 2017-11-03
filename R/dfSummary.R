@@ -462,7 +462,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                                      plain.ascii = plain.ascii,
                                      justify = justify,
                                      split.cells = split.cells,
-                                     split.table = split.table,
-                                     ... = ...)
+                                     split.table = split.table)
+
+  attr(output, "user_fmt") <- list(... = ...)
+
   return(output)
 }

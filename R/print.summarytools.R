@@ -9,11 +9,11 @@
 #'  \method{print}{summarytools}(x, method = "pander", file = "", append = FALSE,
 #'    report.title = NA, group.only = FALSE, escape.pipe = FALSE,
 #'    html.table.class = NA, custom.css = NA, silent = FALSE,
-#'    footer = FALSE, \dots)
+#'    footnote = "default", \dots)
 #'
 #' view(x, method = "viewer", file = "", append = FALSE, report.title = NA,
 #'      group.only = FALSE, escape.pipe = FALSE, html.table.class = NA,
-#'      custom.css = NA, silent = FALSE, footer = FALSE, \dots)
+#'      custom.css = NA, silent = FALSE, footnote = "default", \dots)
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -44,9 +44,10 @@
 #'   parameter. \code{NA} by default.
 #' @param silent Hide console messages (such as ignored variables or \code{NaN}
 #'   to \code{NA} transformations).
-#' @param footer Logical. Include footer (package name & version, R version,
-#'   date) in \emph{html} outputs. \code{TRUE} by default. Has no effect when
-#'   \code{method} is \dQuote{pander}.
+#' @param footnote footnote note in \emph{html} output. When set to \dQuote{default},
+#'   this is the package name & version, R version, and current date). Has no effect
+#'   when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
+#'   or set to \code{FALSE} to omit.
 #' @param \dots Additional arguments can be used to override parameters stored
 #'   as attributes in the object being printed. See \emph{Details} section.
 #'
@@ -70,14 +71,9 @@
 #'
 #' Default values for \code{html.table.attributes} are as follows:
 #'   \describe{
-#'     \item{freq}{\code{'class="table table-striped table-bordered
-#'       table-responsive"'}}
-#'     \item{ctable}{\code{'class="table table-striped table-bordered
-#'       monospace-cells table-responsive"'}}
-#'     \item{descr (stats table)}{\code{'class="table table-striped
-#'       table-bordered table-responsive"'}}
-#'     \item{descr (obs table)}{\code{'class="table table-striped
-#'       table-bordered monospace-cells ctable"'}}
+#'     \item{freq}{\code{'class="table table-striped table-bordered freq-table"'}}
+#'     \item{ctable}{\code{'class="table table-striped table-bordered cross-table"'}}
+#'     \item{descr}{\code{'class="table table-striped table-bordered"'}}
 #'     \item{dfSummary}{\code{'class="table table-striped table-bordered
 #'       table-narrow table-responsive"'}}}
 #' When specifying this parameter, you must also state those attributes if you want them to be applied.
@@ -96,6 +92,7 @@
 #'      \item \code{Dataframe.label}
 #'      \item \code{Variable}
 #'      \item \code{Variable.label}
+#'      \item \code{Data.type}
 #'      \item \code{Subset}
 #'      \item \code{Group}
 #'      \item \code{Weights}
@@ -134,7 +131,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, group.only = FALSE, var.only = FALSE,
                                escape.pipe = FALSE, html.table.class = NA,
                                custom.css = NA, silent = FALSE,
-                               footer = FALSE, ...) {
+                               footnote = "default", ...) {
 
 
   # Parameter validation ---------------------------------------
@@ -196,8 +193,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     stop("'silent' must be either TRUE or FALSE")
   }
 
-  if (!footer %in% c(TRUE, FALSE)) {
-    stop("'footer' must be either TRUE or FALSE")
+  if (footnote == FALSE) {
+    footnote = ""
   }
 
   # Override of x's attributes ---------------------------------------------
@@ -208,8 +205,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Formatting attributes
-  for (format_element in c("style", "round.digits", "justify", "plain.ascii",
-                           "missing", "split.table", "display.type", "display.labels")) {
+  for (format_element in c("style", "round.digits", "justify",
+                           "plain.ascii", "missing", "split.table",
+                           "display.type", "display.labels")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
     }
@@ -217,7 +215,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Data info attributes
   for (data_info_element in c("Dataframe", "Dataframe.label",
-                              "Variable", "Variable.label",
+                              "Variable", "Variable.label", "Data.type",
                               "Subset", "Group", "Weights",
                               "Row.variable", "Col.variable",
                               "Row.variable.subet", "Col.variable.subset",
@@ -311,6 +309,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     return(element_added)
   }
 
+  # Function to vertically align frequencies and proportions in ctables
   align_numbers <- function(counts, props) {
 
     round.digits <- format_info[["round.digits"]]
@@ -339,6 +338,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     return(res)
   }
 
+  # Fn to split variable names that are too long
+  # ref: https://tinyurl.com/y7qv48z9
+  smart_split <- function(str) {
+    re <- "(?=.{1,12}(.*))(?=.*?[^\\W._].*?[\\W._].*?\\1).{1,12}(?<=_|\\b|\\Z)|.{1,12}"
+    matchinfo <- gregexpr(pattern = re,
+                          text = str, perl = TRUE)
+    groups <- regmatches(x = str, m = matchinfo)[[1]]
+    paste(groups, collapse = "\n")
+  }
+
+
   # Extract non-NA "data_info" elements from x attributes
   if ("data_info" %in% names(attributes(x))) {
     data_info <- attr(x, "data_info")
@@ -353,12 +363,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   stpath <- find.package("summarytools")
 
   # Build footer note
-  if (method %in% c("browser", "viewer")) {
-    footer_note <- paste0("Generated by <a href='https://github.com/dcomtois/summarytools'>",
-                          "summarytools</a> package version ",
-                          packageVersion(pkg = "summarytools"),
-                          " (<a href='http://www.r-project.org/'>R</a> version ", getRversion(), ")",
-                          "<br/>", Sys.Date())
+  if (method %in% c("browser", "viewer") && footnote == "default") {
+      footnote <- paste0("<p>Generated by <a href='https://github.com/dcomtois/summarytools'>",
+                       "summarytools</a> package version ",
+                       packageVersion(pkg = "summarytools"),
+                       " (<a href='http://www.r-project.org/'>R</a> version ", getRversion(), ")",
+                       "<br/>", Sys.Date(),"</p>")
   }
 
   # freq objects  -----------------------------------------------------------------------------------
@@ -403,45 +413,54 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
 
 
-        he_added <- add_head_element(list(c("Data.type", "Type"),
-                                          c("Variable.label", "Variable Label"),
+        he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                          c("Data.type", "Type"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
       }
 
-      justify <- ifelse(format_info$justify == "center", "centre", format_info$justify)
+      justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                        l = "left",
+                        c = "centre",
+                        d = "right",
+                        r = "right")
+
+
       freq_table <- format(x = round(x, format_info$round.digits),
                            trim = FALSE,
                            nsmall = format_info$round.digits,
                            #digits = format_info$round.digits,
                            justify = justify)
 
-      # Remove .00 digits in Freq column when weights are not used
-      if (!"Weights" %in% names(data_info))
-        freq_table[ ,1] <- sub("\\.0+", "", freq_table[,1])
-
       # Put NA in irrelevant cells so that pander recognizes them as such
       freq_table[nrow(freq_table)-1, 2] <- NA
       freq_table[nrow(freq_table)-1, 3] <- NA
 
+      # Remove .00 digits in Freq column when weights are not used
+      if (!"Weights" %in% names(data_info))
+        freq_table[ ,1] <- sub("\\.0+", "", freq_table[,1])
+
+
       # Escape "<" and ">" when used in pairs in rownames
-      # TODO: test potentially problematic rownames, including with style "simple"
       if (!format_info$plain.ascii) {
         row.names(freq_table) <- gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
                                       x = row.names(freq_table), perl = TRUE)
       }
 
+      pander_args <- append(list(style = format_info$style,
+                                 plain.ascii = format_info$plain.ascii,
+                                 justify = justify,
+                                 missing = format_info$missing,
+                                 split.table = Inf),
+                            attr(x, "user_fmt"))
+
       output[[length(output) + 1]]  <-
         paste(
           capture.output(
-            pander(x = freq_table,
-                   style = format_info$style,
-                   plain.ascii = format_info$plain.ascii,
-                   justify = justify,
-                   missing = format_info$missing,
-                   split.table = Inf)),
+            do.call(pander, append(pander_args, list(x = quote(freq_table))))
+          ),
           collapse = "\n")
 
       if (isTRUE(escape.pipe) && format_info$style == "grid") {
@@ -453,7 +472,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # freq objects - method viewer / browser / render ---------------------------------------------
 
       table_head <- list()
-      table_head[[1]] <- list(tags$th("", colspan = 2, style="background-color:#ffffff;border:none"),
+
+      table_head[[1]] <- list(tags$th("", colspan = 2),
                               tags$th("Valid", colspan = 2),
                               tags$th("Total", colspan = 2))
       table_head[[2]] <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
@@ -462,6 +482,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               tags$th(HTML("% Cumul")),
                               tags$th("%"),
                               tags$th(HTML("% Cumul")))
+
+      justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                        l = "left",
+                        c = "center",
+                        d = "center",
+                        r = "right")
+
 
       table_rows <- list()
 
@@ -472,18 +499,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             table_row[[length(table_row) + 1]] <- tags$th(row.names(x)[ro])
             if (!"Weights" %in% names(data_info)) {
               cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], perl = TRUE)
-              #table_row[[length(table_row) + 1]] <- tags$td(cell, align = "right")
-              table_row[[length(table_row) + 1]] <- tags$td(cell, align = format_info["justify"])
+              table_row[[length(table_row) + 1]] <- tags$td(cell, align = justify)
               next
             }
           }
 
           if (is.na(x[ro,co])) {
-            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align = "right")
+            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align = justify)
           } else {
             cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-            #table_row[[length(table_row) + 1]] <- tags$td(cell, align = "right")
-            table_row[[length(table_row) + 1]] <- tags$td(cell, align = format_info["justify"])
+            table_row[[length(table_row) + 1]] <- tags$td(cell, align = justify)
           }
 
           if (co == ncol(x)) {
@@ -499,7 +524,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$tbody(table_rows),
           class = ifelse("html.table.class" %in% names(args_list),
                          args_list[["html.table.class"]],
-                         "table table-striped table-bordered freq-table") #table-narrow
+                         "table table-striped table-bordered freq-table")
         )
 
       # Cleanup extra spacing and linefeeds in html to correct layout issues
@@ -528,17 +553,19 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
 
 
-        he_added <- add_head_element(list(c("Data.type", "Type"),
-                                          c("Variable.label", "Variable Label"),
+        he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                          c("Data.type", "Type"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
         div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
       }
+
       div_list[[length(div_list) + 1]] <- HTML(text = freq_table_html)
-      if (isTRUE(footer)) {
-        div_list[[length(div_list) + 1]] <- HTML(text = footer_note)
+
+      if (footnote != "") {
+        div_list[[length(div_list) + 1]] <- HTML(text = footnote)
       }
     }
 
@@ -547,9 +574,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     # ctable objects -----------------------------------------------------------------------------------------
     sect_title <- list()
     sect_title[[1]] <- "Cross-Tabulation"
-    #browser()
+
     if(attr(x, "proportions") %in% c("Row", "Column", "Total")) {
-      sect_title[[1]] <- paste0(sect_title[[1]], " (", attr(x, "proportions"), " Proportions)")
+      sect_title[[1]] <- paste0(sect_title[[1]], " / ", attr(x, "proportions"), " proportions")
       cross_table <- align_numbers(x$cross_table, x$proportions)
     } else {
       cross_table <- x$cross_table
@@ -580,13 +607,18 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                      h = 0)
       }
 
+      pander_args <- append(list(style = format_info[["style"]],
+                                 plain.ascii = format_info[["plain.ascii"]],
+                                 justify = format_info[["justify"]]),
+                            attr(x, "user_fmt"))
+
       # do not use argument keep.trailing.zeros = TRUE b/c of issue with pander + ftable
       output[[length(output) + 1]] <-
-        paste(capture.output(pander(ftable(cross_table),
-                                    style = format_info[["style"]],
-                                    plain.ascii = format_info[["plain.ascii"]],
-                                    justify = format_info[["justify"]])),
-              collapse = "\n")
+        paste(
+          capture.output(
+            do.call(pander, append(pander_args, list(x = quote(ftable(cross_table)))))
+          ),
+          collapse = "\n")
 
       if (isTRUE(escape.pipe) && format_info$style == "grid")
         output[[length(output)]] <- gsub("\\|","\\\\|", output[[length(output)]])
@@ -597,12 +629,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       dnn <- names(dimnames(cross_table))
 
       table_head <- list()
-      table_head[[1]] <- list(tags$th("", style="background-color:#ffffff;border:none"),
+      table_head[[1]] <- list(tags$th(""),
                               tags$th(dnn[2],
                                       colspan = ncol(cross_table) -
                                         as.numeric("Total" %in% colnames(cross_table))))
       if ("Total" %in% colnames(cross_table)) {
-        table_head[[1]][[3]] <- tags$th("", style="background-color:#ffffff;border:none")
+        table_head[[1]][[3]] <- tags$th("")
       }
 
       table_head[[2]] <-  list(tags$td(tags$strong(dnn[1]), align = "center"))
@@ -621,17 +653,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
 
           # Case where no proportions exist
-          #if (is.null(x$proportions)) {
           if (length(x$proportions) == 0) {
             cell <- cross_table[ro,co]
-            table_row[[length(table_row) + 1]] <- tags$td(tags$span(cell, class="numSpan"))
+            table_row[[length(table_row) + 1]] <- tags$td(tags$span(cell))
           } else {
             # Proportions exist
-            cell <- strsplit(gsub(" ", "", cross_table[ro,co]), "(", fixed = TRUE)[[1]]
-            table_row[[length(table_row) + 1]] <-
-              tags$td(tags$span(paste0(cell[1],"~~("),
-                                tags$span(cell[2], class="cellRight"),
-                                class = "cellLeft"))
+            cell <- gsub(" ", "&nbsp;" , cross_table[ro,co])
+            cell <-  sub("(", "(&nbsp;", cell, fixed = TRUE)
+            cell <-  sub(")", "&nbsp;)", cell, fixed = TRUE)
+            cell <-  sub("%", "&#37;"  , cell, fixed = TRUE)
+
+            table_row[[length(table_row) + 1]] <- tags$td(tags$span(HTML(cell)))
           }
 
           # On last col, insert row into table_rows list
@@ -652,27 +684,23 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             ),
             class = ifelse("html.table.class" %in% names(args_list),
                            args_list[["html.table.class"]],
-                           "table table-bordered ctable")
+                           "table table-bordered cross-table")
           )
 
-      #return(as.character(cross_table_html))
       # Cleanup some extra spacing and linefeeds in html to avoid weirdness in layout
       cross_table_html <- as.character(cross_table_html)
-      cross_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
-                              replacement = "\\1\\2", x = cross_table_html,
-                              perl = TRUE)
-      cross_table_html <- gsub(pattern = "</span>\\s*</span>",
-                              replacement = "</span></span>",
-                              x = cross_table_html,
-                              perl = TRUE)
-      cross_table_html <- gsub(pattern = "~~",
-                               replacement = "&nbsp;&nbsp;",
-                               x = cross_table_html,
-                               fixed = TRUE)
-      cross_table_html <- gsub(pattern = '"cellLeft">\\s+',
-                               replacement = '"cellLeft">',
-                               x = cross_table_html,
-                               perl = TRUE)
+      # cross_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
+      #                         replacement = "\\1\\2", x = cross_table_html,
+      #                         perl = TRUE)
+      # cross_table_html <- gsub(pattern = "</span>\\s*</span>",
+      #                         replacement = "</span></span>",
+      #                         x = cross_table_html,
+      #                         perl = TRUE)
+      # cross_table_html <- gsub(pattern = "~~",
+      #                          replacement = "&nbsp;&nbsp;",
+      #                          x = cross_table_html,
+      #                          fixed = TRUE)
+
 
 
       div_list <- list()
@@ -686,12 +714,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("Subset", "Subset"),
                                           c("Group", "Group")),
                                      h = 0)
-        #div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
       }
 
       div_list[[length(div_list) + 1]] <- HTML(text = cross_table_html)
-      if (isTRUE(footer)) {
-        div_list[[length(div_list) + 1]] <- HTML(text = footer_note)
+      if (footnote != "") {
+        div_list[[length(div_list) + 1]] <- HTML(text = footnote)
       }
     }
 
@@ -718,6 +745,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       sect_title <- paste0(sect_title, ": ", data_info$Dataframe)
     }
 
+    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                      l = "left",
+                      c = "center",
+                      r = "right")
+
     if(method=="pander") {
 
       output <- list()
@@ -741,13 +773,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       x <- format(round(x, format_info[["round.digits"]]),
                   nsmall = format_info[["round.digits"]])
 
+      pander_args <- append(list(style = format_info[["style"]],
+                                 plain.ascii = format_info[["plain.ascii"]],
+                                 justify = justify),
+                            attr("x", "user_fmt"))
+
       output[[length(output) + 1]] <-
         paste(
           capture.output(
-            pander(x = x,
-                   style = format_info[["style"]],
-                   plain.ascii = format_info[["plain.ascii"]],
-                   justify = format_info[["justify"]])
+            do.call(pander, append(pander_args, list(x = quote(x))))
           ),
           collapse = "\n")
 
@@ -762,23 +796,27 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       table_head <- list(tags$td(""))
 
       for(cn in colnames(x)) {
+        if (nchar(cn) > 12) {
+          cn <- smart_split(cn)
+        }
         table_head[[length(table_head) + 1]] <- tags$th(cn, align = "center")
       }
 
       table_rows <- list()
       for (ro in seq_len(nrow(x))) {
-        table_row <- list(tags$td(tags$strong(rownames(x)[ro]), align = "right"))
+        table_row <- list(tags$td(tags$strong(rownames(x)[ro])))
         for (co in seq_len(ncol(x))) {
           # cell is NA
           if (is.na(x[ro,co])) {
-            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing, align="center")
-          } else {
-            # When not NA, format cell content
-            cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-            cell <- strsplit(cell, ".", fixed = TRUE)[[1]]
+            table_row[[length(table_row) + 1]] <- tags$td(format_info$missing)
+          } else if (rownames(x)[ro] == "N.Valid" && !"Weights" %in% names(data_info)) {
             table_row[[length(table_row) + 1]] <-
-              tags$td(tags$span(cell[1], tags$span(paste0(".",cell[2]), class="cellRight"),
-                                class = "cellLeft"))
+              tags$td(tags$span(round(x[ro,co])))
+          } else {
+            # When not NA, and not from N.Valid row, format cell content
+            cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+            table_row[[length(table_row) + 1]] <-
+              tags$td(tags$span(cell))
           }
           # On last column, insert row to table_rows list
           if (co == ncol(x)) {
@@ -793,7 +831,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(table_rows),
             class = ifelse("html.table.class" %in% names(args_list),
                            args_list[["html.table.class"]],
-                           "table table-striped table-bordered table-narrow")
+                           "table table-striped table-bordered desc-table")
           )
 
       # Cleanup some extra spacing and linefeeds in html to avoid weirdness in layout
@@ -832,8 +870,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       div_list[[length(div_list) + 1]] <- HTML(text = descr_table_html)
 
-      if (isTRUE(footer)) {
-        div_list[[length(div_list) + 1]] <- HTML(text = footer_note)
+      if (footnote != "") {
+        div_list[[length(div_list) + 1]] <- HTML(text = footnote)
       }
     }
 
@@ -870,17 +908,22 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                         c("N.obs", "N")),
                                    h = 0)
 
+
+      pander_args <- append(list(style = format_info[["style"]],
+                                 plain.ascii = format_info[["plain.ascii"]],
+                                 justify = format_info[["justify"]],
+                                 split.cells = format_info[["split.cells"]],
+                                 split.table = format_info[["split.table"]],
+                                 keep.line.breaks = TRUE),
+                            attr(x, "user_fmt"))
+
       output[[length(output) + 1]] <-
         paste(
           capture.output(
-            pander(x,
-                   style = format_info[["style"]],
-                   plain.ascii = format_info[["plain.ascii"]],
-                   justify = format_info[["justify"]],
-                   split.cells = format_info[["split.cells"]],
-                   split.table = format_info[["split.table"]],
-                   keep.line.breaks = TRUE)),
+            do.call(pander, append(pander_args, list(x = quote(x))))
+          ),
           collapse = "\n")
+
       if (isTRUE(escape.pipe) && format_info[["style"]] == "grid")
         output[[length(output)]] <- gsub("\\|","\\\\|", output[[length(output)]])
 
@@ -892,8 +935,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       for(cn in colnames(x)) {
         if (cn %in% c("No", "Valid", "Missing")) {
           table_head[[length(table_head) + 1]] <- tags$th(tags$strong(cn),
-                                                          align = "center",
-                                                          class="narrowCol")
+                                                          align = "center")
         } else {
           table_head[[length(table_head) + 1]] <- tags$th(tags$strong(cn),
                                                           align = "center")
@@ -907,7 +949,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           cell <- x[ro,co]
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
             #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
-            table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center", class="narrowCol")
+            table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center")
           } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties",
                                             "Stats / Values", "Freqs (% of Valid)")) {
             #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
@@ -938,14 +980,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                         c("Subset", "Subset"),
                                         c("N.obs", "N")),
                                    h = 0)
-      # if (he_added) {
-      #   div_list[[length(div_list) + 1]] <- HTML(text = "<br/><br/>")
-      # }
 
       div_list[[length(div_list) + 1]] <- HTML(text = dfs_table_html)
 
-      if (isTRUE(footer)) {
-        div_list[[length(div_list) + 1]] <- HTML(text = footer_note)
+      if (footnote != "") {
+        div_list[[length(div_list) + 1]] <- HTML(text = footnote)
       }
     }
   }

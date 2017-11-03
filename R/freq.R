@@ -16,9 +16,10 @@
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
-#' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-#'   (or \dQuote{r}). Defaults to \dQuote{right}.
+#' @param justify String indicating alignment of columns. By default
+#'   (\dQuote{default}), \dQuote{right} is used for text tables and
+#'   \dQuote{center} is used for \emph{html} tables. You can force it to one
+#'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
@@ -50,7 +51,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
-                 plain.ascii = TRUE, justify = "right",
+                 plain.ascii = TRUE, justify = "default",
                  missing = "", display.type = TRUE, display.labels = TRUE,
                  weights = NA, rescale.weights = FALSE, ...) {
 
@@ -94,14 +95,8 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     stop("'plain.ascii' argument must either TRUE or FALSE")
   }
 
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    m = "center", # to allow 'middle'
-                    r = "right")
-
-  if (!justify %in% c("left", "center", "right")) {
-    stop("'justify' argument must be one of 'left', 'center' or 'right'")
+  if (!justify %in% c("left", "center", "centre", "right", "default")) {
+    stop("'justify' argument must be one of 'default', 'left', 'center', or 'right'")
   }
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
@@ -201,8 +196,8 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   attr(output, "date") <- Sys.Date()
 
   data_info <-
-    list(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-         Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+    list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name  , NA),
+         Dataframe.label = ifelse("df_label"  %in% names(parse_info), parse_info$df_label , NA),
          Variable        = ifelse("var_names" %in% names(parse_info), parse_info$var_names, NA),
          Variable.label  = label(x),
          Data.type       = ifelse(is.factor(x) && is.ordered(x), "Factor (ordered)",
@@ -217,17 +212,19 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                                   weights_label, NA),
          Group    = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
          by.first = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
-         by.last  = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA))
+         by.last  = ifelse("by_group" %in% names(parse_info), parse_info$by_last , NA))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <- list(style = style,
-                                     round.digits = round.digits,
-                                     plain.ascii = plain.ascii,
-                                     justify = justify,
-                                     missing = missing,
-                                     display.type = display.type,
-                                     display.labels = display.labels,
-                                     ... = ...)
+  attr(output, "formatting") <- list(style          = style,
+                                     round.digits   = round.digits,
+                                     plain.ascii    = plain.ascii,
+                                     justify        = justify,
+                                     missing        = missing,
+                                     display.type   = display.type,
+                                     display.labels = display.labels)
+
+  attr(output, "user_fmt") <- list(... = ...)
+
   return(output)
 }

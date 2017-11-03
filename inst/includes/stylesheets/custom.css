@@ -1,89 +1,30 @@
-/**, ::after, ::before {
-  -webkit-box-sizing: inherit;
-  box-sizing: initial;
-}
-*/
-
 body {
   margin: 15px;
 }
-
 
 table > thead > tr {
    background-color: #eeeeee;
 }
 
-.table-bordered > thead > tr > th,
-.table-bordered > tbody > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > tbody > tr > td {
-  border: 1px solid #cccccc;
-}
-
-table.freq-table,
-table.ctable {
-  border: medium none;
-}
-
-table.freq-table tr th,
-table.ctable tr th {
+table th {
   text-align: center;
-  vertical-align: middle;
 }
 
-table.freq-table td,
-table.ctable td {
-  /*text-align: right;*/
-  padding-right: 18px; /*5%;*/
-  padding-left: 18px; /*2%;*/
+td span {
+  display: block;
 }
 
-table.freq-table thead tr:nth-child(2) th:nth-child(n+2),
-table.ctable thead tr:nth-child(2) th:nth-child(n+2){
-  padding: 6px 18px 6px 18px;
+.multiline {
+  white-space: pre;
 }
 
-table.freq-table thead tr:nth-child(2) th:nth-child(1),
-table.ctable thead tr:nth-child(2) th:nth-child(1) {
-  text-align: center;
-  padding: 6px 18px 6px 18px;
-}
-
-table.freq-table > thead > tr:nth-child(1),
-table.freq-table > thead > tr:nth-child(2),
-table.ctable > thead > tr:nth-child(1),
-table.ctable > thead > tr:nth-child(2) {
-  background-color: #e9e9e9;
-}
-
-table.ctable {
-  box-sizing: initial;
-}
-
-.table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #ffffff;
-}
-
-.table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #f8f8f8;
-}
-
-
-.table-narrow > thead > tr > th,
-.table-narrow > thead > tr > td,
-.table-narrow > tbody > tr > th,
-.table-narrow > tbody > tr > td {
-  min-width: 80px;
-}
-
-th {
-  text-align: center;
+.hidden {
+  visibility: hidden;
 }
 
 .table {
   width: auto;
   table-layout: auto;
-  max-width: 1200px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -95,7 +36,6 @@ th {
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
   vertical-align: middle;
-  min-width: 130px;
 }
 
 .table-bordered {
@@ -126,6 +66,22 @@ th {
    background-color: #eeeeee;
 }
 
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td {
+  border: 1px solid #cccccc;
+}
+
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+  background-color: #f8f8f8;
+}
+
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #ffffff;
 }
@@ -134,41 +90,96 @@ th {
   background-color: #f9f9f9;
 }
 
-.multiline {
-  white-space:pre;
+
+.desc-table > thead > tr > th,
+.desc-table > tbody > tr > th,
+.desc-table > tfoot > tr > th,
+.desc-table > thead > tr > td,
+.desc-table > tbody > tr > td,
+.desc-table > tfoot > tr > td {
+  /*max-width: 170px;*/
+  padding-left:  24px;
+  padding-right: 24px;
+  word-wrap: break-word;
 }
 
-.cellLeft {
-  display: block;
+.desc-table td {
   text-align: right;
-  overflow: hidden;
 }
 
-.cellRight {
-  width: 50%;
-  float: right;
-  text-align: left;
+.freq-table,
+.cross-table {
+  border: medium none;
 }
 
-.numSpan {
-  display: inline-block;
-  width: calc(50% + 1.25em);
-  text-align: right;
-  padding-right: 12px;
+.freq-table > thead > tr:nth-child(1) > th:nth-child(1) {
+  border:none;
+  background-color: #ffffff;
 }
 
-.narrowCol {
-  min-width: 25px !important;
+.freq-table > thead > tr > th,
+.freq-table > tbody > tr > th,
+.freq-table > tfoot > tr > th,
+.freq-table > thead > tr > td,
+.freq-table > tbody > tr > td,
+.freq-table > tfoot > tr > td {
+  padding-left:  24px;
+  padding-right: 24px;
 }
 
-.table-narrow {
-  width: auto;
-  min-width: 60%;
+.cross-table > thead > tr:nth-child(1) > th:nth-child(1),
+.cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
+  border:none;
+  background-color:#ffffff;
 }
 
-.table-narrow > thead > tr > th,
-.table-narrow > thead > tr > td,
-.table-narrow > tbody > tr > th,
-.table-narrow > tbody > tr > td {
-  min-width: 80px;
+.cross-table > thead > tr > th,
+.cross-table > tbody > tr > th,
+.cross-table > tfoot > tr > th,
+.cross-table > thead > tr > td,
+.cross-table > tbody > tr > td,
+.cross-table > tfoot > tr > td {
+  padding-left:  24px;
+  padding-right: 24px;
 }
+
+.cross-table td {
+  text-align: center;
+}
+
+
+/*
+table.freq-table tr th,
+table.ctable tr th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table.freq-table td,
+table.ctable td {
+  padding-right: 18px;
+  padding-left: 18px;
+}
+
+table.freq-table thead tr:nth-child(2) th:nth-child(n+2),
+table.ctable thead tr:nth-child(2) th:nth-child(n+2){
+  padding: 6px 18px 6px 18px;
+}
+
+table.freq-table thead tr:nth-child(2) th:nth-child(1),
+table.ctable thead tr:nth-child(2) th:nth-child(1) {
+  text-align: center;
+  padding: 6px 18px 6px 18px;
+}
+
+table.freq-table > thead > tr:nth-child(1),
+table.freq-table > thead > tr:nth-child(2),
+table.ctable > thead > tr:nth-child(1),
+table.ctable > thead > tr:nth-child(2) {
+  background-color: #e9e9e9;
+}
+
+table.ctable {
+  box-sizing: initial;
+}
+*/

@@ -22,8 +22,8 @@
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
 #' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-#'   (or \dQuote{r}). Defaults to \dQuote{right}.
+#'   \dQuote{center}, or \dQuote{right} (default). Has no effect on \emph{html}
+#'   tables.
 #' @param transpose Makes variables appears as columns, and stats as rows.
 #'   Defaults to \code{FALSE}.
 #' @param use.labels Logical. Display label instead of variable name when
@@ -305,8 +305,9 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   attr(output, "formatting") <- list(style = style,
                                      round.digits = round.digits,
                                      plain.ascii = plain.ascii,
-                                     justify = justify,
-                                     ... = ...)
+                                     justify = justify)
+
+  attr(output, "user_fmt") <- list(... = ...)
 
   if (isTRUE(use.labels) && isTRUE(transpose) && is.data.frame(x)) {
     rownames(output) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)

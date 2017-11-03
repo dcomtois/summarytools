@@ -11,8 +11,7 @@
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
 #'   \dQuote{rmarkdown}.
 #' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   (or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-#'   (or \dQuote{r}). Defaults to \dQuote{right}.
+#'   \dQuote{center}, or \dQuote{right}. Defaults to \dQuote{right}.
 #' @param prop What proportions to display; \dQuote{t} for \emph{total} (default),
 #'   \dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \dQuote{n} for
 #'   \emph{None}.
@@ -23,6 +22,8 @@
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
+#' @param split.table Pander argument that determines how many characters wide a
+#'   table can span. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By default,
 #'   the character values for arguments x and y are used.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
@@ -48,7 +49,8 @@
 #' @export
 ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "ifany",
                    style = "simple", plain.ascii = TRUE, justify = "right",
-                   dnn=c(substitute(x), substitute(y)), ...) {
+                   split.table = Inf, dnn=c(substitute(x), substitute(y)),
+                   ...) {
 
   # Parameter validation ---------------------------------------
   if (!is.factor(x) && !is.atomic(x)) {
@@ -92,7 +94,6 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
   justify <- switch(tolower(substring(justify, 1, 1)),
                     l = "left",
                     c = "center",
-                    m = "center", # to allow 'middle'
                     r = "right")
 
   if (!justify %in% c("left", "center", "right"))
@@ -242,7 +243,9 @@ ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "i
          round.digits = round.digits,
          plain.ascii = plain.ascii,
          justify = justify,
-         ... = ...)
+         split.table = split.table)
+
+  attr(output, "user_fmt") <- list(... = ...)
 
   return(output)
 }

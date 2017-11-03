@@ -1,10 +1,10 @@
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
                  group.only = FALSE, escape.pipe = FALSE, html.table.class = NA,
-                 custom.css = NA, silent = FALSE, footer = FALSE, ...) {
+                 custom.css = NA, silent = FALSE, footnote = "default", ...) {
 
   if ("summarytools" %in% class(x))
-    print.summarytools(x, method = method, silent = silent, footer = footer,
+    print.summarytools(x, method = method, silent = silent, footnote = footnote,
                        file = file, append = append, report.title = report.title, ...)
 
   else if ("by" %in% class(x) && attr(x[[1]], "st_type") %in% c("freq", "descr")) {
@@ -12,11 +12,11 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     if (method %in% c("viewer", "browser")) {
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       print.summarytools(x[[1]], method = method, silent = FALSE,
-                         footer = FALSE, file = file, append = FALSE,
+                         footnote = FALSE, file = file, append = FALSE,
                          report.title = report.title, group.only = FALSE, ...)
       for (i in 2:len) {
         print.summarytools(x[[i]], method = method, silent = silent,
-                           footer = ifelse(i == len, footer, FALSE),
+                           footnote = ifelse(i == len, footnote, FALSE),
                            file = file, append = TRUE, group.only = TRUE,
                            open = TRUE, ...)
       }
@@ -41,12 +41,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     if (method %in% c("viewer", "browser")) {
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       print.summarytools(x[[1]], method = method, silent = FALSE,
-                         footer = FALSE, file = file, append = FALSE,
+                         footnote = FALSE, file = file, append = FALSE,
                          report.title = report.title, #group.only = FALSE,
                          ...)
       for (i in 2:(len-1)) {
         print.summarytools(x[[i]], method = method, silent = silent,
-                           footer = ifelse(i == len, footer, FALSE),
+                           footnote = ifelse(i == len, footnote, FALSE),
                            file = file, append = TRUE, #group.only = TRUE,
                            open = TRUE, ...)
       }
