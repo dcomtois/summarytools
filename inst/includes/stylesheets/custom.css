@@ -97,7 +97,6 @@ td span {
 .desc-table > thead > tr > td,
 .desc-table > tbody > tr > td,
 .desc-table > tfoot > tr > td {
-  /*max-width: 170px;*/
   padding-left:  24px;
   padding-right: 24px;
   word-wrap: break-word;
@@ -112,7 +111,9 @@ td span {
   border: medium none;
 }
 
-.freq-table > thead > tr:nth-child(1) > th:nth-child(1) {
+.freq-table  > thead > tr:nth-child(1) > th:nth-child(1),
+.cross-table > thead > tr:nth-child(1) > th:nth-child(1),
+.cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
   border:none;
   background-color: #ffffff;
 }
@@ -125,12 +126,6 @@ td span {
 .freq-table > tfoot > tr > td {
   padding-left:  24px;
   padding-right: 24px;
-}
-
-.cross-table > thead > tr:nth-child(1) > th:nth-child(1),
-.cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
-  border:none;
-  background-color:#ffffff;
 }
 
 .cross-table > thead > tr > th,
@@ -146,40 +141,3 @@ td span {
 .cross-table td {
   text-align: center;
 }
-
-
-/*
-table.freq-table tr th,
-table.ctable tr th {
-  text-align: center;
-  vertical-align: middle;
-}
-
-table.freq-table td,
-table.ctable td {
-  padding-right: 18px;
-  padding-left: 18px;
-}
-
-table.freq-table thead tr:nth-child(2) th:nth-child(n+2),
-table.ctable thead tr:nth-child(2) th:nth-child(n+2){
-  padding: 6px 18px 6px 18px;
-}
-
-table.freq-table thead tr:nth-child(2) th:nth-child(1),
-table.ctable thead tr:nth-child(2) th:nth-child(1) {
-  text-align: center;
-  padding: 6px 18px 6px 18px;
-}
-
-table.freq-table > thead > tr:nth-child(1),
-table.freq-table > thead > tr:nth-child(2),
-table.ctable > thead > tr:nth-child(1),
-table.ctable > thead > tr:nth-child(2) {
-  background-color: #e9e9e9;
-}
-
-table.ctable {
-  box-sizing: initial;
-}
-*/

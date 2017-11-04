@@ -6,14 +6,14 @@
 \alias{view}
 \title{Print Method for Objects of Class \code{summarytools}.}
 \usage{
-\method{print}{summarytools}(x, method = "pander", file = "", append = FALSE,
-   report.title = NA, group.only = FALSE, escape.pipe = FALSE,
+\method{print}{summarytools}(x, method = "pander", file = "",
+   append = FALSE, report.title = NA, escape.pipe = FALSE,
    html.table.class = NA, custom.css = NA, silent = FALSE,
-   footer = FALSE, \dots)
+   footnote = "default", \dots)
 
-view(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-     group.only = FALSE, escape.pipe = FALSE, html.table.class = NA,
-     custom.css = NA, silent = FALSE, footer = FALSE, \dots)
+view(x, method = "viewer", file = "", append = FALSE,
+  report.title = NA, escape.pipe = FALSE, html.table.class = NA,
+  custom.css = NA, silent = FALSE, footnote = "default", \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -34,9 +34,6 @@ whether to append output to existing file. \code{FALSE} by default.}
 \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 will be generic.}
 
-\item{group.only}{Logical. Used internally when printing objects created
-with \code{by()}.}
-
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using
 \code{style='grid'} and \code{file} argument is supplied if the intent
 is to generate a text file that can be converted to other formats using
@@ -53,9 +50,10 @@ parameter. \code{NA} by default.}
 \item{silent}{Hide console messages (such as ignored variables or \code{NaN}
 to \code{NA} transformations).}
 
-\item{footer}{Logical. Include footer (package name & version, R version,
-date) in \emph{html} outputs. \code{TRUE} by default. Has no effect when
-\code{method} is \dQuote{pander}.}
+\item{footnote}{footnote in \emph{html} output. When set to \dQuote{default},
+this is the package name and version, R version, and current date). Has no effect
+when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
+or set to \code{FALSE} to omit.}
 
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
@@ -71,32 +69,24 @@ Display \code{summarytools} objects in the console, in Web Browser or in
  \emph{RStudio}'s Viewer, or create formatted output files.
 }
 \details{
-\strong{Plain ascii and \emph{rmarkdown} tables} are generated via
+Plain ascii and \emph{rmarkdown} tables are generated via
   \code{\link[pander]{pander}}. See \emph{References} section
   for a list of all available \emph{pander} options.
 
-\strong{\emph{Html} tables} are generated via
-  \code{\link[xtable]{print.xtable}}
-  and include \emph{Bootstrap Cascading Style Sheets}. To add custom
-  \emph{CSS}, edit the \emph{custom.css} file located in package's
+\emph{Html} tables use \emph{Bootstrap Cascading Style Sheets}.
+  To add custom \emph{CSS}, edit the \emph{custom.css} file located in package's
   \emph{includes/stylesheets} directory.
 
-To \strong{print objects of class \dQuote{by}}, use \code{\link{view}}. This
+To print objects of class \dQuote{by}, use \code{\link{view}}. This
   function also makes it more practical to generate \emph{html} files (see
   examples).
 
 Default values for \code{html.table.attributes} are as follows:
   \describe{
-    \item{freq}{\code{'class="table table-striped table-bordered
-      table-responsive"'}}
-    \item{ctable}{\code{'class="table table-striped table-bordered
-      monospace-cells table-responsive"'}}
-    \item{descr (stats table)}{\code{'class="table table-striped
-      table-bordered table-responsive"'}}
-    \item{descr (obs table)}{\code{'class="table table-striped
-      table-bordered monospace-cells ctable"'}}
-    \item{dfSummary}{\code{'class="table table-striped table-bordered
-      table-narrow table-responsive"'}}}
+    \item{freq}{\code{'class="table table-striped table-bordered freq-table"'}}
+    \item{ctable}{\code{'class="table table-striped table-bordered cross-table"'}}
+    \item{descr}{\code{'class="table table-striped table-bordered descr-table"'}}
+    \item{dfSummary}{\code{'class="table table-striped table-bordered"'}}}
 When specifying this parameter, you must also state those attributes if you want them to be applied.
 
 The following additional arguments can be used to override
@@ -113,6 +103,7 @@ The following additional arguments can be used to override
      \item \code{Dataframe.label}
      \item \code{Variable}
      \item \code{Variable.label}
+     \item \code{Data.type}
      \item \code{Subset}
      \item \code{Group}
      \item \code{Weights}
@@ -141,10 +132,10 @@ The following additional arguments can be used to override
 \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
 }
 \seealso{
-\code{\link[xtable]{xtable}}, \code{\link[pander]{pander}}
+\code{\link[pander]{pander}}
 }
 \author{
-Dominic Comtois, \email{dominic.comtois@gmail.com>}
+Dominic Comtois, \email{dominic.comtois@gmail.com}
 }
 \keyword{methods}
 \keyword{print}

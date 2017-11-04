@@ -6,7 +6,8 @@
 \usage{
 ctable(x, y, prop = "t", totals = TRUE, round.digits = 1,
   useNA = "ifany", style = "simple", plain.ascii = TRUE,
-  justify = "right", dnn = c(substitute(x), substitute(y)), ...)
+  justify = "right", split.table = Inf, dnn = c(substitute(x),
+  substitute(y)), ...)
 }
 \arguments{
 \item{x}{First categorical variable - its values will appear as row names.}
@@ -35,8 +36,10 @@ to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{left}
-(or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-(or \dQuote{r}). Defaults to \dQuote{right}.}
+\dQuote{center}, or \dQuote{right}. Defaults to \dQuote{right}.}
+
+\item{split.table}{Pander argument that determines how many characters wide a
+table can span. \code{Inf} by default.}
 
 \item{dnn}{Names to be used in output table. Vector of two strings; By default,
 the character values for arguments x and y are used.}

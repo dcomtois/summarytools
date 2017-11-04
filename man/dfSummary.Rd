@@ -44,8 +44,7 @@ function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.}
 to console). Defaults to \code{TRUE}.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{left}
-(or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-(or \dQuote{r}). Defaults to \dQuote{right}.}
+\dQuote{center}, or \dQuote{right}. Defaults to \dQuote{left}.}
 
 \item{max.distinct.values}{The maximum number of values to display frequencies
 for. If variable has more distinct values than this parameter, the remaining
@@ -53,9 +52,8 @@ frequencies will be reported as a whole, along with the number of additional
 distinct values.}
 
 \item{trim.strings}{Logical; for character variables, should leading and
-trailing white space be removed? When set to \code{TRUE}, this is done
-\emph{before} calculating frequencies, so those will be impacted
-accordingly. Interpret frequencies accordingly. Defaults to \code{FALSE}.}
+trailing white space be removed? Defaults to \code{FALSE}. See \emph{details}
+for more.}
 
 \item{max.string.width}{Limits the number of characters to display in the
 frequency tables. Defaults to \code{25}.}
@@ -76,9 +74,8 @@ A data frame containing as many rows as there are columns in \code{x},
   \describe{
     \item{No}{Number indicating the order in which column appears in
       the data frame.}
-    \item{Variable}{Name of the variable.}
-    \item{Label}{Label of the variable.}
-    \item{Properties}{Type & class(es) of the variable.}
+    \item{Variable}{Name of the variable, along with its class(es).}
+    \item{Label}{Label of the variable (whenever at least one exists.}
     \item{Stats / Values}{For factors, a list of their values, limited by the
       \code{max.distinct.values} parameter. For character variables, the most
       common values (in descending frequency order), also limited by
@@ -88,8 +85,10 @@ A data frame containing as many rows as there are columns in \code{x},
       and proportions of the values listed in the previous column. For numerical
       vectors, number of distinct values, or frequency of distinct values if
       their number is not greater than \code{max.distinct.values}.}
+    \item{Text Graph}{An ascii histogram for numerical variables, and ascii
+      barchart for factors and character variables.}
     \item{Valid}{Number and proportion of valid values.}
-    \item{Missing}{Number and proportion of missing (NA) values.}
+    \item{Missing}{Number and proportion of missing (NA) values, including NaN's.}
 }
 }
 \description{
@@ -101,6 +100,10 @@ observations information.
 The default \code{plain.ascii = TRUE} option is there to make results
   appear cleaner in the console. When used in a context of markdown rendering,
   set this option to \code{FALSE}.
+
+  When the \code{trim.strings} is set to \code{TRUE}, the trimming is done
+  \emph{before} calculating frequencies, so those will be impacted
+  accordingly.
 }
 \examples{
 data(tobacco)

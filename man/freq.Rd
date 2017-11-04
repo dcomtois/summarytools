@@ -5,8 +5,9 @@
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
 freq(x, round.digits = 2, order = "names", style = "simple",
-  plain.ascii = TRUE, justify = "right", missing = "",
-  display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...)
+  plain.ascii = TRUE, justify = "default", missing = "",
+  display.type = TRUE, display.labels = TRUE, weights = NA,
+  rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{Factor or vector}
@@ -27,11 +28,14 @@ output table; One of \dQuote{simple} (default), \dQuote{grid} or
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{left}
-(or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-(or \dQuote{r}). Defaults to \dQuote{right}.}
+\item{justify}{String indicating alignment of columns. By default
+(\dQuote{default}), \dQuote{right} is used for text tables and
+\dQuote{center} is used for \emph{html} tables. You can force it to one
+of \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
+
+\item{display.type}{Logical. Should variable type be displayed? Default is \code{TRUE}.}
 
 \item{display.labels}{Logical. Should variable / data frame labels be displayed?
 Default is \code{TRUE}.}

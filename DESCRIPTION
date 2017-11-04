@@ -1,12 +1,12 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.7.0
-Date: 2017-03-18
+Version: 0.8.0
+Date: 2017-11-04
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Data frame summaries, cross-tabulations, 
-  weight-supporting frequency tables and common univariable 
+  weight-enabled frequency tables and common univariable 
   stats in concise tables available in a variety of
   formats (plain-ascii, rmarkdown and html). A good point-
   of-entry for exploring data, both for experienced and 

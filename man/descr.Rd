@@ -36,8 +36,8 @@ to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{left}
-(or \dQuote{l}), \dQuote{center} (or \dQuote{c}), or \dQuote{right}
-(or \dQuote{r}). Defaults to \dQuote{right}.}
+\dQuote{center}, or \dQuote{right} (default). Has no effect on \emph{html}
+tables.}
 
 \item{use.labels}{Logical. Display label instead of variable name when
 label exists. Available only when \code{transpose = TRUE}.}

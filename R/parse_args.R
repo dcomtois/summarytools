@@ -18,8 +18,11 @@
 #'   \item var_names The variable names when applicable.
 #'   \item rows_subset The subsetting condition when applicable.
 #'   \item by_group The group, when functions are called through
-#'     \code{by()}}A frequency table of class \code{matrix} with added
-#'     attributes used by \code{\link{print.summarytools}} method.
+#'     \code{by()}
+#'   \item by_first A binary indicator used when function was called
+#'     through \code{by()}
+#'   \item by_last A binary indicator used when function was called
+#'     through \code{by()}}
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make
 #'   results appear cleaner in the console. To avoid markdown rendering
@@ -81,9 +84,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
   with_pos   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
 
-  lapply_var   = character()
-  lapply_first = logical()
-  lapply_last  = logical()
+  #lapply_first = logical()
+  #lapply_last  = logical()
   lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
 
 
@@ -104,10 +106,15 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
       if (is.data.frame(eval(with_call$data))) {
         df_name <- deparse(with_call$data)
         allnames <- all.vars(with_call$expr)
-        if (length(allnames) > 0)
-          var_names <- head(intersect(allnames,with_objects),1)
-        else
+        if (length(allnames) > 0) {
+          if (var == "x") {
+            var_names <- intersect(allnames, with_objects)[1]
+          } else {
+            var_names <- intersect(allnames, with_objects)[2]
+          }
+        } else {
           var_names <- with_objects
+        }
       } else if (is.list(eval(with_call$data))) {
         if (length(with_objects) == 1 &&
             is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {

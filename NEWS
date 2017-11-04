@@ -1,6 +1,16 @@
+Version 0.8.0
+-------------
+Introducing graphs in dfSummary results. Improved alignment of numbers in both html and
+ascii tables. Cleanup in css and upgrade to Bootstrap 4 beta. Added rudimentary support
+for lapply() to be used with freq(), and improved support for by() and with() with descr(),
+freq(), and ctable(). Some backward compatibility notes: in dfSummary(), parameter name
+'display.labels' now corresponds to 'labels.col', for consistency reasons. Also, see Notes
+for Version 0.6.9 about the 'file' parameter.
+
+
 Version 0.7.0
 -------------
-Changes introduced in 0.6.9 have been further tested and enhanced. Improved alignment in cells having counts + proportions.  Updated the vignette to reflect latest changes and added examples using the included datasets ('exams' and 'tobacco'). dfSummary()'s last column now includes counts and percentages of both valid and missing data. Internal changes: coding style has been reviewed to be more standard; Roxygen2 is now used to generate help files.
+(Release on GitHub only). Changes introduced in 0.6.9 have been further tested and enhanced. Improved alignment in cells having counts + proportions.  Updated the vignette to reflect latest changes and added examples using the included datasets ('exams' and 'tobacco'). dfSummary()'s last column now includes counts and percentages of both valid and missing data. Internal changes: coding style has been reviewed to be more standard; Roxygen2 is now used to generate help files.
 
 Version 0.6.9
 -------------
