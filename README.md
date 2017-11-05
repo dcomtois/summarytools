@@ -134,16 +134,16 @@ If your eyes/brain prefer seeing things the other way around, just use "transpos
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE)
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;## Descriptive Statistics: iris 
-&nbsp;&nbsp;&nbsp;&nbsp;**N:** 150 
-&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;|           &nbsp; | Mean | Std.Dev |  Min | Median |  Max |
-&nbsp;&nbsp;&nbsp;&nbsp;|-----------------:|-----:|--------:|-----:|-------:|-----:|
-&nbsp;&nbsp;&nbsp;&nbsp;| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
-&nbsp;&nbsp;&nbsp;&nbsp;|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
-&nbsp;&nbsp;&nbsp;&nbsp;| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
-&nbsp;&nbsp;&nbsp;&nbsp;|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
-&nbsp;&nbsp;&nbsp;&nbsp;
+## Descriptive Statistics: iris 
+**N:** 150 
+
+|           &nbsp; | Mean | Std.Dev |  Min | Median |  Max |
+|-----------------:|-----:|--------:|-----:|-------:|-----:|
+| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
+|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
+| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
+|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
+
 
 ## Cross-tabulations with ctable()
 
@@ -272,7 +272,8 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
 _summarytools_ uses Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package (an _R_ implementation of John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/)), to generate the ascii content. What this means is that the 4 main functions can printout [markdown](http://daringfireball.net/projects/markdown/) (_Rmarkdown_ to be precise) simply by setting the option `style="rmarkdown"`. One exception: `dfSummary()` -- since it has multi-line cells, you will need to use both `style = "grid"` and `plain.ascii = FALSE` for it to be rendered correctly.
 
 
-In the console, this would be shown as:
+In the console, the output of a function using `style = 'rmarkdown'` looks like this:
+
 ```
 ## Frequencies 
 ### iris$Species 
@@ -287,17 +288,88 @@ In the console, this would be shown as:
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 ```
 
-To learn more about _markdown_ and _rmarkdown_ formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). With _Pandoc_, Rmarkdown documents can be converted to various formats, such as _pdf_ or 
+In needs an interpreter which will render this as _html_. With _Pandoc_, _markdown_ documents can be converted to various formats, such as _pdf_ or _docx_, among others.
 
-## Create and view html reports
+To learn more about _markdown_ and _rmarkdown_ formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
 
-Version 0.5 of _summarytools_ combines the strengths of the following packages and tools to generate basic html reports:
+## Under the Hood - Generating Html
 
- - _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html)
- - The [xtable package](http://cran.r-project.org/web/packages/xtable/index.html)
- - [Bootstrap](http://getbootstrap.com/) cascading stylesheets
+Version 0.8.0 of _summarytools_ uses _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html) and version 4 of [Bootstrap](http://getbootstrap.com/)'s cascading stylesheets.
 
-### Walkthrough
+It is possible to add markup to the generated content, and it is also possible to include your own _css_.
+
+## print() and view()
+
+_summarytools_ has a generic `print()` method, `print.summarytools`. By default, it has `method = 'pander'`. `view()` was first created as a wrapper around the generic print function, this time using `method = 'viewer'`, to easily display _html_ outputs in _RStudio_'s Viewer. When used outside of _RStudio_, the `method` falls back on `'browser'` and the report is opened in your system's default browser.
+
+### Using by() and lapply()
+
+However, when using `by()` (with `freq()` or `descr()`) or `lapply()` (with `freq()`), `view()` is necessary in order to dispath individual members of the list that R creates when using `by()` or `lapply()`.
+
+Example: we want to get statistics by Species in the _iris_ data frame. We will here show how to get the best results in terms of output.
+
+```r
+# First save the results
+iris_stats_by_species <- by(data = iris, 
+                            INDICES = iris$Species, 
+                            FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
+                            transpose = TRUE)
+# Then use view(), like so:
+view(iris_stats_by_species, method = "pander")
+```
+
+```
+Non-numerical variable(s) ignored: Species
+
+Descriptive Statistics: iris 
+N: 50 
+Group: iris$Species = setosa 
+
+                     Mean   Std.Dev    Min   Median    Max
+------------------ ------ --------- ------ -------- ------
+      Sepal.Length   5.01      0.35   4.30     5.00   5.80
+       Sepal.Width   3.43      0.38   2.30     3.40   4.40
+      Petal.Length   1.46      0.17   1.00     1.50   1.90
+       Petal.Width   0.25      0.11   0.10     0.20   0.60
+
+
+Group: iris$Species = versicolor 
+N: 50 
+
+                     Mean   Std.Dev    Min   Median    Max
+------------------ ------ --------- ------ -------- ------
+      Sepal.Length   5.94      0.52   4.90     5.90   7.00
+       Sepal.Width   2.77      0.31   2.00     2.80   3.40
+      Petal.Length   4.26      0.47   3.00     4.35   5.10
+       Petal.Width   1.33      0.20   1.00     1.30   1.80
+
+
+Group: iris$Species = virginica 
+N: 50 
+
+                     Mean   Std.Dev    Min   Median    Max
+------------------ ------ --------- ------ -------- ------
+      Sepal.Length   6.59      0.64   4.90     6.50   7.90
+       Sepal.Width   2.97      0.32   2.20     3.00   3.80
+      Petal.Length   5.55      0.55   4.50     5.55   6.90
+       Petal.Width   2.03      0.27   1.40     2.00   2.50
+```
+
+To see an _html_ version of these results, proceed like this:
+
+```r
+view(iris_stats_by_species)
+```
+
+The console will always tell you the location of the temporary _html_ file that is created in the process. However, you can specify the name and location of that file with the `file` argument:
+
+```r
+view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
+```
+
+### Writing to files
+
+Both `print()` and `view()` have an optionnal `file = ` parameter that can be used to save outputs (reports) to disk. They also have an `append = ` boolean parameter for adding to existing reports.
 
 When you become familiar with the method, You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with **summarytools**.
 
@@ -317,18 +389,52 @@ When you become familiar with the method, You can achieve this in just one opera
 
 - Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` calls `print()` specifying `method="viewer"`. You can stick to `print()` altogether if you prefer.
 
-### An alternative way to produce html (or text) reports
-
-There is another way to generate output right at the first function call to `descr()`, `dfSummary()` or `freq()`; it is to supply the argument "file" to any of those. For instance, the two following function calls will generate a markdown report, and then an _html_ report from `dfSummary()`:
+**Note** The "escape.pipes=TRUE" argument makes it so that **Pandoc**, in converting to alternative formats, handles correctly multiline cells in `dfSummary()` reports.
 
 ```r
-> dfSummary(iris, style="grid", file="~/iris_dfSummary.md", escape.pipes=TRUE)
-Output successfully written to file D:\Documents\iris_dfSummary.md
-> dfSummary(iris, file="~/iris_dfSummary.html") # With html files, most of the other arguments are omitted.
-Output successfully written to file D:\Documents\iris_dfSummary.html
+dfs <- dfSummary(iris, style = "grid", plain.ascii = FALSE)
+print(dfs, escape.pipe = TRUE)
 ```
 
-**Note** The "escape.pipes=TRUE" argument makes it so that **Pandoc**, in converting to alternative formats, handles correctly multiline cells in `dfSummary()` reports.
+### Data Frame Summary: iris 
+**N:** 150 
+
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+\| No \| Variable       \| Stats / Values               \| Freqs (% of Valid) \| Text Graph            \| Valid  \| Missing \|
++====+================+==============================+====================+=======================+========+=========+
+\| 1  \| Sepal.Length   \| mean (sd) : 5.84 (0.83)   \  \| 35 distinct val.   \| \ \ \ \ \ \ : :       \| 150    \| 0       \|
+\|    \| [numeric]      \| min < med < max :   \        \|                    \| \ \ : : : :           \| (100%) \| (0%)    \|
+\|    \|                \| 4.3 < 5.8 < 7.9   \          \|                    \| \ \ : : : : .         \|        \|         \|
+\|    \|                \| IQR (CV) : 1.3 (0.14)        \|                    \| \ \ : : : : :         \|        \|         \|
+\|    \|                \|                              \|                    \| \ \ : : : : :         \|        \|         \|
+\|    \|                \|                              \|                    \| : : : : : : : :       \|        \|         \|
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+\| 2  \| Sepal.Width    \| mean (sd) : 3.06 (0.44)   \  \| 23 distinct val.   \| \ \ \ \ \ \ \ \ :     \| 150    \| 0       \|
+\|    \| [numeric]      \| min < med < max :   \        \|                    \| \ \ \ \ \ \ \ \ :     \| (100%) \| (0%)    \|
+\|    \|                \| 2 < 3 < 4.4   \              \|                    \| \ \ \ \ \ \ : : :     \|        \|         \|
+\|    \|                \| IQR (CV) : 0.5 (0.14)        \|                    \| \ \ \ \ \ \ : : : :   \|        \|         \|
+\|    \|                \|                              \|                    \| \ \ \ \ : : : : : . . \|        \|         \|
+\|    \|                \|                              \|                    \| . : : : : : : : : . . \|        \|         \|
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+\| 3  \| Petal.Length   \| mean (sd) : 3.76 (1.77)   \  \| 43 distinct val.   \| :                     \| 150    \| 0       \|
+\|    \| [numeric]      \| min < med < max :   \        \|                    \| : \ \ \ \ :           \| (100%) \| (0%)    \|
+\|    \|                \| 1 < 4.35 < 6.9   \           \|                    \| : \ \ \ \ : :         \|        \|         \|
+\|    \|                \| IQR (CV) : 3.5 (0.47)        \|                    \| : \ \ \ \ : :         \|        \|         \|
+\|    \|                \|                              \|                    \| : \ \ : : :           \|        \|         \|
+\|    \|                \|                              \|                    \| : \ \ : : : :         \|        \|         \|
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+\| 4  \| Petal.Width    \| mean (sd) : 1.2 (0.76)   \   \| 22 distinct val.   \| :                     \| 150    \| 0       \|
+\|    \| [numeric]      \| min < med < max :   \        \|                    \| : \ \ :               \| (100%) \| (0%)    \|
+\|    \|                \| 0.1 < 1.3 < 2.5   \          \|                    \| : \ \ : .             \|        \|         \|
+\|    \|                \| IQR (CV) : 1.5 (0.64)        \|                    \| : \ \ : : :           \|        \|         \|
+\|    \|                \|                              \|                    \| : \ \ : : :           \|        \|         \|
+\|    \|                \|                              \|                    \| : : : : :             \|        \|         \|
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+\| 5  \| Species        \| 1. setosa   \                \| 50 (33.3%)   \     \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \| 150    \| 0       \|
+\|    \| [factor]       \| 2. versicolor   \            \| 50 (33.3%)   \     \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \| (100%) \| (0%)    \|
+\|    \|                \| 3. virginica                 \| 50 (33.3%)         \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \|        \|         \|
++----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
+
 
 ## Customizing output
 
