@@ -251,7 +251,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Declare functions ---------------------------------------------
 
   add_hash <- function(str, h = 3) {
-    if (isTRUE(attr(x, "formatting")$plain.ascii)) {
+    #if (isTRUE(attr(x, "formatting")$plain.ascii)) {
+    if (isTRUE(format_info$plain.ascii)) {
       return(str)
     } else {
       if (h > 0) {
@@ -354,7 +355,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     return(res)
   }
 
-  # Fn to split variable names that are too long
+  # Fn to smartly split variable names that are too long
   # ref: https://tinyurl.com/y7qv48z9
   smart_split <- function(str, maxlen) {
     re <- paste0("(?=.{1,", maxlen, "}(.*))",
@@ -613,7 +614,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       } else {
         output[[1]] <- add_hash(sect_title[[1]])
 
-        if (isTRUE(attr(x, "formatting")$plain.ascii)) {
+        #if (isTRUE(attr(x, "formatting")$plain.ascii)) {
+        if (isTRUE(format_info$plain.ascii)) {
           output[[2]] <- paste0("\n", sect_title[[2]])
         } else {
           output[[2]] <- paste0("\n", "**", sect_title[[2]], "**")

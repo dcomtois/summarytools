@@ -12,8 +12,8 @@
 #'   \dQuote{rmarkdown}.
 #' @param justify String indicating alignment of columns; one of \dQuote{left}
 #'   \dQuote{center}, or \dQuote{right}. Defaults to \dQuote{right}.
-#' @param prop What proportions to display; \dQuote{t} for \emph{total} (default),
-#'   \dQuote{r} for \emph{rows}, \dQuote{c} for \emph{columns} or \dQuote{n} for
+#' @param prop What proportions to display;  \dQuote{r} for \emph{rows} (default),
+#'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
 #'   \emph{None}.
 #' @param useNA Argument used by \code{\link[base]{table}}; One of \dQuote{ifany}
 #'   (default), \dQuote{no}, or \dQuote{always}.
@@ -47,7 +47,7 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-ctable <- function(x, y, prop = "t", totals = TRUE, round.digits = 1, useNA = "ifany",
+ctable <- function(x, y, prop = "r", totals = TRUE, round.digits = 1, useNA = "ifany",
                    style = "simple", plain.ascii = TRUE, justify = "right",
                    split.table = Inf, dnn=c(substitute(x), substitute(y)),
                    ...) {
