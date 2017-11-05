@@ -164,7 +164,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     widths <- props / max(props) * maxwidth
     outstr <- character(0)
     for (i in seq_along(widths)) {
-      outstr <- paste(outstr, paste0(rep(x = "¤", times = widths[i]), collapse = ""),
+      outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
                       sep = "  \n")
     }
     return(outstr)

@@ -28,8 +28,8 @@
 #'   Defaults to \code{FALSE}.
 #' @param use.labels Logical. Display label instead of variable name when
 #'   label exists. Available only when \code{transpose = TRUE}.
-#' @param display.labels Logical. Should variable / data frame labels be displayed?
-#'   Default is \code{TRUE}.
+#' @param display.labels Logical. Should variable / data frame labels be displayed in
+#'   the title section?  Default is \code{TRUE}.
 #' @param weights Vector of weights having same length as x. Use \code{NA}
 #'   (default) when no weights are provided.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the
@@ -37,16 +37,14 @@
 #'   default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A list with 2 matrix elements: the stats themselves, and a summary
-#'   of valid / missing cases. The list also has attributes used by
+#' @return A data frame with the statistics, with extra attributes used by
 #'   \pkg{summarytool}'s print method.
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
 #'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
 #'   option is automatically set to \code{FALSE} whenever
 #'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-#'   explicit). If the intent is to produce markdown text using {style = "simple"},
-#'   set \code{plain.ascii} to \code{FALSE}.
+#'   explicit).
 #'
 #' @examples
 #' data(exams)
