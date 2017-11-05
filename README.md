@@ -134,16 +134,16 @@ If your eyes/brain prefer seeing things the other way around, just use "transpos
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE)
 ```
 
-## Descriptive Statistics: iris 
-**N:** 150 
-
-|           &nbsp; | Mean | Std.Dev |  Min | Median |  Max |
-|-----------------:|-----:|--------:|-----:|-------:|-----:|
-| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
-|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
-| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
-|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
-
+&nbsp;&nbsp;&nbsp;&nbsp;## Descriptive Statistics: iris 
+&nbsp;&nbsp;&nbsp;&nbsp;**N:** 150 
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;|           &nbsp; | Mean | Std.Dev |  Min | Median |  Max |
+&nbsp;&nbsp;&nbsp;&nbsp;|-----------------:|-----:|--------:|-----:|-------:|-----:|
+&nbsp;&nbsp;&nbsp;&nbsp;| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
+&nbsp;&nbsp;&nbsp;&nbsp;|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
+&nbsp;&nbsp;&nbsp;&nbsp;| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
+&nbsp;&nbsp;&nbsp;&nbsp;|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Cross-tabulations with ctable()
 
@@ -266,92 +266,10 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
 ```
 
 
-TEST- plain.ascii = FALSE
-### Data Frame Summary: tobacco 
-**N:** 1000 
----------------------------------------------------------------------------------------------------------------------------------------------
-No   Variable         Stats / Values                  Freqs (% of Valid)        Text Graph                                Valid     Missing  
----- ---------------- ------------------------------- ------------------------- ----------------------------------------- --------- ---------
-1    gender           1. F   \                        489 (50.0%)   \           ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                          978       22       
-     [factor]         2. M                            489 (50.0%)               ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                          (97.8%)   (2.2%)   
-
-2    age              mean (sd) : 49.6 (18.29)   \    63 distinct val.          . \ \ \ \ . \ \ \ \ \ \ \ \ . \ \ . :     975       25       
-     [numeric]        min < med < max :   \                                     : . . : : : \ \ : : . : :                 (97.5%)   (2.5%)   
-                      18 < 50 < 80   \                                          : : : : : : : : : : : :                                      
-                      IQR (CV) : 32 (0.37)                                      : : : : : : : : : : : :                                      
-                                                                                : : : : : : : : : : : :                                      
-                                                                                : : : : : : : : : : : :                                      
-
-3    age.gr           1. 18-34   \                    258 (26.5%)   \           ¤¤¤¤¤¤¤¤¤¤¤¤¤                             975       25       
-     [factor]         2. 35-50   \                    241 (24.7%)   \           ¤¤¤¤¤¤¤¤¤¤¤¤                              (97.5%)   (2.5%)   
-                      3. 51-70   \                    317 (32.5%)   \           ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                                             
-                      4. 71 +                         159 (16.3%)               ¤¤¤¤¤¤¤¤                                                     
-
-4    BMI              mean (sd) : 25.73 (4.49)   \    974 distinct val.         \ \ \ \ \ \ \ \ \ \ \ \ :                 974       26       
-     [numeric]        min < med < max :   \                                     \ \ \ \ \ \ \ \ \ \ : : .                 (97.4%)   (2.6%)   
-                      8.83 < 25.62 < 39.44   \                                  \ \ \ \ \ \ \ \ \ \ : : :                                    
-                      IQR (CV) : 5.72 (0.17)                                    \ \ \ \ \ \ \ \ : : : : :                                    
-                                                                                \ \ \ \ \ \ \ \ : : : : : .                                  
-                                                                                \ \ \ \ . : : : : : : : .                                    
-
-5    smoker           1. Yes   \                      298 (29.8%)   \           ¤¤¤¤¤¤                                    1000      0        
-     [factor]         2. No                           702 (70.2%)               ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                          (100%)    (0%)     
-
-6    cigs.per.day     mean (sd) : 6.78 (11.88)   \    37 distinct val.          :                                         965       35       
-     [numeric]        min < med < max :   \                                     :                                         (96.5%)   (3.5%)   
-                      0 < 0 < 40   \                                            :                                                            
-                      IQR (CV) : 11 (1.75)                                      :                                                            
-                                                                                :                                                            
-                                                                                : \ \ \ \ . \ \ \ \ \ \ \ \ . \ \ \ \ .                      
-
-7    diseased         1. Yes   \                      224 (22.4%)   \           ¤¤¤¤                                      1000      0        
-     [factor]         2. No                           776 (77.6%)               ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                          (100%)    (0%)     
-
-8    disease          1. Hypertension   \             36 (16.2%)   \            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                          222       778      
-     [character]      2. Cancer   \                   34 (15.3%)   \            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                           (22.2%)   (77.8%)  
-                      3. Cholesterol   \              21 ( 9.5%)   \            ¤¤¤¤¤¤¤¤¤                                                    
-                      4. Heart   \                    20 ( 9.0%)   \            ¤¤¤¤¤¤¤¤                                                     
-                      5. Pulmonary   \                20 ( 9.0%)   \            ¤¤¤¤¤¤¤¤                                                     
-                      6. Musculoskeletal   \          19 ( 8.6%)   \            ¤¤¤¤¤¤¤¤                                                     
-                      7. Diabetes   \                 14 ( 6.3%)   \            ¤¤¤¤¤¤                                                       
-                      8. Hearing   \                  14 ( 6.3%)   \            ¤¤¤¤¤¤                                                       
-                      9. Digestive   \                12 ( 5.4%)   \            ¤¤¤¤¤                                                        
-                      10. Hypotension   \             11 ( 5.0%)   \            ¤¤¤¤                                                         
-                      [ 3 others ]                    21 ( 9.4%)                ¤¤¤¤¤¤¤¤¤                                                    
-
-9    samp.wgts        mean (sd) : 1 (0.08)   \        0.86*: 267 (26.7%)   \    ¤¤¤¤¤¤¤¤¤¤¤¤¤                             1000      0        
-     [numeric]        min < med < max :   \           1.04*: 249 (24.9%)   \    ¤¤¤¤¤¤¤¤¤¤¤¤                              (100%)    (0%)     
-                      0.86 < 1.04 < 1.06   \          1.05*: 324 (32.4%)   \    ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                                             
-                      IQR (CV) : 0.19 (0.08)          1.06*: 160 (16.0%)   \    ¤¤¤¤¤¤¤                                                      
-                                                      * rounded                                                                              
----------------------------------------------------------------------------------------------------------------------------------------------
-
-
-# Output & formatting options
-
-So far we've only shown the default, plain-ascii console output. We'll now see two alternatives to this default behavior: _Rmarkdown_ and _html_.
 
 ## Rmarkdown
 
-_summarytools_ uses Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package (an _R_ implementation of John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/)), to generate the ascii content. What this means is that the 4 main functions can printout [markdown](http://daringfireball.net/projects/markdown/) (_Rmarkdown_ to be precise) simply by setting the option `style="rmarkdown"`. 
-
-Here is an **example** of a markdown table, as processed by GitHub, using freq():
-
-```r
-freq(iris$Species, style="rmarkdown")
-```
-
-## Frequencies 
-### iris$Species 
-**Type:** Factor (unordered) 
-
-|         &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|---------------:|-----:|--------:|-------------:|--------:|-------------:|
-|     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
-| **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
-|  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
-|     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
-|      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
+_summarytools_ uses Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package (an _R_ implementation of John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/)), to generate the ascii content. What this means is that the 4 main functions can printout [markdown](http://daringfireball.net/projects/markdown/) (_Rmarkdown_ to be precise) simply by setting the option `style="rmarkdown"`. One exception: `dfSummary()` -- since it has multi-line cells, you will need to use both `style = "grid"` and `plain.ascii = FALSE` for it to be rendered correctly.
 
 
 In the console, this would be shown as:
