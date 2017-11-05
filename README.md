@@ -85,27 +85,20 @@ The `freq()` function generates a table of frequencies with counts and proportio
 
 ```r
 library(summarytools)
-data(iris)
-# We'll insert some NA's for illustration purposes
-is.na(iris) <- matrix(sample(x = c(TRUE,FALSE), size = 150*5, 
-                             replace = T, prob = c(.1,.9)),nrow = 150)
-# ... and add a variable label for the Species column
-label(iris$Species) <- "The Species (duh)"
 freq(iris$Species)
 ```
 
 ```
 Frequencies 
 iris$Species 
-Variable Label: The Species (duh) 
 Type: Factor (unordered) 
 
                    Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ---------------- ------ --------- -------------- --------- --------------
-          setosa     45     32.85          32.85     30.00          30.00
-      versicolor     47     34.31          67.15     31.33          61.33
-       virginica     45     32.85         100.00     30.00          91.33
-            <NA>     13                               8.67         100.00
+          setosa     50     33.33          33.33     33.33          33.33
+      versicolor     50     33.33          66.67     33.33          66.67
+       virginica     50     33.33         100.00     33.33         100.00
+            <NA>      0                               0.00         100.00
            Total    150    100.00         100.00    100.00         100.00
 ```
 
@@ -114,36 +107,30 @@ The `descr()` function generates common central tendency statistics and measures
 
 #### descr() on the iris dataframe
 
+We'll use the _rmarkdown_ style for this example, to show that the default plain-ascii output is merely one of many output formats. More about this further down.
+
 ```r
-data(iris)
-descr(iris)
-Non-numerical variable(s) ignored: Species 
+descr(iris, style="rmarkdown")
 ```
 
-```
-Non-numerical variable(s) ignored: Species
+## Descriptive Statistics: iris 
+**N:** 150 
 
-Descriptive Statistics: iris 
-N: 150 
-
-                    Sepal.Length   Sepal.Width   Petal.Length   Petal.Width
------------------ -------------- ------------- -------------- -------------
-             Mean           5.88          3.05           3.80          1.17
-          Std.Dev           0.83          0.44           1.76          0.76
-              Min           4.40          2.00           1.00          0.10
-           Median           5.80          3.00           4.40          1.30
-              Max           7.90          4.40           6.90          2.50
-              MAD           1.04          0.37           1.78          1.04
-              IQR           1.35          0.50           3.50          1.50
-               CV           7.04          6.96           2.16          1.55
-         Skewness           0.30          0.34          -0.29         -0.06
-      SE.Skewness           0.21          0.21           0.21          0.21
-         Kurtosis          -0.64          0.26          -1.39         -1.37
-          N.Valid         135.00        134.00         136.00        130.00
-        Pct.Valid          90.00         89.33          90.67         86.67
-```
-
-
+|          &nbsp; | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width |
+|----------------:|-------------:|------------:|-------------:|------------:|
+|        **Mean** |         5.84 |        3.06 |         3.76 |        1.20 |
+|     **Std.Dev** |         0.83 |        0.44 |         1.77 |        0.76 |
+|         **Min** |         4.30 |        2.00 |         1.00 |        0.10 |
+|      **Median** |         5.80 |        3.00 |         4.35 |        1.30 |
+|         **Max** |         7.90 |        4.40 |         6.90 |        2.50 |
+|         **MAD** |         1.04 |        0.44 |         1.85 |        1.04 |
+|         **IQR** |         1.30 |        0.50 |         3.50 |        1.50 |
+|          **CV** |         7.06 |        7.01 |         2.13 |        1.57 |
+|    **Skewness** |         0.31 |        0.31 |        -0.27 |       -0.10 |
+| **SE.Skewness** |         0.20 |        0.20 |         0.20 |        0.20 |
+|    **Kurtosis** |        -0.61 |        0.14 |        -1.42 |       -1.36 |
+|     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
+|   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |```
 
 ##### Transposing and selecting the stats you need 
 
@@ -153,17 +140,28 @@ If your eyes/brain prefer seeing things the other way around, just use "transpos
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE)
 ```
 
-```
-Descriptive Statistics: iris 
-N: 150 
+## Descriptive Statistics: iris 
+**N:** 150 
 
-                     Mean   Std.Dev    Min   Median    Max
+|           &nbsp; | Mean | Std.Dev |  Min | Median |  Max |
+|-----------------:|-----:|--------:|-----:|-------:|-----:|
+| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
+|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
+| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
+|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
+
+
+(TEST - plain.ascii = FALSE)
+## Descriptive Statistics: iris 
+**N:** 150 
+
+            &nbsp;   Mean   Std.Dev    Min   Median    Max
 ------------------ ------ --------- ------ -------- ------
-      Sepal.Length   5.88      0.83   4.40     5.80   7.90
-       Sepal.Width   3.05      0.44   2.00     3.00   4.40
-      Petal.Length   3.80      1.76   1.00     4.40   6.90
-       Petal.Width   1.17      0.76   0.10     1.30   2.50
-```
+  **Sepal.Length**   5.84      0.83   4.30     5.80   7.90
+   **Sepal.Width**   3.06      0.44   2.00     3.00   4.40
+  **Petal.Length**   3.76      1.77   1.00     4.35   6.90
+   **Petal.Width**   1.20      0.76   0.10     1.30   2.50
+
 
 ## Cross-tabulations with ctable()
 
@@ -173,8 +171,18 @@ Instead of `ctable(tobacco$smoker, tobacco$diseased)`, we'll make use of the `wi
 
 ```r
 data("tobacco")
-with(tobacco, ctable(smoker, diseased))
+with(tobacco, ctable(smoker, diseased, style = "rmarkdown"))
 ``` 
+### Cross-Tabulation / Row proportions 
+**smoker * diseased** 
+**Data Frame:** tobacco 
+|        |          |             |             |               |
+|-------:|---------:|------------:|------------:|--------------:|
+|        | diseased |         Yes |          No |         Total |
+| smoker |          |             |             |               |
+|    Yes |          | 125 (41.9%) | 173 (58.1%) |  298 (100.0%) |
+|     No |          |  99 (14.1%) | 603 (85.9%) |  702 (100.0%) |
+|  Total |          | 224 (22.4%) | 776 (77.6%) | 1000 (100.0%) |
 
 ```
 Cross-Tabulation / Row proportions 
@@ -207,11 +215,11 @@ Data Frame: tobacco
 -------- ---------- ----- -----
 ```
 
-If the presentation is not too convincing at this stage, bare with me. We'll see down below that there are interesting alternatives to this plain-ascii console output.
+If you find the presentation not too convincing at this stage, bare with me. We'll see down below that there are interesting alternatives to this plain-ascii console output.
 
 ## Dataframe summaries
 
-The `dfSummary()` function gives information for all variables contained in a data frame. It 
+The `dfSummary()` function gives information for all variables contained in a data frame. The objective in building this function was to fit as much relevant information as possible in a legible table.
 
 ```r
 dfSummary(tobacco)
@@ -278,39 +286,49 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
 -------------------------------------------------------------------------------------------------------------------------
 ```
 
-# Formatting options
+# Output & formatting options
 
-So far we've only shown the default, plain-ascii console output. 
+So far we've only shown the default, plain-ascii console output. We'll now see two alternatives to this default behavior: _Rmarkdown_ and _html_.
 
-Thanks to Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package, all functions can printout [markdown](http://daringfireball.net/projects/markdown/); just use the option `style="rmarkdown"`. That is useful for instance here on GitHub, where `.md` files are converted and displayed as _html_. Thanks to John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/), you can further convert markdown text files into a wide range of common formats such as _.pdf_, _.docx_ and _.odt_, among others. 
+## Rmarkdown
+
+_summarytools_ uses Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package (an _R_ implementation of John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/)), to generate the ascii content. What this means is that the 4 main functions can printout [markdown](http://daringfireball.net/projects/markdown/) (_Rmarkdown_ to be precise) simply by setting the option `style="rmarkdown"`. 
 
 Here is an **example** of a markdown table, as processed by GitHub, using freq():
 
-
 ```r
-> freq(iris$Species, style="rmarkdown", plain.ascii=FALSE, missing="---")
+freq(iris$Species, style="rmarkdown")
 ```
-Dataframe name: iris  
- Variable name: Species  
-Variable label: The Species (duh)  
-          Date: 2014-12-05  
 
-Frequencies
+## Frequencies 
+### iris$Species 
+**Type:** Factor (unordered) 
 
-|           &nbsp; |   N |   %Valid |   %Cum.Valid |   %Total |   %Cum.Total |
-|-----------------:|----:|---------:|-------------:|---------:|-------------:|
-|       **setosa** |  46 |    33.58 |        33.58 |    30.67 |        30.67 |
-|   **versicolor** |  45 |    32.85 |        66.42 |       30 |        60.67 |
-|    **virginica** |  46 |    33.58 |          100 |    30.67 |        91.33 |
-|       **\<NA\>** |  13 |      --- |          --- |     8.67 |          100 |
-|        **Total** | 150 |      100 |          100 |      100 |          100 |
+|         &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
+|---------------:|-----:|--------:|-------------:|--------:|-------------:|
+|     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
+| **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
+|  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
+|     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
+|      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-###### Two things to note here:
 
-  1. We specified `plain.ascii=FALSE`. This allows additional markup in the text (here, the bold-typed row names, added automatically by [pander](https://github.com/Rapporter/pander)).
-  2. We used the option `missing="---"`, to show that if we don't like seeing `NA`'s in our tables, it's quite easy to get rid of them or replace them with any character (or combination of characters).
+In the console, this would be shown as:
+```
+## Frequencies 
+### iris$Species 
+**Type:** Factor (unordered) 
 
-To **learn more about _markdown_ and _rmarkdown_** formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/).
+|         &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
+|---------------:|-----:|--------:|-------------:|--------:|-------------:|
+|     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
+| **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
+|  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
+|     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
+|      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
+```
+
+To learn more about _markdown_ and _rmarkdown_ formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). With _Pandoc_, Rmarkdown documents can be converted to various formats, such as _pdf_ or 
 
 ## Create and view html reports
 
