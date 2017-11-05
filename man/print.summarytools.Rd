@@ -85,7 +85,7 @@ Default values for \code{html.table.attributes} are as follows:
   \describe{
     \item{freq}{\code{'class="table table-striped table-bordered freq-table"'}}
     \item{ctable}{\code{'class="table table-striped table-bordered cross-table"'}}
-    \item{descr}{\code{'class="table table-striped table-bordered descr-table"'}}
+    \item{descr}{\code{'class="table table-striped table-bordered desc-table"'}}
     \item{dfSummary}{\code{'class="table table-striped table-bordered"'}}}
 When specifying this parameter, you must also state those attributes if you want them to be applied.
 

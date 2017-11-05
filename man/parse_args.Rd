@@ -23,8 +23,11 @@ A list comprised of:
   \item var_names The variable names when applicable.
   \item rows_subset The subsetting condition when applicable.
   \item by_group The group, when functions are called through
-    \code{by()}}A frequency table of class \code{matrix} with added
-    attributes used by \code{\link{print.summarytools}} method.
+    \code{by()}
+  \item by_first A binary indicator used when function was called
+    through \code{by()}
+  \item by_last A binary indicator used when function was called
+    through \code{by()}}
 }
 \description{
 Using sys.calls(), sys.frames() and match.call(), this utility function

@@ -6,8 +6,8 @@
 \usage{
 descr(x, stats = "all", na.rm = TRUE, round.digits = 2,
   transpose = FALSE, style = "simple", plain.ascii = TRUE,
-  justify = "right", use.labels = FALSE, weights = NA,
-  rescale.weights = FALSE, ...)
+  justify = "right", use.labels = FALSE, display.labels = TRUE,
+  weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
@@ -41,6 +41,9 @@ tables.}
 
 \item{use.labels}{Logical. Display label instead of variable name when
 label exists. Available only when \code{transpose = TRUE}.}
+
+\item{display.labels}{Logical. Should variable / data frame labels be displayed?
+Default is \code{TRUE}.}
 
 \item{weights}{Vector of weights having same length as x. Use \code{NA}
 (default) when no weights are provided.}

@@ -369,114 +369,50 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 
 ### Writing to files
 
-Both `print()` and `view()` have an optionnal `file = ` parameter that can be used to save outputs (reports) to disk. They also have an `append = ` boolean parameter for adding to existing reports.
+As we just saw, both `print()` and `view()` have an optionnal `file = ` parameter that can be used to save output to disk. They also have an `append = ` boolean parameter for adding to existing reports.
 
-When you become familiar with the method, You can achieve this in just one operation, but let's have a detailed walkthrough on how to generate and visualize an _html_ report with **summarytools**.
+## Overriding formatting attributes
 
-- First, generate a _summarytools_ object using one of `descr()`, `freq()` or `dfSummary()`:
-```r
-> my.freq.table <- freq(iris$Species)
-```
+When a _summarytools_ object is stored, its formatting attributes are stored with it. However, you can override most of them when using the `print()` function. 
 
-- Next, use `print()`, specifying the `method` argument which can take one of the following values:
-  + `method='browser'` This creates an _html_ report on-the-fly and makes it fire up in your system's default browser. The path to the report is returned.
-  + `method='viewer'` Same as "browser", except the report opens up in _RStudio_'s Viewer pane (as demonstrated at the top of this page.)
-  + `method='pander'` This is the **default** value for `method` and will **not** produce an _html_ file. It will rather direct output to the console.
+Example: 
 
 ```r
-> print(my.freq.table, method="browser")
+data(tobacco)
+bmi_stats <- descr(tobacco$BMI)
+print(bmi_stats, Variable.label = "Body Mass Index")
 ```
 
-- Since many of us like to stay in _RStudio_ as much as possible, a wrapper function called `view()` calls `print()` specifying `method="viewer"`. You can stick to `print()` altogether if you prefer.
+```
+Descriptive Statistics: tobacco$BMI 
+Variable Label: Body Mass Index 
+N: 1000 
 
-**Note** The "escape.pipes=TRUE" argument makes it so that **Pandoc**, in converting to alternative formats, handles correctly multiline cells in `dfSummary()` reports.
-
-```r
-dfs <- dfSummary(iris, style = "grid", plain.ascii = FALSE)
-print(dfs, escape.pipe = TRUE)
+                       BMI
+----------------- --------
+             Mean    25.73
+          Std.Dev     4.49
+              Min     8.83
+           Median    25.62
+              Max    39.44
+              MAD     4.18
+              IQR     5.72
+               CV     5.73
+         Skewness     0.02
+      SE.Skewness     0.08
+         Kurtosis     0.26
+          N.Valid   974.00
+        Pct.Valid    97.40
 ```
 
-### Data Frame Summary: iris 
-**N:** 150 
-
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-\| No \| Variable       \| Stats / Values               \| Freqs (% of Valid) \| Text Graph            \| Valid  \| Missing \|
-+====+================+==============================+====================+=======================+========+=========+
-\| 1  \| Sepal.Length   \| mean (sd) : 5.84 (0.83)   \  \| 35 distinct val.   \| \ \ \ \ \ \ : :       \| 150    \| 0       \|
-\|    \| [numeric]      \| min < med < max :   \        \|                    \| \ \ : : : :           \| (100%) \| (0%)    \|
-\|    \|                \| 4.3 < 5.8 < 7.9   \          \|                    \| \ \ : : : : .         \|        \|         \|
-\|    \|                \| IQR (CV) : 1.3 (0.14)        \|                    \| \ \ : : : : :         \|        \|         \|
-\|    \|                \|                              \|                    \| \ \ : : : : :         \|        \|         \|
-\|    \|                \|                              \|                    \| : : : : : : : :       \|        \|         \|
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-\| 2  \| Sepal.Width    \| mean (sd) : 3.06 (0.44)   \  \| 23 distinct val.   \| \ \ \ \ \ \ \ \ :     \| 150    \| 0       \|
-\|    \| [numeric]      \| min < med < max :   \        \|                    \| \ \ \ \ \ \ \ \ :     \| (100%) \| (0%)    \|
-\|    \|                \| 2 < 3 < 4.4   \              \|                    \| \ \ \ \ \ \ : : :     \|        \|         \|
-\|    \|                \| IQR (CV) : 0.5 (0.14)        \|                    \| \ \ \ \ \ \ : : : :   \|        \|         \|
-\|    \|                \|                              \|                    \| \ \ \ \ : : : : : . . \|        \|         \|
-\|    \|                \|                              \|                    \| . : : : : : : : : . . \|        \|         \|
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-\| 3  \| Petal.Length   \| mean (sd) : 3.76 (1.77)   \  \| 43 distinct val.   \| :                     \| 150    \| 0       \|
-\|    \| [numeric]      \| min < med < max :   \        \|                    \| : \ \ \ \ :           \| (100%) \| (0%)    \|
-\|    \|                \| 1 < 4.35 < 6.9   \           \|                    \| : \ \ \ \ : :         \|        \|         \|
-\|    \|                \| IQR (CV) : 3.5 (0.47)        \|                    \| : \ \ \ \ : :         \|        \|         \|
-\|    \|                \|                              \|                    \| : \ \ : : :           \|        \|         \|
-\|    \|                \|                              \|                    \| : \ \ : : : :         \|        \|         \|
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-\| 4  \| Petal.Width    \| mean (sd) : 1.2 (0.76)   \   \| 22 distinct val.   \| :                     \| 150    \| 0       \|
-\|    \| [numeric]      \| min < med < max :   \        \|                    \| : \ \ :               \| (100%) \| (0%)    \|
-\|    \|                \| 0.1 < 1.3 < 2.5   \          \|                    \| : \ \ : .             \|        \|         \|
-\|    \|                \| IQR (CV) : 1.5 (0.64)        \|                    \| : \ \ : : :           \|        \|         \|
-\|    \|                \|                              \|                    \| : \ \ : : :           \|        \|         \|
-\|    \|                \|                              \|                    \| : : : : :             \|        \|         \|
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-\| 5  \| Species        \| 1. setosa   \                \| 50 (33.3%)   \     \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \| 150    \| 0       \|
-\|    \| [factor]       \| 2. versicolor   \            \| 50 (33.3%)   \     \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \| (100%) \| (0%)    \|
-\|    \|                \| 3. virginica                 \| 50 (33.3%)         \| ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤      \|        \|         \|
-+----+----------------+------------------------------+--------------------+-----------------------+--------+---------+
-
-
-## Customizing output
-
-Some attributes attached to **summarytools** objects can be modified in order to change one of the elements displayed -- this is most usefull when generating _html_ reports. In particular, you may want to change "df.name", "var.name" or "date". To do so, you would use _R_'s `attr()` function in the following manner:
-
-```r
-> attr(my.freq.table, "df.name") <- "The IRIS Dataframe"
-> my.freq.table
-
-Frequencies
-
-Dataframe: The IRIS Dataframe  
-Variable: Species  
-
-                   N   %Valid   %Cum.Valid   %Total   %Cum.Total
----------------- --- -------- ------------ -------- ------------
-          setosa  50    33.33        33.33    33.33        33.33
-      versicolor  50    33.33        66.67    33.33        66.67
-       virginica  50    33.33          100    33.33          100
-            <NA>   0       NA           NA        0          100
-           Total 150      100          100      100          100
-
-```
-
-## Tables customization
-
-When displaying **summarytools** objects in the console (as opposed to generating _html_ reports), many other arguments can be specified so you get the format that you want. The most common are:
-
-- `style` one of "simple" (default), "grid", "rmarkdown" and "multiline"
-- `justify` one of "left", "center", and "right"
-- `round.digits` how many decimals to show. This argument is also used for _html_ reports
-- `plain.ascii` when `TRUE`, no markdown tags are used
-- `...` and any of the other [pander options](https://github.com/Rapporter/pander#pander-options)
-
-## What else?
+## Extra Features
 
 ### Weighted statistics
 Versions 0.5 and above support weights for `freq()` and `descr()`. 
 
 ### Function what.is() helps you figure out quickly what an object is by...
 
-- Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table;
+- Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table
 - Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.` -- see [this post on StackOverflow](http://stackoverflow.com/questions/8855589/a-comprehensive-survey-of-the-types-of-things-in-r-mode-and-class-and-type/26435993#26435993) for details;
 - Giving a list of the object's attributes names and length (c.g. rownames, dimnames, labels, etc.)
 
@@ -520,30 +456,6 @@ $object.type
 
 ```
 
-## Final notes
-
-Visit my professionnal site to learn more about what I do and services I offer: [www.statconseil.com](http://www.statconseil.com)
-
-The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
-
-This development version introduces major improvements and I appeal to useRs to test it out before I can upload it to R-CRAN! The most important changes are:
-  - An added cross-tabulation function 
-  - Much improved support for `by()` and `with()` functions 
-  - Ordering of frequency tables by counts now possible  
-  - Appending content to existing html reports now possible 
-
-Changes that break backward compatibility:
-  - To create an ouput file, the `print()` or `view()` functions must be used. The file= parameter is therefore deprecated with other functions. The reason for this is that several options were added to the `print()` / `view()` functions, and that passing every parameter to those would add much redundancy in the code and complicate maintenance. 
-  - In `cleartmp()`, the what= parameter has been replaced by all= ; it is still possible to use `cleartmp("all")`, but easier is now to just use `cleartmp(1)` or `cleartmp(TRUE)`.
-
-# How to install the development version
-
-```r
-install.packages("devtools")
-library(devtools)
-install_github('dcomtois/summarytools', ref='dev')
-```
-
 # Latest News
 I've been working on `summarytools` on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
 
@@ -555,33 +467,8 @@ The most notable changes are:
   - Added flexibility on many fronts 
 
 
-
-## Introducing cross-tabulation function ctable()
-
-Adding to the package's main three functions `freq()`, `descr()` and `dfSummary()`, `ctable()` creates cross-tabulations allowing flexibility over:
- - Marginal totals being displayed or not 
- - Type of proportions to include in the table (row, column, or total) 
-
-While the html output is satisfying, the plain text / markdown output is far from perfect. But until rmarkdown supports dimnames, using ftable is the best I could find. Please let me know if you find an interesting alternative.
-
-## New features to try out
-
-Using the `view()` function, you can now generate html reports for objects created with `by()` 
-Using `view()` or `print()`, append content to existing html files using `append = TRUE`. 
- 
-## Improvements to existing functions
-
-In previous versions, **variable names** were problematic when `descr()` or `freq()` were called
- - via `by()` 
- - via `with()` 
- - via a combination of `by()` and `with()` 
-
-Now all variable names should be displayed properly.
-
 ## Final notes
 
 The package comes with no guarantees. It is a work in progress and feedback / feature requests are most welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
 
-
-
-For a vignette which complements this introduction, see http://rpubs.com/dcomtois/summarytools_vignette
+Also, the package grew significantly larger, and maintaining it all by myself is time consuming. If you would like to contribute, please get in touch, I'd greatly appreciate the help.
