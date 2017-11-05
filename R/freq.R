@@ -36,8 +36,7 @@
 #'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
 #'   option is automatically set to \code{FALSE} whenever
 #'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-#'   explicit). If the intent is to produce markdown text using {style = "simple"},
-#'   set \code{plain.ascii} to \code{FALSE}.
+#'   explicit).
 #'
 #' @examples
 #' data(tobacco)

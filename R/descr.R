@@ -27,7 +27,7 @@
 #' @param transpose Makes variables appears as columns, and stats as rows.
 #'   Defaults to \code{FALSE}.
 #' @param use.labels Logical. Display label instead of variable name when
-#'   label exists. Available only when \code{transpose = TRUE}.
+#'   label exists.
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
 #'   the title section?  Default is \code{TRUE}.
 #' @param weights Vector of weights having same length as x. Use \code{NA}
@@ -37,14 +37,8 @@
 #'   default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A data frame with the statistics, with extra attributes used by
+#' @return A matrix object with the statistics, with extra attributes used by
 #'   \pkg{summarytool}'s print method.
-#'
-#' @details The default \code{plain.ascii = TRUE} option is there to make results
-#'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
-#'   option is automatically set to \code{FALSE} whenever
-#'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-#'   explicit).
 #'
 #' @examples
 #' data(exams)
@@ -66,9 +60,14 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   if (is.atomic(x) && !is.numeric(x))
     stop("x is not numerical")
 
-  x <- as.data.frame(x)
+  # make x a data.frame
+  x.df <- as.data.frame(x)
 
-  if (!is.data.frame(x))
+  if (is.atomic(x) && !is.na(label(x))) {
+    label(x.df[[1]]) <- label(x)
+  }
+  
+  if (!is.data.frame(x.df))
     stop(paste("x must be a data.frame, a tibble, a data.table or a single vector, and",
                "attempted conversion failed"))
 
@@ -113,9 +112,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   if (!justify %in% c("left", "center", "right"))
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
 
-  if (isTRUE(use.labels) && !isTRUE(transpose))
-    stop("'use.labels' can be TRUE only when 'transpose' is also TRUE")
-
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call()))))
     plain.ascii <- FALSE
@@ -130,15 +126,15 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   }
 
   # Identify and exclude non-numerical columns from x
-  col_to_remove <- which(!sapply(x, is.numeric))
+  col_to_remove <- which(!sapply(x.df, is.numeric))
 
   if (length(col_to_remove) > 0) {
-    ignored <- paste(colnames(x)[col_to_remove], collapse=", ")
-    x <- x[-col_to_remove]
+    ignored <- paste(colnames(x.df)[col_to_remove], collapse=", ")
+    x.df <- x.df[-col_to_remove]
     parse_info$var_names <- parse_info$var_names[-col_to_remove]
   }
 
-  if (ncol(x) == 0)
+  if (ncol(x.df) == 0)
     stop("no numerical variable(s) given as argument")
 
   # Initialise output list
@@ -163,9 +159,9 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                          Pct.Valid = numeric())
 
     # Iterate over columns in x
-    for(i in seq_along(x)) {
+    for(i in seq_along(x.df)) {
 
-      variable <- as.numeric(x[ ,i])
+      variable <- as.numeric(x.df[ ,i])
       if (i == 1) {
         n_tot <- length(variable)
       }
@@ -199,7 +195,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     # Weights are used ---------------
 
     # Check that weights vector has the right length
-    if (length(weights) != nrow(x))
+    if (length(weights) != nrow(x.df))
       stop("weights vector must have the same length as x")
 
     weights_string <- deparse(substitute(weights))
@@ -223,12 +219,12 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
     # Rescale weights if necessary
     if (rescale.weights)
-      weights <- weights / sum(weights) * nrow(x)
+      weights <- weights / sum(weights) * nrow(x.df)
 
     n_tot <- sum(weights)
 
-    for(i in seq_along(x)) {
-      variable <- as.numeric(x[ ,i])
+    for(i in seq_along(x.df)) {
+      variable <- as.numeric(x.df[ ,i])
 
       # Extract number and proportion of missing and valid values
       n_valid <- sum(weights[which(!is.na(variable))])
@@ -256,7 +252,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     }
   }
 
-  for(i in seq_along(x)) {
+  for(i in seq_along(x.df)) {
 
     # Add row names (from col.names/var.name of the parse function)
     if ("var_names" %in% names(parse_info)) {
@@ -288,7 +284,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
          Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
                                   parse_info$var_names, NA),
-         Variable.label  = ifelse(is.atomic(x) && !is.na(label(x)), label(x), NA),
+         Variable.labels = label(x, all = TRUE, fallback = TRUE, simplify = TRUE),
          Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
          Weights         = ifelse(identical(weights, NA), NA,
                                   sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",
@@ -309,10 +305,6 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                      display.labels = display.labels)
 
   attr(output, "user_fmt") <- list(... = ...)
-
-  if (isTRUE(use.labels) && isTRUE(transpose) && is.data.frame(x)) {
-    rownames(output) <- label(x, all = TRUE, fallback = TRUE, simplify = TRUE)
-  }
 
   if (exists("ignored"))
     attr(output, "ignored") <- ignored

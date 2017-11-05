@@ -87,6 +87,8 @@
 #'      \item \code{Dataframe.label}
 #'      \item \code{Variable}
 #'      \item \code{Variable.label}
+#'      \item \code{Variable.labels} (\code{\link{descr}} objects only)
+#'      \item \code{use.labels} (\code{\link{descr}} objects only)
 #'      \item \code{Data.type}
 #'      \item \code{Subset}
 #'      \item \code{Group}
@@ -570,7 +572,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
 
         if (sect_title[[2]] != "") {
-          div_list[[length(div_list)+ 1]] <- h3(sect_title[[2]])
+          div_list[[length(div_list) + 1]] <- h3(sect_title[[2]])
         }
 
 
