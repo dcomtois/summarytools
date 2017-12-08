@@ -443,6 +443,11 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     output$No <- NULL
   }
 
+  if(!graph.col) {
+    output$Graph <- NULL
+    output[['Text Graph']] <- NULL
+  }
+  
   # Set output attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"

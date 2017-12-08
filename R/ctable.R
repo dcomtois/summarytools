@@ -5,19 +5,20 @@
 #'
 #' @param x First categorical variable - values will appear as row names.
 #' @param y Second categorical variable - values will appear in as column names.
-#' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}.
-#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
-#'   \dQuote{rmarkdown}.
-#' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
-#'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
 #' @param prop Proportions to display;  \dQuote{r} for \emph{rows} (default),
 #'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
 #'   \emph{none}.
 #' @param useNA Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
 #'   (default), \dQuote{no}, or \dQuote{always}.
 #' @param totals Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
+#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
+#' @param round.digits Number of significant digits to display. Defaults to
+#'   \code{1}.
+#'   \dQuote{rmarkdown}.
+#' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
+#'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
@@ -46,9 +47,9 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-ctable <- function(x, y, prop = "r", totals = TRUE, round.digits = 1, useNA = "ifany",
-                   style = "simple", plain.ascii = TRUE, justify = "right",
-                   split.table = Inf, dnn=c(substitute(x), substitute(y)),
+ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "simple", 
+                   round.digits = 1, justify = "right",  omit.headings = FALSE, 
+                   plain.ascii = TRUE, split.table = Inf, dnn=c(substitute(x), substitute(y)),
                    ...) {
 
   # Parameter validation ---------------------------------------
@@ -72,23 +73,33 @@ ctable <- function(x, y, prop = "r", totals = TRUE, round.digits = 1, useNA = "i
                  c = "Column",
                  n = "None")
 
-  if (!prop %in% c("Total", "Row", "Column", "None"))
+  if (!prop %in% c("Total", "Row", "Column", "None")) {
     stop("invalid 'prop' argument; must be one of t, r, c, or n")
+  }
 
-  if (!totals %in% c(TRUE, FALSE))
+  if (!totals %in% c(TRUE, FALSE)) {
     stop("'totals' argument must either be TRUE or FALSE")
+  }
 
-  if (!is.numeric(round.digits) || round.digits < 1)
+  if (!omit.headings %in% c(TRUE, FALSE)) {
+    stop("'omit.headings' argument must either be TRUE or FALSE")
+  }
+  
+  if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
+  }
 
-  if (!useNA %in% c("ifany", "always", "never"))
+  if (!useNA %in% c("ifany", "always", "never")) {
     stop("'useNA' must be one of 'ifany', 'always', or 'no'")
+  }
 
-  if (!style %in% c("simple", "grid", "rmarkdown"))
+  if (!style %in% c("simple", "grid", "rmarkdown")) {
     stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
+  }
 
-  if (!plain.ascii %in% c(TRUE, FALSE))
+  if (!plain.ascii %in% c(TRUE, FALSE)) {
     stop("'plain.ascii' argument must either TRUE or FALSE")
+  }
 
   justify <- switch(tolower(substring(justify, 1, 1)),
                     l = "left",
@@ -238,11 +249,12 @@ ctable <- function(x, y, prop = "r", totals = TRUE, round.digits = 1, useNA = "i
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
   attr(output, "formatting") <-
-    list(style = style,
-         round.digits = round.digits,
-         plain.ascii = plain.ascii,
-         justify = justify,
-         split.table = split.table)
+    list(style         = style,
+         round.digits  = round.digits,
+         plain.ascii   = plain.ascii,
+         justify       = justify,
+         split.table   = split.table,
+         omit.headings = omit.headings)
 
   attr(output, "user_fmt") <- list(... = ...)
 

@@ -20,6 +20,7 @@
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one
 #'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
@@ -50,7 +51,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
-                 plain.ascii = TRUE, justify = "default",
+                 plain.ascii = TRUE, justify = "default", omit.headings = FALSE,
                  missing = "", display.type = TRUE, display.labels = TRUE,
                  weights = NA, rescale.weights = FALSE, ...) {
 
@@ -98,6 +99,10 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     stop("'justify' argument must be one of 'default', 'left', 'center', or 'right'")
   }
 
+  if (!omit.headings %in% c(TRUE, FALSE)) {
+    stop("'omit.headings' argument must either be TRUE or FALSE")
+  }
+  
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style %in% c("grid", "rmarkdown") && !"plain.ascii" %in% (names(match.call()))) {
     plain.ascii <- FALSE
@@ -220,6 +225,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                                      plain.ascii    = plain.ascii,
                                      justify        = justify,
                                      missing        = missing,
+                                     omit.headings  = omit.headings,
                                      display.type   = display.type,
                                      display.labels = display.labels)
 
