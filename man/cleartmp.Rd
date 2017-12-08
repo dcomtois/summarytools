@@ -13,12 +13,13 @@ When \code{FALSE} (default), only the latest is.}
 \item{silent}{Hide confirmation messages (\code{FALSE} by default).}
 }
 \description{
-Delete temporary files created when using \code{method='browser'},
-\code{method='viewer'}, or \code{view()} function.
+Delete temporary files created by the generic print method when using
+\code{method='browser'}, \code{method='viewer'}, or by calling the 
+\code{view()} function.
 }
 \details{
 All temporary files are deleted automatically when R session is ended. This
-function is thus an overkill for most circumstances.
+function is thus an overkill in most circumstances.
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com>}

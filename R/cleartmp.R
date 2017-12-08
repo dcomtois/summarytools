@@ -1,10 +1,11 @@
 #' Delete Temporary Html Files
 #'
-#' Delete temporary files created when using \code{method='browser'},
-#' \code{method='viewer'}, or \code{view()} function.
+#' Delete temporary files created when using generic print method with 
+#' \code{method='browser'} or \code{method='viewer'}, or when calling
+#' \code{view()} function.
 #'
 #' All temporary files are deleted automatically when R session is ended. This
-#' function is thus an overkill for most circumstances.
+#' function is thus an overkill in most circumstances.
 #'
 #' @param all Logical. When \code{TRUE}, all temporary summarytools are deleted.
 #'   When \code{FALSE} (default), only the latest is.

@@ -51,7 +51,7 @@ A frequency table of class \code{matrix} with added attributes used
   by \link{print} method.
 }
 \description{
-Produces a cross-tabulation (for 2 categorical variables) with either row,
+Cross-tabulation for 2 categorical variables or factors, with either row,
 column, or total proportions as well as marginal sums.
 }
 \details{

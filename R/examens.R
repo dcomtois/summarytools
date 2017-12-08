@@ -1,4 +1,4 @@
-#' Bulletin de Notes (Donn&eacute;es simul&eacute;es)
+#' Bulletin de Notes (Données simulées)
 #'
 #' Jeu de données simulées contenant les notes de 30 étudiants, avec les colonnes suivantes:
 #' \itemize{
@@ -15,6 +15,9 @@
 #' Données simulées. Les notes de chaque étudiant sont centrées autour d'une moyenne
 #' personnelle et écart-type randomisés.
 #'
+#' A copy of this dataset is \strong{available in English} under the name
+#' \dQuote{exams}.
+#' 
 #' @docType data
 #' @keywords datasets
 #' @name examens

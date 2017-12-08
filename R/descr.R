@@ -1,9 +1,8 @@
 #' Univariate Statistics for Numerical Data
 #'
-#' Calculates weighted or non-weighted mean, standard deviation, min, max,
-#' median, mad, IQR*, CV, skewness*, SE.skewness*, and kurtosis* on numerical
-#' vectors. (Items marked with an * are only available for non-weighted
-#' vectors / data frames.
+#' Calculates mean, standard deviation, min, max, median, mad, IQR*, CV, 
+#' skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not available 
+#' when using sample weights.
 #'
 #' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
@@ -12,32 +11,31 @@
 #'   \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}.
-#' @param round.digits Number of significant digits to keep. Defaults to
+#' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output tables; One of \dQuote{simple} (default), \dQuote{grid} or
+#'   output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown}.
-#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
-#' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   \dQuote{center}, or \dQuote{right} (default). Has no effect on \emph{html}
-#'   tables.
-#' @param transpose Makes variables appears as columns, and stats as rows.
+#' @param justify Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
+#'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
+#' @param transpose Logical. Makes variables appears as columns, and stats as rows.
 #'   Defaults to \code{FALSE}.
 #' @param use.labels Logical. Display label instead of variable name when
 #'   label exists.
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
 #'   the title section?  Default is \code{TRUE}.
-#' @param weights Vector of weights having same length as x. Use \code{NA}
-#'   (default) when no weights are provided.
-#' @param rescale.weights Logical parameter. When set to \code{TRUE}, the
+#' @param weights Vector of weights having same length as x. \code{NA}
+#'   (default) indicates that no weights are used.
+#' @param rescale.weights Logical. When set to \code{TRUE}, the
 #'   total count will be the same as the unweighted \code{x}. \code{FALSE} by
 #'   default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A matrix object with the statistics, with extra attributes used by
+#' @return A matrix object containing the statistics, with extra attributes used by
 #'   \pkg{summarytool}'s print method.
 #'
 #' @examples

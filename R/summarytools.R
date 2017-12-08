@@ -7,27 +7,27 @@
 #' straightforward manner. Users with little to no prior
 #' R programming experience but who are familiar with the concepts
 #' (and maybe with some procedures coming from other software packages)
-#' should find their way pretty quickly.
+#' should find their way easily.
 #'
 #' There are \strong{four core functions}:
 #' \describe{
-#'   \item{dfSummary}{Extensive yet very legible data frame summaries.}
+#'   \item{dfSummary}{Extensive yet legible data frame summaries.}
 #'   \item{freq}{Frequency tables supporting weights and displaying proportions
-#'   of valid and of total data, and also displays cumulative proportions.}
+#'   of valid and of total data, including cumulative proportions.}
 #'   \item{descr}{All common univariate descriptive stats for single vectors
 #'      or for all numerical vectors in a data frame.}
 #'   \item{ctable}{Cross-tabulations for two categorical vectors or factors.
 #'     Choose between \emph{Total}, \emph{Columns} or \emph{Rows} proportions.}
 #' }
 #'
-#' Output formats are:
+#' \strong{Output formats} are:
 #'  \describe{
 #'    \item{plain ascii}{Ideal when looking at results in the console.}
 #'    \item{rmarkdown}{Ideal when writing short papers or presentations.}
-#'    \item{html}{This format is especially well-integrated in
-#'      \emph{RStudio} and offers an esthetically pleasant alternative to
-#'      plain ascii. Just use the \code{view()} function to see results appear
-#'      directly in \emph{RStudio's Viewer} or in your preferred Web Browser.}
+#'    \item{html}{Esthetically pleasant alternative to plain ascii or markdown, this
+#'    format is especially well integrated in \emph{RStudio} (but will work with any
+#'    browser). Just use the \code{view()} function to see results appear
+#'    directly in \emph{RStudio's Viewer} or in your preferred Web Browser.}
 #'  }
 #'
 "_PACKAGE"

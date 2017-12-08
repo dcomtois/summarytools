@@ -12,7 +12,6 @@
 #' @param simplify When x is a data frame and \code{all = TRUE}, coerce results to a vector
 #'   when \code{TRUE}, otherwise (default) return a \code{named list} containing only
 #'   non-NULL/non-NA elements.
-#' @seealso \code{\link[rapportools]{label}}, \code{\link[Hmisc]{label}}
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' Gergely Daróczi, \email{daroczig@@rapporter.net}
@@ -68,6 +67,10 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #'
 #' @param x The data frame or variable to be labelled.
 #' @param value String to be used as label.
+#' @seealso \code{\link{label}} (\pkg{base}), \code{\link[rapportools]{label}} (\pkg{rapportools}),
+#'   \code{\link[Hmisc]{label}} (\pkg{Hmisc})
+#' @author
+#' Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 "label<-" <- function(x, value) {
 
@@ -107,13 +110,8 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #' Returns the object with all labels removed. Both the \dQuote{label} attribute
 #' and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
 #'
-#' Can be more practical than using \code{label(x) <- NA}, if we want to keep
-#' the label but not let it interfere with one particular task.
-#'
 #' @usage unlabel(x)
 #' @param x An R object to remove labels from.
-#' @seealso \code{link{label}}, \code{\link[rapportools]{label}},
-#'   \code{\link[Hmisc]{label}}
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' @export

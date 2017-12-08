@@ -233,7 +233,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Data info attributes
   for (data_info_element in c("Dataframe", "Dataframe.label",
-                              "Variable", "Variable.label", "Data.type",
+                              "Variable", "Variable.label", 
+                              "Variable.labels","Data.type",
                               "Subset", "Group", "Weights",
                               "Row.variable", "Col.variable",
                               "Row.variable.subet", "Col.variable.subset",
@@ -409,9 +410,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       sect_title[[1]] <- ""
     }
 
-    if (all(c("Variable", "Dataframe") %in% names(data_info))) {
-      sect_title[[2]] <- paste0(data_info$Dataframe, "$", data_info$Variable)
-    } else if ("Variable" %in% names(data_info)) {
+    #if (all(c("Variable", "Dataframe") %in% names(data_info))) {
+    #  sect_title[[2]] <- paste0(data_info$Dataframe, "$", data_info$Variable)
+    #} else 
+    if ("Variable" %in% names(data_info)) {
       sect_title[[2]] <- data_info$Variable
     } else {
       sect_title[[2]] <- ""
@@ -435,7 +437,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
 
 
-        he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+        he_added <- add_head_element(list(c("Dataframe", "Data frame"),
+                                          c("Variable.label", "Variable Label"),
                                           c("Data.type", "Type"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
@@ -577,6 +580,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
 
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                          c("Dataframe", "Data Frame"),
                                           c("Data.type", "Type"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
@@ -738,24 +742,30 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
     # descr objects -------------------------------------------------------------------------------------------
 
-    if(!silent && !group.only && !(data_info["by.last"] == "TRUE")
-       && "ignored" %in% names(attributes(x))) {
+    if(!silent && !group.only && 
+       (!"by.first" %in% names(data_info) || as.logical(data_info["by.last"]) == TRUE) &&
+       "ignored" %in% names(attributes(x))) {
       message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
     }
 
+    sect_title <- list()
     if ("Weights" %in% names(data_info)) {
-      sect_title <- "Weighted Descriptive Statistics"
+      sect_title[[1]] <- "Weighted Descriptive Statistics"
     } else {
-      sect_title <- "Descriptive Statistics"
+      sect_title[[1]] <- "Descriptive Statistics"
     }
 
-    if (all(c("Variable", "Dataframe") %in% names(data_info))) {
-      sect_title <- paste0(sect_title, ": ", data_info$Dataframe, "$", data_info$Variable)
-    } else if ("Variable" %in% names(data_info)) {
-      sect_title <- paste0(sect_title, ": ", data_info$Variable)
-    } else if ("Dataframe" %in% names(data_info)) {
-      sect_title <- paste0(sect_title, ": ", data_info$Dataframe)
+    #if (all(c("Variable", "Dataframe") %in% names(data_info))) {
+    #  sect_title <- paste0(sect_title, ": ", data_info$Dataframe, "$", data_info$Variable)
+    #} else 
+    if ("Variable" %in% names(data_info)) {
+      sect_title[[2]] <- data_info$Variable
+    }  else {
+      sect_title[[2]] <- ""
     }
+    #else if ("Dataframe" %in% names(data_info)) {
+    #  sect_title[[2]] <- paste0(sect_title, ": ", data_info$Dataframe)
+    #}
 
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
@@ -774,6 +784,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       } else {
         output[[1]] <- add_hash(sect_title, 2)
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                          c("Dataframe", "Data Frame"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("N.Obs", "N"),
@@ -871,8 +882,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("N.Obs", "N")),
                                      h = 0)
       } else {
-        div_list[[1]] <- h3(sect_title)
+        div_list[[1]] <- h3(sect_title[[1]])
+        if (sect_title[[2]] != "") {
+          div_list[[2]] <- sect_title[[2]]
+        }
+        
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                          c("Dataframe", "Data Frame"),
                                           c("Weights", "Weights"),
                                           c("Subset", "Subset"),
                                           c("N.Obs", "N"),

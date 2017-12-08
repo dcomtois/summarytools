@@ -2,39 +2,39 @@
 #'
 #' Summary of a data frame consisting of: variable names, labels if any, factor
 #' levels, frequencies and/or numerical summary statistics, and valid/missing
-#' observations information.
+#' observation counts.
 #'
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display in numerical
 #'   summaries and in frequency proportions. Defaults to \code{2}.
-#' @param varnumbers Should the first column contain variable number? Defaults
+#' @param varnumbers Logical. Should the first column contain variable number? Defaults
 #'   to \code{TRUE}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 #'   will be displayed. By default, the \emph{labels} column is shown if at least
-#'   one of the columns has a defined label.
+#'   one column has a defined label.
 #' @param valid.col Logical. Include column indicating count and proportion of valid
 #'   (non-missing) values. \code{TRUE} by default.
 #' @param na.col Logical. Include column indicating count and proportion of missing
 #'   (NA) values. \code{TRUE} by default.
 #' @param graph.col Logical. Display barplots / histograms column in \emph{html}
 #'   reports. \code{TRUE} by default.
-#' @param style The style to be used by \code{\link[pander]{pander}} when
-#'   rendering in output table. Defaults to \dQuote{multiline}. Another option is
-#'   \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
+#' @param style Style to be used by \code{\link[pander]{pander}} when
+#'   rendering output table. Defaults to \dQuote{multiline}. The only other valid
+#'   option is \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
 #'   function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.
-#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
-#'   \code{TRUE}, no markup characters will be used (useful when printing
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
+#'   \code{TRUE}, no markup characters will be generated (useful when printing
 #'   to console). Defaults to \code{TRUE}.
-#' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   \dQuote{center}, or \dQuote{right}. Defaults to \dQuote{left}.
+#' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
+#'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
 #' @param max.distinct.values The maximum number of values to display frequencies
-#'   for. If variable has more distinct values than this parameter, the remaining
+#'   for. If variable has more distinct values than this number, the remaining
 #'   frequencies will be reported as a whole, along with the number of additional
-#'   distinct values.
+#'   distinct values. Defaults to 10.
 #' @param trim.strings Logical; for character variables, should leading and
 #'   trailing white space be removed? Defaults to \code{FALSE}. See \emph{details}
-#'   for more.
+#'   section.
 #' @param max.string.width Limits the number of characters to display in the
 #'   frequency tables. Defaults to \code{25}.
 #' @param split.cells A numeric argument passed to \code{\link[pander]{pander}}.
@@ -51,7 +51,7 @@
 #'     \item{No}{Number indicating the order in which column appears in
 #'       the data frame.}
 #'     \item{Variable}{Name of the variable, along with its class(es).}
-#'     \item{Label}{Label of the variable (whenever at least one exists.}
+#'     \item{Label}{Label of the variable (if applicable).}
 #'     \item{Stats / Values}{For factors, a list of their values, limited by the
 #'       \code{max.distinct.values} parameter. For character variables, the most
 #'       common values (in descending frequency order), also limited by
@@ -68,10 +68,10 @@
 #' }
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
-#'   appear cleaner in the console. When used in a context of markdown rendering,
+#'   appear cleaner in the console. When used in a context of \emph{rmarkdown} rendering,
 #'   set this option to \code{FALSE}.
 #'
-#'   When the \code{trim.strings} is set to \code{TRUE}, the trimming is done
+#'   When the \code{trim.strings} is set to \code{TRUE}, trimming is done
 #'   \emph{before} calculating frequencies, so those will be impacted
 #'   accordingly.
 #'

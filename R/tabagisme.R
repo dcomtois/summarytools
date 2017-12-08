@@ -1,4 +1,4 @@
-#' Usage du Tabac et &Eacute;tat de Sant&eacte; (Donn&eacute;es simul&eacute;es)
+#' Usage du Tabac et état de Santé (Données simulées)
 #'
 #' Jeu de données simulées de 1000 sujets, avec les
 #' colonnes suivantes:
@@ -22,6 +22,9 @@
 #' un sujet de tomber dans la catégorie \dQuote{malade} est
 #' basée sur une fonction arbitraire faisant intervenir l'âge,
 #' l'IMC et le nombre de cigarettes fumées par jour.
+#'
+#' A copy of this dataset is \strong{available in English} under the name
+#' \dQuote{tobacco}.
 #'
 #' @docType data
 #' @keywords datasets

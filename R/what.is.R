@@ -2,8 +2,8 @@
 #'
 #' Combination of most common \dQuote{macro-level} functions that describe an object.
 #'
-#' Instead of calling, in turn, \code{\link{class}}, \code{\link{typeof}},
-#' \code{\link{dim}}, and so on, a call to this function will readily give all this
+#' An alternative to calling in turn \code{\link{class}}, \code{\link{typeof}},
+#' \code{\link{dim}}, and so on. A call to this function will readily give all this
 #' information at once.
 #'
 #' @param x Any object.

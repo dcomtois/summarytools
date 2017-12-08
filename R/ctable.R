@@ -1,29 +1,29 @@
-#' Cross-Tabulations
+#' Cross-Tabulation
 #'
-#' Produces a cross-tabulation (for 2 categorical variables) with either row,
-#' column, or total proportions as well as marginal sums.
+#' Cross-tabulation for a pair of categorical variables (or factors) with either row,
+#' column, or total proportions, as well as marginal sums.
 #'
-#' @param x First categorical variable - its values will appear as row names.
-#' @param y Second categorical variable - its values will appear in as column names.
+#' @param x First categorical variable - values will appear as row names.
+#' @param y Second categorical variable - values will appear in as column names.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{1}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
 #'   \dQuote{rmarkdown}.
-#' @param justify String indicating alignment of columns; one of \dQuote{left}
-#'   \dQuote{center}, or \dQuote{right}. Defaults to \dQuote{right}.
-#' @param prop What proportions to display;  \dQuote{r} for \emph{rows} (default),
+#' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
+#'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
+#' @param prop Proportions to display;  \dQuote{r} for \emph{rows} (default),
 #'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-#'   \emph{None}.
-#' @param useNA Argument used by \code{\link[base]{table}}; One of \dQuote{ifany}
+#'   \emph{none}.
+#' @param useNA Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
 #'   (default), \dQuote{no}, or \dQuote{always}.
-#' @param totals Should row and column totals be displayed? Defaults to \code{TRUE}.
-#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
+#' @param totals Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
-#' @param split.table Pander argument that determines how many characters wide a
-#'   table can span. \code{Inf} by default.
+#' @param split.table Pander argument that specifies how many characters wide a
+#'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By default,
 #'   the character values for arguments x and y are used.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
@@ -32,10 +32,10 @@
 #'   by \link{print} method.
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
-#'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
+#'   appear cleaner in the console. To avoid \emph{rmarkdown} rendering problems, the
 #'   option is automatically set to \code{FALSE} whenever
-#'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-#'   explicit). 
+#'   \code{style = "rmarkdown"}, unless \code{plain.ascii = TRUE} is made
+#'   explicit. 
 #'
 #' @examples
 #' data("tobacco")
