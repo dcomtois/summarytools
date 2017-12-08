@@ -39,7 +39,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              html.table.class = html.table.class,
                              custom.css = custom.css,
                              silent = silent,
-                             footnote = FALSE,
+                             footnote = NA,
                              ...)
 
         } else if (i < length(x)) {
@@ -50,7 +50,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              escape.pipe = escape.pipe,
                              html.table.class = html.table.class,
                              silent = silent,
-                             footnote = FALSE,
+                             footnote = NA,
                              group.only = TRUE,
                              ...)
         } else {
@@ -101,7 +101,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              method = method,
                              file = file,
                              silent = FALSE,
-                             footnote = FALSE,
+                             footnote = NA,
                              append = FALSE,
                              report.title = report.title,
                              ...)
@@ -112,7 +112,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              append = TRUE,
                              var.only = TRUE,
                              silent = TRUE,
-                             footnote = FALSE,
+                             footnote = NA,
                              ...)
         } else {
           print.summarytools(x[[i]],

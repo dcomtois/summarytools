@@ -22,6 +22,7 @@
 #'   and \code{FALSE} otherwise.
 #' @param justify Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
 #'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
 #' @param transpose Logical. Makes variables appears as columns, and stats as rows.
 #'   Defaults to \code{FALSE}.
 #' @param use.labels Logical. Display label instead of variable name when
@@ -51,8 +52,8 @@
 #' @export
 descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                   transpose = FALSE, style = "simple", plain.ascii = TRUE,
-                  justify = "right", use.labels = FALSE, display.labels = TRUE,
-                  weights = NA, rescale.weights = FALSE, ...) {
+                  justify = "right", omit.headings = FALSE, use.labels = FALSE, 
+                  display.labels = TRUE,  weights = NA, rescale.weights = FALSE, ...) {
 
   # Validate arguments
   if (is.atomic(x) && !is.numeric(x))
@@ -300,6 +301,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                                      round.digits = round.digits,
                                      plain.ascii = plain.ascii,
                                      justify = justify,
+                                     omit.headings = omit.headings,
                                      display.labels = display.labels)
 
   attr(output, "user_fmt") <- list(... = ...)

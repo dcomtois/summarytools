@@ -28,6 +28,7 @@
 #'   to console). Defaults to \code{TRUE}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
 #' @param max.distinct.values The maximum number of values to display frequencies
 #'   for. If variable has more distinct values than this number, the remaining
 #'   frequencies will be reported as a whole, along with the number of additional
@@ -89,8 +90,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       labels.col = length(label(x, all = TRUE)) > 0,
                       valid.col = TRUE, na.col = TRUE, graph.col = TRUE,
                       style = "multiline", plain.ascii = TRUE, justify = "left",
-                      max.distinct.values = 10, trim.strings = FALSE,
-                      max.string.width = 25, split.cells = 40,
+                      omit.headings = FALSE,  max.distinct.values = 10,
+                      trim.strings = FALSE,  max.string.width = 25, split.cells = 40,
                       split.table = Inf, ...) {
 
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
@@ -164,7 +165,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     outstr <- character(0)
     for (i in seq_along(widths)) {
       outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
-                      sep = "  \n")
+                      sep = "  \n  ")
     }
     return(outstr)
   }
@@ -379,12 +380,12 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           counts_props <- align_numbers(counts, props)
           output[i,5] <- paste(
             paste0(roundval <- round(as.numeric(names(counts)), round.digits),
-                   ifelse(names(counts) != roundval, "*", " ")),
+                   ifelse(names(counts) != roundval, "!", " ")),
             counts_props, sep = ": ", collapse = "  \n"
           )
           if (any(names(counts) != roundval)) {
             extra_space <- TRUE
-            output[i,5] <- paste(output[i,5], "* rounded", sep = "  \n")
+            output[i,5] <- paste(output[i,5], "! rounded", sep = "  \n")
           } else {
             extra_space <- FALSE
           }
@@ -468,6 +469,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                                      round.digits = round.digits,
                                      plain.ascii = plain.ascii,
                                      justify = justify,
+                                     omit.headings = omit.headings,
                                      split.cells = split.cells,
                                      split.table = split.table)
 
