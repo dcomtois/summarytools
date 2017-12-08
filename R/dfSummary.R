@@ -115,8 +115,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   }
 
   if ("display.labels" %in% names(match.call())) {
-    message("'display.labels' argument is deprecated; use 'labels.col' instead")
-    labels.col <- display.labels
+    stop("'display.labels' argument is deprecated; use 'labels.col' instead")
   }
 
   if(style=="rmarkdown") {
