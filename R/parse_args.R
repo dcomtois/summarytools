@@ -265,6 +265,10 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
+  # Remove dataframe name from by_group if df_name is present and the same
+  by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", x = by_group, fixed = TRUE)
+  
+  
   # Extract data frame label if any
   if (!no_df && length(df_name) > 0 && exists(df_name) && !is.na(label(get(df_name)))) {
     df_label <- label(get(df_name))
@@ -331,7 +335,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
       }
     }
   }
-
+  
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,

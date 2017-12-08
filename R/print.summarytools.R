@@ -276,18 +276,18 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (grepl(pattern = "label", e[[1]])) {
             if (isTRUE(format_info[["display.labels"]])) {
               output[[length(output) + 1]] <<-
-                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
+                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
               element_added <- TRUE
             }
           } else if (grepl(pattern = "type", e[[1]])) {
             if (isTRUE(format_info[["display.type"]])) {
               output[[length(output) + 1]] <<-
-                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
+                paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
               element_added <- TRUE
             }
           } else {
             output[[length(output) + 1]] <<-
-              paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h))
+              paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
             element_added <- TRUE
           }
         }
@@ -435,7 +435,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         if (sect_title[[2]] != "") {
           output[[length(output) + 1]] <- paste0("\n",add_hash(sect_title[[2]], 3))
         }
-
 
         he_added <- add_head_element(list(c("Dataframe", "Data frame"),
                                           c("Variable.label", "Variable Label"),
@@ -749,23 +748,18 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     sect_title <- list()
+    
     if ("Weights" %in% names(data_info)) {
       sect_title[[1]] <- "Weighted Descriptive Statistics"
     } else {
       sect_title[[1]] <- "Descriptive Statistics"
     }
 
-    #if (all(c("Variable", "Dataframe") %in% names(data_info))) {
-    #  sect_title <- paste0(sect_title, ": ", data_info$Dataframe, "$", data_info$Variable)
-    #} else 
     if ("Variable" %in% names(data_info)) {
       sect_title[[2]] <- data_info$Variable
     }  else {
       sect_title[[2]] <- ""
     }
-    #else if ("Dataframe" %in% names(data_info)) {
-    #  sect_title[[2]] <- paste0(sect_title, ": ", data_info$Dataframe)
-    #}
 
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
@@ -782,7 +776,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           c("N.Obs", "N")),
                                      h = 0)
       } else {
-        output[[1]] <- add_hash(sect_title, 2)
+        output[[1]] <- add_hash(sect_title[[1]], 2)
+
+        if (sect_title[[2]] != "") {
+            output[[length(output) + 1]] <- paste0("\n",add_hash(sect_title[[2]], 3))
+          }
+        
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                           c("Dataframe", "Data Frame"),
                                           c("Weights", "Weights"),
@@ -884,9 +883,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       } else {
         div_list[[1]] <- h3(sect_title[[1]])
         if (sect_title[[2]] != "") {
-          div_list[[2]] <- sect_title[[2]]
+          div_list[[2]] <- h4(sect_title[[2]])
         }
-        
+
         he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                           c("Dataframe", "Data Frame"),
                                           c("Weights", "Weights"),
