@@ -26,7 +26,7 @@ the following variables:
 All names and grades are simulated. Grades for each student are centered
 around a personal randomized average and standard deviation.
 
-A copy of this dataset is \strong{available in French} under the name
-\dQuote{examens}.
+Une version française de ce jeu de données est disponible sous le nom 
+d'\dQuote{examens}.
 }
 \keyword{datasets}

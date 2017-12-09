@@ -53,7 +53,7 @@ to \code{NA} transformations).}
 \item{footnote}{footnote in \emph{html} output. When set to \dQuote{default},
 this is the package name and version, R version, and current date). Has no effect
 when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
-or set to \code{FALSE} to omit.}
+or set to \code{NA} to omit.}
 
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
@@ -98,11 +98,14 @@ The following additional arguments can be used to override
      \item \code{justify}
      \item \code{plain.ascii}
      \item \code{missing}
+     \item \code{omit.headings}
      \item \code{split.table}
      \item \code{Dataframe}
      \item \code{Dataframe.label}
      \item \code{Variable}
      \item \code{Variable.label}
+     \item \code{Variable.labels} (\code{\link{descr}} objects only)
+     \item \code{use.labels} (\code{\link{descr}} objects only)
      \item \code{Data.type}
      \item \code{Subset}
      \item \code{Group}

@@ -5,9 +5,9 @@
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
 freq(x, round.digits = 2, order = "names", style = "simple",
-  plain.ascii = TRUE, justify = "default", missing = "",
-  display.type = TRUE, display.labels = TRUE, weights = NA,
-  rescale.weights = FALSE, ...)
+  plain.ascii = TRUE, justify = "default", omit.headings = FALSE,
+  missing = "", display.type = TRUE, display.labels = TRUE,
+  weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{Factor or vector}
@@ -33,6 +33,8 @@ and \code{FALSE} otherwise.}
 \dQuote{center} is used for \emph{html} tables. You can force it to one
 of \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
+
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is \code{TRUE}.}
@@ -49,7 +51,7 @@ count will be the same as the unweighted \code{x}. \code{FALSE} by default.}
 }
 \value{
 A frequency table of class \code{matrix} with added attributes used
-  by \pkg{summarytool}'s \emph{print} method.
+  by the \emph{print} method.
 }
 \description{
 Displays weighted or unweighted frequencies, including <NA> counts and
@@ -60,8 +62,7 @@ The default \code{plain.ascii = TRUE} option is there to make results
   appear cleaner in the console. To avoid rmarkdown rendering problems, the
   option is automatically set to \code{FALSE} whenever
   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-  explicit). If the intent is to produce markdown text using {style = "simple"},
-  set \code{plain.ascii} to \code{FALSE}.
+  explicit).
 }
 \examples{
 data(tobacco)

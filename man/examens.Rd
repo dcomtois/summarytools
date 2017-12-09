@@ -3,7 +3,7 @@
 \docType{data}
 \name{examens}
 \alias{examens}
-\title{Bulletin de Notes (Donn&eacute;es simul&eacute;es)}
+\title{Bulletin de Notes (Données simulées)}
 \format{Un data frame de 30 rangées et 8 colonnes}
 \usage{
 data(examens)
@@ -24,5 +24,8 @@ Jeu de données simulées contenant les notes de 30 étudiants, avec les colonne
 \details{
 Données simulées. Les notes de chaque étudiant sont centrées autour d'une moyenne
 personnelle et écart-type randomisés.
+
+A copy of this dataset is \strong{available in English} under the name
+\dQuote{exams}.
 }
 \keyword{datasets}

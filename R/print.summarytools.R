@@ -1111,7 +1111,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       html_content <-
         tags$div(class="container",
                  tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
-                           HTML(paste0('<link rel="icon" type="img/ico" href="', stpath, '/includes/favicon.ico">')),
+                           #HTML(paste0('<link rel="icon" type="img/ico" href="', stpath, '/includes/favicon.ico">')),
                            includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.min.css", sep="/")),
                            includeCSS(path = paste(stpath, "includes/stylesheets/custom.css", sep="/")),
                            if (!is.na(custom.css)) includeCSS(path = custom.css)),

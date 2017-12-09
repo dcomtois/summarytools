@@ -31,4 +31,4 @@
 #' @name tabagisme
 #' @usage data(tabagisme)
 #' @format Un data frame de 1000 rangées et 9 colonnes
-"tabagisme"
+NULL

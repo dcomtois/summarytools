@@ -6,8 +6,8 @@
 \usage{
 descr(x, stats = "all", na.rm = TRUE, round.digits = 2,
   transpose = FALSE, style = "simple", plain.ascii = TRUE,
-  justify = "right", use.labels = FALSE, display.labels = TRUE,
-  weights = NA, rescale.weights = FALSE, ...)
+  justify = "right", omit.headings = FALSE, use.labels = FALSE,
+  display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
@@ -20,58 +20,49 @@ selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{med}, \dQuote{m
 \item{na.rm}{Argument to be passed to statistical functions. Defaults to
 \code{TRUE}.}
 
-\item{round.digits}{Number of significant digits to keep. Defaults to
+\item{round.digits}{Number of significant digits to display. Defaults to
 \code{2}.}
 
-\item{transpose}{Makes variables appears as columns, and stats as rows.
+\item{transpose}{Logical. Makes variables appears as columns, and stats as rows.
 Defaults to \code{FALSE}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output tables; One of \dQuote{simple} (default), \dQuote{grid} or
+output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
 \dQuote{rmarkdown}.}
 
-\item{plain.ascii}{Logical \code{\link[pander]{pander}} argument. When
+\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{left}
-\dQuote{center}, or \dQuote{right} (default). Has no effect on \emph{html}
-tables.}
+\item{justify}{Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
+or \dQuote{r} for right (default). Has no effect on \emph{html} tables.}
+
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
 
 \item{use.labels}{Logical. Display label instead of variable name when
-label exists. Available only when \code{transpose = TRUE}.}
+label exists.}
 
-\item{display.labels}{Logical. Should variable / data frame labels be displayed?
-Default is \code{TRUE}.}
+\item{display.labels}{Logical. Should variable / data frame labels be displayed in
+the title section?  Default is \code{TRUE}.}
 
-\item{weights}{Vector of weights having same length as x. Use \code{NA}
-(default) when no weights are provided.}
+\item{weights}{Vector of weights having same length as x. \code{NA}
+(default) indicates that no weights are used.}
 
-\item{rescale.weights}{Logical parameter. When set to \code{TRUE}, the
+\item{rescale.weights}{Logical. When set to \code{TRUE}, the
 total count will be the same as the unweighted \code{x}. \code{FALSE} by
 default.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A list with 2 matrix elements: the stats themselves, and a summary
-  of valid / missing cases. The list also has attributes used by
+A matrix object containing the statistics, with extra attributes used by
   \pkg{summarytool}'s print method.
 }
 \description{
-Calculates weighted or non-weighted mean, standard deviation, min, max,
-median, mad, IQR*, CV, skewness*, SE.skewness*, and kurtosis* on numerical
-vectors. (Items marked with an * are only available for non-weighted
-vectors / data frames.
-}
-\details{
-The default \code{plain.ascii = TRUE} option is there to make results
-  appear cleaner in the console. To avoid rmarkdown rendering problems, the
-  option is automatically set to \code{FALSE} whenever
-  \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-  explicit). If the intent is to produce markdown text using {style = "simple"},
-  set \code{plain.ascii} to \code{FALSE}.
+Calculates mean, standard deviation, min, max, median, mad, IQR*, CV, 
+skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not available 
+when using sample weights.
 }
 \examples{
 data(exams)

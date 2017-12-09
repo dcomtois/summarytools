@@ -9,7 +9,7 @@
 #' (and maybe with some procedures coming from other software packages)
 #' should find their way easily.
 #'
-#' There are \strong{four core functions}:
+#' These are the four core functions: 
 #' \describe{
 #'   \item{dfSummary}{Extensive yet legible data frame summaries.}
 #'   \item{freq}{Frequency tables supporting weights and displaying proportions
@@ -24,10 +24,9 @@
 #'  \describe{
 #'    \item{plain ascii}{Ideal when looking at results in the console.}
 #'    \item{rmarkdown}{Ideal when writing short papers or presentations.}
-#'    \item{html}{Esthetically pleasant alternative to plain ascii or markdown, this
-#'    format is especially well integrated in \emph{RStudio} (but will work with any
-#'    browser). Just use the \code{view()} function to see results appear
-#'    directly in \emph{RStudio's Viewer} or in your preferred Web Browser.}
+#'    \item{html}{This format is well integrated in \emph{RStudio} (but will work with any
+#'    browser). Use the \code{view()} function to see results appear
+#'    directly in \emph{RStudio's Viewer} or in your default Web Browser.}
 #'  }
 #'
 "_PACKAGE"

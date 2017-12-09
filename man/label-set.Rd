@@ -14,3 +14,10 @@ label(x) <- value
 \description{
 Defines a data frame or variable label by using the \code{label} attribute.
 }
+\seealso{
+\code{\link{label}} (\pkg{base}), \code{\link[rapportools]{label}} (\pkg{rapportools}),
+  \code{\link[Hmisc]{label}} (\pkg{Hmisc})
+}
+\author{
+Dominic Comtois, \email{dominic.comtois@gmail.com}
+}

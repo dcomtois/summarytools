@@ -7,9 +7,9 @@
 dfSummary(x, round.digits = 2, varnumbers = TRUE,
   labels.col = length(label(x, all = TRUE)) > 0, valid.col = TRUE,
   na.col = TRUE, graph.col = TRUE, style = "multiline",
-  plain.ascii = TRUE, justify = "left", max.distinct.values = 10,
-  trim.strings = FALSE, max.string.width = 25, split.cells = 40,
-  split.table = Inf, ...)
+  plain.ascii = TRUE, justify = "left", omit.headings = FALSE,
+  max.distinct.values = 10, trim.strings = FALSE, max.string.width = 25,
+  split.cells = 40, split.table = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -17,13 +17,13 @@ dfSummary(x, round.digits = 2, varnumbers = TRUE,
 \item{round.digits}{Number of significant digits to display in numerical
 summaries and in frequency proportions. Defaults to \code{2}.}
 
-\item{varnumbers}{Should the first column contain variable number? Defaults
+\item{varnumbers}{Logical. Should the first column contain variable number? Defaults
 to \code{TRUE}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 will be displayed. By default, the \emph{labels} column is shown if at least
-one of the columns has a defined label.}
+one column has a defined label.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of valid
 (non-missing) values. \code{TRUE} by default.}
@@ -34,26 +34,28 @@ one of the columns has a defined label.}
 \item{graph.col}{Logical. Display barplots / histograms column in \emph{html}
 reports. \code{TRUE} by default.}
 
-\item{style}{The style to be used by \code{\link[pander]{pander}} when
-rendering in output table. Defaults to \dQuote{multiline}. Another option is
-\dQuote{grid}. Style \dQuote{simple} is not supported for this particular
+\item{style}{Style to be used by \code{\link[pander]{pander}} when
+rendering output table. Defaults to \dQuote{multiline}. The only other valid
+option is \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
 function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.}
 
-\item{plain.ascii}{Logical \code{\link[pander]{pander}} argument. When
-\code{TRUE}, no markup characters will be used (useful when printing
+\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
+\code{TRUE}, no markup characters will be generated (useful when printing
 to console). Defaults to \code{TRUE}.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{left}
-\dQuote{center}, or \dQuote{right}. Defaults to \dQuote{left}.}
+\item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
+\dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
+
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
 
 \item{max.distinct.values}{The maximum number of values to display frequencies
-for. If variable has more distinct values than this parameter, the remaining
+for. If variable has more distinct values than this number, the remaining
 frequencies will be reported as a whole, along with the number of additional
-distinct values.}
+distinct values. Defaults to 10.}
 
 \item{trim.strings}{Logical; for character variables, should leading and
 trailing white space be removed? Defaults to \code{FALSE}. See \emph{details}
-for more.}
+section.}
 
 \item{max.string.width}{Limits the number of characters to display in the
 frequency tables. Defaults to \code{25}.}
@@ -75,7 +77,7 @@ A data frame containing as many rows as there are columns in \code{x},
     \item{No}{Number indicating the order in which column appears in
       the data frame.}
     \item{Variable}{Name of the variable, along with its class(es).}
-    \item{Label}{Label of the variable (whenever at least one exists.}
+    \item{Label}{Label of the variable (if applicable).}
     \item{Stats / Values}{For factors, a list of their values, limited by the
       \code{max.distinct.values} parameter. For character variables, the most
       common values (in descending frequency order), also limited by
@@ -86,7 +88,7 @@ A data frame containing as many rows as there are columns in \code{x},
       vectors, number of distinct values, or frequency of distinct values if
       their number is not greater than \code{max.distinct.values}.}
     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-      barchart for factors and character variables.}
+      barplot for factors and character variables.}
     \item{Valid}{Number and proportion of valid values.}
     \item{Missing}{Number and proportion of missing (NA) values, including NaN's.}
 }
@@ -94,14 +96,14 @@ A data frame containing as many rows as there are columns in \code{x},
 \description{
 Summary of a data frame consisting of: variable names, labels if any, factor
 levels, frequencies and/or numerical summary statistics, and valid/missing
-observations information.
+observation counts.
 }
 \details{
 The default \code{plain.ascii = TRUE} option is there to make results
-  appear cleaner in the console. When used in a context of markdown rendering,
+  appear cleaner in the console. When used in a context of \emph{rmarkdown} rendering,
   set this option to \code{FALSE}.
 
-  When the \code{trim.strings} is set to \code{TRUE}, the trimming is done
+  When the \code{trim.strings} is set to \code{TRUE}, trimming is done
   \emph{before} calculating frequencies, so those will be impacted
   accordingly.
 }

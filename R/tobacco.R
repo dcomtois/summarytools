@@ -27,4 +27,4 @@
 #' @name tobacco
 #' @usage data(tobacco)
 #' @format A data frame with 1000 rows and 9 variables
-"tobacco"
+NULL

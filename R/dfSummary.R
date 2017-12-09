@@ -63,7 +63,7 @@
 #'       vectors, number of distinct values, or frequency of distinct values if
 #'       their number is not greater than \code{max.distinct.values}.}
 #'     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-#'       barchart for factors and character variables.}
+#'       barplot for factors and character variables.}
 #'     \item{Valid}{Number and proportion of valid values.}
 #'     \item{Missing}{Number and proportion of missing (NA) values, including NaN's.}
 #' }

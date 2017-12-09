@@ -23,4 +23,4 @@
 #' @name examens
 #' @usage data(examens)
 #' @format Un data frame de 30 rangées et 8 colonnes
-"examens"
+NULL

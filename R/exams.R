@@ -24,4 +24,4 @@
 #' @name exams
 #' @usage data(exams)
 #' @format A data frame with 30 rows and 8 variables
-"exams"
+NULL

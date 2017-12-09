@@ -13,14 +13,6 @@ unlabel(x)
 Returns the object with all labels removed. Both the \dQuote{label} attribute
 and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
 }
-\details{
-Can be more practical than using \code{label(x) <- NA}, if we want to keep
-the label but not let it interfere with one particular task.
-}
-\seealso{
-\code{link{label}}, \code{\link[rapportools]{label}},
-  \code{\link[Hmisc]{label}}
-}
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com},
 }

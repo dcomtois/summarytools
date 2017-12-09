@@ -199,7 +199,6 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   }
 
 
-
   # From here code applies no matter how function was called ---------------------------------
   skipvars <- FALSE
   no_df    <- FALSE

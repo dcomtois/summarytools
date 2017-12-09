@@ -3,7 +3,7 @@
 \docType{data}
 \name{tabagisme}
 \alias{tabagisme}
-\title{Usage du Tabac et &Eacute;tat de Sant&eacte; (Donn&eacute;es simul&eacute;es)}
+\title{Usage du Tabac et état de Santé (Données simulées)}
 \format{Un data frame de 1000 rangées et 9 colonnes}
 \usage{
 data(tabagisme)
@@ -32,5 +32,8 @@ Note sur la simulation des données: la probabilité pour
 un sujet de tomber dans la catégorie \dQuote{malade} est
 basée sur une fonction arbitraire faisant intervenir l'âge,
 l'IMC et le nombre de cigarettes fumées par jour.
+
+A copy of this dataset is \strong{available in English} under the name
+\dQuote{tobacco}.
 }
 \keyword{datasets}

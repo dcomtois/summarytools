@@ -30,9 +30,6 @@ Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
 \references{
 \url{https://github.com/Rapporter/rapportools}
 }
-\seealso{
-\code{\link[rapportools]{label}}, \code{\link[Hmisc]{label}}
-}
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com},
 Gergely Daróczi, \email{daroczig@rapporter.net}

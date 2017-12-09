@@ -13,8 +13,8 @@ When \code{FALSE} (default), only the latest is.}
 \item{silent}{Hide confirmation messages (\code{FALSE} by default).}
 }
 \description{
-Delete temporary files created by the generic print method when using
-\code{method='browser'}, \code{method='viewer'}, or by calling the 
+Delete temporary files created when using generic print method with 
+\code{method='browser'} or \code{method='viewer'}, or when calling
 \code{view()} function.
 }
 \details{

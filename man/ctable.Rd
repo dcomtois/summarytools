@@ -2,44 +2,46 @@
 % Please edit documentation in R/ctable.R
 \name{ctable}
 \alias{ctable}
-\title{Cross-Tabulations}
+\title{Cross-Tabulation}
 \usage{
-ctable(x, y, prop = "r", totals = TRUE, round.digits = 1,
-  useNA = "ifany", style = "simple", plain.ascii = TRUE,
-  justify = "right", split.table = Inf, dnn = c(substitute(x),
-  substitute(y)), ...)
+ctable(x, y, prop = "r", useNA = "ifany", totals = TRUE,
+  style = "simple", round.digits = 1, justify = "right",
+  omit.headings = FALSE, plain.ascii = TRUE, split.table = Inf,
+  dnn = c(substitute(x), substitute(y)), ...)
 }
 \arguments{
-\item{x}{First categorical variable - its values will appear as row names.}
+\item{x}{First categorical variable - values will appear as row names.}
 
-\item{y}{Second categorical variable - its values will appear in as column names.}
+\item{y}{Second categorical variable - values will appear in as column names.}
 
-\item{prop}{What proportions to display;  \dQuote{r} for \emph{rows} (default),
+\item{prop}{Proportions to display;  \dQuote{r} for \emph{rows} (default),
 \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-\emph{None}.}
+\emph{none}.}
 
-\item{totals}{Should row and column totals be displayed? Defaults to \code{TRUE}.}
-
-\item{round.digits}{Number of significant digits to display. Defaults to
-\code{1}.}
-
-\item{useNA}{Argument used by \code{\link[base]{table}}; One of \dQuote{ifany}
+\item{useNA}{Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
 (default), \dQuote{no}, or \dQuote{always}.}
 
+\item{totals}{Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.}
+
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table; One of \dQuote{simple} (default), \dQuote{grid} or
+output table; One of \dQuote{simple} (default), \dQuote{grid} or}
+
+\item{round.digits}{Number of significant digits to display. Defaults to
+\code{1}.
 \dQuote{rmarkdown}.}
 
-\item{plain.ascii}{Logical \code{\link[pander]{pander}} argument. When
+\item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
+\dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
+
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
+
+\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{left}
-\dQuote{center}, or \dQuote{right}. Defaults to \dQuote{right}.}
-
-\item{split.table}{Pander argument that determines how many characters wide a
-table can span. \code{Inf} by default.}
+\item{split.table}{Pander argument that specifies how many characters wide a
+table can be. \code{Inf} by default.}
 
 \item{dnn}{Names to be used in output table. Vector of two strings; By default,
 the character values for arguments x and y are used.}
@@ -51,20 +53,19 @@ A frequency table of class \code{matrix} with added attributes used
   by \link{print} method.
 }
 \description{
-Cross-tabulation for 2 categorical variables or factors, with either row,
-column, or total proportions as well as marginal sums.
+Cross-tabulation for a pair of categorical variables (or factors) with either row,
+column, or total proportions, as well as marginal sums.
 }
 \details{
 The default \code{plain.ascii = TRUE} option is there to make results
-  appear cleaner in the console. To avoid rmarkdown rendering problems, the
+  appear cleaner in the console. To avoid \emph{rmarkdown} rendering problems, the
   option is automatically set to \code{FALSE} whenever
-  \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-  explicit). If the intent is to produce markdown text using {style = "simple"},
-  set \code{plain.ascii} to \code{FALSE}.
+  \code{style = "rmarkdown"}, unless \code{plain.ascii = TRUE} is made
+  explicit.
 }
 \examples{
 data("tobacco")
-ctable(tobacco$gender, tobacco$smoker, prop="r")
+ctable(tobacco$gender, tobacco$smoker)
 
 }
 \seealso{
