@@ -4,7 +4,7 @@ Other stats: [![Research software impact](http://depsy.org/api/person/338759/bad
 
 ## Latest News
 
-For the latest news, please see [this section](#Latest-News)
+Version 0.8.0 is now on CRAN. A vignette to complement information on this page is available [here].
 
 ## What is summarytools?
 
@@ -288,7 +288,7 @@ In the console, the output of a function using `style = 'rmarkdown'` looks like 
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 ```
 
-In needs an interpreter which will render this as _html_. With _Pandoc_, _markdown_ documents can be converted to various formats, such as _pdf_ or _docx_, among others.
+It needs an interpreter which will render this as _html_. With _Pandoc_, _markdown_ documents can be converted to various formats, such as _pdf_ or _docx_, among others.
 
 To learn more about _markdown_ and _rmarkdown_ formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
 
@@ -456,7 +456,7 @@ $object.type
 
 ```
 
-# Latest News
+# News
 I've been working on `summarytools` on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
 
 The most notable changes are:
