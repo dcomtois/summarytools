@@ -4,7 +4,7 @@ Other stats: [![Research software impact](http://depsy.org/api/person/338759/bad
 
 ## Latest News
 
-Version 0.8.0 is now on CRAN. A vignette to complement information on this page is available [here].
+Version 0.8.0 is now on CRAN. A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
 
 ## What is summarytools?
 
