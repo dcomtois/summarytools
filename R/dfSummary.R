@@ -76,8 +76,6 @@
 #'   \emph{before} calculating frequencies, so those will be impacted
 #'   accordingly.
 #'
-#' @seealso \code{\link[base]{summary.data.frame}}
-#'
 #' @examples
 #' data(tobacco)
 #' dfSummary(tobacco)
@@ -448,7 +446,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     output$Graph <- NULL
     output[['Text Graph']] <- NULL
   }
-  
+
   # Set output attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"

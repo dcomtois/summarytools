@@ -1,26 +1,26 @@
-#' Bulletin de Notes (Données simulées)
+#' Bulletin de Notes (Donn\u00E9es simul\u00E9es)
 #'
-#' Jeu de données simulées contenant les notes de 30 étudiants, avec les colonnes suivantes:
+#' Jeu de donn\u00E9es simul\u00E9es contenant les notes de 30 \u00E9tudiants, avec les colonnes suivantes:
 #' \itemize{
-#'   \item etudiant Nom de l'étudiant.
-#'   \item sexe Variable catégorielle (facteur) à 2 niveaux: \dQuote{Fille}, \dQuote{Garçon}.
-#'   \item francais Note en français (numérique).
-#'   \item math Note en maths (numérique).
-#'   \item geographie Note en géographie (numérique).
+#'   \item etudiant Nom de l'\u00E9tudiant.
+#'   \item sexe Variable cat\u00E9gorielle (facteur) à 2 niveaux: \dQuote{Fille}, \dQuote{Garçon}.
+#'   \item francais Note en français (num\u00E9rique).
+#'   \item math Note en maths (num\u00E9rique).
+#'   \item geographie Note en g\u00E9ographie (num\u00E9rique).
 #'   \item histoire Note en histoire (numérique).
-#'   \item economie Note en économie (numérique).
+#'   \item economie Note en \u00E9conomie (num\u00E9rique).
 #'   \item anglais Note en anglais (numérique).
 #' }
 #'
-#' Données simulées. Les notes de chaque étudiant sont centrées autour d'une moyenne
-#' personnelle et écart-type randomisés.
+#' Donn\u00E9es simulées. Les notes de chaque \u00E9tudiant sont centrées autour d'une moyenne
+#' personnelle et \u00E9cart-type randomis\u00E9s.
 #'
 #' A copy of this dataset is \strong{available in English} under the name
 #' \dQuote{exams}.
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @name examens
 #' @usage data(examens)
-#' @format Un data frame de 30 rangées et 8 colonnes
+#' @format Un data frame de 30 rang\u00E9es et 8 colonnes
 NULL
