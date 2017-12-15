@@ -24,14 +24,6 @@
 #'   \item by_last A binary indicator used when function was called
 #'     through \code{by()}}
 #'
-#' @details The default \code{plain.ascii = TRUE} option is there to make
-#'   results appear cleaner in the console. To avoid markdown rendering
-#'   problems, the option is automatically set to \code{FALSE} whenever
-#'   \code{style = 'rmarkdown'}, unless \code{plain.ascii = TRUE} is made
-#'   explicit. If the intent is to produce \emph{rmarkdown} text for further
-#'   processing while using \code{style = 'simple'}, set \code{plain.ascii} to
-#'   \code{FALSE}.
-#'
 #' @keywords internal misc
 #'
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com>}
@@ -265,11 +257,11 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   }
 
   # Remove dataframe name from by_group if df_name is present and the same
-  
+
   if (length(by_group) == 1) {
     by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", x = by_group, fixed = TRUE)
   }
-  
+
   # Extract data frame label if any
   if (!no_df && length(df_name) > 0 && exists(df_name) && !is.na(label(get(df_name)))) {
     df_label <- label(get(df_name))
@@ -336,7 +328,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
       }
     }
   }
-  
+
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
