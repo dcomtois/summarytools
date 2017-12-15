@@ -10,31 +10,29 @@ Version 0.8.0 is now on CRAN. A vignette which complements information found on 
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
-- Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation
+- **descriptive statistics** with all common univariate statistics for numerical vectors.
 - **frequency tables** with proportions, cumulative proportions and missing data information.
 - **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions.
-- **descriptive statistics** with all common univariate statistics for numerical vectors
+- Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation
 
-One of its goals is to make it easier for newcomeRs who might be used to other statistical software which usually provide a wide range of functions and procedures out-of-the-box, making it very simple to create, with a few point-and-click actions, some pretty decent quality material. For most tasks not relying on advanced statistical methods, summarytools should be well enough to explore the data and create nicely formatted outputs to use in presentations or to send to colleagues and associates. Just a few of the available features are:
-- Support for variable and data frame labels 
-- Support for sampling weights in frequency tables and descriptive statistics 
-- Support for creation of output files (both text/_rmarkdown_ and _html_) 
-- Quite a bit of flexibility on the output formats: 
-  . Plain-ascii (ideal for quickly looking at results directly in the console) 
-  . _Rmarkdown_ (ideal for creating presentations and publish your work) 
-  . _Html_ (easily generated and viewed, especially if you use RStudio, and are much more appealing than the plain-ascii outputs).
+One of its goals is to make it easier for newcomeRs who might be used to other statistical software which usually provide a wide range of functions and procedures out-of-the-box, making it very simple to create, with code or with a few point-and-click actions, thorough and well-formatted reports. For most tasks not relying on advanced statistical methods, summarytools allows you to do just that. 
+
+Here are some of the package's features:  
+- Variable and data frame labels are supported 
+- Sampling weights can be used in frequency tables and descriptive statistics 
+- Output files of various formats can be generated (plaintext, _rmarkdown_ and _html_) 
+- The _html_ outputs are well integrated in RStudio (if an external browser is not your preferred method) 
   
 ### Why use summarytools?
 
-- You're not satisfied with R's out-of-the-box functions to get to know your data in an efficient manner 
+- You're looking for need straightforward descriptive functions to get up and running in no time  
 - You're looking for flexibility in terms of outputs  
-- You want to be able to get up and running with your analysis even if you're not an expert R programmer just yet
 
-### An example
+### A first example
 
-As a first example, we'll use what is the most popular function in the package, `dfSummary` (*Data Frame Summary*). We'll apply it to the _iris_ sample data frame.
+Using the _iris_ sample data frame, we'll jump right to the most popular function in the package, `dfSummary` (*Data Frame Summary*). 
 
-With the following 2 lines of code, we'll generate a summary report for ''tobacco`` and have it displayed in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
+With the following 2 lines of code, we'll generate a summary report for ''iris`` and have it displayed in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
 
 ```r
 library(summarytools)
@@ -45,13 +43,9 @@ view(dfSummary(iris))
 
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by summarytools can be:
 
-- Displayed as plain text in the R console (default behaviour) 
-- Written to plain text files / [markdown](http://daringfireball.net/projects/markdown/) text files 
-- Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser. 
-
-##### Also, all functions:
-- Support _variable labels_ and _data frame labels_. 
-- Return table or dataframe objects for further manipulation if needed. 
+- Displayed in plain text in the R console (default behaviour) 
+- Written to plain text files / [rmarkdown](http://rmarkdown.rstudio.com/) text files 
+- Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser
 
 # How to install
 
@@ -71,9 +65,9 @@ install_github('dcomtois/summarytools', ref='dev-current')
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
-# The 4 main functions
+# Four Core Functions
 
-## Frequency tables with freq()
+## Frequency tables with `freq()`
 
 The `freq()` function generates a table of frequencies with counts and proportions.
 
@@ -96,12 +90,10 @@ Type: Factor (unordered)
            Total    150    100.00         100.00    100.00         100.00
 ```
 
-## Descriptive (univariate) statistics with descr()
+## Descriptive (univariate) statistics with `descr()`
 The `descr()` function generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it just ignores non-numerical columns.
 
-#### descr() on the iris dataframe
-
-We'll use the _rmarkdown_ style for this example, to show that the default plain-ascii output is merely one of many output formats. More about this down below.
+We'll use the _rmarkdown_ style for the next example:
 
 ```r
 descr(iris, style = "rmarkdown")
@@ -145,11 +137,11 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE)
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
 
 
-## Cross-tabulations with ctable()
+## Cross-tabulations with `ctable()`
 
-Here we'll use a sample data frame included in the package called `tobacco` and which contains simulated data. We want to cross-tabulate variables `smoker` and `diseased`. By default, ctable() gives row proportions, so we don't need to specify any additionnal parameter. 
+Here we'll use a sample data frame included in the package (_tobacco_), which contains simulated data. Say we want to cross-tabulate variables `smoker` and `diseased`. By default, `ctable()` gives row proportions, so we don't need to specify any additionnal parameter. 
 
-Instead of `ctable(tobacco$smoker, tobacco$diseased)`, we'll make use of the `with()` function:
+Here, instead of `ctable(tobacco$smoker, tobacco$diseased)`, we'll make use of the `with()` (R-base) function:
 
 ```r
 data("tobacco")
@@ -169,7 +161,7 @@ Data Frame: tobacco
 -------- ---------- ------------- ------------- ---------------
 ```
 
-Note that _markdown_ still has no support for multi-line headers, unfortunately. But here is what the _html_ version looks like:
+Note that _markdown_ has no support (yet) for multi-line headers. Here is what the _html_ version looks like:
 
 ```r
 view(with(tobacco, ctable(smoker, diseased)))
@@ -178,7 +170,7 @@ view(with(tobacco, ctable(smoker, diseased)))
 ![html output for ctable](img/ctable-with-row-props.png)
 
 
-It is possible to display _column_, _total_, or no proportions at all. We can also omit the _Totals_, so at its simplest form, we'd have:
+It is possible to display _column_, _total_, or no proportions at all. We can also omit the marginal totals and proportions altogether, so at its simplest form, we have:
 
 ```r
 with(tobacco, ctable(smoker, diseased, prop = "n", totals = FALSE))
@@ -198,7 +190,7 @@ Data Frame: tobacco
 
 ## Data Frame Summaries
 
-The `dfSummary()` function gives information for all variables contained in a data frame. The objective in building this function was to fit as much relevant information as possible in a concise, legible table. Version 0.8.0 introduced graphs for both ascii and _html_ outputs.
+As seen earlier, the `dfSummary()` function gives information for all variables contained in a data frame. The objective in building this function was to fit as much relevant information as possible in a concise, legible table. Version 0.8.0 introduced graphs for both ascii and _html_ outputs.
 
 ```r
 dfSummary(tobacco)
@@ -210,8 +202,8 @@ N: 1000
 -------------------------------------------------------------------------------------------------------------------------
 No   Variable         Stats / Values               Freqs (% of Valid)     Text Graph                  Valid     Missing  
 ---- ---------------- ---------------------------- ---------------------- --------------------------- --------- ---------
-1    gender           1. F                         489 (50.0%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤            978       22       
-     [factor]         2. M                         489 (50.0%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤            (97.8%)   (2.2%)   
+1    gender           1. F                         489 (50.0%)            IIIIIIIIIIIIIIII            978       22       
+     [factor]         2. M                         489 (50.0%)            IIIIIIIIIIIIIIII            (97.8%)   (2.2%)   
                                                                                                     
 2    age              mean (sd) : 49.6 (18.29)     63 distinct val.       .     .         .   . :     975       25       
      [numeric]        min < med < max :                                   : . . : : :   : : . : :     (97.5%)   (2.5%)   
@@ -220,10 +212,10 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
                                                                           : : : : : : : : : : : :                        
                                                                           : : : : : : : : : : : :                        
                                                                                                     
-3    age.gr           1. 18-34                     258 (26.5%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤               975       25       
-     [factor]         2. 35-50                     241 (24.7%)            ¤¤¤¤¤¤¤¤¤¤¤¤                (97.5%)   (2.5%)   
-                      3. 51-70                     317 (32.5%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                               
-                      4. 71 +                      159 (16.3%)            ¤¤¤¤¤¤¤¤                                       
+3    age.gr           1. 18-34                     258 (26.5%)            IIIIIIIIIIIII               975       25       
+     [factor]         2. 35-50                     241 (24.7%)            IIIIIIIIIIII                (97.5%)   (2.5%)   
+                      3. 51-70                     317 (32.5%)            IIIIIIIIIIIIIIII                               
+                      4. 71 +                      159 (16.3%)            IIIIIIII                                       
                                                                                                     
 4    BMI              mean (sd) : 25.73 (4.49)     974 distinct val.                  :               974       26       
      [numeric]        min < med < max :                                             : : .             (97.4%)   (2.6%)   
@@ -232,8 +224,8 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
                                                                                   : : : : : .                            
                                                                               . : : : : : : : .                          
                                                                                                     
-5    smoker           1. Yes                       298 (29.8%)            ¤¤¤¤¤¤                      1000      0        
-     [factor]         2. No                        702 (70.2%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤            (100%)    (0%)     
+5    smoker           1. Yes                       298 (29.8%)            IIIIII                      1000      0        
+     [factor]         2. No                        702 (70.2%)            IIIIIIIIIIIIIIII            (100%)    (0%)     
                                                                                                     
 6    cigs.per.day     mean (sd) : 6.78 (11.88)     37 distinct val.       :                           965       35       
      [numeric]        min < med < max :                                   :                           (96.5%)   (3.5%)   
@@ -242,35 +234,32 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
                                                                           :                                              
                                                                           :     .         .     .                        
                                                                                                     
-7    diseased         1. Yes                       224 (22.4%)            ¤¤¤¤                        1000      0        
-     [factor]         2. No                        776 (77.6%)            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤            (100%)    (0%)     
+7    diseased         1. Yes                       224 (22.4%)            IIII                        1000      0        
+     [factor]         2. No                        776 (77.6%)            IIIIIIIIIIIIIIII            (100%)    (0%)     
                                                                                                     
-8    disease          1. Hypertension              36 (16.2%)             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤            222       778      
-     [character]      2. Cancer                    34 (15.3%)             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤             (22.2%)   (77.8%)  
-                      3. Cholesterol               21 ( 9.5%)             ¤¤¤¤¤¤¤¤¤                                      
-                      4. Heart                     20 ( 9.0%)             ¤¤¤¤¤¤¤¤                                       
-                      5. Pulmonary                 20 ( 9.0%)             ¤¤¤¤¤¤¤¤                                       
-                      6. Musculoskeletal           19 ( 8.6%)             ¤¤¤¤¤¤¤¤                                       
-                      7. Diabetes                  14 ( 6.3%)             ¤¤¤¤¤¤                                         
-                      8. Hearing                   14 ( 6.3%)             ¤¤¤¤¤¤                                         
-                      9. Digestive                 12 ( 5.4%)             ¤¤¤¤¤                                          
-                      10. Hypotension              11 ( 5.0%)             ¤¤¤¤                                           
-                      [ 3 others ]                 21 ( 9.4%)             ¤¤¤¤¤¤¤¤¤                                      
+8    disease          1. Hypertension              36 (16.2%)             IIIIIIIIIIIIIIII            222       778      
+     [character]      2. Cancer                    34 (15.3%)             IIIIIIIIIIIIIII             (22.2%)   (77.8%)  
+                      3. Cholesterol               21 ( 9.5%)             IIIIIIIII                                      
+                      4. Heart                     20 ( 9.0%)             IIIIIIII                                       
+                      5. Pulmonary                 20 ( 9.0%)             IIIIIIII                                       
+                      6. Musculoskeletal           19 ( 8.6%)             IIIIIIII                                       
+                      7. Diabetes                  14 ( 6.3%)             IIIIII                                         
+                      8. Hearing                   14 ( 6.3%)             IIIIII                                         
+                      9. Digestive                 12 ( 5.4%)             IIIII                                          
+                      10. Hypotension              11 ( 5.0%)             IIII                                           
+                      [ 3 others ]                 21 ( 9.4%)             IIIIIIIII                                      
                                                                                                     
-9    samp.wgts        mean (sd) : 1 (0.08)         0.86*: 267 (26.7%)     ¤¤¤¤¤¤¤¤¤¤¤¤¤               1000      0        
-     [numeric]        min < med < max :            1.04*: 249 (24.9%)     ¤¤¤¤¤¤¤¤¤¤¤¤                (100%)    (0%)     
-                      0.86 < 1.04 < 1.06           1.05*: 324 (32.4%)     ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤                               
-                      IQR (CV) : 0.19 (0.08)       1.06*: 160 (16.0%)     ¤¤¤¤¤¤¤                                        
-                                                   * rounded                                                             
+9    samp.wgts        mean (sd) : 1 (0.08)         0.86!: 267 (26.7%)     IIIIIIIIIIIII               1000      0        
+     [numeric]        min < med < max :            1.04!: 249 (24.9%)     IIIIIIIIIIII                (100%)    (0%)     
+                      0.86 < 1.04 < 1.06           1.05!: 324 (32.4%)     IIIIIIIIIIIIIIII                               
+                      IQR (CV) : 0.19 (0.08)       1.06!: 160 (16.0%)     IIIIIII                                        
+                                                   ! rounded                                                             
 -------------------------------------------------------------------------------------------------------------------------
 ```
 
-
-
 ## Rmarkdown
 
-_summarytools_ uses Gergely Daróczi's [pander](https://github.com/Rapporter/pander) package (an _R_ implementation of John MacFarlane's [Pandoc](http://johnmacfarlane.net/pandoc/)), to generate the ascii content. What this means is that the 4 main functions can printout [markdown](http://daringfireball.net/projects/markdown/) (_Rmarkdown_ to be precise) simply by setting the option `style="rmarkdown"`. One exception: `dfSummary()` -- since it has multi-line cells, you will need to use both `style = "grid"` and `plain.ascii = FALSE` for it to be rendered correctly.
-
+_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. As a consequence, we can easily generate _Rmarkdown_ content; We do this simply by specifying `style="rmarkdown"`. 
 
 In the console, the output of a function using `style = 'rmarkdown'` looks like this:
 
@@ -288,9 +277,9 @@ In the console, the output of a function using `style = 'rmarkdown'` looks like 
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 ```
 
-It needs an interpreter which will render this as _html_. With _Pandoc_, _markdown_ documents can be converted to various formats, such as _pdf_ or _docx_, among others.
+This ``ascii-plus-plus'' content needs an interpreted in order to be displayed as _html_. _Rmarkdown_ documents can be converted to other formats as well, such as _pdf_ or _rtf_.
 
-To learn more about _markdown_ and _rmarkdown_ formats, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
+To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
 
 ## Under the Hood - Generating Html
 
@@ -300,13 +289,13 @@ It is possible to add markup to the generated content, and it is also possible t
 
 ## print() and view()
 
-_summarytools_ has a generic `print()` method, `print.summarytools`. By default, it has `method = 'pander'`. `view()` was first created as a wrapper around the generic print function, this time using `method = 'viewer'`, to easily display _html_ outputs in _RStudio_'s Viewer. When used outside of _RStudio_, the `method` falls back on `'browser'` and the report is opened in your system's default browser.
+_summarytools_ has a generic `print()` method, `print.summarytools`. By default, its `method` argument is set to `'pander'`. To easily display _html_ outputs in _RStudio_'s Viewer, we use the `view()` function, which acts as a wrapper around the generic print function, this time using `method = 'viewer'`.  When used outside of _RStudio_, the `method` falls back on `'browser'` and the report is opened in your system's default browser.
 
 ### Using by() and lapply()
 
-However, when using `by()` (with `freq()` or `descr()`) or `lapply()` (with `freq()`), `view()` is necessary in order to dispath individual members of the list that R creates when using `by()` or `lapply()`.
+When using `by()` (with `freq()` or `descr()`) or `lapply()` (with `freq()`), R returns a `list` containing _summarytools_ objects. Using the `view()` function with those objects allows is necessary in order to have non-redundant and clean section headings.
 
-Example: we want to get statistics by Species in the _iris_ data frame. We will here show how to get the best results in terms of output.
+Example: Using the _iris_ data frame, we will display descriptive statistics broken down by Species.
 
 ```r
 # First save the results
@@ -322,8 +311,8 @@ view(iris_stats_by_species, method = "pander")
 Non-numerical variable(s) ignored: Species
 
 Descriptive Statistics: iris 
-N: 50 
 Group: iris$Species = setosa 
+N: 50 
 
                      Mean   Std.Dev    Min   Median    Max
 ------------------ ------ --------- ------ -------- ------
@@ -361,15 +350,15 @@ To see an _html_ version of these results, proceed like this:
 view(iris_stats_by_species)
 ```
 
-The console will always tell you the location of the temporary _html_ file that is created in the process. However, you can specify the name and location of that file with the `file` argument:
+### Writing to files
+
+The console will always tell you the location of the temporary _html_ file that is created in the process. However, you can specify the name and location of that file explicitly if you need to reuse it later on:
 
 ```r
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 ```
 
-### Writing to files
-
-As we just saw, both `print()` and `view()` have an optionnal `file = ` parameter that can be used to save output to disk. They also have an `append = ` boolean parameter for adding to existing reports.
+There is also an `append = ` boolean parameter for adding content to existing reports.
 
 ## Overriding formatting attributes
 
@@ -457,7 +446,7 @@ $object.type
 ```
 
 # News
-I've been working on `summarytools` on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
+I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
 
 The most notable changes are:
   - A cross-tabulation function, `ctable()` 
