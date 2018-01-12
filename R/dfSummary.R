@@ -371,6 +371,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         )
 
         counts <- table(column_data, useNA = "no")
+        extra_space <- FALSE
 
         if (length(counts) <= max.distinct.values &&
             all(abs(as.numeric(names(counts))) >= 0.01)) {
@@ -384,9 +385,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           if (any(names(counts) != roundval)) {
             extra_space <- TRUE
             output[i,5] <- paste(output[i,5], "! rounded", sep = "  \n")
-          } else {
-            extra_space <- FALSE
-          }
+          } 
         } else {
           output[i,5] <- paste(length(counts), "distinct val.")
         }
