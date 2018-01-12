@@ -36,15 +36,6 @@ Data frame name, variable names and labels if any, subsetting information,
 grouping information (when by() is used) are returned by the function which
 tries various methods to get this information.
 }
-\details{
-The default \code{plain.ascii = TRUE} option is there to make
-  results appear cleaner in the console. To avoid markdown rendering
-  problems, the option is automatically set to \code{FALSE} whenever
-  \code{style = 'rmarkdown'}, unless \code{plain.ascii = TRUE} is made
-  explicit. If the intent is to produce \emph{rmarkdown} text for further
-  processing while using \code{style = 'simple'}, set \code{plain.ascii} to
-  \code{FALSE}.
-}
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com>}
 }

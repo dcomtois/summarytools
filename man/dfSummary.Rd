@@ -113,9 +113,6 @@ dfSummary(tobacco)
 \dontrun{view(dfSummary(iris))}
 
 }
-\seealso{
-\code{\link[base]{summary.data.frame}}
-}
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com}
 }
