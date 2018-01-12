@@ -255,8 +255,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
         counts_props <- align_numbers(counts, props)
         output[i,5] <- paste(counts_props, collapse = "  \n")
-        output[i,6] <- encode_graph(counts, "barplot")
-        output[i,7] <- txtbarplot(prop.table(counts))
+        if (graph.col) {
+          output[i,6] <- encode_graph(counts, "barplot")
+          output[i,7] <- txtbarplot(prop.table(counts))
+        }
 
       } else {
 
@@ -277,14 +279,16 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         )
         output[i,5] <- paste(counts_props, collapse = "  \n")
 
-        # prepare data for barplot
-        tmp_data <- column_data
-        levels(tmp_data)[max.distinct.values + 1] <- paste("[", n_extra_levels, "others", "]")
-        tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
-          paste("[", n_extra_levels, "others", "]")
-        levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
-        output[i,6] <- encode_graph(table(tmp_data), "barplot")
-        output[i,7] <- txtbarplot(prop.table(table(tmp_data)))
+        if (graph.col) {
+          # prepare data for barplot
+          tmp_data <- column_data
+          levels(tmp_data)[max.distinct.values + 1] <- paste("[", n_extra_levels, "others", "]")
+          tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
+            paste("[", n_extra_levels, "others", "]")
+          levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
+          output[i,6] <- encode_graph(table(tmp_data), "barplot")
+          output[i,7] <- txtbarplot(prop.table(table(tmp_data)))
+        }
       }
 
     } else if (is.character(column_data)) {
@@ -339,13 +343,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       sum(props[(max.distinct.values + 1):length(props)])))
           output[i,5] <- paste(counts_props, collapse = "  \n")
 
-          # Prepare data for graph
-          counts[max.distinct.values + 1] <-
-            sum(counts[(max.distinct.values + 1):length(counts)])
-          names(counts)[max.distinct.values + 1] <- paste0("[ ", n_extra_values, " others ]")
-          counts <- counts[1:(max.distinct.values + 1)]
-          output[i,6] <- encode_graph(counts, "barplot")
-          output[i,7] <- txtbarplot(prop.table(counts))
+          if (graph.col) {
+            # Prepare data for graph
+            counts[max.distinct.values + 1] <-
+              sum(counts[(max.distinct.values + 1):length(counts)])
+            names(counts)[max.distinct.values + 1] <- paste0("[ ", n_extra_values, " others ]")
+            counts <- counts[1:(max.distinct.values + 1)]
+            output[i,6] <- encode_graph(counts, "barplot")
+            output[i,7] <- txtbarplot(prop.table(counts))
+          }
         }
       }
 
@@ -390,18 +396,20 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,5] <- paste(length(counts), "distinct val.")
         }
 
-        if (length(counts) <= max.distinct.values) {
-          output[i,6] <- encode_graph(counts, "barplot")
-          if (isTRUE(extra_space)) {
-            output[i,6] <- paste0(output[i,6], "  \n\n")
+        if (graph.col) {
+          if (length(counts) <= max.distinct.values) {
+            output[i,6] <- encode_graph(counts, "barplot")
+            if (isTRUE(extra_space)) {
+              output[i,6] <- paste0(output[i,6], "  \n\n")
+            }
+            output[i,7] <- txtbarplot(prop.table(counts))
+          } else {
+            output[i,6] <- encode_graph(column_data, "histogram")
+            output[i,7] <- txthist(column_data)
           }
-          output[i,7] <- txtbarplot(prop.table(counts))
-        } else {
-          output[i,6] <- encode_graph(column_data, "histogram")
-          output[i,7] <- txthist(column_data)
         }
       }
-
+      
     } else {
 
       # Data does not fit in previous categories (neither numeric, character, or factor)
