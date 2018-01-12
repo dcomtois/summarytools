@@ -3,35 +3,35 @@
 \docType{data}
 \name{tabagisme}
 \alias{tabagisme}
-\title{Usage du Tabac et état de Santé (Données simulées)}
-\format{Un data frame de 1000 rangées et 9 colonnes}
+\title{Usage du Tabac et etat de Sante (Donnees simulees)}
+\format{Un data frame de 1000 rangees et 9 colonnes}
 \usage{
 data(tabagisme)
 }
 \description{
-Jeu de données simulées de 1000 sujets, avec les
+Jeu de donnees simulees de 1000 sujets, avec les
 colonnes suivantes:
 \itemize{
-  \item sexe Variable catégorielle (facteur), 2 niveaux:
+  \item sexe Variable categorielle (facteur), 2 niveaux:
     \dQuote{F} et \dQuote{M}. Environ 500 chacun.
-  \item age Numérique.
-  \item age.gr Age regroupé en facteur (4 niveaux).
-  \item IMC Indice de masse corporelle (numérique).
-  \item fumeur Variable catégorielle à 2 niveaux
+  \item age Numerique.
+  \item age.gr Age regroupe en facteur (4 niveaux).
+  \item IMC Indice de masse corporelle (numerique).
+  \item fumeur Variable categorielle a 2 niveaux
     (\dQuote{Oui} / \dQuote{Non}).
-  \item cigs.par.jour Nombre de cigarettes fumées par jour
-    (numérique).
-  \item malade Variable catégorielle à 2 niveaux
+  \item cigs.par.jour Nombre de cigarettes fumees par jour
+    (numerique).
+  \item malade Variable categorielle a 2 niveaux
     (\dQuote{Oui} / \dQuote{Non}).
   \item maladie Champs texte.
-  \item ponderation Poids échantillonal (numérique).
+  \item ponderation Poids echantillonal (numerique).
 }
 }
 \details{
-Note sur la simulation des données: la probabilité pour
-un sujet de tomber dans la catégorie \dQuote{malade} est
-basée sur une fonction arbitraire faisant intervenir l'âge,
-l'IMC et le nombre de cigarettes fumées par jour.
+Note sur la simulation des donnees: la probabilite pour
+un sujet de tomber dans la categorie \dQuote{malade} est
+basee sur une fonction arbitraire faisant intervenir l'age,
+l'IMC et le nombre de cigarettes fumees par jour.
 
 A copy of this dataset is \strong{available in English} under the name
 \dQuote{tobacco}.
