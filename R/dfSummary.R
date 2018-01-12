@@ -250,18 +250,25 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       counts <- table(column_data, useNA = "no")
       props <- round(prop.table(counts), round.digits + 2)
 
-
-      if (n_levels <= max.distinct.values) {
+      if (n_levels == 0 && n_valid == 0) {
+        output[i,4] <- "No levels defined"
+        output[i,5] <- "All NA's"
+        output[i,6] <- ""
+        output[i,7] <- ""
+      } else if (n_valid == 0) {
+        output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
+        output[i,5] <- "All NA's"
+        output[i,6] <- ""
+        output[i,7] <- ""
+      } else if (n_levels <= max.distinct.values) {
         output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
         counts_props <- align_numbers(counts, props)
         output[i,5] <- paste(counts_props, collapse = "  \n")
-        if (graph.col) {
+        if (graph.col && any(!is.na(column_data))) {
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
         }
-
       } else {
-
         # more levels than allowed by max.distinct.values
         n_extra_levels <- n_levels - max.distinct.values
         output[i,4] <- paste0(1:max.distinct.values,". ",
@@ -277,9 +284,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           c(props[1:max.distinct.values],
             sum(props[(max.distinct.values + 1):length(props)]))
         )
+        
         output[i,5] <- paste(counts_props, collapse = "  \n")
 
-        if (graph.col) {
+        if (graph.col && any(!is.na(column_data))) {
           # prepare data for barplot
           tmp_data <- column_data
           levels(tmp_data)[max.distinct.values + 1] <- paste("[", n_extra_levels, "others", "]")
@@ -301,15 +309,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       }
 
       if (sum(column_data == "", na.rm = TRUE) == length(column_data)) {
-        output[i,4] <- "All empty strings"
-        output[i,5] <- ""
-        output[i,6] <- NA
+        output[i,4] <- ""
+        output[i,5] <- "All empty strings"
+        output[i,6] <- ""
         output[i,7] <- ""
 
       } else if (n_miss == n_tot) {
         output[i,4] <- "All NA's"
         output[i,5] <- ""
-        output[i,6] <- NA
+        output[i,6] <- ""
         output[i,7] <- ""
 
       } else {
@@ -359,9 +367,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
       # For numeric data, display a column of descriptive stats and a column of frequencies
       if (n_miss == n_tot) {
-        output[i,4] <- "All NA's"
-        output[i,5] <- ""
-        output[i,6] <- NA
+        output[i,4] <- ""
+        output[i,5] <- "All NA's"
+        output[i,6] <- ""
         output[i,7] <- ""
       } else {
         output[i,4] <- paste(
@@ -417,9 +425,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       counts <- table(column_data, useNA = "no")
 
       if (n_miss == n_tot) {
-        output[i,4] <- "Contains only NA's"
-        output[i,5] <- ""
-        output[i,6] <- NA
+        output[i,4] <- ""
+        output[i,5] <- "All NA's"
+        output[i,6] <- ""
         output[i,7] <- ""
 
       } else if (length(counts) <= max.distinct.values) {
@@ -430,7 +438,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else {
         output[i,5] <- paste(as.character(length(unique(column_data))), "distinct val.")
       }
-      output[i,6] <- NA
+      output[i,6] <- ""
       output[i,7] <- ""
     }
 
