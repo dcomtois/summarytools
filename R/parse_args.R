@@ -331,9 +331,15 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
-  # remove column negative indexing by itself
-  if (grepl("^\\s*,\\s*-.+$", rows_subset)) {
-    rows_subset <- character()
+  # remove column negative indexing
+  if (!identical(rows_subset, character())) {
+    # scenario 1: by itself, ex: ", -4"
+    if (grepl("^\\s*,\\s*-.+$", rows_subset, perl = TRUE)) {
+      rows_subset <- character()
+    } else if (grepl("^.*,\\s*-.+$", rows_subset, perl = TRUE)) {
+      # scenario 2: with row indexing, ex: "1:10, -4"
+      rows_subset <- sub(",\\s*-.+$", "", rows_subset, perl = TRUE)
+    }
   }
   
   output <- list(df_name = df_name,
