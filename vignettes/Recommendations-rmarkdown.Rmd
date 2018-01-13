@@ -20,7 +20,7 @@ opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE)
 
 This document uses theme `rmarkdown::html_vignette`.
 
-Below are examples using recommended *styles* for `rmarkdown` rendering. Available styles are:  
+Below are examples using recommended styles for `rmarkdown` rendering. Available styles are:  
 
 - _simple_ (default)  
 - _rmarkdown_  

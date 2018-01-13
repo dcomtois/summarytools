@@ -78,7 +78,7 @@
 #'    \itemize{
 #'      \item \code{date}
 #'      \item \code{style}
-#'      \item \code{round.digits}
+#'      \item \code{round.digits} (exception: dfSummary objects)
 #'      \item \code{justify}
 #'      \item \code{plain.ascii}
 #'      \item \code{missing}
