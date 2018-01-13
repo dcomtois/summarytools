@@ -28,7 +28,7 @@ One of its goals is to make it easier for newcomeRs who might be used to other s
 Here are some of the package's features:  
 - Variable and data frame labels are supported 
 - Sampling weights can be used in frequency tables and descriptive statistics 
-- Output files of various formats can be generated (plaintext, _rmarkdown_ and _html_) 
+- Output files of various formats can be generated (plaintext, _markdown_ and _html_) 
 - The _html_ outputs are well integrated in RStudio (if an external browser is not your preferred method) 
   
 ### Why use summarytools?
@@ -52,7 +52,7 @@ view(dfSummary(iris))
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by summarytools can be:
 
 - Displayed in plain text in the R console (default behaviour) 
-- Written to plain text files / [rmarkdown](http://rmarkdown.rstudio.com/) text files 
+- Written to plain text files / _markdown_ text files 
 - Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser
 
 # How to install
@@ -265,9 +265,9 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
 -------------------------------------------------------------------------------------------------------------------------
 ```
 
-## Rmarkdown
+## Markdown
 
-_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. As a consequence, we can easily generate _Rmarkdown_ content; We do this simply by specifying `style="rmarkdown"`. 
+_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. As a consequence, we can easily generate _markdown_ content; We do this simply by specifying `style="rmarkdown"`. 
 
 In the console, the output of a function using `style = 'rmarkdown'` looks like this:
 
@@ -285,7 +285,7 @@ In the console, the output of a function using `style = 'rmarkdown'` looks like 
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 ```
 
-This ``ascii-plus-plus'' content needs an interpreted in order to be displayed as _html_. _Rmarkdown_ documents can be converted to other formats as well, such as _pdf_ or _rtf_.
+This ``ascii-plus-plus'' content needs an interpreted in order to be displayed as _html_. _markdown_ documents can be converted to other formats as well, such as _pdf_ or _rtf_.
 
 To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
 

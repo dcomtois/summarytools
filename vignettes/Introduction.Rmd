@@ -33,7 +33,7 @@ The package is built around four main functions:
 All `summarytools` objects returned by the main functions can be:
 
 - Displayed as plain text in the console (default behavior)
-- Redirected to plain text, `rmarkdown` or HTML documents
+- Redirected to plain text, _markdown/rmarkdown_ or HTML documents
 - Rendered to HTML and shown in default Web Browser or in _RStudio_'s Viewer
 
 Text-based output relies on the [pander](https://github.com/Rapporter/pander) package, while html output relies on RStudio's [htmltools](https://github.com/rstudio/htmltools).
@@ -107,7 +107,7 @@ print(crosstable, method='render', footnote = NA)
 
 ### Data frame Summaries
 
-This is the most elaborate function of the package. It incorporates elements of freq() and descr(), but goes beyond with its graphs (not yet supported in `rmarkdown`) and other attributes. 
+This is the most elaborate function of the package. It incorporates elements of freq() and descr(), but goes beyond with its graphs (not yet supported with `rmarkdown`) and other attributes. 
 
 ```{r dfSummary1, results='asis'}
 dfSummary(tobacco, style='grid', plain.ascii = FALSE, graph.col = FALSE)
@@ -191,8 +191,7 @@ what.is(iris)
 ## Limitations
 
 - The graph column in dfSummary is not yet supported in `rmarkdown`  
-- When using negative indexing, column names might not be displayed  
-- It is not possible to control the heading levels of individual heading items  
+- It is not possible to control the heading levels of individual items  
 
 ## Learn more and stay up-to-date
 
