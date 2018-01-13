@@ -1,0 +1,189 @@
+---
+title: "Recommendations for Using summarytools With Rmarkdown"
+author: "Dominic Comtois"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recommendations for Rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+<!-- (output: html_document or html_vignette) -->
+
+```{r setup, include=FALSE}
+library(summarytools)
+library(knitr)
+opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE)
+```
+
+This document uses theme `rmarkdown::html_vignette`.
+
+Below are examples using recommended *styles* for `rmarkdown` rendering. Available styles are:  
+
+- _simple_ (default)  
+- _rmarkdown_  
+- _grid_  
+- _multiline_  
+ 
+Jump to...
+
+- [descr()](#descr)  
+- [ctable()](#ctable)  
+- [dfSummary()](#dfsummary)  
+
+
+--------------------------------------------------------------------------------
+
+# freq()
+
+`freq()` is best used with _default_ or _rmarkdown_ styles. HTML rendering is not recommended.
+
+### Default (_simple_) Style
+```{r freq_default, results='asis'}
+freq(tobacco$gender)
+```
+
+### Default (_simple_) Style with plain.ascii = FALSE
+```{r freq_default2, results='asis'}
+freq(tobacco$gender, plain.ascii = FALSE)
+```
+
+## Rmarkdown Style
+```{r freq_rm, results='asis'}
+freq(tobacco$gender, style = 'rmarkdown')
+freq(tobacco$gender, style = 'rmarkdown', omit.headings = TRUE)
+```
+
+<!-- ### Grid Style -->
+<!-- ```{r freq_grid, results='asis'} -->
+<!-- freq(tobacco$gender, style = 'grid') -->
+<!-- ``` -->
+
+<!-- ## HTML Rendering -->
+<!-- ```{r freq_html, results='asis'} -->
+<!-- print(freq(tobacco$gender), method = 'render') -->
+<!-- print(freq(tobacco$gender), method = 'render', omit.headings = TRUE) -->
+<!-- ``` -->
+
+ 
+------------------------------------------------------------------------------------
+ 
+<a href="#top">Back to top</a>
+ 
+# descr() {#descr}
+`descr()` is best used with _default_ or _rmarkdown_ styles. HTML rendering is also supported.
+
+### Default Style
+```{r descr_default, results='asis'}
+descr(tobacco)
+```
+
+### Default Style with plain.ascii = FALSE
+```{r descr_default2, results='asis'}
+descr(tobacco, plain.ascii = FALSE)
+descr(tobacco$BMI, plain.ascii = FALSE)
+```
+
+## Rmarkdown Style
+```{r descr_rm, results='asis'}
+descr(tobacco, style = 'rmarkdown')
+descr(tobacco$BMI, style = 'rmarkdown')
+descr(tobacco$BMI, style = 'rmarkdown', omit.headings = TRUE)
+```
+
+<!-- ### Grid Style -->
+<!-- ```{r descr_grid, results='asis'} -->
+<!-- descr(tobacco, style = 'grid') -->
+<!-- descr(tobacco$BMI, style = 'grid') -->
+<!-- ``` -->
+
+## HTML Render
+```{r descr_html, results='asis'}
+print(descr(tobacco), method = 'render')
+print(descr(tobacco$BMI), method = 'render')
+print(descr(tobacco, omit.headings = TRUE), method = 'render')
+```
+
+ 
+--------------------------------------------------------------------------------
+
+<a href="#top">Back to top</a>
+
+# Ctable() {#ctable}
+
+For best results, use *HTML rendering*.
+<!-- ## Default Style -->
+<!-- ```{r ctable_default, results='asis'} -->
+<!-- ctable(tobacco$gender, tobacco$smoker) -->
+<!-- ``` -->
+
+<!-- ## Default Style with plain.ascii = FALSE -->
+<!-- ```{r ctable_default2, results='asis'} -->
+<!-- ctable(tobacco$gender, tobacco$smoker, plain.ascii = FALSE) -->
+<!-- ``` -->
+
+<!-- ## Rmarkdown Style -->
+<!-- ```{r ctable_rm, results='asis'} -->
+<!-- ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown') -->
+<!-- ``` -->
+
+<!-- ## Grid Style -->
+<!-- ```{r ctable_grid, results='asis'} -->
+<!-- ctable(tobacco$gender, tobacco$smoker, justify = 'right', style = 'grid') # voir si default est bien right -->
+<!-- ``` -->
+
+```{r ctable_html, results='asis'}
+print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
+print(ctable(tobacco$gender, tobacco$smoker, omit.headings = TRUE), method = 'render')
+```
+
+--------------------------------------------------------------------------------
+
+<a href="#top">Back to top</a>
+
+# dfSummary() {#dfsummary}
+
+For best results, use _grid_ style and set `graph.col = FALSE`. 
+
+<!-- ## Default Style -->
+<!-- ```{r dfs_default, results='asis'} -->
+<!-- dfSummary(tobacco) -->
+<!-- dfSummary(tobacco, graph.col = FALSE) -->
+<!-- ``` -->
+
+<!-- ## Default Style with plain.ascii = FALSE -->
+<!-- ```{r dfs_default2, results='asis'} -->
+<!-- dfSummary(tobacco, plain.ascii = FALSE) -->
+<!-- dfSummary(tobacco, graph.col = FALSE, plain.ascii = FALSE) -->
+<!-- ``` -->
+
+<!-- ## Multiline Style -->
+<!-- ```{r dfs_ml, results='asis'} -->
+<!-- dfSummary(tobacco, style = 'multiline') -->
+<!-- dfSummary(tobacco, style = 'multiline', graph.col = FALSE) -->
+<!-- dfSummary(tobacco, style = 'multiline', plain.ascii = FALSE) -->
+<!-- dfSummary(tobacco, style = 'multiline', plain.ascii = FALSE, graph.col = FALSE) -->
+<!-- ``` -->
+
+<!-- ## Grid Style -->
+<!-- ```{r dfs_grid, results='asis'} -->
+<!-- dfSummary(tobacco, style = 'grid') -->
+<!-- dfSummary(tobacco, style = 'grid', graph.col = FALSE) -->
+<!-- dfSummary(tobacco, style = 'grid', plain.ascii = FALSE) -->
+<!-- ``` -->
+
+## Grid Style
+```{r dfs_grid, results='asis'}
+dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.col = FALSE)
+dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.col = FALSE, omit.headings = TRUE)
+```
+
+<!-- ## HTML Render -->
+<!-- ```{r dfs_html, results='asis'} -->
+<!-- print(dfSummary(tobacco), method = 'render') -->
+<!-- ``` -->
+
+<a href="#top">Back to top</a>
+
