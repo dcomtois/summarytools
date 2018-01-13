@@ -12,7 +12,8 @@
 #'   (default), \dQuote{no}, or \dQuote{always}.
 #' @param totals Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
+#'   (see details section about the latter).
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{1}.
 #'   \dQuote{rmarkdown}.
@@ -32,11 +33,10 @@
 #' @return A frequency table of class \code{matrix} with added attributes used
 #'   by \link{print} method.
 #'
-#' @details The default \code{plain.ascii = TRUE} option is there to make results
-#'   appear cleaner in the console. To avoid \emph{rmarkdown} rendering problems, the
-#'   option is automatically set to \code{FALSE} whenever
-#'   \code{style = "rmarkdown"}, unless \code{plain.ascii = TRUE} is made
-#'   explicit. 
+#' @details Rmarkdown does not, to this day, support multi-header tables. Therefore,
+#'   until such support is available, the recommended way to display cross-tables
+#'   in .Rmd documents is to use `method=render` with the `print()` generic function
+#'   or with the `view()` function. See package vignettes for examples.
 #'
 #' @examples
 #' data("tobacco")
