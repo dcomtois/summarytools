@@ -4,3 +4,5 @@ summarytools.Rproj
 .Rbuildignore
 .Rproj.user
 COPYING
+vignettes/*.R
+vignettes/*.html
