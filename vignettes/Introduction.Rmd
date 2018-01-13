@@ -15,7 +15,7 @@ library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE)
 ```
 
-**`summarytools`** is an _[R](http://r-project.org)_ package providing tools to neatly and quickly summarize data, with functions that most R programmers once wished were included in base R. It can also make _R_ a little easier to use for newbies. With a few lines of simple code, you can get a good look at the data at hand.
+**`summarytools`** is an _R_ package providing tools to neatly and quickly summarize data, with functions that most R programmers once wished were included in base R. It can also make _R_ a little easier to use for newbies. With a few lines of simple code, you can get a good look at the data at hand.
 
 An emphasis has been put on both _what_ and _how_ results are presented, so that the package can serve both as a data exploration _and_ reporting tool than can be used either on its own for minimal reports, or integrated in a larger set of tools such as RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/) and [knitr](https://yihui.name/knitr/).
 
