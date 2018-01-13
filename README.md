@@ -4,7 +4,15 @@ Other stats: [![Research software impact](http://depsy.org/api/person/338759/bad
 
 ## Latest News
 
-Version 0.8.0 is now on CRAN. A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
+Version 0.8.1 is soon to be submitted to CRAN. To install:
+
+```r
+install.packages("devtools")
+library(devtools)
+install_github('dcomtois/summarytools', ref='dev-current', build_vignettes=TRUE)
+```
+
+A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
 
 ## What is summarytools?
 

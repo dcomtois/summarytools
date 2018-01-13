@@ -804,8 +804,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                             c("Dataframe", "Data Frame"),
                                             c("Weights", "Weights"),
                                             c("Subset", "Subset"),
-                                            c("N.Obs", "N"),
-                                            c("Group", "Group")),
+                                            c("Group", "Group"),
+                                            c("N.Obs", "N")),
                                        h = 0)
         }
       }
