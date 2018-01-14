@@ -1,5 +1,6 @@
 .Rprofile
 .Rhistory
+.Renviron
 summarytools.Rproj
 .Rbuildignore
 .Rproj.user
