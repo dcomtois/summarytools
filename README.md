@@ -4,13 +4,8 @@ Other stats: [![Research software impact](http://depsy.org/api/person/338759/bad
 
 ## Latest News
 
-Version 0.8.1 is soon to be submitted to CRAN. To install:
-
-```r
-install.packages("devtools")
-library(devtools)
-install_github('dcomtois/summarytools', ref='dev-current', build_vignettes=TRUE)
-```
+Version 0.8.1 is now on CRAN. This version includes vignettes and also fixes issues
+reported with 0.8.0. See DESCRIPTION file for details.
 
 A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
 
@@ -36,24 +31,6 @@ Here are some of the package's features:
 - You're looking for need straightforward descriptive functions to get up and running in no time  
 - You're looking for flexibility in terms of outputs  
 
-### A first example
-
-Using the _iris_ sample data frame, we'll jump right to the most popular function in the package, `dfSummary` (*Data Frame Summary*). 
-
-With the following 2 lines of code, we'll generate a summary report for ''iris`` and have it displayed in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
-
-```r
-library(summarytools)
-view(dfSummary(iris))
-```
-
-![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
-
-##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by summarytools can be:
-
-- Displayed in plain text in the R console (default behaviour) 
-- Written to plain text files / _markdown_ text files 
-- Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser
 
 # How to install
 
@@ -72,6 +49,25 @@ install_github('dcomtois/summarytools', ref='dev-current')
 ```
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
+
+## Examples
+
+Using the _iris_ sample data frame, we'll jump right to the most popular function in the package, `dfSummary` (*Data Frame Summary*). 
+
+With the following 2 lines of code, we'll generate a summary report for ''iris`` and have it displayed in [_RStudio_](http://www.rstudio.com/)'s Viewer pane:
+
+```r
+library(summarytools)
+view(dfSummary(iris))
+```
+
+![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
+
+##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the summary reports produced by summarytools can be:
+
+- Displayed in plain text in the R console (default behaviour) 
+- Written to plain text files / _markdown_ text files 
+- Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser
 
 # Four Core Functions
 
@@ -454,14 +450,13 @@ $object.type
 ```
 
 # News
-I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
+I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8. The most notable changes compared to 0.7 are:
 
-The most notable changes are:
   - A cross-tabulation function, `ctable()` 
   - Improved support for `by()`, `with()` and `lapply()` functions 
-  - `dfSummary()` now optionnaly shows barplots and histograms 
+  - Optional barplots and histographs in `dfSummary()` 
   - New layouts, most noticeable in html reports 
-  - Added flexibility on many fronts 
+  - Improved flexibility on several fronts 
 
 
 ## Final notes
