@@ -1,16 +1,16 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.8.0
-Date: 2017-12-08
+Version: 0.8.1
+Date: 2018-01-12
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Data frame summaries, cross-tabulations,
   weight-enabled frequency tables and common univariate
   statistics in concise tables available in a variety of
-  formats (plain ASCII, Rmarkdown and HTML). A good point-
+  formats (plain ASCII, rmarkdown and HTML). A good point-
   of-entry for exploring data, both for experienced and
-  inexperienced R users.
+  new R users.
 Imports:
   htmltools,
   matrixStats,
@@ -24,6 +24,7 @@ Suggests:
   rstudioapi,
   knitr,
   rmarkdown
+VignetteBuilder: knitr
 LazyData: true
 License: GPL-2
 URL: https://github.com/dcomtois/summarytools

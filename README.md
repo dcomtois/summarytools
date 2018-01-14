@@ -1,10 +1,18 @@
-# summarytools version 0.8.0
-CRAN stats: [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)  
+# summarytools version 0.8.1
+CRAN stats: [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)  [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)  
 Other stats: [![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
 
 ## Latest News
 
-Version 0.8.0 is now on CRAN. A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
+Version 0.8.1 is soon to be submitted to CRAN. To install:
+
+```r
+install.packages("devtools")
+library(devtools)
+install_github('dcomtois/summarytools', ref='dev-current', build_vignettes=TRUE)
+```
+
+A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
 
 ## What is summarytools?
 
@@ -49,37 +57,21 @@ view(dfSummary(iris))
 
 # How to install
 
-## Recommended
-
-For the **latest stable release** which will also include fixes not on the _R-CRAN_ version, do the following:
-
-```r
-install.packages("devtools") # Only necessary if you don't already have devtools installed
-library(devtools)
-install_github("dcomtois/summarytools", build_vignettes = TRUE)
-```
-
-## Version on R-CRAN
-
-To install the version currently available on _R-CRAN_, you simply need to do this:
+To install the **latest stable version** of **summarytools** on the _R-CRAN_ repository, just type into your R console: 
 
 ```r
 install.packages("summarytools")
 ```
-
-Note however that the previous method is encouraged, as it might include recent fixes and small enhancements. 
-
-You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
-
-## Development version
 
 For the most **up-to-date version** that has all the latest features **but** might also contain bugs (which can be fixed rapidly in most cases): 
 
 ```r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools', ref='dev-current', build_vignettes = TRUE)
+install_github('dcomtois/summarytools', ref='dev-current')
 ```
+
+You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
 # Four Core Functions
 

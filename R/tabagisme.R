@@ -6,13 +6,13 @@
 #'   \item sexe Variable categorielle (facteur), 2 niveaux:
 #'     \dQuote{F} et \dQuote{M}. Environ 500 chacun.
 #'   \item age Numerique.
-#'   \item age.gr Age regroupe en facteur (4 niveaux).
+#'   \item age.gr Groupe d'age - variable categorielle, 4 niveaux.
 #'   \item IMC Indice de masse corporelle (numerique).
-#'   \item fumeur Variable categorielle a 2 niveaux
+#'   \item fumeur Variable categorielle, 2 niveaux
 #'     (\dQuote{Oui} / \dQuote{Non}).
 #'   \item cigs.par.jour Nombre de cigarettes fumees par jour
 #'     (numerique).
-#'   \item malade Variable categorielle a 2 niveaux
+#'   \item malade Variable categorielle, 2 niveaux
 #'     (\dQuote{Oui} / \dQuote{Non}).
 #'   \item maladie Champs texte.
 #'   \item ponderation Poids echantillonal (numerique).

@@ -275,6 +275,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
       var_names <- var_names_tmp
     } else if (grepl("^\\w+$", data_str, perl = TRUE)) {
       var_names <- colnames(eval(parse(text=data_str)))
+    } else if (grepl("^\\w+\\[.*,\\s*\\-.+\\]", data_str, perl = TRUE)) {
+      var_names <- colnames(eval(parse(text=data_str)))
     } else if (grepl(re1, data_str, perl = TRUE)) {
       # set aside row subsetting for now
       # replacing for instance "dat[1:29,4]" with "dat[4]"
@@ -329,6 +331,17 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
+  # remove column negative indexing
+  if (!identical(rows_subset, character())) {
+    # scenario 1: by itself, ex: ", -4"
+    if (grepl("^\\s*,\\s*-.+$", rows_subset, perl = TRUE)) {
+      rows_subset <- character()
+    } else if (grepl("^.*,\\s*-.+$", rows_subset, perl = TRUE)) {
+      # scenario 2: with row indexing, ex: "1:10, -4"
+      rows_subset <- sub(",\\s*-.+$", "", rows_subset, perl = TRUE)
+    }
+  }
+  
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,

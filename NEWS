@@ -1,3 +1,11 @@
+Version 0.8.1
+-------------
+Added vignettes. Improved handling of negative column indexing by the parsing function. Fixed 
+issue with all-NA factors in dfSummary. Changed column for displaying "All NA's" for numerical
+vectors in dfSummary. Fixed issue with graphs in dfSummary. Removed
+accentuated characters from docs.
+
+
 Version 0.8.0
 -------------
 Introducing graphs in dfSummary results. Improved alignment of numbers in both html and
