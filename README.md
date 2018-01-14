@@ -49,21 +49,37 @@ view(dfSummary(iris))
 
 # How to install
 
-To install the **latest stable version** of **summarytools** on the _R-CRAN_ repository, just type into your R console: 
+## Recommended
+
+For the **latest stable release** which will also include fixes not on the _R-CRAN_ version, do the following:
+
+```r
+install.packages("devtools") # Only necessary if you don't already have devtools installed
+library(devtools)
+install_github("dcomtois/summarytools", build_vignettes = TRUE)
+```
+
+## Version on R-CRAN
+
+To install the version currently available on _R-CRAN_, you simply need to do this:
 
 ```r
 install.packages("summarytools")
 ```
+
+Note however that the previous method is encouraged, as it might include recent fixes and small enhancements. 
+
+You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
+
+## Development version
 
 For the most **up-to-date version** that has all the latest features **but** might also contain bugs (which can be fixed rapidly in most cases): 
 
 ```r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools', ref='dev-current')
+install_github('dcomtois/summarytools', ref='dev-current', build_vignettes = TRUE)
 ```
-
-You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
 # Four Core Functions
 
