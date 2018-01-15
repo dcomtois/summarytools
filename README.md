@@ -26,9 +26,9 @@ Here are some of the package's features:
 - Output files of various formats can be generated (plaintext, _markdown_ and _html_) 
 - The _html_ outputs are well integrated in RStudio (if an external browser is not your preferred method) 
   
-### Why use summarytools?
+## Why use summarytools?
 
-- You're looking for need straightforward descriptive functions to get up and running in no time  
+- You're looking for straightforward descriptive functions to get up and running in no time  
 - You're looking for flexibility in terms of outputs  
 
 # How to install
@@ -49,7 +49,7 @@ install_github('dcomtois/summarytools', ref='dev-current')
 
 You can also see the source code and documentation on the official R site [here](http://cran.r-project.org/web/packages/summarytools/).
 
-## A First Example
+# A First Example
 
 Using the _iris_ sample data frame, we'll jump right to the most popular function in the package, `dfSummary` (*Data Frame Summary*). 
 
@@ -70,7 +70,7 @@ view(dfSummary(iris))
 
 # Four Core Functions
 
-## Frequency tables with `freq()`
+## 1 - Frequency tables with `freq()`
 
 The `freq()` function generates a table of frequencies with counts and proportions.
 
@@ -93,7 +93,7 @@ Type: Factor (unordered)
            Total    150    100.00         100.00    100.00         100.00
 ```
 
-## Descriptive (univariate) statistics with `descr()`
+## 2 - Descriptive (univariate) statistics with `descr()`
 The `descr()` function generates common central tendency statistics and measures of dispersion for numerical data. It can handle single vectors as well as dataframes, in which case it just ignores non-numerical columns.
 
 We'll use the _rmarkdown_ style for the next example:
@@ -140,7 +140,7 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE)
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
 
 
-## Cross-tabulations with `ctable()`
+## 3 - Cross-tabulations with `ctable()`
 
 Here we'll use a sample data frame included in the package (_tobacco_), which contains simulated data. Say we want to cross-tabulate variables `smoker` and `diseased`. By default, `ctable()` gives row proportions, so we don't need to specify any additionnal parameter. 
 
@@ -191,7 +191,7 @@ Data Frame: tobacco
 -------- ---------- ----- -----
 ```
 
-## Data Frame Summaries
+## 4 - Data Frame Summaries
 
 As seen earlier, the `dfSummary()` function gives information for all variables contained in a data frame. The objective in building this function was to fit as much relevant information as possible in a concise, legible table. Version 0.8.0 introduced graphs for both ascii and _html_ outputs.
 
@@ -449,18 +449,18 @@ $object.type
 ```
 
 # News
-I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8.0, here on GitHub at first, and then push it to R-Cran. 
 
-The most notable changes are:
+I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8. The most notable changes compared to 0.7 are:
+
   - A cross-tabulation function, `ctable()` 
   - Improved support for `by()`, `with()` and `lapply()` functions 
-  - `dfSummary()` now optionnaly shows barplots and histograms 
+  - Optional barplots and histographs in `dfSummary()` 
   - New layouts, most noticeable in html reports 
-  - Added flexibility on many fronts 
-
-
+  - Improved flexibility on several fronts 
+  
+  
 ## Final notes
 
-The package comes with no guarantees. It is a work in progress and feedback / feature requests are welcome. Just write me an email at dominic.comtois (at) gmail.com, or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
+The package comes with no guarantees. It is a work in progress and feedback / feature requests are welcome. Just send me an email (dominic.comtois (at) gmail.com), or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
 
 Also, the package grew significantly larger, and maintaining it all by myself is time consuming. If you would like to contribute, please get in touch, I'd greatly appreciate the help.
