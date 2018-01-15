@@ -454,11 +454,11 @@ I've been working on summarytools on and off over the last few months. Now I'm h
 
   - A cross-tabulation function, `ctable()` 
   - Improved support for `by()`, `with()` and `lapply()` functions 
-  - `dfSummary()` now optionally shows barplots and histograms 
+  - Optional barplots and histograms in `dfSummary()` 
   - New layouts, most noticeable in html reports 
-  - Added flexibility on many fronts 
-
-
+  - Improved flexibility on several fronts 
+  
+  
 ## Final notes
 
 The package comes with no guarantees. It is a work in progress and feedback / feature requests are welcome. Just send me an email (dominic.comtois (at) gmail.com), or open an [Issue](https://github.com/dcomtois/summarytools/issues) if you find a bug.
