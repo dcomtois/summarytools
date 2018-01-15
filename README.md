@@ -454,7 +454,7 @@ I've been working on summarytools on and off over the last few months. Now I'm h
 
   - A cross-tabulation function, `ctable()` 
   - Improved support for `by()`, `with()` and `lapply()` functions 
-  - Optional barplots and histographs in `dfSummary()` 
+  - Optional barplots and histograms in `dfSummary()` 
   - New layouts, most noticeable in html reports 
   - Improved flexibility on several fronts 
   
