@@ -1,4 +1,4 @@
-# summarytools version 0.8.1
+# [Summarytools - An R Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)  
@@ -7,7 +7,7 @@
 
 A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
 
-This latest version includes vignettes and and also fixes the issues reported with 0.8.0. See DESCRIPTION file for details.
+The latest version includes vignettes and and also fixes the issues reported with 0.8.0. See DESCRIPTION file for details.
 
 ## What is summarytools?
 
