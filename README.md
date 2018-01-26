@@ -5,11 +5,12 @@
 [![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dcomtois) 
 
-Two vignettes complement information found on this page:  
+Version 0.8.1 (available in the official _R_ repository) fixes the issues reported with 0.8.0. Please make sure you are using the latest version!  
+
+The two following vignettes complement information found on this page:  
 - [Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)  
 - [Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 
-Version 0.8.1 (available in the official _R_ repository) fixes the issues reported with 0.8.0. Please make sure you are using the latest version!  
 
 ## What is summarytools?
 
