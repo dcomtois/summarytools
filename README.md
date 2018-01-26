@@ -5,7 +5,9 @@
 [![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dcomtois) 
 
-A vignette which complements information found on this page is available [here](https://cdn.rawgit.com/dcomtois/summarytools/5e2578f2/vignettes/Introduction.html).
+Two vignettes which complement information found on this page are available on _CRAN_:   
+- [Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)  
+- [Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 
 The latest version includes vignettes and and also fixes the issues reported with 0.8.0. See DESCRIPTION file for details.
 
