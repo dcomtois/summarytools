@@ -36,7 +36,15 @@ Here are some of the package's features:
 
 # How to install
 
-To install the **latest stable version** of **summarytools** on the _R-CRAN_ repository, just type into your R console: 
+To benefit from all the latests fixes, install it from GitHub:
+
+```r
+install.packages("devtools")
+library(devtools)
+install_github('dcomtois/summarytools')
+```
+
+To install the most recent version on the _R-CRAN_ repository, just type into your R console: 
 
 ```r
 install.packages("summarytools")
