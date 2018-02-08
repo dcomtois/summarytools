@@ -307,7 +307,7 @@ _summarytools_ has a generic `print()` method, `print.summarytools`. By default,
 
 ### Using by() and lapply()
 
-When using `by()` (with `freq()` or `descr()`) or `lapply()` (with `freq()`), R returns a `list` containing _summarytools_ objects. Using the `view()` function with those objects allows is necessary in order to have non-redundant and clean section headings.
+When using `by()` (with `freq()` or `descr()`) or `lapply()` (with `freq()`), R returns a `list` containing _summarytools_ objects. Using the `view()` function with those objects is necessary in order to have non-redundant and clean section headings.
 
 Example: Using the _iris_ data frame, we will display descriptive statistics broken down by Species.
 
