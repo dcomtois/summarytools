@@ -141,6 +141,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       hist_values <- hist(data, breaks = breaks_x, plot = FALSE)
       hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
            xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")
+      
     } else if (graph_type == "barplot") {
       png(img_png <- tempfile(fileext = ".png"), width = 150,
           height = 26*length(data), units = "px",
@@ -163,7 +164,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     outstr <- character(0)
     for (i in seq_along(widths)) {
       outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
-                      sep = "  \n  ")
+                      sep = " \n\\")
     }
     return(outstr)
   }
@@ -255,11 +256,13 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
+        
       } else if (n_valid == 0) {
         output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
+        
       } else if (n_levels <= max.distinct.values) {
         output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
         counts_props <- align_numbers(counts, props)
@@ -336,8 +339,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           # Too many values - report most common strings
           counts <- sort(counts, decreasing = TRUE)
           props <- round(prop.table(counts), round.digits + 2)
-          n_extra_values <- length(counts)-max.distinct.values
-          n_extra_values <- length(counts)-max.distinct.values
+          n_extra_values <- length(counts) - max.distinct.values
           output[i,4] <- paste0(
             paste0(1:max.distinct.values,". ",
                    substr(names(counts), 1, max.string.width)[1:max.distinct.values],
@@ -371,6 +373,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
+        
       } else {
         output[i,4] <- paste(
           "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
@@ -381,7 +384,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
           " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
                       round.digits),
-          ")", collapse="",sep=""
+          ")", collapse="", sep=""
         )
 
         counts <- table(column_data, useNA = "no")
@@ -400,6 +403,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
             extra_space <- TRUE
             output[i,5] <- paste(output[i,5], "! rounded", sep = "  \n")
           } 
+          
         } else {
           output[i,5] <- paste(length(counts), "distinct val.")
         }
@@ -411,6 +415,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
               output[i,6] <- paste0(output[i,6], "  \n\n")
             }
             output[i,7] <- txtbarplot(prop.table(counts))
+            
           } else {
             output[i,6] <- encode_graph(column_data, "histogram")
             output[i,7] <- txthist(column_data)
@@ -418,23 +423,62 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         }
       }
       
-    } else {
-
-      # Data does not fit in previous categories (neither numeric, character, or factor)
-      output[i,4] <- ""
-      counts <- table(column_data, useNA = "no")
-
+    } else if (inherits(column_data, c("Date", "POSIXct"))) {  
+      
       if (n_miss == n_tot) {
         output[i,4] <- ""
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
-
+        
+      } else {
+        
+        counts <- table(column_data, useNA = "no")
+        
+        # Report all frequencies when allowed by max.distinct.values
+        if (length(counts) <= max.distinct.values) {
+          output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="  \n")
+          props <- round(prop.table(counts), round.digits + 2)
+          counts_props <- align_numbers(counts, props)
+          output[i,5] <- paste(counts_props, collapse = "  \n")
+          output[i,6] <- encode_graph(counts, "barplot")
+          output[i,7] <- txtbarplot(prop.table(counts))
+          
+        } else {
+          output[i,4] <- paste(
+            "min : ", tmin <- min(column_data, na.rm = TRUE), "  \n",
+            "med : ", median(column_data, na.rm = TRUE), "  \n",
+            "max : ", tmax <- max(column_data, na.rm = TRUE), "  \n",
+            "range : ", paste(round(dtime <- difftime(tmax, tmin), round.digits), attr(dtime, 'units'))
+          )
+          
+          output[i,5] <- paste(length(counts), "distinct val.")
+          
+          if (graph.col) {
+            tmp <- as.numeric(column_data)
+            output[i,6] <- encode_graph(as.numeric(column_data) - mean(as.numeric(column_data)), "histogram")
+            output[i,7] <- txthist(as.numeric(column_data) - mean(as.numeric(column_data)))
+          }
+        }
+      }
+      
+    } else {
+      
+      # Data does not fit in previous categories (neither numeric, character, factor, nor POSIXt/Date)
+      output[i,4] <- ""
+      counts <- table(column_data, useNA = "no")
+      
+      if (n_miss == n_tot) {
+        output[i,4] <- ""
+        output[i,5] <- "All NA's"
+        output[i,6] <- ""
+        output[i,7] <- ""
+        
       } else if (length(counts) <= max.distinct.values) {
         props <- round(prop.table(counts), round.digits + 2)
         counts_props <- align_numbers(counts, props)
         output[i,5] <- paste(counts_props, collapse = "  \n")
-
+        
       } else {
         output[i,5] <- paste(as.character(length(unique(column_data))), "distinct val.")
       }

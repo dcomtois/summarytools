@@ -299,7 +299,7 @@ To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](htt
 
 Version 0.8.0 of _summarytools_ uses _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html) and version 4 of [Bootstrap](http://getbootstrap.com/)'s cascading stylesheets.
 
-It is possible to add markup to the generated content, and it is also possible to include your own _css_.
+It is also possible to include your own _css_ if you wish to customize the look of the output tables.
 
 ## print() and view()
 
