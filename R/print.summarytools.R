@@ -439,8 +439,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             }
           }
   
-          he_added <- add_head_element(list(c("Dataframe", "Data frame"),
-                                            c("Variable.label", "Variable Label"),
+          he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                            c("Dataframe", "Data frame"),
+                                            c("Dataframe.label", "Data Frame Label"),
                                             c("Data.type", "Type"),
                                             c("Weights", "Weights"),
                                             c("Subset", "Subset"),
@@ -584,6 +585,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
           he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                             c("Dataframe", "Data Frame"),
+                                            c("Dataframe.label", "Data Frame Label"),
                                             c("Data.type", "Type"),
                                             c("Weights", "Weights"),
                                             c("Subset", "Subset"),
@@ -635,6 +637,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
   
           he_added <- add_head_element(list(c("Dataframe", "Data Frame"),
+                                            c("Dataframe.label", "Data Frame Label"),
                                             c("Subset", "Subset"),
                                             c("Row.variable.subset", "Row Var Subset"),
                                             c("Col.variable.subset", "Col Var Subset"),
@@ -802,6 +805,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
           he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                             c("Dataframe", "Data Frame"),
+                                            c("Dataframe.label", "Data Frame Label"),
                                             c("Weights", "Weights"),
                                             c("Subset", "Subset"),
                                             c("Group", "Group"),
@@ -911,10 +915,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
           he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
                                             c("Dataframe", "Data Frame"),
+                                            c("Dataframe.label", "Data Frame Label"),
                                             c("Weights", "Weights"),
                                             c("Subset", "Subset"),
-                                            c("N.Obs", "N"),
-                                            c("Group", "Group")),
+                                            c("Group", "Group"),
+                                            c("N.Obs", "N")),
                                        h = 0)
         }
       }

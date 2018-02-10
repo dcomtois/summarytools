@@ -63,6 +63,9 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   re4 <- paste0("\\w+",                       # variable name       (1)
                 "(\\[\\s*(.+)\\s*\\])")       # rows indexing       (2)
 
+  # valid names for dataframes
+  re5 <- "^[_a-zA-Z0-9](\\w|\\d|\\.)*$"
+  
   df_name     = character()
   var_names   = character()
   rows_subset = character()
@@ -187,6 +190,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   if (length(lapply_pos) == 1 && lapply_pos == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[1]]))
     df_name <- as.character(lapply_call$X)
+    df_name <- grep(re5, df_name, value = TRUE)[1]
     var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
   }
 
@@ -264,6 +268,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
 
   # Extract data frame label if any
   if (!no_df && length(df_name) > 0 && exists(df_name) && !is.na(label(get(df_name)))) {
+  #if (!no_df && length(df_name) > 0) {
+  #} && exists(df_name) && !is.na(label(get(df_name)))) {
     df_label <- label(get(df_name))
   } else {
     df_label <- character()
