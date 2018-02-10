@@ -1,14 +1,14 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.8.1
-Date: 2018-01-12
+Version: 0.8.2
+Date: 2018-02-10
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Data frame summaries, cross-tabulations,
   weight-enabled frequency tables and common univariate
   statistics in concise tables available in a variety of
-  formats (plain ASCII, rmarkdown and HTML). A good point-
+  formats (plain ASCII, Markdown and HTML). A good point-
   of-entry for exploring data, both for experienced and
   new R users.
 Imports:

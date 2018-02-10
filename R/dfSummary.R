@@ -220,7 +220,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
   # iterate over columns of x
   for(i in seq_len(ncol(x))) {
-
+    
     # extract column data
     column_data <- x[[i]]
 
@@ -455,9 +455,9 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,5] <- paste(length(counts), "distinct val.")
           
           if (graph.col) {
-            tmp <- as.numeric(column_data)
-            output[i,6] <- encode_graph(as.numeric(column_data) - mean(as.numeric(column_data)), "histogram")
-            output[i,7] <- txthist(as.numeric(column_data) - mean(as.numeric(column_data)))
+            tmp <- as.numeric(column_data)[!is.na(column_data)]
+            output[i,6] <- encode_graph(tmp - mean(tmp), "histogram")
+            output[i,7] <- txthist(tmp - mean(tmp))
           }
         }
       }

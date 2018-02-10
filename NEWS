@@ -1,9 +1,15 @@
+Version 0.8.2
+-------------
+Fixed performance issue with numerical data having a large range. Fixed missing linefeeds
+in dfSummary text barcharts. Added support for Date / POSIXt objects.
+
+
 Version 0.8.1
 -------------
 Added vignettes. Improved handling of negative column indexing by the parsing function. Fixed 
 issue with all-NA factors in dfSummary. Changed column for displaying "All NA's" for numerical
-vectors in dfSummary. Fixed issue with graphs in dfSummary. Removed
-accentuated characters from docs.
+vectors in dfSummary. Fixed issue with graphs in dfSummary. Removed accentuated characters 
+from docs.
 
 
 Version 0.8.0

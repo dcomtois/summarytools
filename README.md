@@ -468,6 +468,7 @@ I've been working on summarytools on and off over the last few months. Now I'm h
   - Optional barplots and histograms in `dfSummary()` 
   - New layouts, most noticeable in html reports 
   - Improved flexibility on several fronts 
+  - Support for Date / POSIX columns 
   
   
 ## Final notes
