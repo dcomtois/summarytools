@@ -1,7 +1,8 @@
 Version 0.8.2
 -------------
 Fixed performance issue with numerical data having a large range. Fixed missing linefeeds
-in dfSummary text barcharts. Added support for Date / POSIXt objects.
+in dfSummary text barcharts. Added support for Date / POSIXt objects. Improved support
+for lapply() when used with freq().
 
 
 Version 0.8.1
