@@ -1,9 +1,9 @@
 # [summarytools: An R Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)  
-[![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dcomtois) 
+[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+[![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
+
 
 Version 0.8.2 (available on the official _R_ repository) fixes the issues reported with 0.8.0 and 0.8.1. Please make sure you are using the latest version!  
 
