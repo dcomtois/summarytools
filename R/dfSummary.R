@@ -493,19 +493,27 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   names(output) <- c("No", "Variable", "Label", "Stats / Values",
                      "Freqs (% of Valid)", "Graph", "Text Graph", "Valid", "Missing")
 
-  if(!labels.col) {
-    output$Label <- NULL
-  }
-
-  if(!varnumbers) {
+  if (!varnumbers) {
     output$No <- NULL
   }
 
-  if(!graph.col) {
+  if (!labels.col) {
+    output$Label <- NULL
+  }
+
+  if (!graph.col) {
     output$Graph <- NULL
     output[['Text Graph']] <- NULL
   }
 
+  if(!valid.col) {
+    output$Valid <- NULL
+  }
+  
+  if (!na.col) {
+    output$Missing <- NULL
+  }
+  
   # Set output attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"
