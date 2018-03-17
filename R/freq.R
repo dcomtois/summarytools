@@ -21,6 +21,7 @@
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one
 #'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
 #' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of missing values.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
@@ -52,8 +53,8 @@
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
                  plain.ascii = TRUE, justify = "default", omit.headings = FALSE,
-                 missing = "", display.type = TRUE, display.labels = TRUE,
-                 weights = NA, rescale.weights = FALSE, ...) {
+                 report.nas = TRUE, missing = "", display.type = TRUE, 
+                 display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...) {
 
   # Parameter validation ---------------------------------------
 
@@ -192,7 +193,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
   colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
   rownames(output) <- c(names(freq_table), "Total")
-
+  
   # Update the output class and attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "freq"
@@ -224,6 +225,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                                      round.digits   = round.digits,
                                      plain.ascii    = plain.ascii,
                                      justify        = justify,
+                                     report.nas     = report.nas,
                                      missing        = missing,
                                      omit.headings  = omit.headings,
                                      display.type   = display.type,

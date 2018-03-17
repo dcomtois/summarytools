@@ -81,6 +81,7 @@
 #'      \item \code{round.digits} (exception: dfSummary objects)
 #'      \item \code{justify}
 #'      \item \code{plain.ascii}
+#'      \item \code{report.nas} (\code{\link{freq}} objects only)
 #'      \item \code{missing}
 #'      \item \code{omit.headings}
 #'      \item \code{split.table}
@@ -222,8 +223,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Formatting attributes
-  for (format_element in c("style", "round.digits", "justify",
-                           "plain.ascii", "missing", "omit.headings", "split.table",
+  for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
+                           "report.nas", "missing", "omit.headings", "split.table",
                            "display.type", "display.labels")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
@@ -416,6 +417,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       sect_title[[2]] <- ""
     }
 
+    if (!format_info$report.nas) {
+      x <- x[-(nrow(x)-1),c(1,3,4)]
+      colnames(x) <- c("Freq", "%", "% Cum.")
+    }
+    
     if(method=="pander") {
 
       output <- list()
@@ -463,10 +469,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            #digits = format_info$round.digits,
                            justify = justify)
 
-      # Put NA in irrelevant cells so that pander recognizes them as such
-      freq_table[nrow(freq_table)-1, 2] <- NA
-      freq_table[nrow(freq_table)-1, 3] <- NA
-
+      if (format_info$report.nas) {
+        # Put NA in irrelevant cells so that pander recognizes them as such
+        freq_table[nrow(freq_table)-1, 2] <- NA
+        freq_table[nrow(freq_table)-1, 3] <- NA
+      }
+      
       # Remove .00 digits in Freq column when weights are not used
       if (!"Weights" %in% names(data_info))
         freq_table[ ,1] <- sub("\\.0+", "", freq_table[,1])
@@ -501,23 +509,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # freq objects - method viewer / browser / render ---------------------------------------------
 
       table_head <- list()
-
-      table_head[[1]] <- list(tags$th("", colspan = 2),
-                              tags$th("Valid", colspan = 2),
-                              tags$th("Total", colspan = 2))
-      table_head[[2]] <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
-                              tags$th("Freq"),
-                              tags$th("%"),
-                              tags$th(HTML("% Cumul")),
-                              tags$th("%"),
-                              tags$th(HTML("% Cumul")))
-
+      
       justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                         l = "left",
                         c = "center",
                         d = "center",
                         r = "right")
-
+        
       table_rows <- list()
 
       for (ro in seq_len(nrow(x))) {
@@ -546,15 +544,44 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
       }
 
-      freq_table_html <-
-        tags$table(
-          tags$thead(tags$tr(table_head[[1]]),
-                     tags$tr(table_head[[2]])),
-          tags$tbody(table_rows),
-          class = ifelse(!is.na(html.table.class),
-                         html.table.class,
-                         "table table-striped table-bordered freq-table")
-        )
+      if (format_info$report.nas) {
+        table_head[[1]] <- list(tags$th("", colspan = 2),
+                                tags$th("Valid", colspan = 2),
+                                tags$th("Total", colspan = 2))
+        table_head[[2]] <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
+                                tags$th("Freq"),
+                                tags$th("%"),
+                                tags$th(HTML("% Cumul")),
+                                tags$th("%"),
+                                tags$th(HTML("% Cumul")))
+
+        freq_table_html <-
+          tags$table(
+            tags$thead(tags$tr(table_head[[1]]),
+                       tags$tr(table_head[[2]])),
+            tags$tbody(table_rows),
+            class = ifelse(!is.na(html.table.class),
+                           html.table.class,
+                           "table table-striped table-bordered freq-table")
+          )
+      } else {
+
+        # no reporting of missing values (NA)
+        table_head <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
+                           tags$th("Freq"),
+                           tags$th("%"),
+                           tags$th(HTML("% Cumul")))
+        
+        freq_table_html <-
+          tags$table(
+            tags$thead(tags$tr(table_head)),
+            tags$tbody(table_rows),
+            class = ifelse(!is.na(html.table.class),
+                           html.table.class,
+                           "table table-striped table-bordered freq-table-nomiss")
+          )
+      }
+
 
       # Cleanup extra spacing and linefeeds in html to correct layout issues
       freq_table_html <- as.character(freq_table_html)
