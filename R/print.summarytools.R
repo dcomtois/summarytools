@@ -423,6 +423,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       colnames(x) <- c("Freq", "%", "% Cum.")
     }
     
+    if (!format_info$totals) {
+      x <- x[-nrow(x),]
+    }
+    
     if(method=="pander") {
 
       output <- list()

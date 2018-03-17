@@ -20,12 +20,13 @@
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one
 #'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#' @param totals Logical. Set to \code{FALSE} to hide totals from results.
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of missing values.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
 #'   Default is \code{TRUE}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -52,9 +53,10 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 freq <- function(x, round.digits = 2, order = "names", style = "simple",
-                 plain.ascii = TRUE, justify = "default", omit.headings = FALSE,
+                 plain.ascii = TRUE, justify = "default", totals = TRUE, 
                  report.nas = TRUE, missing = "", display.type = TRUE, 
-                 display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...) {
+                 display.labels = TRUE, omit.headings = FALSE, weights = NA, 
+                 rescale.weights = FALSE, ...) {
 
   # Parameter validation ---------------------------------------
 
@@ -99,7 +101,15 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   if (!justify %in% c("left", "center", "centre", "right", "default")) {
     stop("'justify' argument must be one of 'default', 'left', 'center', or 'right'")
   }
-
+  
+  if (!totals %in% c(TRUE, FALSE)) {
+    stop("'totals' argument must either be TRUE or FALSE")
+  }
+  
+  if (!report.nas %in% c(TRUE, FALSE)) {
+    stop("'report.nas' argument must either be TRUE or FALSE")
+  }
+  
   if (!omit.headings %in% c(TRUE, FALSE)) {
     stop("'omit.headings' argument must either be TRUE or FALSE")
   }
@@ -225,11 +235,12 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                                      round.digits   = round.digits,
                                      plain.ascii    = plain.ascii,
                                      justify        = justify,
+                                     totals         = totals,
                                      report.nas     = report.nas,
                                      missing        = missing,
-                                     omit.headings  = omit.headings,
                                      display.type   = display.type,
-                                     display.labels = display.labels)
+                                     display.labels = display.labels,
+                                     omit.headings  = omit.headings)
 
   attr(output, "user_fmt") <- list(... = ...)
 
