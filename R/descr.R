@@ -6,9 +6,9 @@
 #'
 #' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
-#'   selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{med}, \dQuote{max},
-#'   \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
-#'   \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
+#'   selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med}, 
+#'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness},
+#'   \dQuote{se.skewness}, \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}.
 #' @param round.digits Number of significant digits to display. Defaults to
@@ -220,10 +220,9 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                          Pct.Valid = numeric())
 
     # Rescale weights if necessary
-    if (rescale.weights) {
+    if (rescale.weights)
       weights <- weights / sum(weights) * nrow(x.df)
-    }
-    
+
     n_tot <- sum(weights)
 
     for(i in seq_along(x.df)) {
