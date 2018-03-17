@@ -71,7 +71,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                "attempted conversion failed"))
 
   # check that all 'stats' elements are valid
-  valid_stats <- list(no_wgts = c("mean", "sd", "min", "med", "max", "mad", "iqr", "cv",
+  valid_stats <- list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", "iqr", "cv",
                                   "skewness", "se.skewness", "kurtosis", "n.valid", "pct.valid"),
                       wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", "n.valid", "pct.valid"))
 
@@ -141,12 +141,13 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
   if (identical(weights, NA)) {
 
-    # Build skeleton (2 empty dataframes; one for stats and other
-    # to report valid vs na counts)
+    # Build skeleton for output dataframe
     output <- data.frame(Mean = numeric(),
                          Std.Dev = numeric(),
                          Min = numeric(),
+                         Q1 = numeric(),
                          Median = numeric(),
+                         Q3 = numeric(),
                          Max = numeric(),
                          MAD = numeric(),
                          IQR = numeric(),
@@ -175,7 +176,9 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       output[i, ] <- c(variable.mean <- mean(variable, na.rm=na.rm),
                        variable.sd <- sd(variable, na.rm=na.rm),
                        min(variable, na.rm=na.rm),
+                       quantile(variable, probs = 0.25, na.rm = na.rm, type = 2),
                        median(variable, na.rm=na.rm),
+                       quantile(variable, probs = 0.75, na.rm = na.rm, type = 2),
                        max(variable, na.rm=na.rm),
                        mad(variable, na.rm=na.rm),
                        IQR(variable, na.rm=na.rm),
@@ -205,7 +208,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       weights[is.na(weights)] <- 0
     }
 
-    # Build skeleton (2 empty dataframes; one for stats and other to report valid vs na counts)
+    # Build skeleton for output dataframe
     output <- data.frame(Mean = numeric(),
                          Std.Dev = numeric(),
                          Min = numeric(),
@@ -217,9 +220,10 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                          Pct.Valid = numeric())
 
     # Rescale weights if necessary
-    if (rescale.weights)
+    if (rescale.weights) {
       weights <- weights / sum(weights) * nrow(x.df)
-
+    }
+    
     n_tot <- sum(weights)
 
     for(i in seq_along(x.df)) {
@@ -253,7 +257,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
 
   for(i in seq_along(x.df)) {
 
-    # Add row names (from col.names/var.name of the parse function)
+    # Add row names (from col.names/var.name of the parse_args function)
     if ("var_names" %in% names(parse_info)) {
       rownames(output)[i] <- parse_info$var_names[i]
     } else {
