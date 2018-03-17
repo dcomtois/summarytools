@@ -418,6 +418,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     if (!format_info$report.nas) {
+      x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
       x <- x[-(nrow(x)-1),1:3]
       colnames(x) <- c("Freq", "%", "% Cum.")
     }
