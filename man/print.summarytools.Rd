@@ -99,7 +99,7 @@ The following additional arguments can be used to override
      \item \code{plain.ascii}
      \item \code{missing}
      \item \code{omit.headings}
-     \item \code{split.table}
+     \item \code{split.tables}
      \item \code{Dataframe}
      \item \code{Dataframe.label}
      \item \code{Variable}

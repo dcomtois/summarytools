@@ -41,7 +41,7 @@
 #' @param split.cells A numeric argument passed to \code{\link[pander]{pander}}.
 #'   It is the number of characters allowed on a line before splitting the cell.
 #'   Defaults to \code{40}.
-#' @param split.table \pkg{pander} argument which determines the maximum
+#' @param split.tables \pkg{pander} argument which determines the maximum
 #'   width of a table. Keeping the default value (\code{Inf}) is recommended.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
@@ -90,7 +90,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       style = "multiline", plain.ascii = TRUE, justify = "left",
                       omit.headings = FALSE,  max.distinct.values = 10,
                       trim.strings = FALSE,  max.string.width = 25, split.cells = 40,
-                      split.table = Inf, ...) {
+                      split.tables = Inf, ...) {
 
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
   if (class(parse_info) == "try-catch") {
@@ -536,7 +536,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                                      justify = justify,
                                      omit.headings = omit.headings,
                                      split.cells = split.cells,
-                                     split.table = split.table)
+                                     split.tables = split.tables)
 
   attr(output, "user_fmt") <- list(... = ...)
 

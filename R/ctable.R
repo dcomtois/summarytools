@@ -24,7 +24,7 @@
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 #'   and \code{FALSE} otherwise.
-#' @param split.table Pander argument that specifies how many characters wide a
+#' @param split.tables Pander argument that specifies how many characters wide a
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By default,
 #'   the character values for arguments x and y are used.
@@ -49,7 +49,7 @@
 #' @export
 ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "simple", 
                    round.digits = 1, justify = "right",  omit.headings = FALSE, 
-                   plain.ascii = TRUE, split.table = Inf, dnn=c(substitute(x), substitute(y)),
+                   plain.ascii = TRUE, split.tables = Inf, dnn=c(substitute(x), substitute(y)),
                    ...) {
 
   # Parameter validation ---------------------------------------
@@ -253,7 +253,7 @@ ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "si
          round.digits  = round.digits,
          plain.ascii   = plain.ascii,
          justify       = justify,
-         split.table   = split.table,
+         split.tables  = split.tables,
          omit.headings = omit.headings)
 
   attr(output, "user_fmt") <- list(... = ...)

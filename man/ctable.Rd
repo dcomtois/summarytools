@@ -6,7 +6,7 @@
 \usage{
 ctable(x, y, prop = "r", useNA = "ifany", totals = TRUE,
   style = "simple", round.digits = 1, justify = "right",
-  omit.headings = FALSE, plain.ascii = TRUE, split.table = Inf,
+  omit.headings = FALSE, plain.ascii = TRUE, split.tables = Inf,
   dnn = c(substitute(x), substitute(y)), ...)
 }
 \arguments{
@@ -41,7 +41,7 @@ output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkd
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
 and \code{FALSE} otherwise.}
 
-\item{split.table}{Pander argument that specifies how many characters wide a
+\item{split.tables}{Pander argument that specifies how many characters wide a
 table can be. \code{Inf} by default.}
 
 \item{dnn}{Names to be used in output table. Vector of two strings; By default,

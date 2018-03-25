@@ -9,7 +9,7 @@ dfSummary(x, round.digits = 2, varnumbers = TRUE,
   na.col = TRUE, graph.col = TRUE, style = "multiline",
   plain.ascii = TRUE, justify = "left", omit.headings = FALSE,
   max.distinct.values = 10, trim.strings = FALSE, max.string.width = 25,
-  split.cells = 40, split.table = Inf, ...)
+  split.cells = 40, split.tables = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -64,7 +64,7 @@ frequency tables. Defaults to \code{25}.}
 It is the number of characters allowed on a line before splitting the cell.
 Defaults to \code{40}.}
 
-\item{split.table}{\pkg{pander} argument which determines the maximum
+\item{split.tables}{\pkg{pander} argument which determines the maximum
 width of a table. Keeping the default value (\code{Inf}) is recommended.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}

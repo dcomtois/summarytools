@@ -84,7 +84,7 @@
 #'      \item \code{report.nas} (\code{\link{freq}} objects only)
 #'      \item \code{missing}
 #'      \item \code{omit.headings}
-#'      \item \code{split.table}
+#'      \item \code{split.tables}
 #'      \item \code{Dataframe}
 #'      \item \code{Dataframe.label}
 #'      \item \code{Variable}
@@ -224,7 +224,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Formatting attributes
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
-                           "report.nas", "missing", "omit.headings", "split.table",
+                           "report.nas", "missing", "omit.headings", "split.tables",
                            "display.type", "display.labels")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
@@ -1026,7 +1026,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                  plain.ascii = format_info[["plain.ascii"]],
                                  justify = format_info[["justify"]],
                                  split.cells = format_info[["split.cells"]],
-                                 split.tables = format_info[["split.table"]],
+                                 split.tables = format_info[["split.tables"]],
                                  keep.line.breaks = TRUE),
                             attr(x, "user_fmt"))
 
