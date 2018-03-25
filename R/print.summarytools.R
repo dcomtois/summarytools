@@ -681,6 +681,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       pander_args <- append(list(style = format_info[["style"]],
                                  plain.ascii = format_info[["plain.ascii"]],
                                  justify = format_info[["justify"]]),
+                                 split.tables = format_info[["split.tables"]],
                             attr(x, "user_fmt"))
 
       # do not use argument keep.trailing.zeros = TRUE b/c of issue with pander + ftable
