@@ -137,11 +137,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           units = "px", bg = "transparent")
       par("mar" = c(0.03,0.01,0.07,0.01))
       data <- data[!is.na(data)]
-      breaks_x <- pretty(range(data), n = min(nclass.FD(data), 1000), min.n = 1)
-      hist_values <- hist(data, breaks = breaks_x, plot = FALSE)
-      hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
-           xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")
-      
+      breaks_x <- pretty(range(data), n = min(nclass.FD(data), 250), min.n = 1)
+      hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
+      cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
+                                      xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")),
+                silent = TRUE)
+      if(class(cl) == "try-error") {
+        plot.new()
+        text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
+      }
     } else if (graph_type == "barplot") {
       png(img_png <- tempfile(fileext = ".png"), width = 150,
           height = 26*length(data), units = "px",
