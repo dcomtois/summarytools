@@ -495,7 +495,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                  plain.ascii = format_info$plain.ascii,
                                  justify = justify,
                                  missing = format_info$missing,
-                                 split.table = Inf),
+                                 split.tables = Inf),
                             attr(x, "user_fmt"))
 
       output[[length(output) + 1]]  <-
@@ -1026,7 +1026,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                  plain.ascii = format_info[["plain.ascii"]],
                                  justify = format_info[["justify"]],
                                  split.cells = format_info[["split.cells"]],
-                                 split.table = format_info[["split.table"]],
+                                 split.tables = format_info[["split.table"]],
                                  keep.line.breaks = TRUE),
                             attr(x, "user_fmt"))
 
