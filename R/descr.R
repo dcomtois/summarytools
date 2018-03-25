@@ -1,8 +1,8 @@
 #' Univariate Statistics for Numerical Data
 #'
-#' Calculates mean, standard deviation, min, max, median, mad, IQR*, CV, 
+#' Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 
 #' skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not available 
-#' when using sample weights.
+#' when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
 #' @param stats Which stats to produce. Either \dQuote{all} (default), or a
@@ -118,7 +118,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   if ("file" %in% names(match.call()))
     message("file argument is deprecated; use print() or view() function to generate files")
   
-  # Get into about x from parsing function
+  # Get info about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
   if (class(parse_info) == "try-catch") {
     parse_info <- list()
@@ -136,11 +136,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   if (ncol(x.df) == 0)
     stop("no numerical variable(s) given as argument")
   
-  # Initialise output list
-  output <- list()
-  
   if (identical(weights, NA)) {
-    
     # Build skeleton for output dataframe
     output <- data.frame(Mean = numeric(),
                          Std.Dev = numeric(),
