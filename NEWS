@@ -1,3 +1,11 @@
+Version 0.8.3
+-------------
+New options for freq() - totals and NA reporting can be switched off. Fix for valid.col
+and na.col. In all functions, argument 'split.table' becomes 'split.tables' as per 
+changes in the pander package. In descr(), Q1 and Q3 were added. Number alignment
+improved in dfSummary(). Fix for frequencies not appearing in dfSummary() when
+value 0 was present.
+
 Version 0.8.2
 -------------
 Fixed performance issue with numerical data having a large range. Fixed missing linefeeds
@@ -8,7 +16,7 @@ for lapply() when used with freq().
 Version 0.8.1
 -------------
 Added vignettes. Improved handling of negative column indexing by the parsing function. Fixed 
-issue with all-NA factors in dfSummary. Changed column for displaying "All NA's" for numerical
+issue with all-NA factors in dfSummary(). Changed column for displaying "All NA's" for numerical
 vectors in dfSummary. Fixed issue with graphs in dfSummary. Removed accentuated characters 
 from docs.
 

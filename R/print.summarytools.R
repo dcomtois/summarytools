@@ -1070,9 +1070,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
             #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center")
-          } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties",
-                                            "Stats / Values", "Freqs (% of Valid)")) {
+          } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties", "Stats / Values")) {
             #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
+            table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
+          } else if (colnames(x)[co] == "Freqs (% of Valid)") {
+            cell <- gsub("\\\\", " ", cell)
+            cell <- gsub(" *(\\d|\\:)", "\\1", cell)
+            cell <- gsub("\\:", " : ", cell)
+            #cell <- gsub(" ", "\\1", cell)
+            #cell <- gsub("\\:", " : ", cell)
+            #cell <- gsub("\\(", " (", cell)
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Graph") {
             table_row[[length(table_row) + 1]] <- tags$td(HTML(cell), align = "center", border = "0")

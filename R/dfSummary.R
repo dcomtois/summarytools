@@ -126,9 +126,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   align_numbers <- function(counts, props) {
     maxchar_cnt <- nchar(as.character(max(counts)))
     maxchar_pct <- nchar(sprintf(paste0("%.", 1, "f"), max(props*100)))
-    res <- paste(sprintf(paste0("%", maxchar_cnt, "i"), counts),
-                 sprintf(paste0("(%", maxchar_pct, ".", 1, "f%%)"), props*100))
-    return(res)
+    paste(sprintf(paste0("%", maxchar_cnt, "i"), counts),
+          sprintf(paste0("(%", maxchar_pct, ".", 1, "f%%)"), props*100))
   }
 
   encode_graph <- function(data, graph_type) {
@@ -270,7 +269,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else if (n_levels <= max.distinct.values) {
         output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "  \n")
         counts_props <- align_numbers(counts, props)
-        output[i,5] <- paste(counts_props, collapse = "  \n")
+        output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
         if (graph.col && any(!is.na(column_data))) {
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
@@ -292,7 +291,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
             sum(props[(max.distinct.values + 1):length(props)]))
         )
         
-        output[i,5] <- paste(counts_props, collapse = "  \n")
+        output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
 
         if (graph.col && any(!is.na(column_data))) {
           # prepare data for barplot
@@ -335,7 +334,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="  \n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
-          output[i,5] <- paste(counts_props, collapse = "  \n")
+          output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
 
@@ -355,8 +354,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                        sum(counts[(max.distinct.values + 1):length(counts)])),
             props = c(props[1:max.distinct.values],
                       sum(props[(max.distinct.values + 1):length(props)])))
-          output[i,5] <- paste(counts_props, collapse = "  \n")
-
+          output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
+          
           if (graph.col) {
             # Prepare data for graph
             counts[max.distinct.values + 1] <-
@@ -482,7 +481,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else if (length(counts) <= max.distinct.values) {
         props <- round(prop.table(counts), round.digits + 2)
         counts_props <- align_numbers(counts, props)
-        output[i,5] <- paste(counts_props, collapse = "  \n")
+        output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
         
       } else {
         output[i,5] <- paste(as.character(length(unique(column_data))), "distinct val.")
