@@ -395,14 +395,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         extra_space <- FALSE
 
         if (length(counts) <= max.distinct.values &&
-            all(abs(as.numeric(names(counts))) >= 0.01)) {
+            (is.integer(column_data) || identical(names(column_data), "0") ||
+              all(abs(as.numeric(names(counts[-which(names(counts)=="0")]))) >= 10^-round.digits))) {
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
-          output[i,5] <- paste(
-            paste0(roundval <- round(as.numeric(names(counts)), round.digits),
-                   ifelse(names(counts) != roundval, "!", " ")),
-            counts_props, sep = ": ", collapse = "  \n"
-          )
+          output[i,5]  <- paste(paste0(roundval <- round(as.numeric(names(counts)), round.digits),
+                                       ifelse(names(counts) != roundval, "!", 
+                                              strrep(" ", 1 + max(nchar(as.character(1:length(counts)))) - nchar(names(counts))))),
+                                counts_props, sep = ": ", collapse = "\n\\")
+          
           if (any(names(counts) != roundval)) {
             extra_space <- TRUE
             output[i,5] <- paste(output[i,5], "! rounded", sep = "  \n")
