@@ -728,6 +728,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         if (nchar(cn) > 12) {
           cn <- smart_split(cn, 12)
         }
+        cn <- sub("<", "&lt;", cn, fixed = TRUE)
+        cn <- sub(">", "&gt;", cn, fixed = TRUE)
         table_head[[2]][[length(table_head[[2]]) + 1]] <- tags$th(HTML(cn), align = "center")
       }
 
@@ -746,10 +748,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             table_row[[length(table_row) + 1]] <- tags$td(tags$span(cell))
           } else {
             # Proportions exist
-            cell <- gsub(" ", "&nbsp;" , cross_table[ro,co])
-            cell <-  sub("(", "&nbsp;(&nbsp;", cell, fixed = TRUE)
-            cell <-  sub(")", "&nbsp;)", cell, fixed = TRUE)
-            cell <-  sub("%", "&#37;"  , cell, fixed = TRUE)
+            cell <- sub("\\( *", "("     , cross_table[ro,co])
+            cell <- sub(" *\\)", ")"     , cell)
+            cell <- gsub(" "   , "&nbsp;", cell)
+            cell <- sub("%"    , "&#37;" , cell, fixed = TRUE)
 
             table_row[[length(table_row) + 1]] <- tags$td(tags$span(HTML(cell)))
           }
@@ -1090,9 +1092,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             cell <- gsub("\\\\", " ", cell)
             cell <- gsub(" *(\\d|\\:)", "\\1", cell)
             cell <- gsub("\\:", " : ", cell)
-            #cell <- gsub(" ", "\\1", cell)
-            #cell <- gsub("\\:", " : ", cell)
-            #cell <- gsub("\\(", " (", cell)
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Graph") {
             table_row[[length(table_row) + 1]] <- tags$td(HTML(cell), align = "center", border = "0")
