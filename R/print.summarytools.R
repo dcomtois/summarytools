@@ -8,12 +8,13 @@
 #' @usage
 #'  \method{print}{summarytools}(x, method = "pander", file = "",
 #'    append = FALSE, report.title = NA, escape.pipe = FALSE,
-#'    html.table.class = NA, custom.css = NA, silent = FALSE,
-#'    footnote = "default", \dots)
+#'    html.table.class = NA, bootstrap.css = TRUE, custom.css = NA, 
+#'    silent = FALSE, footnote = "default", \dots)
 #'
 #' view(x, method = "viewer", file = "", append = FALSE,
 #'   report.title = NA, escape.pipe = FALSE, html.table.class = NA,
-#'   custom.css = NA, silent = FALSE, footnote = "default", \dots)
+#'   bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
+#'   footnote = "default", \dots)
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -35,6 +36,8 @@
 #' @param html.table.class All \emph{Bootstrap CSS} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details} section.
 #'   \code{NA} by default.
+#' @param bootstrap.css Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
+#'   Bootstap css.
 #' @param custom.css Path to a user-defined \emph{.css} file. Classes
 #'   defined in this file can be used in the \code{html.table.classes}
 #'   parameter. \code{NA} by default.
@@ -65,36 +68,42 @@
 #'   function also makes it more practical to generate \emph{html} files (see
 #'   examples).
 #'
-#' Default values for \code{html.table.attributes} are as follows:
-#'   \describe{
-#'     \item{freq}{\code{'class="table table-striped table-bordered freq-table"'}}
-#'     \item{ctable}{\code{'class="table table-striped table-bordered cross-table"'}}
-#'     \item{descr}{\code{'class="table table-striped table-bordered desc-table"'}}
-#'     \item{dfSummary}{\code{'class="table table-striped table-bordered"'}}}
-#' When specifying this parameter, you must also state those attributes if you want them to be applied.
+#' Default values for \code{html.table.attributes} all include the Bootstrap classes
+#' \code{table table-striped table-bordered}, as well as summarytools-specific classes, 
+#' as follows:
+#'   \itemize{
+#'     \item{freq}{\code{'class="st-table st-table-striped st-table-bordered st-freq-table"'}}
+#'     \item{ctable}{\code{'class="st-table st-table-striped st-table-bordered st-cross-table"'}}
+#'     \item{descr}{\code{'class="st-table st-table-striped st-table-bordered st-desc-table"'}}
+#'     \item{dfSummary}{\code{'class="st-table st-table-striped st-table-bordered"'}}}
+#' When specifying this parameter explicitly, you must also state those classes if you want them applied.
 #'
 #' The following additional arguments can be used to override
-#'   formatting and other attributes stored in the object to be printed:
+#'   formatting and other attributes stored in the object to be printed. Refer to the function's
+#'   documentation for details on these arguments.
 #'    \itemize{
-#'      \item \code{date}
 #'      \item \code{style}
-#'      \item \code{round.digits} (exception: dfSummary objects)
+#'      \item \code{round.digits*} (except for \code{\link{dfSummary}} objects)
 #'      \item \code{justify}
-#'      \item \code{plain.ascii}
-#'      \item \code{report.nas} (\code{\link{freq}} objects only)
-#'      \item \code{missing}
-#'      \item \code{omit.headings}
-#'      \item \code{split.tables}
-#'      \item \code{Dataframe}
-#'      \item \code{Dataframe.label}
-#'      \item \code{Variable}
-#'      \item \code{Variable.label}
-#'      \item \code{Variable.labels} (\code{\link{descr}} objects only)
-#'      \item \code{use.labels} (\code{\link{descr}} objects only)
+#'      \item \code{plain.ascii*}
+#'      \item \code{missing*}
 #'      \item \code{Data.type}
 #'      \item \code{Subset}
 #'      \item \code{Group}
 #'      \item \code{Weights}
+#'      \item \code{date}      
+#'      \item \code{omit.headings*}
+#'      \item \code{split.tables*}
+#'      \item \code{Dataframe}
+#'      \item \code{Dataframe.label}
+#'      \item \code{Variable}
+#'      \item \code{Variable.label}
+#'      \item \code{display.labels*}
+#'      \item \code{display.type*}
+#'      \item \code{Variable.labels} (\code{\link{descr}} objects only)
+#'      \item \code{use.labels*} (\code{\link{descr}} objects only)
+#'      \item \code{report.nas*} (\code{\link{freq}} objects only)
+#'      \item \code{totals*} (\code{\link{freq}} objects only)
 #'      \item \code{Row.variable} (\code{\link{ctable}} objects only)
 #'      \item \code{Col.variable} (\code{\link{ctable}} objects only)
 #'      \item \code{Row.variable.subset} (\code{\link{ctable}} objects only)
@@ -129,7 +138,8 @@
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, escape.pipe = FALSE,
                                html.table.class = NA, custom.css = NA,
-                               silent = FALSE, footnote = "default", ...) {
+                               bootstrap.css = TRUE, silent = FALSE, 
+                               footnote = "default", ...) {
 
 
   args_list <- match.call()
@@ -224,8 +234,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Formatting attributes
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
-                           "report.nas", "missing", "omit.headings", "split.tables",
-                           "display.type", "display.labels")) {
+                           "missing", "omit.headings", "split.tables",
+                           "display.type", "display.labels", "report.nas", "totals")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
     }
@@ -567,7 +577,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(table_rows),
             class = ifelse(!is.na(html.table.class),
                            html.table.class,
-                           "table table-striped table-bordered freq-table")
+                           paste("table table-striped table-bordered",
+                                 "st-table st-table-striped st-table-bordered st-freq-table"))
           )
       } else {
 
@@ -583,7 +594,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(table_rows),
             class = ifelse(!is.na(html.table.class),
                            html.table.class,
-                           "table table-striped table-bordered freq-table-nomiss")
+                           paste("table table-striped table-bordered",
+                                 "st-table st-table-striped st-table-bordered st-freq-table-nomiss"))
           )
       }
 
@@ -760,7 +772,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             ),
             class = ifelse(!is.na(html.table.class),
                            html.table.class,
-                           "table table-bordered cross-table")
+                           "table table-bordered st-table st-table-bordered st-cross-table")
           )
 
       #cross_table_html <- as.character(cross_table_html)
@@ -909,7 +921,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(table_rows),
             class = ifelse(!is.na(html.table.class),
                            html.table.class,
-                           "table table-striped table-bordered desc-table")
+                           paste("table table-striped table-bordered",
+                                 "st-table st-table-striped st-table-bordered st-desc-table"))
           )
 
       # Cleanup some extra spacing and linefeeds in html to avoid weirdness in layout
@@ -1095,7 +1108,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$tbody(table_rows),
           class = ifelse(!is.na(html.table.class),
                          html.table.class,
-                         "table table-striped table-bordered multiline")
+                         paste("table table-striped table-bordered",
+                               "st-table st-table-striped st-table-bordered st-multiline"))
         )
 
       dfs_table_html <- gsub(pattern = '(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)',
@@ -1148,20 +1162,30 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       close(f)
       top_part <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
-      insert_part <- iconv(paste(capture.output(tags$div(class="container", div_list)), collapse="\n"), to = "utf-8")
+      insert_part <- iconv(paste(capture.output(tags$div(class="container st-container", div_list)), collapse="\n"), to = "utf-8")
       html_content <- paste(capture.output(cat(top_part, insert_part, bottom_part)), collapse="\n")
 
     } else {
 
-      html_content <-
-        tags$div(class="container",
-                 tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
-                           #HTML(paste0('<link rel="icon" type="img/ico" href="', stpath, '/includes/favicon.ico">')),
-                           includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.min.css", sep="/")),
-                           includeCSS(path = paste(stpath, "includes/stylesheets/custom.css", sep="/")),
-                           if (!is.na(custom.css)) includeCSS(path = custom.css)),
-                 div_list
-        )
+      if (method %in% c("browser", "viewer")) {
+        html_content <-
+          tags$div(class="container st-container",
+                   #tags$br(),
+                   tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
+                             #HTML(paste0('<link rel="icon" type="img/ico" href="', stpath, '/includes/favicon.ico">')),
+                             if (isTRUE(bootstrap.css)) includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.min.css", sep="/")),
+                             includeCSS(path = paste(stpath, "includes/stylesheets/summarytools.css", sep="/")),
+                             if (!is.na(custom.css)) includeCSS(path = custom.css)),
+                   div_list)
+        
+      } else {
+        html_content <-
+          tags$div(class="container st-container",
+                   tags$head(includeCSS(path = paste(stpath, "includes/stylesheets/summarytools.css", sep="/")),
+                             if (!is.na(custom.css)) includeCSS(path = custom.css)),
+                   div_list)
+        
+      }
     }
 
     if (method == "render") {

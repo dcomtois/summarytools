@@ -8,12 +8,13 @@
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "",
    append = FALSE, report.title = NA, escape.pipe = FALSE,
-   html.table.class = NA, custom.css = NA, silent = FALSE,
-   footnote = "default", \dots)
+   html.table.class = NA, bootstrap.css = TRUE, custom.css = NA, 
+   silent = FALSE, footnote = "default", \dots)
 
 view(x, method = "viewer", file = "", append = FALSE,
   report.title = NA, escape.pipe = FALSE, html.table.class = NA,
-  custom.css = NA, silent = FALSE, footnote = "default", \dots)
+  bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
+  footnote = "default", \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -46,6 +47,9 @@ user-defined classes (see custom.css parameter). See \emph{details} section.
 \item{custom.css}{Path to a user-defined \emph{.css} file. Classes
 defined in this file can be used in the \code{html.table.classes}
 parameter. \code{NA} by default.}
+
+\item{bootstrap.css}{Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
+Bootstap css.}
 
 \item{silent}{Hide console messages (such as ignored variables or \code{NaN}
 to \code{NA} transformations).}
