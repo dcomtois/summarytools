@@ -1,6 +1,6 @@
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-                 escape.pipe = FALSE, html.table.class = NA,
+                 escape.pipe = FALSE, html.table.class = NA, bootstrap.css = TRUE,
                  custom.css = NA, silent = FALSE, footnote = "default", ...) {
 
   if ("summarytools" %in% class(x)) {
@@ -11,6 +11,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                        report.title = report.title,
                        escape.pipe = escape.pipe,
                        html.table.class = html.table.class,
+                       bootstrap.css = bootstrap.css,
                        custom.css = custom.css,
                        silent = silent,
                        footnote = footnote,
@@ -37,6 +38,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              report.title = report.title,
                              escape.pipe = escape.pipe,
                              html.table.class = html.table.class,
+                             bootstrap.css = bootstrap.css,
                              custom.css = custom.css,
                              silent = silent,
                              footnote = NA,

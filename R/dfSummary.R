@@ -25,10 +25,12 @@
 #'   function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
 #'   \code{TRUE}, no markup characters will be generated (useful when printing
-#'   to console). Defaults to \code{TRUE}.
+#'   to console). Defaults to \code{TRUE}.  To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.  To change this 
+#'   default value globally, see \code{\link{st_options}}.
 #' @param max.distinct.values The maximum number of values to display frequencies
 #'   for. If variable has more distinct values than this number, the remaining
 #'   frequencies will be reported as a whole, along with the number of additional
@@ -92,6 +94,23 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       trim.strings = FALSE,  max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  names(global_options) <- sub("dfSummary.", "", names(global_options), fixed = TRUE)
+  options_to_set <- intersect(global_options, implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
+  
+  # Parameter validation ------------------------------------------------------
+  
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
   if (class(parse_info) == "try-catch") {
     parse_info <- list()
@@ -122,7 +141,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     style <- "multiline"
   }
 
-  # Declare functions
+  # Declare functions ---------------------------------------------------------
+  
   align_numbers <- function(counts, props) {
     maxchar_cnt <- nchar(as.character(max(counts)))
     maxchar_pct <- nchar(sprintf(paste0("%.", 1, "f"), max(props*100)))
@@ -206,7 +226,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     return(paste(graphlines, collapse = "\n"))
   }
 
-  # Initialize the output data frame
+  # Initialize the output data frame ------------------------------------------
+  
   output <- data.frame(No = numeric(),
                        Variable = character(),
                        Label = character(),
@@ -221,7 +242,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
   n_tot <- nrow(x)
 
-  # iterate over columns of x
+  # iterate over columns of x -------------------------------------------------
+  
   for(i in seq_len(ncol(x))) {
     
     # extract column data
@@ -248,7 +270,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
     if (is.factor(column_data)) {
 
-      # For factors, display a column of levels and a column of frequencies
+      # Factors: display a column of levels and a column of frequencies -------
 
       n_levels <- nlevels(column_data)
       counts <- table(column_data, useNA = "no")
@@ -307,7 +329,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
     } else if (is.character(column_data)) {
 
-      # For character data, display frequencies whenever possible
+      # Character data: display frequencies whenever possible -----------------
 
       if (trim.strings) {
         column_data <- sub(pattern="\\A\\s*(.+?)\\s*\\z",
@@ -370,7 +392,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
     } else if (is.numeric(column_data)) {
 
-      # For numeric data, display a column of descriptive stats and a column of frequencies
+      # Numeric data, display a column of descriptive stats + column of freqs -------
       if (n_miss == n_tot) {
         output[i,4] <- ""
         output[i,5] <- "All NA's"
@@ -429,6 +451,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       
     } else if (inherits(column_data, c("Date", "POSIXct"))) {  
       
+      # Time/date data --------------------------------------------------------
+      
       if (n_miss == n_tot) {
         output[i,4] <- ""
         output[i,5] <- "All NA's"
@@ -468,7 +492,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       
     } else {
       
-      # Data does not fit in previous categories (neither numeric, character, factor, nor POSIXt/Date)
+      # Other data ------------------------------------------------------------
+      # Data does not fit in previous categories (neither numeric, character, 
+      # factor, nor POSIXt/Date)
+      
       output[i,4] <- ""
       counts <- table(column_data, useNA = "no")
       
@@ -494,6 +521,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     output[i,9] <- paste0(n_miss,  "  \n(", round(n_miss  / n_tot * 100, round.digits), "%)")
   }
 
+  # Prepare output object -----------------------------------------------------
+  
   names(output) <- c("No", "Variable", "Label", "Stats / Values",
                      "Freqs (% of Valid)", "Graph", "Text Graph", "Valid", "Missing")
 

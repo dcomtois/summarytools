@@ -38,18 +38,21 @@ will be generic.}
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using
 \code{style='grid'} and \code{file} argument is supplied if the intent
 is to generate a text file that can be converted to other formats using
-\emph{Pandoc}.}
+\emph{Pandoc}. To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{html.table.class}{All \emph{Bootstrap CSS} classes can be used. It also allows
 user-defined classes (see custom.css parameter). See \emph{details} section.
 \code{NA} by default.}
 
+\item{bootstrap.css}{Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
+Bootstap css. To change this default value globally, see 
+\code{\link{st_options}}.}
+
 \item{custom.css}{Path to a user-defined \emph{.css} file. Classes
 defined in this file can be used in the \code{html.table.classes}
-parameter. \code{NA} by default.}
-
-\item{bootstrap.css}{Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
-Bootstap css.}
+parameter. \code{NA} by default. To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{silent}{Hide console messages (such as ignored variables or \code{NaN}
 to \code{NA} transformations).}
@@ -57,7 +60,8 @@ to \code{NA} transformations).}
 \item{footnote}{footnote in \emph{html} output. When set to \dQuote{default},
 this is the package name and version, R version, and current date). Has no effect
 when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
-or set to \code{NA} to omit.}
+or set to \code{NA} to omit. To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
@@ -77,43 +81,44 @@ Plain ascii and \emph{rmarkdown} tables are generated via
   \code{\link[pander]{pander}}. See \emph{References} section
   for a list of all available \emph{pander} options.
 
-\emph{Html} tables use \emph{Bootstrap Cascading Style Sheets}.
-  To add custom \emph{CSS}, edit the \emph{custom.css} file located in package's
-  \emph{includes/stylesheets} directory.
-
 To print objects of class \dQuote{by}, use \code{\link{view}}. This
   function also makes it more practical to generate \emph{html} files (see
   examples).
 
-Default values for \code{html.table.attributes} are as follows:
-  \describe{
-    \item{freq}{\code{'class="table table-striped table-bordered freq-table"'}}
-    \item{ctable}{\code{'class="table table-striped table-bordered cross-table"'}}
-    \item{descr}{\code{'class="table table-striped table-bordered desc-table"'}}
-    \item{dfSummary}{\code{'class="table table-striped table-bordered"'}}}
-When specifying this parameter, you must also state those attributes if you want them to be applied.
+Default values for \code{html.table.attributes} all include the Bootstrap classes
+\code{table table-striped table-bordered}, as well as summarytools-specific classes, 
+as follows:
+  \itemize{
+    \item{freq}{\code{'class="st-table st-table-striped st-table-bordered st-freq-table"'}}
+    \item{ctable}{\code{'class="st-table st-table-striped st-table-bordered st-cross-table"'}}
+    \item{descr}{\code{'class="st-table st-table-striped st-table-bordered st-desc-table"'}}
+    \item{dfSummary}{\code{'class="st-table st-table-striped st-table-bordered"'}}}
+When specifying this parameter explicitly, you must also state those classes if you want them applied.
 
 The following additional arguments can be used to override
-  formatting and other attributes stored in the object to be printed:
+  formatting and other attributes stored in the object to be printed. Refer to the function's
+  documentation for details on these arguments.
    \itemize{
-     \item \code{date}
      \item \code{style}
-     \item \code{round.digits} (exception: dfSummary objects)
+     \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
      \item \code{justify}
      \item \code{plain.ascii}
-     \item \code{missing}
+     \item \code{missing*}
+     \item \code{Data.type}
+     \item \code{Subset}
+     \item \code{Group}
+     \item \code{Weights}
+     \item \code{date}      
      \item \code{omit.headings}
      \item \code{split.tables}
      \item \code{Dataframe}
      \item \code{Dataframe.label}
      \item \code{Variable}
      \item \code{Variable.label}
+     \item \code{display.labels}
+     \item \code{display.type}
      \item \code{Variable.labels} (\code{\link{descr}} objects only)
-     \item \code{use.labels} (\code{\link{descr}} objects only)
-     \item \code{Data.type}
-     \item \code{Subset}
-     \item \code{Group}
-     \item \code{Weights}
+     \item \code{report.nas} (\code{\link{freq}} objects only)
      \item \code{Row.variable} (\code{\link{ctable}} objects only)
      \item \code{Col.variable} (\code{\link{ctable}} objects only)
      \item \code{Row.variable.subset} (\code{\link{ctable}} objects only)

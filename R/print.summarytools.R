@@ -32,21 +32,25 @@
 #' @param escape.pipe Logical. Set to \code{TRUE} when using
 #'   \code{style='grid'} and \code{file} argument is supplied if the intent
 #'   is to generate a text file that can be converted to other formats using
-#'   \emph{Pandoc}.
+#'   \emph{Pandoc}. To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param html.table.class All \emph{Bootstrap CSS} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details} section.
 #'   \code{NA} by default.
 #' @param bootstrap.css Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
-#'   Bootstap css.
+#'   Bootstap css. To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param custom.css Path to a user-defined \emph{.css} file. Classes
 #'   defined in this file can be used in the \code{html.table.classes}
-#'   parameter. \code{NA} by default.
+#'   parameter. \code{NA} by default. To change this default value globally, see 
+#'   \code{\link{st_options}}. 
 #' @param silent Hide console messages (such as ignored variables or \code{NaN}
 #'   to \code{NA} transformations).
 #' @param footnote footnote in \emph{html} output. When set to \dQuote{default},
 #'   this is the package name and version, R version, and current date). Has no effect
 #'   when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
-#'   or set to \code{NA} to omit.
+#'   or set to \code{NA} to omit. To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param \dots Additional arguments can be used to override parameters stored
 #'   as attributes in the object being printed. See \emph{Details} section.
 #'
@@ -59,10 +63,6 @@
 #'   Plain ascii and \emph{rmarkdown} tables are generated via
 #'   \code{\link[pander]{pander}}. See \emph{References} section
 #'   for a list of all available \emph{pander} options.
-#'
-#' \emph{Html} tables use \emph{Bootstrap Cascading Style Sheets}.
-#'   To add custom \emph{CSS}, edit the \emph{custom.css} file located in package's
-#'   \emph{includes/stylesheets} directory.
 #'
 #' To print objects of class \dQuote{by}, use \code{\link{view}}. This
 #'   function also makes it more practical to generate \emph{html} files (see
@@ -83,27 +83,25 @@
 #'   documentation for details on these arguments.
 #'    \itemize{
 #'      \item \code{style}
-#'      \item \code{round.digits*} (except for \code{\link{dfSummary}} objects)
+#'      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
 #'      \item \code{justify}
-#'      \item \code{plain.ascii*}
+#'      \item \code{plain.ascii}
 #'      \item \code{missing*}
 #'      \item \code{Data.type}
 #'      \item \code{Subset}
 #'      \item \code{Group}
 #'      \item \code{Weights}
 #'      \item \code{date}      
-#'      \item \code{omit.headings*}
-#'      \item \code{split.tables*}
+#'      \item \code{omit.headings}
+#'      \item \code{split.tables}
 #'      \item \code{Dataframe}
 #'      \item \code{Dataframe.label}
 #'      \item \code{Variable}
 #'      \item \code{Variable.label}
-#'      \item \code{display.labels*}
-#'      \item \code{display.type*}
+#'      \item \code{display.labels}
+#'      \item \code{display.type}
 #'      \item \code{Variable.labels} (\code{\link{descr}} objects only)
-#'      \item \code{use.labels*} (\code{\link{descr}} objects only)
-#'      \item \code{report.nas*} (\code{\link{freq}} objects only)
-#'      \item \code{totals*} (\code{\link{freq}} objects only)
+#'      \item \code{report.nas} (\code{\link{freq}} objects only)
 #'      \item \code{Row.variable} (\code{\link{ctable}} objects only)
 #'      \item \code{Col.variable} (\code{\link{ctable}} objects only)
 #'      \item \code{Row.variable.subset} (\code{\link{ctable}} objects only)
@@ -137,28 +135,38 @@
 #'@export
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, escape.pipe = FALSE,
-                               html.table.class = NA, custom.css = NA,
-                               bootstrap.css = TRUE, silent = FALSE, 
+                               html.table.class = NA, bootstrap.css = TRUE,
+                               custom.css = NA, silent = FALSE, 
                                footnote = "default", ...) {
 
-
-  args_list <- match.call()
-
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  options_to_set <- intersect(global_options, implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
   # Recup arguments from view() if present
-  if ("open.doc" %in% names(args_list)) {
-    open.doc <- args_list[["open.doc"]]
+  if ("open.doc" %in% names(explicit_args)) {
+    open.doc <- explicit_args[["open.doc"]]
   } else {
     open.doc <- FALSE
   }
 
-  if ("group.only" %in% names(args_list)) {
-    group.only <- args_list[["group.only"]]
+  if ("group.only" %in% names(explicit_args)) {
+    group.only <- explicit_args[["group.only"]]
   } else {
     group.only <- FALSE
   }
 
-  if ("var.only" %in% names(args_list)) {
-    var.only <- args_list[["var.only"]]
+  if ("var.only" %in% names(explicit_args)) {
+    var.only <- explicit_args[["var.only"]]
   } else {
     var.only <- FALSE
   }
@@ -228,16 +236,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Override of x's attributes ---------------------------------------------
-  if ("date" %in% names(args_list)) {
-    attr(x, "date") <- args_list$date
+  if ("date" %in% names(explicit_args)) {
+    attr(x, "date") <- explicit_args$date
   }
 
   # Formatting attributes
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
                            "missing", "omit.headings", "split.tables",
-                           "display.type", "display.labels", "report.nas", "totals")) {
-    if (format_element %in% names(args_list)) {
-      attr(x, "formatting")[format_element] <- args_list[format_element]
+                           "display.type", "display.labels", "report.nas")) {
+    if (format_element %in% names(explicit_args)) {
+      attr(x, "formatting")[format_element] <- explicit_args[format_element]
     }
   }
 
@@ -249,8 +257,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               "Row.variable", "Col.variable",
                               "Row.variable.subet", "Col.variable.subset",
                               "Row.variable.label", "Col.variable.label")) {
-    if (data_info_element %in% names(args_list)) {
-      attr(x, "data_info")[data_info_element] <- args_list[data_info_element]
+    if (data_info_element %in% names(explicit_args)) {
+      attr(x, "data_info")[data_info_element] <- explicit_args[data_info_element]
     }
   }
 
@@ -433,10 +441,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       colnames(x) <- c("Freq", "%", "% Cum.")
     }
     
-    if (!format_info$totals) {
-      x <- x[-nrow(x),]
-    }
-    
+
     if(method=="pander") {
 
       output <- list()

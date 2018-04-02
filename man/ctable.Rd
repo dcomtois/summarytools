@@ -16,30 +16,33 @@ ctable(x, y, prop = "r", useNA = "ifany", totals = TRUE,
 
 \item{prop}{Proportions to display;  \dQuote{r} for \emph{rows} (default),
 \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-\emph{none}.}
+\emph{none}.  To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{useNA}{Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
 (default), \dQuote{no}, or \dQuote{always}.}
 
-\item{totals}{Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.}
+\item{totals}{Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
+To change this default value globally, see \code{\link{st_options}}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
 (see details section about the latter).}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{1}.
-\dQuote{rmarkdown}.}
+\code{1}.  To change this default value globally, see \code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
 \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.
+To change this default value globally, see \code{\link{st_options}}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-and \code{FALSE} otherwise.}
+and \code{FALSE} otherwise. To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{split.tables}{Pander argument that specifies how many characters wide a
 table can be. \code{Inf} by default.}

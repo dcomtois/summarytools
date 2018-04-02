@@ -12,21 +12,26 @@
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
 #'   \dQuote{rmarkdown}.
-#' @param plain.ascii Logical \code{\link[pander]{pander}} argument. When
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-#'   and \code{FALSE} otherwise.
+#'   and \code{FALSE} otherwise. To change default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns. By default
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one
 #'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
-#' @param totals Logical. Set to \code{FALSE} to hide totals from results.
+#' @param totals Logical. Set to \code{FALSE} to hide totals from results. To change this
+#'   default value globally, see \code{\link{st_options}}.
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of missing values.
+#'   To change this default value globally, see \code{\link{st_options}}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
-#'   Default is \code{TRUE}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#'   Default is \code{TRUE}. To change this default value globally, see 
+#'   \code{\link{st_options}}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings. Can be set globally
+#'   via \code{\link{st_options}}.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -45,7 +50,7 @@
 #' data(tobacco)
 #' freq(tobacco$gender)
 #' freq(tobacco$gender, style="rmarkdown")
-#' with(tobacco, by(smoker, gender, freq))
+#' with(tobacco, by(data = smoker, INDICES = gender, FUN = freq))
 #'
 #' @seealso \code{\link[base]{table}}
 #'
@@ -58,7 +63,21 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                  display.labels = TRUE, omit.headings = FALSE, weights = NA, 
                  rescale.weights = FALSE, ...) {
 
-  # Parameter validation ---------------------------------------
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  names(global_options) <- sub("freq.", "", names(global_options), fixed = TRUE)
+  options_to_set <- intersect(global_options, implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
+  # Parameter validation ------------------------------------------------------
 
   # if x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1) {
@@ -147,7 +166,8 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
 
-    # Change the name of the NA item (last) to avoid potential problems when echoing to console
+    # Change the name of the NA item (last) to avoid potential
+    # problems when echoing to console
     names(freq_table)[length(freq_table)] <- "<NA>"
 
     # calculate proportions (valid, i.e excluding NA's)
@@ -161,7 +181,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     P_tot <- prop.table(freq_table) * 100
   }
 
-  # Weights are used
+  # Weights are used ----------------------------------------------------------
   else {
 
     # Check that weights vector is of the right length
@@ -193,18 +213,18 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
     P_tot <- prop.table(freq_table) * 100
   }
 
-  # Calculate cumulative proportions
+  # Calculate cumulative proportions ------------------------------------------
   P_valid_cum <- cumsum(P_valid)
   P_valid_cum["<NA>"] <- NA
   P_tot_cum <- cumsum(P_tot)
 
-  # Combine the info to build the final frequency table
+  # Combine the info to build the final frequency table -----------------------
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
   colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
   rownames(output) <- c(names(freq_table), "Total")
   
-  # Update the output class and attributes
+  # Update the output class and attributes ------------------------------------
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "freq"
   attr(output, "fn_call") <- as.character(match.call())

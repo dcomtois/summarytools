@@ -6,25 +6,25 @@
 \usage{
 descr(x, stats = "all", na.rm = TRUE, round.digits = 2,
   transpose = FALSE, style = "simple", plain.ascii = TRUE,
-  justify = "right", omit.headings = FALSE, use.labels = FALSE,
-  display.labels = TRUE, weights = NA, rescale.weights = FALSE, ...)
+  justify = "right", omit.headings = FALSE, display.labels = TRUE,
+  weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
 \item{stats}{Which stats to produce. Either \dQuote{all} (default), or a
-selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{med}, \dQuote{max},
-\dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness},
-\dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.}
+selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med}, 
+\dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness},
+\dQuote{se.skewness}, \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.}
 
 \item{na.rm}{Argument to be passed to statistical functions. Defaults to
 \code{TRUE}.}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{2}.}
+\code{2}, and can be set globally (see \code{\link{st_options}}).}
 
 \item{transpose}{Logical. Makes variables appears as columns, and stats as rows.
-Defaults to \code{FALSE}.}
+Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
@@ -33,18 +33,18 @@ output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-and \code{FALSE} otherwise.}
+and \code{FALSE} otherwise. To change default value globally, see 
+\code{\link{st_options}}.}
 
 \item{justify}{Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
 or \dQuote{r} for right (default). Has no effect on \emph{html} tables.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
-
-\item{use.labels}{Logical. Display label instead of variable name when
-label exists.}
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings. Can be set globally
+via \code{\link{st_options}}.}
 
 \item{display.labels}{Logical. Should variable / data frame labels be displayed in
-the title section?  Default is \code{TRUE}.}
+the title section?  Default is \code{TRUE}. To change this default value globally,
+see \code{\link{st_options}}.}
 
 \item{weights}{Vector of weights having same length as x. \code{NA}
 (default) indicates that no weights are used.}
@@ -60,9 +60,9 @@ A matrix object containing the statistics, with extra attributes used by
   \pkg{summarytool}'s print method.
 }
 \description{
-Calculates mean, standard deviation, min, max, median, mad, IQR*, CV, 
+Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 
 skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not available 
-when using sample weights.
+when using sampling weights.
 }
 \examples{
 data(exams)

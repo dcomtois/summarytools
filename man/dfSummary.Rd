@@ -41,12 +41,14 @@ function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
 \code{TRUE}, no markup characters will be generated (useful when printing
-to console). Defaults to \code{TRUE}.}
+to console). Defaults to \code{TRUE}.  To change this default value globally, see 
+\code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
 \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.  To change this 
+default value globally, see \code{\link{st_options}}.}
 
 \item{max.distinct.values}{The maximum number of values to display frequencies
 for. If variable has more distinct values than this number, the remaining

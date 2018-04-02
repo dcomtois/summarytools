@@ -5,9 +5,10 @@
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
 freq(x, round.digits = 2, order = "names", style = "simple",
-  plain.ascii = TRUE, justify = "default", omit.headings = FALSE,
-  missing = "", display.type = TRUE, display.labels = TRUE,
-  weights = NA, rescale.weights = FALSE, ...)
+  plain.ascii = TRUE, justify = "default", totals = TRUE,
+  report.nas = TRUE, missing = "", display.type = TRUE,
+  display.labels = TRUE, omit.headings = FALSE, weights = NA,
+  rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{Factor or vector}
@@ -23,24 +24,33 @@ non-factors), \dQuote{levels} (default for factors), or \dQuote{freq}
 output table; One of \dQuote{simple} (default), \dQuote{grid} or
 \dQuote{rmarkdown}.}
 
-\item{plain.ascii}{Logical \code{\link[pander]{pander}} argument. When
+\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-and \code{FALSE} otherwise.}
+and \code{FALSE} otherwise. To change default value globally, see 
+\code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns. By default
 (\dQuote{default}), \dQuote{right} is used for text tables and
 \dQuote{center} is used for \emph{html} tables. You can force it to one
 of \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.}
+\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. To change this
+default value globally, see \code{\link{st_options}}.}
+
+\item{report.nas}{Logical. Set to \code{FALSE} to turn off reporting of missing values.
+To change this default value globally, see \code{\link{st_options}}.}
 
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is \code{TRUE}.}
 
 \item{display.labels}{Logical. Should variable / data frame labels be displayed?
-Default is \code{TRUE}.}
+Default is \code{TRUE}. To change this default value globally, see 
+\code{\link{st_options}}.}
+
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings. Can be set globally
+via \code{\link{st_options}}.}
 
 \item{weights}{Vector of weights; must be of the same length as \code{x}.}
 
@@ -68,7 +78,7 @@ The default \code{plain.ascii = TRUE} option is there to make results
 data(tobacco)
 freq(tobacco$gender)
 freq(tobacco$gender, style="rmarkdown")
-with(tobacco, by(smoker, gender, freq))
+with(tobacco, by(data = smoker, INDICES = gender, FUN = freq))
 
 }
 \seealso{

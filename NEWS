@@ -1,10 +1,12 @@
 Version 0.8.3
 -------------
-New options for freq() - totals and NA reporting can be switched off. Fix for valid.col
-and na.col. In all functions, argument 'split.table' becomes 'split.tables' as per 
-changes in the pander package. In descr(), Q1 and Q3 were added. Number alignment
-improved in dfSummary(). Fix for frequencies not appearing in dfSummary() when
-value 0 was present.
+Introducing global options with st_options. Fixes for dfSummary graphs generating 
+warnings. New options for freq() - totals and NA reporting can be switched off. 
+Fix for valid.col and na.col. In all functions, argument 'split.table' becomes
+'split.tables' as per changes in the pander package. In descr(), Q1 and Q3 were added. 
+Number alignment improved in dfSummary(). Fixed frequencies not appearing in dfSummary() 
+when value 0 was present. In descr(), the order in the 'stats' parameter is reflected
+in the output table.
 
 Version 0.8.2
 -------------

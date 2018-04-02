@@ -125,7 +125,7 @@ Using the `file=` parameter with the `view()` or `print()` functions, we can red
 my_summary <- dfSummary(tobacco)  
 print(my_summary, file = "tobacco.txt", style = "grid")  # Creates tobacco.txt
 my_stats <- descr(tobacco)
-print(my_stats, file="tobacco.txt", append = TRUE) # Appends results to tobacco.txt
+print(my_stats, file = "tobacco.txt", append = TRUE) # Appends results to tobacco.txt
 ```
 
 As you may have noticed, the `style` argument was used when calling the `print()` function. We could also have used it when calling the `dfSummary()` and `descr()` functions, in which case the style would have been written in the objects' properties. Using this argument with `print()` overrides the style that is stored in the object. It is one of several arguments that can be used that way. See the documentation for `print()` to know all the details.

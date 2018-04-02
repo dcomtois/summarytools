@@ -7,23 +7,26 @@
 #' @param y Second categorical variable - values will appear in as column names.
 #' @param prop Proportions to display;  \dQuote{r} for \emph{rows} (default),
 #'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-#'   \emph{none}.
+#'   \emph{none}.  To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param useNA Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
 #'   (default), \dQuote{no}, or \dQuote{always}.
 #' @param totals Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
+#'    To change this default value globally, see \code{\link{st_options}}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
 #'   (see details section about the latter).
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}.
-#'   \dQuote{rmarkdown}.
+#'   \code{1}.  To change this default value globally, see \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
 #' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#'    To change this default value globally, see \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-#'   and \code{FALSE} otherwise.
+#'   and \code{FALSE} otherwise. To change this default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param split.tables Pander argument that specifies how many characters wide a
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By default,
@@ -52,7 +55,22 @@ ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "si
                    plain.ascii = TRUE, split.tables = Inf, dnn=c(substitute(x), substitute(y)),
                    ...) {
 
-  # Parameter validation ---------------------------------------
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  names(global_options) <- sub("ctable.", "", names(global_options), fixed = TRUE)
+  options_to_set <- intersect(global_options, implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
+  # Parameter validation ------------------------------------------------------
+  
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
     if (class(x) == "try-except") {
@@ -171,7 +189,7 @@ ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "si
     y_subset <- NA
   }
 
-  # Create cross-freq table
+  # Create cross-freq table ---------------------------------------------------
   freq_table <- table(x, y, useNA = useNA)
 
   names(dimnames(freq_table)) <- c(x_name, y_name)
@@ -223,7 +241,8 @@ ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "si
     }
   }
 
-  # Create output object
+  # Create output object ------------------------------------------------------
+  
   output <- list(cross_table = freq_table, proportions = prop_table)
 
   # Set output object's attributes

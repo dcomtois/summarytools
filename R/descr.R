@@ -12,21 +12,24 @@
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{2}.
+#'   \code{2}, and can be set globally (see \code{\link{st_options}}).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-#'   and \code{FALSE} otherwise.
+#'   and \code{FALSE} otherwise. To change default value globally, see 
+#'   \code{\link{st_options}}.
 #' @param justify Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
 #'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings. Can be set globally
+#'   via \code{\link{st_options}}.
 #' @param transpose Logical. Makes variables appears as columns, and stats as rows.
-#'   Defaults to \code{FALSE}.
+#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}.
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
-#'   the title section?  Default is \code{TRUE}.
+#'   the title section?  Default is \code{TRUE}. To change this default value globally,
+#'   see \code{\link{st_options}}.
 #' @param weights Vector of weights having same length as x. \code{NA}
 #'   (default) indicates that no weights are used.
 #' @param rescale.weights Logical. When set to \code{TRUE}, the
@@ -53,7 +56,23 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                   justify = "right", omit.headings = FALSE, display.labels = TRUE,  
                   weights = NA, rescale.weights = FALSE, ...) {
   
-  # Validate arguments
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  names(global_options) <- sub("descr.", "", names(global_options), fixed = TRUE)
+  options_to_set <- intersect(global_options, implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
+
+  # Validate arguments --------------------------------------------------------
+  
   if (is.atomic(x) && !is.numeric(x)) {
     stop("x is not numerical")
   }
@@ -86,7 +105,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       stop("valid stats are: ", paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], collapse = ", "),
            "\n  The following statistics are not recognized, or not allowed: ", paste(invalid_stats, collapse = ", "))
     }
-  } 
+  }
   
   if (!na.rm %in% c(TRUE, FALSE)) {
     stop("'na.rm' argument must be either TRUE or FALSE")
@@ -145,7 +164,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   if (ncol(x.df) == 0) {
     stop("no numerical variable(s) given as argument")
   }
-  
+
+  # No weigths being used -----------------------------------------------------  
   if (identical(weights, NA)) {
     # Build skeleton for output dataframe
     output <- data.frame(mean = numeric(),
@@ -208,7 +228,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     
   } else {
     
-    # Weights are used ---------------
+    # Weights being used ------------------------------------------------------
     
     # Check that weights vector has the right length
     if (length(weights) != nrow(x.df)) {
@@ -293,6 +313,8 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
       rownames(output)[i] <- paste0("Var",i)
     }
   }
+  
+  # Prepare output data -------------------------------------------------------
   
   # Keep and order required stats from output
   output <- output[ ,stats]
