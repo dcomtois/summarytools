@@ -64,7 +64,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   
   global_options <- getOption('summarytools')
   names(global_options) <- sub("descr.", "", names(global_options), fixed = TRUE)
-  options_to_set <- intersect(global_options, implicit_args)
+  options_to_set <- intersect(names(global_options), implicit_args)
   
   for (o in options_to_set) {
     assign(x = o, value = global_options[[o]])

@@ -25,11 +25,11 @@
 #'   function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
 #'   \code{TRUE}, no markup characters will be generated (useful when printing
-#'   to console). Defaults to \code{TRUE}.  To change this default value globally, see 
+#'   to console). Defaults to \code{TRUE}. To change this default value globally, see 
 #'   \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings.  To change this 
+#' @param omit.headings Logical. Set to \code{TRUE} to omit headings. To change this 
 #'   default value globally, see \code{\link{st_options}}.
 #' @param max.distinct.values The maximum number of values to display frequencies
 #'   for. If variable has more distinct values than this number, the remaining
@@ -102,7 +102,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   
   global_options <- getOption('summarytools')
   names(global_options) <- sub("dfSummary.", "", names(global_options), fixed = TRUE)
-  options_to_set <- intersect(global_options, implicit_args)
+  options_to_set <- intersect(names(global_options), implicit_args)
   
   for (o in options_to_set) {
     assign(x = o, value = global_options[[o]])

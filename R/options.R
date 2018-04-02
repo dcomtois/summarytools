@@ -37,7 +37,7 @@
 #' \itemize{
 #'   \item \code{round.digits}  Numeric. Default: \code{2}.
 #'   \item \code{plain.ascii}  Logical. \code{TRUE} by default. Set to \code{FALSE} when using
-#'     summarytools with a rendering tool such as \code{\link[knitr]{knitr}.} or when creating output files
+#'     summarytools with a rendering tool such as \code{knitr} or when creating output files
 #'     to be converted with Pandoc.
 #'   \item \code{omit.headings}  Logical. \code{FALSE} by default. Set to \code{TRUE} to remove all
 #'     headings from the outputs (only the tables will be printed out).

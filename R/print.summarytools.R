@@ -86,7 +86,7 @@
 #'      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
 #'      \item \code{justify}
 #'      \item \code{plain.ascii}
-#'      \item \code{missing*}
+#'      \item \code{missing}
 #'      \item \code{Data.type}
 #'      \item \code{Subset}
 #'      \item \code{Group}
@@ -146,7 +146,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   implicit_args <- setdiff(names(all_args), names(explicit_args))
   
   global_options <- getOption('summarytools')
-  options_to_set <- intersect(global_options, implicit_args)
+  options_to_set <- intersect(names(global_options), implicit_args)
   
   for (o in options_to_set) {
     assign(x = o, value = global_options[[o]])
@@ -240,7 +240,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     attr(x, "date") <- explicit_args$date
   }
 
-  # Formatting attributes
+  # Global options override
+  for (format_element in c("round.digits", "plain.ascii", 
+                           "omit.headings", "display.labels")) {
+    if (format_element %in% names(global_options)) {
+      attr(x, "formatting")[format_element] <- global_options[format_element]
+    }
+  }
+  
+  # Local parameter override
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
                            "missing", "omit.headings", "split.tables",
                            "display.type", "display.labels", "report.nas")) {

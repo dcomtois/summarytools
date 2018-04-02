@@ -3,6 +3,21 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                  escape.pipe = FALSE, html.table.class = NA, bootstrap.css = TRUE,
                  custom.css = NA, silent = FALSE, footnote = "default", ...) {
 
+  # Apply global options that were not set explicitly -------------------------
+  
+  all_args <- formals()
+  explicit_args <- match.call()
+  implicit_args <- setdiff(names(all_args), names(explicit_args))
+  
+  global_options <- getOption('summarytools')
+  options_to_set <- intersect(names(global_options), implicit_args)
+  
+  for (o in options_to_set) {
+    assign(x = o, value = global_options[[o]])
+  }
+  
+  # Objects not created via by() or lapply() ----------------------------------
+  
   if ("summarytools" %in% class(x)) {
     print.summarytools(x,
                        method = method,
@@ -20,6 +35,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
   } else if ("by" %in% class(x) &&
              attr(x[[1]], "st_type") %in% c("freq", "descr")) {
 
+    # Objects created via by() ------------------------------------------------
+    
     if (method %in% c("viewer", "browser")) {
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       for (i in seq_along(x)) {
@@ -94,6 +111,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     }
   } else if ("list" %in% class(x) && attr(x[[1]], "st_type") == "freq") {
 
+    # Objects created via lapply() --------------------------------------------
+    
     if (method %in% c("viewer", "browser")) {
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
 
