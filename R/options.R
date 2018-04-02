@@ -19,6 +19,7 @@
     'freq.display.nas' = TRUE,
     'ctable.totals'    = TRUE,
     'ctable.prop'      = 'r',
+    'descr.stats'      = 'all',
     'descr.transpose'  = FALSE,
     'bootstrap.css'    = TRUE,
     'custom.css'       = NA,
@@ -52,8 +53,10 @@
 #'     \code{freq()}. \code{TRUE} by default.
 #'   \item \code{ctable.totals}  Logical. Corresponds to the \code{totals} parameter of 
 #'     \code{\link{ctable}}. \code{TRUE} by default.
-#'   \item \code{ctable.prop}  Logical. Corresponds to the \code{totals} parameter of 
-#'     \code{\link{ctable}}.
+#'   \item \code{ctable.prop}  Character. Corresponds to the \code{prop} parameter of 
+#'     \code{\link{ctable}}. Defaults to \dQuote{r} (row).
+#'   \item \code{descr.stats}  Character. Corresponds to the \code{stats} parameter of 
+#'     \code{\link{descr}}. Defaults to \dQuote{all}.
 #'   \item \code{descr.transpose}  Logical. Corresponds to the \code{transpose} parameter of 
 #'     \code{\link{descr}}. \code{FALSE} by default.
 #'   \item \code{bootstrap.css}  Logical.  Include Bootstrap CSS in html outputs. Defaults to 
