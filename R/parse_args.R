@@ -66,21 +66,21 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   # valid names for dataframes
   re5 <- "^[_a-zA-Z0-9](\\w|\\d|\\.)*$"
   
-  df_name     = character()
-  var_names   = character()
-  rows_subset = character()
+  df_name     <- character()
+  var_names   <- character()
+  rows_subset <- character()
 
-  by_group = character()
-  by_first = logical()
-  by_last  = logical()
+  by_group <- character()
+  by_first <- logical()
+  by_last  <- logical()
 
   # Look for position of by(), tapply(), with() and lapply() in sys.calls()
   by_pos     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
   tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
   with_pos   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
 
-  #lapply_first = logical()
-  #lapply_last  = logical()
+  #lapply_first <- logical()
+  #lapply_last  <- logical()
   lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
 
 
@@ -173,7 +173,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     } else if (.st_env$byInfo$iter == 1) {
       by_first <- TRUE
       by_last  <- FALSE
-      .st_env$byInfo$iter = .st_env$byInfo$iter + 1
+      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
     } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
       by_first <- FALSE
       by_last  <- TRUE
@@ -181,7 +181,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     } else {
       by_first <- FALSE
       by_last <- FALSE
-      .st_env$byInfo$iter = .st_env$byInfo$iter + 1
+      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
     }
   }
 

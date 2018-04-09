@@ -8,11 +8,11 @@
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "",
    append = FALSE, report.title = NA, escape.pipe = FALSE,
-   html.table.class = NA, bootstrap.css = TRUE, custom.css = NA, 
+   table.classes = NA, bootstrap.css = TRUE, custom.css = NA, 
    silent = FALSE, footnote = "default", \dots)
 
 view(x, method = "viewer", file = "", append = FALSE,
-  report.title = NA, escape.pipe = FALSE, html.table.class = NA,
+  report.title = NA, escape.pipe = FALSE, table.classes = NA,
   bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
   footnote = "default", \dots)
 }
@@ -41,16 +41,16 @@ is to generate a text file that can be converted to other formats using
 \emph{Pandoc}. To change this default value globally, see 
 \code{\link{st_options}}.}
 
-\item{html.table.class}{All \emph{Bootstrap CSS} classes can be used. It also allows
+\item{table.classes}{Character.  Additionnal classes to assign to output tables. 
+All \emph{Bootstrap CSS} classes can be used. It also allows
 user-defined classes (see custom.css parameter). See \emph{details} section.
 \code{NA} by default.}
 
-\item{bootstrap.css}{Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
-Bootstap css. To change this default value globally, see 
-\code{\link{st_options}}.}
+\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit Bootstap css. \code{TRUE} 
+by default. To change this default value globally, see \code{\link{st_options}}.}
 
 \item{custom.css}{Path to a user-defined \emph{.css} file. Classes
-defined in this file can be used in the \code{html.table.classes}
+defined in this file can be used in the \code{table.classes}
 parameter. \code{NA} by default. To change this default value globally, see 
 \code{\link{st_options}}.}
 
@@ -84,16 +84,6 @@ Plain ascii and \emph{rmarkdown} tables are generated via
 To print objects of class \dQuote{by}, use \code{\link{view}}. This
   function also makes it more practical to generate \emph{html} files (see
   examples).
-
-Default values for \code{html.table.attributes} all include the Bootstrap classes
-\code{table table-striped table-bordered}, as well as summarytools-specific classes, 
-as follows:
-  \itemize{
-    \item{freq}{\code{'class="st-table st-table-striped st-table-bordered st-freq-table"'}}
-    \item{ctable}{\code{'class="st-table st-table-striped st-table-bordered st-cross-table"'}}
-    \item{descr}{\code{'class="st-table st-table-striped st-table-bordered st-desc-table"'}}
-    \item{dfSummary}{\code{'class="st-table st-table-striped st-table-bordered"'}}}
-When specifying this parameter explicitly, you must also state those classes if you want them applied.
 
 The following additional arguments can be used to override
   formatting and other attributes stored in the object to be printed. Refer to the function's

@@ -2,7 +2,6 @@ Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
 Version: 0.8.3
-Date: 2018-04-01
 Author: Dominic Comtois
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
 Description: Data frame summaries, cross-tabulations,

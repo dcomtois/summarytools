@@ -222,7 +222,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   if (is.na(footnote)) {
-    footnote = ""
+    footnote <- ""
   }
 
   # Override of x's attributes ---------------------------------------------

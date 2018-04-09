@@ -12,7 +12,7 @@ data(examens)
 Jeu de donnees simulees contenant les notes de 30 etudiants, avec les colonnes suivantes:
 \itemize{
   \item etudiant Nom de l'etudiant.
-  \item sexe Variable categorielle (facteur) à 2 niveaux: \dQuote{Fille}, \dQuote{Garcon}.
+  \item sexe Variable categorielle (facteur). Deux niveaux: \dQuote{Fille}, \dQuote{Garcon}.
   \item francais Note en francais (numerique).
   \item math Note en maths (numerique).
   \item geographie Note en geographie (numerique).

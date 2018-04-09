@@ -16,7 +16,7 @@
 #' All names and grades are simulated. Grades for each student are centered
 #' around a personal randomized average and standard deviation.
 #'
-#' Une version française de ce jeu de données est disponible sous le nom 
+#' Une version française de ce \emph{data frame} est disponible sous le nom 
 #' d'\dQuote{examens}.
 #'
 #' @docType data
