@@ -130,7 +130,7 @@ For best results, use *HTML rendering*.
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
 ```
 
-Tables with headings spanning over 2 rows are not fully supported in markdown (yet), although the result is not too bad.
+Tables with heading spanning over 2 rows are not fully supported in markdown (yet), but the result is close to acceptable.
 
 ## HTML Render
 ```{r ctable_html}
@@ -143,7 +143,7 @@ print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
 
 # dfSummary() {#dfsummary}
 
-For best results, use _grid_ style or HTML rendering 
+For best results, use _grid_ style or HTML rendering. Both have unresolved issues with the graphics column, although good progress has been made on that front since earlier versions.
 
 ## Grid Style
 ```{r dfs_grid, results='asis'}
@@ -157,6 +157,8 @@ The histograms don't show up using this method. Only the bar plots are shown.
 ```{r dfs_html, results='asis'}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ```
+
+The transparency of the graph images background is unfortunately lost in translation, but at least it is possible to see all graphs.
 
 <a href="#top">Back to top</a>
 
