@@ -558,7 +558,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"
   attr(output, "date") <- Sys.Date()
-  attr(output, "fn_call") <- as.character(match.call())
+  attr(output, "fn_call") <- match.call()
 
   data_info <-
     list(Dataframe = parse_info$df_name,

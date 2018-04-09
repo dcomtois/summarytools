@@ -249,7 +249,7 @@ ctable <- function(x, y, prop = "r", useNA = "ifany", totals = TRUE, style = "si
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "proportions") <- prop
-  attr(output, "fn_call") <- as.character(match.call())
+  attr(output, "fn_call") <- match.call()
   attr(output, "date") <- Sys.Date()
 
   data_info <-

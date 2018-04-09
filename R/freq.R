@@ -227,7 +227,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   # Update the output class and attributes ------------------------------------
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "freq"
-  attr(output, "fn_call") <- as.character(match.call())
+  attr(output, "fn_call") <- match.call()
   attr(output, "date") <- Sys.Date()
 
   data_info <-

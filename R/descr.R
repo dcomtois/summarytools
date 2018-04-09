@@ -338,7 +338,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "descr"
   attr(output, "date") <- Sys.Date()
-  attr(output, "fn_call") <- as.character(match.call())
+  attr(output, "fn_call") <- match.call()
   
   data_info <-
     list(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
