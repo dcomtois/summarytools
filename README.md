@@ -5,7 +5,7 @@
 [![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dcomtois) 
 
-Version 0.8.2 (available on the official _R_ repository) fixes the issues reported with 0.8.0 and 0.8.1. Please make sure you are using the latest version!  
+NOTE: Version 0.8.2 (available on the official _R_ repository) fixes the issues reported with 0.8.0 and 0.8.1. Please make sure you are using the latest version!  
 
 The two following vignettes complement information found on this page:  
 - [Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)  
@@ -16,24 +16,20 @@ The two following vignettes complement information found on this page:
 
 *summarytools* is an [R](http://r-project.org) package providing tools to _neatly and quickly summarize data_. Its main purpose is to provide hassle-free functions that every R programmer once wished were included in base R:
 
-- **descriptive statistics** with all common univariate statistics for numerical vectors.
-- **frequency tables** with proportions, cumulative proportions and missing data information.
-- **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions.
-- Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation
+- `descr()` : **descriptive statistics** with all common univariate statistics for numerical vectors.
+- `freq()` : **frequency tables** with proportions, cumulative proportions and missing data information.
+- `ctable()` : **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions.
+- `dfSummary() : Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation
 
 One of its goals is to make it easier for newcomeRs who might be used to other statistical software which usually provide a wide range of functions and procedures out-of-the-box, making it very simple to create, with code or with a few point-and-click actions, thorough and well-formatted reports. For most tasks not relying on advanced statistical methods, summarytools allows you to do just that. 
 
 Here are some of the package's features:  
+
 - Variable and data frame labels are supported 
 - Sampling weights can be used in frequency tables and descriptive statistics 
 - Output files of various formats can be generated (plaintext, _markdown_ and _html_) 
-- The _html_ outputs are well integrated in RStudio (if an external browser is not your preferred method) 
+- The viewing of _html_ outputs is possible directly in RStudio (if an external browser is not your preferred method) 
   
-## Why use summarytools?
-
-- You're looking for straightforward descriptive functions to get up and running in no time  
-- You're looking for flexibility in terms of outputs  
-
 # How to install
 
 To benefit from all the latests fixes, install it from GitHub:
@@ -178,7 +174,7 @@ Data Frame: tobacco
 Note that _markdown_ has no support (yet) for multi-line headers. Here is what the _html_ version looks like:
 
 ```r
-view(with(tobacco, ctable(smoker, diseased)))
+with(tobacco, view(ctable(smoker, diseased)))
 ```
 
 ![html output for ctable](img/ctable-with-row-props.png)
@@ -270,6 +266,35 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
                                                    ! rounded                                                             
 -------------------------------------------------------------------------------------------------------------------------
 ```
+
+## Global options
+
+Version 0.8.3 introduced the following set of global options:
+
+  - `round.digits = 2`
+  - `plain.ascii = TRUE`
+  - `omit.headings = FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
+  - `footnote = 'default'` (set to empty string or `NA` to omit footnote)
+  - `display.labels = TRUE`
+  - `freq.totals = TRUE`
+  - `freq.display.nas = TRUE`
+  - `ctable.totals = TRUE`
+  - `ctable.prop = 'r'` (display *r*ow proportions by default)
+  - `descr.stats = 'all'`
+  - `descr.transpose = FALSE`
+  - `bootstrap.css = TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
+  - `custom.css = NA` 
+  - `escape.pipe = FALSE`
+
+Examples:
+```r
+st_options() # display all global options' values
+st_options('round.digits') # display only one option
+st_options('round.digits', 1) # change an option's value
+```
+
+
+
 
 ## Markdown
 
@@ -461,15 +486,15 @@ $object.type
 
 # News
 
-I've been working on summarytools on and off over the last few months. Now I'm happy to introduce version 0.8. The most notable changes compared to 0.7 are:
+The latest versions introduced:
 
-  - A cross-tabulation function, `ctable()` 
+  - To support shiny apps, it is now possible to adjust the size of the graphs in `dfSummary()`, as well as omit the core Bootstrap CSS from the outputs.
+  - Global options (see `?st_options`)
   - Improved support for `by()`, `with()` and `lapply()` functions 
   - Optional barplots and histograms in `dfSummary()` 
   - New layouts, most noticeable in html reports 
-  - Improved flexibility on several fronts 
   - Support for Date / POSIX columns 
-  
+  - Improved flexibility on several fronts
   
 ## Final notes
 

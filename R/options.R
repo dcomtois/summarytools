@@ -62,10 +62,11 @@
 #'   \item \code{bootstrap.css}  Logical.  Include Bootstrap CSS in html outputs. Defaults to 
 #'     \code{TRUE}. When using the \dQuote{render} method, it may be a good idea is to set this
 #'     to \code{FALSE}.
-#'   \item \code{custom.css}  Character. Path to an additional, user-provided CSS file. \code{NA} 
+#'   \item \code{custom.css}  Character. Path to an additional, user-provided, CSS file. \code{NA} 
 #'     by default.
-#'   \item \code{escape.pipe}  Logical. \code{FALSE} by default. Set to \code{TRUE} if Pandoc conversion
+#'   \item \code{escape.pipe}  Logical. Set to \code{TRUE} if Pandoc conversion
 #'     is your goal and you have unsatisfying results with grid or multiline tables.
+#'     \code{FALSE} by default.
 #'     
 #' }
 #' @param option option name (string).

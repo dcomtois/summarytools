@@ -152,6 +152,31 @@ Here is a picture of the output:
 
 As with simple text files, you can also append existing HTML reports with additionnal content.
 
+## Global options
+
+Version 0.8.3 introduced the following set of global options:
+
+  - `round.digits = 2`
+  - `plain.ascii = TRUE`
+  - `omit.headings = FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
+  - `footnote = 'default'` (set to empty string or `NA` to omit footnote)
+  - `display.labels = TRUE`
+  - `freq.totals = TRUE`
+  - `freq.display.nas = TRUE`
+  - `ctable.totals = TRUE`
+  - `ctable.prop = 'r'` (display *r*ow proportions by default)
+  - `descr.stats = 'all'`
+  - `descr.transpose = FALSE`
+  - `bootstrap.css = TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
+  - `custom.css = NA` 
+  - `escape.pipe = FALSE`
+
+Examples:
+```{r glob_opts, eval=FALSE}
+st_options() # display all global options' values
+st_options('round.digits') # display only one option
+st_options('round.digits', 1) # change an option's value
+```
 
 ## Using by(), with(), and lapply()
 
@@ -172,13 +197,15 @@ There are many things you can do to build elaborate, fine-tuned reports. Let's m
 - For text reports, captions can be added with the `caption=` argument
 - Text files as well as HTML files can be appended with as many results you need
 - Custom CSS can be added -- you can specify custom classes for any table you generate
-  For instance:
+  For example, to add `table-responsive`:
 ```r
-view(with(tobacco, ctable(gender, smoker)), 
+with(tobacco, view(ctable(gender, smoker)), 
      report.title = "Summary of the tobacco sample data frame",
-      html.table.class = "table table-bordered table-striped table-responsive",
-      footnote = "Extended use of Bootstrap classes")
+     html.table.class = "table table-bordered table-striped table-responsive st-table st-cross-table st-table-bordered st-table-striped",
+     footnote = "Extended use of Bootstrap classes")
 ```
+
+Class names starting with "st-" are defined in the package's `summarytools.css` file.
 
 ## Getting Most Properties of an Object With `what.is()`
 
