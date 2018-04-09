@@ -1007,21 +1007,35 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       
       output <- list()
 
-      # Escape symbols for words between <>'s to allow <NA> or factor
-      # levels such as <ABC> to be rendered correctly
       if(!format_info[["plain.ascii"]]) {
+        # Escape symbols for words between <>'s to allow <NA> or factor
+        # levels such as <ABC> to be rendered correctly
         if("Label" %in% names(x)) {
           x[["Label"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
                                x = x[["Label"]], perl=TRUE)
         }
+        
         x[["Stats / Values"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-                                      x = x[["Stats / Values"]], perl=TRUE)
-        x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = " \\\\ \n",
                                       x = x[["Stats / Values"]], perl=TRUE)
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
                                           x = x[["Freqs (% of Valid)"]], perl=TRUE)
-        x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = " \\\\ \n",
+        
+        # Add "\" for multiline rendering in markdown
+        x[["Variable"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
+                                x = x[["Variable"]], perl=TRUE)
+        
+        x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
+                                      x = x[["Stats / Values"]], perl=TRUE)
+        
+        x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
                                           x = x[["Freqs (% of Valid)"]], perl=TRUE)
+        
+        # Remove leading space (useful only when plain.ascii = TRUE)
+        x[["Freqs (% of Valid)"]] <- gsub(pattern = "^\\\\ *", replacement = "",
+                                          x = x[["Freqs (% of Valid)"]], perl=TRUE)
+        
+        x[["Freqs (% of Valid)"]] <- gsub(pattern = "\\n\\\\ *", replacement = "\n",
+                                      x = x[["Freqs (% of Valid)"]], perl=TRUE)
       }
 
       if (!format_info$omit.headings) {
@@ -1147,7 +1161,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Print or write to file - pander -------------------------------------------------------------------------
   if (method == "pander") {
-    #cat("\n")
     cat(do.call(paste, output), file = file, append = append)
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
