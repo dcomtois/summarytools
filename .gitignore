@@ -4,7 +4,3 @@
 summarytools.Rproj
 .Rbuildignore
 .Rproj.user
-vignettes/*.R
-vignettes/*.md
-vignettes/*.html
-inst/doc
