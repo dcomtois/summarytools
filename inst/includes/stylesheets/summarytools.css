@@ -1,7 +1,3 @@
-/*body {
-  margin: 15px;
-}*/
-
 table.st-table > thead > tr {
    background-color: #eeeeee;
 }
@@ -23,15 +19,9 @@ table.st-table td span {
   margin-top: 15px;
 }
 
-
 .st-multiline {
   white-space: pre;
 }
-
-/*
-.hidden {
-  visibility: hidden;
-}*/
 
 .st-table {
     width: auto;
