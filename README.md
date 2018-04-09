@@ -1,15 +1,16 @@
 # [summarytools: An R Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)  
-[![Research software impact](http://depsy.org/api/person/338759/badge.svg)](http://depsy.org/person/338759)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dcomtois) 
+[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+[![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 
-NOTE: Version 0.8.2 (available on the official _R_ repository) fixes the issues reported with 0.8.0 and 0.8.1. Please make sure you are using the latest version!  
 
-The two following vignettes complement information found on this page:  
-- [Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)  
-- [Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
+## Latest News
+Version 0.8.3 brings several improvements to summarytools. I'm making it available here on GitHub before submitting it to CRAN. For details on the changes, please see the NEWS file, as well as the rest of this document.
+
+Two vignettes complement information found on this page:  
+- [Introduction to summarytools](https://rawgit.com/dcomtois/summarytools/dev-current/Indroduction.html)  
+- [Recommendations for Using summarytools With Rmarkdown](https://rawgit.com/dcomtois/summarytools/dev-current/Recommendations-rmarkdown.html)  
 
 
 ## What is summarytools?
