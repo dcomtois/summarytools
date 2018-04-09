@@ -19,6 +19,8 @@
 #'   (NA) values. \code{TRUE} by default.
 #' @param graph.col Logical. Display barplots / histograms column in \emph{html}
 #'   reports. \code{TRUE} by default.
+#' @param graph.magnif Numeric. Magnification factor, useful if the graphs show up
+#'   too large (then use a value < 1) or too small (use a value > 1). Must be positive.
 #' @param style Style to be used by \code{\link[pander]{pander}} when
 #'   rendering output table. Defaults to \dQuote{multiline}. The only other valid
 #'   option is \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
@@ -89,8 +91,8 @@
 dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                       labels.col = length(label(x, all = TRUE)) > 0,
                       valid.col = TRUE, na.col = TRUE, graph.col = TRUE,
-                      style = "multiline", plain.ascii = TRUE, justify = "left",
-                      omit.headings = FALSE,  max.distinct.values = 10,
+                      graph.magnif = 1, style = "multiline", plain.ascii = TRUE, 
+                      justify = "left", omit.headings = FALSE,  max.distinct.values = 10,
                       trim.strings = FALSE,  max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
@@ -136,9 +138,13 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     stop("'display.labels' argument is deprecated; use 'labels.col' instead")
   }
 
-  if(style=="rmarkdown") {
+  if (style=="rmarkdown") {
     message("'rmarkdown' style not supported - using 'multiline' instead.")
     style <- "multiline"
+  }
+  
+  if (graph.magnif <= 0) {
+    stop("'graph.magnif' must be > 0" )
   }
 
   # Declare functions ---------------------------------------------------------
@@ -150,10 +156,11 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           sprintf(paste0("(%", maxchar_pct, ".", 1, "f%%)"), props*100))
   }
 
+  # Encode barchars into html-readable image
   encode_graph <- function(data, graph_type) {
     if (graph_type == "histogram") {
-      png(img_png <- tempfile(fileext = ".png"), width = 150, height = 100,
-          units = "px", bg = "transparent")
+      png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif, 
+          height = 100 * graph.magnif, units = "px", bg = "transparent")
       par("mar" = c(0.03,0.01,0.07,0.01))
       data <- data[!is.na(data)]
       breaks_x <- pretty(range(data), n = min(nclass.FD(data), 250), min.n = 1)
@@ -166,8 +173,8 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
       }
     } else if (graph_type == "barplot") {
-      png(img_png <- tempfile(fileext = ".png"), width = 150,
-          height = 26*length(data), units = "px",
+      png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
+          height = 26 * length(data) * graph.magnif, units = "px",
           bg = "transparent")
       par("mar" = c(0.03,0.01,0.05,0.01))
       data <- rev(data)
