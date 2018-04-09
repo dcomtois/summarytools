@@ -15,18 +15,18 @@ library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE)
 ```
 
-**`summarytools`** is an _R_ package providing tools to neatly and quickly summarize data, with functions that most R programmers once wished were included in base R. It can also make _R_ a little easier to use for newbies. With a few lines of simple code, you can get a good look at the data at hand.
+**`summarytools`** is an _R_ package providing tools to neatly and quickly summarize data. It can also make _R_ a little easier to learn and use.
 
-An emphasis has been put on both _what_ and _how_ results are presented, so that the package can serve both as a data exploration _and_ reporting tool than can be used either on its own for minimal reports, or integrated in a larger set of tools such as RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/) and [knitr](https://yihui.name/knitr/).
+An emphasis has been put on both _what_ and _how_ results are presented, so that the package can serve both as a data exploration _and_ reporting tool, which can be used either on its own for minimal reports, or along with larger sets of tools such as RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/) and [knitr](https://yihui.name/knitr/).
 
 ## Four Core Functions
 
 The package is built around four main functions:
 
-- **freq()** -- **Frequency tables** with proportions, cumulative proportions and missing data information
-- **ctable()** -- **Cross-Tabulations** with row, column, or total proportions, as well as marginal totals
-- **descr()** -- **Descriptive (univariate) statistics** for numerical vectors which is more thorough than `fivenum()` and other similar functions
-- **dfSummary()** -- **Data frame summaries** that facilitate data cleaning and firsthand evaluation
+- `freq()` : **Frequency tables** with proportions, cumulative proportions and missing data information
+- `ctable()` : **Cross-Tabulations** with row, column, or total proportions, as well as marginal totals
+- `descr()` : **Descriptive (univariate) statistics** for numerical vectors.
+- `dfSummary()` -- **Data frame summaries** that facilitate data cleaning and firsthand evaluation.
 
 ## Output Options
 
@@ -189,7 +189,7 @@ stats <- by(data = exams$geography, INDICES = exams$gender, FUN = descr, style =
 view(stats, method = 'pander')
 ```
 
-## Other Tricks To Try Out
+## Things To Try Out
 
 There are many things you can do to build elaborate, fine-tuned reports. Let's mention a few...
 
@@ -220,7 +220,7 @@ what.is(iris)
 - The graph column in dfSummary is not yet supported in `rmarkdown`  
 - It is not possible to control the heading levels of individual items  
 
-## Learn more and stay up-to-date
+## Learn More and Stay Up-to-date
 
 Check the [project's page](https://github.com/dcomtois/summarytools) for more examples; from there you can also submit feature requests or signal problems you might encounter.
 
