@@ -260,24 +260,51 @@ No   Variable         Stats / Values               Freqs (% of Valid)     Text G
 -------------------------------------------------------------------------------------------------------------------------
 ```
 
+## Using summarytools in Rmarkdown documents
+
+_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate plain-text content, and _htmltools_ to generate _html_. Both types of outputs can be used in Rmarkdown, according to our preferences. See [this vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html) to get all the details, but if you're in a hurry, here are a few tips to get good results:
+
+- Always set the `knitr` chunk option `results = 'asis'`. You can do this globally or on a chunk-by-chunk basis. See [this page](https://yihui.name/knitr/options/) for more information.
+- To use the 'render' method, set up your .Rmd document so it includes summarytool's css (see example)
+
+
+### Example:
+````
+---
+title: "RMarkdown using summarytools"
+output: 
+  html_document: 
+    css: C:/R/win-library/3.4/summarytools/includes/stylesheets/summarytools.css
+---
+
+```{r, results='asis'}
+library(summarytools)  
+freq(tobacco$smoker, style='rmarkdown')  
+
+print(dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.85), 
+      method = 'render', omit.headings = TRUE)
+```
+
+````
+
 ## Global options
 
 Version 0.8.3 introduced the following set of global options:
 
-  - `round.digits = 2`
-  - `plain.ascii = TRUE`
-  - `omit.headings = FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
-  - `footnote = 'default'` (set to empty string or `NA` to omit footnote)
-  - `display.labels = TRUE`
-  - `freq.totals = TRUE`
-  - `freq.display.nas = TRUE`
-  - `ctable.totals = TRUE`
-  - `ctable.prop = 'r'` (display *r*ow proportions by default)
-  - `descr.stats = 'all'`
-  - `descr.transpose = FALSE`
-  - `bootstrap.css = TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
-  - `custom.css = NA` 
-  - `escape.pipe = FALSE`
+  - `round.digits` = `2`
+  - `plain.ascii` = `TRUE`
+  - `omit.headings` = `FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
+  - `footnote` = `'default'` (set to empty string or `NA` to omit footnote)
+  - `display.labels` = `TRUE`
+  - `freq.totals` = `TRUE`
+  - `freq.display.nas` = `TRUE`
+  - `ctable.totals` = `TRUE`
+  - `ctable.prop` = `'r'` (display *r*ow proportions by default)
+  - `descr.stats` = `'all'`
+  - `descr.transpose` = `FALSE`
+  - `bootstrap.css` = `TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
+  - `custom.css` = `NA` 
+  - `escape.pipe` = `FALSE`
 
 Examples:
 ```r
@@ -286,29 +313,8 @@ st_options('round.digits') # display only one option
 st_options('round.digits', 1) # change an option's value
 ```
 
-## Markdown
 
-_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. We can however generate _markdown_ content very easily.
-
-In the console, the output of a function using `style = 'rmarkdown'` looks like this:
-
-```
-## Frequencies 
-### iris$Species 
-**Type:** Factor (unordered) 
-
-|         &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|---------------:|-----:|--------:|-------------:|--------:|-------------:|
-|     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
-| **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
-|  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
-|     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
-|      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
-```
-
-This "ascii-plus-plus" needs an interpreted in order to be formatted. It is possible to go from this to _html_, _pdf_ or _rtf_, among others. To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
-
-## Under the Hood - Generating Html
+## Bootstrap CSS
 
 Version 0.8.0 of _summarytools_ uses _RStudio_'s [htmltools package](http://cran.r-project.org/web/packages/htmltools/index.html) and version 4 of [Bootstrap](http://getbootstrap.com/)'s cascading stylesheets.
 

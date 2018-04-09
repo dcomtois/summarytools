@@ -2,7 +2,11 @@
 title: "Recommendations for Using summarytools With Rmarkdown"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
 vignette: >
   %\VignetteIndexEntry{Recommendations for Rmarkdown}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,9 +17,9 @@ vignette: >
 <!-- (output: html_document or html_vignette) -->
 
 ```{r setup, include=FALSE}
-library(summarytools)
 library(knitr)
-opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE)
+opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
+library(summarytools)
 ```
 
 This document uses theme `rmarkdown::html_vignette`.
@@ -27,6 +31,43 @@ Below are examples using recommended styles for `rmarkdown` rendering. Available
 - _grid_  
 - _multiline_  
  
+## Important!
+
+`knitr` option `results = 'asis'` must be specified to get good results. This can be done globally via `opts_chunk$set(results='asis')`, on in the individual chunks.
+
+The following summarytools global options have been set:
+```{r setup_st}
+st_options('omit.headings', TRUE)
+st_options('bootstrap.css', FALSE)
+st_options('footnote', NA)
+``` 
+
+## Using method = 'render'
+
+To generate tables using summarytool's own html rendering, the .Rmd document's configuration part (yaml) must point to the package's `summarytools.css` file. This can be achieved in several ways. The current vignette uses this configuration:
+
+````
+output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
+````
+
+Another option would be something like this, pointing to the appropriate directory on your system.
+
+
+````
+---
+title: "RMarkdown using summarytools"
+output: 
+  html_document: 
+    css: C:/R/win-library/3.4/summarytools/includes/stylesheets/summarytools.css
+---
+````
+
+And now the examples, starting with `freq()`.
+
 Jump to...
 
 - [descr()](#descr)  
@@ -38,72 +79,41 @@ Jump to...
 
 # freq()
 
-`freq()` is best used with _default_ or _rmarkdown_ styles. HTML rendering is not recommended.
-
-### Default (_simple_) Style
-```{r freq_default, results='asis'}
-freq(tobacco$gender)
-```
-
-### Default (_simple_) Style with plain.ascii = FALSE
-```{r freq_default2, results='asis'}
-freq(tobacco$gender, plain.ascii = FALSE)
-```
+`freq()` is best used with `style = 'rmarkdown'; html rendering is also possible.
 
 ## Rmarkdown Style
-```{r freq_rm, results='asis'}
+```{r freq_rm}
 freq(tobacco$gender, style = 'rmarkdown')
-freq(tobacco$gender, style = 'rmarkdown', omit.headings = TRUE)
 ```
 
-<!-- ### Grid Style -->
-<!-- ```{r freq_grid, results='asis'} -->
-<!-- freq(tobacco$gender, style = 'grid') -->
-<!-- ``` -->
 
-<!-- ## HTML Rendering -->
-<!-- ```{r freq_html, results='asis'} -->
-<!-- print(freq(tobacco$gender), method = 'render') -->
-<!-- print(freq(tobacco$gender), method = 'render', omit.headings = TRUE) -->
-<!-- ``` -->
+## HTML Rendering
+```{r freq_html}
+print(freq(tobacco$gender), method = 'render')
+```
 
- 
-------------------------------------------------------------------------------------
+
+If you find the table too large, you can use `table.classes = 'st-small'` - see next examples.
+
+--------------------------------------------------------------------------------------------------
  
 <a href="#top">Back to top</a>
  
 # descr() {#descr}
-`descr()` is best used with _default_ or _rmarkdown_ styles. HTML rendering is also supported.
-
-### Default Style
-```{r descr_default, results='asis'}
-descr(tobacco)
-```
-
-### Default Style with plain.ascii = FALSE
-```{r descr_default2, results='asis'}
-descr(tobacco, plain.ascii = FALSE)
-descr(tobacco$BMI, plain.ascii = FALSE)
-```
+`descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is also supported.
 
 ## Rmarkdown Style
-```{r descr_rm, results='asis'}
+```{r descr_rm}
 descr(tobacco, style = 'rmarkdown')
-descr(tobacco$BMI, style = 'rmarkdown')
-descr(tobacco$BMI, style = 'rmarkdown', omit.headings = TRUE)
 ```
 
-<!-- ### Grid Style -->
-<!-- ```{r descr_grid, results='asis'} -->
-<!-- descr(tobacco, style = 'grid') -->
-<!-- descr(tobacco$BMI, style = 'grid') -->
-<!-- ``` -->
 
 ## HTML Render
-```{r descr_html, results='asis'}
-print(descr(tobacco), method = 'render')
-print(descr(tobacco$BMI), method = 'render')
-print(descr(tobacco, omit.headings = TRUE), method = 'render')
+
+This time, we'll use table.classes = 'st-small' to show the difference in size, compared to the `freq()` table rendered above.
+
+```{r descr_html}
+print(descr(tobacco), method = 'render', table.classes = 'st-small')
 ```
 
  
@@ -111,32 +121,20 @@ print(descr(tobacco, omit.headings = TRUE), method = 'render')
 
 <a href="#top">Back to top</a>
 
-# Ctable() {#ctable}
+# ctable() {#ctable}
 
 For best results, use *HTML rendering*.
-<!-- ## Default Style -->
-<!-- ```{r ctable_default, results='asis'} -->
-<!-- ctable(tobacco$gender, tobacco$smoker) -->
-<!-- ``` -->
 
-<!-- ## Default Style with plain.ascii = FALSE -->
-<!-- ```{r ctable_default2, results='asis'} -->
-<!-- ctable(tobacco$gender, tobacco$smoker, plain.ascii = FALSE) -->
-<!-- ``` -->
+## Rmarkdown Style
+```{r ctable_rm, results='asis'}
+ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
+```
 
-<!-- ## Rmarkdown Style -->
-<!-- ```{r ctable_rm, results='asis'} -->
-<!-- ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown') -->
-<!-- ``` -->
+Tables with headings spanning over 2 rows are not fully supported in markdown (yet), although the result is not too bad.
 
-<!-- ## Grid Style -->
-<!-- ```{r ctable_grid, results='asis'} -->
-<!-- ctable(tobacco$gender, tobacco$smoker, justify = 'right', style = 'grid') # voir si default est bien right -->
-<!-- ``` -->
-
-```{r ctable_html, results='asis'}
+## HTML Render
+```{r ctable_html}
 print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
-print(ctable(tobacco$gender, tobacco$smoker, omit.headings = TRUE), method = 'render')
 ```
 
 --------------------------------------------------------------------------------
@@ -145,45 +143,25 @@ print(ctable(tobacco$gender, tobacco$smoker, omit.headings = TRUE), method = 're
 
 # dfSummary() {#dfsummary}
 
-For best results, use _grid_ style and set `graph.col = FALSE`. 
-
-<!-- ## Default Style -->
-<!-- ```{r dfs_default, results='asis'} -->
-<!-- dfSummary(tobacco) -->
-<!-- dfSummary(tobacco, graph.col = FALSE) -->
-<!-- ``` -->
-
-<!-- ## Default Style with plain.ascii = FALSE -->
-<!-- ```{r dfs_default2, results='asis'} -->
-<!-- dfSummary(tobacco, plain.ascii = FALSE) -->
-<!-- dfSummary(tobacco, graph.col = FALSE, plain.ascii = FALSE) -->
-<!-- ``` -->
-
-<!-- ## Multiline Style -->
-<!-- ```{r dfs_ml, results='asis'} -->
-<!-- dfSummary(tobacco, style = 'multiline') -->
-<!-- dfSummary(tobacco, style = 'multiline', graph.col = FALSE) -->
-<!-- dfSummary(tobacco, style = 'multiline', plain.ascii = FALSE) -->
-<!-- dfSummary(tobacco, style = 'multiline', plain.ascii = FALSE, graph.col = FALSE) -->
-<!-- ``` -->
-
-<!-- ## Grid Style -->
-<!-- ```{r dfs_grid, results='asis'} -->
-<!-- dfSummary(tobacco, style = 'grid') -->
-<!-- dfSummary(tobacco, style = 'grid', graph.col = FALSE) -->
-<!-- dfSummary(tobacco, style = 'grid', plain.ascii = FALSE) -->
-<!-- ``` -->
+For best results, use _grid_ style or HTML rendering 
 
 ## Grid Style
 ```{r dfs_grid, results='asis'}
-dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.col = FALSE)
-dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.col = FALSE, omit.headings = TRUE)
+dfSummary(tobacco, style = 'grid', plain.ascii = FALSE)
 ```
 
-<!-- ## HTML Render -->
-<!-- ```{r dfs_html, results='asis'} -->
-<!-- print(dfSummary(tobacco), method = 'render') -->
-<!-- ``` -->
+The histograms don't show up using this method. Only the bar plots are shown.
+
+
+## HTML Render
+```{r dfs_html, results='asis'}
+print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
+```
 
 <a href="#top">Back to top</a>
 
+<!-- ```{css} -->
+<!-- p { -->
+<!-- color: gray; -->
+<!-- } -->
+<!-- ``` -->

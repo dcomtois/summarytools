@@ -107,10 +107,10 @@ print(crosstable, method='render', footnote = NA)
 
 ### Data frame Summaries
 
-This is the most elaborate function of the package. It incorporates elements of freq() and descr(), but goes beyond with its graphs (not yet supported with `rmarkdown`) and other attributes. 
+This is the most elaborate function of the package. It incorporates elements of freq() and descr(), but goes beyond with its graphs and other attributes. 
 
 ```{r dfSummary1, results='asis'}
-dfSummary(tobacco, style='grid', plain.ascii = FALSE, graph.col = FALSE)
+dfSummary(tobacco, style='grid', plain.ascii = FALSE)
 ```
 
 For this one, we can use styles "multiline" (default) or "grid". We **must** however specify `plain.ascii=FALSE` when using markdown, otherwise the rendered results will be problematic.
@@ -156,20 +156,20 @@ As with simple text files, you can also append existing HTML reports with additi
 
 Version 0.8.3 introduced the following set of global options:
 
-  - `round.digits = 2`
-  - `plain.ascii = TRUE`
-  - `omit.headings = FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
-  - `footnote = 'default'` (set to empty string or `NA` to omit footnote)
-  - `display.labels = TRUE`
-  - `freq.totals = TRUE`
-  - `freq.display.nas = TRUE`
-  - `ctable.totals = TRUE`
-  - `ctable.prop = 'r'` (display *r*ow proportions by default)
-  - `descr.stats = 'all'`
-  - `descr.transpose = FALSE`
-  - `bootstrap.css = TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
-  - `custom.css = NA` 
-  - `escape.pipe = FALSE`
+  - `round.digits` = `2`
+  - `plain.ascii` = `TRUE`
+  - `omit.headings` = `FALSE` (if using in a markdown document or a shiny app, setting this to `TRUE` might be preferable
+  - `footnote` = `'default'` (set to empty string or `NA` to omit footnote)
+  - `display.labels` = `TRUE`
+  - `freq.totals` = `TRUE`
+  - `freq.display.nas` = `TRUE`
+  - `ctable.totals` = `TRUE`
+  - `ctable.prop` = `'r'` (display *r*ow proportions by default)
+  - `descr.stats` = `'all'`
+  - `descr.transpose` = `FALSE`
+  - `bootstrap.css` = `TRUE` (if using in a markdown document or a shiny app, setting this to `FALSE` might be preferable
+  - `custom.css` = `NA` 
+  - `escape.pipe` = `FALSE`
 
 Examples:
 ```{r glob_opts, eval=FALSE}
@@ -197,15 +197,13 @@ There are many things you can do to build elaborate, fine-tuned reports. Let's m
 - For text reports, captions can be added with the `caption=` argument
 - Text files as well as HTML files can be appended with as many results you need
 - Custom CSS can be added -- you can specify custom classes for any table you generate
-  For example, to add `table-responsive`:
+  For example, to add the Bootstrap `table-responsive` and the summarytools `st-small` classes:
 ```r
 with(tobacco, view(ctable(gender, smoker)), 
      report.title = "Summary of the tobacco sample data frame",
-     html.table.class = "table table-bordered table-striped table-responsive st-table st-cross-table st-table-bordered st-table-striped",
+     table.classes = "table-responsive st-small",
      footnote = "Extended use of Bootstrap classes")
 ```
-
-Class names starting with "st-" are defined in the package's `summarytools.css` file.
 
 ## Getting Most Properties of an Object With `what.is()`
 
@@ -217,7 +215,7 @@ what.is(iris)
 
 ## Limitations
 
-- The graph column in dfSummary is not yet supported in `rmarkdown`  
+- The text histograms in dfSummary are not yet supported in `rmarkdown`  
 - It is not possible to control the heading levels of individual items  
 
 ## Learn More and Stay Up-to-date
