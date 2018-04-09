@@ -286,12 +286,9 @@ st_options('round.digits') # display only one option
 st_options('round.digits', 1) # change an option's value
 ```
 
-
-
-
 ## Markdown
 
-_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. As a consequence, we can easily generate _markdown_ content; We do this simply by specifying `style="rmarkdown"`. 
+_summarytools_ uses the [pander](https://github.com/Rapporter/pander) package to generate ascii content. We can however generate _markdown_ content very easily.
 
 In the console, the output of a function using `style = 'rmarkdown'` looks like this:
 
@@ -309,9 +306,7 @@ In the console, the output of a function using `style = 'rmarkdown'` looks like 
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 ```
 
-This ``ascii-plus-plus'' content needs an interpreted in order to be displayed as _html_. _markdown_ documents can be converted to other formats as well, such as _pdf_ or _rtf_.
-
-To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
+This "ascii-plus-plus" needs an interpreted in order to be formatted. It is possible to go from this to _html_, _pdf_ or _rtf_, among others. To learn more about _markdown_ and _rmarkdown_, see [John MacFarlane's page](http://johnmacfarlane.net/pandoc/) and this [RStudio's R Markdown Quicktour](http://rmarkdown.rstudio.com/). 
 
 ## Under the Hood - Generating Html
 
@@ -426,18 +421,15 @@ N: 1000
         Pct.Valid    97.40
 ```
 
-## Extra Features
+## The what.is() function
 
-### Weighted statistics
-Versions 0.5 and above support weights for `freq()` and `descr()`. 
-
-### Function what.is() helps you figure out quickly what an object is by...
+...helps you figure out quickly what an object is by:
 
 - Putting together the object's class(es), type (typeof), mode, storage mode, length, dim and object.size, all in a single table
 - Extending the `is()` function in a way that the object is tested against __all__ functions starting with `is.` -- see [this post on StackOverflow](http://stackoverflow.com/questions/8855589/a-comprehensive-survey-of-the-types-of-things-in-r-mode-and-class-and-type/26435993#26435993) for details;
 - Giving a list of the object's attributes names and length (c.g. rownames, dimnames, labels, etc.)
 
-#### Some examples
+#### Examples
 
 ```r
 > what.is(c)
@@ -479,15 +471,10 @@ $object.type
 
 # News
 
-The latest versions introduced:
-
   - To support shiny apps, it is now possible to adjust the size of the graphs in `dfSummary()`, as well as omit the core Bootstrap CSS from the outputs.
-  - Global options (see `?st_options`)
-  - Improved support for `by()`, `with()` and `lapply()` functions 
-  - Optional barplots and histograms in `dfSummary()` 
-  - New layouts, most noticeable in html reports 
-  - Support for Date / POSIX columns 
-  - Improved flexibility on several fronts
+  - _summarytools_ now has **global options** (see `?st_options`)
+  - `dfSummary()` now supports Date / POSIX data 
+  - in `descr()`, Q1 and Q3 are now included. Also, the order of the statistics specified with `stats =` is retained for the output. 
   
 ## Final notes
 
