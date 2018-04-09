@@ -239,14 +239,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if ("date" %in% names(explicit_args)) {
     attr(x, "date") <- explicit_args$date
   }
-
-  # Global options override
-  for (format_element in c("round.digits", "plain.ascii", 
-                           "omit.headings", "display.labels")) {
-    if (format_element %in% names(global_options)) {
-      attr(x, "formatting")[format_element] <- global_options[format_element]
-    }
-  }
   
   # Local parameter override
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
