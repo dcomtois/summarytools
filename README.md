@@ -19,16 +19,9 @@ The two following vignettes complement information found on this page:
 - `descr()` : **descriptive statistics** with all common univariate statistics for numerical vectors.
 - `freq()` : **frequency tables** with proportions, cumulative proportions and missing data information.
 - `ctable()` : **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions.
-- `dfSummary() : Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation
+- `dfSummary()` : Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation.
 
-One of its goals is to make it easier for newcomeRs who might be used to other statistical software which usually provide a wide range of functions and procedures out-of-the-box, making it very simple to create, with code or with a few point-and-click actions, thorough and well-formatted reports. For most tasks not relying on advanced statistical methods, summarytools allows you to do just that. 
-
-Here are some of the package's features:  
-
-- Variable and data frame labels are supported 
-- Sampling weights can be used in frequency tables and descriptive statistics 
-- Output files of various formats can be generated (plaintext, _markdown_ and _html_) 
-- The viewing of _html_ outputs is possible directly in RStudio (if an external browser is not your preferred method) 
+One of its goals is to make it easier for newcomeRs who might be used to other statistical software which usually provide a wide range of functions and procedures out-of-the-box, making it very simple to create, with code or with a few point-and-click actions, thorough and well-formatted reports. For most tasks not relying on advanced statistical methods, _summarytools_ allows you to do just that. 
   
 # How to install
 
@@ -401,7 +394,7 @@ There is also an `append = ` boolean parameter for adding content to existing re
 
 ## Overriding formatting attributes
 
-When a _summarytools_ object is stored, its formatting attributes are stored with it. However, you can override most of them when using the `print()` function. 
+When a _summarytools_ object is stored, its formatting attributes are stored with it. However, you can override most of them when using the `print()` and `view()` functions. 
 
 Example: 
 
