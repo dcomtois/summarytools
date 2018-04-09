@@ -1,6 +1,6 @@
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-                 escape.pipe = FALSE, html.table.class = NA, bootstrap.css = TRUE,
+                 escape.pipe = FALSE, table.classes = NA, bootstrap.css = TRUE,
                  custom.css = NA, silent = FALSE, footnote = "default", ...) {
 
   # Apply global options that were not set explicitly -------------------------
@@ -25,7 +25,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                        append = append,
                        report.title = report.title,
                        escape.pipe = escape.pipe,
-                       html.table.class = html.table.class,
+                       table.classes = table.classes,
                        bootstrap.css = bootstrap.css,
                        custom.css = custom.css,
                        silent = silent,
@@ -54,7 +54,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              append = append,
                              report.title = report.title,
                              escape.pipe = escape.pipe,
-                             html.table.class = html.table.class,
+                             table.classes = table.classes,
                              bootstrap.css = bootstrap.css,
                              custom.css = custom.css,
                              silent = silent,
@@ -67,7 +67,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              file = file,
                              append = TRUE,
                              escape.pipe = escape.pipe,
-                             html.table.class = html.table.class,
+                             table.classes = table.classes,
                              silent = silent,
                              footnote = NA,
                              group.only = TRUE,
@@ -78,7 +78,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              file = file,
                              append = TRUE,
                              escape.pipe = escape.pipe,
-                             html.table.class = html.table.class,
+                             table.classes = table.classes,
                              silent = silent,
                              footnote = footnote,
                              group.only = TRUE,

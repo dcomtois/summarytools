@@ -8,11 +8,11 @@
 #' @usage
 #'  \method{print}{summarytools}(x, method = "pander", file = "",
 #'    append = FALSE, report.title = NA, escape.pipe = FALSE,
-#'    html.table.class = NA, bootstrap.css = TRUE, custom.css = NA, 
+#'    table.classes = NA, bootstrap.css = TRUE, custom.css = NA, 
 #'    silent = FALSE, footnote = "default", \dots)
 #'
 #' view(x, method = "viewer", file = "", append = FALSE,
-#'   report.title = NA, escape.pipe = FALSE, html.table.class = NA,
+#'   report.title = NA, escape.pipe = FALSE, table.classes = NA,
 #'   bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
 #'   footnote = "default", \dots)
 #'
@@ -34,14 +34,14 @@
 #'   is to generate a text file that can be converted to other formats using
 #'   \emph{Pandoc}. To change this default value globally, see 
 #'   \code{\link{st_options}}.
-#' @param html.table.class All \emph{Bootstrap CSS} classes can be used. It also allows
+#' @param table.classes Character.  Additionnal classes to assign to output tables. 
+#'   All \emph{Bootstrap CSS} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details} section.
 #'   \code{NA} by default.
-#' @param bootstrap.css Logical. \code{TRUE} by default. Set to \code{FALSE} to omit
-#'   Bootstap css. To change this default value globally, see 
-#'   \code{\link{st_options}}.
+#' @param bootstrap.css Logical. Set to \code{FALSE} to omit Bootstap css. \code{TRUE} 
+#'   by default. To change this default value globally, see \code{\link{st_options}}.
 #' @param custom.css Path to a user-defined \emph{.css} file. Classes
-#'   defined in this file can be used in the \code{html.table.classes}
+#'   defined in this file can be used in the \code{table.classes}
 #'   parameter. \code{NA} by default. To change this default value globally, see 
 #'   \code{\link{st_options}}. 
 #' @param silent Hide console messages (such as ignored variables or \code{NaN}
@@ -67,16 +67,6 @@
 #' To print objects of class \dQuote{by}, use \code{\link{view}}. This
 #'   function also makes it more practical to generate \emph{html} files (see
 #'   examples).
-#'
-#' Default values for \code{html.table.attributes} all include the Bootstrap classes
-#' \code{table table-striped table-bordered}, as well as summarytools-specific classes, 
-#' as follows:
-#'   \itemize{
-#'     \item{freq}{\code{'class="st-table st-table-striped st-table-bordered st-freq-table"'}}
-#'     \item{ctable}{\code{'class="st-table st-table-striped st-table-bordered st-cross-table"'}}
-#'     \item{descr}{\code{'class="st-table st-table-striped st-table-bordered st-desc-table"'}}
-#'     \item{dfSummary}{\code{'class="st-table st-table-striped st-table-bordered"'}}}
-#' When specifying this parameter explicitly, you must also state those classes if you want them applied.
 #'
 #' The following additional arguments can be used to override
 #'   formatting and other attributes stored in the object to be printed. Refer to the function's
@@ -135,7 +125,7 @@
 #'@export
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, escape.pipe = FALSE,
-                               html.table.class = NA, bootstrap.css = TRUE,
+                               table.classes = NA, bootstrap.css = TRUE,
                                custom.css = NA, silent = FALSE, 
                                footnote = "default", ...) {
 
@@ -223,8 +213,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     stop("'custom.css' argument must point to an existing file.")
   }
 
-  if ((!is.na(html.table.class) || !is.na(custom.css)) && method == "pander") {
-    stop("'html.table.class' and 'custom.css' options do not apply to method 'pander'")
+  if ((!is.na(table.classes) || !is.na(custom.css)) && method == "pander") {
+    stop("'table.classes' and 'custom.css' options do not apply to method 'pander'")
   }
 
   if (!silent %in% c(TRUE, FALSE)) {
@@ -580,10 +570,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$thead(tags$tr(table_head[[1]]),
                        tags$tr(table_head[[2]])),
             tags$tbody(table_rows),
-            class = ifelse(!is.na(html.table.class),
-                           html.table.class,
-                           paste("table table-striped table-bordered",
-                                 "st-table st-table-striped st-table-bordered st-freq-table"))
+            class = paste("table table-striped table-bordered",
+                          "st-table st-table-striped st-table-bordered st-freq-table",
+                          ifelse(is.na(table.classes), "", table.classes))
           )
       } else {
 
@@ -597,10 +586,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$table(
             tags$thead(tags$tr(table_head)),
             tags$tbody(table_rows),
-            class = ifelse(!is.na(html.table.class),
-                           html.table.class,
-                           paste("table table-striped table-bordered",
-                                 "st-table st-table-striped st-table-bordered st-freq-table-nomiss"))
+            class = paste("table table-striped table-bordered",
+                          "st-table st-table-striped st-table-bordered st-freq-table-nomiss",
+                          ifelse(is.na(table.classes), "", table.classes))
           )
       }
 
@@ -777,12 +765,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(
               table_rows
             ),
-            class = ifelse(!is.na(html.table.class),
-                           html.table.class,
-                           "table table-bordered st-table st-table-bordered st-cross-table")
+            class = paste("table table-bordered st-table st-table-bordered st-cross-table",
+                          ifelse(is.na(table.classes), "", table.classes))
           )
 
-      #cross_table_html <- as.character(cross_table_html)
       div_list <- list()
       if (group.only) {
         he_added <- add_head_element(list(c("Group", "Group")), h = 0)
@@ -926,10 +912,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$table(
             tags$thead(tags$tr(table_head)),
             tags$tbody(table_rows),
-            class = ifelse(!is.na(html.table.class),
-                           html.table.class,
-                           paste("table table-striped table-bordered",
-                                 "st-table st-table-striped st-table-bordered st-desc-table"))
+            class = paste("table table-striped table-bordered",
+                          "st-table st-table-striped st-table-bordered st-desc-table",
+                          ifelse(is.na(table.classes), "", table.classes))
           )
 
       # Cleanup some extra spacing and linefeeds in html to avoid weirdness in layout
@@ -1029,7 +1014,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                       x = x[["Freqs (% of Valid)"]], perl=TRUE)
         
         # Remove txt histograms b/c not supported in rmarkdown (for now)
-        x[["Text Graph"]][which(grepl('[:.]', x[["Text Graph"]]))] <- ""
+        if ("Text Graph" %in% names(x)) {
+          x[["Text Graph"]][which(grepl('[:.]', x[["Text Graph"]]))] <- ""
+        }
+        
       }
 
       if (!format_info$omit.headings) {
@@ -1119,10 +1107,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         tags$table(
           tags$thead(tags$tr(table_head)),
           tags$tbody(table_rows),
-          class = ifelse(!is.na(html.table.class),
-                         html.table.class,
-                         paste("table table-striped table-bordered",
-                               "st-table st-table-striped st-table-bordered st-multiline"))
+          class = paste("table table-striped table-bordered",
+                        "st-table st-table-striped st-table-bordered st-multiline",
+                        ifelse(is.na(table.classes), "", table.classes))
         )
 
       dfs_table_html <- gsub(pattern = '(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)',
