@@ -37,17 +37,20 @@ The following options are available:
     \code{freq()}. \code{TRUE} by default.
   \item \code{ctable.totals}  Logical. Corresponds to the \code{totals} parameter of 
     \code{\link{ctable}}. \code{TRUE} by default.
-  \item \code{ctable.prop}  Logical. Corresponds to the \code{totals} parameter of 
-    \code{\link{ctable}}.
+  \item \code{ctable.prop}  Character. Corresponds to the \code{prop} parameter of 
+    \code{\link{ctable}}. Defaults to \dQuote{r} (row).
+  \item \code{descr.stats}  Character. Corresponds to the \code{stats} parameter of 
+    \code{\link{descr}}. Defaults to \dQuote{all}.
   \item \code{descr.transpose}  Logical. Corresponds to the \code{transpose} parameter of 
     \code{\link{descr}}. \code{FALSE} by default.
   \item \code{bootstrap.css}  Logical.  Include Bootstrap CSS in html outputs. Defaults to 
     \code{TRUE}. When using the \dQuote{render} method, it may be a good idea is to set this
     to \code{FALSE}.
-  \item \code{custom.css}  Character. Path to an additional, user-provided CSS file. \code{NA} 
+  \item \code{custom.css}  Character. Path to an additional, user-provided, CSS file. \code{NA} 
     by default.
-  \item \code{escape.pipe}  Logical. \code{FALSE} by default. Set to \code{TRUE} if Pandoc conversion
+  \item \code{escape.pipe}  Logical. Set to \code{TRUE} if Pandoc conversion
     is your goal and you have unsatisfying results with grid or multiline tables.
+    \code{FALSE} by default.
     
 }
 }

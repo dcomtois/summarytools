@@ -103,7 +103,7 @@ The following additional arguments can be used to override
      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
      \item \code{justify}
      \item \code{plain.ascii}
-     \item \code{missing*}
+     \item \code{missing}
      \item \code{Data.type}
      \item \code{Subset}
      \item \code{Group}

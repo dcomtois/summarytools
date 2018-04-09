@@ -6,10 +6,10 @@
 \usage{
 dfSummary(x, round.digits = 2, varnumbers = TRUE,
   labels.col = length(label(x, all = TRUE)) > 0, valid.col = TRUE,
-  na.col = TRUE, graph.col = TRUE, style = "multiline",
-  plain.ascii = TRUE, justify = "left", omit.headings = FALSE,
-  max.distinct.values = 10, trim.strings = FALSE, max.string.width = 25,
-  split.cells = 40, split.tables = Inf, ...)
+  na.col = TRUE, graph.col = TRUE, graph.magnif = 1,
+  style = "multiline", plain.ascii = TRUE, justify = "left",
+  omit.headings = FALSE, max.distinct.values = 10, trim.strings = FALSE,
+  max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -34,6 +34,9 @@ one column has a defined label.}
 \item{graph.col}{Logical. Display barplots / histograms column in \emph{html}
 reports. \code{TRUE} by default.}
 
+\item{graph.magnif}{Numeric. Magnification factor, useful if the graphs show up
+too large (then use a value < 1) or too small (use a value > 1). Must be positive.}
+
 \item{style}{Style to be used by \code{\link[pander]{pander}} when
 rendering output table. Defaults to \dQuote{multiline}. The only other valid
 option is \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
@@ -41,13 +44,13 @@ function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; When
 \code{TRUE}, no markup characters will be generated (useful when printing
-to console). Defaults to \code{TRUE}.  To change this default value globally, see 
+to console). Defaults to \code{TRUE}. To change this default value globally, see 
 \code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
 \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings.  To change this 
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit headings. To change this 
 default value globally, see \code{\link{st_options}}.}
 
 \item{max.distinct.values}{The maximum number of values to display frequencies

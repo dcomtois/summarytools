@@ -16,7 +16,7 @@ ctable(x, y, prop = "r", useNA = "ifany", totals = TRUE,
 
 \item{prop}{Proportions to display;  \dQuote{r} for \emph{rows} (default),
 \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-\emph{none}.  To change this default value globally, see 
+\emph{none}. To change this default value globally, see 
 \code{\link{st_options}}.}
 
 \item{useNA}{Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
@@ -30,7 +30,7 @@ output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkd
 (see details section about the latter).}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{1}.  To change this default value globally, see \code{\link{st_options}}.}
+\code{1}. To change this default value globally, see \code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
 \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
