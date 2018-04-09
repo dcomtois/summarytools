@@ -1020,22 +1020,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
                                           x = x[["Freqs (% of Valid)"]], perl=TRUE)
         
-        # Add "\" for multiline rendering in markdown
-        # x[["Variable"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-        #                         x = x[["Variable"]], perl=TRUE)
-        # 
-        # x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-        #                               x = x[["Stats / Values"]], perl=TRUE)
-        # 
-        # x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-        #                                   x = x[["Freqs (% of Valid)"]], perl=TRUE)
-        
-        # Remove leading space (useful only when plain.ascii = TRUE)
+
+        # Remove leading characters used for alignment in plain.ascii 
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "^\\\\ *", replacement = "",
                                           x = x[["Freqs (% of Valid)"]], perl=TRUE)
         
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "\\n\\\\ *", replacement = "\n",
                                       x = x[["Freqs (% of Valid)"]], perl=TRUE)
+        
+        # Remove txt histograms b/c not supported in rmarkdown (for now)
+        x[["Text Graph"]][which(grepl('[:.]', x[["Text Graph"]]))] <- ""
       }
 
       if (!format_info$omit.headings) {
@@ -1101,9 +1095,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         table_row <- list()
         for (co in seq_len(ncol(x))) {
           cell <- x[ro,co]
+          cell <- gsub('\\\\\n', '\n', cell)
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center")
           } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties", "Stats / Values")) {
+            cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Freqs (% of Valid)") {
             cell <- gsub("\\\\", " ", cell)
@@ -1114,6 +1110,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             table_row[[length(table_row) + 1]] <- tags$td(HTML(cell), align = "center", border = "0")
           }
         }
+        
         table_rows[[length(table_rows) + 1]] <- tags$tr(table_row)
       }
 

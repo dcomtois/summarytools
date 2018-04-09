@@ -376,15 +376,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,4] <- paste0(
             paste0(1:max.distinct.values,"\\. ",
                    substr(names(counts), 1, max.string.width)[1:max.distinct.values],
-                   collapse="\n"),
-            paste("\n[", n_extra_values, "others", "]")
+                   collapse="\\\n"),
+            paste("\\\n[", n_extra_values, "others", "]")
           )
           counts_props <- align_numbers(
             counts = c(counts[1:max.distinct.values],
                        sum(counts[(max.distinct.values + 1):length(counts)])),
             props = c(props[1:max.distinct.values],
                       sum(props[(max.distinct.values + 1):length(props)])))
-          output[i,5] <- paste0(counts_props, collapse = "\\\n") # paste0("\\",
+          output[i,5] <- paste0(counts_props, collapse = "\\\n")
           
           if (graph.col) {
             # Prepare data for graph
@@ -473,7 +473,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         
         # Report all frequencies when allowed by max.distinct.values
         if (length(counts) <= max.distinct.values) {
-          output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="\n")
+          output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="\\\n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           output[i,5] <- paste(counts_props, collapse = "\\\n")
