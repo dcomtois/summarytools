@@ -135,8 +135,8 @@ table.st-table td span {
 .st-freq-table-nomiss > thead > tr > td,
 .st-freq-table-nomiss > tbody > tr > td,
 .st-freq-table-nomiss > tfoot > tr > td {
-  padding-left:  24px;
-  padding-right: 24px;
+  padding-left:  20px;
+  padding-right: 20px;
 }
 
 .st-cross-table > thead > tr > th,
@@ -145,10 +145,19 @@ table.st-table td span {
 .st-cross-table > thead > tr > td,
 .st-cross-table > tbody > tr > td,
 .st-cross-table > tfoot > tr > td {
-  padding-left:  24px;
-  padding-right: 24px;
+  padding-left:  20px;
+  padding-right: 20px;
 }
 
 .st-cross-table td {
   text-align: center;
+}
+
+.st-small {
+  font-size: 12px;
+}
+
+.st-small td,
+.st-small th {
+  padding: 6px;
 }
