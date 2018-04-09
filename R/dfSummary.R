@@ -196,6 +196,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
                       sep = "\\\n")
     }
+    outstr <- sub("^\\\\\\n", "", outstr)
     return(outstr)
   }
 
