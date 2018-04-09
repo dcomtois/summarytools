@@ -194,7 +194,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     outstr <- character(0)
     for (i in seq_along(widths)) {
       outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
-                      sep = " \n\\")
+                      sep = "\\\n")
     }
     return(outstr)
   }
@@ -230,7 +230,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     for (ro in seq_len(nrow(graph))) {
       graphlines[ro] <-  trimws(paste(graph[ro,], collapse = ""), "right")
     }
-    return(paste(graphlines, collapse = "\n"))
+    return(paste(graphlines, collapse = "\\\n"))
   }
 
   # Initialize the output data frame ------------------------------------------
@@ -260,7 +260,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
     output[i,1] <- i
 
     # Add column name and class
-    output[i,2] <- paste0(names(x)[i], "\n[",
+    output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
 
@@ -290,15 +290,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
         output[i,7] <- ""
         
       } else if (n_valid == 0) {
-        output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "\n")
+        output[i,4] <- paste0(1:n_levels,"\\. ", levels(column_data), collapse = "\\\n")
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
         
       } else if (n_levels <= max.distinct.values) {
-        output[i,4] <- paste0(1:n_levels,". ", levels(column_data), collapse = "\n")
+        output[i,4] <- paste0(1:n_levels,"\\. ", levels(column_data), collapse = "\\\n")
         counts_props <- align_numbers(counts, props)
-        output[i,5] <- paste0("\\", counts_props, collapse = "\n") # collapse = "\n\\"
+        output[i,5] <- paste0("\\", counts_props, collapse = "\\\n")
         if (graph.col && any(!is.na(column_data))) {
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
@@ -306,12 +306,12 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else {
         # more levels than allowed by max.distinct.values
         n_extra_levels <- n_levels - max.distinct.values
-        output[i,4] <- paste0(1:max.distinct.values,". ",
+        output[i,4] <- paste0(1:max.distinct.values,"\\. ",
                               levels(column_data)[1:max.distinct.values],
-                              collapse="\n")
+                              collapse="\\\n")
         output[i,4] <- paste(output[i,4],
                              paste("[", n_extra_levels, "others", "]"),
-                             sep="\n")
+                             sep="\\\n")
 
         counts_props <- align_numbers(
           c(counts[1:max.distinct.values],
@@ -320,7 +320,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
             sum(props[(max.distinct.values + 1):length(props)]))
         )
         
-        output[i,5] <- paste0("\\", counts_props, collapse = "\n")
+        output[i,5] <- paste0("\\", counts_props, collapse = "\\\n")
 
         if (graph.col && any(!is.na(column_data))) {
           # prepare data for barplot
@@ -360,10 +360,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
 
         # Report all frequencies when allowed by max.distinct.values
         if (length(counts) <= max.distinct.values) {
-          output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="\n")
+          output[i,4] <- paste0(1:length(counts),"\\. ", names(counts), collapse="\\\n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
-          output[i,5] <- paste0("\\", counts_props, collapse = "\n")
+          output[i,5] <- paste0(counts_props, collapse = "\\\n") # paste0("\\", ...
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
 
@@ -373,7 +373,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           props <- round(prop.table(counts), round.digits + 2)
           n_extra_values <- length(counts) - max.distinct.values
           output[i,4] <- paste0(
-            paste0(1:max.distinct.values,". ",
+            paste0(1:max.distinct.values,"\\. ",
                    substr(names(counts), 1, max.string.width)[1:max.distinct.values],
                    collapse="\n"),
             paste("\n[", n_extra_values, "others", "]")
@@ -383,7 +383,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
                        sum(counts[(max.distinct.values + 1):length(counts)])),
             props = c(props[1:max.distinct.values],
                       sum(props[(max.distinct.values + 1):length(props)])))
-          output[i,5] <- paste0("\\", counts_props, collapse = "\n")
+          output[i,5] <- paste0(counts_props, collapse = "\\\n") # paste0("\\",
           
           if (graph.col) {
             # Prepare data for graph
@@ -409,10 +409,10 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else {
         output[i,4] <- paste(
           "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
-          " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\n",
-          "min < med < max :\n", round(min(column_data, na.rm = TRUE), round.digits),
+          " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
+          "min < med < max :\\\n", round(min(column_data, na.rm = TRUE), round.digits),
           " < ", round(median(column_data, na.rm = TRUE), round.digits),
-          " < ", round(max(column_data, na.rm = TRUE), round.digits), "\n",
+          " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
           "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
           " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
                       round.digits),
@@ -430,11 +430,11 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,5]  <- paste(paste0(roundval <- round(as.numeric(names(counts)), round.digits),
                                        ifelse(names(counts) != roundval, "!", 
                                               strrep(" ", 1 + max(nchar(as.character(1:length(counts)))) - nchar(names(counts))))),
-                                counts_props, sep = ": ", collapse = "\n")
+                                counts_props, sep = ": ", collapse = "\\\n")
           
           if (any(names(counts) != roundval)) {
             extra_space <- TRUE
-            output[i,5] <- paste(output[i,5], "! rounded", sep = "\n")
+            output[i,5] <- paste(output[i,5], "! rounded", sep = "\\\n")
           } 
           
         } else {
@@ -475,15 +475,15 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
           output[i,4] <- paste0(1:length(counts),". ", names(counts), collapse="\n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
-          output[i,5] <- paste(counts_props, collapse = "\n")
+          output[i,5] <- paste(counts_props, collapse = "\\\n")
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
           
         } else {
           output[i,4] <- paste(
-            "min : ", tmin <- min(column_data, na.rm = TRUE), "\n",
-            "med : ", median(column_data, na.rm = TRUE), "\n",
-            "max : ", tmax <- max(column_data, na.rm = TRUE), "\n",
+            "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
+            "med : ", median(column_data, na.rm = TRUE), "\\\n",
+            "max : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
             "range : ", paste(round(dtime <- difftime(tmax, tmin), round.digits), attr(dtime, 'units'))
           )
           
@@ -515,7 +515,7 @@ dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
       } else if (length(counts) <= max.distinct.values) {
         props <- round(prop.table(counts), round.digits + 2)
         counts_props <- align_numbers(counts, props)
-        output[i,5] <- paste0("\\", counts_props, collapse = "\n\\")
+        output[i,5] <- paste0(counts_props, collapse = "\\\n")
         
       } else {
         output[i,5] <- paste(as.character(length(unique(column_data))), "distinct val.")

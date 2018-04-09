@@ -1021,14 +1021,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                           x = x[["Freqs (% of Valid)"]], perl=TRUE)
         
         # Add "\" for multiline rendering in markdown
-        x[["Variable"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-                                x = x[["Variable"]], perl=TRUE)
-        
-        x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-                                      x = x[["Stats / Values"]], perl=TRUE)
-        
-        x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
-                                          x = x[["Freqs (% of Valid)"]], perl=TRUE)
+        # x[["Variable"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
+        #                         x = x[["Variable"]], perl=TRUE)
+        # 
+        # x[["Stats / Values"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
+        #                               x = x[["Stats / Values"]], perl=TRUE)
+        # 
+        # x[["Freqs (% of Valid)"]] <- gsub(pattern = "\n", replacement = "\\\\\n",
+        #                                   x = x[["Freqs (% of Valid)"]], perl=TRUE)
         
         # Remove leading space (useful only when plain.ascii = TRUE)
         x[["Freqs (% of Valid)"]] <- gsub(pattern = "^\\\\ *", replacement = "",
@@ -1102,10 +1102,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         for (co in seq_len(ncol(x))) {
           cell <- x[ro,co]
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
-            #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center")
           } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties", "Stats / Values")) {
-            #cell <- HTML(gsub("  \n","<br/>", htmlEscape(cell)))
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Freqs (% of Valid)") {
             cell <- gsub("\\\\", " ", cell)
@@ -1189,7 +1187,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$div(class="container st-container",
                    #tags$br(),
                    tags$head(tags$title(ifelse(is.na(report.title), sect_title, report.title)),
-                             #HTML(paste0('<link rel="icon" type="img/ico" href="', stpath, '/includes/favicon.ico">')),
                              if (isTRUE(bootstrap.css)) includeCSS(path = paste(stpath, "includes/stylesheets/bootstrap.min.css", sep="/")),
                              includeCSS(path = paste(stpath, "includes/stylesheets/summarytools.css", sep="/")),
                              if (!is.na(custom.css)) includeCSS(path = custom.css)),
