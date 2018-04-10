@@ -9,24 +9,26 @@
 #'   selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med}, 
 #'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness},
 #'   \dQuote{se.skewness}, \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
+#'   This can be set globally via \code{\link{st_options}} (\dQuote{descr.stats}).
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
-#'   \code{TRUE}.
+#'   \code{TRUE}. Can be set globally; see \code{\link{st_options}}.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2}, and can be set globally (see \code{\link{st_options}}).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output tables; One of \dQuote{simple} (default), \dQuote{grid}, or
-#'   \dQuote{rmarkdown}.
-#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
+#'   This option can be set globally; see \code{\link{st_options}}.
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
-#'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-#'   and \code{FALSE} otherwise. To change default value globally, see 
-#'   \code{\link{st_options}}.
-#' @param justify Alignment of columns; \dQuote{l} for left, \dQuote{c} for center,
+#'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
+#'   in which case it will be set to \code{FALSE} automatically. To change the default 
+#'   value globally, see \code{\link{st_options}}.
+#' @param justify Alignment of numbers in cells; \dQuote{l} for left, \dQuote{c} for center,
 #'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings. Can be set globally
-#'   via \code{\link{st_options}}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
+#'   globally via \code{\link{st_options}}.
 #' @param transpose Logical. Makes variables appears as columns, and stats as rows.
-#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}.
+#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}
+#'   (option \dQuote{descr.transpose}).
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
 #'   the title section?  Default is \code{TRUE}. To change this default value globally,
 #'   see \code{\link{st_options}}.
@@ -43,34 +45,22 @@
 #' @examples
 #' data(exams)
 #' descr(exams)
-#' descr(exams, transpose=TRUE)
-#' descr(exams, stats = c("mean", "sd"))
+#' descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 #' data(tobacco)
 #' with(tobacco, by(age, smoker, descr))
 #'
 #' @keywords univar
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
-                  transpose = FALSE, style = "simple", plain.ascii = TRUE,
-                  justify = "right", omit.headings = FALSE, display.labels = TRUE,  
+descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
+                  round.digits = st_options('round.digits'),
+                  transpose = st_options('descr.transpose'), 
+                  style = st_options('style'), 
+                  plain.ascii = st_options('plain.ascii'),
+                  justify = "right", omit.headings = st_options('omit.headings'), 
+                  display.labels = st_options('display.labels'),  
                   weights = NA, rescale.weights = FALSE, ...) {
   
-  # Apply global options that were not set explicitly -------------------------
-  
-  all_args <- formals()
-  explicit_args <- match.call()
-  implicit_args <- setdiff(names(all_args), names(explicit_args))
-  
-  global_options <- getOption('summarytools')
-  names(global_options) <- sub("descr.", "", names(global_options), fixed = TRUE)
-  options_to_set <- intersect(names(global_options), implicit_args)
-  
-  for (o in options_to_set) {
-    assign(x = o, value = global_options[[o]])
-  }
-  
-
   # Validate arguments --------------------------------------------------------
   
   if (is.atomic(x) && !is.numeric(x)) {
@@ -90,20 +80,22 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   }
   
   # check that all 'stats' elements are valid
-  valid_stats <- list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", "iqr", "cv",
-                                  "skewness", "se.skewness", "kurtosis", "n.valid", "pct.valid"),
-                      wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", "n.valid", "pct.valid"))
+  valid_stats <- list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+                                  "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+                                  "n.valid", "pct.valid"),
+                      wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+                               "n.valid", "pct.valid"))
   
   if (identical(stats,"all")) {
-    #stats <- seq_len(length(valid_stats[[2 - as.numeric(identical(weights, NA))]]))
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
   } else {
     stats <- tolower(stats)
     invalid_stats <- setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
     if (length(invalid_stats) > 0) {
-      #message("the following statistics are not recognized or allowed: ", paste(invalid_stats, collapse = ", "))
-      stop("valid stats are: ", paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], collapse = ", "),
-           "\n  The following statistics are not recognized, or not allowed: ", paste(invalid_stats, collapse = ", "))
+      stop("valid stats are: ", paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], 
+                                      collapse = ", "),
+           "\n  The following statistics are not recognized, or not allowed: ",
+           paste(invalid_stats, collapse = ", "))
     }
   }
   
@@ -168,21 +160,21 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
   # No weigths being used -----------------------------------------------------  
   if (identical(weights, NA)) {
     # Build skeleton for output dataframe
-    output <- data.frame(mean = numeric(),
-                         sd   = numeric(),
-                         min  = numeric(),
-                         q1   = numeric(),
-                         med  = numeric(),
-                         q3   = numeric(),
-                         max  = numeric(),
-                         mad  = numeric(),
-                         iqr  = numeric(),
-                         cv   = numeric(),
-                         skewness = numeric(),
+    output <- data.frame(mean        = numeric(),
+                         sd          = numeric(),
+                         min         = numeric(),
+                         q1          = numeric(),
+                         med         = numeric(),
+                         q3          = numeric(),
+                         max         = numeric(),
+                         mad         = numeric(),
+                         iqr         = numeric(),
+                         cv          = numeric(),
+                         skewness    = numeric(),
                          se.skewness = numeric(),
-                         kurtosis  = numeric(),
-                         n.valid   = numeric(),
-                         pct.valid = numeric())
+                         kurtosis    = numeric(),
+                         n.valid     = numeric(),
+                         pct.valid   = numeric())
     
     # Iterate over columns in x
     for(i in seq_along(x.df)) {
@@ -198,7 +190,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
         p_valid <- n_valid / length(variable)
       }
       
-      # Calculate mean and sd
+      # Calculate mean and sd if necessary
       if (any(c("mean", "cv") %in% stats)) {
         variable.mean <- mean(variable, na.rm = na.rm)
       }
@@ -218,12 +210,12 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
                        ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
                        ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
                        ifelse("cv"   %in% stats, variable.mean / variable.sd, NA),
-                       ifelse("skewness" %in% stats, skewness(variable, na.rm=na.rm), NA),
+                       ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
                        ifelse("se.skewness" %in% stats,
                               sqrt((6*n_valid*(n_valid-1)) / ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
-                       ifelse("kurtosis" %in% stats, kurtosis(variable, na.rm=na.rm), NA),
-                       ifelse("n.valid" %in% stats, n_valid, NA),
-                       ifelse("pct.valid" %in% stats, p_valid * 100, NA))
+                       ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
+                       ifelse("n.valid"     %in% stats, n_valid, NA),
+                       ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
     }
     
   } else {
@@ -244,13 +236,13 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
     }
     
     # Build skeleton for output dataframe
-    output <- data.frame(mean = numeric(),
-                         sd   = numeric(),
-                         min  = numeric(),
-                         med  = numeric(),
-                         max  = numeric(),
-                         mad  = numeric(),
-                         cv   = numeric(),
+    output <- data.frame(mean      = numeric(),
+                         sd        = numeric(),
+                         min       = numeric(),
+                         med       = numeric(),
+                         max       = numeric(),
+                         mad       = numeric(),
+                         cv        = numeric(),
                          n.valid   = numeric(),
                          pct.valid = numeric())
     
@@ -280,7 +272,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
         weights <- weights[ind]
       }
 
-      # Calculate mean and sd
+      # Calculate mean and sd if necessary
       if (any(c("mean", "cv") %in% stats)) {
         variable.mean <- weightedMean(variable, weights, refine = TRUE, na.rm = na.rm)
       }
@@ -345,7 +337,7 @@ descr <- function(x, stats = "all", na.rm = TRUE, round.digits = 2,
          Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
                                   parse_info$var_names, NA),
-         Variable.labels = label(x, all = TRUE, fallback = TRUE, simplify = TRUE),
+         Variable.labels = label(x, all = TRUE, fallback = FALSE, simplify = TRUE),
          Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
          Weights         = ifelse(identical(weights, NA), NA,
                                   sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",

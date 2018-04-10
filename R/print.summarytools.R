@@ -1,20 +1,25 @@
 #' Print Method for Objects of Class \code{summarytools}.
 #'
 #' Display \code{summarytools} objects in the console, in Web Browser or in
-#'  \emph{RStudio}'s Viewer, or create formatted output files.
+#'  \emph{RStudio}'s Viewer, or write content to file.
 #'
 #' @aliases print view
 #'
 #' @usage
 #'  \method{print}{summarytools}(x, method = "pander", file = "",
-#'    append = FALSE, report.title = NA, escape.pipe = FALSE,
-#'    table.classes = NA, bootstrap.css = TRUE, custom.css = NA, 
-#'    silent = FALSE, footnote = "default", \dots)
+#'    append = FALSE, report.title = NA, table.classes = NA,
+#'    bootstrap.css = st_options('bootstrap.css'), 
+#'    custom.css = st_options('custom.css'), silent = FALSE, 
+#'    footnote = st_options('footnote'), 
+#'    escape.pipe = st_options('escape.pipe'), \dots)
 #'
 #' view(x, method = "viewer", file = "", append = FALSE,
-#'   report.title = NA, escape.pipe = FALSE, table.classes = NA,
-#'   bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
-#'   footnote = "default", \dots)
+#'   report.title = NA, table.classes = NA, 
+#'   bootstrap.css = st_options('bootstrap.css'), 
+#'   custom.css = st_options('custom.css'), silent = FALSE, 
+#'   footnote = st_options('footnote'), 
+#'   escape.pipe = st_options('escape.pipe'), \dots)
+#'    
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -29,11 +34,6 @@
 #' @param report.title For \emph{html} reports, this goes into the
 #'   \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 #'   will be generic.
-#' @param escape.pipe Logical. Set to \code{TRUE} when using
-#'   \code{style='grid'} and \code{file} argument is supplied if the intent
-#'   is to generate a text file that can be converted to other formats using
-#'   \emph{Pandoc}. To change this default value globally, see 
-#'   \code{\link{st_options}}.
 #' @param table.classes Character.  Additionnal classes to assign to output tables. 
 #'   All \emph{Bootstrap CSS} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details} section.
@@ -50,6 +50,11 @@
 #'   this is the package name and version, R version, and current date). Has no effect
 #'   when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
 #'   or set to \code{NA} to omit. To change this default value globally, see 
+#'   \code{\link{st_options}}.
+#' @param escape.pipe Logical. Set to \code{TRUE} when using
+#'   \code{style='grid'} and \code{file} argument is supplied if the intent
+#'   is to generate a text file that can be converted to other formats using
+#'   \emph{Pandoc}. To change this default value globally, see 
 #'   \code{\link{st_options}}.
 #' @param \dots Additional arguments can be used to override parameters stored
 #'   as attributes in the object being printed. See \emph{Details} section.
@@ -124,45 +129,37 @@
 #'
 #'@export
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
-                               report.title = NA, escape.pipe = FALSE,
-                               table.classes = NA, bootstrap.css = TRUE,
-                               custom.css = NA, silent = FALSE, 
-                               footnote = "default", ...) {
+                               report.title = NA, table.classes = NA, 
+                               bootstrap.css = st_options('bootstrap.css'),
+                               custom.css = st_options('custom.css'), silent = FALSE, 
+                               footnote = st_options('footnote'), 
+                               escape.pipe = st_options('escape.pipe'), ...) {
 
-  # Apply global options that were not set explicitly -------------------------
-  
-  all_args <- formals()
-  explicit_args <- match.call()
-  implicit_args <- setdiff(names(all_args), names(explicit_args))
-  
-  global_options <- getOption('summarytools')
-  options_to_set <- intersect(names(global_options), implicit_args)
-  
-  for (o in options_to_set) {
-    assign(x = o, value = global_options[[o]])
-  }
+  args_list <- match.call()
   
   # Recup arguments from view() if present ------------------------------------
-  if ("open.doc" %in% names(explicit_args)) {
-    open.doc <- explicit_args[["open.doc"]]
+  
+  if ("open.doc" %in% names(args_list)) {
+    open.doc <- args_list[["open.doc"]]
   } else {
     open.doc <- FALSE
   }
 
-  if ("group.only" %in% names(explicit_args)) {
-    group.only <- explicit_args[["group.only"]]
+  if ("group.only" %in% names(args_list)) {
+    group.only <- args_list[["group.only"]]
   } else {
     group.only <- FALSE
   }
 
-  if ("var.only" %in% names(explicit_args)) {
-    var.only <- explicit_args[["var.only"]]
+  if ("var.only" %in% names(args_list)) {
+    var.only <- args_list[["var.only"]]
   } else {
     var.only <- FALSE
   }
 
 
   # Parameter validation -----------------------------------------------------
+  
   method <- switch(tolower(substring(method, 1, 1)),
                    p = "pander",
                    b = "browser",
@@ -226,16 +223,39 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Override of x's attributes ---------------------------------------------
-  if ("date" %in% names(explicit_args)) {
-    attr(x, "date") <- explicit_args$date
+  if ("date" %in% names(args_list)) {
+    attr(x, "date") <- args_list$date
   }
   
-  # Override of formatting elements
-  for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
+  # Override of formatting elements, first by looking at args_list (match.call()),
+  # then by looking at the match.call() from x to set global parameters that were
+  # not explicit in the latter.
+  overrided_args <- character()
+  for (format_element in c("style", "plain.ascii", "round.digits", "justify", 
                            "missing", "omit.headings", "split.tables",
-                           "display.type", "display.labels", "report.nas")) {
-    if (format_element %in% names(explicit_args)) {
-      attr(x, "formatting")[format_element] <- explicit_args[format_element]
+                           "display.type", "display.labels", "totals", 
+                           "report.nas")) {
+    if (format_element %in% names(args_list)) {
+      attr(x, "formatting")[format_element] <- args_list[format_element]
+      overrided_args <- append(overrided_args, format_element)
+    }
+  }
+  
+  # Global options that apply to all types of summarytools objects
+  for (format_element in c("style", "plain.ascii", "round.digits", 
+                           "omit.headings", "display.labels")) {
+    if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
+      attr(x, "formatting")[format_element] <- st_options(format_element)
+    }
+  }
+  
+  # Global options specific to one type of summarytools object
+  prefix <- paste0(attr(x, "st_type"), ".")
+  for (format_element in sub(prefix, "", 
+                             grep(prefix, names(st_options()), value = TRUE, fixed = TRUE),
+                             fixed = TRUE)) {
+    if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
+      attr(x, "formatting")[format_element] <- st_options(paste0(prefix, format_element))
     }
   }
 
@@ -247,15 +267,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               "Row.variable", "Col.variable",
                               "Row.variable.subet", "Col.variable.subset",
                               "Row.variable.label", "Col.variable.label")) {
-    if (data_info_element %in% names(explicit_args)) {
-      attr(x, "data_info")[data_info_element] <- explicit_args[data_info_element]
+    if (data_info_element %in% names(args_list)) {
+      attr(x, "data_info")[data_info_element] <- args_list[data_info_element]
     }
   }
 
   # When style == 'rmarkdown', set plain.ascii to FALSE unless explicitly specified
   if (method == "pander" && attr(x, "formatting")$style == "rmarkdown" &&
       isTRUE(attr(x, "formatting")$plain.ascii) &&
-      (!"plain.ascii" %in% (names(match.call())))) {
+      (!"plain.ascii" %in% (names(args_list)))) {
     attr(x, "formatting")$plain.ascii <- FALSE
   }
 
@@ -325,6 +345,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
         }
       }
+      
       if (nchar(trimws(div_str)) > 0) {
         if (h == 0) {
           div_list[[length(div_list) + 1]] <<- HTML(div_str)
@@ -393,7 +414,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   stpath <- find.package("summarytools")
 
-  # Build footer note
+  # Build footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
       footnote <- paste0("<p>Generated by <a href='https://github.com/dcomtois/summarytools'>",
                        "summarytools</a> package version ",
@@ -429,6 +450,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
       x <- x[-(nrow(x)-1),1:3]
       colnames(x) <- c("Freq", "%", "% Cum.")
+    }
+    
+    if (!format_info$totals) {
+      x <- x[-nrow(x),]
     }
     
 
@@ -479,8 +504,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       if (format_info$report.nas) {
         # Put NA in irrelevant cells so that pander recognizes them as such
-        freq_table[nrow(freq_table)-1, 2] <- NA
-        freq_table[nrow(freq_table)-1, 3] <- NA
+        freq_table[nrow(freq_table) - as.numeric(format_info$totals), 2] <- NA
+        freq_table[nrow(freq_table) - as.numeric(format_info$totals), 3] <- NA
       }
       
       # Remove .00 digits in Freq column when weights are not used
@@ -790,7 +815,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   } else if(attr(x, "st_type") == "descr") {
 
-    # descr objects -------------------------------------------------------------------------------------------
+    # descr objects ------------------------------------------------------------------------
 
     if(!silent && !group.only && 
        (!"by.first" %in% names(data_info) || as.logical(data_info["by.last"]) == TRUE) &&
@@ -986,6 +1011,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # remove html graphs
       if ("Graph" %in% names(x)) {
         x <- x[,-which(names(x) == "Graph")]
+      }
+      
+      # Check that style is not 'simple'
+      if (format_info$style == 'simple') {
+        format_info$style <- 'multiline'
       }
       
       output <- list()

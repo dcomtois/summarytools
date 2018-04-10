@@ -1,21 +1,10 @@
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-                 escape.pipe = FALSE, table.classes = NA, bootstrap.css = TRUE,
-                 custom.css = NA, silent = FALSE, footnote = "default", ...) {
+                 table.classes = NA, bootstrap.css = st_options('bootstrap.css'), 
+                 custom.css = st_options('custom.css'), silent = FALSE, 
+                 footnote = st_options('footnote'), escape.pipe = st_options('escape.pipe'),
+                 ...) {
 
-  # Apply global options that were not set explicitly -------------------------
-  
-  all_args <- formals()
-  explicit_args <- match.call()
-  implicit_args <- setdiff(names(all_args), names(explicit_args))
-  
-  global_options <- getOption('summarytools')
-  options_to_set <- intersect(names(global_options), implicit_args)
-  
-  for (o in options_to_set) {
-    assign(x = o, value = global_options[[o]])
-  }
-  
   # Objects not created via by() or lapply() ----------------------------------
   
   if ("summarytools" %in% class(x)) {

@@ -5,24 +5,24 @@
 #'
 #' @param x Factor or vector
 #' @param round.digits Number of significant digits to display. Defaults
-#'   to \code{2}.
+#'   to \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq}
 #'   (from most frequent to less frequent).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid} or
-#'   \dQuote{rmarkdown}.
-#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
+#'   This option can be set globally; see \code{\link{st_options}}.
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
-#'   to console). Defaults to \code{TRUE} when \code{style} is \dQuote{simple},
-#'   and \code{FALSE} otherwise. To change default value globally, see 
-#'   \code{\link{st_options}}.
+#'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
+#'   in which case it will be set to \code{FALSE} automatically. To change the default 
+#'   value globally, see \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns. By default
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one
 #'   of \dQuote{left}, \dQuote{center}, or \dQuote{right}.
 #' @param totals Logical. Set to \code{FALSE} to hide totals from results. To change this
-#'   default value globally, see \code{\link{st_options}}.
+#'   value globally, see \code{\link{st_options}}.
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of missing values.
 #'   To change this default value globally, see \code{\link{st_options}}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
@@ -30,8 +30,8 @@
 #' @param display.labels Logical. Should variable / data frame labels be displayed?
 #'   Default is \code{TRUE}. To change this default value globally, see 
 #'   \code{\link{st_options}}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit headings. Can be set globally
-#'   via \code{\link{st_options}}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
+#'   globally via \code{\link{st_options}}.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -41,14 +41,16 @@
 #'   by the \emph{print} method.
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
-#'   appear cleaner in the console. To avoid rmarkdown rendering problems, the
+#'   appear cleaner in the console. To avoid rmarkdown rendering problems, this
 #'   option is automatically set to \code{FALSE} whenever
 #'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
-#'   explicit).
+#'   explicit in the function call).
 #'
 #' @examples
 #' data(tobacco)
 #' freq(tobacco$gender)
+#' freq(tobacco$gender, totals = FALSE)
+#' freq(tobacco$gender, display.nas = FALSE)
 #' freq(tobacco$gender, style="rmarkdown")
 #' with(tobacco, by(data = smoker, INDICES = gender, FUN = freq))
 #'
@@ -57,26 +59,14 @@
 #' @keywords univar classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-freq <- function(x, round.digits = 2, order = "names", style = "simple",
-                 plain.ascii = TRUE, justify = "default", totals = TRUE, 
-                 report.nas = TRUE, missing = "", display.type = TRUE, 
-                 display.labels = TRUE, omit.headings = FALSE, weights = NA, 
+freq <- function(x, round.digits = st_options('round.digits'), order = "names", 
+                 style = st_options('style'), plain.ascii = st_options('plain.ascii'), 
+                 justify = "default", totals = st_options('freq.totals'), 
+                 report.nas = st_options('freq.report.nas'), missing = "", 
+                 display.type = TRUE, display.labels = st_options('display.labels'), 
+                 omit.headings = st_options('omit.headings'), weights = NA, 
                  rescale.weights = FALSE, ...) {
 
-  # Apply global options that were not set explicitly -------------------------
-  
-  all_args <- formals()
-  explicit_args <- match.call()
-  implicit_args <- setdiff(names(all_args), names(explicit_args))
-  
-  global_options <- getOption('summarytools')
-  names(global_options) <- sub("freq.", "", names(global_options), fixed = TRUE)
-  options_to_set <- intersect(names(global_options), implicit_args)
-  
-  for (o in options_to_set) {
-    assign(x = o, value = global_options[[o]])
-  }
-  
   # Parameter validation ------------------------------------------------------
 
   # if x is a data.frame with 1 column, extract this column as x
@@ -143,7 +133,7 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
   }
 
-  # Replace NaN's by NA's (This simplifies matters a lot!)
+  # Replace NaN's by NA's (This simplifies matters a lot)
   if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
     x[is.nan(x)] <- NA
@@ -226,9 +216,9 @@ freq <- function(x, round.digits = 2, order = "names", style = "simple",
   
   # Update the output class and attributes ------------------------------------
   class(output) <- c("summarytools", class(output))
-  attr(output, "st_type") <- "freq"
-  attr(output, "fn_call") <- match.call()
-  attr(output, "date") <- Sys.Date()
+  attr(output, "st_type")    <- "freq"
+  attr(output, "fn_call")    <- match.call()
+  attr(output, "date")       <- Sys.Date()
 
   data_info <-
     list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name  , NA),

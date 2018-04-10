@@ -7,14 +7,18 @@
 \title{Print Method for Objects of Class \code{summarytools}.}
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "",
-   append = FALSE, report.title = NA, escape.pipe = FALSE,
-   table.classes = NA, bootstrap.css = TRUE, custom.css = NA, 
-   silent = FALSE, footnote = "default", \dots)
+   append = FALSE, report.title = NA, table.classes = NA,
+   bootstrap.css = st_options('bootstrap.css'), 
+   custom.css = st_options('custom.css'), silent = FALSE, 
+   footnote = st_options('footnote'), 
+   escape.pipe = st_options('escape.pipe'), \dots)
 
 view(x, method = "viewer", file = "", append = FALSE,
-  report.title = NA, escape.pipe = FALSE, table.classes = NA,
-  bootstrap.css = TRUE, custom.css = NA, silent = FALSE, 
-  footnote = "default", \dots)
+  report.title = NA, table.classes = NA, 
+  bootstrap.css = st_options('bootstrap.css'), 
+  custom.css = st_options('custom.css'), silent = FALSE, 
+  footnote = st_options('footnote'), 
+  escape.pipe = st_options('escape.pipe'), \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -34,12 +38,6 @@ whether to append output to existing file. \code{FALSE} by default.}
 \item{report.title}{For \emph{html} reports, this goes into the
 \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 will be generic.}
-
-\item{escape.pipe}{Logical. Set to \code{TRUE} when using
-\code{style='grid'} and \code{file} argument is supplied if the intent
-is to generate a text file that can be converted to other formats using
-\emph{Pandoc}. To change this default value globally, see 
-\code{\link{st_options}}.}
 
 \item{table.classes}{Character.  Additionnal classes to assign to output tables. 
 All \emph{Bootstrap CSS} classes can be used. It also allows
@@ -63,6 +61,12 @@ when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own
 or set to \code{NA} to omit. To change this default value globally, see 
 \code{\link{st_options}}.}
 
+\item{escape.pipe}{Logical. Set to \code{TRUE} when using
+\code{style='grid'} and \code{file} argument is supplied if the intent
+is to generate a text file that can be converted to other formats using
+\emph{Pandoc}. To change this default value globally, see 
+\code{\link{st_options}}.}
+
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
 }
@@ -74,7 +78,7 @@ as attributes in the object being printed. See \emph{Details} section.}
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in
- \emph{RStudio}'s Viewer, or create formatted output files.
+ \emph{RStudio}'s Viewer, or write content to file.
 }
 \details{
 Plain ascii and \emph{rmarkdown} tables are generated via
@@ -124,7 +128,7 @@ The following additional arguments can be used to override
   }
   data(exams)
   print(freq(exams$gender))
-  print(descr(exams), "pander", style = "grid")
+  print(descr(exams), style = "grid")
 
 }
 \references{

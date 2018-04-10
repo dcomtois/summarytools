@@ -5,30 +5,36 @@
 #' observation counts.
 #'
 #' @param x A data frame.
-#' @param round.digits Number of significant digits to display in numerical
-#'   summaries and in frequency proportions. Defaults to \code{2}.
+#' @param round.digits Number of significant digits to display. Defaults
+#'   to \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param varnumbers Logical. Should the first column contain variable number? Defaults
-#'   to \code{TRUE}.
+#'   to \code{TRUE}. Can be set globally; see \code{\link{st_options}}, option 
+#'   \dQuote{dfSummary.varnumbers}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label} functions)
 #'   will be displayed. By default, the \emph{labels} column is shown if at least
 #'   one column has a defined label.
 #' @param valid.col Logical. Include column indicating count and proportion of valid
-#'   (non-missing) values. \code{TRUE} by default.
+#'   (non-missing) values. \code{TRUE} by default, but can be set globally; see 
+#'   \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.
 #' @param na.col Logical. Include column indicating count and proportion of missing
-#'   (NA) values. \code{TRUE} by default.
+#'   (NA) values. \code{TRUE} by default, but can be set globally; see 
+#'   \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
 #' @param graph.col Logical. Display barplots / histograms column in \emph{html}
-#'   reports. \code{TRUE} by default.
+#'   reports. \code{TRUE} by default, but can be set globally; see 
+#'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.
 #' @param graph.magnif Numeric. Magnification factor, useful if the graphs show up
-#'   too large (then use a value < 1) or too small (use a value > 1). Must be positive.
+#'   too large (then use a value < 1) or too small (use a value > 1). Must be 
+#'   positive. Can be set globally; see \code{\link{st_options}}, option 
+#'   \dQuote{dfSummary.graph.magnif}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when
 #'   rendering output table. Defaults to \dQuote{multiline}. The only other valid
 #'   option is \dQuote{grid}. Style \dQuote{simple} is not supported for this particular
 #'   function, and \dQuote{rmarkdown} will fallback to \dQuote{multiline}.
-#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; When
-#'   \code{TRUE}, no markup characters will be generated (useful when printing
-#'   to console). Defaults to \code{TRUE}. To change this default value globally, see 
-#'   \code{\link{st_options}}.
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
+#'   \code{TRUE}, no markup characters will be used (useful when printing
+#'   to console). Defaults to \code{TRUE}. Set to \code{FALSE} when in context of 
+#'   markdown rendering. To change the default value globally, see \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
 #' @param omit.headings Logical. Set to \code{TRUE} to omit headings. To change this 
@@ -69,7 +75,7 @@
 #'     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
 #'       barplot for factors and character variables.}
 #'     \item{Valid}{Number and proportion of valid values.}
-#'     \item{Missing}{Number and proportion of missing (NA) values, including NaN's.}
+#'     \item{Missing}{Number and proportion of missing (NA and NAN) values.}
 #' }
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
@@ -80,6 +86,9 @@
 #'   \emph{before} calculating frequencies, so those will be impacted
 #'   accordingly.
 #'
+#'   The package vignette \dQuote{Recommendations for Rmarkdown} provides valuable 
+#'   information for creating optimal \emph{Rmarkdown} documents with summarytools.
+#'
 #' @examples
 #' data(tobacco)
 #' dfSummary(tobacco)
@@ -88,29 +97,19 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-dfSummary <- function(x, round.digits = 2, varnumbers = TRUE,
+dfSummary <- function(x, round.digits = st_options('round.digits'), 
+                      varnumbers = st_options('dfSummary.varnumbers'),
                       labels.col = length(label(x, all = TRUE)) > 0,
-                      valid.col = TRUE, na.col = TRUE, graph.col = TRUE,
-                      graph.magnif = 1, style = "multiline", plain.ascii = TRUE, 
-                      justify = "left", omit.headings = FALSE,  max.distinct.values = 10,
-                      trim.strings = FALSE,  max.string.width = 25, split.cells = 40,
+                      valid.col = st_options('dfSummary.valid.col'),
+                      na.col = st_options('dfSummary.na.col'),
+                      graph.col = st_options('dfSummary.graph.col'),
+                      graph.magnif = st_options('dfSummary.graph.magnif'),
+                      style = "multiline", plain.ascii = st_options('plain.ascii'),
+                      justify = "left", omit.headings = st_options('omit.headings'),
+                      max.distinct.values = 10, trim.strings = FALSE,  
+                      max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
-  # Apply global options that were not set explicitly -------------------------
-  
-  all_args <- formals()
-  explicit_args <- match.call()
-  implicit_args <- setdiff(names(all_args), names(explicit_args))
-  
-  global_options <- getOption('summarytools')
-  names(global_options) <- sub("dfSummary.", "", names(global_options), fixed = TRUE)
-  options_to_set <- intersect(names(global_options), implicit_args)
-  
-  for (o in options_to_set) {
-    assign(x = o, value = global_options[[o]])
-  }
-  
-  
   # Parameter validation ------------------------------------------------------
   
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
