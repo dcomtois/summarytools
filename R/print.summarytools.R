@@ -118,7 +118,7 @@
 #'   }
 #'   data(exams)
 #'   print(freq(exams$gender))
-#'   print(descr(exams), "pander", style = "grid")
+#'   print(descr(exams), style = "grid")
 #'
 #' @keywords print methods
 #'
@@ -142,7 +142,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     assign(x = o, value = global_options[[o]])
   }
   
-  # Recup arguments from view() if present
+  # Recup arguments from view() if present ------------------------------------
   if ("open.doc" %in% names(explicit_args)) {
     open.doc <- explicit_args[["open.doc"]]
   } else {
@@ -162,7 +162,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
 
-  # Parameter validation ---------------------------------------
+  # Parameter validation -----------------------------------------------------
   method <- switch(tolower(substring(method, 1, 1)),
                    p = "pander",
                    b = "browser",
@@ -230,7 +230,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     attr(x, "date") <- explicit_args$date
   }
   
-  # Local parameter override
+  # Override of formatting elements
   for (format_element in c("style", "round.digits", "justify", "plain.ascii", 
                            "missing", "omit.headings", "split.tables",
                            "display.type", "display.labels", "report.nas")) {
@@ -239,7 +239,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
 
-  # Data info attributes
+  # Override of data info attributes
   for (data_info_element in c("Dataframe", "Dataframe.label",
                               "Variable", "Variable.label", 
                               "Variable.labels","Data.type",
@@ -447,7 +447,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
   
           if (sect_title[[2]] != "") {
-            #output[[length(output) + 1]] <- paste0("\n",add_hash(sect_title[[2]], 4))
             if (format_info$plain.ascii) {
               output[[length(output) + 1]] <- paste0("\n", sect_title[[2]], "  ")
             } else {
@@ -476,7 +475,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       freq_table <- format(x = round(x, format_info$round.digits),
                            trim = FALSE,
                            nsmall = format_info$round.digits,
-                           #digits = format_info$round.digits,
                            justify = justify)
 
       if (format_info$report.nas) {

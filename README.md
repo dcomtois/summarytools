@@ -9,9 +9,8 @@
 Version 0.8.3 brings several improvements to summarytools. I'm making it available here on GitHub before submitting it to CRAN. For details on the changes, please see the NEWS file, as well as the rest of this document.
 
 Two vignettes complement information found on this page:  
-- [Introduction to summarytools](https://rawgit.com/dcomtois/summarytools/dev-current/Indroduction.html)  
-- [Recommendations for Using summarytools With Rmarkdown](https://rawgit.com/dcomtois/summarytools/dev-current/Recommendations-rmarkdown.html)  
-
+- [Introduction to summarytools](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Indroduction.html)  
+- [Recommendations for Using summarytools With Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
 
 ## What is summarytools?
 

@@ -31,7 +31,7 @@ Below are examples using recommended styles for `rmarkdown` rendering. Available
 - _grid_  
 - _multiline_  
  
-## Important!
+## Important Note
 
 `knitr` option `results = 'asis'` must be specified to get good results. This can be done globally via `opts_chunk$set(results='asis')`, on in the individual chunks.
 
