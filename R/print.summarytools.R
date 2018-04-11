@@ -302,13 +302,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       for (e in elements) {
         if (e[[1]] %in% names(data_info)) {
           if (grepl(pattern = "label", e[[1]])) {
-            if (isTRUE(format_info[["display.labels"]])) {
+            if (isTRUE(format_info$display.labels)) {
               output[[length(output) + 1]] <<-
                 paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
               element_added <- TRUE
             }
           } else if (grepl(pattern = "type", e[[1]])) {
-            if (isTRUE(format_info[["display.type"]])) {
+            if (isTRUE(format_info$display.type)) {
               output[[length(output) + 1]] <<-
                 paste0("\n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
               element_added <- TRUE
@@ -325,7 +325,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       for (e in elements) {
         if (e[[1]] %in% names(data_info)) {
           if (grepl(pattern = "label", e[[1]])) {
-            if (isTRUE(format_info[["display.labels"]])) {
+            if (isTRUE(format_info$display.labels)) {
               div_str_item <- paste(paste0("<strong>",e[[2]],"</strong>"), data_info[[e[[1]]]], sep = ": ")
             } else {
               div_str_item <- NA
@@ -361,7 +361,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Function to vertically align frequencies and proportions in ctables
   align_numbers <- function(counts, props) {
 
-    round.digits <- format_info[["round.digits"]]
+    round.digits <- format_info$round.digits
     res <- sapply(1:ncol(counts), function(colnum) {
 
       if ("Weights" %in% names(data_info)) {
@@ -456,7 +456,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       x <- x[-nrow(x),]
     }
     
-
     if(method=="pander") {
 
       output <- list()
@@ -716,10 +715,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
       }
 
-      pander_args <- append(list(style = format_info[["style"]],
-                                 plain.ascii = format_info[["plain.ascii"]],
-                                 justify = format_info[["justify"]],
-                                 split.tables = format_info[["split.tables"]]),
+      pander_args <- append(list(style = format_info$style,
+                                 plain.ascii = format_info$plain.ascii,
+                                 justify = format_info$justify,
+                                 split.tables = format_info$split.tables),
                             attr(x, "user_fmt"))
 
       # do not use argument keep.trailing.zeros = TRUE b/c of issue with pander + ftable
@@ -885,11 +884,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       }
       
       # Format numbers (avoids inconsistencies with pander rounding digits)
-      x <- format(round(x, format_info[["round.digits"]]),
-                  nsmall = format_info[["round.digits"]])
+      x <- format(round(x, format_info$round.digits),
+                  nsmall = format_info$round.digits)
 
-      pander_args <- append(list(style = format_info[["style"]],
-                                 plain.ascii = format_info[["plain.ascii"]],
+      pander_args <- append(list(style        = format_info$style,
+                                 plain.ascii  = format_info$plain.ascii,
+                                 split.tables = format_info$split.tables,
                                  justify = justify),
                             attr("x", "user_fmt"))
 
@@ -908,6 +908,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     } else {
 
       # descr objects - method viewer / browser / render --------------------------
+      
       table_head <- list(tags$th(""))
 
       for(cn in colnames(x)) {
@@ -1029,7 +1030,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       
       output <- list()
 
-      if(!format_info[["plain.ascii"]]) {
+      if(!format_info$plain.ascii) {
         # Escape symbols for words between <>'s to allow <NA> or factor
         # levels such as <ABC> to be rendered correctly
         if("Label" %in% names(x)) {
@@ -1076,11 +1077,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                      h = 0)
       }
 
-      pander_args <- append(list(style = format_info[["style"]],
-                                 plain.ascii = format_info[["plain.ascii"]],
-                                 justify = format_info[["justify"]],
-                                 split.cells = format_info[["split.cells"]],
-                                 split.tables = format_info[["split.tables"]],
+      pander_args <- append(list(style        = format_info$style,
+                                 plain.ascii  = format_info$plain.ascii,
+                                 justify      = format_info$justify,
+                                 split.cells  = format_info$split.cells,
+                                 split.tables = format_info$split.tables,
                                  keep.line.breaks = TRUE),
                             attr(x, "user_fmt"))
 
@@ -1091,7 +1092,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           ),
           collapse = "\n")
 
-      if (isTRUE(escape.pipe) && format_info[["style"]] == "grid") {
+      if (isTRUE(escape.pipe) && format_info$style == "grid") {
         output[[length(output)]] <- gsub("\\|","\\\\|", output[[length(output)]])
       }
 
@@ -1178,7 +1179,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
 
-  # Print or write to file - pander -------------------------------------------------------------------------
+  # Print or write to file - pander --------------------------------------------------------------
+  
   if (method == "pander") {
     cat(do.call(paste, output), file = file, append = append)
     if (file != "" && !isTRUE(silent)) {
@@ -1192,6 +1194,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   } else {
 
     # Print or write to file - html --------------------------
+    
     if (isTRUE(append)) {
       f <- file(file, open = "r", encoding = "utf-8")
       html_content_in <- paste(readLines(f, warn = FALSE, encoding = "utf-8"), collapse="\n")

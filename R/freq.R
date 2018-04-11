@@ -204,18 +204,22 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
   }
 
   # Calculate cumulative proportions ------------------------------------------
+  
   P_valid_cum <- cumsum(P_valid)
   P_valid_cum["<NA>"] <- NA
   P_tot_cum <- cumsum(P_tot)
 
   # Combine the info to build the final frequency table -----------------------
+  
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
   colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", "% Total Cum.")
   rownames(output) <- c(names(freq_table), "Total")
   
   # Update the output class and attributes ------------------------------------
+  
   class(output) <- c("summarytools", class(output))
+  
   attr(output, "st_type")    <- "freq"
   attr(output, "fn_call")    <- match.call()
   attr(output, "date")       <- Sys.Date()
