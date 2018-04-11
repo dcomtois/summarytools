@@ -33,7 +33,7 @@
 #'   the title section?  Default is \code{TRUE}. To change this default value globally,
 #'   see \code{\link{st_options}}.
 #' @param split.tables Pander argument that specifies how many characters wide a
-#'   table can be. \code{Inf} by default.
+#'   table can be. \code{100} by default.
 #' @param weights Vector of weights having same length as x. \code{NA}
 #'   (default) indicates that no weights are used.
 #' @param rescale.weights Logical. When set to \code{TRUE}, the
@@ -61,7 +61,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                   plain.ascii = st_options('plain.ascii'),
                   justify = "right", omit.headings = st_options('omit.headings'), 
                   display.labels = st_options('display.labels'),  
-                  split.tables = Inf, weights = NA, rescale.weights = FALSE, ...) {
+                  split.tables = 100, weights = NA, rescale.weights = FALSE, ...) {
   
   # Validate arguments --------------------------------------------------------
   

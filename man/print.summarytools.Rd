@@ -111,7 +111,7 @@ The following additional arguments can be used to override
      \item \code{Variable.label}
      \item \code{display.labels}
      \item \code{display.type}
-     \item \code{Variable.labels} (\code{\link{descr}} objects only)
+     \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
      \item \code{report.nas} (\code{\link{freq}} objects only)
      \item \code{Row.variable} (\code{\link{ctable}} objects only)
      \item \code{Col.variable} (\code{\link{ctable}} objects only)

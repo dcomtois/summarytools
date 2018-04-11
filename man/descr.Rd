@@ -9,8 +9,8 @@ descr(x, stats = st_options("descr.stats"), na.rm = TRUE,
   transpose = st_options("descr.transpose"), style = st_options("style"),
   plain.ascii = st_options("plain.ascii"), justify = "right",
   omit.headings = st_options("omit.headings"),
-  display.labels = st_options("display.labels"), weights = NA,
-  rescale.weights = FALSE, ...)
+  display.labels = st_options("display.labels"), split.tables = 100,
+  weights = NA, rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
@@ -50,6 +50,9 @@ globally via \code{\link{st_options}}.}
 \item{display.labels}{Logical. Should variable / data frame labels be displayed in
 the title section?  Default is \code{TRUE}. To change this default value globally,
 see \code{\link{st_options}}.}
+
+\item{split.tables}{Pander argument that specifies how many characters wide a
+table can be. \code{100} by default.}
 
 \item{weights}{Vector of weights having same length as x. \code{NA}
 (default) indicates that no weights are used.}
