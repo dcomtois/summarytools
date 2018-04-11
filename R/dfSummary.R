@@ -202,14 +202,14 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   txthist <- function(data) {
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = nclass.FD(data), min.n = 1)
-    if (length(breaks_x) <= 12) {
+    if (length(breaks_x) <= 10) {
       counts <- hist(data, breaks = breaks_x, plot = FALSE)$counts
     } else {
-      counts <- as.vector(table(cut(data, breaks = 12)))
+      counts <- as.vector(table(cut(data, breaks = 10)))
     }
 
-    # make counts top at 12
-    counts <- matrix(round(counts / max(counts) * 12), nrow = 1, byrow = TRUE)
+    # make counts top at 10
+    counts <- matrix(round(counts / max(counts) * 10), nrow = 1, byrow = TRUE)
     graph <- matrix(data = "", nrow = 6, ncol = length(counts))
     for (ro in 6:1) {
       for (co in 1:length(counts)) {
