@@ -32,6 +32,8 @@
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
 #'   the title section?  Default is \code{TRUE}. To change this default value globally,
 #'   see \code{\link{st_options}}.
+#' @param split.tables Pander argument that specifies how many characters wide a
+#'   table can be. \code{Inf} by default.
 #' @param weights Vector of weights having same length as x. \code{NA}
 #'   (default) indicates that no weights are used.
 #' @param rescale.weights Logical. When set to \code{TRUE}, the
@@ -59,7 +61,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                   plain.ascii = st_options('plain.ascii'),
                   justify = "right", omit.headings = st_options('omit.headings'), 
                   display.labels = st_options('display.labels'),  
-                  weights = NA, rescale.weights = FALSE, ...) {
+                  split.tables = Inf, weights = NA, rescale.weights = FALSE, ...) {
   
   # Validate arguments --------------------------------------------------------
   
@@ -329,12 +331,12 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   # Set class/attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "descr"
-  attr(output, "date") <- Sys.Date()
+  attr(output, "date")    <- Sys.Date()
   attr(output, "fn_call") <- match.call()
   
   data_info <-
-    list(Dataframe       = ifelse("df_name" %in% names(parse_info), parse_info$df_name, NA),
-         Dataframe.label = ifelse("df_label" %in% names(parse_info), parse_info$df_label, NA),
+    list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name, NA),
+         Dataframe.label = ifelse("df_label"  %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
                                   parse_info$var_names, NA),
          Variable.labels = label(x, all = TRUE, fallback = FALSE, simplify = TRUE),
@@ -351,12 +353,13 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
-  attr(output, "formatting") <- list(style = style,
-                                     round.digits = round.digits,
-                                     plain.ascii = plain.ascii,
-                                     justify = justify,
-                                     omit.headings = omit.headings,
-                                     display.labels = display.labels)
+  attr(output, "formatting") <- list(style          = style,
+                                     round.digits   = round.digits,
+                                     plain.ascii    = plain.ascii,
+                                     justify        = justify,
+                                     omit.headings  = omit.headings,
+                                     display.labels = display.labels,
+                                     split.tables   = split.tables)
   
   attr(output, "user_fmt") <- list(... = ...)
   
