@@ -2,7 +2,8 @@
 view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
                  table.classes = NA, bootstrap.css = st_options('bootstrap.css'), 
                  custom.css = st_options('custom.css'), silent = FALSE, 
-                 footnote = st_options('footnote'), escape.pipe = st_options('escape.pipe'),
+                 footnote = st_options('footnote'), 
+                 escape.pipe = st_options('escape.pipe'),
                  ...) {
 
   # Objects not created via by() or lapply() ----------------------------------
@@ -26,8 +27,11 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     # Objects created via by() ------------------------------------------------
     
     if (method %in% c("viewer", "browser")) {
+      
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
+      
       for (i in seq_along(x)) {
+        
         if (i == 1) {
           if (isTRUE(append) && !is.na(custom.css)) {
             stop("Can't append existing html file with new custom.css")
@@ -76,8 +80,6 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
       }
       
     } else if (method == "render") {
-
-      #html_content <- list()
       
       for (i in seq_along(x)) {
 
@@ -113,7 +115,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
         }
       }
       
-      return(html_content)
+      return(tagList(html_content))
       
     } else if (method == "pander") {
       
