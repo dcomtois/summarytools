@@ -191,26 +191,25 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   # When useNA = "always" and there are no NA's, we have NAN's (0 div by 0)
   prop_table[is.nan(prop_table)] <- 0
 
-  if (isTRUE(totals)) {
-    freq_table <- addmargins(freq_table)
-    rownames(freq_table)[nrow(freq_table)] <- "Total"
-    colnames(freq_table)[ncol(freq_table)] <- "Total"
-    if (length(prop_table) > 0) {
-      if (prop == "Total") {
-        prop_table <- addmargins(prop_table)
-      } else if (prop == "Row") {
-        prop_table <- addmargins(prop_table, 2)
-        sum_props <- c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
-        prop_table <- rbind(prop_table, sum_props)
-      } else if (prop == "Column") {
-        prop_table <- addmargins(prop_table, 1)
-        sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
-        prop_table <- cbind(prop_table, sum_props)
-      }
-
-      rownames(prop_table)[nrow(prop_table)] <- "Total"
-      colnames(prop_table)[ncol(prop_table)] <- "Total"
+  # Add totals
+  freq_table <- addmargins(freq_table)
+  rownames(freq_table)[nrow(freq_table)] <- "Total"
+  colnames(freq_table)[ncol(freq_table)] <- "Total"
+  if (length(prop_table) > 0) {
+    if (prop == "Total") {
+      prop_table <- addmargins(prop_table)
+    } else if (prop == "Row") {
+      prop_table <- addmargins(prop_table, 2)
+      sum_props <- c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
+      prop_table <- rbind(prop_table, sum_props)
+    } else if (prop == "Column") {
+      prop_table <- addmargins(prop_table, 1)
+      sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
+      prop_table <- cbind(prop_table, sum_props)
     }
+
+    rownames(prop_table)[nrow(prop_table)] <- "Total"
+    colnames(prop_table)[ncol(prop_table)] <- "Total"
   }
 
   # Change the name of NA items to avoid potential problems when echoing to console
@@ -237,7 +236,6 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
   attr(output, "proportions") <- prop
-  attr(output, "totals") <- totals
   attr(output, "date") <- Sys.Date()
 
   data_info <-
@@ -255,14 +253,14 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <-
-    list(style         = style,
-         round.digits  = round.digits,
-         plain.ascii   = plain.ascii,
-         justify       = justify,
-         split.tables  = split.tables,
-         omit.headings = omit.headings)
-
+  attr(output, "formatting") <-  list(style         = style,
+                                      round.digits  = round.digits,
+                                      plain.ascii   = plain.ascii,
+                                      justify       = justify,
+                                      totals        = totals,
+                                      split.tables  = split.tables,
+                                      omit.headings = omit.headings)
+  
   attr(output, "user_fmt") <- list(... = ...)
 
   return(output)

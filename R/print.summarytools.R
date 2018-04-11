@@ -95,7 +95,7 @@
 #'      \item \code{Variable.label}
 #'      \item \code{display.labels}
 #'      \item \code{display.type}
-#'      \item \code{Variable.labels} (\code{\link{descr}} objects only)
+#'      \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
 #'      \item \code{report.nas} (\code{\link{freq}} objects only)
 #'      \item \code{Row.variable} (\code{\link{ctable}} objects only)
 #'      \item \code{Col.variable} (\code{\link{ctable}} objects only)
@@ -664,12 +664,22 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   } else if(attr(x, "st_type") == "ctable") {
 
-    # ctable objects -----------------------------------------------------------------------------------------
+    # ctable objects -------------------------------------------------------------------------
+    
     sect_title <- list()
     sect_title[[1]] <- "Cross-Tabulation"
 
+    if (!format_info$totals) {
+      x$cross_table <- x$cross_table[which(rownames(x$cross_table) != 'Total'), 
+                                     which(colnames(x$cross_table) != 'Total')]
+      if (attr(x, "proportions") != "None") {
+        x$proportions <- x$proportions[which(rownames(x$proportions) != 'Total'), 
+                                     which(colnames(x$proportions) != 'Total')]
+      }
+    }
+
     if(attr(x, "proportions") %in% c("Row", "Column", "Total")) {
-      sect_title[[1]] <- paste0(sect_title[[1]], " / ", attr(x, "proportions"), " proportions")
+      sect_title[[1]] <- paste0(sect_title[[1]], " / ", attr(x, "proportions"), " Proportions")
       cross_table <- align_numbers(x$cross_table, x$proportions)
     } else {
       cross_table <- x$cross_table
@@ -732,9 +742,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       table_head <- list()
       table_head[[1]] <- list(tags$th(""),
                               tags$th(dnn[2],
-                                      colspan = ncol(cross_table) -
-                                        as.numeric("Total" %in% colnames(cross_table))))
-      if ("Total" %in% colnames(cross_table)) {
+                                      colspan = ncol(cross_table) - as.numeric(format_info$totals)))
+      if (format_info$totals) {
         table_head[[1]][[3]] <- tags$th("")
       }
 
