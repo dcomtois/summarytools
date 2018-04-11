@@ -581,7 +581,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         table_head[[1]] <- list(tags$th("", colspan = 2),
                                 tags$th("Valid", colspan = 2),
                                 tags$th("Total", colspan = 2))
-        table_head[[2]] <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
+        table_head[[2]] <- list(tags$th(data_info$Variable),
                                 tags$th("Freq"),
                                 tags$th("%"),
                                 tags$th(HTML("% Cumul")),
@@ -600,7 +600,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       } else {
 
         # no reporting of missing values (NA)
-        table_head <- list(tags$th(ifelse(is.factor(x), "Factor Levels", "Values")),
+        table_head <- list(tags$th(data_info$Variable),
                            tags$th("Freq"),
                            tags$th("%"),
                            tags$th(HTML("% Cumul")))
