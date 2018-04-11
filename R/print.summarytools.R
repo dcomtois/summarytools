@@ -461,8 +461,27 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       output <- list()
 
       if (group.only ||
-          ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
+          ("by.first" %in% names(data_info) && 
+           (!as.logical(data_info$by.first) || format_info$omit.headings))) {
         he_added <- add_head_element(list(c("Group", "Group")), h = 0)
+        
+      } else if (var.only) {
+        
+        if (!format_info$omit.headings) {
+
+          if (sect_title[[2]] != "") {
+            if (format_info$plain.ascii) {
+              output[[length(output) + 1]] <- paste0("\n", sect_title[[2]], "  ")
+            } else {
+              output[[length(output) + 1]] <- paste0("\n**", sect_title[[2]], "**  ")
+            }
+          }
+          
+          he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                            c("Data.type", "Type")),
+                                       h = 0)
+        }
+        
       } else {
 
         if (!format_info$omit.headings) {
@@ -594,8 +613,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$tbody(table_rows),
             class = paste("table table-striped table-bordered",
                           "st-table st-table-striped st-table-bordered st-freq-table",
-                          ifelse(is.na(table.classes), "", table.classes))
-          )
+                          ifelse(is.na(table.classes), "", table.classes)))
+        
       } else {
 
         # no reporting of missing values (NA)
@@ -628,8 +647,24 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # Prepare the main "div" for the html report
       div_list <- list()
 
-      if (group.only) {
+      if (group.only ||
+          ("by.first" %in% names(data_info) && 
+           (!as.logical(data_info$by.first) || format_info$omit.headings))) {
+        
         he_added <- add_head_element(list(c("Group", "Group")), h = 0)
+      
+      } else if (var.only) {
+        
+        if (!format_info$omit.headings) {
+          if (sect_title[[2]] != "") {
+          div_list[[length(div_list) + 1]] <- h4(sect_title[[2]])
+          he_added <- add_head_element(list(c("Variable.label", "Variable Label"),
+                                            c("Data.type", "Type")), h = 0)
+          }
+        }
+
+        div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
+        
       } else {
 
         if (!format_info$omit.headings) {
@@ -855,7 +890,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       output <- list()
 
       if (group.only ||
-          ("by.first" %in% names(data_info) && !as.logical(data_info$by.first))) {
+          ("by.first" %in% names(data_info) && 
+           (!as.logical(data_info$by.first) || format_info$omit.headings))) {
         he_added <- add_head_element(list(c("Group", "Group"),
                                           c("N.Obs", "N")),
                                      h = 0)
