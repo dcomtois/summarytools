@@ -457,6 +457,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
     
     if(method=="pander") {
+      
+      # freq objects, method = pander -----------------------------------------------------
 
       output <- list()
 
@@ -557,7 +559,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
     } else {
 
-      # freq objects - method viewer / browser / render ---------------------------------------------
+      # freq objects - method viewer / browser / render -----------------------------------
 
       table_head <- list()
       
@@ -722,6 +724,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     sect_title[[2]] <- paste0(data_info$Row.variable, " * ", data_info$Col.variable, "  ")
 
     if(method == "pander") {
+      
+      # ctable objects, method = pander --------------------------------------------------------
       output <- list()
 
       if (group.only  ||
@@ -771,12 +775,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     } else {
 
       # ctable objects - method viewer / browser / render  ------------------------------
+
       dnn <- names(dimnames(cross_table))
 
       table_head <- list()
       table_head[[1]] <- list(tags$th(""),
                               tags$th(dnn[2],
                                       colspan = ncol(cross_table) - as.numeric(format_info$totals)))
+      
       if (format_info$totals) {
         table_head[[1]][[3]] <- tags$th("")
       }
@@ -879,6 +885,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }  else {
       sect_title[[2]] <- ""
     }
+    
+    if ("byvar" %in% names(data_info)) {
+      sect_title[[2]] <- paste0(sect_title[[2]], ", split by ", data_info$byvar)
+    }
 
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
@@ -886,6 +896,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                       r = "right")
 
     if(method=="pander") {
+      
+      # descr object, pander method -----------------------------------------------------
 
       output <- list()
 
@@ -919,6 +931,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
       }
       
+      if ('byvar' %in% names(data_info) && !data_info$transpose) {
+        colnames(x)[1] <- paste(data_info$byvar, "=", colnames(x)[1])
+      }
+      
       # Format numbers (avoids inconsistencies with pander rounding digits)
       x <- format(round(x, format_info$round.digits),
                   nsmall = format_info$round.digits)
@@ -926,7 +942,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       pander_args <- append(list(style        = format_info$style,
                                  plain.ascii  = format_info$plain.ascii,
                                  split.tables = format_info$split.tables,
-                                 justify = justify),
+                                 justify      = justify),
                             attr("x", "user_fmt"))
 
       output[[length(output) + 1]] <-
@@ -945,13 +961,33 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       # descr objects - method viewer / browser / render --------------------------
       
-      table_head <- list(tags$th(""))
+      if ("byvar" %in% names(data_info) && !data_info$transpose) {
+        table_head <- list()
+        table_head[[1]] <- list(tags$th(""),
+                                tags$th(data_info$byvar,
+                                        colspan = ncol(x)))
 
-      for(cn in colnames(x)) {
-        if (nchar(cn) > 12) {
-          cn <- smart_split(cn, 12)
+        table_head[[2]] <-  list(tags$td(tags$strong(data_info$Variable), align = "center"))
+
+        for(cn in colnames(x)) {
+          if (nchar(cn) > 12) {
+            cn <- smart_split(cn, 12)
+          }
+          cn <- sub("<", "&lt;", cn, fixed = TRUE)
+          cn <- sub(">", "&gt;", cn, fixed = TRUE)
+          table_head[[2]][[length(table_head[[2]]) + 1]] <- tags$th(HTML(cn), align = "center")
+        } 
+        
+      } else {
+
+        table_head <- list(tags$th(""))
+        
+        for(cn in colnames(x)) {
+          if (nchar(cn) > 12) {
+            cn <- smart_split(cn, 12)
+          }
+          table_head[[length(table_head) + 1]] <- tags$th(HTML(cn), align = "center")
         }
-        table_head[[length(table_head) + 1]] <- tags$th(HTML(cn), align = "center")
       }
 
       table_rows <- list()
@@ -977,15 +1013,33 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
       }
 
-      descr_table_html <-
+      if ("byvar" %in% names(data_info) && !data_info$transpose) {
+        descr_table_html <-
+          tags$table(
+            tags$thead(
+              tags$tr(table_head[[1]]),
+              tags$tr(table_head[[2]])
+            ),
+            tags$tbody(
+              table_rows
+            ),
+            class = paste("table table-bordered table-striped",
+                          "st-table st-table-bordered st-table-striped st-freq-table st-descr-table",
+                          ifelse(is.na(table.classes), "", table.classes))
+          )
+        
+      } else {
+        
+        descr_table_html <-
           tags$table(
             tags$thead(tags$tr(table_head)),
             tags$tbody(table_rows),
-            class = paste("table table-striped table-bordered",
-                          "st-table st-table-striped st-table-bordered st-desc-table",
+            class = paste("table table-bordered table-striped",
+                          "st-table st-table-bordered st-table-striped st-descr-table",
                           ifelse(is.na(table.classes), "", table.classes))
           )
-
+      }
+      
       # Cleanup some extra spacing and linefeeds in html to avoid weirdness in layout
       descr_table_html <- as.character(descr_table_html)
       descr_table_html <- gsub(pattern = "\\s*(\\-?\\d*)\\s*(<span|</td>)",

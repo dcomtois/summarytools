@@ -9,18 +9,65 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
   # Objects not created via by() or lapply() ----------------------------------
   if ("summarytools" %in% class(x)) {
     print.summarytools(x,
-                       method = method,
-                       file = file,
-                       append = append,
-                       report.title = report.title,
-                       escape.pipe = escape.pipe,
+                       method        = method,
+                       file          = file,
+                       append        = append,
+                       report.title  = report.title,
+                       escape.pipe   = escape.pipe,
                        table.classes = table.classes,
                        bootstrap.css = bootstrap.css,
-                       custom.css = custom.css,
-                       silent = silent,
-                       footnote = footnote,
+                       custom.css    = custom.css,
+                       silent        = silent,
+                       footnote      = footnote,
                        ...)
 
+    
+  } else if ("by" %in% class(x) &&
+             attr(x[[1]], "st_type") == "descr" &&
+             ((!attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[2] == 1) || 
+              ( attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[1] == 1))) {
+    
+    # Special case: descr by() objects with 1 variable ------------------------------
+    
+    byvar <- sub("^.*\\$(.+)", "\\1", names(attributes(x)$dimnames))
+    
+    if (attr(x[[1]], 'data_info')$transposed) {
+      xx <- do.call(rbind, x)
+    } else {
+      # 1 Column several times - use cbind
+      xx <- do.call(cbind, x)
+      class(xx)     <- class(x[[1]])
+      colnames(xx)  <- names(x)
+    }
+    
+    attr(xx, 'st_type')   <- "descr"
+    attr(xx, 'date')      <- attr(x[[1]], 'date')
+    attr(xx, 'data_info') <- attr(x[[1]], 'data_info')
+    
+    attr(xx, 'data_info')$byvar    <- byvar
+    attr(xx, 'data_info')$Group    <- NULL
+    attr(xx, 'data_info')$by.first <- NULL
+    attr(xx, 'data_info')$by.last  <- NULL
+    attr(xx, 'data_info')$N.Obs    <- NULL
+    
+    attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx, "data_info"))]
+    
+    attr(xx, 'formatting') <- attr(x[[1]], 'formatting')
+    attr(xx, 'user_fmt')   <- attr(x, 'user_fmt')
+    
+    print.summarytools(xx,
+                       method        = method,
+                       file          = file,
+                       append        = append,
+                       report.title  = report.title,
+                       escape.pipe   = escape.pipe,
+                       table.classes = table.classes,
+                       bootstrap.css = bootstrap.css,
+                       custom.css    = custom.css,
+                       silent        = silent,
+                       footnote      = footnote,
+                       ...)
+    
   } else if ("by" %in% class(x) &&
              attr(x[[1]], "st_type") %in% c("freq", "descr")) {
 
@@ -41,16 +88,16 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
           }
 
           print.summarytools(x[[i]],
-                             method = method,
-                             file = file,
-                             append = append,
-                             report.title = report.title,
-                             escape.pipe = escape.pipe,
+                             method        = method,
+                             file          = file,
+                             append        = append,
+                             report.title  = report.title,
+                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
                              bootstrap.css = bootstrap.css,
-                             custom.css = custom.css,
-                             silent = silent,
-                             footnote = NA,
+                             custom.css    = custom.css,
+                             silent        = silent,
+                             footnote      = NA,
                              ...)
 
         } else if (i < length(x)) {

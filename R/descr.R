@@ -330,9 +330,9 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   # Set class/attributes
   class(output) <- c("summarytools", class(output))
-  attr(output, "st_type") <- "descr"
-  attr(output, "date")    <- Sys.Date()
-  attr(output, "fn_call") <- match.call()
+  attr(output, "st_type")    <- "descr"
+  attr(output, "date")       <- Sys.Date()
+  attr(output, "fn_call")    <- match.call()
   
   data_info <-
     list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name, NA),
@@ -349,6 +349,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
          Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
          by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
          by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
+         transposed      = transpose,
          N.Obs           = n_tot)
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
