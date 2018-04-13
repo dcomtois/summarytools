@@ -221,7 +221,6 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     }
     
   } else {
-    
     # Weights being used ------------------------------------------------------
     
     # Check that weights vector has the right length
@@ -271,16 +270,16 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       if (na.rm == TRUE) {
         ind <- which(!is.na(variable))
         variable <- variable[ind]
-        weights <- weights[ind]
+        weights_tmp <- weights[ind]
       }
 
       # Calculate mean and sd if necessary
       if (any(c("mean", "cv") %in% stats)) {
-        variable.mean <- weightedMean(variable, weights, refine = TRUE, na.rm = na.rm)
+        variable.mean <- weightedMean(variable, weights_tmp, refine = TRUE, na.rm = na.rm)
       }
       
       if (any(c("sd", "cv") %in% stats)) {
-        variable.sd <- weightedSd(variable, weights, refine = TRUE, na.rm = na.rm)
+        variable.sd <- weightedSd(variable, weights_tmp, na.rm = na.rm)
       }
       
       # Calculate and insert stats into output dataframe
@@ -288,9 +287,9 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
         c(ifelse("mean" %in% stats, variable.mean, NA),
           ifelse("sd"   %in% stats, variable.sd, NA),
           ifelse("min"  %in% stats, min(variable, na.rm = na.rm), NA),
-          ifelse("med"  %in% stats, weightedMedian(variable, weights, refine = TRUE, na.rm = na.rm), NA),
+          ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, refine = TRUE, na.rm = na.rm), NA),
           ifelse("max"  %in% stats, max(variable, na.rm = na.rm), NA),
-          ifelse("mad"  %in% stats, weightedMad(variable, weights, refine = TRUE, na.rm = na.rm), NA),
+          ifelse("mad"  %in% stats, weightedMad(variable, weights_tmp, refine = TRUE, na.rm = na.rm), NA),
           ifelse("cv"   %in% stats, variable.mean/variable.sd, NA),
           ifelse("n.valid"   %in% stats, n_valid, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
