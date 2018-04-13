@@ -967,7 +967,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                 tags$th(data_info$byvar,
                                         colspan = ncol(x)))
 
-        table_head[[2]] <-  list(tags$td(tags$strong(data_info$Variable), align = "center"))
+        table_head[[2]] <-  list(tags$th()) #d(tags$strong(data_info$Variable), align = "center"))
 
         for(cn in colnames(x)) {
           if (nchar(cn) > 12) {
