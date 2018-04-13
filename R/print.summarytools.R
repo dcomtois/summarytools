@@ -441,7 +441,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
 
     if ("Variable" %in% names(data_info)) {
-      sect_title[[2]] <- paste0(data_info$Variable, "  ")
+      sect_title[[2]] <- data_info$Variable
     } else {
       sect_title[[2]] <- ""
     }
@@ -488,7 +488,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
         if (!format_info$omit.headings) {
           if (sect_title[[1]] != "") {
-            output[[1]] <- add_hash(sect_title[[1]], 2)
+            output[[1]] <- add_hash(sect_title[[1]], 3)
           }
   
           if (sect_title[[2]] != "") {
@@ -736,7 +736,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         
         if (!format_info$omit.headings) {
           
-          output[[1]] <- add_hash(sect_title[[1]], 2)
+          output[[1]] <- add_hash(sect_title[[1]], 3)
 
           if (format_info$plain.ascii) {
             output[[2]] <- paste0("\n", sect_title[[2]])
@@ -1150,7 +1150,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       if (!format_info$omit.headings) {
         if (sect_title[[1]] != "") {
-          output[[1]] <- add_hash(sect_title[[1]], 2)
+          output[[1]] <- add_hash(sect_title[[1]], 3)
         }
         
         if (sect_title[[2]] != "") {
