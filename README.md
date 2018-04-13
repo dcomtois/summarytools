@@ -65,9 +65,9 @@ view(dfSummary(iris))
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the outputs produced by summarytools can be:
 
 - Displayed in plain text in the _R_ console (default behaviour) 
-- Used in \emph{Rmd} documents and \emph{knitted} along with other text and _R_ output
+- Used in _Rmardown_ documents and _knitted_ along with other text and _R_ output
 - Written to _html_  files that fire up in [_RStudio_](http://www.rstudio.com/)'s Viewer pane or in your system's default browser
-- Written to plain text files / _markdown_ text files 
+- Written to plain text files / _Rmarkdown_ text files 
 
 # Four Core Functions
 
@@ -143,33 +143,83 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 
 Here we'll use a sample data frame included in the package (_tobacco_), which contains simulated data. Say we want to cross-tabulate variables `smoker` and `diseased`. By default, `ctable()` gives row proportions, so we don't need to specify any additionnal parameter. 
 
-Here, instead of `ctable(tobacco$smoker, tobacco$diseased)`, we'll make use of the `with()` (R-base) function:
+Here, instead of `ctable(tobacco$smoker, tobacco$diseased)`, we'll make use of the `with()` (R-base) function. Also, since _markdown_ has not support (yet) for multi-line headings, we'll use html rendering.
 
 ```r
 data("tobacco")
-with(tobacco, ctable(smoker, diseased))
+with(tobacco, view(ctable(smoker, diseased))
 ``` 
 
-```
-Cross-Tabulation / Row proportions 
-smoker * diseased 
-Data Frame: tobacco 
--------- ---------- ------------- ------------- ---------------
-           diseased           Yes            No           Total
-  smoker                                                       
-     Yes              125 (41.9%)   173 (58.1%)    298 (100.0%)
-      No               99 (14.1%)   603 (85.9%)    702 (100.0%)
-   Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
--------- ---------- ------------- ------------- ---------------
-```
-
-Note that _markdown_ has no support (yet) for multi-line headers. Here is what the _html_ version looks like:
-
 ```r
-with(tobacco, view(ctable(smoker, diseased)))
+with(tobacco, view(ctable(smoker, diseased)), method = "render")
 ```
 
-![html output for ctable](img/ctable-with-row-props.png)
+<div class="container st-container">
+  <h3>Cross-Tabulation / Row Proportions</h3>
+  <h4>smoker * diseased  </h4>
+  <strong>Data Frame</strong>: tobacco
+  <table class="table table-bordered st-table st-table-bordered st-cross-table ">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="2">diseased</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td align="center">
+          <strong>smoker</strong>
+        </td>
+        <th align="center">Yes</th>
+        <th align="center">No</th>
+        <th align="center">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="center">
+          <strong>Yes</strong>
+        </td>
+        <td>
+          <span>125&nbsp;(41.95&#37;)</span>
+        </td>
+        <td>
+          <span>173&nbsp;(58.05&#37;)</span>
+        </td>
+        <td>
+          <span>&nbsp;298&nbsp;(100.00&#37;)</span>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <strong>No</strong>
+        </td>
+        <td>
+          <span>&nbsp;99&nbsp;(14.10&#37;)</span>
+        </td>
+        <td>
+          <span>603&nbsp;(85.90&#37;)</span>
+        </td>
+        <td>
+          <span>&nbsp;702&nbsp;(100.00&#37;)</span>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <strong>Total</strong>
+        </td>
+        <td>
+          <span>224&nbsp;(22.40&#37;)</span>
+        </td>
+        <td>
+          <span>776&nbsp;(77.60&#37;)</span>
+        </td>
+        <td>
+          <span>1000&nbsp;(100.00&#37;)</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 It is possible to display _column_, _total_, or no proportions at all. We can also omit the marginal totals to have a simple 2x2 table. (Results not shown).
@@ -182,68 +232,65 @@ with(tobacco, view(ctable(smoker, diseased, prop = 'n', totals = FALSE)))
 
 As seen earlier, the `dfSummary()` function gives information for all variables in a singe table. Version 0.8.0 introduced graphs for both ascii and _html_ tables.
 
+* Note that due to rmarkdown compatibility issues, the text graphs being histograms are not shown. We're working on this.
+
 ```r
 dfSummary(tobacco)
 ```
+### Data Frame Summary   
+**tobacco**   
+**N:** 1000   
 
-```
-Data Frame Summary   
-tobacco   
-N: 1000 
---------------------------------------------------------------------------------------------------------------------
-No   Variable        Stats / Values              Freqs (% of Valid)    Text Graph                Valid     Missing  
----- --------------- --------------------------- --------------------- ------------------------- --------- ---------
-1    gender          1. F                        489 (50.0%)           IIIIIIIIIIIIIIII          978       22       
-     [factor]        2. M                        489 (50.0%)           IIIIIIIIIIIIIIII          (97.8%)   (2.2%)   
-
-2    age             mean (sd) : 49.6 (18.29)    63 distinct val.      .     .     . . . :       975       25       
-     [numeric]       min < med < max :                                 : : : : : . : : : :       (97.5%)   (2.5%)   
-                     18 < 50 < 80                                      : : : : : : : : : :                          
-                     IQR (CV) : 32 (0.37)                              : : : : : : : : : :                          
-                                                                       : : : : : : : : : :                          
-
-3    age.gr          1. 18-34                    258 (26.5%)           IIIIIIIIIIIII             975       25       
-     [factor]        2. 35-50                    241 (24.7%)           IIIIIIIIIIII              (97.5%)   (2.5%)   
-                     3. 51-70                    317 (32.5%)           IIIIIIIIIIIIIIII                             
-                     4. 71 +                     159 (16.3%)           IIIIIIII                                     
-
-4    BMI             mean (sd) : 25.73 (4.49)    974 distinct val.               :               974       26       
-     [numeric]       min < med < max :                                         : : :             (97.4%)   (2.6%)   
-                     8.83 < 25.62 < 39.44                                      : : :                                
-                     IQR (CV) : 5.72 (0.17)                                  : : : : :                              
-                                                                           . : : : : : .                            
-
-5    smoker          1. Yes                      298 (29.8%)           IIIIII                    1000      0        
-     [factor]        2. No                       702 (70.2%)           IIIIIIIIIIIIIIII          (100%)    (0%)     
-
-6    cigs.per.day    mean (sd) : 6.78 (11.88)    37 distinct val.      :                         965       35       
-     [numeric]       min < med < max :                                 :                         (96.5%)   (3.5%)   
-                     0 < 0 < 40                                        :                                            
-                     IQR (CV) : 11 (1.75)                              :                                            
-                                                                       :   . .           .                          
-
-7    diseased        1. Yes                      224 (22.4%)           IIII                      1000      0        
-     [factor]        2. No                       776 (77.6%)           IIIIIIIIIIIIIIII          (100%)    (0%)     
-
-8    disease         1. Hypertension             36 (16.2%)            IIIIIIIIIIIIIIII          222       778      
-     [character]     2. Cancer                   34 (15.3%)            IIIIIIIIIIIIIII           (22.2%)   (77.8%)  
-                     3. Cholesterol              21 ( 9.5%)            IIIIIIIII                                    
-                     4. Heart                    20 ( 9.0%)            IIIIIIII                                     
-                     5. Pulmonary                20 ( 9.0%)            IIIIIIII                                     
-                     6. Musculoskeletal          19 ( 8.6%)            IIIIIIII                                     
-                     7. Diabetes                 14 ( 6.3%)            IIIIII                                       
-                     8. Hearing                  14 ( 6.3%)            IIIIII                                       
-                     9. Digestive                12 ( 5.4%)            IIIII                                        
-                     10. Hypotension             11 ( 5.0%)            IIII                                         
-                     [ 3 others ]                21 ( 9.4%)            IIIIIIIII                                    
-
-9    samp.wgts       mean (sd) : 1 (0.08)        0.86!: 267 (26.7%)    IIIIIIIIIIIII             1000      0        
-     [numeric]       min < med < max :           1.04!: 249 (24.9%)    IIIIIIIIIIII              (100%)    (0%)     
-                     0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIIIIIIIIIIIII                             
-                     IQR (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    IIIIIII                                      
-                                                 ! rounded                                                          
---------------------------------------------------------------------------------------------------------------------
-```
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| No | Variable      | Stats / Values            | Freqs (% of Valid)  | Text Graph        | Valid   | Missing |
++====+===============+===========================+=====================+===================+=========+=========+
+| 1  | gender\       | 1\. F\                    | 489 (50.0%)\        | IIIIIIIIIIIIIIII\ | 978\    | 22\     |
+|    | [factor]      | 2\. M                     | 489 (50.0%)         | IIIIIIIIIIIIIIII  | (97.8%) | (2.2%)  |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 2  | age\          | mean (sd) : 49.6 (18.29)\ | 63 distinct val.    |                   | 975\    | 25\     |
+|    | [numeric]     | min < med < max :\        |                     |                   | (97.5%) | (2.5%)  |
+|    |               | 18 < 50 < 80\             |                     |                   |         |         |
+|    |               | IQR (CV) : 32 (0.37)      |                     |                   |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 3  | age.gr\       | 1\. 18-34\                | 258 (26.5%)\        | IIIIIIIIIIIII\    | 975\    | 25\     |
+|    | [factor]      | 2\. 35-50\                | 241 (24.7%)\        | IIIIIIIIIIII\     | (97.5%) | (2.5%)  |
+|    |               | 3\. 51-70\                | 317 (32.5%)\        | IIIIIIIIIIIIIIII\ |         |         |
+|    |               | 4\. 71 +                  | 159 (16.3%)         | IIIIIIII          |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 4  | BMI\          | mean (sd) : 25.73 (4.49)\ | 974 distinct val.   |                   | 974\    | 26\     |
+|    | [numeric]     | min < med < max :\        |                     |                   | (97.4%) | (2.6%)  |
+|    |               | 8.83 < 25.62 < 39.44\     |                     |                   |         |         |
+|    |               | IQR (CV) : 5.72 (0.17)    |                     |                   |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 5  | smoker\       | 1\. Yes\                  | 298 (29.8%)\        | IIIIII\           | 1000\   | 0\      |
+|    | [factor]      | 2\. No                    | 702 (70.2%)         | IIIIIIIIIIIIIIII  | (100%)  | (0%)    |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 6  | cigs.per.day\ | mean (sd) : 6.78 (11.88)\ | 37 distinct val.    |                   | 965\    | 35\     |
+|    | [numeric]     | min < med < max :\        |                     |                   | (96.5%) | (3.5%)  |
+|    |               | 0 < 0 < 40\               |                     |                   |         |         |
+|    |               | IQR (CV) : 11 (1.75)      |                     |                   |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 7  | diseased\     | 1\. Yes\                  | 224 (22.4%)\        | IIII\             | 1000\   | 0\      |
+|    | [factor]      | 2\. No                    | 776 (77.6%)         | IIIIIIIIIIIIIIII  | (100%)  | (0%)    |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 8  | disease\      | 1\. Hypertension\         | 36 (16.2%)\         | IIIIIIIIIIIIIIII\ | 222\    | 778\    |
+|    | [character]   | 2\. Cancer\               | 34 (15.3%)\         | IIIIIIIIIIIIIII\  | (22.2%) | (77.8%) |
+|    |               | 3\. Cholesterol\          | 21 ( 9.5%)\         | IIIIIIIII\        |         |         |
+|    |               | 4\. Heart\                | 20 ( 9.0%)\         | IIIIIIII\         |         |         |
+|    |               | 5\. Pulmonary\            | 20 ( 9.0%)\         | IIIIIIII\         |         |         |
+|    |               | 6\. Musculoskeletal\      | 19 ( 8.6%)\         | IIIIIIII\         |         |         |
+|    |               | 7\. Diabetes\             | 14 ( 6.3%)\         | IIIIII\           |         |         |
+|    |               | 8\. Hearing\              | 14 ( 6.3%)\         | IIIIII\           |         |         |
+|    |               | 9\. Digestive\            | 12 ( 5.4%)\         | IIIII\            |         |         |
+|    |               | 10\. Hypotension\         | 11 ( 5.0%)\         | IIII\             |         |         |
+|    |               | [ 3 others ]              | 21 ( 9.4%)          | IIIIIIIII         |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
+| 9  | samp.wgts\    | mean (sd) : 1 (0.08)\     | 0.86!: 267 (26.7%)\ | IIIIIIIIIIIII\    | 1000\   | 0\      |
+|    | [numeric]     | min < med < max :\        | 1.04!: 249 (24.9%)\ | IIIIIIIIIIII\     | (100%)  | (0%)    |
+|    |               | 0.86 < 1.04 < 1.06\       | 1.05!: 324 (32.4%)\ | IIIIIIIIIIIIIIII\ |         |         |
+|    |               | IQR (CV) : 0.19 (0.08)    | 1.06!: 160 (16.0%)\ | IIIIIII           |         |         |
+|    |               |                           | ! rounded           |                   |         |         |
++----+---------------+---------------------------+---------------------+-------------------+---------+---------+
 
 
 ## Using summarytools in Rmarkdown documents
@@ -345,20 +392,6 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 **BMI, split by age.gr**   
 **Data Frame:** tobacco   
 
-       &nbsp;   age.gr = 18-34   35-50   51-70    71 +
-------------- ---------------- ------- ------- -------
-     **Mean**            23.84   25.11   26.91   27.45
-  **Std.Dev**             4.23    4.34    4.26    4.37
-      **Min**             8.83   10.35    9.01   16.36
-   **Median**            24.04   25.11   26.77   27.52
-      **Max**            34.84   39.44   39.21   38.37
-
-
-(avec style = 'rmarkdown' -- celle ci-haut avait seulement plain.ascii=TRUE)
-### Descriptive Statistics   
-**BMI, split by age.gr**   
-**Data Frame:** tobacco   
-
 |      &nbsp; | age.gr = 18-34 | 35-50 | 51-70 |  71 + |
 |------------:|---------------:|------:|------:|------:|
 |    **Mean** |          23.84 | 25.11 | 26.91 | 27.45 |
@@ -368,7 +401,7 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 |     **Max** |          34.84 | 39.44 | 39.21 | 38.37 |
 
 
-### And the transposed version would look like this:
+...and the transposed version would look like this:
 
 |    &nbsp; |  Mean | Std.Dev |   Min | Median |   Max |
 |----------:|------:|--------:|------:|-------:|------:|
