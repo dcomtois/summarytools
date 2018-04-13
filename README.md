@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" media="all" href="https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/inst/includes/stylesheets/summarytools.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/inst/includes/stylesheets/bootstrap.min.css"/>
 
 # [summarytools: An *R* Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
 
