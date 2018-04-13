@@ -931,9 +931,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
       }
       
-      if ('byvar' %in% names(data_info) && !data_info$transpose) {
-        colnames(x)[1] <- paste(data_info$byvar, "=", colnames(x)[1])
-      }
+      # if ('byvar' %in% names(data_info) && !data_info$transpose) {
+      #   colnames(x)[1] <- paste(data_info$byvar, "=", colnames(x)[1])
+      # }
       
       # Format numbers (avoids inconsistencies with pander rounding digits)
       x <- format(round(x, format_info$round.digits),
