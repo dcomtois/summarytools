@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" media="all" href="https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/inst/includes/stylesheets/summarytools.css"/>
-<link rel="stylesheet" type="text/css" media="all" href="https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/inst/includes/stylesheets/bootstrap.min.css"/>
 
 # [summarytools: An *R* Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
 
@@ -10,10 +8,13 @@
 
 ## Latest News
 
-Version 0.8.3 brings several improvements to summarytools. I’m making it
-available here on GitHub before submitting it to CRAN. For details on
-the changes, please see the NEWS file, as well as the rest of this
-document.
+Version 0.8.3 brings several improvements to summarytools, notably:
+
+  - Introduction of global settings (customizable defaults)
+  - Options to make content fit more naturally in *shiny* apps or
+    *Rmarkdown* documents
+  - A better handling of “split-group” statistics with `by()`
+  - A more thorough documentation
 
 Two vignettes complement information found on this page:  
 \- [Introduction to
@@ -60,9 +61,10 @@ into your *R* console:
 install.packages("summarytools")
 ```
 
-For the most **up-to-date version** that has all the latest features
-**but** might also contain bugs (which can be fixed rapidly in most
-cases):
+For enthusiastic users, I encourage you to go for the **development**
+version, which is the most up-to-date, **but** might also contain bugs
+(which can be fixed rapidly in most cases). Having some of you work with
+it will help me identify potential problems.
 
 ``` r
 install.packages("devtools")
@@ -70,329 +72,28 @@ library(devtools)
 install_github('dcomtois/summarytools', ref='dev-current')
 ```
 
-You can also see the source code and documentation on the official *R*
-site [here](http://cran.r-project.org/web/packages/summarytools/).
+You can see the source code and documentation on the official *R* site
+[here](http://cran.r-project.org/web/packages/summarytools/).
 
-# A First Example
+# A First Example - Data Frame Summary
 
 Using the *iris* sample data frame, we’ll jump right to the most popular
 function in the package, `dfSummary` (*Data Frame Summary*).
 
-With the following 2 lines of code, we’ll generate a summary report for
-’’iris\`\` and have it displayed in
-[*RStudio*](http://www.rstudio.com/)’s Viewer pane:
+With the following tiny bit of code, we’ll generate a summary report for
+*iris* and have it displayed in [*RStudio*](http://www.rstudio.com/)’s
+Viewer pane:
 
 ``` r
+# Load the package
 library(summarytools)
-view(dfSummary(iris), method = 'render')
+
+# Generate the summary
+view(dfSummary(iris))
 ```
 
-<!--html_preserve-->
-
-<div class="container st-container">
-
-<h3>
-
-Data Frame Summary
-
-</h3>
-
-<h4>
-
-iris
-
-</h4>
-
-<strong>N</strong>:
-150
-
-<table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline ">
-
-<thead>
-
-<tr>
-
-<th align="center">
-
-<strong>No</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Variable</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Stats / Values</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Freqs (% of Valid)</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Graph</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Valid</strong>
-
-</th>
-
-<th align="center">
-
-<strong>Missing</strong>
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td align="center">
-
-1
-
-</td>
-
-<td align="left">
-
-Sepal.Length \[numeric\]
-
-</td>
-
-<td align="left">
-
-mean (sd) : 5.84 (0.83) min \< med \< max : 4.3 \< 5.8 \< 7.9 IQR (CV) :
-1.3 (0.14)
-
-</td>
-
-<td align="left">
-
-35 distinct
-val.
-
-</td>
-
-<td align="center" border="0">
-
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAAJlJREFUaIHt2ssKgCAQQFGr///nlkFGD1FniHP35sFFili2lJVowHVYX+rIWupSsNZzWIeiKgerQmBhYWFFsi42uKe/5xTW46RYWFhYWFhYWFhYWFhYWD9hNV89j2U1Lx8WFhYWFhYWFhYWFhYWFhYWFhYW1hDWiyJYL8bkZ7U8GpvB6vFFLCwsLCwsrGGsRN2et4LD+lJS1g7jOo4yUNMCcwAAAABJRU5ErkJggg==">
-
-</td>
-
-<td align="center">
-
-150 (100%)
-
-</td>
-
-<td align="center">
-
-0 (0%)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-2
-
-</td>
-
-<td align="left">
-
-Sepal.Width \[numeric\]
-
-</td>
-
-<td align="left">
-
-mean (sd) : 3.06 (0.44) min \< med \< max : 2 \< 3 \< 4.4 IQR (CV) : 0.5
-(0.14)
-
-</td>
-
-<td align="left">
-
-23 distinct
-val.
-
-</td>
-
-<td align="center" border="0">
-
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAANxJREFUaIHt2csKhDAMRmEv7//OwmyMWGb6J6kNzjkrKUg/4qbqspdsmQ1oB0vJw1pt6aJPLtZ2ButXsJRgKcFSgqUESwmWEiwlWEqwlGApwVKCpQRLCZbShTXmm1KYNWZw3Sw7lkqsJgUWLFiwYMGC1WAlHnIyWXYZFixYsGDB8rHW9jvrdFbH/rBgwYKlsoLn+lGs4OT+mOV4nk+wHIOD9UpWx3+BKSzv/rBgwQqyAm9eQ1kZ+8PKZvUech5m2eWirG+Dm8gyl7CUO28PtAbLLltWoQyrXLCUirIOKk6bE8VcSO8AAAAASUVORK5CYII=">
-
-</td>
-
-<td align="center">
-
-150 (100%)
-
-</td>
-
-<td align="center">
-
-0 (0%)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-3
-
-</td>
-
-<td align="left">
-
-Petal.Length \[numeric\]
-
-</td>
-
-<td align="left">
-
-mean (sd) : 3.76 (1.77) min \< med \< max : 1 \< 4.35 \< 6.9 IQR (CV) :
-3.5 (0.47)
-
-</td>
-
-<td align="left">
-
-43 distinct
-val.
-
-</td>
-
-<td align="center" border="0">
-
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAAJlJREFUaIHt2TsOgCAQQEHU+9/ZwsYCSCDirnHeAWCg4lOOlJVoQD2skS7W1iiatVfDwsLCwsLCwlrNap2OZhb3JKs+yNSeY2FhYWFhYWHlZE0cw95gTQyOhYWFhYWFhYWFhYWFhYWFhYW1jNV6R4tmDU2PhYWFhfVLVu8rKJDVmxMLCwsLCwvrw6yh6/MCVqJurHRhjZSUdQJhgJMslluacAAAAABJRU5ErkJggg==">
-
-</td>
-
-<td align="center">
-
-150 (100%)
-
-</td>
-
-<td align="center">
-
-0 (0%)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-4
-
-</td>
-
-<td align="left">
-
-Petal.Width \[numeric\]
-
-</td>
-
-<td align="left">
-
-mean (sd) : 1.2 (0.76) min \< med \< max : 0.1 \< 1.3 \< 2.5 IQR (CV) :
-1.5 (0.64)
-
-</td>
-
-<td align="left">
-
-22 distinct
-val.
-
-</td>
-
-<td align="center" border="0">
-
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAAI9JREFUaIHt17kOgCAQQEGP//9nCxtNFMKxWYp5LQEmNMB2LtmWDfgOq6WbtZdKZB3/YWFhYWFhYWHNZYW9hwZZUYeMhYWFhYWFhYWFhYX1njb0K4pjdS6JhYWFhYUVw6relzms6nZYWFhYWFhYWFhYWFhYWFiBrFKJrL4xLCwsLCwsrImshXqwlgurpUVZFzxAjeSoCeYjAAAAAElFTkSuQmCC">
-
-</td>
-
-<td align="center">
-
-150 (100%)
-
-</td>
-
-<td align="center">
-
-0 (0%)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-5
-
-</td>
-
-<td align="left">
-
-Species \[factor\]
-
-</td>
-
-<td align="left">
-
-1.  setosa
-2.  versicolor
-3.  virginica
-    </td>
-    <td align="left">
-    50 (33.3%) 50 (33.3%) 50
-    (33.3%)
-    </td>
-    <td align="center" border="0">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABOCAMAAAD1sh+SAAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAINJREFUaIHt16EBw0AQxEAn7r/npIAng36BpgKBO7DPO+m5HXA2m/VZ9M/67ilLlCXKEmWJskRZoixRlihLDGctmh1kk2azbp/R0e4n3m44KEuUJcoSZYmyRFmiLFGWKEs0X0lZYva2Vj/xdsNBWaIsUZYoS5QlyhJlibJEWaL5SsoSPwWqXr0bCZNHAAAAAElFTkSuQmCC">
-    </td>
-    <td align="center">
-    150 (100%)
-    </td>
-    <td align="center">
-    0
-(0%)
-    </td>
-    </tr>
-    </tbody>
-    </table>
-    </div>
-    <!--/html_preserve-->
-
-<!-- ![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png) -->
+![Example of dfSummary Output displayed in RStudio’s
+viewer](img/dfSummary_in_RStudio_Viewer.png)
 
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the outputs produced by summarytools can be:
 
@@ -404,12 +105,14 @@ Species \[factor\]
     system’s default browser
   - Written to plain text files / *Rmarkdown* text files
 
-# Four Core Functions
+Some people have successfully included some of the package’s functions
+in *shiny apps*, too\!
 
-## 1 - Frequency tables with `freq()`
+# The Core Functions – 1. Frequency Tables With freq()
 
 The `freq()` function generates a table of frequencies with counts and
-proportions.
+proportions. Since this page use *markdown* rendering, we’ll set `style
+= 'rmarkdown'` to take advantage of it.
 
 ``` r
 library(summarytools)
@@ -418,7 +121,7 @@ freq(iris$Species, style = "rmarkdown")
 
 ## Frequencies
 
-**Species **  
+**Species**  
 **Data frame:** iris  
 **Type:** Factor
 (unordered)
@@ -431,14 +134,12 @@ freq(iris$Species, style = "rmarkdown")
 |     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-## 2 - Descriptive (univariate) statistics with `descr()`
+# The Core Functions – 2. Descriptive (univariate) Statistics With descr()
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion for numerical data. It can handle single vectors
 as well as dataframes, in which case it just ignores non-numerical
 columns.
-
-We’ll use the *rmarkdown* style for the next example:
 
 ``` r
 descr(iris, style = "rmarkdown")
@@ -473,8 +174,10 @@ descr(iris, style = "rmarkdown")
 #### Transposing and selecting the stats you need
 
 If your eyes/brain prefer seeing things the other way around, just use
-“transpose=TRUE”. Here, we also select only the statistics we wish to
-see:
+`transpose = TRUE`. Here, we also select only the statistics we wish to
+see, and specify `omit.headings = TRUE` to avoid reprinting the same
+information as
+above.
 
 ``` r
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE, 
@@ -490,7 +193,7 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 | **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
 
-## 3 - Cross-tabulations with `ctable()`
+# The Core Functions – 3. Cross-Tabulations with ctable()
 
 Here we’ll use a sample data frame included in the package (*tobacco*),
 which contains simulated data. Say we want to cross-tabulate variables
@@ -499,179 +202,17 @@ so we don’t need to specify any additionnal parameter.
 
 Here, instead of `ctable(tobacco$smoker, tobacco$diseased)`, we’ll make
 use of the `with()` (R-base) function. Also, since *markdown* has not
-support (yet) for multi-line headings, we’ll use html rendering.
+support (yet) for multi-line headings, we’ll show an image of the
+resulting html table.
 
 ``` r
-with(tobacco, view(ctable(smoker, diseased), method = "render"))
+with(tobacco, view(ctable(smoker, diseased)))
 ```
 
-<!--html_preserve-->
-
-<div class="container st-container">
-
-<h3>
-
-Cross-Tabulation / Row Proportions
-
-</h3>
-
-<h4>
-
-smoker \* diseased
-
-</h4>
-
-<strong>Data Frame</strong>:
-tobacco
-
-<table class="table table-bordered st-table st-table-bordered st-cross-table ">
-
-<thead>
-
-<tr>
-
-<th>
-
-</th>
-
-<th colspan="2">
-
-diseased
-
-</th>
-
-<th>
-
-</th>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-<strong>smoker</strong>
-
-</td>
-
-<th align="center">
-
-Yes
-
-</th>
-
-<th align="center">
-
-No
-
-</th>
-
-<th align="center">
-
-Total
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td align="center">
-
-<strong>Yes</strong>
-
-</td>
-
-<td>
-
-<span>125 (41.95%)</span>
-
-</td>
-
-<td>
-
-<span>173 (58.05%)</span>
-
-</td>
-
-<td>
-
-<span> 298 (100.00%)</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-<strong>No</strong>
-
-</td>
-
-<td>
-
-<span> 99 (14.10%)</span>
-
-</td>
-
-<td>
-
-<span>603 (85.90%)</span>
-
-</td>
-
-<td>
-
-<span> 702 (100.00%)</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td align="center">
-
-<strong>Total</strong>
-
-</td>
-
-<td>
-
-<span>224 (22.40%)</span>
-
-</td>
-
-<td>
-
-<span>776 (77.60%)</span>
-
-</td>
-
-<td>
-
-<span>1000 (100.00%)</span>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-<!--/html_preserve-->
+![Example of ctable() output](img/ctable-with-row-props.png)
 
 It is possible to display *column*, *total*, or no proportions at all.
-We can also omit the marginal totals to have a simple 2x2 table.
+We can also omit the marginal totals to have a simple “2 x 2” table.
 
 ``` r
 with(tobacco, view(ctable(smoker, diseased, 
@@ -779,7 +320,10 @@ No
 
 <!--/html_preserve-->
 
-## 4 - Data Frame Summaries
+![Example of dfSummary Output displayed in RStudio’s
+viewer](img/dfSummary_in_RStudio_Viewer.png)
+
+# The Core Functions – 4. Data Frame Summaries with dfSummary()
 
 As seen earlier, the `dfSummary()` function gives information for all
 variables in a singe table. Version 0.8.0 introduced graphs for both
@@ -1002,9 +546,9 @@ IIIIIII</td>
 ## Using summarytools in Rmarkdown documents
 
 *summarytools* uses the [pander](https://github.com/Rapporter/pander)
-package to generate plain-text content, and *htmltools* to generate
-*html*. Both types of outputs can be used in Rmarkdown, according to our
-preferences. See [this
+package to generate text content (markdown-formatted or not), and
+*htmltools* to generate *html*. Both types of contents can be used in
+Rmarkdown, according to our preferences. See [this
 vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 to get all the details, but if you’re in a hurry, here are a few tips to
 get good results:
@@ -1013,7 +557,7 @@ get good results:
     this globally or on a chunk-by-chunk basis. See [this
     page](https://yihui.name/knitr/options/) for more information.
   - To use the ‘render’ method, set up your .Rmd document so it includes
-    summarytool’s css (see example)
+    summarytool’s css (see the following example).
 
 ### Example (result not shown)
 
@@ -1034,24 +578,29 @@ get good results:
 
 ## The print() and view() functions
 
-*summarytools* has a generic `print()` method, `print.summarytools`. By
-default, its `method` argument is set to `'pander'`. To easily display
-*html* outputs in *RStudio*’s Viewer, we use the `view()` function,
-which acts as a wrapper around the generic `print()` function, this time
-using `method = 'viewer'`. When used outside *RStudio*, the `method`
-falls back on `'browser'` and the report is opened with your system’s
-default browser.
+*summarytools* has a generic `print` method, `print.summarytools()`. By
+default, its `method` argument is set to `'pander'`. One of the ways in
+which `view()` is useful is that we can use it To easily display *html*
+outputs in *RStudio*’s Viewer. In this case, the `view()` function
+simply acts as a wrapper around the generic `print()` function,
+specifying the `method = 'viewer'` for us. When used outside *RStudio*,
+the `method` falls back on `'browser'` and the report is fired up in the
+system’s default browser.
 
-## Using by() to Split Results By Sub-Groups
+## Using by() to Show Results By Sub-Groups
 
-With `freq()` and `descr()` you can use *R*’s base function `by()` to
-have statistics split by a ventilation variable. *R* returns a `list`
-containing *summarytools* objects. Using the `view()` function with
-those objects is necessary in order to have non-redundant and clean
-section headings.
+With `freq()` and `descr()`, you can use *R*’s base function `by()` to
+have statistics split by a ventilation variable (which must be
+categorical). *R*’s `by()` function returns a `list` containing as many
+*summarytools* objects as there are categories in our ventilation
+variable. To propertly display the content present in that list, we use
+the `view()` function. Not doing so would give somewhat messy and
+redundant results.
 
-Example: Using the *iris* data frame, we will display descriptive
-statistics broken down by Species.
+### Example
+
+Using the *iris* data frame, we will display descriptive statistics
+broken down by Species.
 
 ``` r
 # First save the results
@@ -1103,10 +652,10 @@ not shown):
 view(iris_stats_by_species)
 ```
 
-## Special Case - Using descr() With by() For One Variable Only
+## Special Case - Using descr() With by() For A Single Variable
 
-Instead of showing several tables having one column each, the `view()`
-will assemble the results into a single table:
+Instead of showing several tables having only one column each, the
+`view()` function will assemble the results into a single table:
 
 ``` r
 BMI_by_age <- with(tobacco, 
@@ -1128,22 +677,21 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 |  **Median** |          24.04 | 25.11 | 26.77 | 27.52 |
 |     **Max** |          34.84 | 39.44 | 39.21 | 38.37 |
 
-…and the transposed version would look like this:
+The transposed version looks like this:
 
 ``` r
 BMI_by_age <- with(tobacco, 
-                   by(BMI, age.gr, descr, 
+                   by(BMI, age.gr, descr,  transpose = TRUE,
                       stats = c("mean", "sd", "min", "med", "max")))
 view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
 ```
 
-|             | age.gr = 18-34 | 35-50 | 51-70 |  71 + |
-| ----------: | -------------: | ----: | ----: | ----: |
-|    **Mean** |          23.84 | 25.11 | 26.91 | 27.45 |
-| **Std.Dev** |           4.23 |  4.34 |  4.26 |  4.37 |
-|     **Min** |           8.83 | 10.35 |  9.01 | 16.36 |
-|  **Median** |          24.04 | 25.11 | 26.77 | 27.52 |
-|     **Max** |          34.84 | 39.44 | 39.21 | 38.37 |
+|           |  Mean | Std.Dev |   Min | Median |   Max |
+| --------: | ----: | ------: | ----: | -----: | ----: |
+| **18-34** | 23.84 |    4.23 |  8.83 |  24.04 | 34.84 |
+| **35-50** | 25.11 |    4.34 | 10.35 |  25.11 | 39.44 |
+| **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
+|  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
 
 ## Using lapply() to Show Several freq() tables at once
 
@@ -1197,8 +745,8 @@ and location of that file explicitly if you need to reuse it later on:
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 ```
 
-There is also an `append =` boolean parameter for adding content to
-existing reports.
+There is also an `append =` logical argument for adding content to
+existing reports, both text/Rmarkdown and html.
 
 ## Global options
 
@@ -1228,6 +776,9 @@ Examples:
 st_options()                      # display all global options' values
 st_options('round.digits')        # display only one option
 st_options('omit.headings', TRUE) # change an option's value
+st_options('footnote', NA)        # Turn off the footnote on all outputs.
+                                  # This option was used prior to generating
+                                  # the present document.
 ```
 
 ## Bootstrap CSS
@@ -1248,11 +799,11 @@ stored with it. However, you can override most of them when using the
 `print()` and `view()`
 functions.
 
-Example:
+### Example:
 
 ``` r
-age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq including 
-                                   # headings, NA reporting and a Totals row.
+age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
+                                   # including headings, NA counts, and Totals
 print(age_stats, style = "rmarkdown", report.nas = FALSE, 
                  totals = FALSE, omit.headings = TRUE)
 ```
@@ -1264,7 +815,10 @@ print(age_stats, style = "rmarkdown", report.nas = FALSE,
 | **51-70** |  317 | 32.51 |  83.69 |
 |  **71 +** |  159 | 16.31 | 100.00 |
 
-### Order of Priority of Options / Parameters
+Note that the omitted attributes are stil part of the *age\_stats*
+object.
+
+## Order of Priority for Options / Parameters
 
 1.  Options over-ridden explicitly with `print()` or `view()` have
     precendence
@@ -1272,12 +826,11 @@ print(age_stats, style = "rmarkdown", report.nas = FALSE,
     descr() / dfSummary()` come second
 3.  Global options, which can be set with `st_options`, come third
 
-# News
+## Additional News
 
   - To support shiny apps, it is now possible to adjust the size of the
     graphs in `dfSummary()`, as well as omit the core Bootstrap CSS from
     the outputs.
-  - *summarytools* now has **global options** (see `?st_options`)
   - `dfSummary()` now supports Date / POSIX data
   - in `descr()`, Q1 and Q3 are now included. Also, the order of the
     statistics specified with `stats =` is retained for the output.
