@@ -45,7 +45,7 @@ install_github('dcomtois/summarytools')
 ```
 
 To install the most recent version on the *R-CRAN* repository, just type
-into your *R* console:
+in your *R* console:
 
 ``` r
 install.packages("summarytools")
@@ -112,6 +112,7 @@ Some people have successfully included some of the package’s functions
 in *shiny apps*, too\!
 
 # The Four Core Functions
+
 ## 1 - Frequency Tables With freq()
 
 The `freq()` function generates a table of frequencies with counts and
@@ -253,14 +254,13 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 | **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
 
-
 ## 4 - Data Frame Summaries With dfSummary()
 
 As seen earlier, `dfSummary()` collects information about all variables
 in a data frame and displays it in a singe, legible table.
 
 \* Note that due to rmarkdown compatibility issues, the text graphs
-   being histograms are not shown. We’re working on this.
+being histograms are not shown. We’re working on this.
 
 ``` r
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
@@ -471,7 +471,7 @@ IIIIIII</td>
 </tbody>
 </table>
 
-# The print() and view() Functions
+## The print() and view() Functions
 
 *summarytools* has a generic `print` method, `print.summarytools()`. By
 default, its `method` argument is set to `'pander'`. One of the ways in
@@ -482,7 +482,7 @@ specifying the `method = 'viewer'` for us. When used outside *RStudio*,
 the `method` falls back on `'browser'` and the report is fired up in the
 system’s default browser.
 
-# Using by() to Show Results By Groups
+## Using by() to Show Results By Groups
 
 With `freq()` and `descr()`, you can use *R*’s base function `by()` to
 have statistics split by a ventilation variable (which must be
@@ -564,13 +564,13 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 **BMI, split by age.gr**  
 **Data Frame:** tobacco
 
-|             | age.gr = 18-34 | 35-50 | 51-70 |  71 + |
-| ----------: | -------------: | ----: | ----: | ----: |
-|    **Mean** |          23.84 | 25.11 | 26.91 | 27.45 |
-| **Std.Dev** |           4.23 |  4.34 |  4.26 |  4.37 |
-|     **Min** |           8.83 | 10.35 |  9.01 | 16.36 |
-|  **Median** |          24.04 | 25.11 | 26.77 | 27.52 |
-|     **Max** |          34.84 | 39.44 | 39.21 | 38.37 |
+|             | 18-34 | 35-50 | 51-70 |  71 + |
+| ----------: | ----: | ----: | ----: | ----: |
+|    **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
+| **Std.Dev** |  4.23 |  4.34 |  4.26 |  4.37 |
+|     **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
+|  **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
+|     **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
 The transposed version looks like this:
 
@@ -588,7 +588,7 @@ view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
 | **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
 |  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
 
-# Using lapply() to Show Several freq() tables at once
+## Using lapply() to Show Several freq() tables at once
 
 As is the case for `by()`, the `view()` function is essential for making
 results nice and tidy.
@@ -600,7 +600,6 @@ view(freq_tables, method = "pander", style = "rmarkdown")
 ```
 
 ### Frequencies
-**Data frame:** tobacco_subset   
 **gender**  
 **Type:** Factor (unordered)
 
@@ -648,11 +647,11 @@ get started:
 <!-- end list -->
 
 ``` r
-knitr::opts_chunk$set(echo = TRUE, results = 'asis')
+    knitr::opts_chunk$set(echo = TRUE, results = 'asis')
 ```
 
-Refer to [this page](https://yihui.name/knitr/options/) for more on
-*knitr*’s options.
+        Refer to [this page](https://yihui.name/knitr/options/) for more
+on *knitr*’s options.
 
   - To get better results when using html (with `method = 'render'`),
     set up your .Rmd document so it includes *summarytool*’s css.
@@ -756,7 +755,7 @@ object.
     descr() / dfSummary()` come second
 3.  Global options, which can be set with `st_options`, come third
 
-# Customizing looks with CSS
+## Customizing looks with CSS
 
 Version 0.8.0 of *summarytools* uses *RStudio*’s [htmltools
 package](http://cran.r-project.org/web/packages/htmltools/index.html)
@@ -788,12 +787,15 @@ view(dfSummary(tobacco), custom.css = 'path/to/custom.css',
      table.classes = 'table-condensed')
 ```
 
-# Working with *shiny* apps
+## Working with *shiny* apps
 
 To include *summarytools* functions into *shiny* apps, it is recommended
-that you: - set `bootstrap.css = FASE` to avoid interacting with the
-app’s layout. - adjust the size of the graphs in `dfSummary()` - omit
-headings
+that you:
+
+  - set `bootstrap.css = FASE` to avoid interacting with the app’s
+    layout  
+  - adjust the size of the graphs in `dfSummary()`  
+  - omit headings
 
 For example:
 
@@ -804,7 +806,7 @@ print(dfSummary(somedata, graph.magnif = 0.8),
       bootstrap.css = FALSE)
 ```
 
-## Final notes
+# Final notes
 
 The package comes with no guarantees. It is a work in progress and
 feedback / feature requests are welcome. Just send me an email
