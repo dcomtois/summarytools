@@ -111,7 +111,8 @@ viewer](img/dfSummary_in_RStudio_Viewer.png)
 Some people have successfully included some of the package’s functions
 in *shiny apps*, too\!
 
-# Core Function \# 1 - freq()
+# The Four Core Functions
+## 1 - Frequency Tables With freq()
 
 The `freq()` function generates a table of frequencies with counts and
 proportions. Since this page use *markdown* rendering, we’ll set `style
@@ -158,7 +159,42 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown")
 
 We could furthermore omit the *Totals* row by setting `totals = FALSE`.
 
-# Core Function \# 2 - descr()
+## 2 - Cross-Tabulations With ctable()
+
+We’ll now use a sample data frame called *tobacco*, which is included in
+the package. We want to cross-tabulate the two categorical variables
+`smoker` and `diseased`. By default, `ctable()` gives row proportions,
+but we’ll include the full syntax anyway.
+
+Since *markdown* has not support (yet) for multi-line headings, we’ll
+show an image of the resulting html table.
+
+``` r
+with(tobacco, view(ctable(smoker, diseased)))
+```
+
+![Example of ctable() output](img/ctable-with-row-props.png)
+
+Notice that instead of `ctable(tobacco$smoker, tobacco$diseased, ...)`,
+we used the `with()` function, making the syntax less redundant.
+
+It is possible to display *column*, *total*, or no proportions at all.
+We can also omit the marginal totals to have a simple “2 x 2” table.
+
+``` r
+with(tobacco, ctable(smoker, diseased, prop = 'n', totals = FALSE, 
+                     omit.headings = TRUE, style = "simple"))
+```
+
+    ## 
+    ## -------- ---------- ----- -----
+    ##            diseased   Yes    No
+    ##   smoker                       
+    ##      Yes              125   173
+    ##       No               99   603
+    ## -------- ---------- ----- -----
+
+## 3 - Descriptive (Univariate) Stats With descr()
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion for numerical data. It can handle single vectors
@@ -195,7 +231,7 @@ descr(iris, style = "rmarkdown")
 |     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
 |   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
 
-## Transposing and selecting the stats you need
+### Transposing and selecting the stats you need
 
 If your eyes/brain prefer seeing things the other way around, just use
 `transpose = TRUE`. Here, we also select only the statistics we wish to
@@ -217,50 +253,14 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 | **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
 
-# Core Function \# 3 - ctable()
 
-We’ll now use a sample data frame called *tobacco*, which is included in
-the package. We want to cross-tabulate the two categorical variables
-`smoker` and `diseased`. By default, `ctable()` gives row proportions,
-but we’ll include the full syntax anyway.
-
-Since *markdown* has not support (yet) for multi-line headings, we’ll
-show an image of the resulting html table.
-
-``` r
-with(tobacco, view(ctable(smoker, diseased)))
-```
-
-![Example of ctable() output](img/ctable-with-row-props.png)
-
-Notice that instead of `ctable(tobacco$smoker, tobacco$diseased, ...)`,
-we used the `with()` function, making the syntax less redundant.
-
-It is possible to display *column*, *total*, or no proportions at all.
-We can also omit the marginal totals to have a simple “2 x 2” table.
-
-``` r
-with(tobacco, ctable(smoker, diseased, prop = 'n', totals = FALSE, 
-                     omit.headings = TRUE, style = "simple"))
-```
-
-    ## 
-    ## -------- ---------- ----- -----
-    ##            diseased   Yes    No
-    ##   smoker                       
-    ##      Yes              125   173
-    ##       No               99   603
-    ## -------- ---------- ----- -----
-
-# Core Function \# 4 - dfSummary()
+## 4 - Data Frame Summaries With dfSummary()
 
 As seen earlier, `dfSummary()` collects information about all variables
 in a data frame and displays it in a singe, legible table.
 
-  - Note that due to rmarkdown compatibility issues, the text graphs
-    being histograms are not shown. We’re working on this.
-
-<!-- end list -->
+\* Note that due to rmarkdown compatibility issues, the text graphs
+   being histograms are not shown. We’re working on this.
 
 ``` r
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
@@ -611,7 +611,7 @@ view(freq_tables, method = "pander", style = "rmarkdown")
 | **\<NA\>** |   22 |         |              |    2.20 |       100.00 |
 |  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-**age.gr**
+**age.gr**  
 **Type:** Factor (unordered)
 
 |            | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
@@ -623,7 +623,7 @@ view(freq_tables, method = "pander", style = "rmarkdown")
 | **\<NA\>** |   25 |         |              |    2.50 |       100.00 |
 |  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-**smoker**
+**smoker**  
 **Type:** Factor (unordered)
 
 |            | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
@@ -633,7 +633,7 @@ view(freq_tables, method = "pander", style = "rmarkdown")
 | **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
 |  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-# Using summarytools in Rmarkdown documents
+## Using summarytools in Rmarkdown documents
 
 As we have seen, *summarytools* can generate both text (including
 rmarkdown) and html results. Both can be used in Rmarkdown, according to
@@ -676,7 +676,7 @@ Refer to [this page](https://yihui.name/knitr/options/) for more on
 
 ![Example of rendered output](img/dfSummary-render-in-markdown.png)
 
-# Writing Output to Files
+## Writing Output to Files
 
 The console will always tell you the location of the temporary *html*
 file that is created in the process. However, you can specify the name
@@ -689,7 +689,7 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 There is also an `append =` logical argument for adding content to
 existing reports, both text/Rmarkdown and html.
 
-# Global options
+## Global options
 
 Version 0.8.3 introduced the following set of global options:
 
@@ -722,14 +722,14 @@ st_options('footnote', NA)        # Turn off the footnote on all outputs.
                                   # the present document.
 ```
 
-# Overriding formatting attributes
+## Overriding formatting attributes
 
 When a *summarytools* object is stored, its formatting attributes are
 stored with it. However, you can override most of them when using the
 `print()` and `view()`
 functions.
 
-### Example
+#### Example
 
 ``` r
 age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
@@ -768,7 +768,7 @@ look of the output tables. See the documentation for the package’s
 `print.summarytools()` function for details, but here is a quick example
 to give you the gist of it.
 
-### Example
+#### Example
 
 Say you need to make the font size really, really tiny. For this, you
 create a CSS file - let’s call it “custom.css” - containing the
