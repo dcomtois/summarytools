@@ -473,9 +473,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
           if (sect_title[[2]] != "") {
             if (format_info$plain.ascii) {
-              output[[length(output) + 1]] <- paste0("\n", sect_title[[2]], "  ")
+              output[[length(output) + 1]] <- paste0("\nVariable: ", sect_title[[2]], "  ")
             } else {
-              output[[length(output) + 1]] <- paste0("\n**", sect_title[[2]], "**  ")
+              output[[length(output) + 1]] <- paste0("\n**Variable:** ", sect_title[[2]], "  ")
             }
           }
           
