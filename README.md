@@ -32,7 +32,37 @@ Most commercial statistical software suites provide a wide range of
 functions and procedures out-of-the-box, making it very simple to
 create, with code or with a few point-and-click actions, well-formatted
 reports. For most tasks not relying on advanced statistical methods,
-*summarytools* allows you to do just that.
+*summarytools* allows you to do just
+that.
+
+##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and
+
+[htmltools](http://cran.r-project.org/web/packages/htmltools/index.html),
+the outputs produced by summarytools can be:
+
+  - Displayed in plain text in the *R* console (default behaviour)
+  - Used in *Rmardown* documents and *knitted* along with other text and
+    *R* output
+  - Written to *html* files that fire up in
+    [*RStudio*](http://www.rstudio.com/)’s Viewer pane or in your
+    system’s default browser
+  - Written to plain text files / *Rmarkdown* text files
+
+Some people have successfully included some of the package’s functions
+in *shiny apps*, too\!
+
+# Latest News
+
+Version 0.8.3 brings several improvements to summarytools, notably:
+
+  - Introduction of global settings (customizable defaults)
+  - Options to make content fit more naturally in *shiny* apps or
+    *Rmarkdown* documents
+  - A better handling of “split-group” statistics with `by()`
+  - A more thorough documentation
+    <!-- - `dfSummary()` now supports Date / POSIX data  -->
+    <!-- - in `descr()`, Q1 and Q3 are now included -->
+    <!-- - Also in `descr()`, the order of the statistics specified with `stats =` is retained for the output -->
 
 # How to install
 
@@ -51,10 +81,10 @@ in your *R* console:
 install.packages("summarytools")
 ```
 
-For enthusiastic users, I encourage you to go for the **development**
-version, which is the most up-to-date, **but** might also contain bugs
-(which can be fixed rapidly in most cases). Having some of you work with
-it will help me identify potential problems.
+For enthusiastic users willig to contribute to *summarytools*’
+development, I encourage you to go for the **development** version,
+which is the most up-to-date, but also a *work-in-progress*. Bugs may
+show up, but if you report them I can generally fix them quickly.
 
 ``` r
 install.packages("devtools")
@@ -64,52 +94,6 @@ install_github('dcomtois/summarytools', ref='dev-current')
 
 You can see the source code and documentation on the official *R* site
 [here](http://cran.r-project.org/web/packages/summarytools/).
-
-# Latest News
-
-Version 0.8.3 brings several improvements to summarytools, notably:
-
-  - Introduction of global settings (customizable defaults)
-  - Options to make content fit more naturally in *shiny* apps or
-    *Rmarkdown* documents
-  - A better handling of “split-group” statistics with `by()`
-  - A more thorough documentation
-    <!-- - `dfSummary()` now supports Date / POSIX data  -->
-    <!-- - in `descr()`, Q1 and Q3 are now included -->
-    <!-- - Also in `descr()`, the order of the statistics specified with `stats =` is retained for the output -->
-
-# A First Example - Data Frame Summary
-
-Using the *iris* sample data frame, we’ll jump right to the most popular
-function in the package, `dfSummary` (*Data Frame Summary*).
-
-With the following tiny bit of code, we’ll generate a summary report for
-*iris* and have it displayed in [*RStudio*](http://www.rstudio.com/)’s
-Viewer pane:
-
-``` r
-# Load the package
-library(summarytools)
-
-# Generate the summary
-view(dfSummary(iris))
-```
-
-![Example of dfSummary Output displayed in RStudio’s
-viewer](img/dfSummary_in_RStudio_Viewer.png)
-
-##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the outputs produced by summarytools can be:
-
-  - Displayed in plain text in the *R* console (default behaviour)
-  - Used in *Rmardown* documents and *knitted* along with other text and
-    *R* output
-  - Written to *html* files that fire up in
-    [*RStudio*](http://www.rstudio.com/)’s Viewer pane or in your
-    system’s default browser
-  - Written to plain text files / *Rmarkdown* text files
-
-Some people have successfully included some of the package’s functions
-in *shiny apps*, too\!
 
 # The Four Core Functions
 
@@ -256,11 +240,30 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 
 ## 4 - Data Frame Summaries With dfSummary()
 
-As seen earlier, `dfSummary()` collects information about all variables
-in a data frame and displays it in a singe, legible table.
+`dfSummary()` collects information about all variables in a data frame
+and displays it in a singe, legible table.
 
-\* Note that due to rmarkdown compatibility issues, the text graphs
-being histograms are not shown. We’re working on this.
+#### Examples
+
+With the following tiny bit of code, we’ll generate a summary report for
+the *iris* data frame and have it displayed in
+[*RStudio*](http://www.rstudio.com/)’s Viewer pane:
+
+``` r
+# Load the package
+library(summarytools)
+
+# Generate the summary
+view(dfSummary(iris))
+```
+
+![Example of dfSummary Output displayed in RStudio’s
+viewer](img/dfSummary_in_RStudio_Viewer.png)
+
+It is also possible to use `dfSummary()` in Rmarkdown mode. In this next
+example, note that due to rmarkdown compatibility issues, histograms are
+not shown. We’re working on this. Further down, we’ll see how tu use
+*html* rendering to go around this problem.
 
 ``` r
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
@@ -485,12 +488,13 @@ system’s default browser.
 ## Using by() to Show Results By Groups
 
 With `freq()` and `descr()`, you can use *R*’s base function `by()` to
-have statistics split by a ventilation variable (which must be
-categorical). *R*’s `by()` function returns a `list` containing as many
-*summarytools* objects as there are categories in our ventilation
-variable. To propertly display the content present in that list, we use
-the `view()` function. Not doing so would give somewhat messy and
-redundant results.
+show statistics split by a ventilation / categorical variable. *R*’s
+`by()` function returns a `list` containing as many *summarytools*
+objects as there are categories in our ventilation variable.
+
+To propertly display the content present in that list, **we use the
+`view()` function**. Using `print()`, while technically correct, will
+not give as much satisfactory results.
 
 #### Example
 
@@ -600,7 +604,9 @@ view(freq_tables, method = "pander", style = "rmarkdown")
 ```
 
 ### Frequencies
+
 **gender**  
+**Data frame:** tobacco  
 **Type:** Factor (unordered)
 
 |            | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
@@ -685,8 +691,17 @@ and location of that file explicitly if you need to reuse it later on:
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 ```
 
+Based on the file extension you provide (*.html* vs others),
+*summarytools* will use the appropriate method; there is no need to
+specify the `method` argument.
+
+### Appending output files
+
 There is also an `append =` logical argument for adding content to
-existing reports, both text/Rmarkdown and html.
+existing reports, both text/Rmarkdown and html. This is useful if you
+want to quickly include several statistical tables in a single file. It
+is fast alternative to creating an *.Rmd* document, albeit a limitated
+one.
 
 ## Global options
 
