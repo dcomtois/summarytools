@@ -333,12 +333,18 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   attr(output, "date")       <- Sys.Date()
   attr(output, "fn_call")    <- match.call()
   
+  # Extract labels
+  tmp_labels <- label(x, all = TRUE, fallback = FALSE, simplify = TRUE)
+  if (is.character(tmp_labels) && all(tmp_labels == "NA")) {
+    tmp_labels <- NA
+  }
+  
   data_info <-
     list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name, NA),
          Dataframe.label = ifelse("df_label"  %in% names(parse_info), parse_info$df_label, NA),
          Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
                                   parse_info$var_names, NA),
-         Variable.labels = label(x, all = TRUE, fallback = FALSE, simplify = TRUE),
+         Variable.labels = tmp_labels,
          Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
          Weights         = ifelse(identical(weights, NA), NA,
                                   sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",

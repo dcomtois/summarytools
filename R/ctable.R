@@ -245,6 +245,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
+         Row.x.Col          = paste(x_name, y_name, sep = " * "),
          Subset             = ifelse(length(x_subset) == 1 &&
                                      length(y_subset) == 1 &&
                                      x_subset == y_subset, x_subset, NA),
