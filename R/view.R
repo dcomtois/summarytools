@@ -269,6 +269,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              silent = TRUE,
                              footnote = NA,
                              table.classes = table.classes,
+                             bootstrap.css = FALSE,
                              ...)
         } else {
           html_content[[i]] <- 
@@ -278,9 +279,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                                silent = silent,
                                footnote = footnote,
                                table.classes = table.classes,
+                               bootstrap.css = FALSE,
                                ...)
         }
       }
+      
+      return(tagList(html_content))
       
     } else if (method == "pander") {
       
