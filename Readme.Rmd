@@ -28,20 +28,19 @@ to *neatly and quickly summarize data*. Its main purpose is to provide
 hassle-free functions that every *R* programmer once wished were
 included in base R:
 
-  - `descr()` : **descriptive statistics** with all common univariate
-    statistics for numerical vectors.
   - `freq()` : **frequency tables** with proportions, cumulative
     proportions and missing data information.
   - `ctable()` : **cross-tabulations** between two factors or any
-    discrete data, with total, rows or columns proportions.
+    discrete data, with total, rows or columns proportions, as well
+    as marginal totals.
+  - `descr()` : **descriptive (univariate) statistics** for numerical vectors.
   - `dfSummary()` : Extensive **data frame summaries** that facilitate
     data cleaning and firsthand evaluation.
 
-Most commercial statistical software suites provide a wide range of
-functions and procedures out-of-the-box, making it very simple to
-create, with code or with a few point-and-click actions, well-formatted
-reports. For most tasks not relying on advanced statistical methods,
-*summarytools* allows you to do just that.
+An emphasis has been put on both _what_ and _how_ results are presented, so that the
+package can serve both as a data exploration _and_ reporting tool, which can be used
+either on its own for minimal reports, or along with larger sets of tools such as
+RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
 
 ##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and
 [htmltools](http://cran.r-project.org/web/packages/htmltools/index.html), the outputs
@@ -101,8 +100,8 @@ You can see the source code and documentation on the official _R_ site
 [here](http://cran.r-project.org/web/packages/summarytools/).
 
 
-# The Four Core Functions
-## 1 - Frequency Tables With freq()
+# Four Core Functions
+## 1 - freq() : Frequency Tables
 
 The `freq()` function generates a table of frequencies with counts and
 proportions. Since this page use *markdown* rendering, we’ll set `style
@@ -116,12 +115,12 @@ freq(iris$Species, style = "rmarkdown")
 If we do not worry about missing data, we can set `report.nas = FALSE`:
 
 ```{r}
-freq(iris$Species, report.nas = FALSE, style = "rmarkdown")
+freq(iris$Species, report.nas = FALSE, style = "rmarkdown", omit.headings = TRUE)
 ```
 
 We could furthermore omit the _Totals_ row by setting `totals = FALSE`.
 
-## 2 - Cross-Tabulations With ctable()
+## 2 - ctable() : Cross-Tabulations
 
 We’ll now use a sample data frame called *tobacco*, which is included in
 the package. We want to cross-tabulate the two categorical variables
@@ -141,15 +140,16 @@ Notice that instead of `ctable(tobacco$smoker, tobacco$diseased, ...)`,
 we used the `with()` function, making the syntax less redundant.
 
 It is possible to display *column*, *total*, or no proportions at all.
-We can also omit the marginal totals to have a simple “2 x 2” table.
+We can also omit the marginal totals to have a simple _2 x 2_ table.
 
 ```{r, results='markup'}
-with(tobacco, ctable(smoker, diseased, prop = 'n', totals = FALSE, 
-                     omit.headings = TRUE, style = "simple"))
+with(tobacco, 
+     print(ctable(smoker, diseased, prop = 'n', totals = FALSE),
+           omit.headings = TRUE, method = 'render'))
 ```
 
 
-## 3 - Descriptive (Univariate) Stats With descr()
+## 3 - descr() : Descriptive Univariate Stats 
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion for numerical data. It can handle single vectors
@@ -172,7 +172,7 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
       omit.headings = TRUE, style = "rmarkdown")
 ```
 
-## 4 - Data Frame Summaries With dfSummary()
+## 4 - dfSummary() : Data Frame Summaries
 
 `dfSummary()` collects information about all variables
 in a data frame and displays it in a singe, legible table.
@@ -193,7 +193,7 @@ view(dfSummary(iris))
 
 ![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
 
-It is also possible to use `dfSummary()` in Rmarkdown mode. In this next example, 
+It is also possible to use `dfSummary()` in *Rmarkdown* documents. In this next example, 
 note that due to rmarkdown compatibility issues, histograms are not shown. We’re working
 on this. Further down, we'll see how tu use _html_ rendering to go around this problem.
 
@@ -205,7 +205,7 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
 
 *summarytools* has a generic `print` method, `print.summarytools()`. By
 default, its `method` argument is set to `'pander'`. One of the ways in
-which `view()` is useful is that we can use it To easily display *html*
+which `view()` is useful is that we can use it to easily display *html*
 outputs in *RStudio*’s Viewer. In this case, the `view()` function
 simply acts as a wrapper around the generic `print()` function,
 specifying the `method = 'viewer'` for us. When used outside *RStudio*,
@@ -266,50 +266,16 @@ view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
 ```
 
 
-## Using lapply() to Show Several freq() tables at once
+<!-- ## Using lapply() to Show Several freq() tables at once -->
 
-As is the case for `by()`, the `view()` function is essential for making
-results nice and tidy.
+<!-- As is the case for `by()`, the `view()` function is essential for making -->
+<!-- results nice and tidy. -->
 
-```{r, eval=FALSE}
-tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")]
-freq_tables <- lapply(tobacco_subset, freq)
-view(freq_tables, method = "pander", style = "rmarkdown")
-```
-
-### Frequencies   
-**gender**   
-**Data frame:** tobacco   
-**Type:** Factor (unordered)   
-
-|     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|-----------:|-----:|--------:|-------------:|--------:|-------------:|
-|      **F** |  489 |   50.00 |        50.00 |   48.90 |        48.90 |
-|      **M** |  489 |   50.00 |       100.00 |   48.90 |        97.80 |
-| **\<NA\>** |   22 |         |              |    2.20 |       100.00 |
-|  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
-
-**age.gr**   
-**Type:** Factor (unordered)   
-
-|     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|-----------:|-----:|--------:|-------------:|--------:|-------------:|
-|  **18-34** |  258 |   26.46 |        26.46 |   25.80 |        25.80 |
-|  **35-50** |  241 |   24.72 |        51.18 |   24.10 |        49.90 |
-|  **51-70** |  317 |   32.51 |        83.69 |   31.70 |        81.60 |
-|   **71 +** |  159 |   16.31 |       100.00 |   15.90 |        97.50 |
-| **\<NA\>** |   25 |         |              |    2.50 |       100.00 |
-|  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
-
-**smoker**   
-**Type:** Factor (unordered)   
-
-|     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|-----------:|-----:|--------:|-------------:|--------:|-------------:|
-|    **Yes** |  298 |   29.80 |        29.80 |   29.80 |        29.80 |
-|     **No** |  702 |   70.20 |       100.00 |   70.20 |       100.00 |
-| **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
-|  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
+<!-- ```{r} -->
+<!-- tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")] -->
+<!-- freq_tables <- lapply(tobacco_subset, freq) -->
+<!-- view(freq_tables, method = "pander", style = "rmarkdown") -->
+<!-- ``` -->
 
 
 ## Using summarytools in Rmarkdown documents
@@ -438,7 +404,7 @@ Note that the omitted attributes are stil part of the _age\_stats_ object.
 
 ## Customizing looks with CSS
 
-Version 0.8.0 of *summarytools* uses *RStudio*’s [htmltools
+Version 0.8 of *summarytools* uses *RStudio*’s [htmltools
 package](http://cran.r-project.org/web/packages/htmltools/index.html)
 and version 4 of [Bootstrap](http://getbootstrap.com/)’s cascading
 stylesheets.
@@ -472,11 +438,11 @@ view(dfSummary(tobacco), custom.css = 'path/to/custom.css',
 
 To include _summarytools_ functions into _shiny_ apps, it is recommended that you:
 
- - set `bootstrap.css = FASE` to avoid interacting with the app's layout  
+ - set `bootstrap.css` to `FALSE` to avoid interacting with the app's layout  
  - adjust the size of the graphs in `dfSummary()`  
  - omit headings  
  
-For example:
+#### Example:
 
 ```r
 print(dfSummary(somedata, graph.magnif = 0.8), 

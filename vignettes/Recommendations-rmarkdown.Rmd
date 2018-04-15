@@ -14,9 +14,7 @@ vignette: >
 
 ---
 
-<!-- (output: html_document or html_vignette) -->
-
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 library(summarytools)
@@ -24,27 +22,34 @@ library(summarytools)
 
 This document uses theme `rmarkdown::html_vignette`.
 
-Below are examples using recommended styles for `rmarkdown` rendering. Available styles are:  
+Below are examples using recommended styles for *Rmarkdown* rendering. Available styles in
+summarytools are the same as `pander`'s: 
 
 - _simple_ (default)  
 - _rmarkdown_  
 - _grid_  
 - _multiline_  
  
+For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ style is recommended. For
+`dfSummary()`, _grid_ is recommended.
+ 
 ## Important Note
 
-`knitr` option `results = 'asis'` must be specified to get good results. This can be done globally via `opts_chunk$set(results='asis')`, on in the individual chunks.
+`knitr` option `results = 'asis'` must be specified to get good results. This can be done globally via
+`opts_chunk$set(results='asis')`, or in the individual chunks.
 
 The following summarytools global options have been set:
-```{r setup_st}
-st_options('omit.headings', TRUE)
+```{r}
+#st_options('omit.headings', TRUE)
 st_options('bootstrap.css', FALSE)
 st_options('footnote', NA)
 ``` 
 
 ## Using method = 'render'
 
-To generate tables using summarytool's own html rendering, the .Rmd document's configuration part (yaml) must point to the package's `summarytools.css` file. This can be achieved in several ways. The current vignette uses this configuration:
+To generate tables using summarytool's own html rendering, the _.Rmd_ document's configuration part
+(yaml) must point to the package's `summarytools.css` file. This can be achieved in several ways;
+the current vignette uses this configuration:
 
 ````
 output: 
@@ -54,8 +59,7 @@ output:
     - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
 ````
 
-Another option would be something like this, pointing to the appropriate directory on your system.
-
+An alternative is to point to the directory on your system containing _summarytools.css_:
 
 ````
 ---
@@ -66,12 +70,13 @@ output:
 ---
 ````
 
-And now the examples, starting with `freq()`.
+Starting with `freq()`, we'll review the recommended methods and styles to get going with _summarytools_
+in _Rmarkdown_ documents.
 
 Jump to...
 
-- [descr()](#descr)  
 - [ctable()](#ctable)  
+- [descr()](#descr)  
 - [dfSummary()](#dfsummary)  
 
 
@@ -82,18 +87,41 @@ Jump to...
 `freq()` is best used with `style = 'rmarkdown'; html rendering is also possible.
 
 ## Rmarkdown Style
-```{r freq_rm}
+```{r}
 freq(tobacco$gender, style = 'rmarkdown')
 ```
 
 
 ## HTML Rendering
-```{r freq_html}
+```{r}
 print(freq(tobacco$gender), method = 'render')
 ```
 
+If you find the table too large, you can use `table.classes = 'st-small'` - an example is provided 
+further below.
 
-If you find the table too large, you can use `table.classes = 'st-small'` - see next examples.
+--------------------------------------------------------------------------------
+
+<a href="#top">Back to top</a>
+
+# ctable() {#ctable}
+
+## Rmarkdown Style
+
+Tables with heading spanning over 2 rows are not fully supported in markdown (yet), but the result is 
+getting close to acceptable. 
+
+```{r}
+ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
+```
+
+## HTML Rendering
+
+For best results, use this method.
+
+```{r ctable_html}
+print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
+```
 
 --------------------------------------------------------------------------------------------------
  
@@ -103,67 +131,44 @@ If you find the table too large, you can use `table.classes = 'st-small'` - see 
 `descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is also supported.
 
 ## Rmarkdown Style
-```{r descr_rm}
+```{r}
 descr(tobacco, style = 'rmarkdown')
 ```
 
 
-## HTML Render
+## HTML Rendering
 
-This time, we'll use table.classes = 'st-small' to show the difference in size, compared to the `freq()` table rendered above.
+We'll use table.classes = 'st-small' to show how it affects the table's size (compare to the `freq()`
+table rendered earlier).
 
-```{r descr_html}
+```{r}
 print(descr(tobacco), method = 'render', table.classes = 'st-small')
 ```
-
  
---------------------------------------------------------------------------------
-
-<a href="#top">Back to top</a>
-
-# ctable() {#ctable}
-
-For best results, use *HTML rendering*.
-
-## Rmarkdown Style
-```{r ctable_rm, results='asis'}
-ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
-```
-
-Tables with heading spanning over 2 rows are not fully supported in markdown (yet), but the result is close to acceptable.
-
-## HTML Render
-```{r ctable_html}
-print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
-```
-
 --------------------------------------------------------------------------------
 
 <a href="#top">Back to top</a>
 
 # dfSummary() {#dfsummary}
 
-For best results, use _grid_ style or HTML rendering. Both have unresolved issues with the graphics column, although good progress has been made on that front since earlier versions.
-
 ## Grid Style
+
+This gives good results, although the histograms are not shown. This has to do with an unresolved issue,
+but we're working hard to figure out a solution. Don't forget to specify `plain.ascii = FALSE`, or
+you won't get good results.
+
 ```{r dfs_grid, results='asis'}
 dfSummary(tobacco, style = 'grid', plain.ascii = FALSE)
 ```
 
-The histograms don't show up using this method. Only the bar plots are shown.
+## HTML Rendering
 
+Although the results are not as neat as they are when simply generating an html report from 
+the R interpreter -- the transparency of the graphs is lost in translation --, this is the
+best method still.
 
-## HTML Render
-```{r dfs_html, results='asis'}
+```{r}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ```
 
-The transparency of the graph images background is unfortunately lost in translation, but at least it is possible to see all graphs.
-
 <a href="#top">Back to top</a>
-
-<!-- ```{css} -->
-<!-- p { -->
-<!-- color: gray; -->
-<!-- } -->
-<!-- ``` -->
