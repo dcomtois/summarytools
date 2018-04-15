@@ -56,7 +56,6 @@
 #' @param value value to assign (optional)
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' Gergely Daróczi, \email{daroczig@@rapporter.net}
 #' @note Loosely based on Gergely Daróczi's \code{\link[pander]{panderOptions}} function.
 #' 
 #' @examples \dontrun{
@@ -75,55 +74,49 @@ st_options <- function(option, value) {
     
     if (missing(option)) {
       return(allOpts)
-    }
-    
-    if (option %in% c('reset', names(allOpts))) {
+    } else if (option == 'reset') {
+        
+        options('summarytools' = list(
+          'style'              = 'simple',
+          'round.digits'       = 2,
+          'plain.ascii'        = TRUE,
+          'omit.headings'      = FALSE,
+          'footnote'           = 'default',
+          'display.labels'     = TRUE,
+          'bootstrap.css'      = TRUE,
+          'custom.css'         = NA,
+          'escape.pipe'        = FALSE,
+          'freq.totals'        = TRUE,
+          'freq.report.nas'    = TRUE,
+          'ctable.prop'        = 'r',
+          'ctable.totals'      = TRUE,
+          'descr.stats'        = 'all',
+          'descr.transpose'    = FALSE,
+          'dfSummary.varnumbers'   = TRUE,
+          'dfSummary.valid.col'    = TRUE,
+          'dfSummary.na.col'       = TRUE,
+          'dfSummary.graph.col'    = TRUE,
+          'dfSummary.graph.magnif' = 1
+        ))
+        
+        message('summarytools options have been reset')
+        return(invisible())
+        
+    } else if (option %in% names(allOpts)) {
       return(allOpts[[option]])
     } 
     
     message('Available options:', paste(names(allOpts), collapse = ", "))
     stop('Option not recognized / not available')
     
-  } else if (option == 'reset') {
-    
-    options('summarytools' = list(
-      'style'              = 'simple',
-      'round.digits'       = 2,
-      'plain.ascii'        = TRUE,
-      'omit.headings'      = FALSE,
-      'footnote'           = 'default',
-      'display.labels'     = TRUE,
-      'bootstrap.css'      = TRUE,
-      'custom.css'         = NA,
-      'escape.pipe'        = FALSE,
-      'freq.totals'        = TRUE,
-      'freq.report.nas'    = TRUE,
-      'ctable.prop'        = 'r',
-      'ctable.totals'      = TRUE,
-      'descr.stats'        = 'all',
-      'descr.transpose'    = FALSE,
-      'dfSummary.varnumbers'   = TRUE,
-      'dfSummary.valid.col'    = TRUE,
-      'dfSummary.na.col'       = TRUE,
-      'dfSummary.graph.col'    = TRUE,
-      'dfSummary.graph.magnif' = 1
-    ))
-    
-    message('summarytools options have been reset')
-    
-  } else {
+  }  else {
     
     if (!option %in% names(allOpts)) {
       message('Available options: ', paste(names(allOpts), collapse = ", "))
       stop('Invalid option name: ', option)
     }
     
-    ## fix assigning NULL to a list element
-    if (is.null(value)) {
-      allOpts[option] <- list(NULL)
-    } else {
-      allOpts[[option]] <- value
-    }
+    allOpts[[option]] <- value
     
     options('summarytools' = allOpts)
     
