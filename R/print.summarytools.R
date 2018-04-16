@@ -119,11 +119,11 @@
 #' @examples
 #'   \dontrun{
 #'   data(tobacco)
-#'   view(dfSummary(tobacco))
+#'   view(dfSummary(tobacco), footnote = NA)
 #'   }
 #'   data(exams)
-#'   print(freq(exams$gender))
-#'   print(descr(exams), style = "grid")
+#'   print(freq(exams$gender), style = 'rmarkdown')
+#'   print(descr(exams), omit.headings = TRUE)
 #'
 #' @keywords print methods
 #'

@@ -20,8 +20,6 @@ library(summarytools)
 st_options('footnote', NA)
 ```
 
-# What is summarytools?
-
 *summarytools* is an *R* package providing tools
 to *neatly and quickly summarize data*.  It can also make _R_ a little easier to 
 learn and use. Four functions are at the core of the package:
@@ -41,7 +39,7 @@ either on its own for minimal reports, or along with larger sets of tools such a
 RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
 
 **Building on the strengths of [pander](https://github.com/Rapporter/pander) and
-[htmltools](http://cran.r-project.org/web/packages/htmltools/index.html)**, the 
+[htmltools](https://CRAN.R-project.org/package=htmltools)**, the 
 outputs produced by summarytools can be:
 
   - Displayed in plain text in the *R* console (default behaviour)
@@ -61,7 +59,7 @@ Version 0.8.3 brings several improvements to *summarytools*, notably:
  - A better handling of "split-group" statistics with `by()`
  - A more thorough documentation
 
-# The Four Core Functions
+## summarytool's Core Functions
 
 ## 1 - freq() : Frequency Tables
 
@@ -225,25 +223,24 @@ BMI_by_age <- with(tobacco,
 view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
 ```
 
-<!-- ## Using lapply() to Show Several freq() tables at once -->
+## Using lapply() to Show Several freq() tables at once
 
-<!-- As is the case for `by()`, the `view()` function is essential for making -->
-<!-- results nice and tidy. -->
+As is the case for `by()`, the `view()` function is essential for making
+results nice and tidy.
 
-<!-- ```{r} -->
-<!-- tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")] -->
-<!-- freq_tables <- lapply(tobacco_subset, freq) -->
-<!-- view(freq_tables, method = "pander", style = "rmarkdown") -->
-<!-- ``` -->
 
+```{r, eval=FALSE}
+tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")]
+freq_tables <- lapply(tobacco_subset, freq)
+view(freq_tables, footnote = NA, file = 'freq-tables.html')
+```
 
 ## Using summarytools in Rmarkdown documents
 
 As we have seen, *summarytools* can generate both text (including
 rmarkdown) and html results. Both can be used in Rmarkdown, according to
-your preferences. See [this
-vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
-to get all the details, but if you’re in a hurry, here are a few tips to
+your preferences. There is a vignette dedicated to this, which gives
+several examples, but if you’re in a hurry, here are a few tips to
 get started:
 
  - Always set the `knitr` chunk option `results = 'asis'`. You can do
@@ -356,8 +353,8 @@ Note that the omitted attributes are stil part of the _age\_stats_ object.
 ## Customizing looks with CSS
 
 Version 0.8 of *summarytools* uses *RStudio*’s [htmltools
-package](http://cran.r-project.org/web/packages/htmltools/index.html)
-and version 4 of [Bootstrap](http://getbootstrap.com/)’s cascading
+package](https://CRAN.R-project.org/package=htmltools)
+and version 4 of [Bootstrap](https://getbootstrap.com/)’s cascading
 stylesheets.
 
 It is possible to include your own *css* if you wish to customize the

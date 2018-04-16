@@ -70,5 +70,4 @@ st_options('reset')            # reset all summarytools global options
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com},
-Gergely Daróczi, \email{daroczig@rapporter.net}
 }

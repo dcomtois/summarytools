@@ -6,10 +6,8 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 
-Two vignettes complement information found on this page:  
-\- [Introduction to
-summarytools](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Introduction.html)  
-\- [Recommendations for Using summarytools With
+The following vignettes complements this page: [Recommendations for
+Using summarytools With
 Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
 
 # What is summarytools?
@@ -75,8 +73,7 @@ library(devtools)
 install_github('dcomtois/summarytools')
 ```
 
-To install the most recent version on the *R-CRAN* repository, just type
-in your *R* console:
+To install the most recent version on the *R-CRAN* repository:
 
 ``` r
 install.packages("summarytools")
@@ -679,21 +676,16 @@ view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
 | **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
 |  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
 
-<!-- ## Using lapply() to Show Several freq() tables at once -->
+## Using lapply() to Show Several freq() tables at once
 
-<!-- As is the case for `by()`, the `view()` function is essential for making -->
+As is the case for `by()`, the `view()` function is essential for making
+results nice and tidy.
 
-<!-- results nice and tidy. -->
-
-<!-- ```{r} -->
-
-<!-- tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")] -->
-
-<!-- freq_tables <- lapply(tobacco_subset, freq) -->
-
-<!-- view(freq_tables, method = "pander", style = "rmarkdown") -->
-
-<!-- ``` -->
+``` r
+tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")]
+freq_tables <- lapply(tobacco_subset, freq)
+view(freq_tables, footnote = NA, file = 'freq-tables.html')
+```
 
 ## Using summarytools in Rmarkdown documents
 

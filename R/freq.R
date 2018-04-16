@@ -52,8 +52,8 @@
 #' freq(tobacco$gender, totals = FALSE)
 #' freq(tobacco$gender, display.nas = FALSE)
 #' freq(tobacco$gender, style="rmarkdown")
-#' with(tobacco, by(data = smoker, INDICES = gender, FUN = freq))
-#'
+#' with(tobacco, view(by(diseased, smoker, freq), method = "pander"))
+#' 
 #' @seealso \code{\link[base]{table}}
 #'
 #' @keywords univar classes category

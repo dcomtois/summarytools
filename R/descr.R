@@ -49,7 +49,7 @@
 #' descr(exams)
 #' descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 #' data(tobacco)
-#' with(tobacco, by(age, smoker, descr))
+#' with(tobacco, view(by(BMI, gender, descr), method = "pander"))
 #'
 #' @keywords univar
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
