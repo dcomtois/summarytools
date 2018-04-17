@@ -13,9 +13,8 @@ Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Rec
 # What is summarytools?
 
 *summarytools* is an [R](http://r-project.org) package providing tools
-to *neatly and quickly summarize data*. Its main purpose is to provide
-hassle-free functions that every *R* programmer once wished were
-included in base R:
+to *neatly and quickly summarize data*. It can also make *R* a little
+easier to learn and use. Four functions are at the core of the package:
 
   - `freq()` : **frequency tables** with proportions, cumulative
     proportions and missing data information.
@@ -34,10 +33,10 @@ with larger sets of tools such as RStudio’s for
 [rmarkdown](http://rmarkdown.rstudio.com/), and
 [knitr](https://yihui.name/knitr/).
 
-##### Building on the strengths of [pander](https://github.com/Rapporter/pander) and
-
-[htmltools](http://cran.r-project.org/web/packages/htmltools/index.html),
-the outputs produced by summarytools can be:
+**Building on the strengths of
+[pander](https://github.com/Rapporter/pander) and
+[htmltools](https://CRAN.R-project.org/package=htmltools)**, the outputs
+produced by summarytools can be:
 
   - Displayed in plain text in the *R* console (default behaviour)
   - Used in *Rmardown* documents and *knitted* along with other text and
@@ -50,18 +49,19 @@ the outputs produced by summarytools can be:
 Some people have successfully included some of the package’s functions
 in *shiny apps*, too\!
 
-# Latest News
+### Latest Improvements
 
-Version 0.8.3 brings several improvements to summarytools, notably:
+Version 0.8.3 brings several improvements to *summarytools*, notably:
 
   - Introduction of global settings (customizable defaults)
   - Options to make content fit more naturally in *shiny* apps or
     *Rmarkdown* documents
   - A better handling of “split-group” statistics with `by()`
   - A more thorough documentation
-    <!-- - `dfSummary()` now supports Date / POSIX data  -->
-    <!-- - in `descr()`, Q1 and Q3 are now included -->
-    <!-- - Also in `descr()`, the order of the statistics specified with `stats =` is retained for the output -->
+  - `dfSummary()` now supports Date / POSIX data
+  - in `descr()`, Q1 and Q3 are now included
+  - Also in `descr()`, the order of the statistics specified with `stats
+    =` is retained for the output
 
 # How to install
 
@@ -301,7 +301,7 @@ descr(iris, style = "rmarkdown")
 |     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
 |   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
 
-### Transposing and selecting the stats you need
+### Transposing and selecting only the stats you need
 
 If your eyes/brain prefer seeing things the other way around, just use
 `transpose = TRUE`. Here, we also select only the statistics we wish to
@@ -578,7 +578,7 @@ show statistics split by a ventilation / categorical variable. *R*’s
 objects as there are categories in our ventilation variable.
 
 To propertly display the content present in that list, **we use the
-`view()` function**. Using `print()`, while technically correct, will
+`view()` function**. Using `print()`, while technically possible, will
 not give as much satisfactory results.
 
 #### Example
@@ -691,10 +691,9 @@ view(freq_tables, footnote = NA, file = 'freq-tables.html')
 
 As we have seen, *summarytools* can generate both text (including
 rmarkdown) and html results. Both can be used in Rmarkdown, according to
-your preferences. See [this
-vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
-to get all the details, but if you’re in a hurry, here are a few tips to
-get started:
+your preferences. The vignette mentionned at the top of this page is
+dedicated to showing examples, but if you’re in a hurry, here are a few
+tips to get started:
 
   - Always set the `knitr` chunk option `results = 'asis'`. You can do
     this on a chunk-by-chunk basis, but here is how to do it globally:
@@ -749,8 +748,8 @@ specify the `method` argument.
 There is also an `append =` logical argument for adding content to
 existing reports, both text/Rmarkdown and html. This is useful if you
 want to quickly include several statistical tables in a single file. It
-is fast alternative to creating an *.Rmd* document, albeit a limitated
-one.
+is fast alternative to creating an *.Rmd* document if you don’t need the
+extra content that the latter allows.
 
 ## Global options
 
@@ -822,9 +821,8 @@ object.
 ## Customizing looks with CSS
 
 Version 0.8 of *summarytools* uses *RStudio*’s [htmltools
-package](http://cran.r-project.org/web/packages/htmltools/index.html)
-and version 4 of [Bootstrap](http://getbootstrap.com/)’s cascading
-stylesheets.
+package](https://CRAN.R-project.org/package=htmltools) and version 4 of
+[Bootstrap](https://getbootstrap.com/)’s cascading stylesheets.
 
 It is possible to include your own *css* if you wish to customize the
 look of the output tables. See the documentation for the package’s
@@ -833,7 +831,7 @@ to give you the gist of it.
 
 #### Example
 
-Say you need to make the font size really, really tiny. For this, you
+Say you need to make the font size really, really small. For this, you  
 create a CSS file - let’s call it “custom.css” - containing the
 following class:
 
@@ -843,13 +841,16 @@ following class:
 }
 ```
 
-To apply it to a *summarytools* object and display it in your browser,
-you would do like this:
+Then, to apply it to a *summarytools* object and display it in your
+browser:
 
 ``` r
 view(dfSummary(tobacco), custom.css = 'path/to/custom.css', 
      table.classes = 'table-condensed')
 ```
+
+To display a smaller table that is not **that** smaller, you can use the
+provided css class `st-small`.
 
 ## Working with *shiny* apps
 
