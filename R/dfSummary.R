@@ -162,7 +162,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           height = 100 * graph.magnif, units = "px", bg = "transparent")
       par("mar" = c(0.03,0.01,0.07,0.01))
       data <- data[!is.na(data)]
-      breaks_x <- pretty(range(data), n = min(nclass.FD(data), 250), min.n = 1)
+      breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250), min.n = 1)
       hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
       cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
                                       xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")),
