@@ -359,7 +359,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         counts <- table(column_data, useNA = "no")
 
         # Report all frequencies when allowed by max.distinct.values
-        if (length(counts) <= max.distinct.values) {
+        if (length(counts) <= max.distinct.values + 1) {
           output[i,4] <- paste0(1:length(counts),"\\. ", names(counts), collapse="\\\n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
@@ -482,7 +482,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           output[i,7] <- txtbarplot(prop.table(counts))
           
         } else {
-          output[i,4] <- paste(
+          output[i,4] <- paste0(
             "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
             "med : ", median(column_data, na.rm = TRUE), "\\\n",
             "max : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
