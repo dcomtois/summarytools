@@ -29,7 +29,7 @@ learn and use. Four functions are at the core of the package:
   - `ctable()` : **cross-tabulations** between two factors or any
     discrete data, with total, rows or columns proportions, as well
     as marginal totals.
-  - `descr()` : **descriptive (univariate) statistics** for numerical vectors.
+  - `descr()` : **descriptive (univariate) statistics** for numerical data.
   - `dfSummary()` : Extensive **data frame summaries** that facilitate
     data cleaning and firsthand evaluation.
 
@@ -405,7 +405,7 @@ When developing, we often use a number of functions to obtain an object's proper
 `what.is()` proposes to lump together the results of most of these functions (`class()`,
 `typeof()`, `attributes()` and others).
 
-```{r what_is, warning=FALSE}
+```{r what_is, warning=FALSE, results='markup'}
 what.is(iris)
 ```
 

@@ -1,3 +1,10 @@
+Version 0.8.4
+-------------
+Method for calculating number of bins in dfSummary histograms changed from nclass.FD() to 
+nclass.Sturges(). Removed extra space in dfSummary with time objects. Allowed one more
+value for frequency counts in dfSummary to avoid having [one more value] displayed; this
+actual last value will be printed out.
+
 Version 0.8.3
 -------------
 Introduced global options with st_options(). In all functions, argument 'split.table'
