@@ -8,7 +8,7 @@
 
 The following vignette complements this page: [Recommendations for
 Using summarytools With
-Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
+Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 
 # What is summarytools?
 
@@ -552,7 +552,7 @@ IQR (CV) : 0.19 (0.08)</td>
 <td>IIIIIIIIIIIII<br />
 IIIIIIIIIIII<br />
 IIIIIIIIIIIIIIII<br />
-IIIIIII</td>
+IIIIIII<br /></td>
 <td>1000<br />
 (100%)</td>
 <td>0<br />
