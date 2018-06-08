@@ -6,7 +6,7 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 
-The following vignettes complements this page: [Recommendations for
+The following vignette complements this page: [Recommendations for
 Using summarytools With
 Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
 
@@ -51,7 +51,7 @@ in *shiny apps*, too\!
 
 ### Latest Improvements
 
-Version 0.8.3 brings several improvements to *summarytools*, notably:
+Version 0.8.3 brought several improvements to *summarytools*, notably:
 
   - Introduction of global settings (customizable defaults)
   - Options to make content fit more naturally in *shiny* apps or
@@ -62,6 +62,8 @@ Version 0.8.3 brings several improvements to *summarytools*, notably:
   - in `descr()`, Q1 and Q3 are now included
   - Also in `descr()`, the order of the statistics specified with `stats
     =` is retained for the output
+
+Version 0.8.4 is a minor update. It uses a different method to determine the number of bins in dfSummary() histograms.
 
 # How to install
 
