@@ -446,10 +446,12 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         if (graph.col) {
           if (length(counts) <= max.distinct.values) {
             output[i,6] <- encode_graph(counts, "barplot")
+            output[i,7] <- txtbarplot(prop.table(counts))
+            
             if (isTRUE(extra_space)) {
               output[i,6] <- paste0(output[i,6], "\n\n")
+              output[i,7] <- paste0(output[i,7], "\\\n")
             }
-            output[i,7] <- txtbarplot(prop.table(counts))
             
           } else {
             output[i,6] <- encode_graph(column_data, "histogram")
