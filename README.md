@@ -552,7 +552,8 @@ IQR (CV) : 0.19 (0.08)</td>
 <td>IIIIIIIIIIIII<br />
 IIIIIIIIIIII<br />
 IIIIIIIIIIIIIIII<br />
-IIIIIII<br /></td>
+IIIIIII<br />
+<br /></td>
 <td>1000<br />
 (100%)</td>
 <td>0<br />
