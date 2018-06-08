@@ -201,7 +201,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   txthist <- function(data) {
     data <- data[!is.na(data)]
-    breaks_x <- pretty(range(data), n = nclass.FD(data), min.n = 1)
+    breaks_x <- pretty(range(data), n = nclass.Sturges(data), min.n = 1)
     if (length(breaks_x) <= 10) {
       counts <- hist(data, breaks = breaks_x, plot = FALSE)$counts
     } else {
