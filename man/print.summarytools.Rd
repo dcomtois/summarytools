@@ -39,7 +39,7 @@ whether to append output to existing file. \code{FALSE} by default.}
 \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 will be generic.}
 
-\item{table.classes}{Character.  Additionnal classes to assign to output tables. 
+\item{table.classes}{Character.  Additional classes to assign to output tables. 
 All \emph{Bootstrap CSS} classes can be used. It also allows
 user-defined classes (see custom.css parameter). See \emph{details} section.
 \code{NA} by default.}

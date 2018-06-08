@@ -34,7 +34,7 @@
 #' @param report.title For \emph{html} reports, this goes into the
 #'   \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 #'   will be generic.
-#' @param table.classes Character.  Additionnal classes to assign to output tables. 
+#' @param table.classes Character.  Additional classes to assign to output tables. 
 #'   All \emph{Bootstrap CSS} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details} section.
 #'   \code{NA} by default.

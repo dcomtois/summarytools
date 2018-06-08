@@ -11,6 +11,7 @@ Description: Data frame summaries, cross-tabulations,
   point-of-entry for exploring data, both for experienced
   and new R users.
 Imports:
+  grDevices,
   htmltools,
   matrixStats,
   methods,
