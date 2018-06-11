@@ -296,7 +296,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         output[i,7] <- ""
         
       } else if (n_levels <= max.distinct.values) {
-        output[i,4] <- paste0(1:n_levels,"\\. ", levels(column_data), collapse = "\\\n")
+        output[i,4] <- paste0(1:n_levels,"\\. ", 
+                              substr(levels(column_data), 1, max.string.width),
+                              collapse = "\\\n")
         counts_props <- align_numbers(counts, props)
         output[i,5] <- paste0("\\", counts_props, collapse = "\\\n")
         if (graph.col && any(!is.na(column_data))) {
@@ -307,7 +309,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         # more levels than allowed by max.distinct.values
         n_extra_levels <- n_levels - max.distinct.values
         output[i,4] <- paste0(1:max.distinct.values,"\\. ",
-                              levels(column_data)[1:max.distinct.values],
+                              substr(levels(column_data), 1, max.string.width)[1:max.distinct.values],
                               collapse="\\\n")
         output[i,4] <- paste(output[i,4],
                              paste("[", n_extra_levels, "others", "]"),
@@ -360,7 +362,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
         # Report all frequencies when allowed by max.distinct.values
         if (length(counts) <= max.distinct.values + 1) {
-          output[i,4] <- paste0(1:length(counts),"\\. ", names(counts), collapse="\\\n")
+          output[i,4] <- paste0(1:length(counts), "\\. ",
+                                substr(names(counts), 1, max.string.width),
+                                collapse="\\\n")
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           output[i,5] <- paste0(counts_props, collapse = "\\\n") # paste0("\\", ...
