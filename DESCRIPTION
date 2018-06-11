@@ -13,6 +13,7 @@ Description: Data frame summaries, cross-tabulations,
 Imports:
   grDevices,
   htmltools,
+  lubridate,
   matrixStats,
   methods,
   pander,

@@ -488,7 +488,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
             "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
             "med : ", median(column_data, na.rm = TRUE), "\\\n",
             "max : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
-            "range : ", paste(round(dtime <- difftime(tmax, tmin), round.digits), attr(dtime, 'units'))
+            "range : ", sub(pattern = " 0H 0M 0S",
+                            replacement = "",
+                            x = round(as.period(interval(tmin, tmax)), round.digits))
           )
           
           output[i,5] <- paste(length(counts), "distinct val.")
