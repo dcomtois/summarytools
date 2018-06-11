@@ -192,10 +192,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     widths <- props / max(props) * maxwidth
     outstr <- character(0)
     for (i in seq_along(widths)) {
-      outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]), collapse = ""),
-                      sep = "\\\n")
+      outstr <- paste(outstr, paste0(rep(x = 'I', times = widths[i]), collapse = ""),
+                      sep = " \\ \n")
     }
-    outstr <- sub("^\\\\\\n", "", outstr)
+    outstr <- sub("^ \\\\ \\n", "", outstr)
     return(outstr)
   }
 
@@ -450,7 +450,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
             
             if (isTRUE(extra_space)) {
               output[i,6] <- paste0(output[i,6], "\n\n")
-              output[i,7] <- paste0(output[i,7], "\\\n")
+              output[i,7] <- paste0(output[i,7], " \\ \n \\")
             }
             
           } else {
