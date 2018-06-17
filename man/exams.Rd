@@ -26,7 +26,7 @@ the following variables:
 All names and grades are simulated. Grades for each student are centered
 around a personal randomized average and standard deviation.
 
-Une version française de ce \emph{data frame} est disponible sous le nom 
-d'\dQuote{examens}.
+A copy of this dataset is also \strong{available in French} under
+the name \dQuote{examens}.
 }
 \keyword{datasets}
