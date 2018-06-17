@@ -1323,6 +1323,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Print or write to file - pander --------------------------------------------------------------
   
   if (method == "pander") {
+    
+    # remove extra linefeed if omit.headings
+    if (format_info$omit.headings) {
+      if (output[[1]] == "\n  ") {
+        output[[1]] <- NULL
+      }
+      output[[1]] <- sub("^\\n\\n", "\n", output[[1]])
+    }
+
     cat(do.call(paste, output), file = file, append = append)
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
