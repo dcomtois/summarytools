@@ -95,7 +95,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     stop("'round.digits' argument must be numerical and >= 1")
   }
 
-  if (!useNA %in% c("ifany", "always", "never")) {
+  if (!useNA %in% c("ifany", "always", "no")) {
     stop("'useNA' must be one of 'ifany', 'always', or 'no'")
   }
 
