@@ -352,8 +352,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         output[i,7] <- ""
 
       } else if (n_miss == n_tot) {
-        output[i,4] <- "All NA's"
-        output[i,5] <- ""
+        output[i,4] <- ""
+        output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
 
