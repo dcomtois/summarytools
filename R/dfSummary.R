@@ -155,7 +155,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           sprintf(paste0("(%", maxchar_pct, ".", 1, "f%%)"), props*100))
   }
 
-  # Encode barchars into html-readable image
+  # Encode barplots into html-readable image
   encode_graph <- function(data, graph_type) {
     if (graph_type == "histogram") {
       png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif, 

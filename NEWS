@@ -1,6 +1,13 @@
+Version 0.8.5
+-------------
+Time intervals in dfSummary() now use lubridate::as.period(). In dfSummary(),
+line feeds in ascii barplots now displayed correctly, and string
+trimming is applied consistently. In ctable(), argument 'useNA' now correctly
+accepts value "no". 
+
 Version 0.8.4
 -------------
-Method for calculating number of bins in dfSummary() histograms changed from nclass.FD() to 
+Method for calculating number of bins in dfSummary() histograms changed from nclass.FD() to
 nclass.Sturges(). Removed extra space in dfSummary() with time objects. Allowed one more
 value for frequency counts in dfSummary() when "[1 other value]" displayed; this
 actual value will now be included per se.
