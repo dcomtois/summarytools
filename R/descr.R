@@ -41,8 +41,8 @@
 #'   default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A matrix object containing the statistics, with extra attributes used by
-#'   \pkg{summarytool}'s print method.
+#' @return A nn object of classes \code{matrix} and \code{summarytools} containing 
+#'   the statistics, with extra attributes used by \link{print} method.
 #'
 #' @examples
 #' data(exams)

@@ -37,8 +37,8 @@
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A frequency table of class \code{matrix} with added attributes used
-#'   by the \emph{print} method.
+#' @return A frequency table of class \code{matrix} and \code{summarytools} with added
+#'  attributes to be used by the \emph{print} method.
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
 #'   appear cleaner in the console. To avoid rmarkdown rendering problems, this
