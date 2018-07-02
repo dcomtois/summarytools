@@ -1153,7 +1153,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     
     sect_title[[1]] <- "Data Frame Summary  "
 
-    if ("Dataframe" %in% names(data_info)) {
+    if (("Dataframe" %in% names(data_info)) & (! is.null(data_info$Dataframe))) {
       sect_title[[2]] <- data_info$Dataframe
     }  else {
       sect_title[[2]] <- ""
