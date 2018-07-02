@@ -752,12 +752,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           
           output[[1]] <- add_hash(sect_title[[1]], 3)
 
-          # if (format_info$plain.ascii) {
-          #   output[[2]] <- paste0("\n", sect_title[[2]])
-          # } else {
-          #   output[[2]] <- paste0("\n", "**", sect_title[[2]], "**")
-          # }
-  
           he_added <- add_head_element(list(c("Row.x.Col", "Variables"),
                                             c("Dataframe", "Data Frame"),
                                             c("Dataframe.label", "Data Frame Label"),
@@ -770,6 +764,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       }
 
       output[[length(output) + 1]] <- "\n  "
+      
+      # Escape "<" and ">" when used in pairs in rownames or colnames
+      if (!format_info$plain.ascii) {
+        row.names(cross_table) <- gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
+                                       x = row.names(cross_table), perl = TRUE)
+        colnames(cross_table) <- gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
+                                      x = colnames(cross_table), perl = TRUE)
+      }
       
       pander_args <- append(list(style = format_info$style,
                                  plain.ascii = format_info$plain.ascii,
