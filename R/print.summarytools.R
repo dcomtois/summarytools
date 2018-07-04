@@ -1267,7 +1267,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           cell <- gsub('\\\\\n', '\n', cell)
           if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "center")
-          } else if (colnames(x)[co] %in% c("Variable", "Label", "Properties", "Stats / Values")) {
+          } else if (colnames(x)[co] == "Label") {
+            cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
+            cell <- paste(strwrap(cell,width = format_info$split.cells, simplify = TRUE), collapse = "\n")
+            table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
+          } else if (colnames(x)[co] %in% c("Variable", "Properties", "Stats / Values")) {
             cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
             table_row[[length(table_row) + 1]] <- tags$td(cell, align = "left")
           } else if (colnames(x)[co] == "Freqs (% of Valid)") {
