@@ -72,7 +72,7 @@ To benefit from all the latests fixes, install it from GitHub:
 ``` r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools')
+install_github('dcomtois/summarytools', build_vignettes = TRUE)
 ```
 
 To install the most recent version on the *R-CRAN* repository:
@@ -89,7 +89,7 @@ show up, but if you report them I can generally fix them quickly.
 ``` r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools', ref='dev-current')
+install_github('dcomtois/summarytools', ref='dev-current', build_vignettes = TRUE)
 ```
 
 You can see the source code and documentation on the official *R* site
