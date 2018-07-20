@@ -62,8 +62,8 @@ count will be the same as the unweighted \code{x}. \code{FALSE} by default.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A frequency table of class \code{matrix} with added attributes used
-  by the \emph{print} method.
+A frequency table of class \code{matrix} and \code{summarytools} with added
+ attributes used by \emph{print} method.
 }
 \description{
 Displays weighted or unweighted frequencies, including <NA> counts and

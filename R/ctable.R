@@ -33,7 +33,7 @@
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A frequency table of classes \code{matrix} and \code{summarytools} 
-#'   with added attributes to be used by the \link{print} method.
+#'   with added attributes used by \link{print} method.
 #'
 #' @details Rmarkdown does not, to this day, support multi-header tables. Therefore,
 #'   until such support is available, the recommended way to display cross-tables

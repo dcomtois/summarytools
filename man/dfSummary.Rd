@@ -86,9 +86,9 @@ width of a table. Keeping the default value (\code{Inf}) is recommended.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A data frame containing as many rows as there are columns in \code{x},
-  with additional attributes to inform \code{print} function. Columns of the
-  output data frame are:
+A data frame with additional class \code{summarytools} containing as
+  many rows as there are columns in \code{x}, with attributes to 
+  inform \code{print} method. Columns in the output data frame are:
   \describe{
     \item{No}{Number indicating the order in which column appears in
       the data frame.}

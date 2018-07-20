@@ -64,8 +64,8 @@ default.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A matrix object containing the statistics, with extra attributes used by
-  \pkg{summarytool}'s print method.
+A nn object of classes \code{matrix} and \code{summarytools} containing 
+  the statistics, with extra attributes used by \link{print} method.
 }
 \description{
 Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 

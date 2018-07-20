@@ -54,8 +54,8 @@ the character values for arguments x and y are used.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A frequency table of class \code{matrix} with added attributes used
-  by \link{print} method.
+A frequency table of classes \code{matrix} and \code{summarytools} 
+  with added attributes used by \link{print} method.
 }
 \description{
 Cross-tabulation for a pair of categorical variables (or factors) with either row,

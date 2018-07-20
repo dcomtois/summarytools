@@ -38,7 +38,7 @@
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A frequency table of class \code{matrix} and \code{summarytools} with added
-#'  attributes to be used by the \emph{print} method.
+#'  attributes used by \emph{print} method.
 #'
 #' @details The default \code{plain.ascii = TRUE} option is there to make results
 #'   appear cleaner in the console. To avoid rmarkdown rendering problems, this
