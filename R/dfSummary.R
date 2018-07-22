@@ -428,14 +428,15 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         extra_space <- FALSE
 
         if (length(counts) <= max.distinct.values &&
-            (all(column_data%%1 == 0) || identical(names(column_data), "0") ||
+            (all(column_data%%1 == 0, na.rm = TRUE) || identical(names(column_data), "0") ||
               all(abs(as.numeric(names(counts[-which(names(counts)=="0")]))) >= 10^-round.digits))) {
           
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           
           output[i,5]  <- paste(paste0(rounded_names <- format(round(as.numeric(names(counts)), round.digits), 
-                                                               nsmall = round.digits * !all(column_data%%1 == 0)),
+                                                               nsmall = round.digits * !all(column_data%%1 == 0, 
+                                                                                            na.rm = TRUE)),
                                        ifelse(as.numeric(names(counts)) != as.numeric(rounded_names), "!", " ")),
                                 counts_props, sep = ": ", collapse = "\\\n")
           
