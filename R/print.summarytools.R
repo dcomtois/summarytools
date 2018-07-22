@@ -1104,7 +1104,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
       div_list <- list()
 
-      if (group.only) {
+      if (group.only ||
+          ("by.first" %in% names(data_info) && 
+           (!as.logical(data_info$by.first) || format_info$omit.headings))) {
+        
         he_added <- add_head_element(list(c("Group", "Group"),
                                           c("N.Obs", "N")),
                                      h = 0)
@@ -1378,7 +1381,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                    tags$head(includeCSS(path = paste(stpath, "includes/stylesheets/summarytools.css", sep="/")),
                              if (!is.na(custom.css)) includeCSS(path = custom.css)),
                    div_list)
-        
       }
     }
 
