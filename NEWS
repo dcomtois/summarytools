@@ -1,3 +1,9 @@
+Version 0.8.7
+-------------
+Fixed an issue with dfSummary() when missing values were present with whole numbers.
+Fixed an issue with descr() where group was not shown for the first group when
+omitting headings.
+
 Version 0.8.6
 -------------
 In dfSummary(), the Label column now has proper line breaks in its html version;
