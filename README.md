@@ -6,9 +6,9 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 
-The following vignette complements this page: [Recommendations for
+The following vignettes complements this page: [Recommendations for
 Using summarytools With
-Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
+Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
 
 # What is summarytools?
 
@@ -51,7 +51,7 @@ in *shiny apps*, too\!
 
 ### Latest Improvements
 
-Version 0.8.3 brought several improvements to *summarytools*, notably:
+Version 0.8.3 brings several improvements to *summarytools*, notably:
 
   - Introduction of global settings (customizable defaults)
   - Options to make content fit more naturally in *shiny* apps or
@@ -63,8 +63,6 @@ Version 0.8.3 brought several improvements to *summarytools*, notably:
   - Also in `descr()`, the order of the statistics specified with `stats
     =` is retained for the output
 
-Version 0.8.4 is a minor update. It uses a different method to determine the number of bins in dfSummary() histograms.
-
 # How to install
 
 To benefit from all the latests fixes, install it from GitHub:
@@ -72,7 +70,7 @@ To benefit from all the latests fixes, install it from GitHub:
 ``` r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools', build_vignettes = TRUE)
+install_github('dcomtois/summarytools')
 ```
 
 To install the most recent version on the *R-CRAN* repository:
@@ -89,7 +87,7 @@ show up, but if you report them I can generally fix them quickly.
 ``` r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools', ref='dev-current', build_vignettes = TRUE)
+install_github('dcomtois/summarytools', ref='dev-current')
 ```
 
 You can see the source code and documentation on the official *R* site
@@ -296,7 +294,7 @@ descr(iris, style = "rmarkdown")
 |         **Max** |         7.90 |        4.40 |         6.90 |        2.50 |
 |         **MAD** |         1.04 |        0.44 |         1.85 |        1.04 |
 |         **IQR** |         1.30 |        0.50 |         3.50 |        1.50 |
-|          **CV** |         7.06 |        7.01 |         2.13 |        1.57 |
+|          **CV** |         0.14 |        0.14 |         0.47 |        0.64 |
 |    **Skewness** |         0.31 |        0.31 |       \-0.27 |      \-0.10 |
 | **SE.Skewness** |         0.20 |        0.20 |         0.20 |        0.20 |
 |    **Kurtosis** |       \-0.61 |        0.14 |       \-1.42 |      \-1.36 |
@@ -365,11 +363,11 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
 <colgroup>
 <col style="width: 4%" />
 <col style="width: 14%" />
-<col style="width: 25%" />
+<col style="width: 24%" />
 <col style="width: 19%" />
-<col style="width: 18%" />
-<col style="width: 9%" />
-<col style="width: 9%" />
+<col style="width: 19%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -406,7 +404,7 @@ IIIIIIIIIIIIIIII</td>
 min &lt; med &lt; max :<br />
 18 &lt; 50 &lt; 80<br />
 IQR (CV) : 32 (0.37)</td>
-<td>63 distinct val.</td>
+<td>63 distinct values</td>
 <td></td>
 <td>975<br />
 (97.5%)</td>
@@ -442,7 +440,7 @@ IIIIIIII</td>
 min &lt; med &lt; max :<br />
 8.83 &lt; 25.62 &lt; 39.44<br />
 IQR (CV) : 5.72 (0.17)</td>
-<td>974 distinct val.</td>
+<td>974 distinct values</td>
 <td></td>
 <td>974<br />
 (97.4%)</td>
@@ -472,7 +470,7 @@ IIIIIIIIIIIIIIII</td>
 min &lt; med &lt; max :<br />
 0 &lt; 0 &lt; 40<br />
 IQR (CV) : 11 (1.75)</td>
-<td>37 distinct val.</td>
+<td>37 distinct values</td>
 <td></td>
 <td>965<br />
 (96.5%)</td>
@@ -553,7 +551,8 @@ IQR (CV) : 0.19 (0.08)</td>
 IIIIIIIIIIII<br />
 IIIIIIIIIIIIIIII<br />
 IIIIIII<br />
-<br /></td>
+<br />
+</td>
 <td>1000<br />
 (100%)</td>
 <td>0<br />
