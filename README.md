@@ -8,7 +8,7 @@
 
 The following vignettes complements this page: [Recommendations for
 Using summarytools With
-Rmarkdown](https://cdn.rawgit.com/dcomtois/summarytools/dev-current/inst/doc/Recommendations-rmarkdown.html)
+Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 
 # What is summarytools?
 
