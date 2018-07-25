@@ -539,6 +539,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                       x = row.names(freq_table), perl = TRUE)
       }
 
+      # set encoding to native to allow proper of accentuated characters
+      if (file == "") {
+        row.names(freq_table) <- enc2native(row.names(freq_table))
+      }
+      
       pander_args <- append(list(style = format_info$style,
                                  plain.ascii = format_info$plain.ascii,
                                  justify = justify,
@@ -1342,6 +1347,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     cat(do.call(paste, output), file = file, append = append)
+    
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
         message(paste0("Output file appended: ", file))
