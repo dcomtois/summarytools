@@ -43,7 +43,7 @@ RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yi
 outputs produced by summarytools can be:
 
   - Displayed in plain text in the *R* console (default behaviour)
-  - Used in *Rmardown* documents and *knitted* along with other text and
+  - Used in *Rmarkdown* documents and *knitted* along with other text and
     *R* output
   - Written to *html* files that fire up in
     [*RStudio*](http://www.rstudio.com/)’s Viewer pane or in your
@@ -66,7 +66,7 @@ Version 0.8.3 brings several improvements to *summarytools*, notably:
 
 # How to install
 
-To benefit from all the latests fixes, install it from GitHub:
+To benefit from all the latest fixes, install it from GitHub:
 
 ```{r, eval=FALSE}
 install.packages("devtools")
@@ -80,7 +80,7 @@ To install the most recent version on the _R-CRAN_ repository:
 install.packages("summarytools")
 ```
 
-For enthusiastic users willig to contribute to _summarytools_' development,
+For enthusiastic users willing to contribute to _summarytools_' development,
 I encourage you to go for the **development** version, which is the most
 up-to-date, but also a _work-in-progress_. Bugs may show up, but if you
 report them I can generally fix them quickly.
@@ -190,7 +190,7 @@ view(dfSummary(iris))
 
 It is also possible to use `dfSummary()` in *Rmarkdown* documents. In this next example, 
 note that due to rmarkdown compatibility issues, histograms are not shown. We’re working
-on this. Further down, we'll see how tu use _html_ rendering to go around this problem.
+on this. Further down, we'll see how to use _html_ rendering to go around this problem.
 
 ```{r}
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
@@ -214,7 +214,7 @@ show statistics split by a ventilation / categorical variable. *R*’s
 `by()` function returns a `list` containing as many *summarytools* objects
 as there are categories in our ventilation variable. 
 
-To propertly display the content present in that list, **we use
+To properly display the content present in that list, **we use
 the `view()` function**. Using `print()`, while technically possible,
 will not give as much satisfactory results.
 
@@ -276,7 +276,7 @@ view(freq_tables, footnote = NA, file = 'freq-tables.html')
 
 As we have seen, *summarytools* can generate both text (including
 rmarkdown) and html results. Both can be used in Rmarkdown, according to
-your preferences. The vignette mentionned at the top of this page is dedicated to
+your preferences. The vignette mentioned at the top of this page is dedicated to
 showing examples, but if you’re in a hurry, here are a few tips to
 get started:
 
