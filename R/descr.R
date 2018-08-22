@@ -118,7 +118,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   }
   
   if (!plain.ascii %in% c(TRUE, FALSE)) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
+    stop("'plain.ascii' argument must be either TRUE or FALSE")
   }
   
   justify <- switch(tolower(substring(justify, 1, 1)),
@@ -144,6 +144,10 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
   if (class(parse_info) == "try-catch") {
     parse_info <- list()
+  }
+
+  if (!"var_names" %in% names(parse_info)) {
+    parse_info$var_names <- colnames(x.df)
   }
   
   # Identify and exclude non-numerical columns from x
@@ -296,16 +300,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     }
   }
   
-  for(i in seq_along(x.df)) {
-    
-    # Add row names (from col.names/var.name of the parse_args function)
-    if ("var_names" %in% names(parse_info)) {
-      rownames(output)[i] <- parse_info$var_names[i]
-    } else {
-      # this is necessary in order to support by()
-      rownames(output)[i] <- paste0("Var",i)
-    }
-  }
+  rownames(output) <- parse_info$var_names
   
   # Prepare output data -------------------------------------------------------
   
