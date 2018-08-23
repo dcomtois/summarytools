@@ -12,7 +12,7 @@
 #' @param var One of \dQuote{x} or \dQuote{y} (the latter being used only
 #'   in \code{\link{ctable}}).
 #'
-#' @return A list comprised of:
+#' @return A list consisting of:
 #' \itemize{
 #'   \item df_name The data frame name when applicable.
 #'   \item var_names The variable names when applicable.
@@ -142,7 +142,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
-  # Function was called through by() -------------------------------------------------------
+  # Function was called through by() ---------------------------------------------------
+  
   # This part will ensure the group-info is made part of the summarytools object
   if (length(by_pos) == 1) {
 
@@ -186,7 +187,8 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   }
 
 
-  # Function was called through lapply() -------------------------------------------------------
+  # Function was called through lapply() -------------------------------------------------
+
   if (length(lapply_pos) == 1 && lapply_pos == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[1]]))
     df_name <- as.character(lapply_call$X)
@@ -195,7 +197,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
   }
 
 
-  # From here code applies no matter how function was called ---------------------------------
+  # From here code applies no matter how function was called -----------------------------
   skipvars <- FALSE
   no_df    <- FALSE
 
@@ -260,9 +262,10 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     }
   }
 
-  # Remove dataframe name from by_group if df_name is present and the same
+  # Remove dataframe name from by_group if df_name is present in the 
+  # by_group string and the same
 
-  if (length(by_group) == 1) {
+  if (length(by_group) == 1 && length(df_name) > 0) {
     by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", x = by_group, fixed = TRUE)
   }
 
