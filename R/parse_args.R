@@ -171,6 +171,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
     if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
       by_first <- TRUE
       by_last  <- TRUE
+      .st_env$byInfo <- list()
     } else if (.st_env$byInfo$iter == 1) {
       by_first <- TRUE
       by_last  <- FALSE
