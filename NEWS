@@ -1,3 +1,10 @@
+Version 0.8.8
+-------------
+Fixed an issue with dfSummary() where reported percentages could exceed 100% under
+particular circumstances. Fixed issue with groups not being properly updated
+when used in Shiny apps. Fixed caracter encoding issues.
+
+
 Version 0.8.7
 -------------
 Fixed an issue with dfSummary() when missing values were present with whole numbers.
