@@ -3,6 +3,7 @@
 #' Assign a label to a vector or data frame, or returns value previously stored 
 #' in the object's \code{label} attribute (or \code{NA} if none found).
 #' 
+#' @aliases label label<-
 #' @usage label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
 #'label(x) <- value
 #' 
@@ -15,6 +16,8 @@
 #' @param simplify When x is a data frame and \code{all = TRUE}, coerce results to a vector
 #'   when \code{TRUE}, otherwise (default) return a \code{named list} containing only
 #'   non-NULL/non-NA elements.
+#' @param value String to be used as label.
+#' 
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
@@ -62,15 +65,6 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
   return(lbl)
 }
 
-#' Set Variable or Data Frame Label
-#'
-#' Defines a data frame or variable label by using the \code{label} attribute.
-#'
-#' @param x The data frame or variable to be labelled.
-#' @param value String to be used as label.
-#' @seealso \code{\link{label}}
-#' @author
-#' Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 "label<-" <- function(x, value) {
 
