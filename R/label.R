@@ -1,8 +1,11 @@
-#' Get Variable or Data Frame Label
+#' Get or Set Variable or Data Frame Labels
 #'
-#' Returns character value previously stored in variable or data
-#' frame's \code{label} attribute, or \code{NA} if none found.
-#'
+#' Assign a label to a vector or data frame, or returns value previously stored 
+#' in the object's \code{label} attribute (or \code{NA} if none found).
+#' 
+#' @usage label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
+#'label(x) <- value
+#' 
 #' @param x An R object to extract labels from
 #' @param all Logical. When x is a data frame, setting this argument to \code{TRUE} will
 #'   make the function return all variable labels. By default, its value is \code{FALSE},
@@ -14,9 +17,7 @@
 #'   non-NULL/non-NA elements.
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' Gergely Daróczi, \email{daroczig@@rapporter.net}
 #' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
-#' @references \url{https://github.com/Rapporter/rapportools}
 #' @export
 label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 
@@ -67,8 +68,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #'
 #' @param x The data frame or variable to be labelled.
 #' @param value String to be used as label.
-#' @seealso \code{\link{label}} (\pkg{base}), \code{\link[rapportools]{label}} (\pkg{rapportools}),
-#'   \code{\link[Hmisc]{label}} (\pkg{Hmisc})
+#' @seealso \code{\link{label}}
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
@@ -112,6 +112,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #'
 #' @usage unlabel(x)
 #' @param x An R object to remove labels from.
+#' @seealso \code{\link{label}}
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' @export

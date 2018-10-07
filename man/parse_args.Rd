@@ -17,7 +17,7 @@ parse_args(sys_calls, sys_frames, match_call, var = "x")
 in \code{\link{ctable}}).}
 }
 \value{
-A list comprised of:
+A list consisting of:
 \itemize{
   \item df_name The data frame name when applicable.
   \item var_names The variable names when applicable.

@@ -15,8 +15,7 @@ label(x) <- value
 Defines a data frame or variable label by using the \code{label} attribute.
 }
 \seealso{
-\code{\link{label}} (\pkg{base}), \code{\link[rapportools]{label}} (\pkg{rapportools}),
-  \code{\link[Hmisc]{label}} (\pkg{Hmisc})
+\code{\link{label}}
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com}
