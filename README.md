@@ -49,19 +49,9 @@ produced by summarytools can be:
 Some people have successfully included some of the package’s functions
 in *shiny apps*, too\!
 
-### Latest Improvements
+### Latest News
 
-Version 0.8.3 brings several improvements to *summarytools*, notably:
-
-  - Introduction of global settings (customizable defaults)
-  - Options to make content fit more naturally in *shiny* apps or
-    *Rmarkdown* documents
-  - A better handling of “split-group” statistics with `by()`
-  - A more thorough documentation
-  - `dfSummary()` now supports Date / POSIX data
-  - in `descr()`, Q1 and Q3 are now included
-  - Also in `descr()`, the order of the statistics specified with `stats
-    =` is retained for the output
+*summarytools*' dataframe summaries are now part of [radiant](https://github.com/radiant-rstats/radiant), an outstanding *Shiny* App  for Business analytics that I highly recommend.
 
 # How to install
 
