@@ -945,7 +945,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           ("by.first" %in% names(data_info) && 
            (!as.logical(data_info$by.first) || format_info$omit.headings))) {
         he_added <- add_head_element(list(c("Group", "Group"),
-                                          c("N.Obs", "N")),
+                                          c("N.Obs", "N"),
+                                          c("N.dupl", "Duplicates")),
                                      h = 0)
       } else {
         
@@ -965,7 +966,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                               c("Weights", "Weights"),
                                               c("Subset", "Subset"),
                                               c("Group", "Group"),
-                                              c("N.Obs", "N")),
+                                              c("N.Obs", "N"),
+                                              c("N.dupl", "Duplicates")),
                                          h = 0)
             
           } else {
@@ -974,7 +976,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                               c("Weights", "Weights"),
                                               c("Subset", "Subset"),
                                               c("Group", "Group"),
-                                              c("N.Obs", "N")),
+                                              c("N.Obs", "N"),
+                                              c("N.dupl", "Duplicates")),
                                          h = 0)
           }
         }
@@ -1114,7 +1117,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
            (!as.logical(data_info$by.first) || format_info$omit.headings))) {
         
         he_added <- add_head_element(list(c("Group", "Group"),
-                                          c("N.Obs", "N")),
+                                          c("N.Obs", "N"),
+                                          c("N.dupl", "Duplicates")),
                                      h = 0)
       } else {
       
@@ -1131,7 +1135,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                               c("Weights", "Weights"),
                                               c("Subset", "Subset"),
                                               c("Group", "Group"),
-                                              c("N.Obs", "N")),
+                                              c("N.Obs", "N"),
+                                              c("N.dupl", "Duplicates")),
                                          h = 0)
           } else {
             he_added <- add_head_element(list(c("Dataframe", "Data Frame"),
@@ -1139,7 +1144,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                               c("Weights", "Weights"),
                                               c("Subset", "Subset"),
                                               c("Group", "Group"),
-                                              c("N.Obs", "N")),
+                                              c("N.Obs", "N"),
+                                              c("N.dupl", "Duplicates")),
                                          h = 0)
             
           }
@@ -1224,7 +1230,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
         he_added <- add_head_element(list(c("Dataframe.label", "Data Frame Label"),
                                           c("Subset", "Subset"),
-                                          c("N.obs", "N")),
+                                          c("N.obs", "N"),
+                                          c("N.dupl", "Duplicates")),
+                                     
                                      h = 0)
       }
 
@@ -1322,7 +1330,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         
         he_added <- add_head_element(list(c("Dataframe.label", "Data Frame Label"),
                                           c("Subset", "Subset"),
-                                          c("N.obs", "N")),
+                                          c("N.obs", "N"),
+                                          c("N.dupl", "Duplicates")),
                                      h = 0)
       }
       
