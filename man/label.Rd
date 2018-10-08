@@ -2,9 +2,11 @@
 % Please edit documentation in R/label.R
 \name{label}
 \alias{label}
-\title{Get Variable or Data Frame Label}
+\alias{label<-}
+\title{Get or Set Variable or Data Frame Labels}
 \usage{
 label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
+label(x) <- value
 }
 \arguments{
 \item{x}{An R object to extract labels from}
@@ -19,18 +21,16 @@ Defaults to \code{FALSE}.}
 \item{simplify}{When x is a data frame and \code{all = TRUE}, coerce results to a vector
 when \code{TRUE}, otherwise (default) return a \code{named list} containing only
 non-NULL/non-NA elements.}
+
+\item{value}{String to be used as label.}
 }
 \description{
-Returns character value previously stored in variable or data
-frame's \code{label} attribute, or \code{NA} if none found.
+Assign a label to a vector or data frame, or returns value previously stored 
+in the object's \code{label} attribute (or \code{NA} if none found).
 }
 \note{
 Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
 }
-\references{
-\url{https://github.com/Rapporter/rapportools}
-}
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com},
-Gergely Daróczi, \email{daroczig@rapporter.net}
 }

@@ -10,11 +10,11 @@ dfSummary(x, round.digits = st_options("round.digits"),
   valid.col = st_options("dfSummary.valid.col"),
   na.col = st_options("dfSummary.na.col"),
   graph.col = st_options("dfSummary.graph.col"),
-  graph.magnif = st_options("dfSummary.graph.magnif"), style = "multiline",
-  plain.ascii = st_options("plain.ascii"), justify = "left",
-  omit.headings = st_options("omit.headings"), max.distinct.values = 10,
-  trim.strings = FALSE, max.string.width = 25, split.cells = 40,
-  split.tables = Inf, ...)
+  graph.magnif = st_options("dfSummary.graph.magnif"),
+  style = "multiline", plain.ascii = st_options("plain.ascii"),
+  justify = "left", omit.headings = st_options("omit.headings"),
+  max.distinct.values = 10, trim.strings = FALSE,
+  max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
