@@ -450,6 +450,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           
         } else {
           output[i,5] <- paste(length(counts), "distinct values")
+          if(length(counts) == n_tot) {output[i,5] <- paste(output[i,5], "\\\n", "(equals # rows)")}
+          if(max(column_data, na.rm = TRUE) - min(column_data, na.rm = TRUE) + 1 ==  length(counts)) {output[i,5] <- paste(output[i,5], "\\\n", "(integer sequence)")}
         }
 
         if (graph.col) {
