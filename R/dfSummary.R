@@ -581,7 +581,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                   parse_info$df_label, NA),
          Subset = ifelse("rows_subset" %in% names(parse_info),
                          parse_info$rows_subset, NA),
-         N.obs = nrow(x),
+         N.obs = paste(nrow(x), "rows and", ncol(x), "columns"),
          N.dupl = sum(duplicated(x)))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
