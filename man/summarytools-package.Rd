@@ -44,3 +44,7 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Comtois Dominic \email{dominic.comtois@gmail.com}
+
+}
