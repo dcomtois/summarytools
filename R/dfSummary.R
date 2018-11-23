@@ -142,6 +142,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     style <- "multiline"
   }
   
+  if (!graph.col %in% c(TRUE, FALSE)) {
+    stop("'graph.col' must be either TRUE or FALSE.")
+  }
+  
   if (graph.magnif <= 0) {
     stop("'graph.magnif' must be > 0" )
   }
@@ -164,14 +168,17 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
       data <- data[!is.na(data)]
       breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250), min.n = 1)
       hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
-      cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x, axes = FALSE,
-                                      xlab=NULL, ylab=NULL, main=NULL, col = "grey95", border = "grey65")),
+      cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x, 
+                                      axes = FALSE, xlab=NULL, ylab=NULL, main=NULL, 
+                                      col = "grey95", border = "grey65")),
                 silent = TRUE)
       if(class(cl) == "try-error") {
         plot.new()
         text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
       }
+      
     } else if (graph_type == "barplot") {
+      
       png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
           height = 26 * length(data) * graph.magnif, units = "px",
           bg = "transparent")
@@ -305,16 +312,21 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
         }
+        
       } else {
+        
         # more levels than allowed by max.distinct.values
         n_extra_levels <- n_levels - max.distinct.values
-        output[i,4] <- paste0(1:max.distinct.values,"\\. ",
-                              substr(levels(column_data), 1, max.string.width)[1:max.distinct.values],
-                              collapse="\\\n")
+        
+        output[i,4] <- 
+          paste0(1:max.distinct.values,"\\. ",
+                 substr(levels(column_data), 1, max.string.width)[1:max.distinct.values],
+                 collapse="\\\n")
+
         output[i,4] <- paste(output[i,4],
                              paste("[", n_extra_levels, "others", "]"),
                              sep="\\\n")
-
+        
         counts_props <- align_numbers(
           c(counts[1:max.distinct.values],
             sum(counts[(max.distinct.values + 1):length(counts)])),
@@ -328,7 +340,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         if (graph.col && any(!is.na(column_data))) {
           # prepare data for barplot
           tmp_data <- column_data
-          levels(tmp_data)[max.distinct.values + 1] <- paste("[", n_extra_levels, "others", "]")
+          levels(tmp_data)[max.distinct.values + 1] <- 
+            paste("[", n_extra_levels, "others", "]")
           tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
             paste("[", n_extra_levels, "others", "]")
           levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
@@ -359,6 +372,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         output[i,7] <- ""
 
       } else {
+        
         counts <- table(column_data, useNA = "no")
         props <- prop.table(counts)
 
@@ -373,6 +387,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           output[i,7] <- txtbarplot(prop.table(counts))
 
         } else {
+          
           # Too many values - report most common strings
           counts <- sort(counts, decreasing = TRUE)
           props <- sort(props, decreasing = TRUE)
@@ -396,7 +411,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
             # Prepare data for graph
             counts[max.distinct.values + 1] <-
               sum(counts[(max.distinct.values + 1):length(counts)])
-            names(counts)[max.distinct.values + 1] <- paste0("[ ", n_extra_values, " others ]")
+            names(counts)[max.distinct.values + 1] <- 
+              paste0("[ ", n_extra_values, " others ]")
             counts <- counts[1:(max.distinct.values + 1)]
             output[i,6] <- encode_graph(counts, "barplot")
             output[i,7] <- txtbarplot(prop.table(counts))
@@ -431,17 +447,23 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         extra_space <- FALSE
 
         if (length(counts) <= max.distinct.values &&
-            (all(column_data%%1 == 0, na.rm = TRUE) || identical(names(column_data), "0") ||
-              all(abs(as.numeric(names(counts[-which(names(counts)=="0")]))) >= 10^-round.digits))) {
+            (all(column_data%%1 == 0, na.rm = TRUE) || 
+             identical(names(column_data), "0") ||
+             all(abs(as.numeric(names(counts[-which(names(counts)=="0")]))) >= 
+                 10^-round.digits))) {
           
           props <- round(prop.table(counts), round.digits + 2)
           counts_props <- align_numbers(counts, props)
           
-          output[i,5]  <- paste(paste0(rounded_names <- format(round(as.numeric(names(counts)), round.digits), 
-                                                               nsmall = round.digits * !all(column_data%%1 == 0, 
-                                                                                            na.rm = TRUE)),
-                                       ifelse(as.numeric(names(counts)) != as.numeric(rounded_names), "!", " ")),
-                                counts_props, sep = ": ", collapse = "\\\n")
+          output[i,5]  <- 
+            paste(paste0(rounded_names <- format(round(as.numeric(names(counts)), 
+                                                       round.digits), 
+                                                 nsmall = round.digits * 
+                                                   !all(column_data%%1 == 0, 
+                                                        na.rm = TRUE)),
+                         ifelse(as.numeric(names(counts)) != as.numeric(rounded_names), 
+                                "!", " ")),
+                  counts_props, sep = ": ", collapse = "\\\n")
           
           if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
             extra_space <- TRUE
@@ -449,7 +471,12 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           } 
           
         } else {
+          
           output[i,5] <- paste(length(counts), "distinct values")
+          if (n_miss == 0 &&
+              isTRUE(all.equal(column_data, min(column_data):max(column_data)))) {
+            output[i,5] <- paste(output[i,5], "(Integer sequence)", sep = "\\\n")
+          }
         }
 
         if (graph.col) {
@@ -461,7 +488,6 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
               output[i,6] <- paste0(output[i,6], "\n\n")
               output[i,7] <- paste0(output[i,7], " \\ \n \\")
             }
-            
           } else {
             output[i,6] <- encode_graph(column_data, "histogram")
             output[i,7] <- txthist(column_data)
@@ -493,6 +519,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           output[i,7] <- txtbarplot(prop.table(counts))
           
         } else {
+          
           output[i,4] <- paste0(
             "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
             "med : ", median(column_data, na.rm = TRUE), "\\\n",
@@ -539,8 +566,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
       output[i,7] <- ""
     }
 
-    output[i,8] <- paste0(n_valid, "\\\n(", round(n_valid / n_tot * 100, round.digits), "%)")
-    output[i,9] <- paste0(n_miss,  "\\\n(", round(n_miss  / n_tot * 100, round.digits), "%)")
+    output[i,8] <- 
+      paste0(n_valid, "\\\n(", round(n_valid / n_tot * 100, round.digits), "%)")
+    output[i,9] <- 
+      paste0(n_miss,  "\\\n(", round(n_miss  / n_tot * 100, round.digits), "%)")
   }
 
   # Prepare output object -----------------------------------------------------
