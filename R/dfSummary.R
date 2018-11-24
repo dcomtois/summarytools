@@ -431,23 +431,31 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         
       } else {
         
+        counts <- table(column_data, useNA = "no")
+        
         output[i,4] <- paste(
           "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
           " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
           "min < med < max :\\\n", round(min(column_data, na.rm = TRUE), round.digits),
           " < ", round(median(column_data, na.rm = TRUE), round.digits),
           " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
-          "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
-          " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
-                      round.digits),
-          ")", collapse="", sep=""
-        )
-
-        counts <- table(column_data, useNA = "no")
+          collapse="", sep="")
+        
+        if (length(counts) == 2 && counts[1] != counts[2]) {
+          output[i,4] <- paste0(output[i,4], "mode: ", names(counts)[which.max(counts)])            
+        } else if (length(counts) > 2) {
+          output[i,4] <- paste(
+            output[i,4],
+            "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
+            " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
+                        round.digits),
+            ")", collapse="", sep="")
+        }
+        
         extra_space <- FALSE
 
         if (length(counts) <= max.distinct.values &&
-            (all(column_data%%1 == 0, na.rm = TRUE) || 
+            (all(column_data %% 1 == 0, na.rm = TRUE) || 
              identical(names(column_data), "0") ||
              all(abs(as.numeric(names(counts[-which(names(counts)=="0")]))) >= 
                  10^-round.digits))) {
