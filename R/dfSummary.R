@@ -482,7 +482,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           
           output[i,5] <- paste(length(counts), "distinct values")
           if (n_miss == 0 &&
-              isTRUE(all.equal(column_data, min(column_data):max(column_data)))) {
+              (isTRUE(all.equal(column_data, min(column_data):max(column_data))) ||
+               isTRUE(all.equal(column_data, max(column_data):min(column_data))))) {
             output[i,5] <- paste(output[i,5], "(Integer sequence)", sep = "\\\n")
           }
         }
