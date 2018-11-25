@@ -152,6 +152,11 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   # Declare functions ---------------------------------------------------------
   
+  # Remove leading and trailing blanks
+  trimstr <- function(x) {
+    sub('^\\s*(.+?)\\s*$', "\\1", x)
+  }
+  
   align_numbers <- function(counts, props) {
     maxchar_cnt <- nchar(as.character(max(counts)))
     maxchar_pct <- nchar(sprintf(paste0("%.", 1, "f"), max(props*100)))
@@ -233,6 +238,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
       counts <- matrix(apply(X = counts - 2, MARGIN = 2, FUN = max, 0),
                        nrow = 1, byrow = TRUE)
     }
+    
     graphlines <- character()
     for (ro in seq_len(nrow(graph))) {
       graphlines[ro] <-  trimws(paste(graph[ro,], collapse = ""), "right")
@@ -240,6 +246,34 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     return(paste(graphlines, collapse = "\\\n"))
   }
 
+  detect_barcode <- function(x) {
+    
+    x <- na.omit(x)
+    if (length(x) < 10 || (len <- min(nchar(x))) != max(nchar(x)) ||
+        !len %in% c(8,12,13,14)) {
+      return(FALSE)
+    }
+    
+    x <- head(x, 20)
+    
+    type <- switch(as.character(len),
+                   "8"  = "EAN-8",
+                   "12" = "UPC",
+                   "13" = "EAN-13",
+                   "14" = "ITF-14")
+    
+    x_pad      <- paste0(strrep("0", 14-len), x)
+    vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
+    weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
+    sums       <- mapply(weighted, FUN = sum)
+    
+    if (any(sums %% 10 != 0)) {
+      return(FALSE)
+    }
+    
+    return(type)
+  }
+  
   # Initialize the output data frame ------------------------------------------
   
   output <- data.frame(No = numeric(),
@@ -350,16 +384,18 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         }
       }
 
-    } else if (is.character(column_data)) {
+    } 
 
-      # Character data: display frequencies whenever possible -----------------
+    # Character data: display frequencies whenever possible -----------------
+    else if (is.character(column_data)) {
 
       if (trim.strings) {
-        column_data <- sub(pattern="\\A\\s*(.+?)\\s*\\z",
-                           replacement="\\1", x=column_data, perl=TRUE)
+        column_data <- trimstr(column_data)
       }
 
-      if (sum(column_data == "", na.rm = TRUE) == length(column_data)) {
+      n_empty <- sum(column_data == "", na.rm = TRUE)
+
+      if (n_empty == n_tot) {
         output[i,4] <- ""
         output[i,5] <- "All empty strings"
         output[i,6] <- ""
@@ -371,21 +407,48 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         output[i,6] <- ""
         output[i,7] <- ""
 
+      } else if (n_miss + n_miss == n_tot) {
+        output[i,4] <- ""
+        output[i,5] <- "All empty strings / NA's"
+        output[i,6] <- ""
+        output[i,7] <- ""
+        
       } else {
         
-        counts <- table(column_data, useNA = "no")
-        props <- prop.table(counts)
-
-        # Report all frequencies when allowed by max.distinct.values
-        if (length(counts) <= max.distinct.values + 1) {
+        # Check if data fits UPC / EAN barcode numbers patterns
+        if (!isFALSE(barcode_type <- detect_barcode(trimmed <- trimstr(column_data)))) {
+          counts <- table(trimmed, useNA = "no")
+          props <- prop.table(counts)
+          
+          output[i,4] <- paste(barcode_type, "codes \\\n",
+                               "min  :", min(trimmed, na.rm = TRUE), "\\\n",
+                               "max  :", max(trimmed, na.rm = TRUE), "\\\n",
+                               "mode :", names(counts)[which.max(counts)])
+          output[i,5] <- paste0(counts_props, collapse = "\\\n")
+          
+          if (graph.col) {
+            output[i,6] <- encode_graph(counts, "barplot")
+            output[i,7] <- txtbarplot(prop.table(counts))
+          }
+          
+        } else if (length(counts) <= max.distinct.values + 1) {
+          
+          counts <- table(column_data, useNA = "no")
+          props <- prop.table(counts)
+          
+          
+          # Report all frequencies when allowed by max.distinct.values
           output[i,4] <- paste0(1:length(counts), "\\. ",
                                 substr(names(counts), 1, max.string.width),
                                 collapse="\\\n")
           counts_props <- align_numbers(counts, round(props, round.digits + 2))
           output[i,5] <- paste0(counts_props, collapse = "\\\n")
-          output[i,6] <- encode_graph(counts, "barplot")
-          output[i,7] <- txtbarplot(prop.table(counts))
-
+          
+          if (graph.col) {
+            output[i,6] <- encode_graph(counts, "barplot")
+            output[i,7] <- txtbarplot(prop.table(counts))
+          }
+          
         } else {
           
           # Too many values - report most common strings
@@ -419,41 +482,58 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           }
         }
       }
+    } 
+    
+    # Numeric data, display a column of descriptive stats + column of freqs -------
+    else if (is.numeric(column_data)) {
 
-    } else if (is.numeric(column_data)) {
-
-      # Numeric data, display a column of descriptive stats + column of freqs -------
       if (n_miss == n_tot) {
         output[i,4] <- ""
         output[i,5] <- "All NA's"
         output[i,6] <- ""
         output[i,7] <- ""
-        
+
       } else {
         
         counts <- table(column_data, useNA = "no")
         
-        output[i,4] <- paste(
-          "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
-          " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
-          "min < med < max :\\\n", round(min(column_data, na.rm = TRUE), round.digits),
-          " < ", round(median(column_data, na.rm = TRUE), round.digits),
-          " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
-          collapse="", sep="")
-        
-        if (length(counts) == 2 && counts[1] != counts[2]) {
-          output[i,4] <- paste0(output[i,4], "mode: ", names(counts)[which.max(counts)])            
-        } else if (length(counts) > 2) {
+        # Check if data fits UPC / EAN barcode numbers patterns
+        if (!isFALSE(barcode_type <- detect_barcode(column_data))) {
+          
+          output[i,4] <- paste(barcode_type, "codes \\\n",
+                               "min  :", min(trimmed, na.rm = TRUE), "\\\n",
+                               "max  :", max(trimmed, na.rm = TRUE), "\\\n",
+                               "mode :", names(counts)[which.max(counts)])
+          
+        } else if (length(counts) == 1) {
+          output[i,4] <- "One distinct value"
+          
+        } else {
           output[i,4] <- paste(
-            output[i,4],
-            "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
-            " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
-                        round.digits),
-            ")", collapse="", sep="")
+            "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
+            " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
+            "min < med < max :\\\n", round(min(column_data, na.rm = TRUE), round.digits),
+            " < ", round(median(column_data, na.rm = TRUE), round.digits),
+            " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
+            collapse="", sep="")
+          
+          # Data is binary: add mode
+          if (length(counts) == 2 && counts[1] != counts[2]) {
+            output[i,4] <- paste0(output[i,4], "mode: ", names(counts)[which.max(counts)])            
+            
+          } else if (length(counts) >= 3) {
+            # Data has 3+ distinct values: add IQR and CV
+            output[i,4] <- 
+              paste(output[i,4],
+                    "IQR (CV) : ", round(IQR(column_data, na.rm = TRUE), round.digits),
+                    " (", round(sd(column_data,na.rm = TRUE) / mean(column_data, na.rm = TRUE),
+                                round.digits), ")", collapse="", sep="")
+          }
         }
         
         extra_space <- FALSE
-
+        
+        # In specific circumstances, display most common values          
         if (length(counts) <= max.distinct.values &&
             (all(column_data %% 1 == 0, na.rm = TRUE) || 
              identical(names(column_data), "0") ||
@@ -479,7 +559,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           } 
           
         } else {
-          
+          # Do not display specific values - only the number of distinct values
           output[i,5] <- paste(length(counts), "distinct values")
           if (n_miss == 0 &&
               (isTRUE(all.equal(column_data, min(column_data):max(column_data))) ||
@@ -487,7 +567,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
             output[i,5] <- paste(output[i,5], "(Integer sequence)", sep = "\\\n")
           }
         }
-
+        
         if (graph.col) {
           if (length(counts) <= max.distinct.values) {
             output[i,6] <- encode_graph(counts, "barplot")
@@ -503,10 +583,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           }
         }
       }
-      
-    } else if (inherits(column_data, c("Date", "POSIXct"))) {  
-      
-      # Time/date data --------------------------------------------------------
+    }
+    
+    # Time/date data --------------------------------------------------------
+    else if (inherits(column_data, c("Date", "POSIXct"))) {  
       
       if (n_miss == n_tot) {
         output[i,4] <- ""
@@ -548,11 +628,11 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         }
       }
       
-    } else {
-      
-      # Other data ------------------------------------------------------------
-      # Data does not fit in previous categories (neither numeric, character, 
-      # factor, nor POSIXt/Date)
+    } 
+    
+    # Data does not fit in previous categories (neither numeric, character, 
+    # factor, nor POSIXt/Date)
+    else {
       
       output[i,4] <- ""
       counts <- table(column_data, useNA = "no")
