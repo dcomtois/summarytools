@@ -200,8 +200,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     return(sprintf('<img src="data:image/png;base64,%s">', img_txt))
   }
 
-  txtbarplot <- function(props, maxwidth = 16) {
-    widths <- props / max(props) * maxwidth
+  txtbarplot <- function(props, maxwidth = 20) {
+    #widths <- props / max(props) * maxwidth
+    widths <- props * maxwidth
     outstr <- character(0)
     for (i in seq_along(widths)) {
       outstr <- paste(outstr, paste0(rep(x = 'I', times = widths[i]), collapse = ""),
