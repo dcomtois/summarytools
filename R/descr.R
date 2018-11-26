@@ -5,11 +5,12 @@
 #' when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
-#' @param stats Which stats to produce. Either \dQuote{all} (default), or a
-#'   selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med}, 
-#'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness},
-#'   \dQuote{se.skewness}, \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
-#'   This can be set globally via \code{\link{st_options}} (\dQuote{descr.stats}).
+#' @param stats Which stats to produce. Either \dQuote{all} (default), \dQuote{fivenum}, 
+#'   \dQuote{common} (see Details), or a selection of : \dQuote{mean}, \dQuote{sd}, 
+#'   \dQuote{min}, \dQuote{q1}, \dQuote{med}, \dQuote{q3}, \dQuote{max}, \dQuote{mad}, 
+#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis}, 
+#'   \dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via 
+#'   \code{\link{st_options}} (\dQuote{descr.stats}).
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}. Can be set globally; see \code{\link{st_options}}.
 #' @param round.digits Number of significant digits to display. Defaults to
@@ -47,6 +48,7 @@
 #' @examples
 #' data(exams)
 #' descr(exams)
+#' descr(exams, stats = "common")
 #' descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 #' data(tobacco)
 #' with(tobacco, view(by(BMI, gender, descr), method = "pander"))
@@ -86,6 +88,13 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   if (identical(stats,"all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
+  } else if (identical(stats, "fivenum")) {
+    if (!identical(weights, NA)) {
+      stop("fivenum is not supported when weights are used")
+    }
+    stats <- c("min", "q1", "med", "mean", "q3", "max")
+  } else if (identical(stats, "common")) {
+    stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
   } else {
     stats <- tolower(stats)
     invalid_stats <- setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
@@ -202,22 +211,23 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       }
       
       # Calculate and insert stats into output dataframe
-      output[i, ] <- c(ifelse("mean" %in% stats, variable.mean, NA),
-                       ifelse("sd"   %in% stats, variable.sd, NA),
-                       ifelse("min"  %in% stats, min(variable, na.rm=na.rm), NA),
-                       ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, na.rm = na.rm, type = 2), NA),
-                       ifelse("med"  %in% stats, median(variable, na.rm=na.rm), NA),
-                       ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, na.rm = na.rm, type = 2), NA),
-                       ifelse("max"  %in% stats, max(variable, na.rm=na.rm), NA),
-                       ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
-                       ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
-                       ifelse("cv"   %in% stats, variable.sd / variable.mean, NA),
-                       ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
-                       ifelse("se.skewness" %in% stats,
-                              sqrt((6*n_valid*(n_valid-1)) / ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
-                       ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
-                       ifelse("n.valid"     %in% stats, n_valid, NA),
-                       ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
+      output[i, ] <- 
+        c(ifelse("mean" %in% stats, variable.mean, NA),
+          ifelse("sd"   %in% stats, variable.sd, NA),
+          ifelse("min"  %in% stats, min(variable, na.rm=na.rm), NA),
+          ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, na.rm = na.rm, type = 2), NA),
+          ifelse("med"  %in% stats, median(variable, na.rm=na.rm), NA),
+          ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, na.rm = na.rm, type = 2), NA),
+          ifelse("max"  %in% stats, max(variable, na.rm=na.rm), NA),
+          ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
+          ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
+          ifelse("cv"   %in% stats, variable.sd / variable.mean, NA),
+          ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
+          ifelse("se.skewness" %in% stats,
+                 sqrt((6*n_valid*(n_valid-1)) / ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
+          ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
+          ifelse("n.valid"     %in% stats, n_valid, NA),
+          ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
     }
     
   } else {
