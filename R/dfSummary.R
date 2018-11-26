@@ -416,10 +416,12 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         
       } else {
         
+        counts <- table(column_data, useNA = "no")
+        props <- prop.table(counts)        
+        
         # Check if data fits UPC / EAN barcode numbers patterns
         if (!isFALSE(barcode_type <- detect_barcode(trimmed <- trimstr(column_data)))) {
-          counts <- table(trimmed, useNA = "no")
-          props <- prop.table(counts)
+
           
           output[i,4] <- paste(barcode_type, "codes \\\n",
                                "min  :", min(trimmed, na.rm = TRUE), "\\\n",
@@ -433,10 +435,6 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           }
           
         } else if (length(counts) <= max.distinct.values + 1) {
-          
-          counts <- table(column_data, useNA = "no")
-          props <- prop.table(counts)
-          
           
           # Report all frequencies when allowed by max.distinct.values
           output[i,4] <- paste0(1:length(counts), "\\. ",
