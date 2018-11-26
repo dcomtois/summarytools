@@ -40,12 +40,13 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
                 "\\[(.+)?",           # rows indexing  (2)
                 "\\s*(,)\\s*",        # comma surrounded (or not) by spaces     (3)
-                "((c\\(.*\\))|",      # column indexing in the form [ , c(...)] (4) (5)
-                "(\\d+)|",            # column indexing in the form [ , 9     ] (6)
-                "(\\d+\\:\\d+)|",     # column indexing in the form [ , 9:99  ] (7)
-                "(\'.*\')|",          # column indexing in the form [ , 'var.name' ] (8)
-                "(\".+\")|",          # column indexing in the form [ , "var.name" ] (9)
-                "(\\\".+\\\"))?",     # column indexing in the form [ , "var.name" ] (10)
+                "(.*?)",             # column indexing                         (4)
+                # "((c\\(.*\\))|",      # column indexing in the form [ , c(...)] (4) (5)
+                # "(\\d+)|",            # column indexing in the form [ , 9     ] (6)
+                # "(\\d+\\:\\d+)|",     # column indexing in the form [ , 9:99  ] (7)
+                # "(\'.*\')|",          # column indexing in the form [ , 'var.name' ] (8)
+                # "(\".+\")|",          # column indexing in the form [ , "var.name" ] (9)
+                # "(\\\".+\\\"))?",     # column indexing in the form [ , "var.name" ] (10)
                 "\\s*\\]")            # end of indexing
 
   # re2: dfname[[col]] (+ optionnal rows indexing)
@@ -62,9 +63,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                 "(\\[\\s*(.+)\\s*\\])?")      # optional row indexing             (5)  (6)
 
   # re4: variable[rows]
-  re4 <- paste0("\\w+",                       # variable name       (1)
-                "(\\[\\s*(.+)\\s*\\])")       # rows indexing       (2)
-
+  re4 <- paste0("\\w+",                             # variable name       (1)
+                "(\\[\\s*([a-zA-Z0-9]*?)\\s*\\])")  # rows indexing       (2)
+  
   # valid names for dataframes
   re5 <- "^[_a-zA-Z0-9](\\w|\\d|\\.)*$"
   
@@ -198,7 +199,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     df_name <- grep(re5, df_name, value = TRUE)[1]
     var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
   }
-
 
   # From here code applies no matter how function was called -----------------------------
   skipvars <- FALSE
