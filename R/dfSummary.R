@@ -113,7 +113,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   # Parameter validation ------------------------------------------------------
   
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
-  if (class(parse_info) == "try-catch") {
+  if (class(parse_info) %in% c("try-catch", "try-error")) {
     parse_info <- list()
   }
 

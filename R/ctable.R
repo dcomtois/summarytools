@@ -139,14 +139,14 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (class(parse_info_x) == "try-catch") {
+  if (class(parse_info_x) %in% c("try-catch", "try-error")) {
     parse_info_x <- list()
   }
 
   parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (class(parse_info_y) == "try-catch") {
+  if (class(parse_info_y) %in% c("try-catch", "try-error")) {
     parse_info_y <- list()
   }
 
@@ -250,7 +250,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-         Row.x.Col          = paste(x_name, y_name, sep = " * "),
+         Row.x.Col          = paste(x_name, y_name, sep = " * "))
          # Subset             = ifelse(length(x_subset) == 1 &&
          #                             length(y_subset) == 1 &&
          #                             x_subset == y_subset, x_subset, NA),

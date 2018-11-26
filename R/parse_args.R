@@ -219,7 +219,14 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       no_df <- TRUE
     }
   } else {
-    allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
+    # seeming bug with sapply and exists when a variable is named "i"
+    # allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
+    allnames_exist <- character()
+    for (name in allnames) {
+      if (exists(name)) {
+        allnames_exist <- append(allnames_exist, name)
+      }
+    }
     if (length(df_name) == 0 && length(allnames_exist) > 0) {
       if (is.atomic(get(allnames_exist[1]))) {
         no_df <- TRUE
@@ -286,23 +293,23 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     if (exists("var_names_tmp")) {
       var_names <- var_names_tmp
     } else if (grepl("^\\w+$", data_str, perl = TRUE)) {
-      var_names <- colnames(eval(parse(text=data_str)))
+      try(var_names <- colnames(eval(parse(text=data_str))), silent = TRUE)
     } else if (grepl("^\\w+\\[.*,\\s*\\-.+\\]", data_str, perl = TRUE)) {
-      var_names <- colnames(eval(parse(text=data_str)))
+      try(var_names <- colnames(eval(parse(text=data_str))), silent = TRUE)
     } else if (grepl(re1, data_str, perl = TRUE)) {
       # set aside row subsetting for now
       # replacing for instance "dat[1:29,4]" with "dat[4]"
       data_str_var <- sub(re1,"\\1[\\4]", data_str, perl = TRUE)
       # remove brackets if subsetting is now null
       data_str_var <- sub("\\[\\s*\\,?\\s*\\]","", data_str_var, perl = TRUE)
-      var_names <- colnames(eval(parse(text=data_str_var)))
+      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
     } else if (grepl(re2, data_str, perl = TRUE)) {
       # set aside row subsetting for now
       data_str_var <- sub(re2, "\\1[\\2]", data_str, perl = TRUE)
-      var_names <- colnames(eval(parse(text=data_str_var)))
+      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
     } else if (grepl(re3, data_str, perl = TRUE)) {
       data_str_var <- sub(re3, '\\1["\\3"]', data_str, perl = TRUE)
-      var_names <- colnames(eval(parse(text=data_str_var)))
+      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
     } else if (exists(data_str) && is.atomic(get(data_str))) {
       var_names <- data_str
     }

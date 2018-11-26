@@ -71,6 +71,7 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
 
   # if x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1) {
+    varname <- colnames(x)
     x <- x[[1]]
   }
 
@@ -139,12 +140,18 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
     x[is.nan(x)] <- NA
   }
 
-  # Get into about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
-  if (class(parse_info) == "try-catch") {
+  # Get information about x from parsing function
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
+                               silent = exists('varname')),
+                    silent = TRUE)
+  if (class(parse_info) %in% c("try-catch", "try-error")) {
     parse_info <- list()
   }
-
+  
+  if (!"var_names" %in% names(parse_info) && exists("varname")) {
+    parse_info$var_names <- varname
+  }
+  
   # create a basic frequency table, always including the NA row
   if (identical(NA, weights)) {
     freq_table <- table(x, useNA = "always")
