@@ -15,11 +15,12 @@ descr(x, stats = st_options("descr.stats"), na.rm = TRUE,
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
-\item{stats}{Which stats to produce. Either \dQuote{all} (default), or a
-selection of : \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med}, 
-\dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness},
-\dQuote{se.skewness}, \dQuote{kurtosis}, \dQuote{n.valid}, and \dQuote{pct.valid}.
-This can be set globally via \code{\link{st_options}} (\dQuote{descr.stats}).}
+\item{stats}{Which stats to produce. Either \dQuote{all} (default), \dQuote{fivenum}, 
+\dQuote{common} (see Details), or a selection of : \dQuote{mean}, \dQuote{sd}, 
+\dQuote{min}, \dQuote{q1}, \dQuote{med}, \dQuote{q3}, \dQuote{max}, \dQuote{mad}, 
+\dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis}, 
+\dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via 
+\code{\link{st_options}} (\dQuote{descr.stats}).}
 
 \item{na.rm}{Argument to be passed to statistical functions. Defaults to
 \code{TRUE}. Can be set globally; see \code{\link{st_options}}.}
@@ -75,6 +76,7 @@ when using sampling weights.
 \examples{
 data(exams)
 descr(exams)
+descr(exams, stats = "common")
 descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 data(tobacco)
 with(tobacco, view(by(BMI, gender, descr), method = "pander"))
