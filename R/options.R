@@ -183,9 +183,11 @@ st_options <- function(option = NULL, value = NULL, style = 'simple', round.digi
                  'dfSummary.na.col'       = TRUE,
                  'dfSummary.graph.col'    = TRUE,
                  'dfSummary.graph.magnif' = 1))
-          
 }
 
 .onAttach <- function(libname, pkgname) {
   pander::panderOptions("knitr.auto.asis", FALSE)
+  if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
+    message("For best results, consider updating pander to its most recent verstion on GitHub:",
+            "devtools::install_github('rapporter/pander')")
 }
