@@ -11,7 +11,8 @@
 #' @param match_call Object created using \code{match.call()}.
 #' @param var One of \dQuote{x} or \dQuote{y} (the latter being used only
 #'   in \code{\link{ctable}}).
-#'
+#' @param silent Logical. Hide console messages. \code{FALSE} by default.
+#' 
 #' @return A list consisting of:
 #' \itemize{
 #'   \item df_name The data frame name when applicable.
@@ -29,7 +30,8 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com>}
 #'
 #' @export
-parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
+parse_args <- function(sys_calls, sys_frames, match_call, 
+                       var = "x", silent = FALSE) {
 
   # Define regular expressions -- those will be used only when other means
   # of identifying structures have failed.
@@ -305,7 +307,7 @@ parse_args <- function(sys_calls, sys_frames, match_call, var = "x") {
       var_names <- data_str
     }
 
-    if (length(var_names) == 0) {
+    if (length(var_names) == 0 && !silent) {
       message("unable to identify var names: ", data_str)
     }
   }
