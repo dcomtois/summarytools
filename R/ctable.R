@@ -136,13 +136,15 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     message("file argument is deprecated; use print() or view() function to generate files")
 
   # Get into about x & y from parsing function
-  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x"),
+  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x",
+                                 silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
   if (class(parse_info_x) == "try-catch") {
     parse_info_x <- list()
   }
 
-  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y"),
+  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y",
+                                 silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
   if (class(parse_info_y) == "try-catch") {
     parse_info_y <- list()
@@ -152,13 +154,16 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
       length(parse_info_y$df_name) == 1 &&
       parse_info_x$df_name == parse_info_y$df_name) {
     df_name <- parse_info_x$df_name
-    x_name  <- parse_info_x$var_names
-    y_name  <- parse_info_y$var_names
-  } else {
+  }
+  
+  if ("dnn" %in% names(match.call())) {
     x_name <- dnn[1]
     y_name <- dnn[2]
+  } else {
+    x_name  <- na.omit(c(parse_info_x$var_names, deparse(dnn[[1]])))[1]
+    y_name  <- na.omit(c(parse_info_y$var_names, deparse(dnn[[2]])))[1]
   }
-
+  
   if (length(parse_info_x$df_label) == 1 &&
       length(parse_info_y$df_label) == 1 &&
       parse_info_x$df_label == parse_info_y$df_label) {
