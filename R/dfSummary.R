@@ -190,7 +190,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
       par("mar" = c(0.03,0.01,0.05,0.01))
       data <- rev(data)
       bp_values <- barplot(data, names.arg = "", axes = FALSE, space = 0.2,
-                           col = "grey97", border = "grey65", horiz = TRUE)
+                           col = "grey97", border = "grey65", horiz = TRUE,
+                           xlim = c(0, sum(data)))
     }
 
     dev.off()
