@@ -170,17 +170,17 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     df_label <- parse_info_x$df_label
   }
 
-  if (length(parse_info_x$rows_subset) == 1) {
-    x_subset <- parse_info_x$rows_subset
-  } else {
-    x_subset <- NA
-  }
-
-  if (length(parse_info_y$rows_subset) == 1) {
-    y_subset <- parse_info_y$rows_subset
-  } else {
-    y_subset <- NA
-  }
+  # if (length(parse_info_x$rows_subset) == 1) {
+  #   x_subset <- parse_info_x$rows_subset
+  # } else {
+  #   x_subset <- NA
+  # }
+  # 
+  # if (length(parse_info_y$rows_subset) == 1) {
+  #   y_subset <- parse_info_y$rows_subset
+  # } else {
+  #   y_subset <- NA
+  # }
 
   # Create cross-freq table ---------------------------------------------------
   freq_table <- table(x, y, useNA = useNA)
@@ -251,11 +251,11 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
          Row.x.Col          = paste(x_name, y_name, sep = " * "),
-         Subset             = ifelse(length(x_subset) == 1 &&
-                                     length(y_subset) == 1 &&
-                                     x_subset == y_subset, x_subset, NA),
-         Row.variable.subset = ifelse((x_subset != y_subset) && length(x_subset) == 1, x_subset, NA),
-         Col.variable.subset = ifelse((x_subset != y_subset) && length(y_subset) == 1, y_subset, NA))
+         # Subset             = ifelse(length(x_subset) == 1 &&
+         #                             length(y_subset) == 1 &&
+         #                             x_subset == y_subset, x_subset, NA),
+         # Row.variable.subset = ifelse((x_subset != y_subset) && length(x_subset) == 1, x_subset, NA),
+         # Col.variable.subset = ifelse((x_subset != y_subset) && length(y_subset) == 1, y_subset, NA))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 

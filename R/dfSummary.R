@@ -697,8 +697,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     list(Dataframe = parse_info$df_name,
          Dataframe.label = ifelse("df_label" %in% names(parse_info),
                                   parse_info$df_label, NA),
-         Subset = ifelse("rows_subset" %in% names(parse_info),
-                         parse_info$rows_subset, NA),
+         # Subset = ifelse("rows_subset" %in% names(parse_info),
+         #                 parse_info$rows_subset, NA),
          N.obs = nrow(x),
          N.dupl = sum(duplicated(x)))
 
