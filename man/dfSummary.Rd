@@ -45,7 +45,7 @@ reports. \code{TRUE} by default, but can be set globally; see
 
 \item{graph.magnif}{Numeric. Magnification factor, useful if the graphs show up
 too large (then use a value < 1) or too small (use a value > 1). Must be 
-positive. Can be set globally; see \code{\link{st_options}}, option 
+positive. Default to \code{1}. Can be set globally; see \code{\link{st_options}}, option 
 \dQuote{dfSummary.graph.magnif}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when
