@@ -17,7 +17,6 @@
 #' \itemize{
 #'   \item df_name The data frame name when applicable.
 #'   \item var_names The variable names when applicable.
-#'   \item rows_subset The subsetting condition when applicable.
 #'   \item by_group The group, when functions are called through
 #'     \code{by()}
 #'   \item by_first A binary indicator used when function was called
@@ -71,7 +70,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   df_name     <- character()
   var_names   <- character()
-  rows_subset <- character()
+  #rows_subset <- character()
 
   by_group <- character()
   by_first <- logical()
@@ -137,12 +136,12 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       }
     }
 
-    if (grepl(".+\\[.+\\]$", as.character(with_call$expr[2]), perl = TRUE)) {
-      rows_subset <- sub("(.+)\\[(.+)\\]$","\\2",
-                         as.character(with_call$expr[2]), perl = TRUE)
-    } else {
-      rows_subset <- "NULL"
-    }
+  #   if (grepl(".+\\[.+\\]$", as.character(with_call$expr[2]), perl = TRUE)) {
+  #     rows_subset <- sub("(.+)\\[(.+)\\]$","\\2",
+  #                        as.character(with_call$expr[2]), perl = TRUE)
+  #   } else {
+  #     rows_subset <- "NULL"
+  #   }
   }
 
   # Function was called through by() ---------------------------------------------------
@@ -189,7 +188,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
     }
   }
-
 
   # Function was called through lapply() -------------------------------------------------
 
@@ -320,51 +318,51 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }
 
   # Rows subset
-  if (length(rows_subset) == 0) {
-    if (grepl(re1, data_str, perl = TRUE)) {
-      rows_subset <- sub(re1, "\\2", data_str, perl = TRUE)
-    } else if (grepl(re2, data_str, perl = TRUE)) {
-      rows_subset <- sub(re2, "\\4", data_str, perl = TRUE)
-    } else if (grepl(re3, data_str, perl = TRUE)) {
-      rows_subset <- sub(re3, "\\6", data_str, perl = TRUE)
-    } else if (grepl(re4, data_str, perl = TRUE)) {
-      rows_subset <- sub(re4, "\\2", data_str, perl = TRUE)
-    }
-  }
-
-  if (!no_df && length(df_name) > 0 && length(rows_subset) == 1) {
-    rows_subset <- sub(pattern = paste0(df_name, "$"),
-                       replacement = "", x = rows_subset, fixed = TRUE)
-    rows_subset <- sub(pattern = "==", replacement = "=", x = rows_subset, fixed = TRUE)
-    rows_subset <- sub(pattern = '"(.+)"', replacement = "\\1", x = rows_subset, perl = TRUE)
-  }
-
-  if (length(rows_subset) == 0 || nchar(rows_subset) == 0 || rows_subset == "NULL") {
-    rows_subset <- character()
-  } else {
-    if (exists(get("rows_subset"))) {
-      tmp <- deparse(get(rows_subset))
-      if (length(tmp) == 1 && grepl("\\d+:\\d+", tmp, perl = TRUE)) {
-        rows_subset <- tmp
-      }
-    }
-  }
-
+  # if (length(rows_subset) == 0) {
+  #   if (grepl(re1, data_str, perl = TRUE)) {
+  #     rows_subset <- sub(re1, "\\2", data_str, perl = TRUE)
+  #   } else if (grepl(re2, data_str, perl = TRUE)) {
+  #     rows_subset <- sub(re2, "\\4", data_str, perl = TRUE)
+  #   } else if (grepl(re3, data_str, perl = TRUE)) {
+  #     rows_subset <- sub(re3, "\\6", data_str, perl = TRUE)
+  #   } else if (grepl(re4, data_str, perl = TRUE)) {
+  #     rows_subset <- sub(re4, "\\2", data_str, perl = TRUE)
+  #   }
+  # }
+  #
+  # if (!no_df && length(df_name) > 0 && length(rows_subset) == 1) {
+  #   rows_subset <- sub(pattern = paste0(df_name, "$"),
+  #                      replacement = "", x = rows_subset, fixed = TRUE)
+  #   rows_subset <- sub(pattern = "==", replacement = "=", x = rows_subset, fixed = TRUE)
+  #   rows_subset <- sub(pattern = '"(.+)"', replacement = "\\1", x = rows_subset, perl = TRUE)
+  # }
+  # 
+  # if (length(rows_subset) == 0 || nchar(rows_subset) == 0 || rows_subset == "NULL") {
+  #   rows_subset <- character()
+  # } else {
+  #   if (exists(get("rows_subset"))) {
+  #     tmp <- deparse(get(rows_subset))
+  #     if (length(tmp) == 1 && grepl("\\d+:\\d+", tmp, perl = TRUE)) {
+  #       rows_subset <- tmp
+  #     }
+  #   }
+  # }
+  #
   # remove column negative indexing
-  if (!identical(rows_subset, character())) {
-    # scenario 1: by itself, ex: ", -4"
-    if (grepl("^\\s*,\\s*-.+$", rows_subset, perl = TRUE)) {
-      rows_subset <- character()
-    } else if (grepl("^.*,\\s*-.+$", rows_subset, perl = TRUE)) {
-      # scenario 2: with row indexing, ex: "1:10, -4"
-      rows_subset <- sub(",\\s*-.+$", "", rows_subset, perl = TRUE)
-    }
-  }
+  # if (!identical(rows_subset, character())) {
+  #   # scenario 1: by itself, ex: ", -4"
+  #   if (grepl("^\\s*,\\s*-.+$", rows_subset, perl = TRUE)) {
+  #     rows_subset <- character()
+  #   } else if (grepl("^.*,\\s*-.+$", rows_subset, perl = TRUE)) {
+  #     # scenario 2: with row indexing, ex: "1:10, -4"
+  #     rows_subset <- sub(",\\s*-.+$", "", rows_subset, perl = TRUE)
+  #   }
+  # }
   
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
-                 rows_subset = rows_subset,
+                 #rows_subset = rows_subset,
                  by_group = by_group,
                  by_first = by_first,
                  by_last = by_last)
@@ -372,4 +370,3 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   output <- output[which(sapply(output, length) > 0)]
   return(output)
 }
-
