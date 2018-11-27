@@ -105,6 +105,7 @@
 #' @importFrom stats IQR median ftable sd
 #' @importFrom RCurl base64Encode
 #' @importFrom utils head
+#' @importFrom stats na.omit
 dfSummary <- function(x, round.digits = st_options('round.digits'), 
                       varnumbers = st_options('dfSummary.varnumbers'),
                       labels.col = length(label(x, all = TRUE)) > 0,

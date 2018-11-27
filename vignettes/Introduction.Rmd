@@ -15,9 +15,9 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, results='asis')
+opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
 library(summarytools)
-st_options('footnote', NA)
+st_options(footnote = NA)
 ```
 
 *summarytools* is an *R* package providing tools
@@ -317,8 +317,8 @@ Version 0.8.3 introduced the following set of global options:
 ```{r, eval=FALSE}
 st_options()                      # display all global options' values
 st_options('round.digits')        # display only one option
-st_options('omit.headings', TRUE) # change an option's value
-st_options('footnote', NA)        # Turn off the footnote on all outputs.
+st_options(omit.headings = TRUE)  # change an option's value
+st_options(footnote = NA)         # Turn off the footnote on all outputs.
                                   # This option was used prior to generating
                                   # the present document.
 ```
