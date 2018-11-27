@@ -1,7 +1,7 @@
-#' Displaying and setting summarytools global options
+#' Query and set summarytools global options
 #'
-#' To list all \code{summarytools} global options, run this function without any arguments. 
-#' To display the value of one or several options, use the first parameter only.
+#' To list all \code{summarytools} global options, call without arguments. To display the value of
+#' one or several options, enter the name(s) of the option(s) in a character vector as sole argument.
 #'
 #' @param option option(s) name(s) to query (optional). When provided alone, can be a
 #'   character vector to display several option values at once.
@@ -18,10 +18,10 @@
 #' @param footnote Character. When the default value \dQuote{default} is used, the 
 #'   package name, version, and R version are displayed below html outputs. Set no \code{NA} to omit
 #'   the footnote, or provide a string to personalize it.
-#' @param display.labels  Logical. \code{TRUE} by default. Set to \code{FALSE} to omit data 
+#' @param display.labels Logical. \code{TRUE} by default. Set to \code{FALSE} to omit data 
 #'   frame and variable labels in the headings section.
-#' @param bootstrap.css Logical.  Include Bootstrap CSS in html outputs. Defaults to 
-#'   \code{TRUE}. Set to \code{FALSE} When using the \dQuote{render} method inside a 
+#' @param bootstrap.css Logical. Include Bootstrap CSS in html outputs. Defaults to 
+#'   \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render} method inside a 
 #'   \code{shiny} app.
 #' @param custom.css Character. Path to an additional, user-provided, CSS file. \code{NA} 
 #'   by default.
@@ -40,8 +40,8 @@
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter of 
 #'   \code{\link{descr}}. \code{FALSE} by default.
-#' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, should the first column 
-#'   contain variable number? Defaults to \code{TRUE}.
+#' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display variable numbers
+#'   in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.valid.col Logical. In \code{\link{dfSummary}}, include column indicating
 #'   count and proportion of valid (non-missing). \code{TRUE} by default.
 #' @param dfSummary.na.col Logical. In \code{\link{dfSummary}}, include column indicating count

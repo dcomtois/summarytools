@@ -5,9 +5,9 @@
 #' 
 #' @aliases label label<-
 #' @usage label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
-#'label(x) <- value
+#' label(x) <- value
 #' 
-#' @param x An R object to extract labels from
+#' @param x An R object to extract labels from.
 #' @param all Logical. When x is a data frame, setting this argument to \code{TRUE} will
 #'   make the function return all variable labels. By default, its value is \code{FALSE},
 #'   so that if x is a data frame, it is the data frame's label that will be returned.

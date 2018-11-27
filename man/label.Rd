@@ -9,7 +9,7 @@ label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
 label(x) <- value
 }
 \arguments{
-\item{x}{An R object to extract labels from}
+\item{x}{An R object to extract labels from.}
 
 \item{all}{Logical. When x is a data frame, setting this argument to \code{TRUE} will
 make the function return all variable labels. By default, its value is \code{FALSE},
