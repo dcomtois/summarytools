@@ -9,37 +9,40 @@
 
 # summarytools global options
 .onLoad <- function(libname, pkgname) {
-  summarytools.options <- list('style'                  = 'simple',
-                               'round.digits'           = 2,
-                               'plain.ascii'            = TRUE,
-                               'omit.headings'          = FALSE,
-                               'footnote'               = 'default',
-                               'display.labels'         = TRUE,
-                               'bootstrap.css'          = TRUE,
-                               'custom.css'             = NA,
-                               'escape.pipe'            = FALSE,
-                               'freq.totals'            = TRUE,
-                               'freq.report.nas'        = TRUE,
-                               'ctable.prop'            = 'r',
-                               'ctable.totals'          = TRUE,
-                               'descr.stats'            = 'all',
-                               'descr.transpose'        = FALSE,
-                               'dfSummary.varnumbers'   = TRUE,
-                               'dfSummary.valid.col'    = TRUE,
-                               'dfSummary.na.col'       = TRUE,
-                               'dfSummary.graph.col'    = TRUE,
-                               'dfSummary.graph.magnif' = 1)
-  
-  toset <- !(names(summarytools.options) %in% names(options()))
-  
-  if(any(toset)) options(summarytools.options[toset])
+  st.options <- list('style'                  = 'simple',
+                     'round.digits'           = 2,
+                     'plain.ascii'            = TRUE,
+                     'omit.headings'          = FALSE,
+                     'footnote'               = 'default',
+                     'display.labels'         = TRUE,
+                     'bootstrap.css'          = TRUE,
+                     'custom.css'             = NA,
+                     'escape.pipe'            = FALSE,
+                     'freq.totals'            = TRUE,
+                     'freq.report.nas'        = TRUE,
+                     'ctable.prop'            = 'r',
+                     'ctable.totals'          = TRUE,
+                     'descr.stats'            = 'all',
+                     'descr.transpose'        = FALSE,
+                     'dfSummary.varnumbers'   = TRUE,
+                     'dfSummary.valid.col'    = TRUE,
+                     'dfSummary.na.col'       = TRUE,
+                     'dfSummary.graph.col'    = TRUE,
+                     'dfSummary.graph.magnif' = 1)
 
-  invisible()
+  if (!'summarytools' %in% names(options())) {
+    options(summarytools = st.options)
+  } else {
+    toadd <- st.options[which(!names(st.options) %in% names(options()$summarytools))]
+    options(summarytools = append(options()$summarytools, toadd))
+  }
+  return(invisible())
 }
 
+#' @importFrom utils packageDate
 .onAttach <- function(libname, pkgname) {
   pander::panderOptions("knitr.auto.asis", FALSE)
   if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
-    message("For best results, consider updating pander to its most recent version ",
-            "with devtools::install_github('rapporter/pander')")
+    packageStartupMessage("For best results, consider updating pander to its most recent version ",
+                          "with devtools::install_github('rapporter/pander')")
 }
