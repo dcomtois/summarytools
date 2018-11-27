@@ -217,21 +217,19 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       no_df <- TRUE
     }
   } else {
-    # seeming bug with sapply and exists when a variable is named "i"
-    # allnames_exist <- allnames[which(sapply(allnames, exists, USE.NAMES = FALSE))]
     allnames_exist <- character()
     for (name in allnames) {
-      if (exists(name)) {
+      if (exists(name, mode = 'character') || exists(name, mode = 'numeric') ||
+          exists(name, mode = 'list')) {
         allnames_exist <- append(allnames_exist, name)
       }
     }
+    
     if (length(df_name) == 0 && length(allnames_exist) > 0) {
       if (is.atomic(get(allnames_exist[1]))) {
         no_df <- TRUE
         var_names <- allnames_exist[1]
-      } else if (is.data.frame(get(allnames_exist[1]))) {
-        df_name <- allnames_exist[1]
-      }
+      } 
     }
   }
 
