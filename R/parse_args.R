@@ -28,7 +28,8 @@
 #'
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com>}
 #'
-#' @export
+#' @importFrom pryr standardise_call
+#' @importFrom utils head
 parse_args <- function(sys_calls, sys_frames, match_call, 
                        var = "x", silent = FALSE) {
 

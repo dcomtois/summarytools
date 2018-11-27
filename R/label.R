@@ -22,6 +22,7 @@
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
 #' @export
+#' @importFrom utils tail
 label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 
   if (missing(x))

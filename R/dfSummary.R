@@ -97,6 +97,14 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
+#' @import htmltools
+#' @importFrom graphics axis barplot hist par text plot.new
+#' @importFrom grDevices dev.off nclass.Sturges png
+#' @importFrom lubridate as.period interval
+#' @importFrom RCurl base64Encode
+#' @importFrom stats IQR median ftable sd
+#' @importFrom RCurl base64Encode
+#' @importFrom utils head
 dfSummary <- function(x, round.digits = st_options('round.digits'), 
                       varnumbers = st_options('dfSummary.varnumbers'),
                       labels.col = length(label(x, all = TRUE)) > 0,

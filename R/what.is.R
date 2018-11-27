@@ -44,6 +44,8 @@
 #' @keywords attribute classes utilities
 #'
 #' @export
+#' @importFrom pryr ftype otype
+#' @importFrom utils methods object.size
 what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {

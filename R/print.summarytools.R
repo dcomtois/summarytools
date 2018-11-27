@@ -127,7 +127,9 @@
 #'
 #' @keywords print methods
 #'
-#'@export
+#' @export
+#' @importFrom pander pander
+#' @importFrom utils capture.output packageVersion head
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, table.classes = NA, 
                                bootstrap.css = st_options('bootstrap.css'),

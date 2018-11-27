@@ -18,6 +18,7 @@
 #' @keywords IO
 #'
 #' @export
+#' @importFrom utils tail
 cleartmp <- function(all=FALSE, silent=FALSE) {
   if(length(.st_env$tmpfiles) == 0) {
     if (!silent)

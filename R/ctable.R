@@ -49,6 +49,7 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
+#' @importFrom stats addmargins
 ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany', 
                    totals = st_options('ctable.totals'), style = st_options('style'), 
                    round.digits = 1, justify = 'right', 

@@ -56,6 +56,10 @@
 #' @keywords univar
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
+#' @importFrom matrixStats weightedMean weightedSd weightedMedian weightedMad
+#' @importFrom rapportools skewness kurtosis
+#' @importFrom stats IQR mad median sd quantile
+#' @importFrom utils head
 descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
                   round.digits = st_options('round.digits'),
                   transpose = st_options('descr.transpose'), 
