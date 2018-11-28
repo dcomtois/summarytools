@@ -74,35 +74,37 @@
 #'   examples).
 #'
 #' The following additional arguments can be used to override
-#'   formatting and other attributes stored in the object to be printed. Refer to the function's
-#'   documentation for details on these arguments.
+#'   formatting attributes stored in the object to be printed. Refer to the 
+#'   function's documentation for details on these arguments.
 #'    \itemize{
 #'      \item \code{style}
 #'      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
-#'      \item \code{justify}
 #'      \item \code{plain.ascii}
-#'      \item \code{missing}
-#'      \item \code{Data.type}
-#'      \item \code{Subset}
-#'      \item \code{Group}
-#'      \item \code{Weights}
-#'      \item \code{date}      
+#'      \item \code{justify}
 #'      \item \code{omit.headings}
+#'      \item \code{display.labels}
 #'      \item \code{split.tables}
+#'      \item \code{report.nas} (\code{\link{freq}} objects)
+#'      \item \code{display.type} (\code{\link{freq}} objects)
+#'      \item \code{missing} (\code{\link{freq}} objects)
+#'      \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
+#'    }
+#'      
+#' The following additional arguments can be used to override
+#'   heading elements to be printed:
+#'    \itemize{
 #'      \item \code{Dataframe}
 #'      \item \code{Dataframe.label}
 #'      \item \code{Variable}
 #'      \item \code{Variable.label}
-#'      \item \code{display.labels}
-#'      \item \code{display.type}
-#'      \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
-#'      \item \code{report.nas} (\code{\link{freq}} objects only)
-#'      \item \code{Row.variable} (\code{\link{ctable}} objects only)
-#'      \item \code{Col.variable} (\code{\link{ctable}} objects only)
-#'      \item \code{Row.variable.subset} (\code{\link{ctable}} objects only)
-#'      \item \code{Col.variable.subset} (\code{\link{ctable}} objects only)
-#'      \item \code{Row.variable.label} (\code{\link{ctable}} objects only)
-#'      \item \code{Col.variable.label} (\code{\link{ctable}} objects only)
+#'      \item \code{Group}
+#'      \item \code{date}
+#'      \item \code{Weights} (\code{\link{freq}} and \code{\link{descr}} objects)
+#'      \item \code{Data.type} (\code{\link{freq}} objects)
+#'      \item \code{Row.variable} (\code{\link{ctable}} objects)
+#'      \item \code{Col.variable} (\code{\link{ctable}} objects)
+#'      \item \code{Row.variable.label} (\code{\link{ctable}} objects)
+#'      \item \code{Col.variable.label} (\code{\link{ctable}} objects)
 #'    }
 #'
 #' @references
@@ -158,7 +160,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   } else {
     var.only <- FALSE
   }
-
 
   # Parameter validation -----------------------------------------------------
   
@@ -232,11 +233,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Override of formatting elements, first by looking at args_list (match.call()),
   # then by looking at the match.call() from x to set global parameters that were
   # not explicit in the latter.
+  # Here we check for arguments that can be specified at the function level for
+  # freq, descr, ctable and dfSummary (we don't include  print/view args)
   overrided_args <- character()
-  for (format_element in c("style", "plain.ascii", "round.digits", "justify", 
-                           "missing", "omit.headings", "split.tables",
-                           "display.type", "display.labels", "totals", 
-                           "report.nas")) {
+  for (format_element in c("style", "plain.ascii", "round.digits",
+                           "justify", "omit.headings", "display.labels",
+                           "split.tables", "totals", "report.nas",
+                           "display.type",  "missing", "totals")) {
     if (format_element %in% names(args_list)) {
       attr(x, "formatting")[format_element] <- args_list[format_element]
       overrided_args <- append(overrided_args, format_element)
@@ -264,13 +267,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Override of data info attributes
   for (data_info_element in c("Dataframe", "Dataframe.label",
                               "Variable", "Variable.label", 
-                              "Variable.labels","Data.type", #"Subset", 
+                              "Variable.labels", "Data.type", #"Subset", 
                               "Group", "Weights",
                               "Row.variable", "Col.variable",
                               #"Row.variable.subet", "Col.variable.subset",
                               "Row.variable.label", "Col.variable.label")) {
     if (data_info_element %in% names(args_list)) {
       attr(x, "data_info")[data_info_element] <- args_list[data_info_element]
+      overrided_args <- append(overrided_args, data_info_element)
     }
   }
 
@@ -308,7 +312,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                 paste0("  \n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
               element_added <- TRUE
             }
-          } else if (grepl(pattern = "type", e[[1]])) {
+          } else if (e[[1]] == 'Data.type') {
             if (isTRUE(format_info$display.type)) {
               output[[length(output) + 1]] <<-
                 paste0("  \n", add_hash(paste(e[[2]], data_info[[e[[1]]]], sep = ": "), h), "  ")
@@ -327,6 +331,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         if (e[[1]] %in% names(data_info)) {
           if (grepl(pattern = "label", e[[1]])) {
             if (isTRUE(format_info$display.labels)) {
+              div_str_item <- paste(paste0("<strong>",e[[2]],"</strong>"), data_info[[e[[1]]]], sep = ": ")
+            } else {
+              div_str_item <- NA
+            }
+          } else if (e[[1]] == 'Data.type') {
+            if (isTRUE(format_info$display.type)) {
               div_str_item <- paste(paste0("<strong>",e[[2]],"</strong>"), data_info[[e[[1]]]], sep = ": ")
             } else {
               div_str_item <- NA
@@ -441,7 +451,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
 
-    if (all(c("Variable", "Dataframe") %in% names(data_info))) {
+    if (all(c("Variable", "Dataframe") %in% names(data_info)) &&
+        !"Variable" %in% overrided_args) {
       sect_title[[2]] <- paste(data_info$Dataframe, data_info$Variable, sep = "$")
     } else if ("Variable" %in% names(data_info)) {
       sect_title[[2]] <- data_info$Variable
@@ -1045,7 +1056,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           # cell is NA
           if (is.na(x[ro,co])) {
             table_row[[length(table_row) + 1]] <- tags$td(format_info$missing)
-          } else if (rownames(x)[ro] == "N.Valid" && 
+          } else if ((rownames(x)[ro] == "N.Valid" || colnames(x)[co] == "N.Valid") && 
                      !"Weights" %in% names(data_info)) {
             table_row[[length(table_row) + 1]] <-
               tags$td(tags$span(round(x[ro,co])))

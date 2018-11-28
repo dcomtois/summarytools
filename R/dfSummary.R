@@ -724,6 +724,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                      justify = justify,
                                      omit.headings = omit.headings,
                                      display.labels = display.labels,
+                                     labels.col = labels.col,
                                      split.cells = split.cells,
                                      split.tables = split.tables)
 

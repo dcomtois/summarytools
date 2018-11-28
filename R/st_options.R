@@ -43,6 +43,8 @@
 #'   \code{\link{descr}}. \code{FALSE} by default.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display variable numbers
 #'   in the first column. Defaults to \code{TRUE}.
+#' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display variable labels
+#'   Defaults to \code{TRUE}.
 #' @param dfSummary.valid.col Logical. In \code{\link{dfSummary}}, include column indicating
 #'   count and proportion of valid (non-missing). \code{TRUE} by default.
 #' @param dfSummary.na.col Logical. In \code{\link{dfSummary}}, include column indicating count
@@ -73,8 +75,9 @@ st_options <- function(option = NULL, value = NULL, style = 'simple', round.digi
                        freq.report.nas = TRUE, ctable.prop = 'r',
                        ctable.totals = TRUE, descr.stats = 'all',
                        descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
-                       dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
-                       dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1) {
+                       dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
+                       dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
+                       dfSummary.graph.magnif = 1) {
   
   allOpts <- getOption('summarytools')
   
@@ -106,8 +109,8 @@ st_options <- function(option = NULL, value = NULL, style = 'simple', round.digi
     
     options('summarytools' = 
               list('style'                  = 'simple',
-                   'round.digits'           = 2,
                    'plain.ascii'            = TRUE,
+                   'round.digits'           = 2,
                    'omit.headings'          = FALSE,
                    'footnote'               = 'default',
                    'display.labels'         = TRUE,
@@ -121,6 +124,7 @@ st_options <- function(option = NULL, value = NULL, style = 'simple', round.digi
                    'descr.stats'            = 'all',
                    'descr.transpose'        = FALSE,
                    'dfSummary.varnumbers'   = TRUE,
+                   'dfSummary.labels.col'   = TRUE,
                    'dfSummary.valid.col'    = TRUE,
                    'dfSummary.na.col'       = TRUE,
                    'dfSummary.graph.col'    = TRUE,
