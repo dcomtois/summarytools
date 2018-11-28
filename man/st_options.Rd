@@ -15,10 +15,11 @@ st_options(option = NULL, value = NULL, style = "simple",
   dfSummary.graph.magnif = 1)
 }
 \arguments{
-\item{option}{option(s) name(s) to query (optional). When provided alone, can be a
-character vector to display several option values at once.}
+\item{option}{option(s) name(s) to query (optional). Can be a single string or a vector
+of strings to query multiple values.}
 
-\item{value}{value to assign (optional).}
+\item{value}{value to assign to the option specified as first argument. This is for
+backward-compatibility, as all options can now be set via their own parameter.}
 
 \item{style}{Character. One of \dQuote{simple} (default), \dQuote{rmarkdown}, or \dQuote{grid}. 
 Does not apply to \code{\link{dfSummary}}.}

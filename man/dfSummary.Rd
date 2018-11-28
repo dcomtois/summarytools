@@ -13,6 +13,7 @@ dfSummary(x, round.digits = st_options("round.digits"),
   graph.magnif = st_options("dfSummary.graph.magnif"),
   style = "multiline", plain.ascii = st_options("plain.ascii"),
   justify = "left", omit.headings = st_options("omit.headings"),
+  display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
   max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
 }
@@ -63,6 +64,10 @@ markdown rendering. To change the default value globally, see \code{\link{st_opt
 
 \item{omit.headings}{Logical. Set to \code{TRUE} to omit headings. To change this 
 default value globally, see \code{\link{st_options}}.}
+
+\item{display.labels}{Logical. Should data frame label be displayed in
+the title section?  Default is \code{TRUE}. To change this default value globally,
+see \code{\link{st_options}}.}
 
 \item{max.distinct.values}{The maximum number of values to display frequencies
 for. If variable has more distinct values than this number, the remaining

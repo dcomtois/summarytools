@@ -7,8 +7,9 @@
 ctable(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   totals = st_options("ctable.totals"), style = st_options("style"),
   round.digits = 1, justify = "right",
+  plain.ascii = st_options("plain.ascii"),
   omit.headings = st_options("omit.headings"),
-  plain.ascii = st_options("plain.ascii"), split.tables = Inf,
+  display.labels = st_options("display.labels"), split.tables = Inf,
   dnn = c(substitute(x), substitute(y)), ...)
 }
 \arguments{
@@ -36,14 +37,18 @@ This option can be set globally; see \code{\link{st_options}}.}
 \item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
 \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit heading section. Can be set
-globally via \code{\link{st_options}}.}
-
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
 in which case it will be set to \code{FALSE} automatically. To change the default 
 value globally, see \code{\link{st_options}}.}
+
+\item{omit.headings}{Logical. Set to \code{TRUE} to omit heading section. Can be set
+globally via \code{\link{st_options}}.}
+
+\item{display.labels}{Logical. Should variable / data frame label be displayed in
+the title section?  Default is \code{TRUE}. To change this default value globally,
+see \code{\link{st_options}}.}
 
 \item{split.tables}{Pander argument that specifies how many characters wide a
 table can be. \code{Inf} by default.}

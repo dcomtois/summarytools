@@ -15,6 +15,9 @@
 #'   \code{TRUE}. Can be set globally; see \code{\link{st_options}}.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2}, and can be set globally (see \code{\link{st_options}}).
+#' @param transpose Logical. Makes variables appears as columns, and stats as rows.
+#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}
+#'   (option \dQuote{descr.transpose}).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
 #'   This option can be set globally; see \code{\link{st_options}}.
@@ -27,9 +30,6 @@
 #'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
 #' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
 #'   globally via \code{\link{st_options}}.
-#' @param transpose Logical. Makes variables appears as columns, and stats as rows.
-#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}
-#'   (option \dQuote{descr.transpose}).
 #' @param display.labels Logical. Should variable / data frame labels be displayed in
 #'   the title section?  Default is \code{TRUE}. To change this default value globally,
 #'   see \code{\link{st_options}}.
@@ -140,18 +140,23 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
   }
   
+  if (!display.labels %in% c(TRUE, FALSE)) {
+    stop("'display.labels' must be either TRUE or FALSE.")
+  }
+  
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
   if ("file" %in% names(match.call())) {
-    message("file argument is deprecated; use print() or view() function to generate files")
+    message(paste0("'file' argument is deprecated; use for instance ",
+                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
   }
   
   # Get info about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
-  if (class(parse_info) == "try-catch") {
+  if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
 
@@ -280,7 +285,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       }
       
       # Remove missing values from variable and from corresponding weights
-      if (na.rm == TRUE) {
+      if (isTRUE(na.rm)) {
         ind <- which(!is.na(variable))
         variable <- variable[ind]
         weights_tmp <- weights[ind]
@@ -327,7 +332,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
-  if (!transpose) {
+  if (!isTRUE(transpose)) {
     output <- t(output)
   }
   

@@ -19,13 +19,16 @@
 #'   \code{1}. To change this default value globally, see \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
-#'   globally via \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
 #'   in which case it will be set to \code{FALSE} automatically. To change the default 
 #'   value globally, see \code{\link{st_options}}.
+#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
+#'   globally via \code{\link{st_options}}.
+#' @param display.labels Logical. Should variable / data frame label be displayed in
+#'   the title section?  Default is \code{TRUE}. To change this default value globally,
+#'   see \code{\link{st_options}}.
 #' @param split.tables Pander argument that specifies how many characters wide a
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By default,
@@ -53,8 +56,10 @@
 ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany', 
                    totals = st_options('ctable.totals'), style = st_options('style'), 
                    round.digits = 1, justify = 'right', 
-                   omit.headings = st_options('omit.headings'), 
-                   plain.ascii = st_options('plain.ascii'), split.tables = Inf, 
+                   plain.ascii = st_options('plain.ascii'),
+                   omit.headings = st_options('omit.headings'),
+                   display.labels = st_options('display.labels'),
+                   split.tables = Inf, 
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
 
@@ -113,15 +118,20 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                     c = "center",
                     r = "right")
 
-  if (!justify %in% c("left", "center", "right"))
+  if (!justify %in% c("left", "center", "right")) {
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
-
+  }
 
   # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style=="rmarkdown" && isTRUE(plain.ascii) && 
+      (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
 
+  if (!display.labels %in% c(TRUE, FALSE)) {
+    stop("'display.labels' must be either TRUE or FALSE.")
+  }
+  
   # Replace NaN's by NA's (This simplifies matters a lot)
   if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA in x\n"))
@@ -133,21 +143,23 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     y[is.nan(y)] <- NA
   }
 
-  if ("file" %in% names(match.call()))
-    message("file argument is deprecated; use print() or view() function to generate files")
+  if ("file" %in% names(match.call())) {
+    message(paste0("'file' argument is deprecated; use for instance ",
+                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
+  }
 
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (class(parse_info_x) %in% c("try-catch", "try-error")) {
+  if (any(grepl('try-', class(parse_info_x)))) {
     parse_info_x <- list()
   }
 
   parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (class(parse_info_y) %in% c("try-catch", "try-error")) {
+  if (any(grepl('try-', class(parse_info_x)))) {
     parse_info_y <- list()
   }
 
@@ -266,7 +278,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                                       justify       = justify,
                                       totals        = totals,
                                       split.tables  = split.tables,
-                                      omit.headings = omit.headings)
+                                      omit.headings = omit.headings,
+                                      display.labels = display.labels)
   
   attr(output, "user_fmt") <- list(... = ...)
 

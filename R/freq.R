@@ -78,7 +78,7 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
 
   if (!is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
-    if (class(x) == "try-except" || !is.atomic(x)) {
+    if (any(grepl('try-',class(x))) || !is.atomic(x)) {
       stop("argument x must be a vector or a factor")
     }
   }
@@ -130,6 +130,10 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
     plain.ascii <- FALSE
   }
 
+  if (!display.labels %in% c(TRUE, FALSE)) {
+    stop("'display.labels' must be either TRUE or FALSE.")
+  }
+  
   if ("file" %in% names(match.call())) {
     message(paste0("'file' argument is deprecated; use for instance ",
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
@@ -145,7 +149,7 @@ freq <- function(x, round.digits = st_options('round.digits'), order = "names",
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
                                silent = exists('varname')),
                     silent = TRUE)
-  if (class(parse_info) %in% c("try-catch", "try-error")) {
+  if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
   

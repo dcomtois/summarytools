@@ -3,9 +3,10 @@
 #' To list all \code{summarytools} global options, call without arguments. To display the value of
 #' one or several options, enter the name(s) of the option(s) in a character vector as sole argument.
 #'
-#' @param option option(s) name(s) to query (optional). When provided alone, can be a
-#'   character vector to display several option values at once.
-#' @param value value to assign (optional).
+#' @param option option(s) name(s) to query (optional). Can be a single string or a vector
+#'   of strings to query multiple values.
+#' @param value value to assign to the option specified as first argument. This is for
+#'   backward-compatibility, as all options can now be set via their own parameter.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown}, or \dQuote{grid}. 
 #'   Does not apply to \code{\link{dfSummary}}.
 #' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when using

@@ -39,6 +39,9 @@
 #'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
 #' @param omit.headings Logical. Set to \code{TRUE} to omit headings. To change this 
 #'   default value globally, see \code{\link{st_options}}.
+#' @param display.labels Logical. Should data frame label be displayed in
+#'   the title section?  Default is \code{TRUE}. To change this default value globally,
+#'   see \code{\link{st_options}}.
 #' @param max.distinct.values The maximum number of values to display frequencies
 #'   for. If variable has more distinct values than this number, the remaining
 #'   frequencies will be reported as a whole, along with the number of additional
@@ -115,6 +118,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       graph.magnif = st_options('dfSummary.graph.magnif'),
                       style = "multiline", plain.ascii = st_options('plain.ascii'),
                       justify = "left", omit.headings = st_options('omit.headings'),
+                      display.labels = st_options('display.labels'),
                       max.distinct.values = 10, trim.strings = FALSE,  
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
@@ -122,7 +126,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   # Parameter validation ------------------------------------------------------
   
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
-  if (class(parse_info) %in% c("try-catch", "try-error")) {
+  if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
 
@@ -139,11 +143,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   }
 
   if ("file" %in% names(match.call())) {
-    message("file argument is deprecated; use print() or view() function to generate files")
-  }
-
-  if ("display.labels" %in% names(match.call())) {
-    stop("'display.labels' argument is deprecated; use 'labels.col' instead")
+    message(paste0("'file' argument is deprecated; use for instance ",
+                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
   }
 
   if (style=="rmarkdown") {
@@ -157,6 +158,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   if (graph.magnif <= 0) {
     stop("'graph.magnif' must be > 0" )
+  }
+  
+  if (!display.labels %in% c(TRUE, FALSE)) {
+    stop("'display.labels' must be either TRUE or FALSE.")
   }
 
   # Declare functions ---------------------------------------------------------
@@ -186,7 +191,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                       axes = FALSE, xlab=NULL, ylab=NULL, main=NULL, 
                                       col = "grey95", border = "grey65")),
                 silent = TRUE)
-      if(class(cl) == "try-error") {
+      if (any(grepl('try-', class(cl)))) {
         plot.new()
         text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
       }
@@ -317,7 +322,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                           "]")
 
     # Add column label (if applicable)
-    if (labels.col) {
+    if (isTRUE(labels.col)) {
       output[i,3] <- label(x[[i]])
       if (is.na(output[i,3]))
         output[i,3] <- ""
@@ -353,7 +358,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                               collapse = "\\\n")
         counts_props <- align_numbers(counts, round(props, round.digits + 2))
         output[i,5] <- paste0("\\", counts_props, collapse = "\\\n")
-        if (graph.col && any(!is.na(column_data))) {
+        if (isTRUE(graph.col) && any(!is.na(column_data))) {
           output[i,6] <- encode_graph(counts, "barplot")
           output[i,7] <- txtbarplot(prop.table(counts))
         }
@@ -382,7 +387,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
         
         output[i,5] <- paste0("\\", counts_props, collapse = "\\\n")
 
-        if (graph.col && any(!is.na(column_data))) {
+        if (isTRUE(graph.col) && any(!is.na(column_data))) {
           # prepare data for barplot
           tmp_data <- column_data
           levels(tmp_data)[max.distinct.values + 1] <- 
@@ -400,7 +405,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     # Character data: display frequencies whenever possible -----------------
     else if (is.character(column_data)) {
 
-      if (trim.strings) {
+      if (isTRUE(trim.strings)) {
         column_data <- trimstr(column_data)
       }
 
@@ -439,7 +444,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                "mode :", names(counts)[which.max(counts)])
           output[i,5] <- paste0(counts_props, collapse = "\\\n")
           
-          if (graph.col) {
+          if (isTRUE(graph.col)) {
             output[i,6] <- encode_graph(counts, "barplot")
             output[i,7] <- txtbarplot(prop.table(counts))
           }
@@ -453,7 +458,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           counts_props <- align_numbers(counts, round(props, round.digits + 2))
           output[i,5] <- paste0(counts_props, collapse = "\\\n")
           
-          if (graph.col) {
+          if (isTRUE(graph.col)) {
             output[i,6] <- encode_graph(counts, "barplot")
             output[i,7] <- txtbarplot(prop.table(counts))
           }
@@ -479,7 +484,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
             )
           output[i,5] <- paste0(counts_props, collapse = "\\\n")
           
-          if (graph.col) {
+          if (isTRUE(graph.col)) {
             # Prepare data for graph
             counts[max.distinct.values + 1] <-
               sum(counts[(max.distinct.values + 1):length(counts)])
@@ -577,7 +582,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           }
         }
         
-        if (graph.col) {
+        if (isTRUE(graph.col)) {
           if (length(counts) <= max.distinct.values) {
             output[i,6] <- encode_graph(counts, "barplot")
             output[i,7] <- txtbarplot(prop.table(counts))
@@ -629,7 +634,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
           
           output[i,5] <- paste(length(counts), "distinct val.")
           
-          if (graph.col) {
+          if (isTRUE(graph.col)) {
             tmp <- as.numeric(column_data)[!is.na(column_data)]
             output[i,6] <- encode_graph(tmp - mean(tmp), "histogram")
             output[i,7] <- txthist(tmp - mean(tmp))
@@ -675,24 +680,24 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   names(output) <- c("No", "Variable", "Label", "Stats / Values",
                      "Freqs (% of Valid)", "Graph", "Text Graph", "Valid", "Missing")
 
-  if (!varnumbers) {
+  if (!isTRUE(varnumbers)) {
     output$No <- NULL
   }
 
-  if (!labels.col) {
+  if (!isTRUE(labels.col)) {
     output$Label <- NULL
   }
 
-  if (!graph.col) {
+  if (!isTRUE(graph.col)) {
     output$Graph <- NULL
     output[['Text Graph']] <- NULL
   }
 
-  if(!valid.col) {
+  if (!isTRUE(valid.col)) {
     output$Valid <- NULL
   }
   
-  if (!na.col) {
+  if (!isTRUE(na.col)) {
     output$Missing <- NULL
   }
   
@@ -708,8 +713,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                   parse_info$df_label, NA),
          # Subset = ifelse("rows_subset" %in% names(parse_info),
          #                 parse_info$rows_subset, NA),
-         N.obs = nrow(x),
-         N.dupl = sum(duplicated(x)))
+         Dimensions = paste(nrow(x), "x", ncol(x)),
+         Duplicates = sum(duplicated(x)))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
@@ -718,6 +723,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                      plain.ascii = plain.ascii,
                                      justify = justify,
                                      omit.headings = omit.headings,
+                                     display.labels = display.labels,
                                      split.cells = split.cells,
                                      split.tables = split.tables)
 
