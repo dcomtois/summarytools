@@ -54,15 +54,13 @@ Some people have successfully included some of the package’s functions
 in *shiny apps*, too\!
 
 ### Latest Improvements
-Version 0.8.3 brings several improvements to *summarytools*, notably:
+Version 0.8.9 brings several improvements to *summarytools*, notably:
 
- - Introduction of global settings (customizable defaults)
- - Options to make content fit more naturally in _shiny_ apps or _Rmarkdown_ documents
- - A better handling of "split-group" statistics with `by()`
- - A more thorough documentation
- - `dfSummary()` now supports Date / POSIX data
- - in `descr()`, Q1 and Q3 are now included
- - Also in `descr()`, the order of the statistics specified with `stats =` is retained for the output
+ - Easier management of global settings (customizable defaults) with `st_options()`
+ - `dfSummary()` now shows number of culumns in heading, as well as number of duplicated rows
+ - `dfSummary()` barplots more accurately reflect counts
+ - `dfSummary()` better handles columns with some particular content (unary/binary, integer sequences, UPC/EAN codes)
+ - in `descr()`, values 'fivenum' and 'common' are now available for `stats` argument
 
 # How to install
 
@@ -161,6 +159,9 @@ If your eyes/brain prefer seeing things the other way around, just use
 `transpose = TRUE`. Here, we also select only the statistics we wish to
 see, and specify `omit.headings = TRUE` to avoid reprinting the same
 information as above.
+
+You can specify the stats you wish to report with the `stats` argument, which
+also accepts special values `all`, `fivenum`, and  `common`.
 
 ```{r}
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE, 
@@ -305,7 +306,6 @@ more on _knitr_'s options.
 
 # ```{r, results='asis'}
 # library(summarytools)  
-# freq(tobacco$smoker, style='rmarkdown')  
 # 
 # print(dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.85), 
 #       method = 'render', omit.headings = TRUE)
@@ -337,33 +337,42 @@ content that the latter allows.
 
 ## Global options
 
-Version 0.8.3 introduced the following set of global options:
+The following options are customizable with `st_options()`:
 
+  **General options** 
+  
+  - `style` = `simple`
   - `round.digits` = `2`
   - `plain.ascii` = `TRUE`
   - `omit.headings` = `FALSE` (if using in a markdown document or a
     shiny app, setting this to `TRUE` might be preferable
-  - `footnote` = `'default'` (set to empty string or `NA` to omit
-    footnote)
-  - `display.labels` = `TRUE`
-  - `freq.totals` = `TRUE`
-  - `freq.display.nas` = `TRUE`
-  - `ctable.totals` = `TRUE`
-  - `ctable.prop` = `'r'` (display *r*ow proportions by default)
-  - `descr.stats` = `'all'`
-  - `descr.transpose` = `FALSE`
+  - `footnote` = `'default'` (set to empty string or `NA` to omit)
+  - `display.labels` = `TRUE` (specifies whether labels are shown in headings)
   - `bootstrap.css` = `TRUE` (if using in a markdown document or a shiny
-    app, setting this to `FALSE` might be preferable
   - `custom.css` = `NA`
   - `escape.pipe` = `FALSE`
+    app, setting this to `FALSE` might be preferable
+    
+    **Function-specific options**
+  - `freq.totals` = `TRUE`
+  - `freq.report.nas` = `TRUE`
+  - `ctable.prop` = `'r'` (display *r*ow proportions by default)
+  - `ctable.totals` = `TRUE`
+  - `descr.stats` = `'all'`
+  - `descr.transpose` = `FALSE`
+  - `dfSummary.varnumbers` = `TRUE`
+  - `dfSummary.valid.col` = `TRUE`
+  - `dfSummary.na.col` = `TRUE`
+  - `dfSummary.graph.col` = `TRUE`
+  - `dfSummary.graph.magnif` = `1`
 
 #### Examples
 
 ```{r, eval=FALSE}
-st_options()                      # display all global options' values
-st_options('round.digits')        # display only one option
-st_options('omit.headings', TRUE) # change an option's value
-st_options('footnote', NA)        # Turn off the footnote on all outputs.
+st_options()                      # display all global options values
+st_options('round.digits')        # display the value for one specific option
+st_options(omit.headings = TRUE)  # change an option's value
+st_options(footnote = NA)         # Turn off the footnote on all outputs.
                                   # This option was used prior to generating
                                   # the present document.
 ```

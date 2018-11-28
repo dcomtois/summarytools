@@ -52,12 +52,14 @@ outputs produced by summarytools can be:
 
 ### Latest Improvements
 
-Version 0.8.3 brings several improvements to *summarytools*, notably:
+Version 0.8.9 brings several improvements to *summarytools*, notably:
 
- - Introduction of global settings (customizable defaults)
- - Options to make content fit more naturally in _shiny_ apps or _Rmarkdown_ documents
- - A better handling of "split-group" statistics with `by()`
- - A more thorough documentation
+ - Easier management of global settings (customizable defaults) with `st_options()`
+ - `dfSummary()` now shows number of culumns in heading, as well as number of duplicated rows
+ - `dfSummary()` barplots more accurately reflect counts
+ - `dfSummary()` better handles columns with some particular content (unary/binary, integer sequences, UPC/EAN codes)
+ - in `descr()`, values 'fivenum' and 'common' are now available for `stats` argument
+
 
 ## summarytool's Core Functions
 

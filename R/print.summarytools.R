@@ -1059,7 +1059,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           } else if ((rownames(x)[ro] == "N.Valid" || colnames(x)[co] == "N.Valid") && 
                      !"Weights" %in% names(data_info)) {
             table_row[[length(table_row) + 1]] <-
-              tags$td(tags$span(round(x[ro,co])))
+              tags$td(tags$span(round(x[ro,co], 0)))
           } else {
             # When not NA, and not N.Valid row, format cell content
             cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
