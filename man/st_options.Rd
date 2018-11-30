@@ -10,9 +10,9 @@ st_options(option = NULL, value = NULL, style = "simple",
   custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
   freq.report.nas = TRUE, ctable.prop = "r", ctable.totals = TRUE,
   descr.stats = "all", descr.transpose = FALSE,
-  dfSummary.varnumbers = TRUE, dfSummary.valid.col = TRUE,
-  dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE,
-  dfSummary.graph.magnif = 1)
+  dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
+  dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
+  dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string or a vector
@@ -72,6 +72,9 @@ is your goal and you have unsatisfying results with grid or multiline tables.
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display variable numbers
 in the first column. Defaults to \code{TRUE}.}
+
+\item{dfSummary.labels.col}{Logical. In \code{\link{dfSummary}}, display variable labels
+Defaults to \code{TRUE}.}
 
 \item{dfSummary.valid.col}{Logical. In \code{\link{dfSummary}}, include column indicating
 count and proportion of valid (non-missing). \code{TRUE} by default.}

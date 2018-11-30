@@ -90,35 +90,37 @@ To print objects of class \dQuote{by}, use \code{\link{view}}. This
   examples).
 
 The following additional arguments can be used to override
-  formatting and other attributes stored in the object to be printed. Refer to the function's
-  documentation for details on these arguments.
+  formatting attributes stored in the object to be printed. Refer to the 
+  function's documentation for details on these arguments.
    \itemize{
      \item \code{style}
      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
-     \item \code{justify}
      \item \code{plain.ascii}
-     \item \code{missing}
-     \item \code{Data.type}
-     \item \code{Subset}
-     \item \code{Group}
-     \item \code{Weights}
-     \item \code{date}      
+     \item \code{justify}
      \item \code{omit.headings}
+     \item \code{display.labels}
      \item \code{split.tables}
+     \item \code{report.nas} (\code{\link{freq}} objects)
+     \item \code{display.type} (\code{\link{freq}} objects)
+     \item \code{missing} (\code{\link{freq}} objects)
+     \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
+   }
+     
+The following additional arguments can be used to override
+  heading elements to be printed:
+   \itemize{
      \item \code{Dataframe}
      \item \code{Dataframe.label}
      \item \code{Variable}
      \item \code{Variable.label}
-     \item \code{display.labels}
-     \item \code{display.type}
-     \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
-     \item \code{report.nas} (\code{\link{freq}} objects only)
-     \item \code{Row.variable} (\code{\link{ctable}} objects only)
-     \item \code{Col.variable} (\code{\link{ctable}} objects only)
-     \item \code{Row.variable.subset} (\code{\link{ctable}} objects only)
-     \item \code{Col.variable.subset} (\code{\link{ctable}} objects only)
-     \item \code{Row.variable.label} (\code{\link{ctable}} objects only)
-     \item \code{Col.variable.label} (\code{\link{ctable}} objects only)
+     \item \code{Group}
+     \item \code{date}
+     \item \code{Weights} (\code{\link{freq}} and \code{\link{descr}} objects)
+     \item \code{Data.type} (\code{\link{freq}} objects)
+     \item \code{Row.variable} (\code{\link{ctable}} objects)
+     \item \code{Col.variable} (\code{\link{ctable}} objects)
+     \item \code{Row.variable.label} (\code{\link{ctable}} objects)
+     \item \code{Col.variable.label} (\code{\link{ctable}} objects)
    }
 }
 \examples{
