@@ -39,33 +39,33 @@ whether to append output to existing file. \code{FALSE} by default.}
 \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 will be generic.}
 
-\item{table.classes}{Character.  Additional classes to assign to output tables. 
-All \emph{Bootstrap CSS} classes can be used. It also allows
-user-defined classes (see custom.css parameter). See \emph{details} section.
-\code{NA} by default.}
+\item{table.classes}{Character.  Additional classes to assign to output
+tables. All \emph{Bootstrap CSS} classes can be used. It also allows
+user-defined classes (see custom.css parameter). See \emph{details}
+section. \code{NA} by default.}
 
-\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit Bootstap css. \code{TRUE} 
-by default. To change this default value globally, see \code{\link{st_options}}.}
+\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit Bootstap css.
+\code{TRUE} by default. To change this default value globally, see
+\code{\link{st_options}}.}
 
-\item{custom.css}{Path to a user-defined \emph{.css} file. Classes
-defined in this file can be used in the \code{table.classes}
-parameter. \code{NA} by default. To change this default value globally, see 
+\item{custom.css}{Path to a user-defined \emph{.css} file. Classes defined in
+this file can be used in the \code{table.classes} parameter. \code{NA} by
+default. To change this default value globally, see
 \code{\link{st_options}}.}
 
 \item{silent}{Hide console messages (such as ignored variables or \code{NaN}
 to \code{NA} transformations).}
 
 \item{footnote}{footnote in \emph{html} output. When set to \dQuote{default},
-this is the package name and version, R version, and current date). Has no effect
-when \code{method} is \dQuote{pander}. Set to \dQuote{default}, provide your own text,
-or set to \code{NA} to omit. To change this default value globally, see 
-\code{\link{st_options}}.}
+this is the package name and version, R version, and current date). Has no
+effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
+provide your own text, or set to \code{NA} to omit. To change this default
+value globally, see \code{\link{st_options}}.}
 
-\item{escape.pipe}{Logical. Set to \code{TRUE} when using
-\code{style='grid'} and \code{file} argument is supplied if the intent
-is to generate a text file that can be converted to other formats using
-\emph{Pandoc}. To change this default value globally, see 
-\code{\link{st_options}}.}
+\item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
+and \code{file} argument is supplied if the intent is to generate a text
+file that can be converted to other formats using \emph{Pandoc}. To change
+this default value globally, see \code{\link{st_options}}.}
 
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
@@ -97,13 +97,16 @@ The following additional arguments can be used to override
      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
      \item \code{plain.ascii}
      \item \code{justify}
-     \item \code{omit.headings}
+     \item \code{headings}
      \item \code{display.labels}
+     \item \code{labels.col}    (\code{\link{dfSummary}} objects)
+     \item \code{graph.col}     (\code{\link{dfSummary}} objects)
      \item \code{split.tables}
-     \item \code{report.nas} (\code{\link{freq}} objects)
-     \item \code{display.type} (\code{\link{freq}} objects)
-     \item \code{missing} (\code{\link{freq}} objects)
-     \item \code{totals} (\code{\link{freq}} and \code{\link{ctable}} objects)
+     \item \code{report.nas}    (\code{\link{freq}} objects)
+     \item \code{display.type}  (\code{\link{freq}} objects)
+     \item \code{missing}       (\code{\link{freq}} objects)
+     \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}} 
+     objects)
    }
      
 The following additional arguments can be used to override
@@ -115,7 +118,7 @@ The following additional arguments can be used to override
      \item \code{Variable.label}
      \item \code{Group}
      \item \code{date}
-     \item \code{Weights} (\code{\link{freq}} and \code{\link{descr}} objects)
+     \item \code{Weights} (\code{\link{freq}} & \code{\link{descr}} objects)
      \item \code{Data.type} (\code{\link{freq}} objects)
      \item \code{Row.variable} (\code{\link{ctable}} objects)
      \item \code{Col.variable} (\code{\link{ctable}} objects)
@@ -130,7 +133,7 @@ The following additional arguments can be used to override
   }
   data(exams)
   print(freq(exams$gender), style = 'rmarkdown')
-  print(descr(exams), omit.headings = TRUE)
+  print(descr(exams), headings = FALSE)
 
 }
 \references{

@@ -9,50 +9,53 @@ freq(x, round.digits = st_options("round.digits"), order = "names",
   justify = "default", totals = st_options("freq.totals"),
   report.nas = st_options("freq.report.nas"), missing = "",
   display.type = TRUE, display.labels = st_options("display.labels"),
-  omit.headings = st_options("omit.headings"), weights = NA,
+  headings = st_options("headings"), weights = NA,
   rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{Factor or vector}
 
-\item{round.digits}{Number of significant digits to display. Defaults
-to \code{2} and can be set globally; see \code{\link{st_options}}.}
+\item{round.digits}{Number of significant digits to display. Defaults to
+\code{2} and can be set globally; see \code{\link{st_options}}.}
 
 \item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
-non-factors), \dQuote{levels} (default for factors), or \dQuote{freq}
-(from most frequent to less frequent).}
+non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
+most frequent to less frequent).}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
-This option can be set globally; see \code{\link{st_options}}.}
+output table; One of \dQuote{simple} (default), \dQuote{grid}, or
+\dQuote{rmarkdown} This option can be set globally; see
+\code{\link{st_options}}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
-\code{TRUE}, no markup characters will be used (useful when printing
-to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
-in which case it will be set to \code{FALSE} automatically. To change the default 
-value globally, see \code{\link{st_options}}.}
+\code{TRUE}, no markup characters will be used (useful when printing to
+console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'}, in
+which case it will be set to \code{FALSE} automatically. To change the
+default value globally, see \code{\link{st_options}}.}
 
 \item{justify}{String indicating alignment of columns. By default
 (\dQuote{default}), \dQuote{right} is used for text tables and
-\dQuote{center} is used for \emph{html} tables. You can force it to one
-of \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
+\dQuote{center} is used for \emph{html} tables. You can force it to one of
+\dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
-\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. To change this
-value globally, see \code{\link{st_options}}.}
+\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. To
+change this value globally, see \code{\link{st_options}}.}
 
-\item{report.nas}{Logical. Set to \code{FALSE} to turn off reporting of missing values.
-To change this default value globally, see \code{\link{st_options}}.}
+\item{report.nas}{Logical. Set to \code{FALSE} to turn off reporting of
+missing values. To change this default value globally, see
+\code{\link{st_options}}.}
 
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
 
-\item{display.type}{Logical. Should variable type be displayed? Default is \code{TRUE}.}
+\item{display.type}{Logical. Should variable type be displayed? Default is
+\code{TRUE}.}
 
-\item{display.labels}{Logical. Should variable / data frame labels be displayed?
-Default is \code{TRUE}. To change this default value globally, see 
-\code{\link{st_options}}.}
+\item{display.labels}{Logical. Should variable / data frame labels be
+displayed? Default is \code{TRUE}. To change this default value globally,
+see \code{\link{st_options}}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit heading section. Can be set
-globally via \code{\link{st_options}}.}
+\item{headings}{Logical. Set to \code{FALSE} to omit heading section. Can be
+set globally via \code{\link{st_options}}.}
 
 \item{weights}{Vector of weights; must be of the same length as \code{x}.}
 
@@ -62,17 +65,17 @@ count will be the same as the unweighted \code{x}. \code{FALSE} by default.}
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
-A frequency table of class \code{matrix} and \code{summarytools} with added
- attributes used by \emph{print} method.
+A frequency table of class \code{matrix} and \code{summarytools} with
+  added attributes used by \emph{print} method.
 }
 \description{
 Displays weighted or unweighted frequencies, including <NA> counts and
 proportions.
 }
 \details{
-The default \code{plain.ascii = TRUE} option is there to make results
-  appear cleaner in the console. To avoid rmarkdown rendering problems, this
-  option is automatically set to \code{FALSE} whenever
+The default \code{plain.ascii = TRUE} option is there to make
+  results appear cleaner in the console. To avoid rmarkdown rendering
+  problems, this option is automatically set to \code{FALSE} whenever
   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
   explicit in the function call).
 }

@@ -8,7 +8,7 @@ ctable(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   totals = st_options("ctable.totals"), style = st_options("style"),
   round.digits = 1, justify = "right",
   plain.ascii = st_options("plain.ascii"),
-  omit.headings = st_options("omit.headings"),
+  headings = st_options("headings"),
   display.labels = st_options("display.labels"), split.tables = Inf,
   dnn = c(substitute(x), substitute(y)), ...)
 }
@@ -18,43 +18,47 @@ ctable(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
 \item{y}{Second categorical variable - values will appear in as column names.}
 
 \item{prop}{Proportions to display;  \dQuote{r} for \emph{rows} (default),
-\dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-\emph{none}. This option can be set globally; see \code{\link{st_options}}.}
+\dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} 
+for \emph{none}. This option can be set globally; see 
+\code{\link{st_options}}.}
 
-\item{useNA}{Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
-(default), \dQuote{no}, or \dQuote{always}.}
+\item{useNA}{Argument passed on to \code{\link[base]{table}}; One of 
+\dQuote{ifany} (default), \dQuote{no}, or \dQuote{always}.}
 
-\item{totals}{Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
-To change this default value globally, see \code{\link{st_options}}.}
+\item{totals}{Logical. Should row and column totals be displayed? Defaults to
+\code{TRUE}. To change this default value globally, see
+\code{\link{st_options}}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
-This option can be set globally; see \code{\link{st_options}}.}
+output table; One of \dQuote{simple} (default), \dQuote{grid}, or 
+\dQuote{rmarkdown}. This option can be set globally; 
+see \code{\link{st_options}}.}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{1}. To change this default value globally, see \code{\link{st_options}}.}
+\code{1}. To change this default value globally, see 
+\code{\link{st_options}}.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{l} (left)
-\dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
+\item{justify}{String indicating alignment of columns; one of \dQuote{l} 
+(left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
 \code{TRUE}, no markup characters will be used (useful when printing
 to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
-in which case it will be set to \code{FALSE} automatically. To change the default 
-value globally, see \code{\link{st_options}}.}
+in which case it will be set to \code{FALSE} automatically. To change the 
+default value globally, use \code{\link{st_options}}.}
 
-\item{omit.headings}{Logical. Set to \code{TRUE} to omit heading section. Can be set
-globally via \code{\link{st_options}}.}
+\item{headings}{Logical. Set to \code{FALSE} to omit heading section. Can be
+set globally via \code{\link{st_options}}.}
 
-\item{display.labels}{Logical. Should variable / data frame label be displayed in
-the title section?  Default is \code{TRUE}. To change this default value globally,
-see \code{\link{st_options}}.}
+\item{display.labels}{Logical. Should variable / data frame label be 
+displayed in the title section? Default is \code{TRUE}. To change this
+default value globally, use \code{\link{st_options}}.}
 
 \item{split.tables}{Pander argument that specifies how many characters wide a
 table can be. \code{Inf} by default.}
 
-\item{dnn}{Names to be used in output table. Vector of two strings; By default,
-the character values for arguments x and y are used.}
+\item{dnn}{Names to be used in output table. Vector of two strings; By 
+default, the character values for arguments x and y are used.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
@@ -63,14 +67,14 @@ A frequency table of classes \code{matrix} and \code{summarytools}
   with added attributes used by \link{print} method.
 }
 \description{
-Cross-tabulation for a pair of categorical variables (or factors) with either row,
-column, or total proportions, as well as marginal sums.
+Cross-tabulation for a pair of categorical variables (or factors) with either
+row, column, or total proportions, as well as marginal sums.
 }
 \details{
-Rmarkdown does not, to this day, support multi-header tables. Therefore,
-  until such support is available, the recommended way to display cross-tables
-  in .Rmd documents is to use `method=render` with the `print()` generic function
-  or with the `view()` function. See package vignettes for examples.
+Rmarkdown does not, to this day, support multi-header tables. 
+  Therefore, until such support is available, the recommended way to display 
+  cross-tables in .Rmd documents is to use `method=render` with the `print()`
+  or `view()` functions. See package vignettes for examples.
 }
 \examples{
 data("tobacco")

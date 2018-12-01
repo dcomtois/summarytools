@@ -77,7 +77,7 @@ freq(iris$Species, style = "rmarkdown")
 If we do not worry about missing data, we can set `report.nas = FALSE`:
 
 ```{r}
-freq(iris$Species, report.nas = FALSE, style = "rmarkdown", omit.headings = TRUE)
+freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 ```
 
 We could simplify further and omit the _Totals_ row by setting `totals = FALSE`.
@@ -111,7 +111,7 @@ We can also omit the marginal totals to have a simple “2 x 2” table.
 ```{r}
 with(tobacco, 
      print(ctable(smoker, diseased, prop = 'n', totals = FALSE), 
-           omit.headings = TRUE, method = "render"))
+           headings = FALSE, method = "render"))
 ```
 
 ## 3 - descr() : Descriptive Univariate Stats 
@@ -129,12 +129,12 @@ descr(iris, style = "rmarkdown")
 
 If your eyes/brain prefer seeing things the other way around, just use
 `transpose = TRUE`. Here, we also select only the statistics we wish to
-see, and specify `omit.headings = TRUE` to avoid reprinting the same
+see, and specify `headings = FALSE` to avoid reprinting the same
 information as above.
 
 ```{r}
 descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE, 
-      omit.headings = TRUE, style = "rmarkdown")
+      headings = FALSE, style = "rmarkdown")
 ```
 
 ## 4 - dfSummary() : Data Frame Summaries
@@ -222,7 +222,7 @@ The transposed version looks like this:
 BMI_by_age <- with(tobacco, 
                    by(BMI, age.gr, descr,  transpose = TRUE,
                       stats = c("mean", "sd", "min", "med", "max")))
-view(BMI_by_age, "pander", style = "rmarkdown", omit.headings = TRUE)
+view(BMI_by_age, "pander", style = "rmarkdown", headings = FALSE)
 ```
 
 ## Using lapply() to Show Several freq() tables at once
@@ -296,31 +296,31 @@ content that the latter allows.
 
 Version 0.8.3 introduced the following set of global options:
 
-  - `round.digits` = `2`
-  - `plain.ascii` = `TRUE`
-  - `omit.headings` = `FALSE` (if using in a markdown document or a
+  - `round.digits`     = `2`
+  - `plain.ascii`      = `TRUE`
+  - `headings`         = `TRUE` (if using in a markdown document or a
     shiny app, setting this to `TRUE` might be preferable
-  - `footnote` = `'default'` (set to empty string or `NA` to omit
+  - `footnote`         = `'default'` (set to empty string or `NA` to omit
     footnote)
-  - `display.labels` = `TRUE`
-  - `freq.totals` = `TRUE`
+  - `display.labels`   = `TRUE`
+  - `freq.totals`      = `TRUE`
   - `freq.display.nas` = `TRUE`
-  - `ctable.totals` = `TRUE`
-  - `ctable.prop` = `'r'` (display *r*ow proportions by default)
-  - `descr.stats` = `'all'`
-  - `descr.transpose` = `FALSE`
-  - `bootstrap.css` = `TRUE` (if using in a markdown document or a shiny
+  - `ctable.totals`    = `TRUE`
+  - `ctable.prop`      = `'r'` (display *r*ow proportions by default)
+  - `descr.stats`      = `'all'`
+  - `descr.transpose`  = `FALSE`
+  - `bootstrap.css`    = `TRUE` (if using in a markdown document or a shiny
     app, setting this to `FALSE` might be preferable
-  - `custom.css` = `NA`
-  - `escape.pipe` = `FALSE`
+  - `custom.css`       = `NA`
+  - `escape.pipe`      = `FALSE`
 
 #### Examples
 
 ```{r, eval=FALSE}
 st_options()                      # display all global options' values
 st_options('round.digits')        # display only one option
-st_options(omit.headings = TRUE)  # change an option's value
-st_options(footnote = NA)         # Turn off the footnote on all outputs.
+st_options(headings = FALSE)      # change an option's value
+st_options(footnote = "")         # Turn off the footnote on all outputs.
                                   # This option was used prior to generating
                                   # the present document.
 ```
@@ -339,7 +339,7 @@ functions.
 age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
                                    # including headings, NA counts, and Totals
 print(age_stats, style = "rmarkdown", report.nas = FALSE, 
-                 totals = FALSE, omit.headings = TRUE)
+                 totals = FALSE, headings = FALSE)
 ```
 
 Note that the omitted attributes are stil part of the _age\_stats_ object.
@@ -397,7 +397,7 @@ To include _summarytools_ functions into _shiny_ apps, it is recommended that yo
 ```r
 print(dfSummary(somedata, graph.magnif = 0.8), 
       method = 'render',
-      omit.headings = TRUE,
+      headings = FALSE,
       bootstrap.css = FALSE)
 ```
 
@@ -414,9 +414,9 @@ what.is(iris)
 ## Limitations
 
   - The text histograms in dfSummary are not yet supported in `rmarkdown`. Better use the
-  'render' method. 
+    'render' method. 
   - It is not possible to control the heading levels of individual items. You can however 
-  choose to `omit.headings` altogether.
+    choose to omit the headings altogether with `headers = FALSE`.
 
 ## Stay Up-to-date
 

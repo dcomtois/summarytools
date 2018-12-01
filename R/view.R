@@ -1,24 +1,25 @@
 #' @export
-view <- function(x, method = "viewer", file = "", append = FALSE, report.title = NA,
-                 table.classes = NA, bootstrap.css = st_options('bootstrap.css'), 
+view <- function(x, method = "viewer", file = "", append = FALSE, 
+                 report.title = NA, table.classes = NA, 
+                 bootstrap.css = st_options('bootstrap.css'), 
                  custom.css = st_options('custom.css'), silent = FALSE, 
                  footnote = st_options('footnote'), 
                  escape.pipe = st_options('escape.pipe'),
                  ...) {
 
-  # Objects not created via by() or lapply() ----------------------------------
+  # Objects not created via by() or lapply() -----------------------------------
   if ("summarytools" %in% class(x)) {
     print.summarytools(x,
                        method        = method,
                        file          = file,
                        append        = append,
                        report.title  = report.title,
-                       escape.pipe   = escape.pipe,
                        table.classes = table.classes,
                        bootstrap.css = bootstrap.css,
                        custom.css    = custom.css,
                        silent        = silent,
                        footnote      = footnote,
+                       escape.pipe   = escape.pipe,
                        ...)
 
     
@@ -27,7 +28,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
              ((!attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[2] == 1) || 
               ( attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[1] == 1))) {
     
-    # Special case: descr by() objects with 1 variable ------------------------------
+    # Special case: descr by() objects with 1 variable -------------------------
     
     byvar <- sub("^.*\\$(.+)", "\\1", names(attributes(x)$dimnames))
     
@@ -50,7 +51,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     attr(xx, 'data_info')$by.last  <- NULL
     attr(xx, 'data_info')$N.Obs    <- NULL
     
-    attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx, "data_info"))]
+    attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx,"data_info"))]
     
     attr(xx, 'formatting') <- attr(x[[1]], 'formatting')
     attr(xx, 'user_fmt')   <- attr(x, 'user_fmt')
@@ -60,12 +61,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                        file          = file,
                        append        = append,
                        report.title  = report.title,
-                       escape.pipe   = escape.pipe,
                        table.classes = table.classes,
                        bootstrap.css = bootstrap.css,
                        custom.css    = custom.css,
                        silent        = silent,
                        footnote      = footnote,
+                       escape.pipe   = escape.pipe,
                        ...)
     
   } else if ("by" %in% class(x) &&
@@ -73,7 +74,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
 
     if (method %in% c("viewer", "browser")) {
 
-      # by object, viewer / browser -------------------------------------------------
+      # by object, viewer / browser --------------------------------------------
             
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       
@@ -92,12 +93,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              file          = file,
                              append        = append,
                              report.title  = report.title,
-                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
                              bootstrap.css = bootstrap.css,
                              custom.css    = custom.css,
                              silent        = silent,
                              footnote      = NA,
+                             escape.pipe   = escape.pipe,
                              ...)
 
         } else if (i < length(x)) {
@@ -105,10 +106,10 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
                              method = method,
                              file = file,
                              append = TRUE,
-                             escape.pipe = escape.pipe,
                              table.classes = table.classes,
                              silent = TRUE,
                              footnote = NA,
+                             escape.pipe = escape.pipe,
                              group.only = TRUE,
                              ...)
         } else {
@@ -128,7 +129,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
       
     } else if (method == "render") {
       
-      # by object, render ----------------------------------------------------
+      # by object, render ------------------------------------------------------
       
       for (i in seq_along(x)) {
 
@@ -171,7 +172,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
       
     } else if (method == "pander") {
       
-      # by object, pander ----------------------------------------------------
+      # by object, pander ------------------------------------------------------
       
       for (i in seq_along(x)) {
         if (i == 1) {
@@ -201,7 +202,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
 
     if (method %in% c("viewer", "browser")) {
       
-      # list (lapply) object, viewer / browser ------------------------------
+      # list (lapply) object, viewer / browser ---------------------------------
       
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
 
@@ -247,7 +248,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
       }
     } else if (method == "render") {
       
-      # list (lapply) object, render ----------------------------------------
+      # list (lapply) object, render -------------------------------------------
       
       for (i in seq_along(x)) {
         if (i == 1) {
@@ -288,7 +289,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
       
     } else if (method == "pander") {
       
-      # list (lapply) object, pander ------------------------------------------
+      # list (lapply) object, pander -------------------------------------------
       
       for (i in seq_along(x)) {
         if (i == 1) {
@@ -314,9 +315,14 @@ view <- function(x, method = "viewer", file = "", append = FALSE, report.title =
     
   } else {
     
-    message(paste("x must either be a summarytools object created with freq(), descr(),",
-                  "or a list of freq() / descr() objects created using by(),",
-                  "or a list of freq() objects created using lapply().",
-                  "Support for by() used with ctable() may be available in future realeases."))
+    message(
+      paste(
+        "x must either be a summarytools object created with freq(), descr(),",
+        "or a list of freq() / descr() objects created using by(),",
+        "or a list of freq() objects created using lapply().",
+        "Support for by() used with ctable() may be available in future ",
+        "realeases."
+        )
+      )
   }
 }

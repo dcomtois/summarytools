@@ -3,7 +3,8 @@
 #' A simulated datasets of 1,000 subjects, with the following variables:
 #'
 #' \itemize{
-#'   \item gender Factor with 2 levels: \dQuote{F} and \dQuote{M}, having roughly 500 of each.
+#'   \item gender Factor with 2 levels: \dQuote{F} and \dQuote{M}, having 
+#'     roughly 500 of each.
 #'   \item age Numerical.
 #'   \item age.gr Factor with 4 age categories.
 #'   \item BMI Body Mass Index (numerical).

@@ -11,16 +11,17 @@ label(x) <- value
 \arguments{
 \item{x}{An R object to extract labels from.}
 
-\item{all}{Logical. When x is a data frame, setting this argument to \code{TRUE} will
-make the function return all variable labels. By default, its value is \code{FALSE},
-so that if x is a data frame, it is the data frame's label that will be returned.}
+\item{all}{Logical. When x is a data frame, setting this argument to
+\code{TRUE} will make the function return all variable labels. By default,
+its value is \code{FALSE}, so that if x is a data frame, it is the data
+frame's label that will be returned.}
 
-\item{fallback}{a logical value indicating if labels should fallback to object name(s).
-Defaults to \code{FALSE}.}
+\item{fallback}{a logical value indicating if labels should fallback to
+object name(s). Defaults to \code{FALSE}.}
 
-\item{simplify}{When x is a data frame and \code{all = TRUE}, coerce results to a vector
-when \code{TRUE}, otherwise (default) return a \code{named list} containing only
-non-NULL/non-NA elements.}
+\item{simplify}{When x is a data frame and \code{all = TRUE}, coerce results
+to a vector when \code{TRUE}, otherwise (default) return a \code{named
+list} containing only non-NULL/non-NA elements.}
 
 \item{value}{String to be used as label.}
 }
@@ -29,7 +30,8 @@ Assign a label to a vector or data frame, or returns value previously stored
 in the object's \code{label} attribute (or \code{NA} if none found).
 }
 \note{
-Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
+Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 
+  function.
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com},

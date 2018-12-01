@@ -1,5 +1,5 @@
-# Initialize vector containing paths to temporary html files generated when viewing
-# in browser or in RStudio visualization pane. Will be updated whenever
+# Initialize vector containing paths to temporary html files generated when 
+# viewing in browser or in RStudio visualization pane. Will be updated whenever
 # print.summarytools() / cleartmp() are called.
 .st_env <- new.env(parent = emptyenv())
 .st_env$tmpfiles <- c()
@@ -12,7 +12,7 @@
   st.options <- list('style'                  = 'simple',
                      'round.digits'           = 2,
                      'plain.ascii'            = TRUE,
-                     'omit.headings'          = FALSE,
+                     'headings'               = TRUE,
                      'footnote'               = 'default',
                      'display.labels'         = TRUE,
                      'bootstrap.css'          = TRUE,
@@ -25,15 +25,17 @@
                      'descr.stats'            = 'all',
                      'descr.transpose'        = FALSE,
                      'dfSummary.varnumbers'   = TRUE,
+                     'dfSummary.labels.col'   = TRUE,
+                     'dfSummary.graph.col'    = TRUE,
                      'dfSummary.valid.col'    = TRUE,
                      'dfSummary.na.col'       = TRUE,
-                     'dfSummary.graph.col'    = TRUE,
                      'dfSummary.graph.magnif' = 1)
 
   if (!'summarytools' %in% names(options())) {
     options(summarytools = st.options)
   } else {
-    toadd <- st.options[which(!names(st.options) %in% names(options()$summarytools))]
+    toadd <- st.options[which(!names(st.options) %in% 
+                                names(options()$summarytools))]
     options(summarytools = append(options()$summarytools, toadd))
   }
   return(invisible())
@@ -43,6 +45,7 @@
 .onAttach <- function(libname, pkgname) {
   pander::panderOptions("knitr.auto.asis", FALSE)
   if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
-    packageStartupMessage("For best results, consider updating pander to its most recent version ",
-                          "with devtools::install_github('rapporter/pander')")
+    packageStartupMessage("For best results, consider updating pander to its ",
+                          "most recent version with ",
+                          "devtools::install_github('rapporter/pander')")
 }

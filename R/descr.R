@@ -1,49 +1,52 @@
 #' Univariate Statistics for Numerical Data
 #'
 #' Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 
-#' skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not available 
-#' when using sampling weights.
+#' skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not 
+#' available when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
-#' @param stats Which stats to produce. Either \dQuote{all} (default), \dQuote{fivenum}, 
-#'   \dQuote{common} (see Details), or a selection of : \dQuote{mean}, \dQuote{sd}, 
-#'   \dQuote{min}, \dQuote{q1}, \dQuote{med}, \dQuote{q3}, \dQuote{max}, \dQuote{mad}, 
-#'   \dQuote{iqr}, \dQuote{cv}, \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis}, 
-#'   \dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via 
+#' @param stats Which stats to produce. Either \dQuote{all} (default),
+#'   \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
+#'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
+#'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
+#'   \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
+#'   \dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via
 #'   \code{\link{st_options}} (\dQuote{descr.stats}).
 #' @param na.rm Argument to be passed to statistical functions. Defaults to
 #'   \code{TRUE}. Can be set globally; see \code{\link{st_options}}.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2}, and can be set globally (see \code{\link{st_options}}).
-#' @param transpose Logical. Makes variables appears as columns, and stats as rows.
-#'   Defaults to \code{FALSE}. To change this default value, see \code{\link{st_options}}
-#'   (option \dQuote{descr.transpose}).
+#' @param transpose Logical. Makes variables appears as columns, and stats as
+#'   rows. Defaults to \code{FALSE}. To change this default value, see
+#'   \code{\link{st_options}} (option \dQuote{descr.transpose}).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
-#'   This option can be set globally; see \code{\link{st_options}}.
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
+#'   \dQuote{rmarkdown} This option can be set globally; see
+#'   \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
-#'   \code{TRUE}, no markup characters will be used (useful when printing
-#'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
-#'   in which case it will be set to \code{FALSE} automatically. To change the default 
-#'   value globally, see \code{\link{st_options}}.
-#' @param justify Alignment of numbers in cells; \dQuote{l} for left, \dQuote{c} for center,
-#'   or \dQuote{r} for right (default). Has no effect on \emph{html} tables.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
-#'   globally via \code{\link{st_options}}.
-#' @param display.labels Logical. Should variable / data frame labels be displayed in
-#'   the title section?  Default is \code{TRUE}. To change this default value globally,
-#'   see \code{\link{st_options}}.
+#'   \code{TRUE}, no markup characters will be used (useful when printing to
+#'   console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'}, in
+#'   which case it will be set to \code{FALSE} automatically. To change the
+#'   default value globally, see \code{\link{st_options}}.
+#' @param justify Alignment of numbers in cells; \dQuote{l} for left, \dQuote{c}
+#'   for center, or \dQuote{r} for right (default). Has no effect on \emph{html}
+#'   tables.
+#' @param headings Logical. Set to \code{FALSE} to omit heading section. Can be
+#'   set globally via \code{\link{st_options}}.
+#' @param display.labels Logical. Should variable / data frame labels be
+#'   displayed in the title section?  Default is \code{TRUE}. To change this
+#'   default value globally, see \code{\link{st_options}}.
 #' @param split.tables Pander argument that specifies how many characters wide a
 #'   table can be. \code{100} by default.
-#' @param weights Vector of weights having same length as x. \code{NA}
-#'   (default) indicates that no weights are used.
-#' @param rescale.weights Logical. When set to \code{TRUE}, the
-#'   total count will be the same as the unweighted \code{x}. \code{FALSE} by
-#'   default.
+#' @param weights Vector of weights having same length as x. \code{NA} (default)
+#'   indicates that no weights are used.
+#' @param rescale.weights Logical. When set to \code{TRUE}, the total count will
+#'   be the same as the unweighted \code{x}. \code{FALSE} by default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A nn object of classes \code{matrix} and \code{summarytools} containing 
-#'   the statistics, with extra attributes used by \link{print} method.
+#' @return A nn object of classes \code{matrix} and \code{summarytools}
+#'   containing the statistics, with extra attributes used by \link{print}
+#'   method.
 #'
 #' @examples
 #' data(exams)
@@ -65,11 +68,12 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                   transpose = st_options('descr.transpose'), 
                   style = st_options('style'), 
                   plain.ascii = st_options('plain.ascii'),
-                  justify = "right", omit.headings = st_options('omit.headings'), 
+                  justify = "right", headings = st_options('headings'), 
                   display.labels = st_options('display.labels'),  
-                  split.tables = 100, weights = NA, rescale.weights = FALSE, ...) {
+                  split.tables = 100, weights = NA, rescale.weights = FALSE,
+                  ...) {
   
-  # Validate arguments --------------------------------------------------------
+  # Validate arguments ---------------------------------------------------------
   
   if (is.atomic(x) && !is.numeric(x)) {
     stop("x is not numerical")
@@ -79,32 +83,43 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   x.df <- as.data.frame(x)
   
   if (!is.data.frame(x.df)) {
-    stop(paste("x must be a data.frame, a tibble, a data.table or a single vector, and",
-               "attempted conversion failed"))
+    stop(paste("x must be a data.frame, a tibble, a data.table or a single",
+               "vector, and attempted conversion failed"))
   }
   
   # check that all 'stats' elements are valid
-  valid_stats <- list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
-                                  "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                                  "n.valid", "pct.valid"),
-                      wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-                               "n.valid", "pct.valid"))
+  valid_stats <- 
+    list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+                     "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+                     "n.valid", "pct.valid"),
+         wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+                  "n.valid", "pct.valid"))
   
   if (identical(stats,"all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
+  
   } else if (identical(stats, "fivenum")) {
+    
     if (!identical(weights, NA)) {
       stop("fivenum is not supported when weights are used")
     }
+    
     stats <- c("min", "q1", "med", "mean", "q3", "max")
+    
   } else if (identical(stats, "common")) {
+    
     stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
+    
   } else {
+    
     stats <- tolower(stats)
-    invalid_stats <- setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
+    invalid_stats <- 
+      setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
+    
     if (length(invalid_stats) > 0) {
-      stop("valid stats are: ", paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], 
-                                      collapse = ", "),
+      stop("valid stats are: ", 
+           paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], 
+                 collapse = ", "),
            "\n  The following statistics are not recognized, or not allowed: ",
            paste(invalid_stats, collapse = ", "))
     }
@@ -145,7 +160,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   }
   
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && plain.ascii==TRUE && (!"plain.ascii" %in% (names(match.call())))) {
+  if (style=="rmarkdown" && plain.ascii==TRUE && 
+      (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
@@ -154,8 +170,19 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
   }
   
+  if ("omit.headings" %in% names(match.call())) {
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+                   "setting headings = ", 
+                   !isTRUE(eval(match.call()[['omit.headings']]))))
+    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
+  }
+  
+  # End of arguments validation
+  
   # Get info about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), silent = TRUE)
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 
+                    silent = TRUE)
+  
   if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
@@ -165,7 +192,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   }
   
   # Identify and exclude non-numerical columns from x
-  col_to_remove <- which(!sapply(x.df, is.numeric))
+  col_to_remove <- which(!vapply(x.df, is.numeric, logical(1)))
   
   if (length(col_to_remove) > 0) {
     ignored <- paste(colnames(x.df)[col_to_remove], collapse=", ")
@@ -177,7 +204,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     stop("no numerical variable(s) given as argument")
   }
 
-  # No weights being used -----------------------------------------------------  
+  # No weights being used ------------------------------------------------------
   if (identical(weights, NA)) {
     # Build skeleton for output dataframe
     output <- data.frame(mean        = numeric(),
@@ -224,23 +251,26 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
         c(ifelse("mean" %in% stats, variable.mean, NA),
           ifelse("sd"   %in% stats, variable.sd, NA),
           ifelse("min"  %in% stats, min(variable, na.rm=na.rm), NA),
-          ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, na.rm = na.rm, type = 2), NA),
+          ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, 
+                                             na.rm = na.rm, type = 2), NA),
           ifelse("med"  %in% stats, median(variable, na.rm=na.rm), NA),
-          ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, na.rm = na.rm, type = 2), NA),
+          ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, 
+                                             na.rm = na.rm, type = 2), NA),
           ifelse("max"  %in% stats, max(variable, na.rm=na.rm), NA),
           ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
           ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
           ifelse("cv"   %in% stats, variable.sd / variable.mean, NA),
           ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
           ifelse("se.skewness" %in% stats,
-                 sqrt((6*n_valid*(n_valid-1)) / ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
+                 sqrt((6*n_valid*(n_valid-1)) / 
+                        ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
           ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
           ifelse("n.valid"     %in% stats, n_valid, NA),
           ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
     }
     
   } else {
-    # Weights being used ------------------------------------------------------
+    # Weights being used -------------------------------------------------------
     
     # Check that weights vector has the right length
     if (length(weights) != nrow(x.df)) {
@@ -250,7 +280,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     weights_string <- deparse(substitute(weights))
 
     if (sum(is.na(weights)) > 0) {
-      warning("Missing values on weight variable have been detected and will be treated as zeroes")
+      warning("Missing values on weight variable have been detected and will",
+              "be treated as zeroes")
       weights[is.na(weights)] <- 0
     }
     
@@ -293,7 +324,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
 
       # Calculate mean and sd if necessary
       if (any(c("mean", "cv") %in% stats)) {
-        variable.mean <- weightedMean(variable, weights_tmp, refine = TRUE, na.rm = na.rm)
+        variable.mean <- weightedMean(variable, weights_tmp, refine = TRUE, 
+                                      na.rm = na.rm)
       }
       
       if (any(c("sd", "cv") %in% stats)) {
@@ -305,9 +337,13 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
         c(ifelse("mean" %in% stats, variable.mean, NA),
           ifelse("sd"   %in% stats, variable.sd, NA),
           ifelse("min"  %in% stats, min(variable, na.rm = na.rm), NA),
-          ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, refine = TRUE, na.rm = na.rm), NA),
+          ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, 
+                                                   refine = TRUE, 
+                                                   na.rm = na.rm), NA),
           ifelse("max"  %in% stats, max(variable, na.rm = na.rm), NA),
-          ifelse("mad"  %in% stats, weightedMad(variable, weights_tmp, refine = TRUE, na.rm = na.rm), NA),
+          ifelse("mad"  %in% stats, weightedMad(variable, weights_tmp, 
+                                                refine = TRUE, 
+                                                na.rm = na.rm), NA),
           ifelse("cv"   %in% stats, variable.sd/variable.mean, NA),
           ifelse("n.valid"   %in% stats, n_valid, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
@@ -322,8 +358,9 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   output <- output[ ,stats]
   
   # Make column names prettier
-  cnames <- c(sd = "Std.Dev", med = "Median", mad = "MAD", iqr = "IQR", cv = "CV",
-              se.skewness = "SE.Skewness", n.valid = "N.Valid", pct.valid = "Pct.Valid")
+  cnames <- c(sd = "Std.Dev", med = "Median", mad = "MAD", iqr = "IQR", 
+              cv = "CV", se.skewness = "SE.Skewness", n.valid = "N.Valid",
+              pct.valid = "Pct.Valid")
   for (i in seq_along(cnames)) {
     colnames(output)[which(colnames(output) == names(cnames[i]))] <- cnames[i]
   }
@@ -344,20 +381,27 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   
   data_info <-
-    list(Dataframe       = ifelse("df_name"   %in% names(parse_info), parse_info$df_name, NA),
-         Dataframe.label = ifelse("df_label"  %in% names(parse_info), parse_info$df_label, NA),
-         Variable        = ifelse("var_names" %in% names(parse_info) && length(parse_info$var_names) == 1,
-                                  parse_info$var_names, NA),
-         Variable.label  = ifelse(is.atomic(x), label(x), NA),
-         #Subset          = ifelse("rows_subset" %in% names(parse_info), parse_info$rows_subset, NA),
-         Weights         = ifelse(identical(weights, NA), NA,
-                                  sub(pattern = paste0(parse_info$df_name, "$"), replacement = "",
-                                      x = weights_string, fixed = TRUE)),
-         Group           = ifelse("by_group" %in% names(parse_info), parse_info$by_group, NA),
-         by.first        = ifelse("by_group" %in% names(parse_info), parse_info$by_first, NA),
-         by.last         = ifelse("by_group" %in% names(parse_info), parse_info$by_last, NA),
-         transposed      = transpose,
-         N.Obs           = n_tot)
+    list(
+      Dataframe       = ifelse("df_name" %in% names(parse_info), 
+                               parse_info$df_name, NA),
+      Dataframe.label = ifelse("df_label" %in% names(parse_info), 
+                               parse_info$df_label, NA),
+      Variable        = ifelse("var_names" %in% names(parse_info) && 
+                                 length(parse_info$var_names) == 1,
+                               parse_info$var_names, NA),
+      Variable.label  = ifelse(is.atomic(x), label(x), NA),
+      Weights         = ifelse(identical(weights, NA), NA,
+                               sub(pattern = paste0(parse_info$df_name, "$"), 
+                                   replacement = "", x = weights_string, 
+                                   fixed = TRUE)),
+      Group           = ifelse("by_group" %in% names(parse_info),
+                               parse_info$by_group, NA),
+      by.first        = ifelse("by_group" %in% names(parse_info), 
+                               parse_info$by_first, NA),
+      by.last         = ifelse("by_group" %in% names(parse_info), 
+                               parse_info$by_last, NA),
+      transposed      = transpose,
+      N.Obs           = n_tot)
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
@@ -365,7 +409,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                                      round.digits   = round.digits,
                                      plain.ascii    = plain.ascii,
                                      justify        = justify,
-                                     omit.headings  = omit.headings,
+                                     headings       = headings,
                                      display.labels = display.labels,
                                      split.tables   = split.tables)
   

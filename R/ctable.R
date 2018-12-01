@@ -1,47 +1,51 @@
 #' Cross-Tabulation
 #'
-#' Cross-tabulation for a pair of categorical variables (or factors) with either row,
-#' column, or total proportions, as well as marginal sums.
+#' Cross-tabulation for a pair of categorical variables (or factors) with either
+#' row, column, or total proportions, as well as marginal sums.
 #'
 #' @param x First categorical variable - values will appear as row names.
 #' @param y Second categorical variable - values will appear in as column names.
 #' @param prop Proportions to display;  \dQuote{r} for \emph{rows} (default),
-#'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} for
-#'   \emph{none}. This option can be set globally; see \code{\link{st_options}}.
-#' @param useNA Argument passed on to \code{\link[base]{table}}; One of \dQuote{ifany}
-#'   (default), \dQuote{no}, or \dQuote{always}.
-#' @param totals Logical. Should row and column totals be displayed? Defaults to \code{TRUE}.
-#'    To change this default value globally, see \code{\link{st_options}}.
+#'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} 
+#'   for \emph{none}. This option can be set globally; see 
+#'   \code{\link{st_options}}.
+#' @param useNA Argument passed on to \code{\link[base]{table}}; One of 
+#'    \dQuote{ifany} (default), \dQuote{no}, or \dQuote{always}.
+#' @param totals Logical. Should row and column totals be displayed? Defaults to
+#'   \code{TRUE}. To change this default value globally, see
+#'   \code{\link{st_options}}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown} 
-#'   This option can be set globally; see \code{\link{st_options}}.
+#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or 
+#'   \dQuote{rmarkdown}. This option can be set globally; 
+#'   see \code{\link{st_options}}.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}. To change this default value globally, see \code{\link{st_options}}.
-#' @param justify String indicating alignment of columns; one of \dQuote{l} (left)
-#'   \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
+#'   \code{1}. To change this default value globally, see 
+#'   \code{\link{st_options}}.
+#' @param justify String indicating alignment of columns; one of \dQuote{l} 
+#'   (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing
 #'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
-#'   in which case it will be set to \code{FALSE} automatically. To change the default 
-#'   value globally, see \code{\link{st_options}}.
-#' @param omit.headings Logical. Set to \code{TRUE} to omit heading section. Can be set
-#'   globally via \code{\link{st_options}}.
-#' @param display.labels Logical. Should variable / data frame label be displayed in
-#'   the title section?  Default is \code{TRUE}. To change this default value globally,
-#'   see \code{\link{st_options}}.
+#'   in which case it will be set to \code{FALSE} automatically. To change the 
+#'   default value globally, use \code{\link{st_options}}.
+#' @param headings Logical. Set to \code{FALSE} to omit heading section. Can be
+#'   set globally via \code{\link{st_options}}.
+#' @param display.labels Logical. Should variable / data frame label be 
+#'   displayed in the title section? Default is \code{TRUE}. To change this
+#'   default value globally, use \code{\link{st_options}}.
 #' @param split.tables Pander argument that specifies how many characters wide a
 #'   table can be. \code{Inf} by default.
-#' @param dnn Names to be used in output table. Vector of two strings; By default,
-#'   the character values for arguments x and y are used.
+#' @param dnn Names to be used in output table. Vector of two strings; By 
+#'   default, the character values for arguments x and y are used.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A frequency table of classes \code{matrix} and \code{summarytools} 
 #'   with added attributes used by \link{print} method.
 #'
-#' @details Rmarkdown does not, to this day, support multi-header tables. Therefore,
-#'   until such support is available, the recommended way to display cross-tables
-#'   in .Rmd documents is to use `method=render` with the `print()` generic function
-#'   or with the `view()` function. See package vignettes for examples.
+#' @details Rmarkdown does not, to this day, support multi-header tables. 
+#'   Therefore, until such support is available, the recommended way to display 
+#'   cross-tables in .Rmd documents is to use `method=render` with the `print()`
+#'   or `view()` functions. See package vignettes for examples.
 #'
 #' @examples
 #' data("tobacco")
@@ -54,16 +58,17 @@
 #' @export
 #' @importFrom stats addmargins na.omit
 ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany', 
-                   totals = st_options('ctable.totals'), style = st_options('style'), 
+                   totals = st_options('ctable.totals'), 
+                   style = st_options('style'), 
                    round.digits = 1, justify = 'right', 
                    plain.ascii = st_options('plain.ascii'),
-                   omit.headings = st_options('omit.headings'),
+                   headings = st_options('headings'),
                    display.labels = st_options('display.labels'),
                    split.tables = Inf, 
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
 
-  # Parameter validation ------------------------------------------------------
+  # Parameter validation -------------------------------------------------------
   
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
@@ -93,8 +98,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     stop("'totals' argument must either be TRUE or FALSE")
   }
 
-  if (!omit.headings %in% c(TRUE, FALSE)) {
-    stop("'omit.headings' argument must either be TRUE or FALSE")
+  if (!headings %in% c(TRUE, FALSE)) {
+    stop("'headings' argument must either be TRUE or FALSE")
   }
   
   if (!is.numeric(round.digits) || round.digits < 1) {
@@ -122,7 +127,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
   }
 
-  # When style is 'rmarkdown', make plain.ascii FALSE unless specified explicitly
+  # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
@@ -148,15 +153,27 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
   }
 
+  if ("omit.headings" %in% names(match.call())) {
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+                   "setting headings = ", 
+                   !isTRUE(eval(match.call()$omit.headings))))
+    headings <- !isTRUE(eval(match.call()$omit.headings))
+  }
+  
+  # End of arguments validation
+  
   # Get into about x & y from parsing function
-  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "x",
+  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                                 var = "x",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
+                      
   if (any(grepl('try-', class(parse_info_x)))) {
     parse_info_x <- list()
   }
 
-  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), var = "y",
+  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                                 var = "y",
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
   if (any(grepl('try-', class(parse_info_x)))) {
@@ -183,19 +200,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     df_label <- parse_info_x$df_label
   }
 
-  # if (length(parse_info_x$rows_subset) == 1) {
-  #   x_subset <- parse_info_x$rows_subset
-  # } else {
-  #   x_subset <- NA
-  # }
-  # 
-  # if (length(parse_info_y$rows_subset) == 1) {
-  #   y_subset <- parse_info_y$rows_subset
-  # } else {
-  #   y_subset <- NA
-  # }
-
-  # Create cross-freq table ---------------------------------------------------
+  # Create cross-freq table ----------------------------------------------------
   freq_table <- table(x, y, useNA = useNA)
 
   names(dimnames(freq_table)) <- c(x_name, y_name)
@@ -218,11 +223,13 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
       prop_table <- addmargins(prop_table)
     } else if (prop == "Row") {
       prop_table <- addmargins(prop_table, 2)
-      sum_props <- c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
+      sum_props <- c(prop.table(freq_table[nrow(freq_table), 
+                                           -ncol(freq_table)]), Total=1)
       prop_table <- rbind(prop_table, sum_props)
     } else if (prop == "Column") {
       prop_table <- addmargins(prop_table, 1)
-      sum_props <- c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
+      sum_props <- c(prop.table(freq_table[-nrow(freq_table), 
+                                           ncol(freq_table)]), Total=1)
       prop_table <- cbind(prop_table, sum_props)
     }
 
@@ -230,7 +237,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     colnames(prop_table)[ncol(prop_table)] <- "Total"
   }
 
-  # Change the name of NA items to avoid potential problems when echoing to console
+  # Change name of NA items to avoid potential problems when echoing to console
   if (NA %in% rownames(freq_table)) {
     row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
     if (prop != "None") {
@@ -245,7 +252,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     }
   }
 
-  # Create output object ------------------------------------------------------
+  # Create output object -------------------------------------------------------
   
   output <- list(cross_table = freq_table, proportions = prop_table)
 
@@ -264,11 +271,6 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
          Row.x.Col          = paste(x_name, y_name, sep = " * "))
-         # Subset             = ifelse(length(x_subset) == 1 &&
-         #                             length(y_subset) == 1 &&
-         #                             x_subset == y_subset, x_subset, NA),
-         # Row.variable.subset = ifelse((x_subset != y_subset) && length(x_subset) == 1, x_subset, NA),
-         # Col.variable.subset = ifelse((x_subset != y_subset) && length(y_subset) == 1, y_subset, NA))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
@@ -278,7 +280,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                                       justify       = justify,
                                       totals        = totals,
                                       split.tables  = split.tables,
-                                      omit.headings = omit.headings,
+                                      headings      = headings,
                                       display.labels = display.labels)
   
   attr(output, "user_fmt") <- list(... = ...)

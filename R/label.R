@@ -8,19 +8,21 @@
 #' label(x) <- value
 #' 
 #' @param x An R object to extract labels from.
-#' @param all Logical. When x is a data frame, setting this argument to \code{TRUE} will
-#'   make the function return all variable labels. By default, its value is \code{FALSE},
-#'   so that if x is a data frame, it is the data frame's label that will be returned.
-#' @param fallback a logical value indicating if labels should fallback to object name(s).
-#'   Defaults to \code{FALSE}.
-#' @param simplify When x is a data frame and \code{all = TRUE}, coerce results to a vector
-#'   when \code{TRUE}, otherwise (default) return a \code{named list} containing only
-#'   non-NULL/non-NA elements.
+#' @param all Logical. When x is a data frame, setting this argument to
+#'   \code{TRUE} will make the function return all variable labels. By default,
+#'   its value is \code{FALSE}, so that if x is a data frame, it is the data
+#'   frame's label that will be returned.
+#' @param fallback a logical value indicating if labels should fallback to
+#'   object name(s). Defaults to \code{FALSE}.
+#' @param simplify When x is a data frame and \code{all = TRUE}, coerce results
+#'   to a vector when \code{TRUE}, otherwise (default) return a \code{named
+#'   list} containing only non-NULL/non-NA elements.
 #' @param value String to be used as label.
 #' 
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} function.
+#' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 
+#'   function.
 #' @export
 #' @importFrom utils tail
 label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
@@ -42,8 +44,9 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
     }
   } else if (is.data.frame(x)) {
     if (isTRUE(all)) {
-      lbl <- sapply(x, attr, which = 'label', exact = TRUE)
-      lbl[which(sapply(lbl, is.null))] <- NA
+      lbl <- lapply(x, attr, which = 'label', exact = TRUE)
+      lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- NA
+      
       if (isTRUE(fallback)) {
         lbl[which(is.na(lbl))] <- colnames(x)[which(is.na(lbl))]
       }
@@ -85,8 +88,8 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
         attr(x[[i]], 'label') <- value[i]
       }
     } else {
-      stop(paste("provide a single string to label the data frame, or a vector of characters",
-                 "having length = ncol(x)"))
+      stop(paste("provide a single string to label the data frame, or a vector",
+                 "of characters having length = ncol(x)"))
     }
   } else if (is.atomic(x)) {
     if (is.na(value)) {
@@ -113,8 +116,12 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #' @export
 unlabel <- function(x) {
   if(is.list(x)) {
-    for(i in 1 : length(x)) class(x[[i]]) <- setdiff(class(x[[i]]), 'labelled')
-    for(i in 1 : length(x)) attr(x[[i]],"label") <- NULL
+    for(i in seq_along(x)) {
+      class(x[[i]]) <- setdiff(class(x[[i]]), 'labelled')
+    }
+    for(i in seq_along(x)) {
+      attr(x[[i]],"label") <- NULL
+    }
   }
   else {
     class(x) <- setdiff(class(x), "labelled")

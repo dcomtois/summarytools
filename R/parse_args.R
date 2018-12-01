@@ -37,17 +37,19 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # of identifying structures have failed.
 
   # re1: dfname[rows,columns]
-  re1 <- paste0("([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
-                "\\[(.+)?",           # rows indexing  (2)
-                "\\s*(,)\\s*",        # comma surrounded (or not) by spaces     (3)
-                "(.*?)",             # column indexing                         (4)
-                # "((c\\(.*\\))|",      # column indexing in the form [ , c(...)] (4) (5)
-                # "(\\d+)|",            # column indexing in the form [ , 9     ] (6)
-                # "(\\d+\\:\\d+)|",     # column indexing in the form [ , 9:99  ] (7)
-                # "(\'.*\')|",          # column indexing in the form [ , 'var.name' ] (8)
-                # "(\".+\")|",          # column indexing in the form [ , "var.name" ] (9)
-                # "(\\\".+\\\"))?",     # column indexing in the form [ , "var.name" ] (10)
-                "\\s*\\]")            # end of indexing
+  re1 <- 
+    paste0(
+      "([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
+      "\\[(.+)?",           # rows indexing  (2)
+      "\\s*(,)\\s*",        # comma surrounded (or not) by spaces     (3)
+      "(.*?)",              # column indexing                         (4)
+      # "((c\\(.*\\))|",    # column indexing in the form [ , c(...)] (4) (5)
+      # "(\\d+)|",          # column indexing in the form [ , 9     ] (6)
+      # "(\\d+\\:\\d+)|",   # column indexing in the form [ , 9:99  ] (7)
+      # "(\'.*\')|",        # column indexing in the form [ , 'var.name' ] (8)
+      # "(\".+\")|",        # column indexing in the form [ , "var.name" ] (9)
+      # "(\\\".+\\\"))?",   # column indexing in the form [ , "var.name" ] (10)
+      "\\s*\\]")            # end of indexing
 
   # re2: dfname[[col]] (+ optionnal rows indexing)
   re2 <- paste0("([\\w\\.\\_]+)",                 # data frame               (1)
@@ -56,12 +58,13 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
 
   # re3: dfname$column[rows] or dfname['column'][rows]
-  re3 <- paste0("^([\\w\\.]+)\\s*",           # data.frame name                        (1)
-                "(\\$|\\[\\'|\\[\\\")\\s*",   # column indexing chars ($ or [' or [")  (2)
-                "([\\w\\.\\_]+)",             # variable name                          (3)
-                "(\\s|\\'\\]|\\\"\\])*",      # optional closing indexing chars        (4)
-                "(\\[\\s*(.+)\\s*\\])?")      # optional row indexing             (5)  (6)
-
+  re3 <- paste0(
+    "^([\\w\\.]+)\\s*",           # data.frame name                        (1)
+    "(\\$|\\[\\'|\\[\\\")\\s*",   # column indexing chars ($ or [' or [")  (2)
+    "([\\w\\.\\_]+)",             # variable name                          (3)
+    "(\\s|\\'\\]|\\\"\\])*",      # optional closing indexing chars        (4)
+    "(\\[\\s*(.+)\\s*\\])?")      # optional row indexing             (5)  (6)
+  
   # re4: variable[rows]
   re4 <- paste0("\\w+",                             # variable name       (1)
                 "(\\[\\s*([a-zA-Z0-9]*?)\\s*\\])")  # rows indexing       (2)
@@ -90,7 +93,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # List of classes accepted as "data frames"
   # classes <- c("data.frame", "data.table", "tbl")
 
-  # Function was called through with() ----------------------------------------------------
+  # Function was called through with() -----------------------------------------
   # We should be able to extract:
   #  - df_name
   #  - var_names
@@ -115,7 +118,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       } else if (is.list(eval(with_call$data))) {
         if (length(with_objects) == 1 &&
-            is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
+            is.data.frame(get(with_objects, 
+                              envir = as.environment(eval(with_call$data))))) {
           df_name <- with_objects
         }
       }
@@ -126,7 +130,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         var_names <- deparse(by_call$data)
       } else if (is.list(eval(with_call$data))) {
         if (length(with_objects) == 1 &&
-            is.data.frame(get(with_objects, envir = as.environment(eval(with_call$data))))) {
+            is.data.frame(get(with_objects, 
+                              envir = as.environment(eval(with_call$data))))) {
           df_name <- with_objects
           if (length(all.vars(by_call$data)) == 1) {
             var_names <- colnames(eval(with_call$data)[[df_name]])
@@ -136,16 +141,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       }
     }
-
-  #   if (grepl(".+\\[.+\\]$", as.character(with_call$expr[2]), perl = TRUE)) {
-  #     rows_subset <- sub("(.+)\\[(.+)\\]$","\\2",
-  #                        as.character(with_call$expr[2]), perl = TRUE)
-  #   } else {
-  #     rows_subset <- "NULL"
-  #   }
   }
 
-  # Function was called through by() ---------------------------------------------------
+  # Function was called through by() -------------------------------------------
   
   # This part will ensure the group-info is made part of the summarytools object
   if (length(by_pos) == 1) {
@@ -157,17 +155,20 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     if (length(.st_env$byInfo) == 0) {
       if (is.null(names(sys_frames[[tapply_pos]]$namelist)) ||
           is.na(names(sys_frames[[tapply_pos]]$namelist)[1])) {
-        names(sys_frames[[tapply_pos]]$namelist) <- as.character(by_call$INDICES)[-1]
+        names(sys_frames[[tapply_pos]]$namelist) <- 
+          as.character(by_call$INDICES)[-1]
       }
       by_levels <- sys_frames[[tapply_pos]]$namelist
-      .st_env$byInfo$by_levels <- expand.grid(by_levels, stringsAsFactors = FALSE)
+      .st_env$byInfo$by_levels <- 
+        expand.grid(by_levels, stringsAsFactors = FALSE)
       .st_env$byInfo$iter <- 1
     }
 
     # Populate by_group item
-    by_group <- paste(colnames(.st_env$byInfo$by_levels),
-                      as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
-                      sep=" = ", collapse = ", ")
+    by_group <- 
+      paste(colnames(.st_env$byInfo$by_levels),
+            as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
+            sep=" = ", collapse = ", ")
 
     # by_first and by_last are used by print.summarytools when printing objects
     # passed by the by() function
@@ -190,7 +191,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
 
-  # Function was called through lapply() -------------------------------------------------
+  # Function was called through lapply() ---------------------------------------
 
   if (length(lapply_pos) == 1 && lapply_pos == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[1]]))
@@ -199,7 +200,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
   }
 
-  # From here code applies no matter how function was called -----------------------------
+  # From here code applies no matter how function was called -------------------
   skipvars <- FALSE
   no_df    <- FALSE
 
@@ -240,8 +241,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (length(allnames_exist) == 1 && is.data.frame(get(allnames_exist)))
         df_name <- allnames_exist
       else if (length(allnames_exist) > 1) {
-        df_index <- which(isTRUE(sapply(sapply(allnames_exist, get), is.data.frame)))
-        if (length(df_index) == 1 && is.data.frame(get(allnames_exist[df_index])))
+        df_index <- 
+          which(isTRUE(sapply(sapply(allnames_exist, get), is.data.frame)))
+        if (length(df_index) == 1 &&
+            is.data.frame(get(allnames_exist[df_index])))
           df_name <- allnames_exist[df_index]
       }
     }
@@ -273,11 +276,13 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # by_group string and the same
 
   if (length(by_group) == 1 && length(df_name) > 0) {
-    by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", x = by_group, fixed = TRUE)
+    by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", 
+                    x = by_group, fixed = TRUE)
   }
 
   # Extract data frame label if any
-  if (!no_df && length(df_name) > 0 && exists(df_name) && !is.na(label(get(df_name)))) {
+  if (!no_df && length(df_name) > 0 && exists(df_name) && 
+      !is.na(label(get(df_name)))) {
   #if (!no_df && length(df_name) > 0) {
   #} && exists(df_name) && !is.na(label(get(df_name)))) {
     df_label <- label(get(df_name))
@@ -316,48 +321,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
 
-  # Rows subset
-  # if (length(rows_subset) == 0) {
-  #   if (grepl(re1, data_str, perl = TRUE)) {
-  #     rows_subset <- sub(re1, "\\2", data_str, perl = TRUE)
-  #   } else if (grepl(re2, data_str, perl = TRUE)) {
-  #     rows_subset <- sub(re2, "\\4", data_str, perl = TRUE)
-  #   } else if (grepl(re3, data_str, perl = TRUE)) {
-  #     rows_subset <- sub(re3, "\\6", data_str, perl = TRUE)
-  #   } else if (grepl(re4, data_str, perl = TRUE)) {
-  #     rows_subset <- sub(re4, "\\2", data_str, perl = TRUE)
-  #   }
-  # }
-  #
-  # if (!no_df && length(df_name) > 0 && length(rows_subset) == 1) {
-  #   rows_subset <- sub(pattern = paste0(df_name, "$"),
-  #                      replacement = "", x = rows_subset, fixed = TRUE)
-  #   rows_subset <- sub(pattern = "==", replacement = "=", x = rows_subset, fixed = TRUE)
-  #   rows_subset <- sub(pattern = '"(.+)"', replacement = "\\1", x = rows_subset, perl = TRUE)
-  # }
-  # 
-  # if (length(rows_subset) == 0 || nchar(rows_subset) == 0 || rows_subset == "NULL") {
-  #   rows_subset <- character()
-  # } else {
-  #   if (exists(get("rows_subset"))) {
-  #     tmp <- deparse(get(rows_subset))
-  #     if (length(tmp) == 1 && grepl("\\d+:\\d+", tmp, perl = TRUE)) {
-  #       rows_subset <- tmp
-  #     }
-  #   }
-  # }
-  #
-  # remove column negative indexing
-  # if (!identical(rows_subset, character())) {
-  #   # scenario 1: by itself, ex: ", -4"
-  #   if (grepl("^\\s*,\\s*-.+$", rows_subset, perl = TRUE)) {
-  #     rows_subset <- character()
-  #   } else if (grepl("^.*,\\s*-.+$", rows_subset, perl = TRUE)) {
-  #     # scenario 2: with row indexing, ex: "1:10, -4"
-  #     rows_subset <- sub(",\\s*-.+$", "", rows_subset, perl = TRUE)
-  #   }
-  # }
-  
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
@@ -366,6 +329,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                  by_first = by_first,
                  by_last = by_last)
 
-  output <- output[which(sapply(output, length) > 0)]
+  #output <- output[which(sapply(output, length) > 0)]
+  output <- output[which(mapply(length, output, SIMPLIFY = TRUE) > 0)]
+  
   return(output)
 }

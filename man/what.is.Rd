@@ -25,20 +25,21 @@ A list with following elements:
   \item{attributes.lengths}{A named character vector giving all attributes
     (\emph{c.f.} \dQuote{names}, \dQuote{row.names}, \dQuote{class},
     \dQuote{dim}, and so forth) along with their length.}
-  \item{extensive.is}{A character vector of all the \emph{identifier functions.}
-    (starting with \dQuote{is.}) that yield \code{TRUE} when used with \code{x}
-    as argument.}
-  \item{function.type}{When x is a function, results of \code{\link[pryr]{ftype}}
-    are added.}
+  \item{extensive.is}{A character vector of all the 
+    \emph{identifier functions.} (starting with \dQuote{is.}) that yield 
+    \code{TRUE} when used with \code{x} as argument.}
+  \item{function.type}{When x is a function, results of 
+  \code{\link[pryr]{ftype}} are added.}
 }
 }
 \description{
-Combination of most common \dQuote{macro-level} functions that describe an object.
+Combination of most common \dQuote{macro-level} functions that describe an 
+object.
 }
 \details{
 An alternative to calling in turn \code{\link{class}}, \code{\link{typeof}},
-\code{\link{dim}}, and so on. A call to this function will readily give all this
-information at once.
+\code{\link{dim}}, and so on. A call to this function will readily give all
+this information at once.
 }
 \examples{
 what.is(1)
