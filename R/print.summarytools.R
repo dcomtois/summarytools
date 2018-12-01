@@ -35,12 +35,12 @@
 #'   \code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
 #'   will be generic.
 #' @param table.classes Character.  Additional classes to assign to output
-#'   tables. All \emph{Bootstrap CSS} classes can be used. It also allows
+#'   tables. All \emph{Bootstrap css} classes can be used. It also allows
 #'   user-defined classes (see custom.css parameter). See \emph{details}
 #'   section. \code{NA} by default.
-#' @param bootstrap.css Logical. Set to \code{FALSE} to omit Bootstap css.
-#'   \code{TRUE} by default. To change this default value globally, see
-#'   \code{\link{st_options}}.
+#' @param bootstrap.css Logical. Set to \code{FALSE} to omit 
+#'   \emph{Bootstrap css}. \code{TRUE} by default. To change this default value
+#'   globally, see \code{\link{st_options}}.
 #' @param custom.css Path to a user-defined \emph{.css} file. Classes defined in
 #'   this file can be used in the \code{table.classes} parameter. \code{NA} by
 #'   default. To change this default value globally, see

@@ -74,7 +74,7 @@
 #'        common values (in descending frequency order), also limited by
 #'       \code{max.distinct.values}. For numerical variables, common univariate
 #'       statistics (mean, std. deviation, min, med, max, IQR and CV).} 
-#'     \item{Freqs (\% of Valid)} {For factors and character variables, the 
+#'     \item{Freqs (\% of Valid)}{For factors and character variables, the 
 #'       frequencies and proportions of the values listed in the previous 
 #'       column. For numerical vectors, number of distinct values, or frequency
 #'       of distinct values if their number is not greater than 
