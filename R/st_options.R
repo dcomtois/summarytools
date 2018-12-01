@@ -6,28 +6,34 @@
 #'
 #' @param option option(s) name(s) to query (optional). Can be a single string
 #'   or a vector of strings to query multiple values.
-#' @param value value to assign to the option specified as first argument. This
-#'   is for backward-compatibility, as all options can now be set via their own
-#'   parameter.
+#' @param the value you wish to assign to the option specified in the first
+#'   argument. This is for backward-compatibility, as all options can now be set
+#'   via their own parameter. That is, instead of 
+#'   \code{st_options('plain.ascii', FALSE))}, it is more practical to use
+#'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
 #' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when
 #'   using summarytools with a rendering tool such as \code{knitr} or when
-#'   creating rmarkdown output files to be converted with Pandoc (although note
+#'   creating rmarkdown output files to be converted with Pandoc. Note hoewever
 #'   that its value will automatically be set to \code{FALSE} whenever
-#'   \code{style} = \dQuote{rmarkdown}).
+#'   \code{style} is set to \dQuote{rmarkdown}).
 #' @param round.digits Numeric. Defaults to \code{2}.
 #' @param headings Logical. Set to \code{FALSE} to remove all headings from
-#'   outputs (only the tables will be printed out). \code{FALSE} by default.
+#'   outputs. Only the tables will be printed out, except when \code{\link{by}}
+#'   or \code{\link{lapply}} are used. In that case, the variable or the group
+#'   will still appear before the tables. \code{FALSE} by default.
 #' @param footnote Character. When the default value \dQuote{default} is used,
-#'   the package name, version, and R version are displayed below html outputs.
-#'   Set no \code{NA} to omit the footnote, or provide a string to personalize
-#'   it.
+#'   the package name & version, as well as the R version number are displayed
+#'   below html outputs. Set no \code{NA} to omit the footnote, or provide a
+#'   custom string. Applies only to \emph{html} outputs.
 #' @param display.labels Logical. \code{TRUE} by default. Set to \code{FALSE} to
 #'   omit data frame and variable labels in the headings section.
-#' @param bootstrap.css Logical. Include Bootstrap CSS in html outputs. Defaults
-#'   to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render} method
-#'   inside a \code{shiny} app.
+#' @param bootstrap.css Logical. Specifies whether to Include 
+#'   \emph{Bootstrap css} in \emph{html} reports \emph{head} section outputs.
+#'   Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
+#'   method inside a \code{shiny} app to avoid interacting with the app's 
+#'   layout.
 #' @param custom.css Character. Path to an additional, user-provided, CSS file.
 #'   \code{NA} by default.
 #' @param escape.pipe Logical. Set to \code{TRUE} if Pandoc conversion is your

@@ -214,8 +214,8 @@ default, its `method` argument is set to `'pander'`. One of the ways in
 which `view()` is useful is that we can use it to easily display *html*
 outputs in *RStudio*’s Viewer. In this case, the `view()` function
 simply acts as a wrapper around the generic `print()` function,
-specifying the `method = 'viewer'` for us. When used outside *RStudio*,
-the `method` falls back on `'browser'` and the report is fired up in the
+specifying `method = 'viewer'`. When used outside *RStudio*,
+the `method` falls back on `'browser'` and the generated file is opened in the
 system’s default browser.
 
 ## Using by() to Show Results By Groups
