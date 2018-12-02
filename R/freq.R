@@ -63,6 +63,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
+#' @importFrom dplyr as_tibble count '%>%'
 freq <- function(x, round.digits = st_options('round.digits'), 
                  order = "names", style = st_options('style'), 
                  plain.ascii = st_options('plain.ascii'), 
@@ -73,20 +74,11 @@ freq <- function(x, round.digits = st_options('round.digits'),
                  headings = st_options('headings'), weights = NA, 
                  rescale.weights = FALSE, ...) {
 
-  # Parameter validation ------------------------------------------------------
+  # Parameter validation -------------------------------------------------------
 
-  # if x is a data.frame with 1 column, extract this column as x
-  if (!is.null(ncol(x)) && ncol(x)==1) {
-    varname <- colnames(x)
-    x <- x[[1]]
-  }
-
-  if (!is.atomic(x)) {
-    x <- try(as.vector(x), silent = TRUE)
-    if (any(grepl('try-',class(x))) || !is.atomic(x)) {
-      stop("argument x must be a vector or a factor")
-    }
-  }
+  if (is.data.frame(x) && ncol(x) > 1) {
+    stop("x must be a vector, factor, or data frame having 1 column only")
+  } 
 
   if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
@@ -153,40 +145,60 @@ freq <- function(x, round.digits = st_options('round.digits'),
     headings <- !isTRUE(eval(match.call()[['omit.headings']]))
   }
   
-  # End of arguments validation
-  
-  # Replace NaN's by NA's (This simplifies matters a lot)
-  if (NaN %in% x)  {
-    message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
-    x[is.nan(x)] <- NA
-  }
-  
+  # Prep work ------------------------------------------------------------------
+
   # Get information about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
                                silent = exists('varname')),
                     silent = TRUE)
+  
   if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
   
-  if (!"var_names" %in% names(parse_info) && exists("varname")) {
-    parse_info$var_names <- varname
+  # if x is a data.frame with 1 column, extract variable name
+  if (is.data.frame(x)) {
+    varname <- colnames(x)
+    x <- as_tibble(x)
+  } else {
+    x <- as_tibble(x)
+    if ("var_names" %in% names(parse_info)) {
+      varname <- parse_info$var_names
+    } else {
+      varname <- "variable"
+    }
   }
   
-  # create a basic frequency table, always including the NA row
+  colnames(x) <- varname
+  
+  # Replace NaN's by NA's (This simplifies matters a lot)
+  if (NaN %in% x[[1]])  {
+    message(paste(sum(is.nan(x[[1]])), "NaN value(s) converted to NA\n"))
+    x[[1]][is.nan(x[[1]])] <- NA
+  }
+  
+  # Calculations - No Weights used ----------------------------------------------  
+
   if (identical(NA, weights)) {
-    freq_table <- table(x, useNA = "always")
     
-    # Order by frequency if needed
-    if (order == "freq") {
-      freq_table <- sort(freq_table, decreasing = TRUE)
-      na_pos <- which(is.na(names(freq_table)))
+    ft <- x %>% count(!!varname, sort = (order == 'freq'))
+    freq_table <- as.integer(ft[[2]])
+    
+    if (NA %in% ft[[1]]) {
+      names(freq_table) <- as.character(ft[[1]])
+      names(freq_table)[length(freq_table)] <- '<NA>'
+    } else {
+      freq_table <- append(freq_table, 0)
+      names(freq_table) <- append(ft[[1]], '<NA>')
+    }
+    
+    # Order by name if needed
+    if (order == "names" && is.factor(x[[1]])) {
+      freq_table <- freq_table[order(names(freq_table))]
+      na_pos <- which(names(freq_table) == '<NA>')
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
-    # Change the name of the NA item (last) to avoid potential
-    # problems when echoing to console
-    names(freq_table)[length(freq_table)] <- "<NA>"
     
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
