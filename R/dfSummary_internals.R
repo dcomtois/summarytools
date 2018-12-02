@@ -100,7 +100,7 @@ txthist <- function(data) {
 #' @importFrom stats na.omit
 detect_barcode <- function(x) {
  
-  x <- na.omit(x)[1:00]
+  x <- na.omit(x)[1:100]
   if (length(x) < 10 || (len <- min(nchar(x))) != max(nchar(x)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
