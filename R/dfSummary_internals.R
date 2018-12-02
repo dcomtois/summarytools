@@ -255,6 +255,7 @@ crunch_character <- function() {
                            "min  :", min(trimmed, na.rm = TRUE), "\\\n",
                            "max  :", max(trimmed, na.rm = TRUE), "\\\n",
                            "mode :", names(counts)[which.max(counts)])
+      counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
       outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
     
       if (isTRUE(parent.frame()$graph.col)) {
