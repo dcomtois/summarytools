@@ -147,26 +147,27 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options('footnote'), 
                                escape.pipe = st_options('escape.pipe'), ...) {
 
-  mc <- match.call()
+  #mc <- match.call()
+  dotargs <- list(...)
   
   # Recup arguments from view() if present -------------------------------------
   
-  if ("open.doc" %in% names(mc)) {
-    open.doc <- mc[["open.doc"]]
+  if ("open.doc" %in% names(dotargs)) {
+    open.doc <- eval(dotargs[["open.doc"]])
   } else {
     open.doc <- FALSE
   }
 
-  if ("group.only" %in% names(mc)) {
-    group.only <- mc[["group.only"]]
+  if ("group.only" %in% names(dotargs)) {
+    attr(x, "formatting")$group.only <- eval(dotargs[["group.only"]])
   } else {
-    group.only <- FALSE
+    attr(x, "formatting")$group.only <- FALSE
   }
 
-  if ("var.only" %in% names(mc)) {
-    var.only <- mc[["var.only"]]
+  if ("var.only" %in% names(dotargs)) {
+    attr(x, "formatting")$var.only <- eval(dotargs[["var.only"]])
   } else {
-    var.only <- FALSE
+    attr(x, "formatting")$var.only <- FALSE
   }
 
   # Parameter validation -------------------------------------------------------
@@ -198,20 +199,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     method <- "viewer"
   }
 
-  if (isTRUE(group.only) && !"Group" %in% names(attr(x, "data_info"))) {
-    stop("'group.only' can only be used with objects created using by()")
-  }
-
   if (!is.na(report.title) && !is.character(report.title)) {
     stop("'report.title' must either be NA or a character string")
-  }
-
-  if (!group.only %in% c(TRUE, FALSE)) {
-    stop("'group.only' must be either TRUE or FALSE")
-  }
-
-  if (!var.only %in% c(TRUE, FALSE)) {
-    stop("'var.only' must be either TRUE or FALSE")
   }
 
   if (!escape.pipe %in% c(TRUE, FALSE)) {
@@ -237,11 +226,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
 
   # Override of x's attributes (formatting and heading info) -------------------
-  if ("date" %in% names(mc)) {
-    attr(x, "date") <- mc$date
+  if ("date" %in% names(dotargs)) {
+    attr(x, "date") <- dotargs[["date"]]
   }
   
-  # Override of formatting elements, first by looking at mc (match.call()),
+  # Override of formatting elements, first by looking at '...' (var dotargs),
   # then by looking at the match.call() from x to set global parameters that 
   # were not explicit in the latter.
   # Here we check for arguments that can be specified at the function level for
@@ -254,26 +243,26 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "graph.col", "na.col", "valid.col", "split.tables",
                            "totals", "report.nas", "missing", "totals",
                            "omit.headings")) {
-    if (format_element %in% names(mc)) {
+    if (format_element %in% names(dotargs)) {
       if (format_element == 'omit.headings') {
         message("'omit.headings' will be deprecated; use 'headings' instead.")
         attr(x, "formatting")[['headings']] <- 
-          !isTRUE(eval(mc[['omit.headings']]))
+          !isTRUE(eval(dotargs[["omit.headings"]]))
         overrided_args <- append(overrided_args, 'headings')
       } else {
-        attr(x, "formatting")[[format_element]] <- 
-          ifelse(is.symbol(mc[[format_element]]), eval(mc[[format_element]]),
-                           mc[[format_element]])
+        attr(x, "formatting")[[format_element]] <- dotargs[[format_element]]
         overrided_args <- append(overrided_args, format_element)
       }
     }
   }
   
   # Global options that apply to all types of summarytools objects
+  # This is useful in a case where some global option was changed after the
+  # object was created.
   for (format_element in c("style", "plain.ascii", "round.digits", 
                            "headings", "display.labels")) {
     if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
-      # Todo: following line is to be removed next release
+      # Todo: following condition is to be removed in further releases
       if (!(format_element == 'headings' &&
             'omit.headings' %in% names(attr(x, "fn_call")))) {
         attr(x, "formatting")[format_element] <- st_options(format_element)
@@ -300,8 +289,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                               "Group", "Weights",
                               "Row.variable", "Col.variable",
                               "Row.variable.label", "Col.variable.label")) {
-    if (data_info_element %in% names(mc)) {
-      attr(x, "data_info")[data_info_element] <- mc[data_info_element]
+    if (data_info_element %in% names(dotargs)) {
+      attr(x, "data_info")[data_info_element] <- dotargs[data_info_element]
       overrided_args <- append(overrided_args, data_info_element)
     }
   }
@@ -310,28 +299,29 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # explicitly specified
   if (method == "pander" && attr(x, "formatting")$style == "rmarkdown" &&
       isTRUE(attr(x, "formatting")$plain.ascii) &&
-      (!"plain.ascii" %in% (names(mc)))) {
+      (!"plain.ascii" %in% (names(dotargs)))) {
     attr(x, "formatting")$plain.ascii <- FALSE
   }
 
-  # Extract non-NA "data_info" elements from x attributes
-  if ("data_info" %in% names(attributes(x))) {
-    data_info <- attr(x, "data_info")
-    # data_info <- data_info[!is.na(data_info)]
-  } else {
-    data_info <- NA
+  # # Extract non-NA "data_info" elements from x attributes
+  # if ("data_info" %in% names(attributes(x))) {
+  #   data_info <- attr(x, "data_info")
+  #   # data_info <- data_info[!is.na(data_info)]
+  # } else {
+  #   data_info <- list()
+  # }
+  
+
+  # Evaluate formatting attributes that are symbols at this stage (F, T)
+  for (i in seq_along(attr(x, "formatting"))) {
+    if (is.symbol(attr(x, "formatting")[[i]])) {
+      attr(x, "formatting")[[i]] <- eval(attr(x, "formatting")[[i]])
+    }
   }
   
   # Extract formatting information from x attributes
-  format_info <- attr(x, "formatting")
-
-  # Evaluate formatting attributes that are symbols at this stage (F, T)
-  for (i in seq_along(format_info)) {
-    if (is.symbol(format_info[[i]])) {
-      format_info[[i]] <- eval(format_info[[i]])
-    }
-  }
-    
+  # format_info <- attr(x, "formatting")
+  
   stpath <- find.package("summarytools")
   
   # Build footnote
@@ -361,7 +351,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if (method == "pander") {
     
     # remove extra linefeed if headings is FALSE
-    if (!isTRUE(format_info$headings)) {
+    if (!isTRUE(attr(x, "formatting")$headings)) {
       if (res$main_sect[[1]] == "\n  ") {
         res$main_sect[[1]] <- NULL
       }
@@ -417,6 +407,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             res$div_list)
         
       } else {
+        
         html_content <-
           tags$div(
             class="container st-container",

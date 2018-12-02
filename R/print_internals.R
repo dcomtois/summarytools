@@ -126,13 +126,13 @@ smart_split <- function(str, maxlen) {
 prep_freq <- function(x, method) {
 
   # prep_freq -- Common section  -----------------------------------------------
-  data_info   <- parent.frame()$data_info
-  format_info <- parent.frame()$format_info
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
   
   # Build headers section
   title_sect  <- list()
   
-  if (!isTRUE(parent.frame()$var.only)) {
+  if (!isTRUE(format_info$var.only)) {
     if ("Weights" %in% names(data_info)) {
       title_sect[[1]] <- "Weighted Frequencies  "
     } else {
@@ -169,13 +169,13 @@ prep_freq <- function(x, method) {
     to_append <- list()
     
     # Handle group.only / var.only (by() / lapply())
-    if (isTRUE(parent.frame()$group.only) ||
+    if (isTRUE(format_info$group.only) ||
         ("by.first" %in% names(data_info) && 
          (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
       
       to_append <- add_head_element(list(c("Group", "Group")), h = 0)
       
-    } else if (isTRUE(parent.frame()$var.only)) {
+    } else if (isTRUE(format_info$var.only)) {
       
       if (title_sect[[2]] != "") {
         if (isTRUE(format_info$plain.ascii)) {
@@ -215,7 +215,6 @@ prep_freq <- function(x, method) {
                                            #c("Subset", "Subset"),
                                            c("Group", "Group")),
                                       h = 0)
-        
       }
     }
     
@@ -259,10 +258,10 @@ prep_freq <- function(x, method) {
       row.names(freq_table) <- enc2native(row.names(freq_table))
     }
     
-    pander_args <- append(list(style = format_info$style,
-                               plain.ascii = format_info$plain.ascii,
-                               justify = justify,
-                               missing = format_info$missing,
+    pander_args <- append(list(style        = format_info$style,
+                               plain.ascii  = format_info$plain.ascii,
+                               justify      = justify,
+                               missing      = format_info$missing,
                                split.tables = Inf),
                           attr(x, "user_fmt"))
     
@@ -380,9 +379,9 @@ prep_freq <- function(x, method) {
     
     # Prepare the main "div" for the html report
     div_list <- list()
-    #browser()
+
     # Deal with group.only and var.only when by() or lapply() has been used
-    if (isTRUE(parent.frame()$group.only) ||
+    if (isTRUE(format_info$group.only) ||
         ("by.first" %in% names(data_info) && 
          (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
       
@@ -391,7 +390,7 @@ prep_freq <- function(x, method) {
         div_list[[length(div_list) + 1]] <- to_append
       }
       
-    } else if (isTRUE(parent.frame()$var.only)) {
+    } else if (isTRUE(format_info$var.only)) {
       
       if (isTRUE(format_info$headings)) {
         if (title_sect[[2]] != "") {
@@ -464,8 +463,8 @@ prep_freq <- function(x, method) {
 #' @import htmltools
 prep_ctable <- function(x, method) {
   
-  data_info   <- parent.frame()$data_info
-  format_info <- parent.frame()$format_info
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
   
   title_sect  <- list()
   
@@ -495,7 +494,7 @@ prep_ctable <- function(x, method) {
     main_sect <- list()
     to_append <- list()
     
-    if (isTRUE(parent.frame()$group.only)  ||
+    if (isTRUE(format_info$group.only)  ||
         ("by.first" %in% names(data_info) && !isTRUE(data_info$by.first))) {
       to_append <- add_head_element(list(c("Group", "Group")), h = 0)
       
@@ -627,7 +626,7 @@ prep_ctable <- function(x, method) {
     div_list  <- list()
     to_append <- list()
     
-    if (isTRUE(parent.frame()$group.only)) {
+    if (isTRUE(format_info$group.only)) {
       
       to_append <- add_head_element(list(c("Group", "Group")), h = 0)
       
@@ -671,10 +670,10 @@ prep_ctable <- function(x, method) {
 #' @import htmltools
 prep_descr <- function(x, method) {
   
-  data_info   <- parent.frame()$data_info
-  format_info <- parent.frame()$format_info
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
   
-  if(!isTRUE(parent.frame()$silent) && !isTRUE(parent.frame()$group.only) && 
+  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by.first" %in% names(data_info) || 
       as.logical(data_info$by.last) == TRUE) &&
      "ignored" %in% names(attributes(x))) {
@@ -713,7 +712,7 @@ prep_descr <- function(x, method) {
     main_sect    <- list()
     to_append <- list()
     
-    if (isTRUE(parent.frame()$group.only) ||
+    if (isTRUE(format_info$group.only) ||
         ("by.first" %in% names(data_info) && 
          (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
       to_append <- add_head_element(list(c("Group", "Group"),
@@ -896,7 +895,7 @@ prep_descr <- function(x, method) {
     div_list  <- list()
     to_append <- list()
     
-    if (isTRUE(parent.frame()$group.only) ||
+    if (isTRUE(format_info$group.only) ||
         ("by.first" %in% names(data_info) && 
          (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
       
@@ -947,8 +946,8 @@ prep_descr <- function(x, method) {
 #' @import htmltools
 prep_dfs <- function(x, method) {
   
-  data_info   <- parent.frame()$data_info
-  format_info <- parent.frame()$format_info
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
   
   title_sect  <- list()
   title_sect[[1]] <- "Data Frame Summary  "
