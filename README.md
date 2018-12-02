@@ -54,26 +54,37 @@ in *shiny apps*, too\!
 Version 0.8.9 brings several improvements to *summarytools*, notably:
 
   - Easier management of global settings (customizable defaults) with
-    `st_options()`
-  - `dfSummary()` now shows number of culumns in heading, as well as
-    number of duplicated rows
-  - `dfSummary()` barplots more accurately reflect counts
-  - `dfSummary()` better handles columns with some particular content
-    (unary/binary, integer sequences, UPC/EAN codes)
-  - in `descr()`, values ‘fivenum’ and ‘common’ are now available for
-    `stats` argument
-  - More “overriding” options are allowed in `print()` and `view()`,
-    such as `graph.col` and `labels.col`
+    `st_options()`; each option has its own parameter, so you can set as
+    many as you need in just one function call. The legacy way of
+    setting options is still supported
+  - `dfSummary()` went through somw changes:
+      - number of culumns is shown in heading, as well as number of
+        duplicated rows (credits to [Paul
+        Feitsma](https://github.com/paulfeitsma) for the good idea)
+      - UPC and EAN codes are now detected as well as sequences of
+        integers (thanks to Paul one more)
+      - barplots more accurately reflect counts as they are no more
+        “stretched” to the width of the table “cells”; this allows
+        comparing counts across variables
+      - Binary and unary columns no more show irrelevant statistics (IQR
+        / CV)
+  - `descr()` allows two new values for the `stats` parameter: “fivenum”
+    and “common”, the latter being a shortcut for `c("mean", "sd",
+    "min", "med",` `"max", "n.valid", "pct.valid")`
+  - Many More options can be overridden when printing / viewing
+    summarytools objects; refer to `print.summarytools()`’s
+    documentation for details
 
 **Other notable changes:**
 
-  - The logical argument `omit.headings` is replaced by the more
-    straightforward `headings` (still logical); the former is still
-    supported but disappear in future releases
-  - The *Rows subset* heading element has been removed, since it was
-    subject to errors
-  - Under the hood, much has been going; the lengthy functions have been
-    separated into more manageable parts, facilitating maintenance and
+  - The `omit.headings` parameter has been replaced by the more
+    straightforward `headings`. `omit.heandings` is still supported in
+    this version but will be deprecated in the future
+  - Finally, because it was subject to errors, the *Rows Subset* heading
+    element has been removed. In case of a massive public outry, I’ll
+    bring it back ;)
+  - Under the hood, much has been going; the lengthier functions have
+    been split into more manageable parts, facilitating maintenance and
     improving readability
 
 # How to install
@@ -773,62 +784,47 @@ extra content that the latter allows.
 
 The following options are customizable with `st_options()`:
 
-**General options**
+**General
+options**
 
-  - `style = "simple"`
+|        Option name |   Default | Note                                         |
+| -----------------: | --------: | :------------------------------------------- |
+|              style |  “simple” | Set to “rmarkdown” when necessary            |
+|        plain.ascii |      TRUE | Set to FALSE when doing rmarkdown            |
+|       round.digits |         2 | Number of decimals to show                   |
+|      headings (\*) |      TRUE | Formerly ‘omit.headings’                     |
+|           footnote | “default” | Personalize, or set to NA to omit            |
+|     display.labels |      TRUE | Show variable / data frame labels in heading |
+| bootstrap.css (\*) |      TRUE | Include Bootstrap 4 css in html              |
+|         custom.css |        NA | Path to your own css file                    |
+|        escape.pipe |     FALSE | Useful with some Pandoc conversions          |
 
-  - `round.digits = 2`
+(\*) In rmarkdown or in Shiny apps, better set to FALSE
 
-  - `plain.ascii = TRUE`
+**Function-specific
+options**
 
-  - `headings = TRUE` (if using in a markdown document or a shiny app,
-    setting this to `FALSE` might be preferable
-
-  - `footnote = "default"` (set to empty string or `NA` to omit)
-
-  - `display.labels = TRUE` (specifies whether labels are shown in
-    headings)
-
-  - `bootstrap.css = TRUE` (if using in a markdown document or a shiny
-
-  - `custom.css = NA`
-
-  - `escape.pipe = FALSE` app, setting this to `FALSE` might be
-    preferable
-    
-    **Function-specific options**
-
-  - `freq.totals = TRUE`
-
-  - `freq.report.nas = TRUE`
-
-  - `ctable.prop = "r"` (display *r*ow proportions by default)
-
-  - `ctable.totals = TRUE`
-
-  - `descr.stats = "all"` (other useful defaults are “fivenum” and
-    “common”)
-
-  - `descr.transpose = FALSE`
-
-  - `dfSummary.varnumbers = TRUE`
-
-  - `dfSummary.labels.col = TRUE`
-
-  - `dfSummary.graph.col = TRUE`
-
-  - `dfSummary.valid.col = TRUE`
-
-  - `dfSummary.na.col = TRUE`
-
-  - `dfSummary.graph.magnif = 1`
+|            Option name | Default | Note                                    |
+| ---------------------: | ------: | :-------------------------------------- |
+|            freq.totals |    TRUE | Display totals row in freq()            |
+|        freq.report.nas |    TRUE | Display <NA> row and “valid” columns    |
+|            ctable.prop |     “r” | Display **r**ow proportions by default  |
+|          ctable.totals |    TRUE | Show marginal totals                    |
+|            descr.stats |   “all” | “fivenum”, “common” or list of stats    |
+|        descr.transpose |   FALSE |                                         |
+|   dfSummary.varnumbers |    TRUE | Show variable numbers in 1st col.       |
+|   dfSummary.labels.col |    TRUE | Show variable labels when present       |
+|    dfSummary.graph.col |    TRUE |                                         |
+|    dfSummary.valid.col |    TRUE |                                         |
+|       dfSummary.na.col |    TRUE |                                         |
+| dfSummary.graph.magnif |       1 | Zoom factor for barplots and histograms |
 
 #### Examples
 
 ``` r
 st_options()                      # display all global options values
-st_options('round.digits')        # display the value for one specific option
-st_options(style = 'rmarkdown')   # change an option's value
+st_options('round.digits')        # display the value of a specific option
+st_options(style = 'rmarkdown')   # change one or several options' values
 st_options(footnote = NA)         # Turn off the footnote on all outputs.
                                   # This option was used prior to generating
                                   # the present document.
@@ -837,7 +833,7 @@ st_options(footnote = NA)         # Turn off the footnote on all outputs.
 ## Overriding formatting attributes
 
 When a *summarytools* object is stored, its formatting attributes are
-stored with it. However, you can override most of them when using the
+stored within it. However, you can override most of them when using the
 `print()` and `view()`
 functions.
 
@@ -857,12 +853,12 @@ print(age_stats, style = "rmarkdown", report.nas = FALSE,
 | **51-70** |  317 | 32.51 |  83.69 |
 |  **71 +** |  159 | 16.31 | 100.00 |
 
-Note that the omitted attributes are stil part of the *age\_stats*
+Note that the overridden attributes are stil part of the *age\_stats*
 object.
 
-## Order of Priority for Options / Parameters
+## Order of Priority for options
 
-1.  Options over-ridden explicitly with `print()` or `view()` have
+1.  Options overridden explicitly with `print()` or `view()` have
     precendence
 2.  options specified as explicit arguments to `freq() / ctable() /
     descr() / dfSummary()` come second

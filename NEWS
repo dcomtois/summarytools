@@ -1,3 +1,21 @@
+Version 0.8.9
+-------------
+Several changes in dfSummary(): number of columns and number of duplicates are
+shown in the headings section, integer sequences as well as UPC/EAN codes are
+detected, and the statistics for unary / binary data is simplified (thanks to
+Paul Feitsma for the suggestions). Barplots now reflect true frequencies and
+thus allow comparison acrosse variables. In descr(), the stats options "common"
+and "fivenum" are provided as shortcuts for sets of common statistics. Setting
+multiple options with one call to st_options() is now possible, since all 
+options now have their own parameter. The legacy way of setting options is still
+supported. Several more options can be overridden when calling print() or
+view() - refer to print.summarytools()'s documentation to learn more. The 
+'omit.headings' parameter has been replaced by the more straightforward 
+'headings'. The former is still supported in this version but will be deprecated
+in a future release. Finally, row subsetting is no longer indicated in the
+headings section, as it was too error-prone.
+
+
 Version 0.8.8
 -------------
 Fixed an issue with dfSummary() where reported percentages could exceed 100% under
@@ -47,8 +65,8 @@ unresponsive, and fixed warnings when generating graphics columns. Also in
 dfSummary(), the 'graph.magnif' argument now allows shrinking or enlarging
 graphs. For the print() and view() functions, argument 'html.table.class' has
 changed to 'table.classes' and its usage is simplified (please refer to docs for
-details). CSS class 'st-small' can be used to make html tables smaller by slightly
-reducing font size and cell padding. 
+details). CSS class 'st-small' can be used to make html tables smaller by 
+slightly reducing font size and cell padding. 
 
 Version 0.8.2
 -------------
@@ -60,8 +78,8 @@ Version 0.8.1
 -------------
 Added vignettes. Improved handling of negative column indexing by the parsing
 function. Fixed issue with all-NA factors in dfSummary(). Changed column for
-displaying "All NA's" for numerical vectors in dfSummary. Fixed issue with graphs
-in dfSummary. Removed accentuated characters from docs. 
+displaying "All NA's" for numerical vectors in dfSummary. Fixed issue with 
+graphs in dfSummary(). Removed accentuated characters from docs. 
 
 Version 0.8.0
 -------------
