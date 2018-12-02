@@ -208,7 +208,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
 
       for (i in seq_along(x)) {
         if (i == 1) {
-          print.summarytools(x[[i]],
+          print.summarytools(x[[1]],
                              method = method,
                              file = file,
                              silent = silent,
@@ -290,16 +290,31 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     } else if (method == "pander") {
       
       # list (lapply) object, pander -------------------------------------------
-      
+
+      browser()
+      var.only <- "headings" %in% names(match.call()) &&
+        !isTRUE(match.call()[['headings']])
+
       for (i in seq_along(x)) {
         if (i == 1) {
-          print.summarytools(x[[1]],
-                             method = "pander",
-                             file = file,
-                             silent = silent,
-                             append = append,
-                             escape.pipe = escape.pipe,
-                             ...)
+          if (isTRUE(var.only)) {
+            print.summarytools(x[[1]],
+                               method = "pander",
+                               file = file,
+                               silent = silent,
+                               append = append,
+                               escape.pipe = escape.pipe,
+                               var.only = TRUE,
+                               ...)
+          } else {
+            print.summarytools(x[[1]],
+                               method = "pander",
+                               file = file,
+                               silent = silent,
+                               append = append,
+                               escape.pipe = escape.pipe,
+                               ...)
+          }
         } else {
           print.summarytools(x[[i]],
                              method = "pander",

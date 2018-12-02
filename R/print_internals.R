@@ -177,23 +177,19 @@ prep_freq <- function(x, method) {
       
     } else if (isTRUE(parent.frame()$var.only)) {
       
-      if (isTRUE(format_info$headings)) {
-        
-        if (title_sect[[2]] != "") {
-          if (isTRUE(format_info$plain.ascii)) {
-            main_sect[[length(main_sect) + 1]] <- 
-              paste0("\nVariable: ", title_sect[[2]], "  ")
-          } else {
-            main_sect[[length(main_sect) + 1]] <- 
-              paste0("\n**Variable:** ", title_sect[[2]], "  ")
-          }
+      if (title_sect[[2]] != "") {
+        if (isTRUE(format_info$plain.ascii)) {
+          main_sect[[length(main_sect) + 1]] <- 
+            paste0("\nVariable: ", title_sect[[2]], "  ")
+        } else {
+          main_sect[[length(main_sect) + 1]] <- 
+            paste0("\n**Variable:** ", title_sect[[2]], "  ")
         }
-        
-        to_append <- add_head_element(list(c("Variable.label", "Label"),
-                                           c("Data.type", "Type")),
-                                      h = 0)
       }
       
+      to_append <- add_head_element(list(c("Variable.label", "Label"),
+                                         c("Data.type", "Type")),
+                                    h = 0)
     } else {
       
       # No by() or lapply() involved
@@ -289,6 +285,7 @@ prep_freq <- function(x, method) {
     # prep_freq -- viewer-browser-render section -------------------------------
     
     table_head <- list()
+    to_append <- ""
     
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
