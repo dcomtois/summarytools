@@ -291,9 +291,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       
       # list (lapply) object, pander -------------------------------------------
 
-      browser()
       var.only <- "headings" %in% names(match.call()) &&
-        !isTRUE(match.call()[['headings']])
+        !isTRUE(eval(match.call()[['headings']]))
 
       for (i in seq_along(x)) {
         if (i == 1) {

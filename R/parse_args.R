@@ -324,12 +324,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
-                 #rows_subset = rows_subset,
                  by_group = by_group,
                  by_first = by_first,
                  by_last = by_last)
 
-  #output <- output[which(sapply(output, length) > 0)]
   output <- output[which(mapply(length, output, SIMPLIFY = TRUE) > 0)]
   
   return(output)

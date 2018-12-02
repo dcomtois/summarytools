@@ -959,12 +959,30 @@ prep_dfs <- function(x, method) {
     title_sect[[2]] <- ""
   }
 
-  # Remove labels column if specified in call to print/view
+  # Remove Var number ("No") column if specified in call to print/view
+  if ("No" %in% names(x) && "varnumbers" %in% names(format_info) && 
+      !isTRUE(format_info$varnumbers)) {
+    x <- x[ ,-which(names(x) == 'No')]
+  }
+  
+  # Remove Label column if specified in call to print/view
   if ('Label' %in% names(x) && "labels.col" %in% names(format_info) && 
       !isTRUE(format_info$labels.col)) {
     x <- x[ ,-which(names(x) == 'Label')]
   }
     
+  # Remove Valid column if specified in call to print/view
+  if ('Valid' %in% names(x) && "valid.col" %in% names(format_info) && 
+      !isTRUE(format_info$valid.col)) {
+    x <- x[ ,-which(names(x) == 'Valid')]
+  }
+  
+  # Remove Missing column if specified in call to print/view
+  if ('Missing' %in% names(x) && "na.col" %in% names(format_info) && 
+      !isTRUE(format_info$na.col)) {
+    x <- x[ ,-which(names(x) == 'Missing')]
+  }
+  
   if (method == "pander") {
     
     # remove html graphs
