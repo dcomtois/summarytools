@@ -363,7 +363,7 @@ crunch_numeric <- function() {
       # Data is binary: add mode
       if (length(counts) == 2 && counts[1] != counts[2]) {
         outlist[[1]] <- paste0(outlist[[1]], "mode: ",
-                               names(counts)[parent.frame()$which.max(counts)])           
+                               names(counts)[which.max(parent.frame()$counts)])           
        
       } else if (length(counts) >= 3) {
         # Data has 3+ distinct values: add IQR and CV
