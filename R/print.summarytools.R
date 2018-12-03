@@ -283,14 +283,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Override of data info attributes
-  for (data_info_element in c("Dataframe", "Dataframe.label",
-                              "Variable", "Variable.label", 
-                              "Variable.labels", "Data.type", #"Subset", 
-                              "Group", "Weights",
-                              "Row.variable", "Col.variable",
-                              "Row.variable.label", "Col.variable.label")) {
-    if (data_info_element %in% names(dotargs)) {
-      attr(x, "data_info")[data_info_element] <- dotargs[data_info_element]
+  data_info_elements <- c("Dataframe", "Dataframe.label", "Variable", 
+                          "Variable.label", "Data.type", "Group", "Weights",
+                          "Row.variable", "Col.variable",
+                          "Row.variable.label", "Col.variable.label")
+  for (data_info_element in data_info_elements) {
+    if (tolower(data_info_element) %in% tolower(names(dotargs))) {
+      attr(x, "data_info")[data_info_element] <- 
+        dotargs[grep(data_info_element, names(dotargs), ignore.case = TRUE)]
       overrided_args <- append(overrided_args, data_info_element)
     }
   }
@@ -302,15 +302,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       (!"plain.ascii" %in% (names(dotargs)))) {
     attr(x, "formatting")$plain.ascii <- FALSE
   }
-
-  # # Extract non-NA "data_info" elements from x attributes
-  # if ("data_info" %in% names(attributes(x))) {
-  #   data_info <- attr(x, "data_info")
-  #   # data_info <- data_info[!is.na(data_info)]
-  # } else {
-  #   data_info <- list()
-  # }
-  
 
   # Evaluate formatting attributes that are symbols at this stage (F, T)
   for (i in seq_along(attr(x, "formatting"))) {
