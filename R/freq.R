@@ -8,7 +8,7 @@
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent).
+#'   most frequent to less frequent). Default value is \dQuote{default}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown} This option can be set globally; see
@@ -63,9 +63,10 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-#' @importFrom dplyr as_tibble count '%>%'
+#' @importFrom magrittr %>%
+#' @importFrom dplyr as_tibble count
 freq <- function(x, round.digits = st_options('round.digits'), 
-                 order = "names", style = st_options('style'), 
+                 order = "default", style = st_options('style'), 
                  plain.ascii = st_options('plain.ascii'), 
                  justify = "default", totals = st_options('freq.totals'), 
                  report.nas = st_options('freq.report.nas'), 
@@ -78,19 +79,27 @@ freq <- function(x, round.digits = st_options('round.digits'),
 
   if (is.data.frame(x) && ncol(x) > 1) {
     stop("x must be a vector, factor, or data frame having 1 column only")
-  } 
+  }
+  
+  else if (is.data.frame(x) && ncol(x) == 1) {
+    x.df <- as_tibble(x)
+    x <- x[[1]]
+  }
 
   if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
   }
 
-  order <- switch(tolower(substring(order, 1, 1)),
-                  l = "levels",
-                  f = "freq",
-                  n = "names")
-
-  if (!order %in% c("levels", "freq", "names")) {
-    stop("'order' argument must be one of 'level', 'freq' or 'names'")
+  if ('order' %in% names(match.call())) {
+    order <- switch(tolower(substring(order, 1, 1)),
+                    d = "default",
+                    l = "levels",
+                    f = "freq",
+                    n = "names")
+  }
+  
+  if (!order %in% c("default", "levels", "freq", "names")) {
+   stop("'order' argument must be one of 'default', 'level', 'freq' or 'names'")
   }
 
   if (order == "levels" && !is.factor(x)) {
@@ -134,8 +143,8 @@ freq <- function(x, round.digits = st_options('round.digits'),
   }
   
   if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
+    message(paste0("'file' argument is deprecated; use with print() or view():",
+                   "print(x, file='a.txt') or view(x, file='a.html')"))
   }
 
   if ("omit.headings" %in% names(match.call())) {
@@ -149,8 +158,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
 
   # Get information about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               silent = exists('varname')),
-                    silent = TRUE)
+                    max.varnames = 1), silent = TRUE)
   
   if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
@@ -159,9 +167,10 @@ freq <- function(x, round.digits = st_options('round.digits'),
   # if x is a data.frame with 1 column, extract variable name
   if (is.data.frame(x)) {
     varname <- colnames(x)
-    x <- as_tibble(x)
+    varlabel <- label(x)
+    x.df <- as_tibble(x)
   } else {
-    x <- as_tibble(x)
+    x.df <- as_tibble(x)
     if ("var_names" %in% names(parse_info)) {
       varname <- parse_info$var_names
     } else {
@@ -169,31 +178,31 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
   }
   
-  colnames(x) <- varname
+  colnames(x.df) <- varname
   
   # Replace NaN's by NA's (This simplifies matters a lot)
-  if (NaN %in% x[[1]])  {
+  if (NaN %in% x.df[[1]])  {
     message(paste(sum(is.nan(x[[1]])), "NaN value(s) converted to NA\n"))
-    x[[1]][is.nan(x[[1]])] <- NA
+    x.df[[1]][is.nan(x.df[[1]])] <- NA
   }
   
   # Calculations - No Weights used ----------------------------------------------  
 
   if (identical(NA, weights)) {
     
-    ft <- x %>% count(!!varname, sort = (order == 'freq'))
+    ft <- x.df %>% count(get(varname), sort = (order == 'freq'))
     freq_table <- as.integer(ft[[2]])
     
     if (NA %in% ft[[1]]) {
       names(freq_table) <- as.character(ft[[1]])
       names(freq_table)[length(freq_table)] <- '<NA>'
     } else {
-      freq_table <- append(freq_table, 0)
-      names(freq_table) <- append(ft[[1]], '<NA>')
+        freq_table <- append(freq_table, 0)
+        names(freq_table) <- append(as.character(ft[[1]]), '<NA>')
     }
     
     # Order by name if needed
-    if (order == "names" && is.factor(x[[1]])) {
+    if (order == "names" && is.factor(x.df[[1]])) {
       freq_table <- freq_table[order(names(freq_table))]
       na_pos <- which(names(freq_table) == '<NA>')
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
@@ -220,8 +229,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
     
     weights_string <- deparse(substitute(weights))
-    weights_label <- try(label(weights), silent = TRUE)
-    
+
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were ",
               "treated as zeroes.")
@@ -229,7 +237,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
     
     if (isTRUE(rescale.weights)) {
-      weights <- weights / sum(weights) * length(x)
+      weights <- weights / sum(weights) * length(x.df[[1]])
     }
     
     freq_table <- xtabs(formula = weights ~ x)
