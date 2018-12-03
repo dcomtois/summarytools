@@ -60,9 +60,11 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom matrixStats weightedMean weightedSd weightedMedian weightedMad
-#' @importFrom rapportools skewness kurtosis
+#' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
+#' @importFrom magrittr %>%
+#' @importFrom dplyr as_tibble select starts_with summarize_all
 descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
                   round.digits = st_options('round.digits'),
                   transpose = st_options('descr.transpose'), 
@@ -80,7 +82,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   }
   
   # make x a data.frame
-  x.df <- as.data.frame(x)
+  x.df <- as_tibble(x)
   
   if (!is.data.frame(x.df)) {
     stop(paste("x must be a data.frame, a tibble, a data.table or a single",
@@ -206,70 +208,73 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
 
   # No weights being used ------------------------------------------------------
   if (identical(weights, NA)) {
-    # Build skeleton for output dataframe
-    output <- data.frame(mean        = numeric(),
-                         sd          = numeric(),
-                         min         = numeric(),
-                         q1          = numeric(),
-                         med         = numeric(),
-                         q3          = numeric(),
-                         max         = numeric(),
-                         mad         = numeric(),
-                         iqr         = numeric(),
-                         cv          = numeric(),
-                         skewness    = numeric(),
-                         se.skewness = numeric(),
-                         kurtosis    = numeric(),
-                         n.valid     = numeric(),
-                         pct.valid   = numeric())
     
-    # Iterate over columns in x
-    for(i in seq_along(x.df)) {
-      
-      variable <- as.numeric(x.df[ ,i])
-      if (i == 1) {
-        n_tot <- length(variable)
-      }
-      
-      # Extract number and proportion of missing and valid values
-      if (any(c("n.valid", "pct.valid", "se.skewness") %in% stats)) {
-        n_valid <- sum(!is.na(variable))
-        p_valid <- n_valid / length(variable)
-      }
-      
-      # Calculate mean and sd if necessary
-      if (any(c("mean", "cv") %in% stats)) {
-        variable.mean <- mean(variable, na.rm = na.rm)
-      }
-      
-      if (any(c("sd", "cv") %in% stats)) {
-        variable.sd <- sd(variable, na.rm = na.rm)
-      }
-      
-      # Calculate and insert stats into output dataframe
-      output[i, ] <- 
-        c(ifelse("mean" %in% stats, variable.mean, NA),
-          ifelse("sd"   %in% stats, variable.sd, NA),
-          ifelse("min"  %in% stats, min(variable, na.rm=na.rm), NA),
-          ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, 
-                                             na.rm = na.rm, type = 2), NA),
-          ifelse("med"  %in% stats, median(variable, na.rm=na.rm), NA),
-          ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, 
-                                             na.rm = na.rm, type = 2), NA),
-          ifelse("max"  %in% stats, max(variable, na.rm=na.rm), NA),
-          ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
-          ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
-          ifelse("cv"   %in% stats, variable.sd / variable.mean, NA),
-          ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
-          ifelse("se.skewness" %in% stats,
-                 sqrt((6*n_valid*(n_valid-1)) / 
-                        ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
-          ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
-          ifelse("n.valid"     %in% stats, n_valid, NA),
-          ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
+    # Prepare the summarizing functions; there are 3 that we'll calculate 
+    # later so to not slow down the process
+    summar_funs <- funs(mean, 
+                        sd, 
+                        min, 
+                        q1 = quantile(., probs = .25, type = 2, names = FALSE),
+                        med = median,
+                        q3 = quantile(., probs = .75, type = 2, names = FALSE),
+                        max,
+                        mad,
+                        iqr = IQR,
+                        cv = -999,
+                        skewness = rapportools::skewness,
+                        se.skewness = -999,
+                        kurtosis = rapportools::kurtosis,
+                        n.valid = rapportools::nvalid,
+                        pct.valid = -999)
+    
+    summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]  
+
+    results <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm)
+
+    # Build skeleton for output dataframe
+    output <- data.frame(mean        = numeric(ncol(x.df)),
+                         sd          = numeric(ncol(x.df)),
+                         min         = numeric(ncol(x.df)),
+                         q1          = numeric(ncol(x.df)),
+                         med         = numeric(ncol(x.df)),
+                         q3          = numeric(ncol(x.df)),
+                         max         = numeric(ncol(x.df)),
+                         mad         = numeric(ncol(x.df)),
+                         iqr         = numeric(ncol(x.df)),
+                         cv          = numeric(ncol(x.df)),
+                         skewness    = numeric(ncol(x.df)),
+                         se.skewness = numeric(ncol(x.df)),
+                         kurtosis    = numeric(ncol(x.df)),
+                         n.valid     = numeric(ncol(x.df)),
+                         pct.valid   = numeric(ncol(x.df)))
+    
+    output <- output[which(names(output) %in% stats)]  
+    rownames(output) <- colnames(x.df)
+    
+    # Fill-in the output table
+    for (rname in rownames(output)) {
+      output[rname,] <- results %>% select(starts_with(rname))
     }
     
+    # Calculate additionnal stats if needed
+    if ('cv' %in% stats) {
+      output$cv <- output$sd / output$mean
+    }
+    
+    if ('se.skewness' %in% stats) {
+      output$se.skewness <- 
+        with(output, 
+             sqrt((6 * n.valid * (n.valid - 1)) / 
+                    ((n.valid - 2) * (n.valid + 1) * (n.valid + 3))))
+    }
+    
+    if ('pct.valid' %in% stats) {
+      output$pct.valid <- output$n.valid *100 / nrow(x.df)
+    }
+    
+
   } else {
+    
     # Weights being used -------------------------------------------------------
     
     # Check that weights vector has the right length
@@ -348,19 +353,22 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
           ifelse("n.valid"   %in% stats, n_valid, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
+    
+    rownames(output) <- parse_info$var_names
+    
   }
   
-  rownames(output) <- parse_info$var_names
   
   # Prepare output data -------------------------------------------------------
-  
   # Keep and order required stats from output
   output <- output[ ,stats]
   
+  
   # Make column names prettier
   cnames <- c(sd = "Std.Dev", med = "Median", mad = "MAD", iqr = "IQR", 
-              cv = "CV", se.skewness = "SE.Skewness", n.valid = "N.Valid",
-              pct.valid = "Pct.Valid")
+                cv = "CV", se.skewness = "SE.Skewness", n.valid = "N.Valid",
+                pct.valid = "Pct.Valid")
+  
   for (i in seq_along(cnames)) {
     colnames(output)[which(colnames(output) == names(cnames[i]))] <- cnames[i]
   }
@@ -389,7 +397,9 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       Variable        = ifelse("var_names" %in% names(parse_info) && 
                                  length(parse_info$var_names) == 1,
                                parse_info$var_names, NA),
-      Variable.label  = ifelse(is.atomic(x), label(x), NA),
+      Variable.label  = ifelse("var_names" %in% names(parse_info),
+                               parse_info$var_names, 
+                               ifelse(is.atomic(x), label(x), NA)),
       Weights         = ifelse(identical(weights, NA), NA,
                                sub(pattern = paste0(parse_info$df_name, "$"), 
                                    replacement = "", x = weights_string, 
@@ -401,7 +411,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       by.last         = ifelse("by_group" %in% names(parse_info), 
                                parse_info$by_last, NA),
       transposed      = transpose,
-      N.Obs           = n_tot)
+      N.Obs           = nrow(x.df))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
