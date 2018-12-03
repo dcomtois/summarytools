@@ -4,7 +4,7 @@
 \alias{freq}
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
-freq(x, round.digits = st_options("round.digits"), order = "names",
+freq(x, round.digits = st_options("round.digits"), order = "default",
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),
   justify = "default", totals = st_options("freq.totals"),
   report.nas = st_options("freq.report.nas"), missing = "",
@@ -20,7 +20,7 @@ freq(x, round.digits = st_options("round.digits"), order = "names",
 
 \item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
 non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent).}
+most frequent to less frequent). Default value is \dQuote{default}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or

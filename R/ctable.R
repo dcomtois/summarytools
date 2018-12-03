@@ -164,7 +164,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "x",
+                                 var = "x", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
                       
@@ -173,7 +173,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   }
 
   parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "y",
+                                 var = "y", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
   if (any(grepl('try-', class(parse_info_x)))) {

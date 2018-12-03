@@ -11,6 +11,8 @@
 #' @param match_call Object created using \code{match.call()}.
 #' @param var One of \dQuote{x} or \dQuote{y} (the latter being used only
 #'   in \code{\link{ctable}}).
+#' @param  max.varnames Numeric. Allows limiting the number of expected variable
+#'   names. Defaults to \code{Inf}
 #' @param silent Logical. Hide console messages. \code{FALSE} by default.
 #' 
 #' @return A list consisting of:
@@ -31,49 +33,11 @@
 #' @importFrom pryr standardise_call
 #' @importFrom utils head
 parse_args <- function(sys_calls, sys_frames, match_call, 
-                       var = "x", silent = FALSE) {
+                       var = "x", max.varnames = Inf, silent = FALSE) {
 
-  # Define regular expressions -- those will be used only when other means
-  # of identifying structures have failed.
-
-  # re1: dfname[rows,columns]
-  re1 <- 
-    paste0(
-      "([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
-      "\\[(.+)?",           # rows indexing  (2)
-      "\\s*(,)\\s*",        # comma surrounded (or not) by spaces     (3)
-      "(.*?)",              # column indexing                         (4)
-      # "((c\\(.*\\))|",    # column indexing in the form [ , c(...)] (4) (5)
-      # "(\\d+)|",          # column indexing in the form [ , 9     ] (6)
-      # "(\\d+\\:\\d+)|",   # column indexing in the form [ , 9:99  ] (7)
-      # "(\'.*\')|",        # column indexing in the form [ , 'var.name' ] (8)
-      # "(\".+\")|",        # column indexing in the form [ , "var.name" ] (9)
-      # "(\\\".+\\\"))?",   # column indexing in the form [ , "var.name" ] (10)
-      "\\s*\\]")            # end of indexing
-
-  # re2: dfname[[col]] (+ optionnal rows indexing)
-  re2 <- paste0("([\\w\\.\\_]+)",                 # data frame               (1)
-                "\\s*\\[\\[\\s*(.*)\\s*\\]\\]",   # variable number or name  (2)
-                "(\\s*\\[\\s*(.*)\\s*\\])?")      # rows indexing (opt)      (4)
-
-
-  # re3: dfname$column[rows] or dfname['column'][rows]
-  re3 <- paste0(
-    "^([\\w\\.]+)\\s*",           # data.frame name                        (1)
-    "(\\$|\\[\\'|\\[\\\")\\s*",   # column indexing chars ($ or [' or [")  (2)
-    "([\\w\\.\\_]+)",             # variable name                          (3)
-    "(\\s|\\'\\]|\\\"\\])*",      # optional closing indexing chars        (4)
-    "(\\[\\s*(.+)\\s*\\])?")      # optional row indexing             (5)  (6)
-  
-  # re4: variable[rows]
-  re4 <- paste0("\\w+",                             # variable name       (1)
-                "(\\[\\s*([a-zA-Z0-9]*?)\\s*\\])")  # rows indexing       (2)
-  
-  # valid names for dataframes
-  re5 <- "^[_a-zA-Z0-9](\\w|\\d|\\.)*$"
-  
   df_name     <- character()
   var_names   <- character()
+  var_label   <- character()
   #rows_subset <- character()
 
   by_group <- character()
@@ -199,131 +163,94 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     df_name <- grep(re5, df_name, value = TRUE)[1]
     var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
   }
-
-  # From here code applies no matter how function was called -------------------
-  skipvars <- FALSE
-  no_df    <- FALSE
-
-  # Extract call as a string
-  if (exists("by_call")) {
-    data_str <- deparse(by_call$data)
-    allnames <- all.vars(by_call$data)
-  } else {
-    data_str <- deparse(match_call[[var]])
-    allnames <- all.vars(match_call[[var]])
-  }
-
-  if (length(allnames) == 0 && length(var_names) == 0) {
-    var_names <- data_str
-    if (length(df_name) == 0) {
-      no_df <- TRUE
-    }
-  } else {
-    allnames_exist <- character()
-    for (name in allnames) {
-      if (exists(name, mode = 'character') || exists(name, mode = 'numeric') ||
-          exists(name, mode = 'list')) {
-        allnames_exist <- append(allnames_exist, name)
-      }
-    }
-    
-    if (length(df_name) == 0 && length(allnames_exist) > 0) {
-      if (is.atomic(get(allnames_exist[1]))) {
-        no_df <- TRUE
-        var_names <- allnames_exist[1]
-      } 
-    }
-  }
-
-  # Extract the dataset name (or unique variable name) if not already done
-  if (length(df_name) == 0 && !no_df) {
-    if (length(allnames_exist) > 0) {
-      if (length(allnames_exist) == 1 && is.data.frame(get(allnames_exist)))
-        df_name <- allnames_exist
-      else if (length(allnames_exist) > 1) {
-        df_index <- 
-          which(isTRUE(sapply(sapply(allnames_exist, get), is.data.frame)))
-        if (length(df_index) == 1 &&
-            is.data.frame(get(allnames_exist[df_index])))
-          df_name <- allnames_exist[df_index]
-      }
-    }
-
-    # If it fails, search for df_name using regex's
-    if (length(df_name) == 0) {
-
-      # remove what follows last '['
-      data_str_df <- sub("(.+)\\[(.*)", "\\1", data_str, perl = TRUE)
-
-      # check that structure exists and has proper class
-      if (exists(data_str_df) && any(class(get(data_str_df)) == "data.frame")) {
-        df_name <- data_str_df
-      } else {
-        getobj <- try(eval(parse(text=data_str_df)), silent = TRUE)
-        if (inherits(getobj, "try-error")) {
-          skipvars <- TRUE
+  
+  # End of special calls -------------------------------------------------------
+  
+  # regex to try and parse indexing
+  re_indexing <- 
+    paste0(
+      "^([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
+      "\\[(.+)?",           # rows indexing  (2)
+      "\\s*(\\,)\\s*",        # comma surrounded (or not) by spaces     (3)
+      "(.*?)",              # column indexing                         (4)
+      "\\s*\\]$")            # end of indexing
+  
+  
+  # re2: dfname[[col]] (+ optionnal rows indexing)
+  re_dbl_brackets <- 
+    paste0("([\\w\\.\\_]+)",                 # data frame               (1)
+           "\\s*\\[\\[\\s*(.*)\\s*\\]\\]",   # variable number or name  (2)
+           "(\\s*\\[\\s*(.*)\\s*\\])?")      # rows indexing (opt)      (4)
+  
+  if (length(df_name) == 0 ||
+      (length(var_names) == 0 && max.varnames > 0)) {
+        # From here code applies no matter how function was called -------------------
+        skipvars <- FALSE
+        no_df    <- FALSE
+        
+        # Extract call as a string
+        if (exists("by_call")) {
+          data_str <- deparse(by_call$data)
+          allnames <- all.vars(by_call$data)
         } else {
-          if (is.data.frame(getobj)) {
-            df_name <- data_str_df
-            var_names_tmp <- colnames(getobj)
+          data_str <- deparse(match_call[[var]])
+          allnames <- all.vars(match_call[[var]])
+        }
+        
+        # Look for a data frame; go up the chain of environments
+        cont <- TRUE
+        for (i in seq_along(allnames)) {
+          if (!cont)
+            break
+          for (j in seq_along(sys.frames())) {
+            check <- exists(x = allnames[i], where = j, mode = 'list')
+            if (isTRUE(check)) {
+              obj <- get(allnames[i], pos = j)
+              if (is.data.frame(obj)) {
+                df_name <- allnames[i]
+                df_label <- label(obj)
+                if (length(allnames == 1)) {
+                  # if there is column indexing, simplify it so to get df[col]
+                  if (grepl(re_indexing, data_str, perl = TRUE)) {
+                    var_names <- 
+                      colnames(obj[as.numeric(sub(re_indexing, "\\4", 
+                                                  x = data_str, perl = TRUE))])
+                    var_label <- 
+                      label(obj[eval(sub(re_indexing, "\\4", 
+                                         x = data_str, perl = TRUE))])
+                    cont <- FALSE
+                    break
+                  } else if (grepl(re_dbl_brackets, data_str, perl = TRUE)) {
+                    var_names <- 
+                      colnames(obj[as.numeric(sub(re_dbl_brackets, "\\2",
+                                                   x = data_str, perl = TRUE))])
+                    var_label <- 
+                      label(obj[as.numeric(sub(re_dbl_brackets, "\\2",
+                                                x = data_str, perl = TRUE))])
+                    cont <- FALSE
+                    break
+                  }
+                } else {
+                  tmp <- intersect(colnames(obj), allnames)
+                  if (length(tmp) > 0) {
+                    # truncate the vector var_names to the max expected
+                    length(tmp) <- min(length(tmp), max.varnames) 
+                    var_names <- tmp
+                  }
+                  var_label <- label(obj[,var_names])
+                  cont <- FALSE
+                  break
+                }
+              }
+            }
           }
         }
       }
-    }
-  }
 
-  # Remove dataframe name from by_group if df_name is present in the 
-  # by_group string and the same
-
-  if (length(by_group) == 1 && length(df_name) > 0) {
-    by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", 
-                    x = by_group, fixed = TRUE)
-  }
-
-  # Extract data frame label if any
-  if (!no_df && length(df_name) > 0 && exists(df_name) && 
-      !is.na(label(get(df_name)))) {
-  #if (!no_df && length(df_name) > 0) {
-  #} && exists(df_name) && !is.na(label(get(df_name)))) {
-    df_label <- label(get(df_name))
-  } else {
-    df_label <- character()
-  }
-
-  # Determine variables name(s) if not already done
-  if (!no_df && length(var_names) == 0 && !skipvars) {
-    if (exists("var_names_tmp")) {
-      var_names <- var_names_tmp
-    } else if (grepl("^\\w+$", data_str, perl = TRUE)) {
-      try(var_names <- colnames(eval(parse(text=data_str))), silent = TRUE)
-    } else if (grepl("^\\w+\\[.*,\\s*\\-.+\\]", data_str, perl = TRUE)) {
-      try(var_names <- colnames(eval(parse(text=data_str))), silent = TRUE)
-    } else if (grepl(re1, data_str, perl = TRUE)) {
-      # set aside row subsetting for now
-      # replacing for instance "dat[1:29,4]" with "dat[4]"
-      data_str_var <- sub(re1,"\\1[\\4]", data_str, perl = TRUE)
-      # remove brackets if subsetting is now null
-      data_str_var <- sub("\\[\\s*\\,?\\s*\\]","", data_str_var, perl = TRUE)
-      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
-    } else if (grepl(re2, data_str, perl = TRUE)) {
-      # set aside row subsetting for now
-      data_str_var <- sub(re2, "\\1[\\2]", data_str, perl = TRUE)
-      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
-    } else if (grepl(re3, data_str, perl = TRUE)) {
-      data_str_var <- sub(re3, '\\1["\\3"]', data_str, perl = TRUE)
-      try(var_names <- colnames(eval(parse(text=data_str_var))), silent = TRUE)
-    } else if (exists(data_str) && is.atomic(get(data_str))) {
-      var_names <- data_str
-    }
-
-    if (length(var_names) == 0 && !silent) {
-      message("unable to identify var names: ", data_str)
-    }
-  }
-
-  output <- list(df_name = df_name,
+      output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
+                 var_label = var_label,
                  by_group = by_group,
                  by_first = by_first,
                  by_last = by_last)

@@ -121,8 +121,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   # Parameter validation ------------------------------------------------------
   
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 
-                    silent = TRUE)
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                    max.varnames = 0), silent = TRUE)
   if (any(grepl('try-', class(parse_info)))) {
     parse_info <- list()
   }
