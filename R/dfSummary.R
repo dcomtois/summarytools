@@ -103,6 +103,7 @@
 #'
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+#' @importFrom dplyr n_distinct
 #' @export
 dfSummary <- function(x, round.digits = st_options('round.digits'), 
                       varnumbers = st_options('dfSummary.varnumbers'),
@@ -281,10 +282,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     list(Dataframe = parse_info$df_name,
          Dataframe.label = ifelse("df_label" %in% names(parse_info),
                                   parse_info$df_label, NA),
-         # Subset = ifelse("rows_subset" %in% names(parse_info),
-         #                 parse_info$rows_subset, NA),
-         Dimensions = paste(nrow(x), "x", ncol(x)),
-         Duplicates = sum(duplicated(x)))
+         Dimensions = paste(n_tot, "x", ncol(x)),
+         Duplicates = n_tot - n_distinct(x))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
