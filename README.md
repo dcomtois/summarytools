@@ -62,7 +62,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
         duplicated rows (credits to [Paul
         Feitsma](https://github.com/paulfeitsma) for the good idea)
       - UPC and EAN codes are now detected as well as sequences of
-        integers (thanks to Paul one more)
+        integers (credits to Paul F. here too)
       - barplots more accurately reflect counts as they are no more
         “stretched” to the width of the table “cells”; this allows
         comparing counts across variables
