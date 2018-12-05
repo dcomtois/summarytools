@@ -64,7 +64,7 @@
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
 #' @importFrom magrittr %>%
-#' @importFrom dplyr as_tibble select starts_with summarize_all
+#' @importFrom dplyr as_tibble funs select starts_with summarize_all
 descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
                   round.digits = st_options('round.digits'),
                   transpose = st_options('descr.transpose'), 
@@ -249,11 +249,15 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                          pct.valid   = numeric(ncol(x.df)))
     
     output <- output[which(names(output) %in% stats)]  
-    rownames(output) <- colnames(x.df)
+    rownames(output) <- parse_info$var_names
     
     # Fill-in the output table
-    for (rname in rownames(output)) {
-      output[rname,] <- results %>% select(starts_with(rname))
+    if (ncol(x.df) == 1) {
+      output[1,] <- results[1,]
+    } else {
+      for (rname in rownames(output)) {
+        output[rname,] <- results %>% select(starts_with(rname))
+      }
     }
     
     # Calculate additionnal stats if needed
@@ -272,7 +276,6 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       output$pct.valid <- output$n.valid *100 / nrow(x.df)
     }
     
-
   } else {
     
     # Weights being used -------------------------------------------------------
@@ -309,7 +312,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     n_tot <- sum(weights)
     
     for(i in seq_along(x.df)) {
-      variable <- as.numeric(x.df[ ,i])
+      variable <- as.numeric(x.df[[i]])
       
       # Extract number and proportion of missing and valid values
       if (any(c("n.valid", "pct.valid") %in% stats)) {
@@ -397,9 +400,9 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       Variable        = ifelse("var_names" %in% names(parse_info) && 
                                  length(parse_info$var_names) == 1,
                                parse_info$var_names, NA),
-      Variable.label  = ifelse("var_names" %in% names(parse_info),
-                               parse_info$var_names, 
-                               ifelse(is.atomic(x), label(x), NA)),
+      Variable.label  = ifelse("var_label" %in% names(parse_info) &&
+                                 length(parse_info$var_label) == 1,
+                               parse_info$var_label, NA),
       Weights         = ifelse(identical(weights, NA), NA,
                                sub(pattern = paste0(parse_info$df_name, "$"), 
                                    replacement = "", x = weights_string, 
