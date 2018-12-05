@@ -123,7 +123,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
                     max.varnames = 0), silent = TRUE)
-  if (any(grepl('try-', class(parse_info)))) {
+  
+  if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
 

@@ -106,7 +106,7 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
     # loop over all functions with x as argument, and store the results
     for(fun in list.id.fun) {
       value <- try(eval(call(fun,x)),silent=TRUE)
-      if(class(value)=="try-error") {
+      if(inherits(value, "try-error")) {
         next() # ignore tests that yield an error
       } else if (length(value)>1) {
         warn <- paste("!!! Logical value applies only to the first element of",

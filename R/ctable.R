@@ -72,14 +72,14 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
-    if (class(x) == "try-except") {
+    if (inherits(x, "try-error")) {
       stop("'x' argument must be a factor or an object coercible to a vector")
     }
   }
 
   if (!is.factor(y) && !is.atomic(x)) {
     y <- try(as.vector(y), silent = TRUE)
-    if (class(y) == "try-except") {
+    if (inherits(y, "try-error")) {
       stop("'y' argument must be a factor or an object coercible to a vector")
     }
   }
@@ -168,7 +168,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
                       
-  if (any(grepl('try-', class(parse_info_x)))) {
+  if (inherits(parse_info_x, "try-error")) {
     parse_info_x <- list()
   }
 
@@ -176,7 +176,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                                  var = "y", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (any(grepl('try-', class(parse_info_x)))) {
+  if (inherits(parse_info_y, "try-error")) {
     parse_info_y <- list()
   }
 

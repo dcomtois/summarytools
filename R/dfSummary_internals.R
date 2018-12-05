@@ -23,7 +23,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
                                     main=NULL, col = "grey95",
                                     border = "grey65")),
               silent = TRUE)
-    if (any(grepl('try-', class(cl)))) {
+    if (inherits(cl, "try-error")) {
       plot.new()
       text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
     }

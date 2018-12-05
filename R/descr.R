@@ -185,7 +185,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 
                     silent = TRUE)
   
-  if (any(grepl('try-', class(parse_info)))) {
+  if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
 

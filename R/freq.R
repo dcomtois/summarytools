@@ -160,7 +160,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
                     max.varnames = 1), silent = TRUE)
   
-  if (any(grepl('try-', class(parse_info)))) {
+  if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
   
@@ -168,9 +168,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
   if (is.data.frame(x)) {
     varname <- colnames(x)
     varlabel <- label(x)
-    x.df <- as_tibble(x)
   } else {
-    x.df <- as_tibble(x)
     if ("var_names" %in% names(parse_info)) {
       varname <- parse_info$var_names
     } else {
@@ -178,6 +176,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
   }
   
+  x.df <- as_tibble(x)
   colnames(x.df) <- varname
   
   # Replace NaN's by NA's (This simplifies matters a lot)
