@@ -1,5 +1,5 @@
 add_hash <- function(str, h = 4) {
-  if (isTRUE(parent.frame()$format_info$plain.ascii)) {
+  if (isTRUE(parent.frame(2)$format_info$plain.ascii)) {
     return(str)
   } else {
     if (h > 0) {
@@ -693,7 +693,7 @@ prep_descr <- function(x, method) {
   } else if ("Variable" %in% names(data_info)) {
     title_sect[[2]] <- data_info$Variable
   } else {
-    title_sect[[2]] <-""
+    title_sect[[2]] <- ""
   }
   
   if ("byvar" %in% names(data_info)) {
