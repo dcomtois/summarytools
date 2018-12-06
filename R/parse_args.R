@@ -36,10 +36,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                        var = "x", max.varnames = Inf, silent = FALSE) {
 
   df_name     <- character()
+  df_label    <- character()
   var_names   <- character()
   var_label   <- character()
   #rows_subset <- character()
-
   by_group <- character()
   by_first <- logical()
   by_last  <- logical()
@@ -184,77 +184,97 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   if (length(df_name) == 0 ||
       (length(var_names) == 0 && max.varnames > 0)) {
-        # From here code applies no matter how function was called -------------------
-        skipvars <- FALSE
-        no_df    <- FALSE
-        
-        # Extract call as a string
-        if (exists("by_call")) {
-          data_str <- deparse(by_call$data)
-          allnames <- all.vars(by_call$data)
-        } else {
-          data_str <- deparse(match_call[[var]])
-          allnames <- all.vars(match_call[[var]])
-        }
-        
-        # Look for a data frame; go up the chain of environments
-        cont <- TRUE
-        for (i in seq_along(allnames)) {
-          if (!cont)
-            break
-          for (j in seq_along(sys.frames())) {
-            check <- exists(x = allnames[i], where = j, mode = 'list')
-            if (isTRUE(check)) {
-              obj <- get(allnames[i], pos = j)
-              if (is.data.frame(obj)) {
-                df_name <- allnames[i]
-                df_label <- label(obj)
-                if (length(allnames == 1)) {
-                  # if there is column indexing, simplify it so to get df[col]
-                  if (grepl(re_indexing, data_str, perl = TRUE)) {
-                    var_names <- 
-                      colnames(obj[as.numeric(sub(re_indexing, "\\4", 
-                                                  x = data_str, perl = TRUE))])
-                    var_label <- 
-                      label(obj[eval(sub(re_indexing, "\\4", 
-                                         x = data_str, perl = TRUE))])
-                    cont <- FALSE
-                    break
-                  } else if (grepl(re_dbl_brackets, data_str, perl = TRUE)) {
-                    var_names <- 
-                      colnames(obj[as.numeric(sub(re_dbl_brackets, "\\2",
-                                                   x = data_str, perl = TRUE))])
-                    var_label <- 
-                      label(obj[as.numeric(sub(re_dbl_brackets, "\\2",
-                                                x = data_str, perl = TRUE))])
-                    cont <- FALSE
-                    break
-                  }
-                } else {
-                  tmp <- intersect(colnames(obj), allnames)
-                  if (length(tmp) > 0) {
-                    # truncate the vector var_names to the max expected
-                    length(tmp) <- min(length(tmp), max.varnames) 
-                    var_names <- tmp
-                  }
-                  var_label <- label(obj[,var_names])
-                  cont <- FALSE
-                  break
-                }
+    # From here code applies no matter how function was called -------------------
+    #skipvars <- FALSE
+    #no_df    <- FALSE
+    
+    # Extract call as a string
+    if (exists("by_call")) {
+      data_str <- deparse(by_call$data)
+      allnames <- all.vars(by_call$data)
+    } else {
+      data_str <- deparse(match_call[[var]])
+      allnames <- all.vars(match_call[[var]])
+    }
+    
+    # Look for a data frame; go up the chain of environments
+    cont <- TRUE
+    for (i in seq_along(allnames)) {
+      if (!cont)
+        break
+      for (j in seq_along(sys.frames())) {
+        check <- exists(x = allnames[i], where = j, mode = 'list')
+        if (isTRUE(check)) {
+          obj <- get(allnames[i], pos = j)
+          if (is.data.frame(obj)) {
+            df_name <- allnames[i]
+            df_label <- label(obj)
+            if (length(allnames) == 1 && max.varnames != Inf) {
+              # if there is column indexing, simplify it so to get df[col]
+              if (grepl(re_indexing, data_str, perl = TRUE)) {
+                var_names <- 
+                  colnames(obj[as.numeric(sub(re_indexing, "\\4", 
+                                              x = data_str, perl = TRUE))])
+                var_label <- 
+                  label(obj[eval(sub(re_indexing, "\\4", 
+                                     x = data_str, perl = TRUE))])
+                cont <- FALSE
+                break
+              } else if (grepl(re_dbl_brackets, data_str, perl = TRUE)) {
+                var_names <- 
+                  colnames(obj[as.numeric(sub(re_dbl_brackets, "\\2",
+                                              x = data_str, perl = TRUE))])
+                var_label <- 
+                  label(obj[as.numeric(sub(re_dbl_brackets, "\\2",
+                                           x = data_str, perl = TRUE))])
+                cont <- FALSE
+                break
               }
+            } else {
+              tmp <- intersect(colnames(obj), allnames)
+              if (length(tmp) > 0) {
+                # truncate the vector var_names to the max expected
+                length(tmp) <- min(length(tmp), max.varnames) 
+                var_names <- tmp
+              }
+              var_label <- label(obj[,var_names])
+              cont <- FALSE
+              break
             }
           }
         }
       }
-
-      output <- list(df_name = df_name,
+    }
+    
+    # No dataframe found;
+    # Look for a variable; go up the chain of environments
+    for (i in seq_along(allnames)) {
+      if (!cont)
+        break
+      for (j in seq_along(sys.frames())) {
+        check <- exists(x = allnames[i], where = j, mode = 'character') ||
+          exists(x = allnames[i], where = j, mode = 'numeric')
+        if (isTRUE(check)) {
+          obj <- get(allnames[i], pos = j)
+          if (is.atomic(obj)) {
+            var_names <- allnames[i]
+            var_label <- label(obj)
+            cont <- FALSE
+            break
+          }
+        }
+      }
+    }
+  }
+  
+  output <- list(df_name = df_name,
                  df_label = df_label,
                  var_names = var_names,
                  var_label = var_label,
                  by_group = by_group,
                  by_first = by_first,
                  by_last = by_last)
-
+  
   output <- output[which(mapply(length, output, SIMPLIFY = TRUE) > 0)]
   
   return(output)
