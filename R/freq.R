@@ -75,8 +75,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
                  headings = st_options('headings'), weights = NA, 
                  rescale.weights = FALSE, ...) {
 
-  # Parameter validation -------------------------------------------------------
-
+  # Validate arguments ---------------------------------------------------------
   if (is.data.frame(x) && ncol(x) > 1) {
     stop("x must be a vector, factor, or data frame having 1 column only")
   }
@@ -86,6 +85,20 @@ freq <- function(x, round.digits = st_options('round.digits'),
     x <- x[[1]]
   }
 
+  # Deprecated arguments
+  if ("file" %in% names(match.call())) {
+    message(paste0("'file' argument is deprecated; use with print() or view():",
+                   "print(x, file='a.html') or view(x, file='a.html')"))
+  }
+  
+  if ("omit.headings" %in% names(match.call())) {
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+                   "setting headings = ", 
+                   !isTRUE(eval(match.call()[['omit.headings']]))))
+    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
+  }
+  
+  # Other arguments
   if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
   }
@@ -99,59 +112,62 @@ freq <- function(x, round.digits = st_options('round.digits'),
   }
   
   if (!order %in% c("default", "levels", "freq", "names")) {
-   stop("'order' argument must be one of 'default', 'level', 'freq' or 'names'")
+   stop("'order' must be one of 'default', 'level', 'freq', or 'names'")
   }
 
   if (order == "levels" && !is.factor(x)) {
     stop("'order' argument can be set to 'factor' only for factors. Use 'names'
-         or 'freq', or convert object to factor.")
+         or 'freq', or convert object to factor")
   }
 
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
+  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
+    stop("'style' argument must be one of 'simple', 'grid', or 'rmarkdown'")
   }
 
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
+  if (!(plain.ascii %in% c(TRUE, FALSE))) {
     stop("'plain.ascii' argument must either TRUE or FALSE")
   }
 
-  if (!justify %in% c("left", "center", "centre", "right", "default")) {
+  justify <- switch(tolower(substring(justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    m = "center", # to allow 'middle'
+                    d = "default",
+                    r = "right")
+  
+  if (!(justify %in% c("left", "center", "centre", "right", "default"))) {
     stop("'justify' argument must be one of 'default', 'left', 'center', ",
          "or 'right'")
   }
   
-  if (!totals %in% c(TRUE, FALSE)) {
+  if (!(totals %in% c(TRUE, FALSE))) {
     stop("'totals' argument must either be TRUE or FALSE")
   }
   
-  if (!report.nas %in% c(TRUE, FALSE)) {
+  if (!(report.nas %in% c(TRUE, FALSE))) {
     stop("'report.nas' argument must either be TRUE or FALSE")
   }
   
-  if (!headings %in% c(TRUE, FALSE)) {
+  if (!(display.type %in% c(TRUE, FALSE))) {
+    stop("'display.type' argument must either be TRUE or FALSE")
+  }
+  
+  if (!(display.labels %in% c(TRUE, FALSE))) {
+    stop("'display.labels' must be either TRUE or FALSE")
+  }
+  
+  if (!(headings %in% c(TRUE, FALSE))) {
     stop("'headings' argument must either be TRUE or FALSE")
+  }
+  
+  if (!(rescale.weights %in% c(TRUE, FALSE))) {
+    stop("'rescale.weights' must be either TRUE or FALSE")
   }
   
   # When style = 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style %in% c("grid", "rmarkdown") && 
       !"plain.ascii" %in% (names(match.call()))) {
     plain.ascii <- FALSE
-  }
-
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-  
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use with print() or view():",
-                   "print(x, file='a.txt') or view(x, file='a.html')"))
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
   }
   
   # Prep work ------------------------------------------------------------------

@@ -89,6 +89,20 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                "vector, and attempted conversion failed"))
   }
   
+  # Deprecated arguments
+  if ("file" %in% names(match.call())) {
+    message(paste0("'file' argument is deprecated; use for instance ",
+                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
+  }
+  
+  if ("omit.headings" %in% names(match.call())) {
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+                   "setting headings = ", 
+                   !isTRUE(eval(match.call()[['omit.headings']]))))
+    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
+  }
+  
+  # Other arguments
   # check that all 'stats' elements are valid
   valid_stats <- 
     list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
@@ -127,7 +141,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     }
   }
   
-  if (!na.rm %in% c(TRUE, FALSE)) {
+  if (!(na.rm %in% c(TRUE, FALSE))) {
     stop("'na.rm' argument must be either TRUE or FALSE")
   }
   
@@ -135,15 +149,15 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     stop("'round.digits' argument must be numerical and >= 1")
   }
   
-  if (!transpose %in% c(TRUE, FALSE)) {
+  if (!(transpose %in% c(TRUE, FALSE))) {
     stop("'transpose' argument must be either TRUE or FALSE")
   }
   
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
+  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
     stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
   }
   
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
+  if (!(plain.ascii %in% c(TRUE, FALSE))) {
     stop("'plain.ascii' argument must be either TRUE or FALSE")
   }
   
@@ -153,30 +167,26 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                     m = "center", # to allow 'middle'
                     r = "right")
   
-  if (!justify %in% c("left", "center", "right")) {
+  if (!(justify %in% c("left", "center", "right"))) {
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
   }
   
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
+  if (!(headings %in% c(TRUE, FALSE))) {
+    stop("'display.labels' must be either TRUE or FALSE")
+  }
+  
+  if (!(display.labels %in% c(TRUE, FALSE))) {
+    stop("'display.labels' must be either TRUE or FALSE")
+  }
+
+  if (!(rescale.weights %in% c(TRUE, FALSE))) {
+    stop("'rescale.weights' must be either TRUE or FALSE")
   }
   
   # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && plain.ascii==TRUE && 
+  if (style == "rmarkdown" && plain.ascii == TRUE && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
-  }
-  
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-  
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
   }
   
   # End of arguments validation

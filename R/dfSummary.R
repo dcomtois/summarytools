@@ -120,14 +120,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
+  
   # Parameter validation ------------------------------------------------------
-  
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                    max.varnames = 0), silent = TRUE)
-  
-  if (inherits(parse_info, "try-error")) {
-    parse_info <- list()
-  }
 
   if (!is.data.frame(x)) {
     x <- try(as.data.frame(x))
@@ -141,26 +135,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   }
 
+  # Deprecated arguments  
   if ("file" %in% names(match.call())) {
     message(paste0("'file' argument is deprecated; use for instance ",
                    "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if (style=="rmarkdown") {
-    message("'rmarkdown' style not supported - using 'multiline' instead.")
-    style <- "multiline"
-  }
-  
-  if (!graph.col %in% c(TRUE, FALSE)) {
-    stop("'graph.col' must be either TRUE or FALSE.")
-  }
-  
-  if (graph.magnif <= 0) {
-    stop("'graph.magnif' must be > 0" )
-  }
-  
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
   }
 
   if ("omit.headings" %in% names(match.call())) {
@@ -170,7 +148,70 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     headings <- !isTRUE(match.call()[['omit.headings']])
   }
   
+  # Other arguments
+  if (!is.numeric(round.digits) || round.digits < 1) {
+    stop("'round.digits' argument must be numerical and >= 1")
+  }
+  
+  if (!(varnumbers %in% c(TRUE, FALSE))) {
+    stop("'varnumbers' must be either TRUE or FALSE")
+  }
+
+  if (!(labels.col %in% c(TRUE, FALSE))) {
+    stop("'labels.col' must be either TRUE or FALSE")
+  }
+  
+  if (!(valid.col %in% c(TRUE, FALSE))) {
+    stop("'valid.col' must be either TRUE or FALSE")
+  }
+
+  if (!(na.col %in% c(TRUE, FALSE))) {
+    stop("'labels.col' must be either TRUE or FALSE")
+  }
+  
+  if (!(graph.col %in% c(TRUE, FALSE))) {
+    stop("'graph.col' must be either TRUE or FALSE")
+  }
+  
+  if (graph.magnif <= 0) {
+    stop("'graph.magnif' must be > 0" )
+  }
+
+  if (style == "rmarkdown") {
+    message("'rmarkdown' style not supported - using 'multiline' instead")
+    style <- "multiline"
+  }
+  
+  if (!(plain.ascii %in% c(TRUE, FALSE))) {
+    stop("'graph.col' must be either TRUE or FALSE")
+  }
+
+  justify <- switch(tolower(substring(justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    m = "center", # to allow 'middle'
+                    r = "right")
+  
+  if (!(justify %in% c("left", "center", "right"))) {
+    stop("'justify' argument must be one of 'left', 'center', or 'right'")
+  }
+  
+  if (!(display.labels %in% c(TRUE, FALSE))) {
+    stop("'display.labels' must be either TRUE or FALSE")
+  }
+
+  if (!(trim.strings %in% c(TRUE, FALSE))) {
+    stop("'trim.strings' must be either TRUE or FALSE")
+  }
+  
   # End of arguments validation
+  
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                    max.varnames = 0), silent = TRUE)
+  
+  if (inherits(parse_info, "try-error")) {
+    parse_info <- list()
+  }
   
   # Initialize the output data frame -------------------------------------------
   

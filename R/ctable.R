@@ -84,48 +84,72 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     }
   }
 
+  # Deprecated arguments
+  if ("file" %in% names(match.call())) {
+    message(paste0("'file' argument is deprecated; use for instance ",
+                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
+  }
+  
+  if ("omit.headings" %in% names(match.call())) {
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+                   "setting headings = ", 
+                   !isTRUE(eval(match.call()$omit.headings))))
+    headings <- !isTRUE(eval(match.call()$omit.headings))
+  }
+  
+  # Other arguments
   prop <- switch(tolower(substring(prop, 1, 1)),
                  t = "Total",
                  r = "Row",
                  c = "Column",
                  n = "None")
 
-  if (!prop %in% c("Total", "Row", "Column", "None")) {
+  if (!(prop %in% c("Total", "Row", "Column", "None"))) {
     stop("invalid 'prop' argument; must be one of t, r, c, or n")
   }
 
-  if (!totals %in% c(TRUE, FALSE)) {
+  if (!(useNA %in% c("ifany", "always", "no"))) {
+    stop("'useNA' must be one of 'ifany', 'always', or 'no'")
+  }
+
+  if (!(totals %in% c(TRUE, FALSE))) {
     stop("'totals' argument must either be TRUE or FALSE")
   }
 
-  if (!headings %in% c(TRUE, FALSE)) {
-    stop("'headings' argument must either be TRUE or FALSE")
+  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
+    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
   }
   
   if (!is.numeric(round.digits) || round.digits < 1) {
     stop("'round.digits' argument must be numerical and >= 1")
   }
-
-  if (!useNA %in% c("ifany", "always", "no")) {
-    stop("'useNA' must be one of 'ifany', 'always', or 'no'")
-  }
-
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
-  }
-
+  
   justify <- switch(tolower(substring(justify, 1, 1)),
                     l = "left",
                     c = "center",
                     r = "right")
 
-  if (!justify %in% c("left", "center", "right")) {
+  if (!(justify %in% c("left", "center", "right"))) {
     stop("'justify' argument must be one of 'left', 'center' or 'right'")
   }
+
+  if (!(plain.ascii %in% c(TRUE, FALSE))) {
+    stop("'plain.ascii' argument must either TRUE or FALSE")
+  }
+  
+  if (!(headings %in% c(TRUE, FALSE))) {
+    stop("'headings' argument must either be TRUE or FALSE")
+  }
+  
+  if (!(display.labels %in% c(TRUE, FALSE))) {
+    stop("'display.labels' must be either TRUE or FALSE")
+  }
+  
+  if (!is.atomic(dnn) || !(length(dnn) == 2)) {
+    stop("'dnn' must be a vector of size 2")
+  }
+
+  # End of arguments validation
 
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && isTRUE(plain.ascii) && 
@@ -133,10 +157,6 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     plain.ascii <- FALSE
   }
 
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-  
   # Replace NaN's by NA's (This simplifies matters a lot)
   if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA in x\n"))
@@ -148,19 +168,6 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     y[is.nan(y)] <- NA
   }
 
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()$omit.headings))))
-    headings <- !isTRUE(eval(match.call()$omit.headings))
-  }
-  
-  # End of arguments validation
   
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
