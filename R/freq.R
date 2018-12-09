@@ -76,8 +76,19 @@ freq <- function(x, round.digits = st_options('round.digits'),
                  rescale.weights = FALSE, ...) {
 
   # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
+  
   if (is.data.frame(x) && ncol(x) > 1) {
-    stop("x must be a vector, factor, or data frame having 1 column only")
+    errmsg %+=% "x must be a vector, factor, or data frame having 1 column only"
+  }
+  
+  else if (is.data.frame(x) && ncol(x) == 1) {
+    x.df <- as_tibble(x)
+    x <- x[[1]]
+  }
+  
+  if (is.data.frame(x) && ncol(x) > 1) {
+    errmsg %+=% "x must be a vector, factor, or data frame having 1 column only"
   }
   
   else if (is.data.frame(x) && ncol(x) == 1) {
@@ -85,83 +96,10 @@ freq <- function(x, round.digits = st_options('round.digits'),
     x <- x[[1]]
   }
 
-  # Deprecated arguments
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use with print() or view():",
-                   "print(x, file='a.html') or view(x, file='a.html')"))
-  }
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
   
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
-  }
-  
-  # Other arguments
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-
-  if ('order' %in% names(match.call())) {
-    order <- switch(tolower(substring(order, 1, 1)),
-                    d = "default",
-                    l = "levels",
-                    f = "freq",
-                    n = "names")
-  }
-  
-  if (!order %in% c("default", "levels", "freq", "names")) {
-   stop("'order' must be one of 'default', 'level', 'freq', or 'names'")
-  }
-
-  if (order == "levels" && !is.factor(x)) {
-    stop("'order' argument can be set to 'factor' only for factors. Use 'names'
-         or 'freq', or convert object to factor")
-  }
-
-  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
-    stop("'style' argument must be one of 'simple', 'grid', or 'rmarkdown'")
-  }
-
-  if (!(plain.ascii %in% c(TRUE, FALSE))) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
-  }
-
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    m = "center", # to allow 'middle'
-                    d = "default",
-                    r = "right")
-  
-  if (!(justify %in% c("left", "center", "centre", "right", "default"))) {
-    stop("'justify' argument must be one of 'default', 'left', 'center', ",
-         "or 'right'")
-  }
-  
-  if (!(totals %in% c(TRUE, FALSE))) {
-    stop("'totals' argument must either be TRUE or FALSE")
-  }
-  
-  if (!(report.nas %in% c(TRUE, FALSE))) {
-    stop("'report.nas' argument must either be TRUE or FALSE")
-  }
-  
-  if (!(display.type %in% c(TRUE, FALSE))) {
-    stop("'display.type' argument must either be TRUE or FALSE")
-  }
-  
-  if (!(display.labels %in% c(TRUE, FALSE))) {
-    stop("'display.labels' must be either TRUE or FALSE")
-  }
-  
-  if (!(headings %in% c(TRUE, FALSE))) {
-    stop("'headings' argument must either be TRUE or FALSE")
-  }
-  
-  if (!(rescale.weights %in% c(TRUE, FALSE))) {
-    stop("'rescale.weights' must be either TRUE or FALSE")
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
   # When style = 'rmarkdown', make plain.ascii FALSE unless specified explicitly

@@ -120,94 +120,32 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
-  
-  # Parameter validation ------------------------------------------------------
 
+  # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
+  
   if (!is.data.frame(x)) {
     x <- try(as.data.frame(x))
 
     if (inherits(x, "try-error")) {
-      stop("x is not a data frame and attempted conversion failed")
+      errmsg %+=% paste(deparse(substitute(x)),
+                        "is not coercible to a data frame")
+    } else {
+      message(deparse(substitute(x)), " was converted to a data frame")
     }
-
-    message("x was converted to a data frame")
-    parse_info$df_name <- parse_info$var_name
-
+    #parse_info$df_name <- parse_info$var_name 
+    # TODO: test the use of a single vector passed to dfSummary
   }
 
-  # Deprecated arguments  
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings';",
-                   "setting headings = ", 
-                   !isTRUE(match.call()[['omit.headings']])))
-    headings <- !isTRUE(match.call()[['omit.headings']])
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
-  # Other arguments
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-  
-  if (!(varnumbers %in% c(TRUE, FALSE))) {
-    stop("'varnumbers' must be either TRUE or FALSE")
-  }
-
-  if (!(labels.col %in% c(TRUE, FALSE))) {
-    stop("'labels.col' must be either TRUE or FALSE")
-  }
-  
-  if (!(valid.col %in% c(TRUE, FALSE))) {
-    stop("'valid.col' must be either TRUE or FALSE")
-  }
-
-  if (!(na.col %in% c(TRUE, FALSE))) {
-    stop("'labels.col' must be either TRUE or FALSE")
-  }
-  
-  if (!(graph.col %in% c(TRUE, FALSE))) {
-    stop("'graph.col' must be either TRUE or FALSE")
-  }
-  
-  if (graph.magnif <= 0) {
-    stop("'graph.magnif' must be > 0" )
-  }
-
-  if (style == "rmarkdown") {
-    message("'rmarkdown' style not supported - using 'multiline' instead")
-    style <- "multiline"
-  }
-  
-  if (!(plain.ascii %in% c(TRUE, FALSE))) {
-    stop("'graph.col' must be either TRUE or FALSE")
-  }
-
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    m = "center", # to allow 'middle'
-                    r = "right")
-  
-  if (!(justify %in% c("left", "center", "right"))) {
-    stop("'justify' argument must be one of 'left', 'center', or 'right'")
-  }
-  
-  if (!(display.labels %in% c(TRUE, FALSE))) {
-    stop("'display.labels' must be either TRUE or FALSE")
-  }
-
-  if (!(trim.strings %in% c(TRUE, FALSE))) {
-    stop("'trim.strings' must be either TRUE or FALSE")
-  }
-  
-  # End of arguments validation
-  
+  # Get info on x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                    max.varnames = 0), silent = TRUE)
+                               max.varnames = 0), silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()

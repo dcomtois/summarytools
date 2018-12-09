@@ -19,6 +19,12 @@ st_options(option = NULL, value = NULL, style = "simple",
 \item{option}{option(s) name(s) to query (optional). Can be a single string
 or a vector of strings to query multiple values.}
 
+\item{value}{the value you wish to assign to the option specified in the
+first argument. This is for backward-compatibility, as all options can now 
+be set via their own parameter. That is, instead of 
+\code{st_options('plain.ascii', FALSE))}, use
+\code{st_options(plain.ascii = FALSE)}.}
+
 \item{style}{Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
@@ -97,12 +103,6 @@ default.}
 \code{1}.}
 
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
-
-\item{the}{value you wish to assign to the option specified in the first
-argument. This is for backward-compatibility, as all options can now be set
-via their own parameter. That is, instead of 
-\code{st_options('plain.ascii', FALSE))}, it is more practical to use
-\code{st_options(plain.ascii = FALSE)}.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To

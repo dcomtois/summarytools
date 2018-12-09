@@ -76,120 +76,63 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
                   ...) {
   
   # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
   
   if (is.atomic(x) && !is.numeric(x)) {
-    stop("x is not numerical")
+    errmsg %+=% "'x' must be numeric"
   }
-  
   # make x a data.frame
   x.df <- as_tibble(x)
   
   if (!is.data.frame(x.df)) {
-    stop(paste("x must be a data.frame, a tibble, a data.table or a single",
-               "vector, and attempted conversion failed"))
+    errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
+                      "a data.table; attempted conversion to tibble failed")
   }
   
-  # Deprecated arguments
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
   
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
-  }
-  
-  # Other arguments
-  # check that all 'stats' elements are valid
-  valid_stats <- 
-    list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
-                     "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                     "n.valid", "pct.valid"),
-         wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-                  "n.valid", "pct.valid"))
-  
+  valid_stats <- list(
+    no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+                "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+                "n.valid", "pct.valid"),
+    wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+             "n.valid", "pct.valid")
+  )
   if (identical(stats,"all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
-  
   } else if (identical(stats, "fivenum")) {
-    
     if (!identical(weights, NA)) {
-      stop("fivenum is not supported when weights are used")
+      errmsg %+=% "fivenum is not supported when weights are used"
     }
-    
     stats <- c("min", "q1", "med", "mean", "q3", "max")
-    
   } else if (identical(stats, "common")) {
-    
     stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
-    
   } else {
-    
     stats <- tolower(stats)
     invalid_stats <- 
       setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
-    
     if (length(invalid_stats) > 0) {
-      stop("valid stats are: ", 
-           paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], 
-                 collapse = ", "),
-           "\n  The following statistics are not recognized, or not allowed: ",
-           paste(invalid_stats, collapse = ", "))
+      errmsg %+-% 
+        paste("valid stats are: ", 
+              paste(
+                dQuote(valid_stats[[2 - as.numeric(identical(weights, NA))]]), 
+                sep = ", "
+              ), 
+              ";\n  following statistics are not recognized, or not allowed: ",
+              paste(dQuote(invalid_stats), collapse = ", ")
+              )
     }
   }
   
-  if (!(na.rm %in% c(TRUE, FALSE))) {
-    stop("'na.rm' argument must be either TRUE or FALSE")
-  }
-  
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-  
-  if (!(transpose %in% c(TRUE, FALSE))) {
-    stop("'transpose' argument must be either TRUE or FALSE")
-  }
-  
-  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-  
-  if (!(plain.ascii %in% c(TRUE, FALSE))) {
-    stop("'plain.ascii' argument must be either TRUE or FALSE")
-  }
-  
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    m = "center", # to allow 'middle'
-                    r = "right")
-  
-  if (!(justify %in% c("left", "center", "right"))) {
-    stop("'justify' argument must be one of 'left', 'center' or 'right'")
-  }
-  
-  if (!(headings %in% c(TRUE, FALSE))) {
-    stop("'display.labels' must be either TRUE or FALSE")
-  }
-  
-  if (!(display.labels %in% c(TRUE, FALSE))) {
-    stop("'display.labels' must be either TRUE or FALSE")
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
 
-  if (!(rescale.weights %in% c(TRUE, FALSE))) {
-    stop("'rescale.weights' must be either TRUE or FALSE")
-  }
-  
-  # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style == "rmarkdown" && plain.ascii == TRUE && 
+  # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
+  if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
-  
-  # End of arguments validation
   
   # Get info about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 

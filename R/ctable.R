@@ -68,89 +68,29 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
 
-  # Parameter validation -------------------------------------------------------
+  # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
   
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
     if (inherits(x, "try-error")) {
-      stop("'x' argument must be a factor or an object coercible to a vector")
+      errmsg %+=% "'x' must be a factor or an object coercible to a vector"
     }
   }
 
   if (!is.factor(y) && !is.atomic(x)) {
     y <- try(as.vector(y), silent = TRUE)
     if (inherits(y, "try-error")) {
-      stop("'y' argument must be a factor or an object coercible to a vector")
+      errmsg %+=%  "'y' must be a factor or an object coercible to a vector"
     }
   }
 
-  # Deprecated arguments
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()$omit.headings))))
-    headings <- !isTRUE(eval(match.call()$omit.headings))
-  }
-  
-  # Other arguments
-  prop <- switch(tolower(substring(prop, 1, 1)),
-                 t = "Total",
-                 r = "Row",
-                 c = "Column",
-                 n = "None")
-
-  if (!(prop %in% c("Total", "Row", "Column", "None"))) {
-    stop("invalid 'prop' argument; must be one of t, r, c, or n")
-  }
-
-  if (!(useNA %in% c("ifany", "always", "no"))) {
-    stop("'useNA' must be one of 'ifany', 'always', or 'no'")
-  }
-
-  if (!(totals %in% c(TRUE, FALSE))) {
-    stop("'totals' argument must either be TRUE or FALSE")
-  }
-
-  if (!(style %in% c("simple", "grid", "rmarkdown"))) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-  
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-  
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    r = "right")
-
-  if (!(justify %in% c("left", "center", "right"))) {
-    stop("'justify' argument must be one of 'left', 'center' or 'right'")
-  }
-
-  if (!(plain.ascii %in% c(TRUE, FALSE))) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
-  }
-  
-  if (!(headings %in% c(TRUE, FALSE))) {
-    stop("'headings' argument must either be TRUE or FALSE")
-  }
-  
-  if (!(display.labels %in% c(TRUE, FALSE))) {
-    stop("'display.labels' must be either TRUE or FALSE")
-  }
-  
-  if (!is.atomic(dnn) || !(length(dnn) == 2)) {
-    stop("'dnn' must be a vector of size 2")
-  }
-
-  # End of arguments validation
-
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
@@ -168,7 +108,6 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     y[is.nan(y)] <- NA
   }
 
-  
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
                                  var = "x", max.varnames = 1,
@@ -189,7 +128,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   if (length(parse_info_x$df_name) == 1 &&
       length(parse_info_y$df_name) == 1 &&
-      parse_info_x$df_name == parse_info_y$df_name) {
+      isTRUE(parse_info_x$df_name == parse_info_y$df_name)) {
     df_name <- parse_info_x$df_name
   }
   
@@ -203,7 +142,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   if (length(parse_info_x$df_label) == 1 &&
       length(parse_info_y$df_label) == 1 &&
-      parse_info_x$df_label == parse_info_y$df_label) {
+      isTRUE(parse_info_x$df_label == parse_info_y$df_label)) {
     df_label <- parse_info_x$df_label
   }
 
