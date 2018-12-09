@@ -99,8 +99,11 @@ The following additional arguments can be used to override
      \item \code{justify}
      \item \code{headings}
      \item \code{display.labels}
+     \item \code{varnumbers}    (\code{\link{dfSummary}} objects)
      \item \code{labels.col}    (\code{\link{dfSummary}} objects)
      \item \code{graph.col}     (\code{\link{dfSummary}} objects)
+     \item \code{valid.col}     (\code{\link{dfSummary}} objects)
+     \item \code{na.col}         (\code{\link{dfSummary}} objects)
      \item \code{split.tables}
      \item \code{report.nas}    (\code{\link{freq}} objects)
      \item \code{display.type}  (\code{\link{freq}} objects)
