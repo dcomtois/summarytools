@@ -206,7 +206,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
-  attr(output, "proportions") <- prop
+  #attr(output, "proportions") <- prop
   attr(output, "date") <- Sys.Date()
 
   data_info <-
@@ -216,7 +216,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-         Row.x.Col          = paste(x_name, y_name, sep = " * "))
+         Row.x.Col          = paste(x_name, y_name, sep = " * "),
+         Proportions        = prop)
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
