@@ -20,54 +20,7 @@ prep_descr <- function(x, method) {
   
   if(method=="pander") {
     
-    # descr object, pander method ----------------------------------------------
-    
-    main_sect    <- list()
-    to_append <- list()
-    
-    if (isTRUE(format_info$group.only) ||
-        ("by.first" %in% names(data_info) && 
-         (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-      to_append <- add_head_element(list(c("Group", "Group"),
-                                         c("N.Obs", "N")),
-                                    h = 0)
-    } else {
-      
-      if (isTRUE(format_info$headings)) {
-        main_sect[[1]] <- add_hash(title_sect[[1]], 3)
-        
-        if (title_sect[[2]] != "") {
-          if (isTRUE(format_info$plain.ascii)) {
-            main_sect[[length(main_sect) + 1]] <- 
-              paste0("\n", title_sect[[2]], "  ")
-          } else {
-            main_sect[[length(main_sect) + 1]] <- 
-              paste0("\n**Variable:** ", title_sect[[2]], "  ")
-          }
-        }
-        
-        if ("Variable" %in% names(data_info)) {
-          to_append <- add_head_element(list(c("Variable.label", "Label"),
-                                             c("Weights", "Weights"),
-                                             c("Group", "Group"),
-                                             c("N.Obs", "N")),
-                                        h = 0)
-          
-        } else {
-          to_append <- add_head_element(list(c("Dataframe", "Data Frame"),
-                                             c("Dataframe.label", "Label"),
-                                             c("Weights", "Weights"),
-                                             c("Group", "Group"),
-                                             c("N.Obs", "N")),
-                                        h = 0)
-        }
-      }
-    }
-    
-    if (!identical(to_append, list())) {
-      main_sect <- append(main_sect, to_append)
-    }
-    
+    # descr -- pander method ---------------------------------------------------
     # Format numbers (avoids inconsistencies with pander rounding digits)
     x <- format(round(x, format_info$round.digits),
                 nsmall = format_info$round.digits)
@@ -77,6 +30,8 @@ prep_descr <- function(x, method) {
                                split.tables = format_info$split.tables,
                                justify      = justify),
                           attr("x", "user_fmt"))
+
+    main_sect <- build_heading_pander(format_info, data_info)  
     
     main_sect[[length(main_sect) + 1]] <-
       paste(
@@ -92,11 +47,11 @@ prep_descr <- function(x, method) {
         gsub("\\|","\\\\|", main_sect[[length(main_sect) - 2]])
     }
     
-    return(list(title_sect = title_sect, main_sect = main_sect))
+    return(main_sect)
     
   } else {
     
-    # descr objects - method viewer / browser / render -------------------------
+    # descr -- html method -----------------------------------------------------
     
     if ("byvar" %in% names(data_info) && !data_info$transpose) {
       table_head <- list()
@@ -205,52 +160,17 @@ prep_descr <- function(x, method) {
                              x = descr_table_html,
                              perl = TRUE)
     
-    div_list  <- list()
-    to_append <- list()
-    
-    if (isTRUE(format_info$group.only) ||
-        ("by.first" %in% names(data_info) && 
-         (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-      
-      to_append <- add_head_element(list(c("Group", "Group"),
-                                         c("N.Obs", "N")),
-                                    h = 0)
-    } else {
-      
-      if (isTRUE(format_info$headings)) {
-        
-        div_list[[1]] <- h3(title_sect[[1]])
-        
-        if (title_sect[[2]] != "") {
-          div_list[[2]] <- h4(title_sect[[2]])
-        }
-        
-        if ("Variable" %in% names(data_info)) {
-          to_append <- add_head_element(list(c("Variable.label", "Label"),
-                                             c("Weights", "Weights"),
-                                             c("Group", "Group"),
-                                             c("N.Obs", "N")),
-                                        h = 0)
-        } else {
-          to_append <- add_head_element(list(c("Dataframe", "Data Frame"),
-                                             c("Dataframe.label", "Label"),
-                                             c("Weights", "Weights"),
-                                             c("Group", "Group"),
-                                             c("N.Obs", "N")),
-                                        h = 0)
-        }
-      }
+    # Prepare the main "div" for the html report
+    div_list <- build_heading_html(format_info, data_info, method)
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
     }
-    
-    if (!identical(to_append, list())) {
-      div_list[[length(div_list) + 1]] <- to_append
-    }
-    
     div_list[[length(div_list) + 1]] <- HTML(text = descr_table_html)
-    
+   
     if (parent.frame()$footnote != "") {
       div_list[[length(div_list) + 1]] <- HTML(text = parent.frame()$footnote)
     }
   }
-  return(list(title_sect = title_sect, div_list = div_list))
+  return(div_list)
 }
