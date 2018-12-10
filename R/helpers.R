@@ -12,8 +12,17 @@ smart_split <- function(str, maxlen) {
   paste(groups, collapse = "<br/>")
 }
 
-# Shortcut (infix) function used for appending messages to the errmsg vector
+# infix to simplify append()ing 
+#' @keywords internal
 `%+=%` <- function(x, y) {
   assign(x = deparse(substitute(x)), value = append(x, y), 
          envir = parent.frame())
+}
+
+# Remove quotation marks inside a string
+#' @keywords internal
+unquote <- function(x) {
+  x <- sub("^\\'(.+)\\'$", '\\1', x)
+  x <- sub('^\\"(.+)\\"$', '\\1', x)
+  x
 }

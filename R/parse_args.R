@@ -170,9 +170,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   re_indexing <- 
     paste0(
       "^([\\w\\.\\_]+)\\s*", # normally, data frame name (1)
-      "\\[(.+)?",           # rows indexing  (2)
-      "\\s*(\\,)\\s*",        # comma surrounded (or not) by spaces     (3)
-      "(.*?)",              # column indexing                         (4)
+      "\\[(.+)?",            # rows indexing  (2)
+      "\\s*(\\,)\\s*",       # comma surrounded (or not) by spaces     (3)
+      "(.*?)",               # column indexing                         (4)
       "\\s*\\]$")            # end of indexing
   
   
@@ -184,7 +184,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   if (length(df_name) == 0 ||
       (length(var_names) == 0 && max.varnames > 0)) {
-    # From here code applies no matter how function was called -------------------
+    # From here code applies no matter how function was called -----------------
     #skipvars <- FALSE
     #no_df    <- FALSE
     
@@ -221,12 +221,17 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                 cont <- FALSE
                 break
               } else if (grepl(re_dbl_brackets, data_str, perl = TRUE)) {
-                var_names <- 
-                  colnames(obj[as.numeric(sub(re_dbl_brackets, "\\2",
-                                              x = data_str, perl = TRUE))])
-                var_label <- 
-                  label(obj[as.numeric(sub(re_dbl_brackets, "\\2",
-                                           x = data_str, perl = TRUE))])
+                # try to convert to numeric what's inside the dbl brackets
+                tmp_content <- unquote(sub(re_dbl_brackets, "\\2", 
+                                           x = data_str, perl = TRUE))
+                varnum <- suppressWarnings(as.numeric(tmp_content))
+                if (is.na(varnum)) {
+                  var_names <- colnames(obj[tmp_content])
+                  var_label <- label(obj[tmp_content])
+                } else {
+                  var_names <- colnames(obj[as.numeric(tmp_content)])
+                  var_label <- label(obj[as.numeric(tmp_content)])
+                }
                 cont <- FALSE
                 break
               }
@@ -247,20 +252,22 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
     
     # No dataframe found;
-    # Look for a variable; go up the chain of environments
-    for (i in seq_along(allnames)) {
-      if (!cont)
-        break
-      for (j in seq_along(sys.frames())) {
-        check <- exists(x = allnames[i], where = j, mode = 'character') ||
-          exists(x = allnames[i], where = j, mode = 'numeric')
-        if (isTRUE(check)) {
-          obj <- get(allnames[i], pos = j)
-          if (is.atomic(obj)) {
-            var_names <- allnames[i]
-            var_label <- label(obj)
-            cont <- FALSE
-            break
+    if (length(df_name) == 0) {
+      # Look for a variable; go up the chain of environments
+      for (i in seq_along(allnames)) {
+        if (!cont)
+          break
+        for (j in seq_along(sys.frames())) {
+          check <- exists(x = allnames[i], where = j, mode = 'character') ||
+            exists(x = allnames[i], where = j, mode = 'numeric')
+          if (isTRUE(check)) {
+            obj <- get(allnames[i], pos = j)
+            if (is.atomic(obj)) {
+              var_names <- allnames[i]
+              var_label <- label(obj)
+              cont <- FALSE
+              break
+            }
           }
         }
       }
@@ -277,5 +284,5 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   output <- output[which(mapply(length, output, SIMPLIFY = TRUE) > 0)]
   
-  return(output)
+  return(output[!is.na(output)])
 }
