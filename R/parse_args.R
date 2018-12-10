@@ -48,10 +48,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   by_pos     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
   tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
   with_pos   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
+  lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
 
   #lapply_first <- logical()
   #lapply_last  <- logical()
-  lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
 
 
   # List of classes accepted as "data frames"
@@ -157,11 +157,13 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # Function was called through lapply() ---------------------------------------
 
-  if (length(lapply_pos) == 1 && lapply_pos == 1) {
-    lapply_call <- as.list(standardise_call(sys_calls[[1]]))
-    df_name <- as.character(lapply_call$X)
-    df_name <- grep(re5, df_name, value = TRUE)[1]
-    var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
+  if (length(lapply_pos) == 1) {
+    lapply_call <- as.list(standardise_call(sys_calls[[lapply_pos]]))
+    df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
+    var_names <- names(sys_frames[[lapply_pos]]$X)[sys_frames[[lapply_pos]]$i]
+    
+    df_label <- label(eval(lapply_call$X))
+    var_label <- label(eval(lapply_call$X)[[var_names]])
   }
   
   # End of special calls -------------------------------------------------------
