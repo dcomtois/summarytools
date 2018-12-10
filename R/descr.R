@@ -157,8 +157,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   # No weights being used ------------------------------------------------------
   if (identical(weights, NA)) {
     
-    # Prepare the summarizing functions; there are 3 that we'll calculate 
-    # later so to not slow down the process
+    # Prepare the summarizing functions for dplyr::summarize; there are 3 stats
+    # that will be calculated later on so to not slow down the function
     summar_funs <- funs(mean, 
                         sd, 
                         min, 
