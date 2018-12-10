@@ -17,7 +17,7 @@ prep_freq <- function(x, method) {
   
   if(method=="pander") {
     
-    # freq -- pander section ---------------------------------------------------
+    # freq -- pander method ----------------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "centre",
@@ -49,7 +49,7 @@ prep_freq <- function(x, method) {
                                     x = row.names(freq_table), perl = TRUE)
     }
     
-    # set encoding to native to allow proper of accentuated characters
+    # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
       row.names(freq_table) <- enc2native(row.names(freq_table))
     }
@@ -79,7 +79,7 @@ prep_freq <- function(x, method) {
     
   } else {
     
-    # freq -- html section -----------------------------------------------------
+    # freq -- html method ------------------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "center",
@@ -174,7 +174,10 @@ prep_freq <- function(x, method) {
     
     # Prepare the main "div" for the html report
     div_list <- build_heading_html(format_info, data_info, method)
-    div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
+    }
     div_list[[length(div_list) + 1]] <- HTML(text = freq_table_html)
     
     if (parent.frame()$footnote != "") {
