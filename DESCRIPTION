@@ -11,6 +11,8 @@ Description: Data frame summaries, cross-tabulations,
   point-of-entry for exploring data, both for experienced
   and new R users.
 Imports:
+  checkmate,
+  dplyr,
   grDevices,
   htmltools,
   lubridate,
@@ -20,6 +22,7 @@ Imports:
   pryr,
   rapportools,
   RCurl,
+  tidyr,
   utils
 Suggests:
   rstudioapi,
