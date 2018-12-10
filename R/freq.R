@@ -63,8 +63,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-#' @importFrom magrittr %>%
-#' @importFrom dplyr as_tibble count
+#' @importFrom dplyr %>% as_tibble count
 freq <- function(x, round.digits = st_options('round.digits'), 
                  order = "default", style = st_options('style'), 
                  plain.ascii = st_options('plain.ascii'), 
