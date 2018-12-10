@@ -7,6 +7,12 @@
 # Initialize list used by view() when printing an object of class "by"
 .st_env$byInfo <- list()
 
+# Initialise message to be displayed in some specific circumstances
+.st_env$last.message <- list(msg = "", time = 0)
+
+# To avoid warning on check
+utils::globalVariables(c("."))
+
 # summarytools global options
 .onLoad <- function(libname, pkgname) {
   st.options <- list('style'                  = 'simple',
@@ -42,8 +48,9 @@
 }
 
 #' @importFrom utils packageDate
+#' @importFrom pander panderOptions
 .onAttach <- function(libname, pkgname) {
-  pander::panderOptions("knitr.auto.asis", FALSE)
+  #panderOptions("knitr.auto.asis", FALSE)
   if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
     packageStartupMessage("For best results, consider updating pander to its ",
                           "most recent version with ",

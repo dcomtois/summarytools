@@ -6,10 +6,10 @@
 #'
 #' @param option option(s) name(s) to query (optional). Can be a single string
 #'   or a vector of strings to query multiple values.
-#' @param the value you wish to assign to the option specified in the first
-#'   argument. This is for backward-compatibility, as all options can now be set
-#'   via their own parameter. That is, instead of 
-#'   \code{st_options('plain.ascii', FALSE))}, it is more practical to use
+#' @param value the value you wish to assign to the option specified in the
+#'   first argument. This is for backward-compatibility, as all options can now 
+#'   be set via their own parameter. That is, instead of 
+#'   \code{st_options('plain.ascii', FALSE))}, use
 #'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
@@ -96,11 +96,18 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
   
   allOpts <- getOption('summarytools')
   
+  
+  # Validate arguments
   mc <- match.call()
+  errmsg <- check_arguments_st_options(mc = mc, errmsg = character())
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "), "\n No options have been modified")
+  }
   
   if (omit.headings %in% names(mc)) {
-    message("'omit.headings' will be deprecated in future releases. ",
-            "Use 'headings' instead")
+    message("'omit.headings' will disappear in future releases; ",
+            "use 'headings' instead")
   }
   
   # Querying all
@@ -113,8 +120,6 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     # Check that option is among the existing ones
     for (o in option) {
       if (!o %in% c(names(allOpts), 'omit.headings')) {
-        message('Available options: ', paste(names(allOpts), collapse = ", "))
-        print(o)
         stop('Option ', o, 'not recognized / not available')
       }
     }
@@ -165,10 +170,10 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
   }
 
   # Legacy way of setting of options
-  if (length(names(mc)) == 3 && identical(sort(names(mc)), 
-                                          c("", "option", "value"))) {
+  if (length(names(mc)) == 3 && 
+      identical(sort(names(mc)), c("", "option", "value"))) {
     if (length(option) > 1) {
-      stop("Cannot set more than one option at a time in the legacy way.",
+      stop("Cannot set more than one option at a time in the legacy way; ",
            "Use separate arguments for each option instead")
     }
     if (option == 'omit.headings') {
@@ -176,7 +181,6 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
               "'headings' to ", !isTRUE(value))
       allOpts[['headings']] <- !isTRUE(value)
     } else if (!option %in% names(allOpts)) {
-      message('Available options:', paste(names(allOpts), collapse = ", "))
       stop('Option ', option, 'not recognized / not available')
     } else {
       allOpts[[option]] <- value

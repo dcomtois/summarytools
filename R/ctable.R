@@ -68,75 +68,35 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
 
-  # Parameter validation -------------------------------------------------------
+  # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
   
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
-    if (class(x) == "try-except") {
-      stop("'x' argument must be a factor or an object coercible to a vector")
+    if (inherits(x, "try-error")) {
+      errmsg %+=% "'x' must be a factor or an object coercible to a vector"
     }
   }
 
   if (!is.factor(y) && !is.atomic(x)) {
     y <- try(as.vector(y), silent = TRUE)
-    if (class(y) == "try-except") {
-      stop("'y' argument must be a factor or an object coercible to a vector")
+    if (inherits(y, "try-error")) {
+      errmsg %+=%  "'y' must be a factor or an object coercible to a vector"
     }
   }
 
-  prop <- switch(tolower(substring(prop, 1, 1)),
-                 t = "Total",
-                 r = "Row",
-                 c = "Column",
-                 n = "None")
-
-  if (!prop %in% c("Total", "Row", "Column", "None")) {
-    stop("invalid 'prop' argument; must be one of t, r, c, or n")
-  }
-
-  if (!totals %in% c(TRUE, FALSE)) {
-    stop("'totals' argument must either be TRUE or FALSE")
-  }
-
-  if (!headings %in% c(TRUE, FALSE)) {
-    stop("'headings' argument must either be TRUE or FALSE")
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-
-  if (!useNA %in% c("ifany", "always", "no")) {
-    stop("'useNA' must be one of 'ifany', 'always', or 'no'")
-  }
-
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
-  }
-
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    r = "right")
-
-  if (!justify %in% c("left", "center", "right")) {
-    stop("'justify' argument must be one of 'left', 'center' or 'right'")
-  }
-
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
 
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-  
   # Replace NaN's by NA's (This simplifies matters a lot)
   if (NaN %in% x)  {
     message(paste(sum(is.nan(x)), "NaN value(s) converted to NA in x\n"))
@@ -148,41 +108,27 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     y[is.nan(y)] <- NA
   }
 
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()$omit.headings))))
-    headings <- !isTRUE(eval(match.call()$omit.headings))
-  }
-  
-  # End of arguments validation
-  
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "x",
+                                 var = "x", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
                       
-  if (any(grepl('try-', class(parse_info_x)))) {
+  if (inherits(parse_info_x, "try-error")) {
     parse_info_x <- list()
   }
 
   parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "y",
+                                 var = "y", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
-  if (any(grepl('try-', class(parse_info_x)))) {
+  if (inherits(parse_info_y, "try-error")) {
     parse_info_y <- list()
   }
 
   if (length(parse_info_x$df_name) == 1 &&
       length(parse_info_y$df_name) == 1 &&
-      parse_info_x$df_name == parse_info_y$df_name) {
+      isTRUE(parse_info_x$df_name == parse_info_y$df_name)) {
     df_name <- parse_info_x$df_name
   }
   
@@ -196,7 +142,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   if (length(parse_info_x$df_label) == 1 &&
       length(parse_info_y$df_label) == 1 &&
-      parse_info_x$df_label == parse_info_y$df_label) {
+      isTRUE(parse_info_x$df_label == parse_info_y$df_label)) {
     df_label <- parse_info_x$df_label
   }
 
@@ -206,27 +152,25 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
-                       Total = prop.table(freq_table),
-                       Row = prop.table(freq_table, 1),
-                       Column = prop.table(freq_table, 2),
-                       None = NULL)
-
-  # When useNA = "always" and there are no NA's, we have NAN's (0 div by 0)
-  prop_table[is.nan(prop_table)] <- 0
+                       t = prop.table(freq_table),
+                       r = prop.table(freq_table, 1),
+                       c = prop.table(freq_table, 2),
+                       n = NULL)
 
   # Add totals
   freq_table <- addmargins(freq_table)
   rownames(freq_table)[nrow(freq_table)] <- "Total"
   colnames(freq_table)[ncol(freq_table)] <- "Total"
-  if (length(prop_table) > 0) {
-    if (prop == "Total") {
+  if (!is.null(prop_table)) {
+    prop_table[is.nan(prop_table)] <- 0 # NaN's can occur
+    if (prop == "t") {
       prop_table <- addmargins(prop_table)
-    } else if (prop == "Row") {
+    } else if (prop == "r") {
       prop_table <- addmargins(prop_table, 2)
       sum_props <- c(prop.table(freq_table[nrow(freq_table), 
                                            -ncol(freq_table)]), Total=1)
       prop_table <- rbind(prop_table, sum_props)
-    } else if (prop == "Column") {
+    } else if (prop == "c") {
       prop_table <- addmargins(prop_table, 1)
       sum_props <- c(prop.table(freq_table[-nrow(freq_table), 
                                            ncol(freq_table)]), Total=1)
@@ -260,7 +204,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
-  attr(output, "proportions") <- prop
+  #attr(output, "proportions") <- prop
   attr(output, "date") <- Sys.Date()
 
   data_info <-
@@ -270,7 +214,12 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-         Row.x.Col          = paste(x_name, y_name, sep = " * "))
+         Row.x.Col          = paste(x_name, y_name, sep = " * "),
+         Proportions        = switch(prop,
+                                     r = "Row",
+                                     c = "Column",
+                                     t = "Total",
+                                     n = "None"))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 

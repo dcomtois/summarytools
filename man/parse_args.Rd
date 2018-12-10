@@ -5,7 +5,7 @@
 \title{Extract Data Information From Arguments Passed to Functions}
 \usage{
 parse_args(sys_calls, sys_frames, match_call, var = "x",
-  silent = FALSE)
+  max.varnames = Inf, silent = FALSE)
 }
 \arguments{
 \item{sys_calls}{Object created using \code{sys.calls()}.}
@@ -16,6 +16,9 @@ parse_args(sys_calls, sys_frames, match_call, var = "x",
 
 \item{var}{One of \dQuote{x} or \dQuote{y} (the latter being used only
 in \code{\link{ctable}}).}
+
+\item{max.varnames}{Numeric. Allows limiting the number of expected variable
+names. Defaults to \code{Inf}}
 
 \item{silent}{Logical. Hide console messages. \code{FALSE} by default.}
 }

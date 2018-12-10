@@ -1,4 +1,5 @@
 # Utility functions ------------------------------------------------------------
+#' @keywords internal
 align_numbers_dfs <- function(counts, props) {
   maxchar_cnt <- nchar(as.character(max(counts)))
   maxchar_pct <- nchar(sprintf(paste0("%.", 1, "f"), max(props*100)))
@@ -9,6 +10,7 @@ align_numbers_dfs <- function(counts, props) {
 #' @importFrom RCurl base64Encode
 #' @importFrom graphics barplot hist par text plot.new
 #' @importFrom grDevices dev.off nclass.Sturges png
+#' @keywords internal
 encode_graph <- function(data, graph_type, graph.magnif = NA) {
   if (graph_type == "histogram") {
     png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
@@ -23,7 +25,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
                                     main=NULL, col = "grey95",
                                     border = "grey65")),
               silent = TRUE)
-    if (any(grepl('try-', class(cl)))) {
+    if (inherits(cl, "try-error")) {
       plot.new()
       text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
     }
@@ -47,6 +49,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
   return(sprintf('<img src="data:image/png;base64,%s">', img_txt))
 }
 
+#' @keywords internal
 txtbarplot <- function(props, maxwidth = 20) {
   #widths <- props / max(props) * maxwidth
   widths <- props * maxwidth
@@ -61,6 +64,7 @@ txtbarplot <- function(props, maxwidth = 20) {
 }
 
 #' @importFrom grDevices nclass.Sturges
+#' @keywords internal
 txthist <- function(data) {
   data <- data[!is.na(data)]
   breaks_x <- pretty(range(data), n = nclass.Sturges(data), min.n = 1)
@@ -98,6 +102,7 @@ txthist <- function(data) {
 
 #' @importFrom utils head
 #' @importFrom stats na.omit
+#' @keywords internal
 detect_barcode <- function(x) {
  
   x <- na.omit(x)[1:100]
@@ -126,7 +131,7 @@ detect_barcode <- function(x) {
   return(type)
 }
 
-
+#' @keywords internal
 crunch_factor <- function() {
 
   outlist <- list()
@@ -208,6 +213,7 @@ crunch_factor <- function() {
   return(outlist)
 }
 
+#' @keywords internal
 crunch_character <- function() {
  
   outlist <- list()
@@ -315,6 +321,7 @@ crunch_character <- function() {
 }
 
 #' @importFrom stats IQR median ftable sd
+#' @keywords internal
 crunch_numeric <- function() {
  
   outlist <- list()
@@ -442,6 +449,7 @@ crunch_numeric <- function() {
 }
 
 #' @importFrom lubridate as.period interval
+#' @keywords internal
 crunch_time_date <- function() {
  
   outlist <- list()
@@ -494,6 +502,7 @@ crunch_time_date <- function() {
   outlist 
 }
 
+#' @keywords internal
 crunch_other <- function() {
  
   outlist <- list()

@@ -103,6 +103,7 @@
 #'
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+#' @importFrom dplyr n_distinct
 #' @export
 dfSummary <- function(x, round.digits = st_options('round.digits'), 
                       varnumbers = st_options('dfSummary.varnumbers'),
@@ -119,56 +120,46 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
 
-  # Parameter validation ------------------------------------------------------
-  
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 
-                    silent = TRUE)
-  if (any(grepl('try-', class(parse_info)))) {
-    parse_info <- list()
-  }
 
+  # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
+  
+  # Flag to replace colname when x is not a data frame
+  replace_colname <- FALSE
   if (!is.data.frame(x)) {
+    xnames <- substitute(x)
     x <- try(as.data.frame(x))
 
     if (inherits(x, "try-error")) {
-      stop("x is not a data frame and attempted conversion failed")
+      errmsg %+=% paste(deparse(xnames), "is not coercible to a data frame")
+    } else {
+      message(deparse(xnames), " was converted to a data frame")
+      replace_colname <- TRUE
     }
-
-    message("x was converted to a data frame")
-    parse_info$df_name <- parse_info$var_name
-
+    #parse_info$df_name <- parse_info$var_name 
+    # TODO: test the use of a single vector passed to dfSummary
   }
 
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if (style=="rmarkdown") {
-    message("'rmarkdown' style not supported - using 'multiline' instead.")
-    style <- "multiline"
+  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
-  if (!graph.col %in% c(TRUE, FALSE)) {
-    stop("'graph.col' must be either TRUE or FALSE.")
+  # Get info on x from parsing function
+  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                               max.varnames = as.numeric(replace_colname)),
+                    silent = TRUE)
+  
+  if (inherits(parse_info, "try-error")) {
+    parse_info <- list()
   }
   
-  if (graph.magnif <= 0) {
-    stop("'graph.magnif' must be > 0" )
+  if (isTRUE(replace_colname) && identical(colnames(x), "x") &&
+      'var_names' %in% names(parse_info) 
+      && length(parse_info$var_names) == 1) {
+    colnames(x) <- parse_info$var_names
   }
-  
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings';",
-                   "setting headings = ", 
-                   !isTRUE(match.call()[['omit.headings']])))
-    headings <- !isTRUE(match.call()[['omit.headings']])
-  }
-  
-  # End of arguments validation
   
   # Initialize the output data frame -------------------------------------------
   
@@ -280,10 +271,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     list(Dataframe = parse_info$df_name,
          Dataframe.label = ifelse("df_label" %in% names(parse_info),
                                   parse_info$df_label, NA),
-         # Subset = ifelse("rows_subset" %in% names(parse_info),
-         #                 parse_info$rows_subset, NA),
-         Dimensions = paste(nrow(x), "x", ncol(x)),
-         Duplicates = sum(duplicated(x)))
+         Dimensions = paste(n_tot, "x", ncol(x)),
+         Duplicates = n_tot - n_distinct(x))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
