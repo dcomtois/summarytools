@@ -10,6 +10,9 @@
 # Initialise message to be displayed in some specific circumstances
 .st_env$last.message <- list(msg = "", time = 0)
 
+# To avoid warning on check
+utils::globalVariables(c("."))
+
 # summarytools global options
 .onLoad <- function(libname, pkgname) {
   st.options <- list('style'                  = 'simple',
