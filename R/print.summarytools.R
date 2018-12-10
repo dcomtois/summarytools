@@ -147,6 +147,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options('footnote'), 
                                escape.pipe = st_options('escape.pipe'), ...) {
 
+  knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
+  panderOptions("knitr.auto.asis", FALSE)
+  
+  on.exit(panderOptions("knitr.auto.asis",knitr.auto.asis.value))
+  
   dotargs <- list(...)
   
   # Recup arguments from view() if present -------------------------------------
@@ -371,11 +376,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Print or write to file - pander --------------------------------------------
   if (method == "pander") {
-    
-    knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
-    panderOptions("knitr.auto.asis", FALSE)
-    
-    on.exit(panderOptions("knitr.auto.asis",knitr.auto.asis.value))
 
     # remove initial linefeed if headings is FALSE
     if (!isTRUE(attr(x, "formatting")$headings)) {
