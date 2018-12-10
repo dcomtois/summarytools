@@ -35,7 +35,7 @@ build_heading_pander <- function(format_info, data_info) {
     return(paste(to_append, collapse = ""))
   }
   
-  # Special cases where no primary heading is needed
+  # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
     head2 <- append_items(list(c(Variable       = "Variable"),
                                c(Variable.lable = "Label"),
@@ -133,14 +133,18 @@ build_heading_html <- function(format_info, data_info, method) {
                                 data_info[[names(item)]], sep = ": ")
           
           if (identical(to_append_html, character())) {
-            to_append_html <- to_append_html
+            to_append_html <- div_str_item
           } else {
             to_append_html <- paste(to_append_html,
-                                    div_str_item,
-                                    sep = "\n  <br/>")
+                                     div_str_item,
+                                     sep = "\n  <br/>")
           }
         }
       }
+    }
+    
+    if (identical(to_append_html, character())) {
+      return(NA)
     }
     
     return(HTML(to_append_html))
@@ -157,7 +161,7 @@ build_heading_html <- function(format_info, data_info, method) {
   else if (isTRUE(format_info$group.only) ||
            ("by.first" %in% names(data_info) && 
             (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-    head2 <- append_items(list(Group = "Group"))
+    head2 <- append_items(list(c(Group = "Group")))
     
     return(list(head2))
   }
@@ -174,6 +178,7 @@ build_heading_html <- function(format_info, data_info, method) {
   caller <- as.character(sys.call(-1))[1]
   
   if (caller == "prep_freq") {
+    
     head1 <- h3(ifelse("Weights" %in% names(data_info),
                        "Weighted Frequencies", "Frequencies"))
     
@@ -189,7 +194,9 @@ build_heading_html <- function(format_info, data_info, method) {
                                c(Data.type      = "Type"),
                                c(Weights        = "Weights"),
                                c(Group          = "Group")))
+    
   } else if (caller == "prep_ctable") {
+    
     head1 <- h3(switch(data_info$Proportions,
                        Row    = "Cross-Tabulation / Row Proportions",
                        Column = "Cross-Tabulation / Column Proportions",
@@ -197,42 +204,57 @@ build_heading_html <- function(format_info, data_info, method) {
                        None   = "Cross-Tabulation"))
     
     if ("Row.x.Col" %in% names(data_info)) {
-      head2 <- ifelse(method == "render",
-                      strong(data_info$Row.x.Col),
-                      h4(data_info$Row.x.Col))
+      if (method == "render") {
+        head2 <- strong(data_info$Row.x.Col)
+      } else {
+        head2 <- h4(data_info$Row.x.Col)
+      }
     }
     
     head3 <- append_items(list(c(Dataframe       = "Data Frame"),
+                               c(Dataframe.label = "Label"),
                                c(Group           = "Group")))
+    
   } else if (caller == "prep_descr") {
+    
     head1 <- h3(ifelse("Weights" %in% names(data_info),
                        "Weighted Descriptive Statistics", 
                        "Descriptive Statistics"))
     
     if ("Variable" %in% names(data_info)) {
-      head2 <- ifelse(method == "render",
-                      strong(data_info$Variable),
-                      h4(data_info$Variable))
       
+      if (method == "render") {
+        head2 <- strong(data_info$Variable)
+      } else {
+        head2 <- h4(data_info$Variable)
+      }
+
       head3 <- append_items(list(c(Variable.label = "Label"),
                                  c(Weights        = "Weights"),
                                  c(Group          = "Group"),
                                  c(N.Obs          = "N")))
     } else {
-      head2 <- ifelse(method == "render",
-                      strong(data_info$Dataframe),
-                      h4(data_info$Dataframe))
+      if (method == "render") {
+        head2 <- strong(data_info$Dataframe)
+      } else {
+        head2 <- h4(data_info$Dataframe)
+      }
       
       head3 <- append_items(list(c(Dataframe.label = "Label"),
                                  c(Weights         = "Weights"),
                                  c(Group           = "Group"),
                                  c(N.Obs           = "N")))
     }
+    
   } else if (caller == "prep_dfs") {
+    
     head1 <- h3("Data Frame Summary")
-    head2 <- ifelse(method == "render",
-                    strong(data_info$Dataframe),
-                    h4(data_info$Dataframe))
+    if (method == "render") {
+      head2 <- strong(data_info$Dataframe)
+    } else {
+      head2 <- h4(data_info$Dataframe)
+    }
+    
     head3 <- append_items(list(c(Dataframe.label = "Label"),
                                c(Dimensions      = "Dimensions"),
                                c(Duplicates      = "Duplicates")))
