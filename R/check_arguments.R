@@ -56,12 +56,14 @@ check_arguments <- function(mc, dotArgs, errmsg) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
     
-    justify <<- switch(pf$justify,
-                       l = "left",
-                       c = "center",
-                       m = "center",
-                       d = "default",
-                       r = "right")
+    justify <- switch(pf$justify,
+                      l = "left",
+                      c = "center",
+                      m = "center",
+                      d = "default",
+                      r = "right")
+    
+    assign("justify", justify, parent.frame())
   }
   
   if ('display.labels' %in% names(mc) &&
@@ -198,7 +200,7 @@ check_arguments <- function(mc, dotArgs, errmsg) {
     
     if ('style' %in% names(mc) && pf$style == "rmarkdown") {
       message("'rmarkdown' style not supported - using 'multiline' instead")
-      style <<- "multiline"
+      assign("style", "multiline", envir = parent.frame())
     }
     
     if ('trim.strings' %in% names(mc) &&
