@@ -259,8 +259,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "omit.headings")) {
     if (format_element %in% names(dotargs)) {
       if (format_element == 'omit.headings') {
-        message("'omit.headings' will disappear in future releases; ",
-                "use 'headings' instead")
+        
+        msg <- paste("'omit.headings' will disappear in future releases;",
+                     "use 'headings' instead")
+        if (.st_env$last.message$msg != msg || 
+            Sys.time() - .st_env$last.message$time > 1) {
+          .st_env$last.message$msg <- msg
+          .st_env$last.message$time <- Sys.time()
+          message(msg)
+        }
+        
         attr(x, "formatting")[['headings']] <- 
           !isTRUE(eval(dotargs[["omit.headings"]]))
         overrided_args <- append(overrided_args, 'headings')
@@ -340,8 +348,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         getRversion(), ")", "<br/>", Sys.Date(),"</p>"
       )
   }
-  
-  
+
   # Concatenate data frame + $ + variable name where appropriate
   if (!("Variable" %in% overrided_args) && 
       length(attr(x, "data_info")$Variable) == 1 && 
