@@ -137,7 +137,7 @@
 #'
 #' @export
 #' @import htmltools
-#' @importFrom pander pander
+#' @importFrom pander pander panderOptions
 #' @importFrom utils capture.output packageVersion head
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, table.classes = NA, 
@@ -147,11 +147,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options('footnote'), 
                                escape.pipe = st_options('escape.pipe'), ...) {
 
-  #mc <- match.call()
   dotargs <- list(...)
   
   # Recup arguments from view() if present -------------------------------------
-  
   if ("open.doc" %in% names(dotargs)) {
     open.doc <- eval(dotargs[["open.doc"]])
   } else {
@@ -224,6 +222,22 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     footnote <- ""
   }
 
+  # Display message if list object printed with base print() method
+  if (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
+      any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
+                x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE))) {
+    msg <- paste("For best results printing list objects with summarytools,",
+                 "use view(x, method = 'pander')")
+    if (.st_env$last.message$msg != msg || 
+        Sys.time() - .st_env$last.message$time > 1) {
+      .st_env$last.message$msg <- msg
+      .st_env$last.message$time <- Sys.time()
+      message(msg)
+    }
+  }
+  
+  #sys.call(which = 3)
+  #as.character(lapply(sys.calls(), head, 1))
 
   # Override of x's attributes (formatting and heading info) -------------------
   if ("date" %in% names(dotargs)) {
@@ -245,7 +259,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "omit.headings")) {
     if (format_element %in% names(dotargs)) {
       if (format_element == 'omit.headings') {
-        message("'omit.headings' will be deprecated; use 'headings' instead.")
+        message("'omit.headings' will disappear in future releases; ",
+                "use 'headings' instead")
         attr(x, "formatting")[['headings']] <- 
           !isTRUE(eval(dotargs[["omit.headings"]]))
         overrided_args <- append(overrided_args, 'headings')
@@ -265,7 +280,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       # Todo: following condition is to be removed in further releases
       if (!(format_element == 'headings' &&
             'omit.headings' %in% names(attr(x, "fn_call")))) {
-        attr(x, "formatting")[format_element] <- st_options(format_element)
+        attr(x, "formatting")[[format_element]] <- st_options(format_element)
       }
     }
   }
@@ -277,7 +292,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                   fixed = TRUE),
                              fixed = TRUE)) {
     if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
-      attr(x, "formatting")[format_element] <- 
+      attr(x, "formatting")[[format_element]] <- 
         st_options(paste0(prefix, format_element))
     }
   }
@@ -289,7 +304,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                           "Row.variable.label", "Col.variable.label")
   for (data_info_element in data_info_elements) {
     if (tolower(data_info_element) %in% tolower(names(dotargs))) {
-      attr(x, "data_info")[data_info_element] <- 
+      attr(x, "data_info")[[data_info_element]] <- 
         dotargs[grep(data_info_element, names(dotargs), ignore.case = TRUE)]
       overrided_args <- append(overrided_args, data_info_element)
     }
@@ -326,8 +341,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       )
   }
   
+  
+  # Concatenate data frame + $ + variable name where appropriate
+  if (!("Variable" %in% overrided_args) && 
+      length(attr(x, "data_info")$Variable) == 1 && 
+      length(attr(x, "data_info")$Dataframe) == 1) {
+    attr(x, "data_info")$Variable <- paste(attr(x, "data_info")$Dataframe,
+                                           attr(x, "data_info")$Variable, 
+                                           sep = "$")
+  }
+  
   # Dispatch to the right function for preparing output ------------------------
-
   if(attr(x, "st_type") == "freq") {
     res <- prep_freq(x, method)
   } else if(attr(x, "st_type") == "ctable") {
@@ -341,15 +365,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Print or write to file - pander --------------------------------------------
   if (method == "pander") {
     
-    # remove extra linefeed if headings is FALSE
+    knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
+    panderOptions("knitr.auto.asis", FALSE)
+    
+    on.exit(panderOptions("knitr.auto.asis",knitr.auto.asis.value))
+
+    # remove initial linefeed if headings is FALSE
     if (!isTRUE(attr(x, "formatting")$headings)) {
-      if (res$main_sect[[1]] == "\n  ") {
-        res$main_sect[[1]] <- NULL
-      }
-      res$main_sect[[1]] <- sub("^\\n\\n", "\n", res$main_sect[[1]])
+      res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
     }
 
-    cat(do.call(paste, res$main_sect), file = file, append = append)
+    cat(do.call(paste, res), file = file, append = append)
     
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
@@ -372,7 +398,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
       insert_part <- 
         iconv(paste(capture.output(tags$div(class="container st-container", 
-                                            res$div_list)), 
+                                            res)), 
                     collapse="\n"), to = "utf-8")
       html_content <- paste(capture.output(cat(top_part, insert_part, 
                                                bottom_part)), collapse="\n")
@@ -384,21 +410,21 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$div(
             class="container st-container",
             tags$head(
-              tags$title(ifelse(is.na(report.title), res$title_sect, 
+              tags$title(ifelse(is.na(report.title), res[[1]], 
                                 report.title)),
               if (isTRUE(bootstrap.css)) 
                 includeCSS(path = paste(stpath, 
-                                       "includes/stylesheets/bootstrap.min.css",
+                                        "includes/stylesheets/bootstrap.min.css",
                                         sep="/")),
               includeCSS(path = paste(stpath, 
                                       "includes/stylesheets/summarytools.css", 
                                       sep="/")),
               if (!is.na(custom.css)) includeCSS(path = custom.css)
             ),
-            res$div_list)
+            res)
         
       } else {
-        
+        # method == 'render'
         html_content <-
           tags$div(
             class="container st-container",
@@ -408,7 +434,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                       sep="/")),
               if (!is.na(custom.css))
                 includeCSS(path = custom.css)),
-            res$div_list)
+            res)
       }
     }
 
