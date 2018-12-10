@@ -112,13 +112,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     invalid_stats <- 
       setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
     if (length(invalid_stats) > 0) {
-      errmsg %+-% 
-        paste("valid stats are: ", 
-              paste(
-                dQuote(valid_stats[[2 - as.numeric(identical(weights, NA))]]), 
-                sep = ", "
-              ), 
-              ";\n  following statistics are not recognized, or not allowed: ",
+      errmsg %+=% 
+        paste("The following statistics are not recognized, or not allowed: ",
               paste(dQuote(invalid_stats), collapse = ", ")
               )
     }

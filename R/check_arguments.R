@@ -1,4 +1,4 @@
-#' @importFrom checkmate test_int test_logical test_choice
+#' @importFrom checkmate test_int test_logical test_choice test_string
 check_arguments <- function(mc, dotArgs, errmsg) {
   
   caller <- as.character(sys.call(-1))[1]
@@ -128,14 +128,9 @@ check_arguments <- function(mc, dotArgs, errmsg) {
   # ctable-specific arguments --------------------------------------------------
   if (caller == "ctable") {
     if ('prop' %in% names(mc)) {
-      if(!isTRUE(test_choice(pf$proc, c('t', 'r', 'c', 'n')))) {
+      if(!isTRUE(test_choice(pf$prop, c('t', 'r', 'c', 'n')))) {
         errmsg %+=% "'prop' must be one of 't', 'r', 'c', or 'n'"
       }
-      prop <<- switch(pf$prop,
-                      t = "Total",
-                      r = "Row",
-                      c = "Column",
-                      n = "None")
     }
     
     if ('useNA' %in% names(mc) &&
@@ -227,7 +222,8 @@ check_arguments <- function(mc, dotArgs, errmsg) {
 }
 
 
-#' @importFrom checkmate test_int test_logical test_choice test_file_exists
+#' @importFrom checkmate test_int test_logical test_choice 
+#' test_file_exists test_character
 check_arguments_st_options <- function(mc, errmsg) {
   
   pf <- parent.frame()
@@ -300,7 +296,7 @@ check_arguments_st_options <- function(mc, errmsg) {
     errmsg %+=% "'ctable.totals' must be either TRUE or FALSE"
   }
   
-  if (descr_stats %in% names(mc)) {
+  if ('descr_stats' %in% names(mc)) {
     valid_stats <- c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
                      "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
                      "n.valid", "pct.valid")

@@ -124,14 +124,17 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
+  # Flag to replace colname when x is not a data frame
+  replace_colname <- FALSE
   if (!is.data.frame(x)) {
+    xnames <- substitute(x)
     x <- try(as.data.frame(x))
 
     if (inherits(x, "try-error")) {
-      errmsg %+=% paste(deparse(substitute(x)),
-                        "is not coercible to a data frame")
+      errmsg %+=% paste(deparse(xnames), "is not coercible to a data frame")
     } else {
-      message(deparse(substitute(x)), " was converted to a data frame")
+      message(deparse(xnames), " was converted to a data frame")
+      replace_colname <- TRUE
     }
     #parse_info$df_name <- parse_info$var_name 
     # TODO: test the use of a single vector passed to dfSummary

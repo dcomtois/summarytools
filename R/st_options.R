@@ -102,12 +102,12 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
   errmsg <- check_arguments_st_options(mc = mc, errmsg = character())
   
   if (length(errmsg) > 0) {
-    stop(paste(errmsg, collapse = "\n  "))
+    stop(paste(errmsg, collapse = "\n  "), "\n No options have been modified")
   }
   
   if (omit.headings %in% names(mc)) {
-    message("'omit.headings' will be deprecated in future releases. ",
-            "Use 'headings' instead")
+    message("'omit.headings' will disappear in future releases; ",
+            "use 'headings' instead")
   }
   
   # Querying all
@@ -120,8 +120,6 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     # Check that option is among the existing ones
     for (o in option) {
       if (!o %in% c(names(allOpts), 'omit.headings')) {
-        message('Available options: ', paste(names(allOpts), collapse = ", "))
-        print(o)
         stop('Option ', o, 'not recognized / not available')
       }
     }
@@ -183,7 +181,6 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
               "'headings' to ", !isTRUE(value))
       allOpts[['headings']] <- !isTRUE(value)
     } else if (!option %in% names(allOpts)) {
-      message('Available options:', paste(names(allOpts), collapse = ", "))
       stop('Option ', option, 'not recognized / not available')
     } else {
       allOpts[[option]] <- value
