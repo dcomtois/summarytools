@@ -27,7 +27,6 @@ unquote <- function(x) {
   x
 }
 
-
 # Replace accentuated characters by their html numerical code
 #' @keywords internal
 repl_accents <- function(...) {
@@ -42,9 +41,8 @@ repl_accents <- function(...) {
   out
 }
 
-# # Replace accentuated characters by their html numerical code
-# #' @keywords internal
-# repl_accents <- function(...) {
+# These are the latin - extended characters; might be useful in the future to
+# include them if there is some demand for it.
 #
 #   replacements <-
 #     list(
@@ -184,5 +182,3 @@ repl_accents <- function(...) {
 #     }
 #     out %+=% s
 #   }
-#   out
-# }

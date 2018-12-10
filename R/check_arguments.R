@@ -1,4 +1,7 @@
+# Arguments validation for freq, ctable, descr and dfSummary functions.
+# Another function for validating st_options arguments follows.
 #' @importFrom checkmate test_int test_logical test_choice test_string
+#' @keywords internal
 check_arguments <- function(mc, dotArgs, errmsg) {
   
   caller <- as.character(sys.call(-1))[1]

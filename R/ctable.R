@@ -122,6 +122,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
                                  var = "y", max.varnames = 1,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
+  
   if (inherits(parse_info_y, "try-error")) {
     parse_info_y <- list()
   }
