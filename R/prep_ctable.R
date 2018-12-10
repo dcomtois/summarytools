@@ -90,11 +90,12 @@ prep_ctable <- function(x, method) {
         ),
         collapse = "\n")
     
-    if (isTRUE(format_info$headings)) {
+    if (isTRUE(format_info$headings) && format_info$style != 'grid') {
       main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", main_sect[[length(main_sect)]])
-    } else {
-      main_sect[[length(main_sect)]] <- sub("^\n", "", main_sect[[length(main_sect)]])
-    }
+    } 
+    # else {
+    #   main_sect[[length(main_sect)]] <- sub("^\n", "", main_sect[[length(main_sect)]])
+    # }
     
     
     if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
@@ -179,7 +180,11 @@ prep_ctable <- function(x, method) {
       )
     
     div_list <- build_heading_html(format_info, data_info, method)
-    div_list[[length(div_list) + 1]] <- HTML(text = cross_table_html)
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
+    }
+    div_list[[length(div_list) + 1]] <- cross_table_html
     
     
     if (parent.frame()$footnote != "") {
