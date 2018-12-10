@@ -38,7 +38,7 @@ build_heading_pander <- function(format_info, data_info) {
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
     head2 <- append_items(list(c(Variable       = "Variable"),
-                               c(Variable.lable = "Label"),
+                               c(Variable.label = "Label"),
                                c(Data.type      = "Type")))
     return(list(head2))
   }
@@ -130,7 +130,8 @@ build_heading_html <- function(format_info, data_info, method) {
             !grepl("(label|Data\\.type)", names(item))) {
           
           div_str_item <- paste(paste0("<strong>", item, "</strong>"),
-                                data_info[[names(item)]], sep = ": ")
+                                repl_accents(data_info[[names(item)]]),
+                                sep = ": ")
           
           if (identical(to_append_html, character())) {
             to_append_html <- div_str_item
@@ -153,7 +154,7 @@ build_heading_html <- function(format_info, data_info, method) {
   # Special cases where no title is needed
   if (isTRUE(format_info$var.only)) {
     head2 <- append_items(list(c(Variable       = "Variable"),
-                               c(Variable.lable = "Label"),
+                               c(Variable.label = "Label"),
                                c(Data.type      = "Type")))
     return(list(head2))
   }
