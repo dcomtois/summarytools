@@ -148,10 +148,17 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   # Get info on x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                               max.varnames = 0), silent = TRUE)
+                               max.varnames = as.numeric(replace_colname)),
+                    silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
+  }
+  
+  if (isTRUE(replace_colname) && identical(colnames(x), "x") &&
+      'var_names' %in% names(parse_info) 
+      && length(parse_info$var_names) == 1) {
+    colnames(x) <- parse_info$var_names
   }
   
   # Initialize the output data frame -------------------------------------------

@@ -5,15 +5,6 @@ prep_dfs <- function(x, method) {
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "formatting")
   
-  title_sect  <- list()
-  title_sect[[1]] <- "Data Frame Summary  "
-  
-  if (("Dataframe" %in% names(data_info)) && (!is.null(data_info$Dataframe))) {
-    title_sect[[2]] <- data_info$Dataframe
-  }  else {
-    title_sect[[2]] <- ""
-  }
-  
   # Remove Var number ("No") column if specified in call to print/view
   if ("No" %in% names(x) && "varnumbers" %in% names(format_info) && 
       !isTRUE(format_info$varnumbers)) {
@@ -56,9 +47,6 @@ prep_dfs <- function(x, method) {
       format_info$style <- 'multiline'
     }
     
-    main_sect <- list()
-    to_append <- list()
-    
     if (!isTRUE(format_info$plain.ascii)) {
       # Escape symbols for words between <>'s to allow <NA> or factor
       # levels such as <ABC> to be rendered correctly
@@ -90,32 +78,6 @@ prep_dfs <- function(x, method) {
       if ("Text Graph" %in% names(x)) {
         x[["Text Graph"]][which(grepl('[:.]', x[["Text Graph"]]))] <- ""
       }
-      
-    }
-    
-    if (isTRUE(format_info$headings)) {
-      if (title_sect[[1]] != "") {
-        main_sect[[1]] <- add_hash(title_sect[[1]], 3)
-      }
-      
-      if (title_sect[[2]] != "") {
-        if (isTRUE(format_info$plain.ascii)) {
-          main_sect[[length(main_sect) + 1]] <- 
-            paste0("\n", title_sect[[2]], "  ")
-        } else {
-          main_sect[[length(main_sect) + 1]] <- 
-            paste0("\n**", title_sect[[2]], "**  ")
-        }
-      }
-      
-      to_append <- add_head_element(list(c("Dataframe.label", "Label"),
-                                         c("Dimensions", "Dimensions"),
-                                         c("Duplicates", "Duplicates")),
-                                    h = 0)
-    }
-    
-    if (!identical(to_append, list())) {
-      main_sect <- append(main_sect, to_append)
     }
     
     pander_args <- append(list(style        = format_info$style,
@@ -125,6 +87,8 @@ prep_dfs <- function(x, method) {
                                split.tables = format_info$split.tables,
                                keep.line.breaks = TRUE),
                           attr(x, "user_fmt"))
+    
+    main_sect <- build_heading_pander(format_info, data_info)
     
     main_sect[[length(main_sect) + 1]] <-
       paste(
@@ -138,7 +102,7 @@ prep_dfs <- function(x, method) {
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
     }
     
-    return(list(title_sect = title_sect, main_sect = main_sect))
+    return(main_sect)
     
   } else {
     
@@ -213,34 +177,18 @@ prep_dfs <- function(x, method) {
     dfs_table_html <-
       gsub(pattern = '(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)',
            replacement = "\\1\\2\\3", x = dfs_table_html)
-    div_list  <- list()
-    to_append <- list()
-    
-    if (isTRUE(format_info$headings)) {
-      
-      if (title_sect[[1]] != "") {
-        div_list[[1]] <- h3(title_sect[[1]])
-      }
-      
-      if (title_sect[[2]] != "") {
-        div_list[[length(div_list) + 1]] <- h4(title_sect[[2]])
-      }
-      
-      to_append <- add_head_element(list(c("Dataframe.label", "Label"),
-                                         c("Dimensions", "Dimensions"),
-                                         c("Duplicates", "Duplicates")),
-                                    h = 0)
+
+    # Prepare the main "div" for the html report
+    div_list <- build_heading_html(format_info, data_info, method)
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
     }
-    
-    if (!identical(to_append, list())) {
-      div_list[[length(div_list) + 1]] <- to_append
-    }
-    
     div_list[[length(div_list) + 1]] <- HTML(text = dfs_table_html)
     
     if (parent.frame()$footnote != "") {
       div_list[[length(div_list) + 1]] <- HTML(text = parent.frame()$footnote)
     }
   }
-  return(list(title_sect = title_sect, div_list = div_list))
+  return(div_list)
 }
