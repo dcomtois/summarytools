@@ -152,27 +152,25 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
-                       Total = prop.table(freq_table),
-                       Row = prop.table(freq_table, 1),
-                       Column = prop.table(freq_table, 2),
-                       None = NULL)
-
-  # When useNA = "always" and there are no NA's, we have NAN's (0 div by 0)
-  prop_table[is.nan(prop_table)] <- 0
+                       t = prop.table(freq_table),
+                       r = prop.table(freq_table, 1),
+                       c = prop.table(freq_table, 2),
+                       n = NULL)
 
   # Add totals
   freq_table <- addmargins(freq_table)
   rownames(freq_table)[nrow(freq_table)] <- "Total"
   colnames(freq_table)[ncol(freq_table)] <- "Total"
-  if (length(prop_table) > 0) {
-    if (prop == "Total") {
+  if (!is.null(prop_table)) {
+    prop_table[is.nan(prop_table)] <- 0 # NaN's can occur
+    if (prop == "t") {
       prop_table <- addmargins(prop_table)
-    } else if (prop == "Row") {
+    } else if (prop == "r") {
       prop_table <- addmargins(prop_table, 2)
       sum_props <- c(prop.table(freq_table[nrow(freq_table), 
                                            -ncol(freq_table)]), Total=1)
       prop_table <- rbind(prop_table, sum_props)
-    } else if (prop == "Column") {
+    } else if (prop == "c") {
       prop_table <- addmargins(prop_table, 1)
       sum_props <- c(prop.table(freq_table[-nrow(freq_table), 
                                            ncol(freq_table)]), Total=1)
@@ -217,7 +215,11 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
          Col.variable       = y_name,
          Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
          Row.x.Col          = paste(x_name, y_name, sep = " * "),
-         Proportions        = prop)
+         Proportions        = switch(prop,
+                                     r = "Row",
+                                     c = "Column",
+                                     t = "Total",
+                                     n = "None"))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 

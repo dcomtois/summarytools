@@ -44,7 +44,7 @@ prep_ctable <- function(x, method) {
   if (!isTRUE(format_info$totals)) {
     x$cross_table <- x$cross_table[which(rownames(x$cross_table) != 'Total'), 
                                    which(colnames(x$cross_table) != 'Total')]
-    if (attr(x, "proportions") != "None") {
+    if (data_info$Proportions != "None") {
       x$proportions <- x$proportions[which(rownames(x$proportions) != 'Total'), 
                                      which(colnames(x$proportions) != 'Total')]
     }
