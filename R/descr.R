@@ -63,8 +63,8 @@
 #' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-#' @importFrom magrittr %>%
-#' @importFrom dplyr as_tibble funs select starts_with summarize_all
+#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all
+#' @importFrom tidyr separate gather spread
 descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
                   round.digits = st_options('round.digits'),
                   transpose = st_options('descr.transpose'), 
@@ -177,37 +177,21 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     
     summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]  
 
-    results <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm)
-
-    # Build skeleton for output dataframe
-    output <- data.frame(mean        = numeric(ncol(x.df)),
-                         sd          = numeric(ncol(x.df)),
-                         min         = numeric(ncol(x.df)),
-                         q1          = numeric(ncol(x.df)),
-                         med         = numeric(ncol(x.df)),
-                         q3          = numeric(ncol(x.df)),
-                         max         = numeric(ncol(x.df)),
-                         mad         = numeric(ncol(x.df)),
-                         iqr         = numeric(ncol(x.df)),
-                         cv          = numeric(ncol(x.df)),
-                         skewness    = numeric(ncol(x.df)),
-                         se.skewness = numeric(ncol(x.df)),
-                         kurtosis    = numeric(ncol(x.df)),
-                         n.valid     = numeric(ncol(x.df)),
-                         pct.valid   = numeric(ncol(x.df)))
-    
-    output <- output[which(names(output) %in% stats)]  
-    rownames(output) <- parse_info$var_names
-    
-    # Fill-in the output table
-    if (ncol(x.df) == 1) {
-      output[1,] <- results[1,]
+    if (ncol(x.df) > 1) {
+      results <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+        gather("variable", "value") %>%
+        separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
+        spread("var", "value")
+      
+      # Transform results into output object
+      output <- as.data.frame(t(results[ ,-1]))
+      colnames(output) <- results$stat
     } else {
-      for (rname in rownames(output)) {
-        output[rname,] <- results %>% select(starts_with(rname))
-      }
+      output <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+        as.data.frame
+      rownames(output) <- parse_info$var_names
     }
-    
+
     # Calculate additionnal stats if needed
     if ('cv' %in% stats) {
       output$cv <- output$sd / output$mean
