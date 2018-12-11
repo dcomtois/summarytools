@@ -33,7 +33,7 @@ prep_descr <- function(x, method) {
 
     main_sect <- build_heading_pander(format_info, data_info)  
     
-    main_sect[[length(main_sect) + 1]] <-
+    main_sect %+=%
       paste(
         capture.output(
           do.call(pander, append(pander_args, list(x = quote(x))))
@@ -77,8 +77,7 @@ prep_descr <- function(x, method) {
         if (nchar(cn) > 12) {
           cn <- smart_split(cn, 12)
         }
-        table_head[[length(table_head) + 1]] <- 
-          tags$th(HTML(cn), align = "center")
+        table_head %+=% list(tags$th(HTML(cn), align = "center"))
       }
     }
     
@@ -88,21 +87,19 @@ prep_descr <- function(x, method) {
       for (co in seq_len(ncol(x))) {
         # cell is NA
         if (is.na(x[ro,co])) {
-          table_row[[length(table_row) + 1]] <- tags$td(format_info$missing)
+          table_row %+=% list(tags$td(format_info$missing))
         } else if ((rownames(x)[ro] == "N.Valid" || 
                     colnames(x)[co] == "N.Valid") && 
                    !"Weights" %in% names(data_info)) {
-          table_row[[length(table_row) + 1]] <-
-            tags$td(tags$span(round(x[ro,co], 0)))
+          table_row %+=% list(tags$td(tags$span(round(x[ro,co], 0))))
         } else {
           # When not NA, and not N.Valid row, format cell content
           cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-          table_row[[length(table_row) + 1]] <-
-            tags$td(tags$span(cell))
+          table_row %+=% list(tags$td(tags$span(cell)))
         }
         # On last column, insert row to table_rows list
         if (co == ncol(x)) {
-          table_rows[[length(table_rows) + 1]] <- tags$tr(table_row)
+          table_rows %+=% list(tags$tr(table_row))
         }
       }
     }
@@ -162,12 +159,12 @@ prep_descr <- function(x, method) {
     div_list <- build_heading_html(format_info, data_info, method)
     if (length(div_list) > 0 &&
         !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
-      div_list[[length(div_list) + 1]] <- HTML(text = "<br/>")
+      div_list %+=% list(HTML(text = "<br/>"))
     }
-    div_list[[length(div_list) + 1]] <- HTML(text = descr_table_html)
+    div_list %+=% list(HTML(text = descr_table_html))
    
     if (parent.frame()$footnote != "") {
-      div_list[[length(div_list) + 1]] <- HTML(text = parent.frame()$footnote)
+      div_list %+=% list(HTML(text = parent.frame()$footnote))
     }
   }
   return(div_list)

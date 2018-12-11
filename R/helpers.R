@@ -15,8 +15,42 @@ smart_split <- function(str, maxlen) {
 # infix to simplify append()ing
 #' @keywords internal
 `%+=%` <- function(x, y) {
-  assign(x = deparse(substitute(x)), value = append(x, y),
-         envir = parent.frame())
+  xcall <- substitute(x)
+  xobjname <- setdiff(all.names(xcall), c("[[", "[", ":"))
+  #subset <- sub(pattern = "^.+\\[\\[(.*)\\]\\]$", replacement = "\\1", x = deparse(xname))
+  if (!exists(xobjname, parent.frame(), mode = "list") &&
+      !exists(xobjname, parent.frame(), mode = "numeric") &&
+      !exists(xobjname, parent.frame(), mode = "character")) {
+    xobj <- subset(y, FALSE)
+  } else {
+    xobj <- eval(xcall, envir = parent.frame())
+  }
+  
+  if (is.atomic(xobj)) {
+    if (!is.atomic(y)) {
+      stop('Cannot append object of mode ', dQuote(mode(y)), 
+           ' to atomic structure ', xobjname)
+    }
+    xobj <- eval(xcall, envir = parent.frame())
+    assign(xobjname, append(xobj, y), envir = parent.frame())
+    return(invisible())
+  }
+  
+  if (is.list(xobj)) {
+    xobj <- eval(xcall, envir = parent.frame())
+    if (is.atomic(y)) {
+      xobj[[length(xobj) + 1]] <- y
+    } else {
+      for (i in seq_along(y)) {
+        xobj[[length(xobj) + 1]] <- y[[i]]
+        names(xobj)[length(xobj)] <- names(y[i])
+      }
+    }
+    assign(xobjname, xobj, envir = parent.frame())
+    return(invisible())
+  }
+  stop("Can't append to an object of mode ", 
+       mode(eval(xcall, envir = parent.frame())))
 }
 
 # Remove quotation marks inside a string

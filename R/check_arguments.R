@@ -214,7 +214,7 @@ check_arguments <- function(mc, dotArgs, errmsg) {
   }
   
   # Order the messages according to arguments order
-  ord <- c()
+  ord <- numeric()
   for(a in names(mc)[-1]) {
     ord %+=% grep(pattern = a, 
                   x = sub(pattern = "^'(.+?)'.+$", 
