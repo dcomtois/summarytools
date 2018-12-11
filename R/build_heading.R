@@ -130,7 +130,9 @@ build_heading_html <- function(format_info, data_info, method) {
             !grepl("(label|Data\\.type)", names(item))) {
           
           div_str_item <- paste(paste0("<strong>", item, "</strong>"),
-                                repl_accents(data_info[[names(item)]]),
+                                ifelse(is.character(data_info[[names(item)]]),
+                                       repl_accents(data_info[[names(item)]]),
+                                       data_info[[names(item)]]),
                                 sep = ": ")
           
           if (identical(to_append_html, character())) {

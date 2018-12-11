@@ -139,6 +139,8 @@
 #' @import htmltools
 #' @importFrom pander pander panderOptions
 #' @importFrom utils capture.output packageVersion head
+#' @importFrom checkmate test_logical test_path_for_output test_choice
+#'             test_string check_file_exists
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, table.classes = NA, 
                                bootstrap.css = st_options('bootstrap.css'),
@@ -174,6 +176,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Parameter validation -------------------------------------------------------
+  errmsg <- character()
   
   method <- switch(tolower(substring(method, 1, 1)),
                    p = "pander",
@@ -181,48 +184,62 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                    v = "viewer",
                    r = "render")
 
-  if (!method %in% c("pander", "browser", "viewer", "render")) {
-    stop("'method' must be one of 'pander', 'browser', 'viewer', or 'render'")
+  if (!isTRUE(test_choice(method, 
+                          c("pander", "browser", "viewer", "render")))) {
+    errmsg %+=% paste("'method' must be one of 'pander', 'browser', 'viewer',",
+                      "or 'render'")
   }
 
   if (file == "" && isTRUE(append)) {
-    stop("'append' is set to TRUE but no file name has been specified")
+    errmsg %+=% "'append' is set to TRUE but no file name has been specified"
   }
 
   if (file != "" && isTRUE(append) && !file.exists(file)) {
-    stop("'append' is set to TRUE but specified file does not exist")
+    errmsg %+=% "'append' is set to TRUE but specified file does not exist"
   }
 
   if (file != "" && isTRUE(append) && !is.na(report.title)) {
-    message("Appending existing file -- 'report.title' arg. will be ignored")
+    errmsg %+=% "Appending existing file -- 'report.title' arg. will be ignored"
   }
 
+  if (!isTRUE(test_string(report.title, na.ok = TRUE))) {
+    errmsg %+=% "'report.title' must either be NA or a character string"
+  }
+
+  if (!isTRUE(test_logical(escape.pipe, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'escape.pipe' must be either TRUE or FALSE"
+  }
+
+  if (!is.na(custom.css) && 
+      !isTRUE(check_file_exists(custom.css, access = "r"))) {
+    errmsg %+=% "'custom.css' must point to an existing file."
+  }
+
+  if (method == "pander" && !is.na(table.classes)) {
+    errmsg %+=% "'table.classes' option does not apply to method 'pander'"
+  }
+  
+  if (method == "pander" && !is.na(custom.css)) {
+    errmsg %+=% "'custom.css' option does not apply to method 'pander'"
+  }
+
+  if (!isTRUE(test_logical(silent, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'silent' must be either TRUE or FALSE"
+  }
+
+  # if (!isTRUE(test_path_for_output(file, overwrite = TRUE))) {
+  #   errmsg %+=% "'file' path is not valid - check that directory exists"
+  # }
+  
   if (file != "" && grepl(pattern = "\\.html$", x = file, 
                           ignore.case = TRUE, perl = TRUE)) {
     method <- "viewer"
   }
-
-  if (!is.na(report.title) && !is.character(report.title)) {
-    stop("'report.title' must either be NA or a character string")
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
-
-  if (!escape.pipe %in% c(TRUE, FALSE)) {
-    stop("'escape.pipe' must be either TRUE or FALSE")
-  }
-
-  if (!is.na(custom.css) && !file.exists(custom.css)) {
-    stop("'custom.css' argument must point to an existing file.")
-  }
-
-  if ((!is.na(table.classes) || !is.na(custom.css)) && method == "pander") {
-    stop("'table.classes' and 'custom.css' options do not apply ",
-         "to method 'pander'")
-  }
-
-  if (!silent %in% c(TRUE, FALSE)) {
-    stop("'silent' must be either TRUE or FALSE")
-  }
-
+  
   if (is.na(footnote)) {
     footnote <- ""
   }
@@ -241,9 +258,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
   
-  #sys.call(which = 3)
-  #as.character(lapply(sys.calls(), head, 1))
-
   # Override of x's attributes (formatting and heading info) -------------------
   if ("date" %in% names(dotargs)) {
     attr(x, "date") <- dotargs[["date"]]
@@ -417,16 +431,16 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$div(
             class="container st-container",
             tags$head(
-              tags$title(ifelse(is.na(report.title), res[[1]], 
-                                report.title)),
+              tags$title(ifelse(is.na(report.title), res[[1]], report.title)),
               if (isTRUE(bootstrap.css)) 
-                includeCSS(path = paste(stpath, 
-                                        "includes/stylesheets/bootstrap.min.css",
-                                        sep="/")),
-              includeCSS(path = paste(stpath, 
-                                      "includes/stylesheets/summarytools.css", 
-                                      sep="/")),
-              if (!is.na(custom.css)) includeCSS(path = custom.css)
+                includeCSS(
+                  path = paste(stpath, "includes/stylesheets/bootstrap.min.css",
+                               sep="/")),
+              includeCSS(
+                path = paste(stpath, "includes/stylesheets/summarytools.css",
+                             sep="/")),
+              if (!is.na(custom.css)) 
+                includeCSS(path = custom.css)
             ),
             res)
         

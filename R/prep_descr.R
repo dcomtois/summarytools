@@ -43,8 +43,6 @@ prep_descr <- function(x, method) {
     if(isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
-      main_sect[[length(main_sect) - 2]] <- 
-        gsub("\\|","\\\\|", main_sect[[length(main_sect) - 2]])
     }
     
     return(main_sect)

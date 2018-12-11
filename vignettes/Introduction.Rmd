@@ -33,10 +33,10 @@ learn and use. Four functions are at the core of the package:
   - `dfSummary()` : Extensive **data frame summaries** that facilitate
     data cleaning and firsthand evaluation.
 
-An emphasis has been put on both _what_ and _how_ results are presented, so that the
-package can serve both as a data exploration _and_ reporting tool, which can be used
-either on its own for minimal reports, or along with larger sets of tools such as
-RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
+An emphasis has been put on both _what_ and _how_ results are presented, so that
+the package can serve both as a data exploration _and_ reporting tool, which can
+be used either on its own for minimal reports, or along with larger sets of
+tools such as RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
 
 **Building on the strengths of [pander](https://github.com/Rapporter/pander) and
 [htmltools](https://CRAN.R-project.org/package=htmltools)**, the 
@@ -188,9 +188,8 @@ broken down by Species.
 
 ```{r}
 # First save the results
-iris_stats_by_species <- by(data = iris, 
-                            INDICES = iris$Species, 
-                            FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
+iris_stats_by_species <- by(data = iris, INDICES = iris$Species, FUN = descr, 
+                            stats = c("mean", "sd", "min", "med", "max"), 
                             transpose = TRUE)
 
 # Then use view(), like so:
@@ -234,7 +233,7 @@ results nice and tidy.
 ```{r, eval=FALSE}
 tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")]
 freq_tables <- lapply(tobacco_subset, freq)
-view(freq_tables, footnote = NA, file = 'freq-tables.html')
+view(freq_tables, footnote = NA, file = '~/freq-tables.html')
 ```
 
 ## Using summarytools in Rmarkdown documents
