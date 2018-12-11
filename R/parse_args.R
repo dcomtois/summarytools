@@ -157,10 +157,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # Function was called through lapply() ---------------------------------------
 
-  if (length(lapply_pos) == 1) {
-    lapply_call <- as.list(standardise_call(sys_calls[[lapply_pos]]))
+  if (length(lapply_pos) == 1 && lapply_pos == 1) {
+    lapply_call <- as.list(standardise_call(sys_calls[[1]]))
     df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
-    var_names <- names(sys_frames[[lapply_pos]]$X)[sys_frames[[lapply_pos]]$i]
+    var_names <- names(sys_frames[[1]]$X)[sys_frames[[1]]$i]
     
     df_label <- label(eval(lapply_call$X))
     var_label <- label(eval(lapply_call$X)[[var_names]])
