@@ -82,7 +82,7 @@ prep_ctable <- function(x, method) {
     
     main_sect <- build_heading_pander(format_info, data_info)
     
-    main_sect %+=%
+    +main_sect <-
       paste(
         capture.output(
           do.call(pander, append(pander_args, 
@@ -138,14 +138,14 @@ prep_ctable <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(cross_table))) {
         if (co == 1) {
-          table_row %+=%
+          +table_row <-
             list(tags$td(tags$strong(row.names(cross_table)[ro]), align = "center"))
         }
         
         # No proportions
         if (length(x$proportions) == 0) {
           cell <- cross_table[ro,co]
-          table_row %+=% list(tags$td(tags$span(cell)))
+          +table_row <- list(tags$td(tags$span(cell)))
         } else {
           # With proportions
           cell <- sub("\\( *", "("     , cross_table[ro,co])
@@ -153,12 +153,12 @@ prep_ctable <- function(x, method) {
           cell <- gsub(" "   , "&nbsp;", cell)
           cell <- sub("%"    , "&#37;" , cell, fixed = TRUE)
           
-          table_row %+=% list(tags$td(tags$span(HTML(cell))))
+          +table_row <- list(tags$td(tags$span(HTML(cell))))
         }
         
         # On last col, insert row into list
         if (co == ncol(cross_table)) {
-          table_rows %+=% list(tags$tr(table_row))
+          +table_rows <- list(tags$tr(table_row))
         }
       }
     }
@@ -182,12 +182,12 @@ prep_ctable <- function(x, method) {
     div_list <- build_heading_html(format_info, data_info, method)
     if (length(div_list) > 0 &&
         !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
-      div_list %+=% list(HTML(text = "<br/>"))
+      +div_list <- list(HTML(text = "<br/>"))
     }
-    div_list %+=% list(cross_table_html)
+    +div_list <- list(cross_table_html)
     
     if (parent.frame()$footnote != "") {
-      div_list %+=% list(HTML(text = parent.frame()$footnote))
+      +div_list <- list(HTML(text = parent.frame()$footnote))
     }
   }
    

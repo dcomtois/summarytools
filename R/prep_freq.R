@@ -63,7 +63,7 @@ prep_freq <- function(x, method) {
     
     main_sect <- build_heading_pander(format_info, data_info)
     
-    main_sect %+=%
+    +main_sect <-
       paste(
         capture.output(
           do.call(pander, append(pander_args, list(x = quote(freq_table))))
@@ -93,24 +93,24 @@ prep_freq <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
         if (co == 1) {
-          table_row %+=% list(tags$th(row.names(x)[ro]))
+          +table_row <- list(tags$th(row.names(x)[ro]))
           if (!"Weights" %in% names(data_info)) {
             cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
                         perl = TRUE)
-            table_row %+=% list(tags$td(cell, align = justify))
+            +table_row <- list(tags$td(cell, align = justify))
             next
           }
         }
         
         if (is.na(x[ro,co])) {
-          table_row %+=% list(tags$td(format_info$missing, align = justify))
+          +table_row <- list(tags$td(format_info$missing, align = justify))
         } else {
           cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-          table_row %+=% list(tags$td(cell, align = justify))
+          +table_row <- list(tags$td(cell, align = justify))
         }
         
         if (co == ncol(x)) {
-          table_rows %+=% list(tags$tr(table_row))
+          +table_rows <- list(tags$tr(table_row))
         }
       }
     }
@@ -175,12 +175,12 @@ prep_freq <- function(x, method) {
     div_list <- build_heading_html(format_info, data_info, method)
     if (length(div_list) > 0 &&
         !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
-      div_list %+=% list(HTML(text = "<br/>"))
+      +div_list <- list(HTML(text = "<br/>"))
     }
-    div_list %+=% list(HTML(text = freq_table_html))
+    +div_list <- list(HTML(text = freq_table_html))
     
     if (parent.frame()$footnote != "") {
-      div_list %+=% list(HTML(text = parent.frame()$footnote))
+      +div_list <- list(HTML(text = parent.frame()$footnote))
     }
   }
   

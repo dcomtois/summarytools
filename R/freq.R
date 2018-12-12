@@ -78,7 +78,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
   errmsg <- character()  # problems with arguments will be stored here
   
   if (is.data.frame(x) && ncol(x) > 1) {
-    errmsg %+=% "x must be a vector, factor, or data frame having 1 column only"
+    +errmsg <- "x must be a vector, factor, or data frame having 1 column only"
   }
   
   else if (is.data.frame(x) && ncol(x) == 1) {
@@ -87,7 +87,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
   }
   
   if (is.data.frame(x) && ncol(x) > 1) {
-    errmsg %+=% "x must be a vector, factor, or data frame having 1 column only"
+    +errmsg <- "x must be a vector, factor, or data frame having 1 column only"
   }
   
   else if (is.data.frame(x) && ncol(x) == 1) {

@@ -14,43 +14,7 @@ smart_split <- function(str, maxlen) {
 
 # infix to simplify append()ing
 #' @keywords internal
-`%+=%` <- function(x, y) {
-  xcall <- substitute(x)
-  #re_ind <- "^(\\w+)\\$(\\w+)$"
-  #ind <- sub(re_ind, "\\2", deparse(xcall))
-  xobjname <- setdiff(all.names(xcall), c("[[", "[", ":", "$"))
-  if (!exists(xobjname, parent.frame(), mode = "list") &&
-      !exists(xobjname, parent.frame(), mode = "numeric") &&
-      !exists(xobjname, parent.frame(), mode = "character")) {
-    xobj <- subset(y, FALSE)
-  } else {
-    xobj <- eval(xcall, envir = parent.frame())
-  }
-  
-  if (is.atomic(xobj)) {
-    if (!is.atomic(y)) {
-      stop('Cannot append object of mode ', dQuote(mode(y)), 
-           ' to atomic structure ', xobjname)
-    }
-    assign(xobjname, append(xobj, y), envir = parent.frame())
-    return(invisible())
-  }
-  
-  if (is.list(xobj)) {
-    if (is.atomic(y)) {
-      xobj[[length(xobj) + 1]] <- y
-    } else {
-      for (i in seq_along(y)) {
-        xobj[[length(xobj) + 1]] <- y[[i]]
-        names(xobj)[length(xobj)] <- names(y[i])
-      }
-    }
-    assign(xobjname, xobj, envir = parent.frame())
-    return(invisible())
-  }
-  stop("Can't append to an object of mode ", 
-       mode(eval(xcall, envir = parent.frame())))
-}
+`+<-` <- append
 
 # Remove quotation marks inside a string
 #' @keywords internal
@@ -60,7 +24,7 @@ unquote <- function(x) {
   x
 }
 
-# Replace accentuated characters by their html numerical code
+# Replace accentuated characters by their html decimal entity
 #' @keywords internal
 repl_accents <- function(...) {
   out <- character()

@@ -131,7 +131,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     x <- try(as.data.frame(x))
 
     if (inherits(x, "try-error")) {
-      errmsg %+=% paste(deparse(xnames), "is not coercible to a data frame")
+      +errmsg <- paste(deparse(xnames), "is not coercible to a data frame")
     } else {
       message(deparse(xnames), " was converted to a data frame")
       replace_colname <- TRUE

@@ -186,49 +186,49 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   if (!isTRUE(test_choice(method, 
                           c("pander", "browser", "viewer", "render")))) {
-    errmsg %+=% paste("'method' must be one of 'pander', 'browser', 'viewer',",
-                      "or 'render'")
+    +errmsg <- paste("'method' must be one of 'pander', 'browser', 'viewer',",
+                     "or 'render'")
   }
 
   if (file == "" && isTRUE(append)) {
-    errmsg %+=% "'append' is set to TRUE but no file name has been specified"
+    +errmsg <- "'append' is set to TRUE but no file name has been specified"
   }
 
   if (file != "" && isTRUE(append) && !file.exists(file)) {
-    errmsg %+=% "'append' is set to TRUE but specified file does not exist"
+    +errmsg <- "'append' is set to TRUE but specified file does not exist"
   }
 
   if (file != "" && isTRUE(append) && !is.na(report.title)) {
-    errmsg %+=% "Appending existing file -- 'report.title' arg. will be ignored"
+    +errmsg <- "Appending existing file -- 'report.title' arg. will be ignored"
   }
 
   if (!isTRUE(test_string(report.title, na.ok = TRUE))) {
-    errmsg %+=% "'report.title' must either be NA or a character string"
+    +errmsg <- "'report.title' must either be NA or a character string"
   }
 
   if (!isTRUE(test_logical(escape.pipe, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'escape.pipe' must be either TRUE or FALSE"
+    +errmsg <- "'escape.pipe' must be either TRUE or FALSE"
   }
 
   if (!is.na(custom.css) && 
       !isTRUE(check_file_exists(custom.css, access = "r"))) {
-    errmsg %+=% "'custom.css' must point to an existing file."
+    +errmsg <- "'custom.css' must point to an existing file."
   }
 
   if (method == "pander" && !is.na(table.classes)) {
-    errmsg %+=% "'table.classes' option does not apply to method 'pander'"
+    +errmsg <- "'table.classes' option does not apply to method 'pander'"
   }
   
   if (method == "pander" && !is.na(custom.css)) {
-    errmsg %+=% "'custom.css' option does not apply to method 'pander'"
+    +errmsg <- "'custom.css' option does not apply to method 'pander'"
   }
 
   if (!isTRUE(test_logical(silent, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'silent' must be either TRUE or FALSE"
+    +errmsg <- "'silent' must be either TRUE or FALSE"
   }
 
   if (file != "" && !isTRUE(test_path_for_output(file, overwrite = TRUE))) {
-     errmsg %+=% "'file' path is not valid - check that directory exists"
+     +errmsg <- "'file' path is not valid - check that directory exists"
   }
   
   if (file != "" && grepl(pattern = "\\.html$", x = file, 
