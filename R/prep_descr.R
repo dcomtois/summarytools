@@ -167,5 +167,6 @@ prep_descr <- function(x, method) {
       div_list %+=% list(HTML(text = parent.frame()$footnote))
     }
   }
+  
   return(div_list)
 }

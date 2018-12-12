@@ -155,10 +155,8 @@ prep_dfs <- function(x, method) {
                                       align = "center", border = "0"))
         }
       }
-      
       table_rows %+=% list(tags$tr(table_row))
     }
-    
     
     dfs_table_html <-
       tags$table(
@@ -188,5 +186,6 @@ prep_dfs <- function(x, method) {
       div_list %+=% list(HTML(text = parent.frame()$footnote))
     }
   }
+  
   return(div_list)
 }

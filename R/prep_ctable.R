@@ -186,11 +186,10 @@ prep_ctable <- function(x, method) {
     }
     div_list %+=% list(cross_table_html)
     
-    
     if (parent.frame()$footnote != "") {
       div_list %+=% list(HTML(text = parent.frame()$footnote))
     }
   }
-  
+   
   return(div_list)
 }
