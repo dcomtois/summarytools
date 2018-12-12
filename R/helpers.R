@@ -16,8 +16,9 @@ smart_split <- function(str, maxlen) {
 #' @keywords internal
 `%+=%` <- function(x, y) {
   xcall <- substitute(x)
-  xobjname <- setdiff(all.names(xcall), c("[[", "[", ":"))
-  #subset <- sub(pattern = "^.+\\[\\[(.*)\\]\\]$", replacement = "\\1", x = deparse(xname))
+  #re_ind <- "^(\\w+)\\$(\\w+)$"
+  #ind <- sub(re_ind, "\\2", deparse(xcall))
+  xobjname <- setdiff(all.names(xcall), c("[[", "[", ":", "$"))
   if (!exists(xobjname, parent.frame(), mode = "list") &&
       !exists(xobjname, parent.frame(), mode = "numeric") &&
       !exists(xobjname, parent.frame(), mode = "character")) {
@@ -31,13 +32,11 @@ smart_split <- function(str, maxlen) {
       stop('Cannot append object of mode ', dQuote(mode(y)), 
            ' to atomic structure ', xobjname)
     }
-    xobj <- eval(xcall, envir = parent.frame())
     assign(xobjname, append(xobj, y), envir = parent.frame())
     return(invisible())
   }
   
   if (is.list(xobj)) {
-    xobj <- eval(xcall, envir = parent.frame())
     if (is.atomic(y)) {
       xobj[[length(xobj) + 1]] <- y
     } else {
