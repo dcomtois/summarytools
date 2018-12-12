@@ -178,10 +178,12 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]  
 
     if (ncol(x.df) > 1) {
-      results <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+      results <- suppressWarnings(
+        x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
         gather("variable", "value") %>%
         separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
         spread("var", "value")
+      )
       
       # Transform results into output object
       output <- as.data.frame(t(results[ ,-1]))
