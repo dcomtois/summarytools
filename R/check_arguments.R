@@ -59,7 +59,7 @@ check_arguments <- function(mc, dotArgs, errmsg) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
     
-    justify <- switch(pf$justify,
+    justify <- switch(substring(pf$justify, 1, 1),
                       l = "left",
                       c = "center",
                       m = "center",
@@ -133,8 +133,12 @@ check_arguments <- function(mc, dotArgs, errmsg) {
   # ctable-specific arguments --------------------------------------------------
   if (caller == "ctable") {
     if ('prop' %in% names(mc)) {
-      if(!isTRUE(test_choice(pf$prop, c('t', 'r', 'c', 'n')))) {
+      prop <- tolower(substr(pf$prop, 1, 1))
+      if(!isTRUE(test_choice(prop, c('t', 'r', 'c', 'n')))) {
         errmsg %+=% "'prop' must be one of 't', 'r', 'c', or 'n'"
+      }
+      if (nchar(prop > 1)) {
+        assign("prop", prop, envir = parent.frame())
       }
     }
     

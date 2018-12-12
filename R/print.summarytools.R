@@ -227,9 +227,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     errmsg %+=% "'silent' must be either TRUE or FALSE"
   }
 
-  # if (!isTRUE(test_path_for_output(file, overwrite = TRUE))) {
-  #   errmsg %+=% "'file' path is not valid - check that directory exists"
-  # }
+  if (file != "" && !isTRUE(test_path_for_output(file, overwrite = TRUE))) {
+     errmsg %+=% "'file' path is not valid - check that directory exists"
+  }
   
   if (file != "" && grepl(pattern = "\\.html$", x = file, 
                           ignore.case = TRUE, perl = TRUE)) {
