@@ -378,14 +378,34 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
   
   # Dispatch to the right function for preparing output ------------------------
-  if(attr(x, "st_type") == "freq") {
+  if (attr(x, "st_type") == "freq") {
     res <- prep_freq(x, method)
-  } else if(attr(x, "st_type") == "ctable") {
+    if (is.na(report.title)) {
+      if (!("Weights" %in% names(attr(x, "data_info")))) {
+        report.title <- "Frequencies"
+      } else {
+        report.title <- "Weighted Frequencies"
+      }
+    }
+  } else if (attr(x, "st_type") == "ctable") {
     res <- prep_ctable(x, method)
-  } else if(attr(x, "st_type") == "descr") {
+    if (is.na(report.title)) {
+      report.title <- "Cross-Tabulation"
+    }
+  } else if (attr(x, "st_type") == "descr") {
     res <- prep_descr(x, method)
+    if (is.na(report.title)) {
+      if (!("Weights" %in% names(attr(x, "data_info")))) {
+        report.title <- "Descriptive Statistics"
+      } else {
+        report.title <- "Weighted Descriptive Statistics"
+      }
+    }
   } else if(attr(x, "st_type") == "dfSummary") {
-    res <- prep_dfs(x, method) 
+    res <- prep_dfs(x, method)
+    if (is.na(report.title)) {
+      report.title <- "Data Frame Summary"
+    }
   }
 
   # Print or write to file - pander --------------------------------------------
@@ -431,7 +451,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$div(
             class="container st-container",
             tags$head(
-              tags$title(ifelse(is.na(report.title), res[[1]], report.title)),
+              tags$title(report.title),
               if (isTRUE(bootstrap.css)) 
                 includeCSS(
                   path = paste(stpath, "includes/stylesheets/bootstrap.min.css",
