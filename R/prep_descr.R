@@ -164,7 +164,7 @@ prep_descr <- function(x, method) {
     +div_list <- list(HTML(text = descr_table_html))
    
     if (parent.frame()$footnote != "") {
-      +div_list <- list(HTML(text = parent.frame()$footnote))
+      +div_list <- list(HTML(text = repl_accents(parent.frame()$footnote)))
     }
   }
   
