@@ -92,10 +92,12 @@
 #'      \item \code{report.nas}    (\code{\link{freq}} objects)
 #'      \item \code{display.type}  (\code{\link{freq}} objects)
 #'      \item \code{missing}       (\code{\link{freq}} objects)
-#'      \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}} 
+#'      \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}}
+#'      objects)
+#'      \item \code{caption}       (\code{\link{freq}} and \code{\link{ctable}}
 #'      objects)
 #'    }
-#'      
+#'
 #' The following additional arguments can be used to override
 #'   heading elements to be printed:
 #'    \itemize{
@@ -154,23 +156,23 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
   on.exit(panderOptions("knitr.auto.asis",knitr.auto.asis.value))
   
-  dotargs <- list(...)
+  dotArgs <- list(...)
   
   # Recup arguments from view() if present -------------------------------------
-  if ("open.doc" %in% names(dotargs)) {
-    open.doc <- eval(dotargs[["open.doc"]])
+  if ("open.doc" %in% names(dotArgs)) {
+    open.doc <- eval(dotArgs[["open.doc"]])
   } else {
     open.doc <- FALSE
   }
 
-  if ("group.only" %in% names(dotargs)) {
-    attr(x, "formatting")$group.only <- eval(dotargs[["group.only"]])
+  if ("group.only" %in% names(dotArgs)) {
+    attr(x, "formatting")$group.only <- eval(dotArgs[["group.only"]])
   } else {
     attr(x, "formatting")$group.only <- FALSE
   }
 
-  if ("var.only" %in% names(dotargs)) {
-    attr(x, "formatting")$var.only <- eval(dotargs[["var.only"]])
+  if ("var.only" %in% names(dotArgs)) {
+    attr(x, "formatting")$var.only <- eval(dotArgs[["var.only"]])
   } else {
     attr(x, "formatting")$var.only <- FALSE
   }
@@ -231,8 +233,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
      +errmsg <- "'file' path is not valid - check that directory exists"
   }
   
-  if (file != "" && grepl(pattern = "\\.html$", x = file, 
-                          ignore.case = TRUE, perl = TRUE)) {
+  if (file != "" && 
+      grepl(pattern = "\\.html$", x = file, ignore.case = TRUE, perl = TRUE) &&
+      !grepl(pattern = tempdir(), x = file, fixed = TRUE)) {
     method <- "viewer"
   }
   
@@ -244,10 +247,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     footnote <- ""
   }
 
-  # Display message if list object printed with base print() method
-  if (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
-      any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
-                x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE))) {
+  # Display message if list object printed with base print() method with pander
+  if (method == "pander" && 
+      (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
+       any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
+                x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
     msg <- paste("For best results printing list objects with summarytools,",
                  "use view(x, method = 'pander')")
     if (.st_env$last.message$msg != msg || 
@@ -259,11 +263,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
   
   # Override of x's attributes (formatting and heading info) -------------------
-  if ("date" %in% names(dotargs)) {
-    attr(x, "date") <- dotargs[["date"]]
+  if ("date" %in% names(dotArgs)) {
+    attr(x, "date") <- dotArgs[["date"]]
   }
   
-  # Override of formatting elements, first by looking at '...' (var dotargs),
+  # Override of formatting elements, first by looking at '...' (var dotArgs),
   # then by looking at the match.call() from x to set global parameters that 
   # were not explicit in the latter.
   # Here we check for arguments that can be specified at the function level for
@@ -276,7 +280,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "graph.col", "na.col", "valid.col", "split.tables",
                            "totals", "report.nas", "missing", "totals",
                            "omit.headings")) {
-    if (format_element %in% names(dotargs)) {
+    if (format_element %in% names(dotArgs)) {
       if (format_element == 'omit.headings') {
         
         msg <- paste("'omit.headings' will disappear in future releases;",
@@ -289,10 +293,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         }
         
         attr(x, "formatting")[['headings']] <- 
-          !isTRUE(eval(dotargs[["omit.headings"]]))
+          !isTRUE(eval(dotArgs[["omit.headings"]]))
         overrided_args <- append(overrided_args, 'headings')
       } else {
-        attr(x, "formatting")[[format_element]] <- dotargs[[format_element]]
+        attr(x, "formatting")[[format_element]] <- dotArgs[[format_element]]
         overrided_args <- append(overrided_args, format_element)
       }
     }
@@ -330,18 +334,23 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                           "Row.variable", "Col.variable",
                           "Row.variable.label", "Col.variable.label")
   for (data_info_element in data_info_elements) {
-    if (tolower(data_info_element) %in% tolower(names(dotargs))) {
+    if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
       attr(x, "data_info")[[data_info_element]] <- 
-        dotargs[grep(data_info_element, names(dotargs), ignore.case = TRUE)]
+        dotArgs[grep(data_info_element, names(dotArgs), ignore.case = TRUE)]
       overrided_args <- append(overrided_args, data_info_element)
     }
+  }
+  
+  # Add caption if present in dotArgs
+  if ("caption" %in% names(dotArgs)) {
+    attr(x, "user_fmt")$caption <- dotArgs$caption
   }
 
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
   # explicitly specified
   if (method == "pander" && attr(x, "formatting")$style == "rmarkdown" &&
       isTRUE(attr(x, "formatting")$plain.ascii) &&
-      (!"plain.ascii" %in% (names(dotargs)))) {
+      (!"plain.ascii" %in% (names(dotArgs)))) {
     attr(x, "formatting")$plain.ascii <- FALSE
   }
 
