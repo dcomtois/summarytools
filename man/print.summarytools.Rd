@@ -108,10 +108,12 @@ The following additional arguments can be used to override
      \item \code{report.nas}    (\code{\link{freq}} objects)
      \item \code{display.type}  (\code{\link{freq}} objects)
      \item \code{missing}       (\code{\link{freq}} objects)
-     \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}} 
+     \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}}
+     objects)
+     \item \code{caption}       (\code{\link{freq}} and \code{\link{ctable}}
      objects)
    }
-     
+
 The following additional arguments can be used to override
   heading elements to be printed:
    \itemize{
