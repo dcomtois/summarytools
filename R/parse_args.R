@@ -215,8 +215,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         for (iter in possible.iterator) {
           if (exists(iter, envir = sys_frames[[no.frame]], mode = "numeric")) {
             it <- get(iter, envir = sys_frames[[no.frame]])
-            var_names <- head(names(df[it]), max.varnames)
-            var_label <- label(df[it])[1]
+            var_names <- head(names(df_[it]), max.varnames)
+            var_label <- label(df_[it])[1]
             cont <- FALSE
             break
           }
