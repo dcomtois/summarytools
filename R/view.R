@@ -78,6 +78,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
             
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       
+      if (grepl(tempdir(), file, fixed = TRUE)) {
+        open.doc <- TRUE
+      } else {
+        open.doc <- FALSE
+      }
+      
       for (i in seq_along(x)) {
         
         if (i == 1) {
@@ -122,7 +128,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                              silent = silent,
                              footnote = footnote,
                              group.only = TRUE,
-                             open.doc = TRUE,
+                             open.doc = open.doc,
                              ...)
         }
       }
@@ -206,6 +212,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
 
+      if (grepl(tempdir(), file, fixed = TRUE)) {
+        open.doc <- TRUE
+      } else {
+        open.doc <- FALSE
+      }
+      
       for (i in seq_along(x)) {
         if (i == 1) {
           print.summarytools(x[[1]],
@@ -242,7 +254,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                              footnote = footnote,
                              escape.pipe = escape.pipe,
                              table.classes = table.classes,
-                             open.doc = TRUE,
+                             open.doc = open.doc,
                              ...)
         }
       }
@@ -305,15 +317,6 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                                escape.pipe = escape.pipe,
                                var.only = var.only,
                                ...)
-          # } else {
-          #   print.summarytools(x[[1]],
-          #                      method = "pander",
-          #                      file = file,
-          #                      silent = silent,
-          #                      append = append,
-          #                      escape.pipe = escape.pipe,
-          #                      ...)
-          # }
         } else {
           print.summarytools(x[[i]],
                              method = "pander",
