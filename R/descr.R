@@ -79,17 +79,18 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   errmsg <- character()  # problems with arguments will be stored here
   
   if (is.atomic(x) && !is.numeric(x)) {
-    +errmsg <- "'x' must be numeric"
+    errmsg %+=% "'x' must be numeric"
   }
+  
   # make x a data.frame
   x.df <- as_tibble(x)
   
   if (!is.data.frame(x.df)) {
-    +errmsg <- paste("'x' must be a numeric vector, a data.frame, a tibble,",
+    errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
                      "a data.table; attempted conversion to tibble failed")
   }
   
-  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
   
   valid_stats <- list(
     no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
@@ -98,11 +99,12 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
              "n.valid", "pct.valid")
   )
+  
   if (identical(stats,"all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
   } else if (identical(stats, "fivenum")) {
     if (!identical(weights, NA)) {
-      +errmsg <- "fivenum is not supported when weights are used"
+      errmsg %+=% "fivenum is not supported when weights are used"
     }
     stats <- c("min", "q1", "med", "mean", "q3", "max")
   } else if (identical(stats, "common")) {
@@ -112,17 +114,19 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     invalid_stats <- 
       setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
     if (length(invalid_stats) > 0) {
-      +errmsg <-
+      errmsg %+=%
         paste("The following statistics are not recognized, or not allowed: ",
               paste(dQuote(invalid_stats), collapse = ", ")
               )
     }
   }
-  
+
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
 
+  # End of arguments validation ------------------------------------------------
+  
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
   if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {

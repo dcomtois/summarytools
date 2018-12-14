@@ -90,7 +90,7 @@ prep_dfs <- function(x, method) {
     
     main_sect <- build_heading_pander(format_info, data_info)
     
-    +main_sect <-
+    main_sect %+=%
       paste(
         capture.output(
           do.call(pander, append(pander_args, list(x = quote(x))))
@@ -122,9 +122,9 @@ prep_dfs <- function(x, method) {
     table_head <- list()
     for(cn in colnames(x)) {
       if (cn %in% c("No", "Valid", "Missing")) {
-        +table_head <- list(tags$th(tags$strong(cn), align = "center"))
+        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
       } else {
-        +table_head <- list(tags$th(tags$strong(cn), align = "center"))
+        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
       }
     }
     
@@ -135,27 +135,27 @@ prep_dfs <- function(x, method) {
         cell <- x[ro,co]
         cell <- gsub('\\\\\n', '\n', cell)
         if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
-          +table_row <- list(tags$td(cell, align = "center"))
+          table_row %+=% list(tags$td(cell, align = "center"))
         } else if (colnames(x)[co] == "Label") {
           cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
           cell <- paste(strwrap(cell,width = format_info$split.cells, 
                                 simplify = TRUE), collapse = "\n")
-          +table_row <- list(tags$td(cell, align = "left"))
+          table_row %+=% list(tags$td(cell, align = "left"))
         } else if (colnames(x)[co] %in% 
                    c("Variable", "Properties", "Stats / Values")) {
           cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
-          +table_row <- list(tags$td(cell, align = "left"))
+          table_row %+=% list(tags$td(cell, align = "left"))
         } else if (colnames(x)[co] == "Freqs (% of Valid)") {
           cell <- gsub("\\\\", " ", cell)
           cell <- gsub(" *(\\d|\\:)", "\\1", cell)
           cell <- gsub("\\:", " : ", cell)
-          +table_row <- list(tags$td(cell, align = "left"))
+          table_row %+=% list(tags$td(cell, align = "left"))
         } else if (colnames(x)[co] == "Graph") {
-          +table_row <- list(tags$td(HTML(cell), 
+          table_row %+=% list(tags$td(HTML(cell), 
                                       align = "center", border = "0"))
         }
       }
-      +table_rows <- list(tags$tr(table_row))
+      table_rows %+=% list(tags$tr(table_row))
     }
     
     dfs_table_html <-
@@ -176,14 +176,17 @@ prep_dfs <- function(x, method) {
 
     # Prepare the main "div" for the html report
     div_list <- build_heading_html(format_info, data_info, method)
+    
     if (length(div_list) > 0 &&
         !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
-      +div_list <- list(HTML(text = "<br/>"))
+      div_list %+=% list(HTML(text = "<br/>"))
     }
-    +div_list <- list(HTML(text = dfs_table_html))
+    
+    div_list %+=% list(HTML(text = dfs_table_html))
     
     if (parent.frame()$footnote != "") {
-      +div_list <- list(HTML(text = parent.frame()$footnote))
+      fn <- repl_accents(parent.frame()[['footnote']])
+      div_list %+=% list(HTML(text = fn))
     }
   }
   

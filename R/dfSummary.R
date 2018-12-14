@@ -131,22 +131,22 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     x <- try(as.data.frame(x))
 
     if (inherits(x, "try-error")) {
-      +errmsg <- paste(deparse(xnames), "is not coercible to a data frame")
+      errmsg %+=% paste(deparse(xnames), "is not coercible to a data frame")
     } else {
       message(deparse(xnames), " was converted to a data frame")
       replace_colname <- TRUE
     }
-    #parse_info$df_name <- parse_info$var_name 
-    # TODO: test the use of a single vector passed to dfSummary
   }
 
-  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
   
-  # Get info on x from parsing function
+  # End of arguments validation ------------------------------------------------
+  
+  # Get info on x from parsing function ----------------------------------------
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
                                max.varnames = as.numeric(replace_colname)),
                     silent = TRUE)

@@ -74,18 +74,18 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   if (!is.factor(x) && !is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
     if (inherits(x, "try-error")) {
-      +errmsg <- "'x' must be a factor or an object coercible to a vector"
+      errmsg %+=% "'x' must be a factor or an object coercible to a vector"
     }
   }
 
   if (!is.factor(y) && !is.atomic(x)) {
     y <- try(as.vector(y), silent = TRUE)
     if (inherits(y, "try-error")) {
-      +errmsg <- "'y' must be a factor or an object coercible to a vector"
+      errmsg %+=% "'y' must be a factor or an object coercible to a vector"
     }
   }
 
-  errmsg <- check_arguments(match.call(), list(...), errmsg)
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
