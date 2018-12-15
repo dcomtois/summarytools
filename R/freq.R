@@ -8,7 +8,7 @@
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent). Default value is \dQuote{default}.
+#'   most frequent to less frequent).
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown} This option can be set globally; see
@@ -63,7 +63,6 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-#' @importFrom dplyr %>% as_tibble count
 freq <- function(x, round.digits = st_options('round.digits'), 
                  order = "default", style = st_options('style'), 
                  plain.ascii = st_options('plain.ascii'), 
@@ -77,89 +76,74 @@ freq <- function(x, round.digits = st_options('round.digits'),
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
-  if (is.data.frame(x) && ncol(x) > 1) {
-    +errmsg <- "x must be a vector, factor, or data frame having 1 column only"
-  }
-  
-  else if (is.data.frame(x) && ncol(x) == 1) {
-    x.df <- as_tibble(x)
-    x <- x[[1]]
-  }
-  
-  if (is.data.frame(x) && ncol(x) > 1) {
-    +errmsg <- "x must be a vector, factor, or data frame having 1 column only"
-  }
-  
-  else if (is.data.frame(x) && ncol(x) == 1) {
-    x.df <- as_tibble(x)
+  # if x is a data.frame with 1 column, extract this column as x
+  if (!is.null(ncol(x)) && ncol(x)==1) {
+    varname <- colnames(x)
     x <- x[[1]]
   }
 
-  errmsg <- check_arguments(match.call(), list(...), errmsg)
-  
+  if (!is.atomic(x)) {
+    x <- try(as.vector(x), silent = TRUE)
+    if (inherits(x, "try-error") || !is.atomic(x)) {
+      errmsg %+=% "argument x must be a vector or a factor"
+    }
+  }
+
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
+
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
   
+  # End of arguments validation ------------------------------------------------
+  
   # When style = 'rmarkdown', make plain.ascii FALSE unless specified explicitly
   if (style %in% c("grid", "rmarkdown") && 
-      !"plain.ascii" %in% (names(match.call()))) {
+      !("plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
-  # Prep work ------------------------------------------------------------------
-
+  # Replace NaN's by NA's (This simplifies matters a lot)
+  if (NaN %in% x)  {
+    message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
+    x[is.nan(x)] <- NA
+  }
+  
   # Get information about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                    max.varnames = 1), silent = TRUE)
+                               silent = exists('varname')),
+                    silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
   
-  # if x is a data.frame with 1 column, extract variable name
-  if (is.data.frame(x)) {
-    varname <- colnames(x)
-    varlabel <- label(x)
-  } else {
-    if ("var_names" %in% names(parse_info)) {
-      varname <- parse_info$var_names
-    } else {
-      varname <- "variable"
-    }
+  if (!("var_names" %in% names(parse_info)) && exists('varname')) {
+    parse_info$var_names <- varname
   }
   
-  x.df <- as_tibble(x)
-  colnames(x.df) <- varname
-  
-  # Replace NaN's by NA's (This simplifies matters a lot)
-  if (NaN %in% x.df[[1]])  {
-    message(paste(sum(is.nan(x[[1]])), "NaN value(s) converted to NA\n"))
-    x.df[[1]][is.nan(x.df[[1]])] <- NA
-  }
-  
-  # Calculations - No Weights used ----------------------------------------------  
-
+  # No weights are used --------------------------------------------------------
+  # create a basic frequency table, always including NA
   if (identical(NA, weights)) {
+    freq_table <- table(x, useNA = "always")
     
-    ft <- x.df %>% count(get(varname), sort = (order == 'freq'))
-    freq_table <- as.integer(ft[[2]])
-    
-    if (NA %in% ft[[1]]) {
-      names(freq_table) <- as.character(ft[[1]])
-      names(freq_table)[length(freq_table)] <- '<NA>'
-    } else {
-        freq_table <- append(freq_table, 0)
-        names(freq_table) <- append(as.character(ft[[1]]), '<NA>')
-    }
-    
-    # Order by name if needed
-    if (order == "names" && is.factor(x.df[[1]])) {
-      freq_table <- freq_table[order(names(freq_table))]
-      na_pos <- which(names(freq_table) == '<NA>')
+    # Order by frequency if needed
+    if (order == "freq") {
+      freq_table <- sort(freq_table, decreasing = TRUE)
+      na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
+    # order by names if needed
+    if (is.factor(x) && order == "names") {
+      freq_table <- freq_table[order(names(freq_table))]
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
+    
+    # Change the name of the NA item (last) to avoid potential
+    # problems when echoing to console
+    names(freq_table)[length(freq_table)] <- "<NA>"
     
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
@@ -172,7 +156,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     P_tot <- prop.table(freq_table) * 100
   }
   
-  # Weights are used ----------------------------------------------------------
+  # Weights are used -----------------------------------------------------------
   else {
     
     # Check that weights vector is of the right length
@@ -181,7 +165,8 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
     
     weights_string <- deparse(substitute(weights))
-
+    weights_label <- try(label(weights), silent = TRUE)
+    
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were ",
               "treated as zeroes.")
@@ -189,14 +174,24 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
     
     if (isTRUE(rescale.weights)) {
-      weights <- weights / sum(weights) * length(x.df[[1]])
+      weights <- weights / sum(weights) * length(x)
     }
     
     freq_table <- xtabs(formula = weights ~ x)
     
     # Order by frequency if needed
-    if (order == "freq")
-      freq_table <- freq_table[order(freq_table, decreasing = TRUE)]
+    if (order == "freq") {
+      freq_table <- sort(freq_table, decreasing = TRUE)
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
+    
+    # order by names if needed
+    if (is.factor(x) && order == "names") {
+      freq_table <- freq_table[sort(names(freq_table))]
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
     
     P_valid <- prop.table(freq_table) * 100
     P_valid["<NA>"] <- NA
@@ -228,23 +223,18 @@ freq <- function(x, round.digits = st_options('round.digits'),
   
   data_info <-
     list(
-      Dataframe      = ifelse("df_name"  %in% names(parse_info), 
+      Dataframe      = ifelse("df_name" %in% names(parse_info), 
                               parse_info$df_name, NA),
-      Dataframe.label= ifelse("df_label"  %in% names(parse_info), 
+      Dataframe.label = ifelse("df_label" %in% names(parse_info), 
                                parse_info$df_label, NA),
       Variable       = ifelse("var_names" %in% names(parse_info), 
                               parse_info$var_names, NA),
-      Variable.label = ifelse("Var_label" %in% names(parse_info),
-                              parse_info$Variable_label, label(x)),
-      Data.type      = ifelse(is.factor(x.df[[1]]) && is.ordered(x.df[[1]]), 
-                              "Factor (ordered)",
-                              ifelse(is.factor(x.df[[1]]), 
-                                     "Factor (unordered)",
-                                     ifelse(is.character(x.df[[1]]), 
-                                            "Character",
-                                            ifelse(is.numeric(x.df[[1]]),
-                                                   "Numeric", 
-                                                   class(x.df[[1]]))))),
+      Variable.label = label(x),
+      Data.type      = ifelse(is.factor(x) && is.ordered(x), "Factor (ordered)",
+                              ifelse(is.factor(x), "Factor (unordered)",
+                                     ifelse(is.character(x), "Character",
+                                            ifelse(is.numeric(x), "Numeric", 
+                                                   class(x))))),
       Weights       = ifelse(identical(weights, NA), NA,
                              sub(pattern = paste0(parse_info$df_name, "$"), 
                                  replacement = "",

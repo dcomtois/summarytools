@@ -28,7 +28,7 @@ unquote <- function(x) {
 
 # Replace accentuated characters by their html decimal entity
 #' @keywords internal
-repl_accents <- function(...) {
+conv_non_ascii <- function(...) {
   out <- character()
   for (s in list(...)) {
     splitted <- unlist(strsplit(s, ""))

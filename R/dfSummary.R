@@ -104,6 +104,7 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct
+#' @importFrom stats start end
 #' @export
 dfSummary <- function(x, round.digits = st_options('round.digits'), 
                       varnumbers = st_options('dfSummary.varnumbers'),
@@ -125,7 +126,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   errmsg <- character()  # problems with arguments will be stored here
   
   # Flag to replace colname when x is not a data frame
-  replace_colname <- FALSE
+  converted_to_df <- FALSE
   if (!is.data.frame(x)) {
     xnames <- substitute(x)
     x <- try(as.data.frame(x))
@@ -133,8 +134,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     if (inherits(x, "try-error")) {
       errmsg %+=% paste(deparse(xnames), "is not coercible to a data frame")
     } else {
-      message(deparse(xnames), " was converted to a data frame")
-      replace_colname <- TRUE
+      converted_to_df <- TRUE
+      df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
+      message(df_name, " was converted to a data frame")
     }
   }
 
@@ -147,18 +149,25 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   # End of arguments validation ------------------------------------------------
   
   # Get info on x from parsing function ----------------------------------------
+  max.varnames <- as.numeric(converted_to_df)
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                               max.varnames = as.numeric(replace_colname)),
+                               max.varnames = max.varnames),
                     silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
   
-  if (isTRUE(replace_colname) && identical(colnames(x), "x") &&
-      'var_names' %in% names(parse_info) 
-      && length(parse_info$var_names) == 1) {
-    colnames(x) <- parse_info$var_names
+  if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
+    parse_info$df_name <- df_name
+  }
+  
+  if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
+    if ('var_names' %in% names(parse_info)) {
+      colnames(x) <- parse_info$var_names      
+    } else {
+      colnames(x) <- parse_info$df_name
+    }
   }
   
   # Initialize the output data frame -------------------------------------------
@@ -205,27 +214,27 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
-      output[i,4:7] <- crunch_factor()
+      output[i,4:7] <- crunch_factor(column_data)
     }
     
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
-      output[i,4:7] <- crunch_character()
+      output[i,4:7] <- crunch_character(column_data)
     }
     
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
-      output[i,4:7] <- crunch_numeric()
+      output[i,4:7] <- crunch_numeric(column_data)
     }
     
     # Time/date data -----------------------------------------------------------
     else if (inherits(column_data, c("Date", "POSIXct"))) {
-      output[i,4:7] <- crunch_time_date()
+      output[i,4:7] <- crunch_time_date(column_data)
     }
-      
+    
     # Data does not fit in previous categories ---------------------------------
     else {
-      output[i,4:7] <- crunch_other()
+      output[i,4:7] <- crunch_other(column_data)
     }
 
     output[i,8] <- 

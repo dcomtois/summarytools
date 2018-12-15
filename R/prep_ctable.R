@@ -189,7 +189,7 @@ prep_ctable <- function(x, method) {
     div_list %+=% list(cross_table_html)
     
     if (parent.frame()$footnote != "") {
-      fn <- repl_accents(parent.frame()[['footnote']])
+      fn <- conv_non_ascii(parent.frame()[['footnote']])
       div_list %+=% list(HTML(text = fn))
     }
   }

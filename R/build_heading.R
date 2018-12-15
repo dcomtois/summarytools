@@ -35,6 +35,11 @@ build_heading_pander <- function(format_info, data_info) {
     return(paste(to_append, collapse = ""))
   }
   
+  # head1 = main title (e.g. "Data Frame Summary")
+  # head2 = the data frame, the variable, or the 2 variables for ctable
+  # head3 = additional other elements
+  
+  
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
     head2 <- append_items(list(c(Variable       = "Variable"),
@@ -131,7 +136,7 @@ build_heading_html <- function(format_info, data_info, method) {
           
           div_str_item <- paste(paste0("<strong>", item, "</strong>"),
                                 ifelse(is.character(data_info[[names(item)]]),
-                                       repl_accents(data_info[[names(item)]]),
+                                       conv_non_ascii(data_info[[names(item)]]),
                                        data_info[[names(item)]]),
                                 sep = ": ")
           
