@@ -287,7 +287,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       for (no.frame in seq_along(sys_frames)) {
         if (!cont) 
           break
-        for (iter in possible.iterator) {
+        for (iter in potential.iterator) {
           if (exists(iter, envir = sys_frames[[no.frame]], mode = "numeric")) {
             it <- get(iter, envir = sys_frames[[no.frame]])
             var_names <- head(names(df_[it]), max.varnames)
