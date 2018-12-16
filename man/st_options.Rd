@@ -13,7 +13,7 @@ st_options(option = NULL, value = NULL, style = "simple",
   dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
   dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
   dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-  omit.headings = !headings)
+  lang = "en", omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -102,6 +102,10 @@ default.}
 0 and 1) or too small (use a value > 1). Must be positive. Default to
 \code{1}.}
 
+\item{lang}{Character. A 2-letter code for the language to use in the
+produced outputs. Currently available languages are: \sQuote{en}, 
+\sQuote{fr}.}
+
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
 }
 \description{
@@ -109,9 +113,9 @@ To list all \code{summarytools} global options, call without arguments. To
 display the value of one or several options, enter the name(s) of the
 option(s) in a character vector as sole argument.
 }
-\note{
-Loosely based on Gergely Daróczi's \code{\link[pander]{panderOptions}}
- function.
+\details{
+To learn more about summarytools options, see the 
+\href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
 }
 \examples{
 \dontrun{
@@ -121,7 +125,4 @@ st_options(round.digits = 1)   # set an option
 st_options('round.digits', 1)  # set an option (legacy way)
 st_options('reset')            # reset all summarytools global options
 }
-}
-\author{
-Dominic Comtois, \email{dominic.comtois@gmail.com},
 }

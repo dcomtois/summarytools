@@ -10,42 +10,39 @@
 # Initialise message to be displayed in some specific circumstances
 .st_env$last.message <- list(msg = "", time = 0)
 
+# Placeholder for customized translations
+.st_env$custom_lang <- list()
+
 # Hideous hack to avoid warning on check
 utils::globalVariables(c("."))
 
 # summarytools global options
+#' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
-  st.options <- list('style'                  = 'simple',
-                     'round.digits'           = 2,
-                     'plain.ascii'            = TRUE,
-                     'headings'               = TRUE,
-                     'footnote'               = 'default',
-                     'display.labels'         = TRUE,
-                     'bootstrap.css'          = TRUE,
-                     'custom.css'             = NA,
-                     'escape.pipe'            = FALSE,
-                     'freq.totals'            = TRUE,
-                     'freq.report.nas'        = TRUE,
-                     'ctable.prop'            = 'r',
-                     'ctable.totals'          = TRUE,
-                     'descr.stats'            = 'all',
-                     'descr.transpose'        = FALSE,
-                     'dfSummary.varnumbers'   = TRUE,
-                     'dfSummary.labels.col'   = TRUE,
-                     'dfSummary.graph.col'    = TRUE,
-                     'dfSummary.valid.col'    = TRUE,
-                     'dfSummary.na.col'       = TRUE,
-                     'dfSummary.graph.magnif' = 1,
-                     'lang'                   = 'en')
-
-  if (!'summarytools' %in% names(options())) {
-    options(summarytools = st.options)
-  } else {
-    toadd <- st.options[which(!names(st.options) %in% 
-                                names(options()$summarytools))]
-    options(summarytools = append(options()$summarytools, toadd))
-  }
-
+  options(summarytools =
+            list('style'                  = 'simple',
+                 'round.digits'           = 2,
+                 'plain.ascii'            = TRUE,
+                 'headings'               = TRUE,
+                 'footnote'               = 'default',
+                 'display.labels'         = TRUE,
+                 'bootstrap.css'          = TRUE,
+                 'custom.css'             = NA,
+                 'escape.pipe'            = FALSE,
+                 'freq.totals'            = TRUE,
+                 'freq.report.nas'        = TRUE,
+                 'ctable.prop'            = 'r',
+                 'ctable.totals'          = TRUE,
+                 'descr.stats'            = 'all',
+                 'descr.transpose'        = FALSE,
+                 'dfSummary.varnumbers'   = TRUE,
+                 'dfSummary.labels.col'   = TRUE,
+                 'dfSummary.graph.col'    = TRUE,
+                 'dfSummary.valid.col'    = TRUE,
+                 'dfSummary.na.col'       = TRUE,
+                 'dfSummary.graph.magnif' = 1,
+                 'lang'                   = 'en'))
+          
   data("translations", package=pkgname, envir=parent.env(environment()))
   
   return(invisible())
@@ -57,6 +54,6 @@ utils::globalVariables(c("."))
   #panderOptions("knitr.auto.asis", FALSE)
   if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
     packageStartupMessage("For best results, consider updating pander to its ",
-                          "most recent version with ",
+                          "most recent version. You can do so by using \n",
                           "devtools::install_github('rapporter/pander')")
 }

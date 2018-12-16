@@ -722,7 +722,7 @@ conv_non_ascii <- function(...) {
 trs <- function(item, l = st_options('lang')) {
   l = force(l)
   if (l != "custom") {
-    tr[l,item]
+    translations[l,item]
   } else {
     .st_env$custom_lang['custom', item]
   }

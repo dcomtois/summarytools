@@ -72,10 +72,8 @@
 #'   \sQuote{fr}.
 #' @param omit.headings Logical. Deprecated. Use \code{headings} instead.
 #' 
-#' @author
-#' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' @note Loosely based on Gergely Daróczi's \code{\link[pander]{panderOptions}}
-#'  function.
+#' @details To learn more about summarytools options, see the 
+#' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
 #' 
 #' @examples \dontrun{
 #' st_options()                   # show all summarytools global options
@@ -124,7 +122,7 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     # Check that option is among the existing ones
     for (o in option) {
       if (!o %in% c(names(allOpts), 'omit.headings')) {
-        stop('Option ', o, 'not recognized / not available')
+        stop('Option ', o, ' not recognized / not available')
       }
     }
     
@@ -167,7 +165,8 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
                    'dfSummary.graph.col'    = TRUE,
                    'dfSummary.valid.col'    = TRUE,
                    'dfSummary.na.col'       = TRUE,
-                   'dfSummary.graph.magnif' = 1))
+                   'dfSummary.graph.magnif' = 1,
+                   'lang'                   = 'en'))
     
     message('summarytools options have been reset')
     return(invisible())
