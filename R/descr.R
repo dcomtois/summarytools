@@ -305,16 +305,11 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   output <- output[ ,stats]
   
   
-  # Make column names prettier
-  cnames <- c(sd = "Std.Dev", med = "Median", mad = "MAD", iqr = "IQR", 
-                cv = "CV", se.skewness = "SE.Skewness", n.valid = "N.Valid",
-                pct.valid = "Pct.Valid")
-  
-  for (i in seq_along(cnames)) {
-    colnames(output)[which(colnames(output) == names(cnames[i]))] <- cnames[i]
+  # Apply translations to colnames
+  for (i in seq_along(output)) {
+    colnames(output)[i] <- trs(colnames(output)[i])
   }
-  colnames(output) <- rapportools::capitalise(colnames(output))
-  
+
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
@@ -327,7 +322,6 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   attr(output, "st_type")    <- "descr"
   attr(output, "date")       <- Sys.Date()
   attr(output, "fn_call")    <- match.call()
-  
   
   data_info <-
     list(

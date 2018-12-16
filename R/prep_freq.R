@@ -8,7 +8,7 @@ prep_freq <- function(x, method) {
   if (!isTRUE(format_info$report.nas)) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     x <- x[-(nrow(x)-1),1:3]
-    colnames(x) <- c("Freq", "%", "% Cum.")
+    colnames(x) <- c(trs('freq'), "%", trs('pct.cum'))
   }
   
   if (!isTRUE(format_info$totals)) {
@@ -117,15 +117,15 @@ prep_freq <- function(x, method) {
     
     if (isTRUE(format_info$report.nas)) {
       table_head[[1]] <- list(tags$th("", colspan = 2),
-                              tags$th("Valid", colspan = 2),
-                              tags$th("Total", colspan = 2))
+                              tags$th(trs('valid'), colspan = 2),
+                              tags$th(trs('total'), colspan = 2))
       table_head[[2]] <- list(tags$th(sub("^.*\\$(.+)$", "\\1", 
                                           data_info$Variable)),
-                              tags$th("Freq"),
+                              tags$th(HTML(trs('freq'))),
                               tags$th("%"),
-                              tags$th(HTML("% Cumul")),
+                              tags$th(HTML(trs('pct.cum'))),
                               tags$th("%"),
-                              tags$th(HTML("% Cumul")))
+                              tags$th(HTML(trs('pct.cum'))))
       
       freq_table_html <-
         tags$table(
@@ -144,9 +144,9 @@ prep_freq <- function(x, method) {
       
       # no reporting of missing values (NA)
       table_head <- list(tags$th(data_info$Variable),
-                         tags$th("Freq"),
+                         tags$th(trs('freq')),
                          tags$th("%"),
-                         tags$th(HTML("% Cumul")))
+                         tags$th(HTML(trs('pct.cum'))))
       
       freq_table_html <-
         tags$table(
@@ -179,7 +179,7 @@ prep_freq <- function(x, method) {
       div_list %+=% list(HTML(text = "<br/>"))
     }
     
-    div_list %+=% list(HTML(text = freq_table_html))
+    div_list %+=% list(HTML(text = conv_non_ascii(freq_table_html)))
     
     if (parent.frame()$footnote != "") {
       fn <- conv_non_ascii(parent.frame()[['footnote']])

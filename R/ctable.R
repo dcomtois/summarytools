@@ -160,8 +160,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   # Add totals
   freq_table <- addmargins(freq_table)
-  rownames(freq_table)[nrow(freq_table)] <- "Total"
-  colnames(freq_table)[ncol(freq_table)] <- "Total"
+  rownames(freq_table)[nrow(freq_table)] <- trs('total')
+  colnames(freq_table)[ncol(freq_table)] <- trs('total')
   if (!is.null(prop_table)) {
     prop_table[is.nan(prop_table)] <- 0 # NaN's can occur
     if (prop == "t") {
@@ -178,8 +178,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
       prop_table <- cbind(prop_table, sum_props)
     }
 
-    rownames(prop_table)[nrow(prop_table)] <- "Total"
-    colnames(prop_table)[ncol(prop_table)] <- "Total"
+    rownames(prop_table)[nrow(prop_table)] <- trs('total')
+    colnames(prop_table)[ncol(prop_table)] <- trs('total')
   }
 
   # Change name of NA items to avoid potential problems when echoing to console
@@ -199,7 +199,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   # Create output object -------------------------------------------------------
   
-  output <- list(cross_table = freq_table, proportions = prop_table)
+  output <- list(cross_table = freq_table, 
+                 proportions = prop_table)
 
   # Set output object's attributes
   class(output) <- c("summarytools", class(output))

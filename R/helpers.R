@@ -39,3 +39,10 @@ conv_non_ascii <- function(...) {
   }
   out
 }
+
+
+# Shorcut function to get translation strings
+#' @keywords internal
+trs <- function(item, l = st_options('lang')) {
+  tr[force(l),item]
+}

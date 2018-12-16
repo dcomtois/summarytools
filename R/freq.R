@@ -74,7 +74,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
                  rescale.weights = FALSE, ...) {
 
   # Validate arguments ---------------------------------------------------------
-  errmsg <- character()  # problems with arguments will be stored here
+  errmsg <- character()  # problems with arguments will be stored in here
   
   # if x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1) {
@@ -209,9 +209,9 @@ freq <- function(x, round.digits = st_options('round.digits'),
   
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", 
-                        "% Total Cum.")
-  rownames(output) <- c(names(freq_table), "Total")
+  colnames(output) <- c(trs('freq'), trs('pct.valid'), trs('pct.valid.cum'), 
+                        trs('pct.total'), trs('pct.total.cum'))
+  rownames(output) <- c(names(freq_table), trs('total'))
   
   # Update the output class and attributes ------------------------------------
   
@@ -221,30 +221,45 @@ freq <- function(x, round.digits = st_options('round.digits'),
   attr(output, "fn_call")    <- match.call()
   attr(output, "date")       <- Sys.Date()
   
+  # Determine data "type", in a non-strict way
+  if (all(c("ordered", "factor") %in% class(x))) {
+    Data.type <- trs('factor.ordered')
+  } else if ("factor" %in% class(x)) {
+    Data.type <- trs('factor')
+  } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { # TODO: see what other classes correspond to datetime
+    Data.type <- trs('datetime')
+  } else if ("Date" %in% class(x)) {
+    Data.type <- trs('date')
+  } else if ("logical" %in% class(x)) {
+    Data.type <- trs('logical')
+  } else if ("character" %in% class(x)) {
+    Data.type <- trs('character')
+  } else if ("numeric" %in% class(x)) {
+    Data.type <- trs('numeric')
+  } else {
+    Data.type <- NA
+  }
+    
   data_info <-
     list(
-      Dataframe      = ifelse("df_name" %in% names(parse_info), 
+      Dataframe       = ifelse("df_name" %in% names(parse_info), 
                               parse_info$df_name, NA),
       Dataframe.label = ifelse("df_label" %in% names(parse_info), 
                                parse_info$df_label, NA),
       Variable       = ifelse("var_names" %in% names(parse_info), 
-                              parse_info$var_names, NA),
+                             parse_info$var_names, NA),
       Variable.label = label(x),
-      Data.type      = ifelse(is.factor(x) && is.ordered(x), "Factor (ordered)",
-                              ifelse(is.factor(x), "Factor (unordered)",
-                                     ifelse(is.character(x), "Character",
-                                            ifelse(is.numeric(x), "Numeric", 
-                                                   class(x))))),
-      Weights       = ifelse(identical(weights, NA), NA,
-                             sub(pattern = paste0(parse_info$df_name, "$"), 
-                                 replacement = "",
-                                 x = weights_string, fixed = TRUE)),
-      Group    = ifelse("by_group" %in% names(parse_info),
-                        parse_info$by_group, NA),
-      by.first = ifelse("by_group" %in% names(parse_info), 
-                        parse_info$by_first, NA),
-      by.last  = ifelse("by_group" %in% names(parse_info), 
-                        parse_info$by_last , NA))
+      Data.type      = Data.type,
+      Weights        = ifelse(identical(weights, NA), NA,
+                              sub(pattern = paste0(parse_info$df_name, "$"), 
+                                  replacement = "",
+                                  x = weights_string, fixed = TRUE)),
+      Group          = ifelse("by_group" %in% names(parse_info),
+                              parse_info$by_group, NA),
+      by.first       = ifelse("by_group" %in% names(parse_info), 
+                              parse_info$by_first, NA),
+      by.last        = ifelse("by_group" %in% names(parse_info), 
+                              parse_info$by_last , NA))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 

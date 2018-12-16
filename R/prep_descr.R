@@ -88,8 +88,8 @@ prep_descr <- function(x, method) {
         # cell is NA
         if (is.na(x[ro,co])) {
           table_row %+=% list(tags$td(format_info$missing))
-        } else if ((rownames(x)[ro] == "N.Valid" || 
-                    colnames(x)[co] == "N.Valid") && 
+        } else if ((rownames(x)[ro] == trs('n.valid') || 
+                    colnames(x)[co] == trs('n.valid')) && 
                    !"Weights" %in% names(data_info)) {
           table_row %+=% list(tags$td(tags$span(round(x[ro,co], 0))))
         } else {
@@ -154,6 +154,7 @@ prep_descr <- function(x, method) {
                              replacement = '\\1\\2',
                              x = descr_table_html,
                              perl = TRUE)
+    descr_table_html <- conv_non_ascii(descr_table_html)
     
     # Prepare the main "div" for the html report
     div_list <- build_heading_html(format_info, data_info, method)

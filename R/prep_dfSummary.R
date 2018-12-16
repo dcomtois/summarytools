@@ -6,40 +6,46 @@ prep_dfs <- function(x, method) {
   format_info <- attr(x, "formatting")
   
   # Remove Var number ("No") column if specified in call to print/view
-  if ("No" %in% names(x) && "varnumbers" %in% names(format_info) && 
+  if (trs('no') %in% names(x) && 
+      "varnumbers" %in% names(format_info) && 
       !isTRUE(format_info$varnumbers)) {
-    x <- x[ ,-which(names(x) == 'No')]
+    x <- x[ ,-which(names(x) == trs('no'))]
   }
   
   # Remove Label column if specified in call to print/view
-  if ('Label' %in% names(x) && "labels.col" %in% names(format_info) && 
+  if (trs("label") %in% names(x) && 
+      "Labels.col" %in% names(format_info) && 
       !isTRUE(format_info$labels.col)) {
-    x <- x[ ,-which(names(x) == 'Label')]
+    x <- x[ ,-which(names(x) == trs('label'))]
   }
   
   # Remove Valid column if specified in call to print/view
-  if ('Valid' %in% names(x) && "valid.col" %in% names(format_info) && 
+  if (trs('valid') %in% names(x) && 
+      "valid.col" %in% names(format_info) && 
       !isTRUE(format_info$valid.col)) {
-    x <- x[ ,-which(names(x) == 'Valid')]
+    x <- x[ ,-which(names(x) == trs('valid'))]
   }
   
   # Remove Missing column if specified in call to print/view
-  if ('Missing' %in% names(x) && "na.col" %in% names(format_info) && 
+  if (trs('missing') %in% names(x) && 
+      "na.col" %in% names(format_info) && 
       !isTRUE(format_info$na.col)) {
-    x <- x[ ,-which(names(x) == 'Missing')]
+    x <- x[ ,-which(names(x) == trs('missing'))]
   }
-  
+
+  # pander section -------------------------------------------------------------  
   if (method == "pander") {
     
     # remove html graphs
-    if ("Graph" %in% names(x)) {
-      x <- x[ ,-which(names(x) == "Graph")]
+    if (trs("graph") %in% names(x)) {
+      x <- x[ ,-which(names(x) == trs("graph"))]
     }
     
     # Remove graph if specified in call to print/view
-    if ('Text Graph' %in% names(x) && "graph.col" %in% names(format_info) &&
+    if (trs('text.graph') %in% names(x) && 
+        "graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) {
-      x <- x[ ,-which(names(x) == 'Text Graph')]
+      x <- x[ ,-which(names(x) == trs('text.graph'))]
     }
     
     # Check that style is not 'simple'
@@ -50,41 +56,42 @@ prep_dfs <- function(x, method) {
     if (!isTRUE(format_info$plain.ascii)) {
       # Escape symbols for words between <>'s to allow <NA> or factor
       # levels such as <ABC> to be rendered correctly
-      if("Label" %in% names(x)) {
-        x[["Label"]] <-
+      if(trs("label") %in% names(x)) {
+        x[[trs("label")]] <-
           gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-               x = x[["Label"]], perl=TRUE)
+               x = x[[trs("label")]], perl=TRUE)
       }
       
-      x[["Stats / Values"]] <-
+      x[[trs("stats.values")]] <-
         gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-             x = x[["Stats / Values"]], perl=TRUE)
+             x = x[[trs("stats.values")]], perl=TRUE)
       
-      x[["Freqs (% of Valid)"]] <-
+      x[[trs("freqs.pct.valid")]] <-
         gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-             x = x[["Freqs (% of Valid)"]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
       
       
       # Remove leading characters used for alignment in plain.ascii 
-      x[["Freqs (% of Valid)"]] <-
+      x[[trs("freqs.pct.valid")]] <-
         gsub(pattern = "^\\\\ *", replacement = "",
-             x = x[["Freqs (% of Valid)"]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
       
-      x[["Freqs (% of Valid)"]] <- 
+      x[[trs("freqs.pct.valid")]] <- 
         gsub(pattern = "\\n\\\\ *", replacement = "\n",
-             x = x[["Freqs (% of Valid)"]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
       
       # Remove txt histograms b/c not supported in rmarkdown (for now)
-      if ("Text Graph" %in% names(x)) {
-        x[["Text Graph"]][which(grepl('[:.]', x[["Text Graph"]]))] <- ""
+      if (trs("text.graph") %in% names(x)) {
+        x[[trs("text.graph")]][which(grepl('[:.]', 
+                                           x[[trs("text.graph")]]))] <- ""
       }
     }
     
-    pander_args <- append(list(style        = format_info$style,
-                               plain.ascii  = format_info$plain.ascii,
-                               justify      = format_info$justify,
-                               split.cells  = format_info$split.cells,
-                               split.tables = format_info$split.tables,
+    pander_args <- append(list(style            = format_info$style,
+                               plain.ascii      = format_info$plain.ascii,
+                               justify          = format_info$justify,
+                               split.cells      = format_info$split.cells,
+                               split.tables     = format_info$split.tables,
                                keep.line.breaks = TRUE),
                           attr(x, "user_fmt"))
     
@@ -106,22 +113,23 @@ prep_dfs <- function(x, method) {
     
   } else {
     
-    # dfSummary objects - method viewer / browser / render ---------------------
+    # html section -------------------------------------------------------------
     
     # remove text graph
-    if ("Text Graph" %in% names(x)) {
-      x <- x[ ,-which(names(x) == "Text Graph")]
+    if (trs("text.graph") %in% names(x)) {
+      x <- x[ ,-which(names(x) == trs("text.graph"))]
     }
     
     # Remove graph if specified in call to print/view
-    if ('Graph' %in% names(x) && "graph.col" %in% names(format_info) &&
+    if (trs("graph") %in% names(x) && 
+        "graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) {
-      x <- x[ ,-which(names(x) == 'Graph')]
+      x <- x[ ,-which(names(x) == trs("graph"))]
     }
     
     table_head <- list()
     for(cn in colnames(x)) {
-      if (cn %in% c("No", "Valid", "Missing")) {
+      if (cn %in% c(trs("no"), trs("valid"), trs("missing"))) {
         table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
       } else {
         table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
@@ -134,24 +142,28 @@ prep_dfs <- function(x, method) {
       for (co in seq_len(ncol(x))) {
         cell <- x[ro,co]
         cell <- gsub('\\\\\n', '\n', cell)
-        if (colnames(x)[co] %in% c("No", "Valid", "Missing")) {
-          table_row %+=% list(tags$td(cell, align = "center"))
-        } else if (colnames(x)[co] == "Label") {
+        if (colnames(x)[co] %in% c(trs("no"), trs("valid"), trs("missing"))) {
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+                                      align = "center"))
+        } else if (colnames(x)[co] == trs("label")) {
           cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
-          cell <- paste(strwrap(cell,width = format_info$split.cells, 
+          cell <- paste(strwrap(cell, width = format_info$split.cells, 
                                 simplify = TRUE), collapse = "\n")
-          table_row %+=% list(tags$td(cell, align = "left"))
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+                                      align = "left"))
         } else if (colnames(x)[co] %in% 
-                   c("Variable", "Properties", "Stats / Values")) {
+                   c(trs("variable"), trs("stats.values"))) {
           cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
-          table_row %+=% list(tags$td(cell, align = "left"))
-        } else if (colnames(x)[co] == "Freqs (% of Valid)") {
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
+                                      align = "left"))
+        } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
           cell <- gsub("\\\\", " ", cell)
           cell <- gsub(" *(\\d|\\:)", "\\1", cell)
           cell <- gsub("\\:", " : ", cell)
-          table_row %+=% list(tags$td(cell, align = "left"))
-        } else if (colnames(x)[co] == "Graph") {
-          table_row %+=% list(tags$td(HTML(cell), 
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
+                                      align = "left"))
+        } else if (colnames(x)[co] == trs("graph")) {
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
                                       align = "center", border = "0"))
         }
       }

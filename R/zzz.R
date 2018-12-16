@@ -35,7 +35,8 @@ utils::globalVariables(c("."))
                      'dfSummary.graph.col'    = TRUE,
                      'dfSummary.valid.col'    = TRUE,
                      'dfSummary.na.col'       = TRUE,
-                     'dfSummary.graph.magnif' = 1)
+                     'dfSummary.graph.magnif' = 1,
+                     'lang'                   = 'en')
 
   if (!'summarytools' %in% names(options())) {
     options(summarytools = st.options)
@@ -44,6 +45,9 @@ utils::globalVariables(c("."))
                                 names(options()$summarytools))]
     options(summarytools = append(options()$summarytools, toadd))
   }
+
+  data("translations", package=pkgname, envir=parent.env(environment()))
+  
   return(invisible())
 }
 

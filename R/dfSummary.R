@@ -172,17 +172,17 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   # Initialize the output data frame -------------------------------------------
   
-  output <- data.frame(No = numeric(),
-                       Variable = character(),
-                       Label = character(),
-                       Stats = character(),
-                       Frequencies = character(),
-                       Graph_html = character(),
-                       Graph_ascii = character(),
-                       Valid = character(),
-                       Missing = character(),
+  output <- data.frame(no               = numeric(),
+                       variable         = character(),
+                       label            = character(),
+                       stats.values     = character(),
+                       freqs.pct.valid  = character(),
+                       graph            = character(),
+                       text.graph       = character(),
+                       valid            = character(),
+                       missing          = character(),
                        stringsAsFactors = FALSE,
-                       check.names = FALSE)
+                       check.names      = FALSE)
 
   n_tot <- nrow(x)
 
@@ -245,16 +245,12 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   # Prepare output object ------------------------------------------------------
   
-  names(output) <- c("No", "Variable", "Label", "Stats / Values",
-                     "Freqs (% of Valid)", "Graph", "Text Graph", "Valid",
-                     "Missing")
-
   if (!isTRUE(varnumbers)) {
     output$No <- NULL
   }
 
   if (!isTRUE(labels.col)) {
-    output$Label <- NULL
+    output$label <- NULL
   }
 
   if (!isTRUE(graph.col)) {
@@ -268,6 +264,11 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   if (!isTRUE(na.col)) {
     output$Missing <- NULL
+  }
+
+  # apply translations to colnames
+  for (i in seq_along(output)) {
+    colnames(output)[i] <- trs(colnames(output)[i])
   }
   
   # Set output attributes

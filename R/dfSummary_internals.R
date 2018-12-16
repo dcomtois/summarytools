@@ -182,7 +182,7 @@ crunch_factor <- function(column_data) {
              collapse="\\\n")
   
     outlist[[1]] <- paste(outlist[[1]],
-                          paste("[", n_extra_levels, "others", "]"), 
+                          paste("[", n_extra_levels, trs("others"), "]"), 
                           sep="\\\n")
   
     counts_props <- align_numbers_dfs(
@@ -200,9 +200,9 @@ crunch_factor <- function(column_data) {
       # prepare data for barplot
       tmp_data <- column_data
       levels(tmp_data)[max.distinct.values + 1] <-
-        paste("[", n_extra_levels, "others", "]")
+        paste("[", n_extra_levels, trs("others"), "]")
       tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
-        paste("[", n_extra_levels, "others", "]")
+        paste("[", n_extra_levels, trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
       outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
       outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)))
@@ -292,7 +292,7 @@ crunch_character <- function(column_data) {
                substr(names(counts), 1, 
                       max.string.width)[1:max.distinct.values],
                collapse="\\\n"),
-        paste("\\\n[", n_extra_values, "others", "]")
+        paste("\\\n[", n_extra_values, trs("others"), "]")
       )
       counts_props <- align_numbers_dfs(
         counts = c(counts[1:max.distinct.values],
@@ -308,7 +308,7 @@ crunch_character <- function(column_data) {
         counts[max.distinct.values + 1] <-
           sum(counts[(max.distinct.values + 1):length(counts)])
         names(counts)[max.distinct.values + 1] <-
-          paste0("[ ", n_extra_values, " others ]")
+          paste("[", n_extra_values, trs("others"),"]")
         counts <- counts[1:(max.distinct.values + 1)]
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
         outlist[[4]] <- txtbarplot(prop.table(counts))
@@ -341,21 +341,26 @@ crunch_numeric <- function(column_data) {
   
     # Check if data fits UPC / EAN barcode numbers patterns
     if (!isFALSE(barcode_type <- detect_barcode(column_data))) {
-    
-      outlist[[1]] <- paste(barcode_type, "codes \\\n",
-                           "min  :", min(column_data, na.rm = TRUE), "\\\n",
-                           "max  :", max(column_data, na.rm = TRUE), "\\\n",
-                           "mode :", names(counts)[which.max(counts)])
+      maxchars <- max(nchar(c(trs('min'), trs('max'), trs('mode'))))
+      outlist[[1]] <- 
+        paste(barcode_type, trs("codes"),"\\\n",
+              trs("min"), strrep(" ", maxchars - nchar(trs("min"))), ":", 
+              min(column_data, na.rm = TRUE), "\\\n",
+              trs("max"), strrep(" ", maxchars - nchar(trs("max"))), ":",
+              max(column_data, na.rm = TRUE), "\\\n",
+              trs("mode"), strrep(" ", maxchars - nchar(trs("mode"))), ":",
+              names(counts)[which.max(counts)])
     
     } else if (length(counts) == 1) {
-      outlist[[1]] <- "One distinct value"
+      outlist[[1]] <- paste("1", trs("distinct.values"))
     
     } else {
       outlist[[1]] <- paste(
-        "mean (sd) : ", round(mean(column_data, na.rm = TRUE), round.digits),
+        trs("mean"), paste0(" (", trs("sd"), ") :"),
+        round(mean(column_data, na.rm = TRUE), round.digits),
         " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
-        "min < med < max :\\\n", round(min(column_data, na.rm = TRUE),
-                                       round.digits),
+        tolower(paste(trs('min'), "<", trs('med.short'), "<", trs('max'))),
+        ":\\\n", round(min(column_data, na.rm = TRUE), round.digits),
         " < ", round(median(column_data, na.rm = TRUE), round.digits),
         " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
         collapse="", sep="")
@@ -369,8 +374,9 @@ crunch_numeric <- function(column_data) {
         # Data has 3+ distinct values: add IQR and CV
         outlist[[1]] <-
           paste(outlist[[1]],
-                "IQR (CV) : ", round(IQR(column_data,
-                                         na.rm = TRUE), round.digits),
+                paste0(trs("iqr"), " (", trs('cv'), ") :"),
+                round(IQR(column_data,
+                          na.rm = TRUE), round.digits),
                 " (", round(sd(column_data, na.rm = TRUE) /
                               mean(column_data, na.rm = TRUE),
                             round.digits), ")", collapse="", sep="")
@@ -382,12 +388,17 @@ crunch_numeric <- function(column_data) {
     # Values columns
     # for "ts" objects, display n distinct & start / end
     if (inherits(column_data, "ts")) {
+      maxchars <- max(nchar(c(trs('start'), trs('end'))))
       outlist[[2]] <- 
-        paste0(length(counts), " distinct values", 
-               "\\\nStart: ", paste(sprintf("%02d", start(column_data)),
-                                    collapse = "/"),
-               "\\\nEnd:   ", paste(sprintf("%02d", end(column_data)),
-                                    collapse = "/"))
+        paste(length(counts), trs("distinct.values"), 
+              paste0("\\\n", trs('start'), 
+                     strrep(" ", maxchars - nchar(trs('start'))), ":"), 
+              paste(sprintf("%02d", start(column_data)),
+                    collapse = "-"),
+              paste0("\\\n", trs('end'), 
+                     strrep(" ", maxchars - nchar(trs('end'))), ":"), 
+              paste(sprintf("%02d", end(column_data)),
+                    collapse = "-"))
     }
        
     # In specific circumstances, display most common values         
@@ -413,12 +424,13 @@ crunch_numeric <- function(column_data) {
      
       if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
         extra_space <- TRUE
-        outlist[[2]] <- paste(outlist[[2]], "! rounded", sep = "\\\n")
+        outlist[[2]] <- paste(outlist[[2]], paste("!", trs('rounded')), 
+                              sep = "\\\n")
       }
      
     } else {
       # Do not display specific values - only the number of distinct values
-      outlist[[2]] <- paste(length(counts), "distinct values")
+      outlist[[2]] <- paste(length(counts), trs("distinct.values"))
       if (parent.frame()$n_miss == 0 &&
           (isTRUE(all.equal(column_data, min(column_data):max(column_data))) ||
            isTRUE(all.equal(column_data, max(column_data):min(column_data))))) {
@@ -485,7 +497,7 @@ crunch_time_date <- function(column_data) {
                         x = round(as.period(interval(tmin, tmax)),round.digits))
       )
      
-      outlist[[2]] <- paste(length(counts), "distinct val.")
+      outlist[[2]] <- paste(length(counts), trs("distinct.values"))
      
       if (isTRUE(parent.frame()$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
@@ -522,7 +534,7 @@ crunch_other <- function(column_data) {
    
   } else {
     outlist[[2]] <- paste(as.character(length(unique(column_data))),
-                          "distinct val.")
+                          trs("distinct.values"))
   }
  
   outlist[[3]] <- ""

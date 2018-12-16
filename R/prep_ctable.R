@@ -42,11 +42,13 @@ prep_ctable <- function(x, method) {
   format_info <- attr(x, "formatting")
   
   if (!isTRUE(format_info$totals)) {
-    x$cross_table <- x$cross_table[which(rownames(x$cross_table) != 'Total'), 
-                                   which(colnames(x$cross_table) != 'Total')]
+    x$cross_table <-
+      x$cross_table[which(rownames(x$cross_table) != trs('total')), 
+                    which(colnames(x$cross_table) != trs('total'))]
     if (data_info$Proportions != "None") {
-      x$proportions <- x$proportions[which(rownames(x$proportions) != 'Total'), 
-                                     which(colnames(x$proportions) != 'Total')]
+      x$proportions <- 
+        x$proportions[which(rownames(x$proportions) != trs('total')), 
+                      which(colnames(x$proportions) != trs('total'))]
     }
   }
   
@@ -91,13 +93,10 @@ prep_ctable <- function(x, method) {
         collapse = "\n")
     
     if (isTRUE(format_info$headings) && format_info$style != 'grid') {
-      main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", main_sect[[length(main_sect)]])
-    } 
-    # else {
-    #   main_sect[[length(main_sect)]] <- sub("^\n", "", main_sect[[length(main_sect)]])
-    # }
-    
-    
+      main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", 
+                                            main_sect[[length(main_sect)]])
+    }
+
     if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
@@ -130,7 +129,7 @@ prep_ctable <- function(x, method) {
       cn <- sub("<", "&lt;", cn, fixed = TRUE)
       cn <- sub(">", "&gt;", cn, fixed = TRUE)
       table_head[[2]][[length(table_head[[2]]) + 1]] <- 
-        tags$th(HTML(cn), align = "center")
+        tags$th(HTML(conv_non_ascii(cn)), align = "center")
     }
     
     table_rows <- list()
@@ -139,7 +138,8 @@ prep_ctable <- function(x, method) {
       for (co in seq_len(ncol(cross_table))) {
         if (co == 1) {
           table_row %+=%
-            list(tags$td(tags$strong(row.names(cross_table)[ro]), align = "center"))
+            list(tags$td(tags$strong(row.names(cross_table)[ro]), 
+                         align = "center"))
         }
         
         # No proportions

@@ -67,6 +67,9 @@
 #'   \code{\link{dfSummary}} graphs show up too large (then use a value between
 #'   0 and 1) or too small (use a value > 1). Must be positive. Default to
 #'   \code{1}.
+#' @param lang Character. A 2-letter code for the language to use in the
+#'   produced outputs. Currently available languages are: \sQuote{en}, 
+#'   \sQuote{fr}.
 #' @param omit.headings Logical. Deprecated. Use \code{headings} instead.
 #' 
 #' @author
@@ -92,7 +95,8 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
                        descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
                        dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
                        dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, omit.headings = !headings) {
+                       dfSummary.graph.magnif = 1, lang = 'en',
+                       omit.headings = !headings) {
   
   allOpts <- getOption('summarytools')
   
@@ -205,5 +209,6 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     }
   }
   options('summarytools' = allOpts)
+  
   return(invisible())
 }
