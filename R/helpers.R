@@ -70,9 +70,12 @@ build_heading_pander <- function(format_info, data_info) {
   head1  <- NA
   head2  <- NA
   
-  if (caller == 'prep_freq') {
+  if (caller == 'print_freq') {
+    
     head1 <- ifelse('Weights' %in% names(data_info),
-                    trs('title.freq'), trs('title.freq.weighted'))
+                    trs('title.freq.weighted'), 
+                    trs('title.freq'))
+    
     head1 <- add_markup(head1, h = 3)
     
     head2 <- append_items(list(c(Variable       = trs('variable')),
@@ -81,7 +84,7 @@ build_heading_pander <- function(format_info, data_info) {
                                c(Weights        = trs('weights')),
                                c(Group          = trs('group'))))
     
-  } else if (caller == 'prep_ctable') {
+  } else if (caller == 'print_ctable') {
     head1 <- switch(data_info$Proportions,
                     Row    = paste(trs('title.ctable'), trs('title.ctable.row'), 
                                    sep = ' / '),
@@ -97,10 +100,12 @@ build_heading_pander <- function(format_info, data_info) {
                                c(Dataframe.label = trs('label')),
                                c(Group           = trs('group'))))
     
-  } else if (caller == 'prep_descr') {
+  } else if (caller == 'print_descr') {
+    
     head1 <- ifelse('Weights' %in% names(data_info),
                     trs('title.descr.weighted'), 
                     trs('title.descr'))
+    
     head1 <- add_markup(head1, h = 3)
     
     if ('Variable' %in% names(data_info)) {
@@ -117,7 +122,7 @@ build_heading_pander <- function(format_info, data_info) {
                                  c(Group           = trs('group')),
                                  c(N.Obs           = trs('n'))))
     }
-  } else if (caller == 'prep_dfs') {
+  } else if (caller == 'print_dfs') {
     head1 <- add_markup(trs('title.dfSummary'), h = 3)
     
     head2 <- append_items(list(c(Dataframe       = trs('data.frame')),
@@ -195,10 +200,11 @@ build_heading_html <- function(format_info, data_info, method) {
   
   caller <- as.character(sys.call(-1))[1]
   
-  if (caller == 'prep_freq') {
+  if (caller == 'print_freq') {
     
     head1 <- h3(ifelse('Weights' %in% names(data_info),
-                       trs('title.freq.weighted'), trs('title.freq')))
+                       trs('title.freq.weighted'), 
+                       trs('title.freq')))
     
     if ('Variable' %in% names(data_info)) {
       if (method == 'render') {
@@ -213,7 +219,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                c(Weights        = trs('weights')),
                                c(Group          = trs('group'))))
     
-  } else if (caller == 'prep_ctable') {
+  } else if (caller == 'print_ctable') {
     
     head1 <- 
       h3(switch(data_info$Proportions,
@@ -237,7 +243,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                c(Dataframe.label = trs('label')),
                                c(Group           = trs('group'))))
     
-  } else if (caller == 'prep_descr') {
+  } else if (caller == 'print_descr') {
     
     head1 <- h3(ifelse('Weights' %in% names(data_info),
                        trs('title.descr.weighted'), 
@@ -268,7 +274,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                  c(N.Obs           = trs('n'))))
     }
     
-  } else if (caller == 'prep_dfs') {
+  } else if (caller == 'print_dfs') {
     
     head1 <- h3(trs('title.dfSummary'))
     if (method == 'render') {
@@ -714,5 +720,10 @@ conv_non_ascii <- function(...) {
 # Shorcut function to get translation strings
 #' @keywords internal
 trs <- function(item, l = st_options('lang')) {
-  tr[force(l),item]
+  l = force(l)
+  if (l != "custom") {
+    tr[l,item]
+  } else {
+    .st_env$custom_lang['custom', item]
+  }
 }
