@@ -39,7 +39,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   df_label    <- character()
   var_names   <- character()
   var_labels  <- character()
-  #rows_subset <- character()
+  data_str    <- character()
   by_group <- character()
   by_first <- logical()
   by_last  <- logical()
@@ -79,9 +79,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
           } else {
             var_names <- intersect(allnames, with_objects)[2]
           }
-        } else {
-          var_names <- with_objects
-        }
+        } 
+        # else {
+        #   var_names <- with_objects
+        # }
       } else if (is.list(tmp_)) {
         if (length(with_objects) == 1 &&
             is.data.frame(get(with_objects, 
@@ -218,7 +219,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }
   
   # Found df_name but not var_names --------------------------------------------
-  if (max.varnames > 0 && length(setdiff(df_name, allnames)) > 0) {
+  if (max.varnames > 0 && length(data_str) > 0 && 
+      length(setdiff(df_name, allnames)) > 0) {
     if (length(df_name) == 1 && length(var_names) == 0) {
       # Declare regular expressions for matching with indexing
       re_singlBrackets <-
@@ -273,7 +275,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
             var_labels <- label(df_[col_num])
           }
         }
-      } 
+      }
     }
     
     if (length(df_name) ==1 && length(var_names) == 0) {

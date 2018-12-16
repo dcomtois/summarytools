@@ -554,3 +554,777 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
 }
+
+# Prepare freq objects for printing --------------------------------------------
+#' @import htmltools
+print_freq <- function(x, method) {
+  
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
+  
+  if (!isTRUE(format_info$report.nas)) {
+    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
+    x <- x[-(nrow(x)-1),1:3]
+    colnames(x) <- c(trs('freq'), "%", trs('pct.cum'))
+  }
+  
+  if (!isTRUE(format_info$totals)) {
+    x <- x[-nrow(x),]
+  }
+  
+  if(method=="pander") {
+    
+    # freq -- pander method ----------------------------------------------------
+    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                      l = "left",
+                      c = "centre",
+                      d = "right",
+                      r = "right")
+    
+    freq_table <- format(x = round(x, format_info$round.digits),
+                         trim = FALSE,
+                         nsmall = format_info$round.digits,
+                         justify = justify)
+    
+    if (isTRUE(format_info$report.nas)) {
+      # Put NA in relevant cells so that pander recognizes them as such
+      freq_table[nrow(freq_table) - 
+                   as.numeric(isTRUE(format_info$totals)), 2] <- NA
+      freq_table[nrow(freq_table) -
+                   as.numeric(isTRUE(format_info$totals)), 3] <- NA
+    }
+    
+    # Remove .00 digits in Freq column when weights are not used
+    if (!"Weights" %in% names(data_info))
+      freq_table[ ,1] <- sub("\\.0+", "", freq_table[ ,1])
+    
+    
+    # Escape "<" and ">" when used in pairs in rownames
+    if (!isTRUE(format_info$plain.ascii)) {
+      row.names(freq_table) <- gsub(pattern = "\\<(.*)\\>", 
+                                    replacement = "\\\\<\\1\\\\>",
+                                    x = row.names(freq_table), perl = TRUE)
+    }
+    
+    # set encoding to native to allow proper display of accentuated characters
+    if (parent.frame()$file == "") {
+      row.names(freq_table) <- enc2native(row.names(freq_table))
+    }
+    
+    pander_args <- append(list(style        = format_info$style,
+                               plain.ascii  = format_info$plain.ascii,
+                               justify      = justify,
+                               missing      = format_info$missing,
+                               split.tables = Inf),
+                          attr(x, "user_fmt"))
+    
+    main_sect <- build_heading_pander(format_info, data_info)
+    
+    main_sect %+=%
+      paste(
+        capture.output(
+          do.call(pander, append(pander_args, list(x = quote(freq_table))))
+        ),
+        collapse = "\n")
+    
+    if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
+      main_sect[[length(main_sect)]] <- gsub("\\|","\\\\|", 
+                                             main_sect[[length(main_sect)]])
+    }
+    
+    return(main_sect)
+    
+  } else {
+    
+    # freq -- html method ------------------------------------------------------
+    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                      l = "left",
+                      c = "center",
+                      d = "center",
+                      r = "right")
+    
+    table_head <- list()
+    table_rows <- list()
+    
+    for (ro in seq_len(nrow(x))) {
+      table_row <- list()
+      for (co in seq_len(ncol(x))) {
+        if (co == 1) {
+          table_row %+=% list(tags$th(row.names(x)[ro]))
+          if (!"Weights" %in% names(data_info)) {
+            cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
+                        perl = TRUE)
+            table_row %+=% list(tags$td(cell, align = justify))
+            next
+          }
+        }
+        
+        if (is.na(x[ro,co])) {
+          table_row %+=% list(tags$td(format_info$missing, align = justify))
+        } else {
+          cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+          table_row %+=% list(tags$td(cell, align = justify))
+        }
+        
+        if (co == ncol(x)) {
+          table_rows %+=% list(tags$tr(table_row))
+        }
+      }
+    }
+    
+    if (isTRUE(format_info$report.nas)) {
+      table_head[[1]] <- list(tags$th("", colspan = 2),
+                              tags$th(trs('valid'), colspan = 2),
+                              tags$th(trs('total'), colspan = 2))
+      table_head[[2]] <- list(tags$th(sub("^.*\\$(.+)$", "\\1", 
+                                          data_info$Variable)),
+                              tags$th(HTML(trs('freq'))),
+                              tags$th("%"),
+                              tags$th(HTML(trs('pct.cum'))),
+                              tags$th("%"),
+                              tags$th(HTML(trs('pct.cum'))))
+      
+      freq_table_html <-
+        tags$table(
+          tags$thead(tags$tr(table_head[[1]]),
+                     tags$tr(table_head[[2]])),
+          tags$tbody(table_rows),
+          class = paste(
+            "table table-striped table-bordered",
+            "st-table st-table-striped st-table-bordered st-freq-table",
+            ifelse(is.na(parent.frame()$table.classes), 
+                   "", parent.frame()$table.classes)
+          )
+        )
+      
+    } else {
+      
+      # no reporting of missing values (NA)
+      table_head <- list(tags$th(data_info$Variable),
+                         tags$th(trs('freq')),
+                         tags$th("%"),
+                         tags$th(HTML(trs('pct.cum'))))
+      
+      freq_table_html <-
+        tags$table(
+          tags$thead(tags$tr(table_head)),
+          tags$tbody(table_rows),
+          class = paste(
+            "table table-striped table-bordered",
+            "st-table st-table-striped st-table-bordered st-freq-table-nomiss",
+            ifelse(is.na(parent.frame()$table.classes),
+                   "", parent.frame()$table.classes)
+          )
+        )
+    }
+    
+    # Cleanup extra spacing and linefeeds in html to correct layout issues
+    freq_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
+                            replacement = "\\1\\2", 
+                            x = as.character(freq_table_html),
+                            perl = TRUE)
+    freq_table_html <- gsub(pattern = "</span>\\s*</span>",
+                            replacement = "</span></span>",
+                            x = freq_table_html,
+                            perl = TRUE)
+    
+    # Prepare the main "div" for the html report
+    div_list <- build_heading_html(format_info, data_info, method)
+    
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list %+=% list(HTML(text = "<br/>"))
+    }
+    
+    div_list %+=% list(HTML(text = conv_non_ascii(freq_table_html)))
+    
+    if (parent.frame()$footnote != "") {
+      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      div_list %+=% list(HTML(text = fn))
+    }
+  }
+  
+  return(div_list)
+}
+
+# Prepare ctable objects for printing ------------------------------------------
+#' @import htmltools
+#' @keywords internal
+print_ctable <- function(x, method) {
+  
+  align_numbers <- function(counts, props) {
+    res <- sapply(seq_len(ncol(counts)), function(colnum) {
+      
+      if ("Weights" %in% names(data_info)) {
+        maxchar_cnt <- 
+          nchar(as.character(round(max(counts[ ,colnum]), 
+                                   digits = format_info$round.digits)))
+        maxchar_pct <- 
+          nchar(sprintf(paste0("%.", format_info$round.digits, "f"),
+                        max(props[ ,colnum]*100)))
+        
+        return(paste(sprintf(paste0("%", maxchar_cnt, ".", 
+                                    format_info$round.digits, "f"),
+                             counts[ ,colnum]),
+                     sprintf(paste0("(%", maxchar_pct, ".", 
+                                    format_info$round.digits, "f%%)"),
+                             props[ ,colnum]*100)))
+      } else {
+        maxchar_cnt <- nchar(as.character(max(counts[ ,colnum])))
+        maxchar_pct <- nchar(sprintf(paste0("%.", format_info$round.digits,"f"), 
+                                     max(props[ ,colnum]*100)))
+        return(paste(sprintf(paste0("%", maxchar_cnt, "i"),
+                             counts[ ,colnum]),
+                     sprintf(paste0("(%", maxchar_pct, ".", 
+                                    format_info$round.digits, "f%%)"),
+                             props[ ,colnum]*100)))
+      }
+    })
+    
+    dim(res) <- dim(counts)
+    dimnames(res) <- dimnames(counts)
+    
+    return(res)
+  }
+  
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
+  
+  if (!isTRUE(format_info$totals)) {
+    x$cross_table <-
+      x$cross_table[which(rownames(x$cross_table) != trs('total')), 
+                    which(colnames(x$cross_table) != trs('total'))]
+    if (data_info$Proportions != "None") {
+      x$proportions <- 
+        x$proportions[which(rownames(x$proportions) != trs('total')), 
+                      which(colnames(x$proportions) != trs('total'))]
+    }
+  }
+  
+  if(data_info$Proportions %in% c("Row", "Column", "Total")) {
+    cross_table <- align_numbers(x$cross_table, x$proportions)
+  } else {
+    cross_table <- x$cross_table
+  }
+  
+  justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    r = "right")
+  
+  # ctable -- pander section ---------------------------------------------------
+  if(method == "pander") {
+    
+    # Escape "<" and ">" when used in pairs in rownames or colnames
+    if (!isTRUE(format_info$plain.ascii)) {
+      row.names(cross_table) <-
+        gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
+             x = row.names(cross_table), perl = TRUE)
+      colnames(cross_table) <- 
+        gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
+             x = colnames(cross_table), perl = TRUE)
+    }
+    
+    pander_args <- append(list(style        = format_info$style,
+                               plain.ascii  = format_info$plain.ascii,
+                               justify      = format_info$justify,
+                               split.tables = format_info$split.tables),
+                          attr(x, "user_fmt"))
+    
+    main_sect <- build_heading_pander(format_info, data_info)
+    
+    main_sect %+=%
+      paste(
+        capture.output(
+          do.call(pander, append(pander_args, 
+                                 list(x = quote(ftable(cross_table)))))
+        ),
+        collapse = "\n")
+    
+    if (isTRUE(format_info$headings) && format_info$style != 'grid') {
+      main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", 
+                                            main_sect[[length(main_sect)]])
+    }
+    
+    if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
+      main_sect[[length(main_sect)]] <- 
+        gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
+    }
+    
+    return(main_sect)
+    
+  } else {
+    
+    # ctable -- html section ---------------------------------------------------
+    dnn <- names(dimnames(cross_table))
+    
+    table_head <- list()
+    table_rows <- list()
+    
+    table_head[[1]] <- 
+      list(tags$th(""), tags$th(dnn[2], colspan = ncol(cross_table) - 
+                                  as.numeric(isTRUE(format_info$totals))))
+    
+    if (isTRUE(format_info$totals)) {
+      table_head[[1]][[3]] <- tags$th("")
+    }
+    
+    table_head[[2]] <-list(tags$td(tags$strong(dnn[1]), align = "center"))
+    
+    for(cn in colnames(cross_table)) {
+      if (nchar(cn) > 12) {
+        cn <- smart_split(cn, 12)
+      }
+      cn <- sub("<", "&lt;", cn, fixed = TRUE)
+      cn <- sub(">", "&gt;", cn, fixed = TRUE)
+      table_head[[2]][[length(table_head[[2]]) + 1]] <- 
+        tags$th(HTML(conv_non_ascii(cn)), align = "center")
+    }
+    
+    table_rows <- list()
+    for (ro in seq_len(nrow(cross_table))) {
+      table_row <- list()
+      for (co in seq_len(ncol(cross_table))) {
+        if (co == 1) {
+          table_row %+=%
+            list(tags$td(tags$strong(row.names(cross_table)[ro]), 
+                         align = "center"))
+        }
+        
+        # No proportions
+        if (length(x$proportions) == 0) {
+          cell <- cross_table[ro,co]
+          table_row %+=% list(tags$td(tags$span(cell)))
+        } else {
+          # With proportions
+          cell <- sub("\\( *", "("     , cross_table[ro,co])
+          cell <- sub(" *\\)", ")"     , cell)
+          cell <- gsub(" "   , "&nbsp;", cell)
+          cell <- sub("%"    , "&#37;" , cell, fixed = TRUE)
+          
+          table_row %+=% list(tags$td(tags$span(HTML(cell))))
+        }
+        
+        # On last col, insert row into list
+        if (co == ncol(cross_table)) {
+          table_rows %+=% list(tags$tr(table_row))
+        }
+      }
+    }
+    
+    cross_table_html <-
+      tags$table(
+        tags$thead(
+          tags$tr(table_head[[1]]),
+          tags$tr(table_head[[2]])
+        ),
+        tags$tbody(
+          table_rows
+        ),
+        class = paste(
+          "table table-bordered st-table st-table-bordered st-cross-table",
+          ifelse(is.na(parent.frame()$table.classes), "", 
+                 parent.frame()$table.classes)
+        )
+      )
+    
+    div_list <- build_heading_html(format_info, data_info, method)
+    
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list %+=% list(HTML(text = "<br/>"))
+    }
+    
+    div_list %+=% list(cross_table_html)
+    
+    if (parent.frame()$footnote != "") {
+      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      div_list %+=% list(HTML(text = fn))
+    }
+  }
+  
+  return(div_list)
+}
+
+# Prepare descr objects for printing
+#' @import htmltools
+#' @keywords internal
+print_descr <- function(x, method) {
+  
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
+  
+  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
+     (!"by.first" %in% names(data_info) || 
+      isTRUE(as.logical(data_info$by.last))) &&
+     "ignored" %in% names(attributes(x))) {
+    message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
+  }
+  
+  justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                    l = "left",
+                    c = "center",
+                    r = "right")
+  
+  if(method=="pander") {
+    
+    # descr -- pander method ---------------------------------------------------
+    # Format numbers (avoids inconsistencies with pander rounding digits)
+    x <- format(round(x, format_info$round.digits),
+                nsmall = format_info$round.digits)
+    
+    pander_args <- append(list(style        = format_info$style,
+                               plain.ascii  = format_info$plain.ascii,
+                               split.tables = format_info$split.tables,
+                               justify      = justify),
+                          attr("x", "user_fmt"))
+    
+    main_sect <- build_heading_pander(format_info, data_info)  
+    
+    main_sect %+=%
+      paste(
+        capture.output(
+          do.call(pander, append(pander_args, list(x = quote(x))))
+        ),
+        collapse = "\n")
+    
+    if(isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
+      main_sect[[length(main_sect)]] <- 
+        gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
+    }
+    
+    return(main_sect)
+    
+  } else {
+    
+    # descr -- html method -----------------------------------------------------
+    
+    if ("byvar" %in% names(data_info) && !data_info$transpose) {
+      table_head <- list()
+      table_head[[1]] <- list(tags$th(""),
+                              tags$th(data_info$byvar,
+                                      colspan = ncol(x)))
+      
+      table_head[[2]] <-  list(tags$th()) 
+      
+      for(cn in colnames(x)) {
+        if (nchar(cn) > 12) {
+          cn <- smart_split(cn, 12)
+        }
+        cn <- sub("<", "&lt;", cn, fixed = TRUE)
+        cn <- sub(">", "&gt;", cn, fixed = TRUE)
+        table_head[[2]][[length(table_head[[2]]) + 1]] <- 
+          tags$th(HTML(cn), align = "center")
+      } 
+      
+    } else {
+      
+      table_head <- list(tags$th(""))
+      
+      for(cn in colnames(x)) {
+        if (nchar(cn) > 12) {
+          cn <- smart_split(cn, 12)
+        }
+        table_head %+=% list(tags$th(HTML(cn), align = "center"))
+      }
+    }
+    
+    table_rows <- list()
+    for (ro in seq_len(nrow(x))) {
+      table_row <- list(tags$td(tags$strong(rownames(x)[ro])))
+      for (co in seq_len(ncol(x))) {
+        # cell is NA
+        if (is.na(x[ro,co])) {
+          table_row %+=% list(tags$td(format_info$missing))
+        } else if ((rownames(x)[ro] == trs('n.valid') || 
+                    colnames(x)[co] == trs('n.valid')) && 
+                   !"Weights" %in% names(data_info)) {
+          table_row %+=% list(tags$td(tags$span(round(x[ro,co], 0))))
+        } else {
+          # When not NA, and not N.Valid row, format cell content
+          cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+          table_row %+=% list(tags$td(tags$span(cell)))
+        }
+        # On last column, insert row to table_rows list
+        if (co == ncol(x)) {
+          table_rows %+=% list(tags$tr(table_row))
+        }
+      }
+    }
+    
+    if ("byvar" %in% names(data_info) && !isTRUE(data_info$transpose)) {
+      descr_table_html <-
+        tags$table(
+          tags$thead(
+            tags$tr(table_head[[1]]),
+            tags$tr(table_head[[2]])
+          ),
+          tags$tbody(
+            table_rows
+          ),
+          class = paste(
+            "table table-bordered table-striped",
+            "st-table st-table-bordered st-table-striped st-freq-table",
+            "st-descr-table",
+            ifelse(is.na(parent.frame()$table.classes), "", 
+                   parent.frame()$table.classes))
+        )
+      
+    } else {
+      
+      descr_table_html <-
+        tags$table(
+          tags$thead(tags$tr(table_head)),
+          tags$tbody(table_rows),
+          class = paste(
+            "table table-bordered table-striped",
+            "st-table st-table-bordered st-table-striped st-descr-table",
+            ifelse(is.na(parent.frame()$table.classes), "", 
+                   parent.frame()$table.classes))
+        )
+    }
+    
+    # Cleanup some extra spacing & html linefeeds to avoid weirdness in layout
+    # of source code
+    descr_table_html <- as.character(descr_table_html)
+    descr_table_html <- gsub(pattern = "\\s*(\\-?\\d*)\\s*(<span|</td>)",
+                             replacement = "\\1\\2", x = descr_table_html,
+                             perl = TRUE)
+    descr_table_html <- gsub(pattern = "</span>\\s*</span>",
+                             replacement = "</span></span>",
+                             x = descr_table_html,
+                             perl = TRUE)
+    descr_table_html <- gsub(pattern = "<strong>\\s*</strong>",
+                             replacement = "",
+                             x = descr_table_html,
+                             perl = TRUE)
+    descr_table_html <- gsub(pattern = '(<td align="right">)\\s+(<)',
+                             replacement = '\\1\\2',
+                             x = descr_table_html,
+                             perl = TRUE)
+    descr_table_html <- conv_non_ascii(descr_table_html)
+    
+    # Prepare the main "div" for the html report
+    div_list <- build_heading_html(format_info, data_info, method)
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list %+=% list(HTML(text = "<br/>"))
+    }
+    
+    div_list %+=% list(HTML(text = descr_table_html))
+    
+    if (parent.frame()$footnote != "") {
+      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      div_list %+=% list(HTML(text = fn))
+    }
+  }
+  
+  return(div_list)
+}
+
+#' @import htmltools
+#' @keywords internal
+print_dfs <- function(x, method) {
+  
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "formatting")
+  
+  # Remove Var number ("No") column if specified in call to print/view
+  if (trs('no') %in% names(x) && 
+      "varnumbers" %in% names(format_info) && 
+      !isTRUE(format_info$varnumbers)) {
+    x <- x[ ,-which(names(x) == trs('no'))]
+  }
+  
+  # Remove Label column if specified in call to print/view
+  if (trs("label") %in% names(x) && 
+      "Labels.col" %in% names(format_info) && 
+      !isTRUE(format_info$labels.col)) {
+    x <- x[ ,-which(names(x) == trs('label'))]
+  }
+  
+  # Remove Valid column if specified in call to print/view
+  if (trs('valid') %in% names(x) && 
+      "valid.col" %in% names(format_info) && 
+      !isTRUE(format_info$valid.col)) {
+    x <- x[ ,-which(names(x) == trs('valid'))]
+  }
+  
+  # Remove Missing column if specified in call to print/view
+  if (trs('missing') %in% names(x) && 
+      "na.col" %in% names(format_info) && 
+      !isTRUE(format_info$na.col)) {
+    x <- x[ ,-which(names(x) == trs('missing'))]
+  }
+  
+  # pander section -------------------------------------------------------------  
+  if (method == "pander") {
+    
+    # remove html graphs
+    if (trs("graph") %in% names(x)) {
+      x <- x[ ,-which(names(x) == trs("graph"))]
+    }
+    
+    # Remove graph if specified in call to print/view
+    if (trs('text.graph') %in% names(x) && 
+        "graph.col" %in% names(format_info) &&
+        !isTRUE(format_info$graph.col)) {
+      x <- x[ ,-which(names(x) == trs('text.graph'))]
+    }
+    
+    # Check that style is not 'simple'
+    if (isTRUE(format_info$style == 'simple')) {
+      format_info$style <- 'multiline'
+    }
+    
+    if (!isTRUE(format_info$plain.ascii)) {
+      # Escape symbols for words between <>'s to allow <NA> or factor
+      # levels such as <ABC> to be rendered correctly
+      if(trs("label") %in% names(x)) {
+        x[[trs("label")]] <-
+          gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
+               x = x[[trs("label")]], perl=TRUE)
+      }
+      
+      x[[trs("stats.values")]] <-
+        gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
+             x = x[[trs("stats.values")]], perl=TRUE)
+      
+      x[[trs("freqs.pct.valid")]] <-
+        gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+      
+      
+      # Remove leading characters used for alignment in plain.ascii 
+      x[[trs("freqs.pct.valid")]] <-
+        gsub(pattern = "^\\\\ *", replacement = "",
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+      
+      x[[trs("freqs.pct.valid")]] <- 
+        gsub(pattern = "\\n\\\\ *", replacement = "\n",
+             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+      
+      # Remove txt histograms b/c not supported in rmarkdown (for now)
+      if (trs("text.graph") %in% names(x)) {
+        x[[trs("text.graph")]][which(grepl('[:.]', 
+                                           x[[trs("text.graph")]]))] <- ""
+      }
+    }
+    
+    pander_args <- append(list(style            = format_info$style,
+                               plain.ascii      = format_info$plain.ascii,
+                               justify          = format_info$justify,
+                               split.cells      = format_info$split.cells,
+                               split.tables     = format_info$split.tables,
+                               keep.line.breaks = TRUE),
+                          attr(x, "user_fmt"))
+    
+    main_sect <- build_heading_pander(format_info, data_info)
+    
+    main_sect %+=%
+      paste(
+        capture.output(
+          do.call(pander, append(pander_args, list(x = quote(x))))
+        ),
+        collapse = "\n")
+    
+    if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
+      main_sect[[length(main_sect)]] <- 
+        gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
+    }
+    
+    return(main_sect)
+    
+  } else {
+    
+    # html section -------------------------------------------------------------
+    
+    # remove text graph
+    if (trs("text.graph") %in% names(x)) {
+      x <- x[ ,-which(names(x) == trs("text.graph"))]
+    }
+    
+    # Remove graph if specified in call to print/view
+    if (trs("graph") %in% names(x) && 
+        "graph.col" %in% names(format_info) &&
+        !isTRUE(format_info$graph.col)) {
+      x <- x[ ,-which(names(x) == trs("graph"))]
+    }
+    
+    table_head <- list()
+    for(cn in colnames(x)) {
+      if (cn %in% c(trs("no"), trs("valid"), trs("missing"))) {
+        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
+      } else {
+        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
+      }
+    }
+    
+    table_rows <- list()
+    for (ro in seq_len(nrow(x))) {
+      table_row <- list()
+      for (co in seq_len(ncol(x))) {
+        cell <- x[ro,co]
+        cell <- gsub('\\\\\n', '\n', cell)
+        if (colnames(x)[co] %in% c(trs("no"), trs("valid"), trs("missing"))) {
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+                                      align = "center"))
+        } else if (colnames(x)[co] == trs("label")) {
+          cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
+          cell <- paste(strwrap(cell, width = format_info$split.cells, 
+                                simplify = TRUE), collapse = "\n")
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+                                      align = "left"))
+        } else if (colnames(x)[co] %in% 
+                   c(trs("variable"), trs("stats.values"))) {
+          cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
+                                      align = "left"))
+        } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
+          cell <- gsub("\\\\", " ", cell)
+          cell <- gsub(" *(\\d|\\:)", "\\1", cell)
+          cell <- gsub("\\:", " : ", cell)
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
+                                      align = "left"))
+        } else if (colnames(x)[co] == trs("graph")) {
+          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+                                      align = "center", border = "0"))
+        }
+      }
+      table_rows %+=% list(tags$tr(table_row))
+    }
+    
+    dfs_table_html <-
+      tags$table(
+        tags$thead(tags$tr(table_head)),
+        tags$tbody(table_rows),
+        class = paste(
+          "table table-striped table-bordered",
+          "st-table st-table-striped st-table-bordered st-multiline",
+          ifelse(is.na(parent.frame()$table.classes), 
+                 "", parent.frame()$table.classes)
+        )
+      )
+    
+    dfs_table_html <-
+      gsub(pattern = '(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)',
+           replacement = "\\1\\2\\3", x = dfs_table_html)
+    
+    # Prepare the main "div" for the html report
+    div_list <- build_heading_html(format_info, data_info, method)
+    
+    if (length(div_list) > 0 &&
+        !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
+      div_list %+=% list(HTML(text = "<br/>"))
+    }
+    
+    div_list %+=% list(HTML(text = dfs_table_html))
+    
+    if (parent.frame()$footnote != "") {
+      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      div_list %+=% list(HTML(text = fn))
+    }
+  }
+  
+  return(div_list)
+}
