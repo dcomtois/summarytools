@@ -389,7 +389,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
   # Dispatch to the right function for preparing output ------------------------
   if (attr(x, "st_type") == "freq") {
-    res <- prep_freq(x, method)
+    res <- print_freq(x, method)
     if (is.na(report.title)) {
       if (!("Weights" %in% names(attr(x, "data_info")))) {
         report.title <- trs('title.freq')
@@ -398,12 +398,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       }
     }
   } else if (attr(x, "st_type") == "ctable") {
-    res <- prep_ctable(x, method)
+    res <- print_ctable(x, method)
     if (is.na(report.title)) {
       report.title <- trs('title.ctable')
     }
   } else if (attr(x, "st_type") == "descr") {
-    res <- prep_descr(x, method)
+    res <- print_descr(x, method)
     if (is.na(report.title)) {
       if (!("Weights" %in% names(attr(x, "data_info")))) {
         report.title <- trs('title.descr')
@@ -412,7 +412,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       }
     }
   } else if(attr(x, "st_type") == "dfSummary") {
-    res <- prep_dfs(x, method)
+    res <- print_dfs(x, method)
     if (is.na(report.title)) {
       report.title <- trs('title.dfSummary')
     }
