@@ -99,33 +99,32 @@ txthist <- function(data) {
 #' @importFrom utils head
 #' @importFrom stats na.omit
 detect_barcode <- function(x) {
- 
+  
   x <- na.omit(x)[1:100]
   if (length(x) < 10 || (len <- min(nchar(x))) != max(nchar(x)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
   }
- 
+  
   x <- head(x, 20)
- 
+  
   type <- switch(as.character(len),
                  "8"  = "EAN-8",
                  "12" = "UPC",
                  "13" = "EAN-13",
                  "14" = "ITF-14")
- 
+  
   x_pad      <- paste0(strrep("0", 14-len), x)
   vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
   weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
   sums       <- mapply(weighted, FUN = sum)
- 
-  if (any(sums %% 10 != 0)) {
+  
+  if (any(sums %% 10 != 0, na.rm = TRUE)) {
     return(FALSE)
   }
- 
+  
   return(type)
 }
-
 
 crunch_factor <- function() {
 
