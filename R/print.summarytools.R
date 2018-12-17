@@ -609,6 +609,7 @@ print_freq <- function(x, method) {
     # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
       row.names(freq_table) <- enc2native(row.names(freq_table))
+      colnames(freq_table)  <- enc2native(colnames(freq_table))
     }
     
     pander_args <- append(list(style        = format_info$style,
@@ -973,6 +974,12 @@ print_descr <- function(x, method) {
     x <- format(round(x, format_info$round.digits),
                 nsmall = format_info$round.digits)
     
+    # set encoding to native to allow proper display of accentuated characters
+    if (parent.frame()$file == "") {
+      row.names(x) <- enc2native(row.names(x))
+      colnames(x)  <- enc2native(colnames(x))
+    }
+
     pander_args <- append(list(style        = format_info$style,
                                plain.ascii  = format_info$plain.ascii,
                                split.tables = format_info$split.tables,
@@ -1209,6 +1216,11 @@ print_dfs <- function(x, method) {
         x[[trs("text.graph")]][which(grepl('[:.]', 
                                            x[[trs("text.graph")]]))] <- ""
       }
+    }
+    
+    # set column names encoding to native to allow proper display of non-ascii
+    if (parent.frame()$file == "") {
+      colnames(x) <- enc2native(colnames(x))
     }
     
     pander_args <- append(list(style            = format_info$style,
@@ -1626,3 +1638,4 @@ build_heading_html <- function(format_info, data_info, method) {
   
   tmp <- list(head1, head2, head3)
   return(tmp[which(!is.na(tmp))])
+}

@@ -15,12 +15,19 @@
 #' @importFrom utils read.csv2
 #' @export
 useTranslations <- function(file) {
-  tr <- read.csv2(file, strip.white = TRUE, stringsAsFactors = FALSE,
-                  fileEncoding = "UTF-8",)
+  tr <- read.csv(file, strip.white = TRUE, stringsAsFactors = FALSE,
+                 fileEncoding = "UTF-8")
   items <- tr$item
   tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
   colnames(tr) <- items
   rownames(tr) <- "custom"
+  
+  # testing this part:
+  # for (cname in colnames(tr)) {
+  #   tr[,cname] <- enc2utf8(tr[,cname])
+  # }
+  # end test
+  
   .st_env$custom_lang <- tr
   st_options(lang = 'custom')
 }
