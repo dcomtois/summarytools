@@ -29,6 +29,7 @@ Suggests:
   rstudioapi,
   knitr,
   rmarkdown
+Depends: R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
 License: GPL-2
