@@ -209,9 +209,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                 var_names <- intersect(allnames, col_names)
                 var_labels <- label(df_[var_names])
               }
-              cont <- FALSE
-              break
             }
+            cont <- FALSE
+            break
           }
         }
       }
@@ -219,8 +219,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }
   
   # Found df_name but not var_names --------------------------------------------
-  if (max.varnames > 0 && length(data_str) > 0 && 
-      length(setdiff(df_name, allnames)) > 0) {
+  if (max.varnames > 0 && length(data_str) > 0) {
+    #  && length(setdiff(df_name, allnames)) > 0) {
     if (length(df_name) == 1 && length(var_names) == 0) {
       # Declare regular expressions for matching with indexing
       re_singlBrackets <-
@@ -298,50 +298,51 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       }
     }
-    
-    # Look for a "stand-alone" variable
-    # look for numeric if function is descr()
-    if (length(df_name) == 0 && length(var_names) == 0) {
-      cont <- TRUE
-      if (grepl("descr", deparse(match_call))) {
-        for (no.frame in seq_along(sys_frames)) {
-          if (!cont) 
+  }  
+  
+  # Look for a "stand-alone" variable
+  # look for numeric if function is descr()
+  if (length(df_name) == 0 && length(var_names) == 0) {
+    cont <- TRUE
+    if (grepl("descr", deparse(match_call))) {
+      for (no.frame in seq_along(sys_frames)) {
+        if (!cont) 
+          break
+        for (obj.name in allnames) {
+          if (exists(obj.name, envir = sys_frames[[no.frame]], 
+                     mode = "numeric")) {
+            var_names <- obj.name
+            var_labels <- label(get(obj.name, envir = sys_frames[[no.frame]]))
+            cont <- FALSE
             break
-          for (obj.name in allnames) {
-            if (exists(obj.name, envir = sys_frames[[no.frame]], 
-                       mode = "numeric")) {
-              var_names <- obj.name
-              var_labels <- label(get(obj.name, envir = sys_frames[[no.frame]]))
-              cont <- FALSE
-              break
-            }
           }
         }
-      } else {
-        # Look for numeric or character if function is freq or ctable
-        for (no.frame in seq_along(sys_frames)) {
-          if (!cont) 
+      }
+    } else {
+      # Look for numeric or character if function is freq or ctable
+      for (no.frame in seq_along(sys_frames)) {
+        if (!cont) 
+          break
+        for (obj.name in allnames) {
+          if (exists(obj.name, envir = sys_frames[[no.frame]], 
+                     mode = "numeric") ||
+              exists(obj.name, envir = sys_frames[[no.frame]],
+                     mode = "character")) {
+            var_names <- obj.name
+            var_labels <- label(get(obj.name, envir = sys_frames[[no.frame]]))
+            cont <- FALSE
             break
-          for (obj.name in allnames) {
-            if (exists(obj.name, envir = sys_frames[[no.frame]], 
-                       mode = "numeric") ||
-                exists(obj.name, envir = sys_frames[[no.frame]],
-                       mode = "character")) {
-              var_names <- obj.name
-              var_labels <- label(get(obj.name, envir = sys_frames[[no.frame]]))
-              cont <- FALSE
-              break
-            }
           }
         }
       }
     }
   }
+  
   # All methods failed, so we try to distribute the names from allnames
   # in a logical manner
   if (length(var_names) == 0 && length(df_name) == 0) {
     if (length(allnames) == 1) {
-      if (grepl("(dfSummary|descr)", deparse(match_call))) {
+      if (grepl("(dfSummary)", deparse(match_call))) {
         df_name <- allnames    
       } else if (grepl("(freq|ctable)", deparse(match_call))) {
         var_names <- allnames
