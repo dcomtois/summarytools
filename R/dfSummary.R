@@ -278,11 +278,11 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   attr(output, "fn_call") <- match.call()
 
   data_info <-
-    list(Dataframe = parse_info$df_name,
-         Dataframe.label = ifelse("df_label" %in% names(parse_info),
-                                  parse_info$df_label, NA),
-         Dimensions = paste(n_tot, "x", ncol(x)),
-         Duplicates = n_tot - n_distinct(x))
+    list(Data.frame       = parse_info$df_name,
+         Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
+                                   parse_info$df_label, NA),
+         Dimensions       = paste(n_tot, "x", ncol(x)),
+         Duplicates       = n_tot - n_distinct(x))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 

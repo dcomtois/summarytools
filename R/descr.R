@@ -325,28 +325,28 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   data_info <-
     list(
-      Dataframe       = ifelse("df_name" %in% names(parse_info), 
-                               parse_info$df_name, NA),
-      Dataframe.label = ifelse("df_label" %in% names(parse_info), 
-                               parse_info$df_label, NA),
-      Variable        = ifelse("var_names" %in% names(parse_info) && 
-                                 length(parse_info$var_names) == 1,
-                               parse_info$var_names, NA),
-      Variable.label  = ifelse("var_label" %in% names(parse_info) &&
-                                 length(parse_info$var_label) == 1,
-                               parse_info$var_label, NA),
-      Weights         = ifelse(identical(weights, NA), NA,
-                               sub(pattern = paste0(parse_info$df_name, "$"), 
-                                   replacement = "", x = weights_string, 
-                                   fixed = TRUE)),
-      Group           = ifelse("by_group" %in% names(parse_info),
-                               parse_info$by_group, NA),
-      by.first        = ifelse("by_group" %in% names(parse_info), 
-                               parse_info$by_first, NA),
-      by.last         = ifelse("by_group" %in% names(parse_info), 
-                               parse_info$by_last, NA),
-      transposed      = transpose,
-      N.Obs           = nrow(x.df))
+      Data.frame       = ifelse("df_name" %in% names(parse_info), 
+                                parse_info$df_name, NA),
+      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
+                                parse_info$df_label, NA),
+      Variable         = ifelse("var_names" %in% names(parse_info) && 
+                                  length(parse_info$var_names) == 1,
+                                parse_info$var_names, NA),
+      Variable.label   = ifelse("var_label" %in% names(parse_info) &&
+                                  length(parse_info$var_label) == 1,
+                                parse_info$var_label, NA),
+      Weights          = ifelse(identical(weights, NA), NA,
+                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                    replacement = "", x = weights_string, 
+                                    fixed = TRUE)),
+      Group            = ifelse("by_group" %in% names(parse_info),
+                                parse_info$by_group, NA),
+      by.first         = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_first, NA),
+      by.last          = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_last, NA),
+      transposed       = transpose,
+      N.Obs            = nrow(x.df))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
