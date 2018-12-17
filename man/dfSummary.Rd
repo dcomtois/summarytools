@@ -101,20 +101,20 @@ A data frame with additional class \code{summarytools} containing as
     \item{No}{Number indicating the order in which column appears in the data
      frame.}
     \item{Variable}{Name of the variable, along with its class(es).}
-    \item{Label}{Label of the variable (if applicable).} 
+    \item{Label}{Label of the variable (if applicable).}
     \item{Stats / Values}{For factors, a list of their values, limited by the
       \code{max.distinct.values} parameter. For character variables, the most
        common values (in descending frequency order), also limited by
       \code{max.distinct.values}. For numerical variables, common univariate
-      statistics (mean, std. deviation, min, med, max, IQR and CV).} 
-    \item{Freqs (\% of Valid)}{For factors and character variables, the 
-      frequencies and proportions of the values listed in the previous 
+      statistics (mean, std. deviation, min, med, max, IQR and CV).}
+    \item{Freqs (\% of Valid)}{For factors and character variables, the
+      frequencies and proportions of the values listed in the previous
       column. For numerical vectors, number of distinct values, or frequency
-      of distinct values if their number is not greater than 
-      \code{max.distinct.values}.} 
+      of distinct values if their number is not greater than
+      \code{max.distinct.values}.}
     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-      barplot for factors and character variables.} \item{Valid}{Number and 
-      proportion of valid values.} 
+      barplot for factors and character variables.} \item{Valid}{Number and
+      proportion of valid values.}
     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 }
 \description{
