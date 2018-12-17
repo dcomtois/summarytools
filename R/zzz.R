@@ -42,9 +42,7 @@ utils::globalVariables(c("."))
                  'dfSummary.na.col'       = TRUE,
                  'dfSummary.graph.magnif' = 1,
                  'lang'                   = 'en'))
-          
-  data("translations", package=pkgname, envir=parent.env(environment()))
-  
+
   return(invisible())
 }
 
