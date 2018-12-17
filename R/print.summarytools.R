@@ -329,6 +329,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # Override of data info attributes
+  if ("dataframe" %in% tolower(names(dotArgs))) {
+    dotArgs$Data.frame = dotArgs$Dataframe
+    message("Attribute 'Dataframe' has been renamed to 'Data.frame'")
+  }
+  
+  if ("dataframe.label" %in% tolower(names(dotArgs))) {
+    dotArgs$Data.frame.label = dotArgs$Dataframe.label
+    message("Attribute 'Dataframe.label' has been renamed to ",
+            "'Data.frame.label'")
+  }
+  
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
                           "Row.variable", "Col.variable",
@@ -1384,35 +1395,29 @@ build_heading_pander <- function(format_info, data_info) {
     return(paste(to_append, collapse = ""))
   }
   
-  # head1 = main title (e.g. 'Data Frame Summary')
-  # head2 = the data frame, the variable, or the 2 variables for ctable
-  # head3 = additional other elements
-  
+  caller <- as.character(sys.call(-1))[1]
+  head1 = NA # Main title (e.g. 'Data Frame Summary')
+  head2 = NA # The data frame, the variable, or the 2 variables for ctable
+  head3 = NA # Additional elements
   
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
-    head2 <- append_items(list(c(Variable       = trs('variable')),
+    head3 <- append_items(list(c(Variable       = '')),
                                c(Variable.label = trs('label')),
                                c(Data.type      = trs('type'))))
-    return(list(head2))
-  }
-  
-  else if (isTRUE(format_info$group.only) ||
-           ('by.first' %in% names(data_info) && 
-            (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-    head2 <- append_items(list(c(Group = trs('group'))))
-    return(list(head2))
-  }
-  
-  else if (!isTRUE(format_info$headings)) {
+    return(list(head3))
+  } else if (isTRUE(format_info$group.only)) {
+    head3 <- append_items(list(c(Group = trs('group'))))
+    return(list(head3))
+  } else if (!isTRUE(format_info$headings)) {
     return(list())
   }
   
+  #   (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
+  #   return(list(head2))
+  # }
+
   # Regular cases - Build primary and secondary headings
-  caller <- as.character(sys.call(-1))[1]
-  head1  <- NA
-  head2  <- NA
-  
   if (caller == 'print_freq') {
     
     head1 <- ifelse('Weights' %in% names(data_info),
