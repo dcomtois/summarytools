@@ -276,5 +276,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
 
   attr(output, "user_fmt") <- list(... = ...)
 
+  attr(output, "lang") <- st_options('lang')
+  
   return(output)
 }

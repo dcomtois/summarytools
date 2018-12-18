@@ -186,6 +186,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                    v = "viewer",
                    r = "render")
 
+  if (attr(x, 'lang') != st_options('lang')) {
+    op <- st_options('lang')
+    st_options(lang = attr(x, 'lang'))
+    on.exit(st_options(lang = op), add = TRUE)
+  }
+
   if (!isTRUE(test_choice(method, 
                           c("pander", "browser", "viewer", "render")))) {
     errmsg %+=% paste("'method' must be one of 'pander', 'browser', 'viewer',",

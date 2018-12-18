@@ -236,5 +236,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   attr(output, "user_fmt") <- list(... = ...)
 
+  attr(output, "lang") <- st_options('lang')
+  
   return(output)
 }

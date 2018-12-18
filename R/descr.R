@@ -360,6 +360,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   attr(output, "user_fmt") <- list(... = ...)
   
+  attr(output, "lang") <- st_options('lang')
+  
   if (exists("ignored"))
     attr(output, "ignored") <- ignored
   
