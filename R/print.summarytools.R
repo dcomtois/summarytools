@@ -594,7 +594,7 @@ print_freq <- function(x, method) {
   
   if(method=="pander") {
     
-    # freq -- pander method ----------------------------------------------------
+    # print_freq -- pander section ---------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "centre",
@@ -657,7 +657,7 @@ print_freq <- function(x, method) {
     
   } else {
     
-    # freq -- html method ------------------------------------------------------
+    # print_freq -- html section -----------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "center",
@@ -833,7 +833,7 @@ print_ctable <- function(x, method) {
                     c = "center",
                     r = "right")
   
-  # ctable -- pander section ---------------------------------------------------
+  # print_ctable -- pander section ---------------------------------------------
   if(method == "pander") {
     
     # Escape "<" and ">" when used in pairs in rownames or colnames
@@ -876,7 +876,7 @@ print_ctable <- function(x, method) {
     
   } else {
     
-    # ctable -- html section ---------------------------------------------------
+    # print_ctable -- html section ---------------------------------------------
     dnn <- names(dimnames(cross_table))
     
     table_head <- list()
@@ -989,7 +989,7 @@ print_descr <- function(x, method) {
   
   if(method=="pander") {
     
-    # descr -- pander method ---------------------------------------------------
+    # print_descr -- pander section --------------------------------------------
     # Format numbers (avoids inconsistencies with pander rounding digits)
     x <- format(round(x, format_info$round.digits),
                 nsmall = format_info$round.digits)
@@ -1024,7 +1024,7 @@ print_descr <- function(x, method) {
     
   } else {
     
-    # descr -- html method -----------------------------------------------------
+    # print_descr -- html section ----------------------------------------------
     
     if ("byvar" %in% names(data_info) && !data_info$transpose) {
       table_head <- list()
@@ -1185,7 +1185,7 @@ print_dfs <- function(x, method) {
     x <- x[ ,-which(names(x) == trs('missing'))]
   }
   
-  # dfSummary - pander section -------------------------------------------------  
+  # print_dfs - pander section -------------------------------------------------  
   if (method == "pander") {
     
     # remove html graphs
@@ -1270,7 +1270,7 @@ print_dfs <- function(x, method) {
     
   } else {
     
-    # dfSummary - html section -------------------------------------------------
+    # print_dfs - html section -------------------------------------------------
     
     # remove text graph
     if (trs("text.graph") %in% names(x)) {
@@ -1539,7 +1539,7 @@ build_heading_html <- function(format_info, data_info, method) {
              isTRUE(format_info$display.type)) ||
             !grepl('(label|Data\\.type)', names(item))) {
           
-          div_str_item <- paste(paste0('<strong>', item, '</strong>'),
+          div_str_item <- paste(paste0('<strong>', HTML(conv_non_ascii(item)), '</strong>'),
                                 ifelse(is.character(data_info[[names(item)]]),
                                        conv_non_ascii(data_info[[names(item)]]),
                                        data_info[[names(item)]]),
@@ -1593,15 +1593,15 @@ build_heading_html <- function(format_info, data_info, method) {
   
   if (caller == 'print_freq') {
     
-    head1 <- h3(ifelse('Weights' %in% names(data_info),
-                       trs('title.freq.weighted'), 
-                       trs('title.freq')))
-    
+    head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
+                                           trs('title.freq.weighted'), 
+                                           trs('title.freq')))))
+                     
     if ('Variable' %in% names(data_info)) {
       if (method == 'render') {
-        head2 <- strong(data_info$Variable)
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
-        head2 <- h4(data_info$Variable)
+        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
     }
     
@@ -1624,9 +1624,9 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ('Row.x.Col' %in% names(data_info)) {
       if (method == 'render') {
-        head2 <- strong(data_info$Row.x.Col)
+        head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)))
       } else {
-        head2 <- h4(data_info$Row.x.Col)
+        head2 <- h4(HTML(conv_non_ascii(data_info$Row.x.Col)))
       }
     }
     
@@ -1636,15 +1636,15 @@ build_heading_html <- function(format_info, data_info, method) {
     
   } else if (caller == 'print_descr') {
     
-    head1 <- h3(ifelse('Weights' %in% names(data_info),
-                       trs('title.descr.weighted'), 
-                       trs('title.descr')))
+    head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
+                                           trs('title.descr.weighted'), 
+                                           trs('title.descr')))))
     
     if ('Variable' %in% names(data_info)) {
       if (method == 'render') {
-        head2 <- strong(data_info$Variable)
+        head2 <- HTML(conv_non_ascii(strong(data_info$Variable)))
       } else {
-        head2 <- h4(data_info$Variable)
+        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
       
       head3 <- append_items(list(c(Variable.label = trs('label')),
@@ -1653,9 +1653,9 @@ build_heading_html <- function(format_info, data_info, method) {
                                  c(N.Obs          = trs('n'))))
     } else {
       if (method == 'render') {
-        head2 <- strong(data_info$Data.frame)
+        head2 <- HTML(conv_non_ascii(strong(data_info$Data.frame)))
       } else {
-        head2 <- h4(data_info$Data.frame)
+        head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
       }
       
       head3 <- append_items(list(c(Data.frame.label = trs('label')),
@@ -1666,11 +1666,11 @@ build_heading_html <- function(format_info, data_info, method) {
     
   } else if (caller == 'print_dfs') {
     
-    head1 <- h3(trs('title.dfSummary'))
+    head1 <- h3(HTML(conv_non_ascii(trs('title.dfSummary'))))
     if (method == 'render') {
-      head2 <- strong(data_info$Data.frame)
+      head2 <- HTML(conv_non_ascii(strong(data_info$Data.frame)))
     } else {
-      head2 <- h4(data_info$Data.frame)
+      head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
     }
     
     head3 <- append_items(list(c(Data.frame.label = trs('label')),
