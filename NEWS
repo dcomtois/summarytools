@@ -1,5 +1,11 @@
-Version 0.8.9
+Version 0.9.0
 -------------
+Translations are introduced. Function useTranslations() added to allow custom
+translations.
+
+
+Version 0.8.9 (Released on GitHub only)
+---------------------------------------
 Several changes in dfSummary(): number of columns and number of duplicates are
 shown in the headings section, integer sequences as well as UPC/EAN codes are
 detected, and the statistics for unary / binary data is simplified (thanks to
