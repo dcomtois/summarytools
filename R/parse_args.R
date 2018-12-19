@@ -163,7 +163,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   else if (length(lapply_pos) == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[lapply_pos]]))
     df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
-    df_ <- get(df_name, envir = sys_frames[[lapply_pos]])
+    df_ <- eval(expr = lapply_call$X, envir = sys_frames[[lapply_pos]])
     df_label <- label(df_)
     for (i_ in seq_along(sys_frames)) {
       if (identical(names(sys_frames[[i_]])[1:3], c("i", "X", "FUN"))) {
