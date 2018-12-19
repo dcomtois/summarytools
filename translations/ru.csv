@@ -1,0 +1,68 @@
+item                 ,context                         ,ru
+title.freq           ,main heading                    ,частота
+title.freq.weighted  ,main heading                    ,взвешенная частота
+title.ctable         ,main heading                    ,кросс-табуляция
+title.ctable.row     ,main heading                    ,пропорции по рядам
+title.ctable.col     ,main heading                    ,пропорции по столбцам
+title.ctable.tot     ,main heading                    ,суммарные пропорции
+title.descr          ,main heading                    ,кол-венный показатель распределения
+title.descr.weighted ,main heading                    ,взвешенный кол-венный показатель распределения
+title.dfSummary      ,main heading                    ,[TODO: data frame is something in R]
+n                    ,heading label                   ,кол-во
+dimensions           ,heading label                   ,измерения
+duplicates           ,heading label                   ,дупликаты
+data.frame           ,heading label                   ,[верт. таблица]
+label                ,heading label & column name     ,ярлык
+variable             ,heading label & column name     ,переменная
+group                ,heading label                   ,переменные
+by                   ,heading label                   ,группа
+weights              ,heading label                   ,вес
+type                 ,heading label                   ,тип
+logical              ,heading value for type          ,булева переменная
+character            ,heading value for type          ,символ
+numeric              ,heading value for type          ,число
+factor               ,heading value for type          ,склейка
+factor.ordered       ,heading value for type          ,упорядоченная склейка
+date                 ,heading value for type          ,дата
+datetime             ,heading value for type          ,Datetime
+freq                 ,column name (freq)              ,Част.
+pct.valid            ,column name (freq)              ,% корр.
+pct.valid.cum        ,column name (freq)              ,% корр. сумм.
+pct.total            ,column name (freq)              ,% сумма
+pct.total.cum        ,column name (freq)              ,% совокупной суммы
+pct.cum              ,column name (freq)              ,% суммы
+valid                ,column name (freq & dfSummary)  ,корректное
+total                ,column grouping (freq)          ,сумма
+mean                 ,row name (descr)                ,среднее значение
+sd                   ,row name (descr)                ,ст. откл.
+min                  ,row name (descr)                ,мин
+q1                   ,row name (descr)                ,Q1
+med                  ,row name (descr)                ,медиана
+q3                   ,row name (descr)                ,Q3
+max                  ,row name (descr)                ,макс
+mad                  ,row name (descr)                ,MAD
+iqr                  ,row name (descr)                ,IQR
+cv                   ,row name (descr)                ,CV
+skewness             ,row name (descr)                ,асимметрия
+se.skewness          ,row name (descr)                ,SE.асимметрия
+kurtosis             ,row name (descr)                ,эксцесс
+n.valid              ,row name (descr)                ,Цифр. корр
+pct.valid            ,row name (descr)                ,Проц. корр
+no                   ,column name (dfSummary)         ,№
+stats.values         ,column name (dfSummary)         ,[Stats / Values]
+freqs.pct.valid      ,column name (dfSummary)         ,[Freqs (% of Valid)]
+graph                ,column name (dfSummary)         ,диаграмма
+text.graph           ,column name (dfSummary)         ,текст. диаграмма
+missing              ,column name (dfSummary)         ,отсутствующее
+distinct.values      ,cell content (dfSummary)        ,уникальные значения
+int.sequence         ,cell content (dfSummary)        ,целочисленная последовательность
+rounded              ,cell content (dfSummary)        ,округлённое
+others               ,cell content (dfSummary)        ,остальные
+code                 ,cell content (dfSummary)        ,[код]
+mode                 ,cell content (dfSummary)        ,[mode]
+med.short            ,cell content (dfSummary)        ,[med]
+start                ,cell content (dfSummary)        ,начало
+end                  ,cell content (dfSummary)        ,конец
+generated.by         ,footnote                        ,Сгенерировано
+version              ,footnote                        ,версия
+date.fmt             ,footnote                        ,%Y-%m-%d

@@ -1,0 +1,68 @@
+item                 ,context                         ,es
+title.freq           ,main heading                    ,Frecuencias
+title.freq.weighted  ,main heading                    ,Frecuencías ponderadas
+title.ctable         ,main heading                    ,Tabulación cruzada
+title.ctable.row     ,main heading                    ,proporciónes por líneas/filas?
+title.ctable.col     ,main heading                    ,proporciónes por columnas
+title.ctable.tot     ,main heading                    ,proporcíones sobre total
+title.descr          ,main heading                    ,Estadísticas descriptivas
+title.descr.weighted ,main heading                    ,Estadísticas descriptivas ponderadas
+title.dfSummary      ,main heading                    ,Resumen de data frame
+n                    ,heading label                   ,N
+dimensions           ,heading label                   ,Dimensiónes
+duplicates           ,heading label                   ,Duplicados
+data.frame           ,heading label                   ,Data frame
+label                ,heading label & column name     ,Etiqueta
+variable             ,heading label & column name     ,Variable
+group                ,heading label                   ,Subgrupo
+by                   ,heading label                   ,por
+weights              ,heading label                   ,Ponderaciones
+type                 ,heading label                   ,Tipo
+logical              ,heading value for type          ,Booleana
+character            ,heading value for type          ,Alpahnumérico
+numeric              ,heading value for type          ,Numérico
+factor               ,heading value for type          ,Factor
+factor.ordered       ,heading value for type          ,Forctor ordenado
+date                 ,heading value for type          ,Fecha
+datetime             ,heading value for type          ,Fecha y hora
+freq                 ,column name (freq)              ,Frec.
+pct.valid            ,column name (freq)              ,% Válido
+pct.valid.cum        ,column name (freq)              ,% Válido cum.
+pct.total            ,column name (freq)              ,% Total
+pct.total.cum        ,column name (freq)              ,% Total cum.
+pct.cum              ,column name (freq)              ,% Cum.
+valid                ,column name (freq & dfSummary)  ,Válido
+total                ,column grouping (freq)          ,Total
+mean                 ,row name (descr)                ,Media
+sd                   ,row name (descr)                ,D-std.
+min                  ,row name (descr)                ,Min
+q1                   ,row name (descr)                ,Q1
+med                  ,row name (descr)                ,Mediana
+q3                   ,row name (descr)                ,Q3
+max                  ,row name (descr)                ,Max
+mad                  ,row name (descr)                ,DAP
+iqr                  ,row name (descr)                ,RI
+cv                   ,row name (descr)                ,CV
+skewness             ,row name (descr)                ,Asimetría
+se.skewness          ,row name (descr)                ,ES-Asimetría
+kurtosis             ,row name (descr)                ,Curtosis
+n.valid              ,row name (descr)                ,Num.Válido
+pct.valid            ,row name (descr)                ,Pct.Válido
+no                   ,column name (dfSummary)         ,No
+stats.values         ,column name (dfSummary)         ,Estadísticas / Valores
+freqs.pct.valid      ,column name (dfSummary)         ,Frec. (% sobre válido)
+graph                ,column name (dfSummary)         ,Gráfico
+text.graph           ,column name (dfSummary)         ,Gráfico texto / ascii?
+missing              ,column name (dfSummary)         ,Faltante
+distinct.values      ,cell content (dfSummary)        ,valores distintos
+int.sequence         ,cell content (dfSummary)        ,Secuencia de enteros
+rounded              ,cell content (dfSummary)        ,redondeo
+others               ,cell content (dfSummary)        ,otros
+code                 ,cell content (dfSummary)        ,(codigos)
+mode                 ,cell content (dfSummary)        ,modo
+med.short            ,cell content (dfSummary)        ,mediana
+start                ,cell content (dfSummary)        ,principio
+end                  ,cell content (dfSummary)        ,término
+generated.by         ,footnote                        ,Generado por
+version              ,footnote                        ,versión
+date.fmt             ,footnote                        ,%Y-%m-%d
