@@ -15,8 +15,9 @@
 #' @importFrom utils read.csv
 #' @export
 useTranslations <- function(file) {
+  browser()
   tr <- read.csv(file, strip.white = TRUE, stringsAsFactors = FALSE,
-                 fileEncoding = "UTF-8")
+                 encoding = "UTF-8")
   items <- tr$item
   tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
   colnames(tr) <- items
