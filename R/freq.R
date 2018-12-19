@@ -242,24 +242,24 @@ freq <- function(x, round.digits = st_options('round.digits'),
     
   data_info <-
     list(
-      Dataframe       = ifelse("df_name" %in% names(parse_info), 
-                              parse_info$df_name, NA),
-      Dataframe.label = ifelse("df_label" %in% names(parse_info), 
-                               parse_info$df_label, NA),
-      Variable       = ifelse("var_names" %in% names(parse_info), 
-                             parse_info$var_names, NA),
-      Variable.label = label(x),
-      Data.type      = Data.type,
-      Weights        = ifelse(identical(weights, NA), NA,
-                              sub(pattern = paste0(parse_info$df_name, "$"), 
-                                  replacement = "",
-                                  x = weights_string, fixed = TRUE)),
-      Group          = ifelse("by_group" %in% names(parse_info),
-                              parse_info$by_group, NA),
-      by.first       = ifelse("by_group" %in% names(parse_info), 
-                              parse_info$by_first, NA),
-      by.last        = ifelse("by_group" %in% names(parse_info), 
-                              parse_info$by_last , NA))
+      Data.frame       = ifelse("df_name" %in% names(parse_info), 
+                                parse_info$df_name, NA),
+      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
+                                parse_info$df_label, NA),
+      Variable         = ifelse("var_names" %in% names(parse_info), 
+                                parse_info$var_names, NA),
+      Variable.label   = label(x),
+      Data.type        = Data.type,
+      Weights          = ifelse(identical(weights, NA), NA,
+                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                    replacement = "",
+                                    x = weights_string, fixed = TRUE)),
+      Group            = ifelse("by_group" %in% names(parse_info),
+                                parse_info$by_group, NA),
+      by.first         = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_first, NA),
+      by.last          = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_last , NA))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
@@ -276,5 +276,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
 
   attr(output, "user_fmt") <- list(... = ...)
 
+  attr(output, "lang") <- st_options('lang')
+  
   return(output)
 }

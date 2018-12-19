@@ -240,7 +240,7 @@ check_arguments <- function(mc, dotArgs) {
   return(msg[ord])
 }
 
-
+# check_arguments_st_options ---------------------------------------------------
 #' @importFrom checkmate test_int test_logical test_choice 
 #' test_file_exists test_character
 check_arguments_st_options <- function(mc) {
@@ -379,7 +379,7 @@ check_arguments_st_options <- function(mc) {
   return(msg)
 }
 
-
+# smart_split ------------------------------------------------------------------
 # Fn to smartly split variable names that are too long
 # ref: https://tinyurl.com/y7qv48z9
 #' @keywords internal
@@ -394,12 +394,14 @@ smart_split <- function(str, maxlen) {
   paste(groups, collapse = "<br/>")
 }
 
+# %+=% -------------------------------------------------------------------------
 # infix to simplify append()ing
 #' @keywords internal
 `%+=%`<- function(x, value) {
   eval.parent(substitute(x <- append(x, value)))
 }
 
+# unquote ----------------------------------------------------------------------
 # Remove quotation marks inside a string
 #' @keywords internal
 unquote <- function(x) {
@@ -408,6 +410,7 @@ unquote <- function(x) {
   x
 }
 
+# conv_non_ascii ---------------------------------------------------------------
 # Replace accentuated characters by their html decimal entity
 #' @keywords internal
 conv_non_ascii <- function(...) {
@@ -415,7 +418,9 @@ conv_non_ascii <- function(...) {
   for (s in list(...)) {
     splitted <- unlist(strsplit(s, ""))
     intvalues <- utf8ToInt(enc2utf8(s))
-    pos_to_modify <- which(intvalues >=161 & intvalues <= 255)
+    pos_to_modify_lat <- which(intvalues >=161 & intvalues <= 255)
+    pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <=1279)
+    pos_to_modify <- c(pos_to_modify_lat, pos_to_modify_cyr)
     splitted[pos_to_modify] <- paste0("&#0",  intvalues[pos_to_modify], ";")
     out <- c(out, paste0(splitted, collapse = ""))
   }

@@ -210,18 +210,18 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   attr(output, "date") <- Sys.Date()
 
   data_info <-
-    list(Dataframe          = ifelse(exists("df_name"), df_name, NA),
-         Dataframe.label    = ifelse(exists("df_label"), df_label, NA),
-         Row.variable       = x_name,
-         Row.variable.label = ifelse(!is.na(label(x)), label(x), NA),
-         Col.variable       = y_name,
-         Col.variable.label = ifelse(!is.na(label(y)), label(y), NA),
-         Row.x.Col          = paste(x_name, y_name, sep = " * "),
-         Proportions        = switch(prop,
-                                     r = "Row",
-                                     c = "Column",
-                                     t = "Total",
-                                     n = "None"))
+    list(Data.frame          = ifelse(exists("df_name"), df_name, NA),
+         Data.frame.label    = ifelse(exists("df_label"), df_label, NA),
+         Row.variable        = x_name,
+         Row.variable.label  = ifelse(!is.na(label(x)), label(x), NA),
+         Col.variable        = y_name,
+         Col.variable.label  = ifelse(!is.na(label(y)), label(y), NA),
+         Row.x.Col           = paste(x_name, y_name, sep = " * "),
+         Proportions         = switch(prop,
+                                      r = "Row",
+                                      c = "Column",
+                                      t = "Total",
+                                      n = "None"))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
@@ -236,5 +236,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   attr(output, "user_fmt") <- list(... = ...)
 
+  attr(output, "lang") <- st_options('lang')
+  
   return(output)
 }
