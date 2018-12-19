@@ -167,15 +167,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   if ("group.only" %in% names(dotArgs)) {
     attr(x, "formatting")$group.only <- eval(dotArgs[["group.only"]])
-  } else {
-    attr(x, "formatting")$group.only <- FALSE
-  }
+  } #else {
+    #attr(x, "formatting")$group.only <- FALSE
+  #}
 
   if ("var.only" %in% names(dotArgs)) {
     attr(x, "formatting")$var.only <- eval(dotArgs[["var.only"]])
-  } else {
-    attr(x, "formatting")$var.only <- FALSE
-  }
+  }# else {
+  #  attr(x, "formatting")$var.only <- FALSE
+  #}
 
   # Parameter validation -------------------------------------------------------
   errmsg <- character()
@@ -356,7 +356,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   for (data_info_element in data_info_elements) {
     if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
       attr(x, "data_info")[[data_info_element]] <- 
-        dotArgs[grep(data_info_element, names(dotArgs), ignore.case = TRUE)]
+        dotArgs[[grep(data_info_element, names(dotArgs), ignore.case = TRUE)]]
       overrided_args <- append(overrided_args, data_info_element)
     }
   }
@@ -1424,7 +1424,15 @@ build_heading_pander <- function(format_info, data_info) {
                                c(N.Obs = trs('n'))))
     return(list(head3))
   } else if (!isTRUE(format_info$headings)) {
-    return(list())
+    if ("var.only" %in% names(format_info)) {
+      head3 <- append_items(list(c(Variable       = trs('variable')),
+                                 c(Variable.label = trs('label')),
+                                 c(Data.type      = trs('type'))))
+      
+      return(list(head3))
+    } else {
+      return(list())
+    }
   }
   
   #   (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
@@ -1664,7 +1672,7 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ('Variable' %in% names(data_info)) {
       if (method == 'render') {
-        head2 <- HTML(conv_non_ascii(strong(data_info$Variable)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
@@ -1675,7 +1683,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                  c(N.Obs          = trs('n'))))
     } else {
       if (method == 'render') {
-        head2 <- HTML(conv_non_ascii(strong(data_info$Data.frame)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
       }
@@ -1690,7 +1698,7 @@ build_heading_html <- function(format_info, data_info, method) {
     
     head1 <- h3(HTML(conv_non_ascii(trs('title.dfSummary'))))
     if (method == 'render') {
-      head2 <- HTML(conv_non_ascii(strong(data_info$Data.frame)))
+      head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
     } else {
       head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
     }

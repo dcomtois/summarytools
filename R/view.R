@@ -227,6 +227,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                              silent = silent,
                              footnote = NA,
                              append = FALSE,
+                             var.only = FALSE,
                              report.title = report.title,
                              escape.pipe = escape.pipe,
                              table.classes = table.classes,
@@ -273,6 +274,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                                     table.classes = table.classes,
                                     bootstrap.css = bootstrap.css,
                                     custom.css = custom.css,
+                                    var.only = FALSE,
                                     ...))
           
         } else if (i < length(x)) {
@@ -284,6 +286,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                              footnote = NA,
                              table.classes = table.classes,
                              bootstrap.css = FALSE,
+                             var.only = TRUE,
                              ...)
         } else {
           html_content[[i]] <- 
@@ -294,6 +297,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                                footnote = footnote,
                                table.classes = table.classes,
                                bootstrap.css = FALSE,
+                               var.only = TRUE,
                                ...)
         }
       }
