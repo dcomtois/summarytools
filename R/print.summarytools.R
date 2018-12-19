@@ -1387,24 +1387,26 @@ build_heading_pander <- function(format_info, data_info) {
     to_append <- c()
     for (item in items) {
       if (names(item) %in% names(data_info)) {
-        # if (item == items[[1]] && 
-        #     names(item) %in% c("Variable", "Data.frame", "Row.x.Col")) {
-        #   to_append <- paste0('  \n', add_markup(data_info[[names(item)]], h))
-        # }
-        
-        #else
         if ((grepl(pattern = 'label', names(item)) && 
              isTRUE(format_info$display.labels)) ||
             (names(item) == 'Data.type' && 
              isTRUE(format_info$display.type)) ||
             !grepl('(label|Data\\.type)', names(item))) {
-          
-          to_append <- append(to_append,
-                              paste0('  \n', 
-                                     add_markup(paste(item,
-                                                      data_info[[names(item)]],
-                                                      sep = ': '), h), 
-                                     '  '))
+
+          if (item != "") {
+            to_append <- 
+              append(to_append,
+                     paste0('  \n', 
+                            add_markup(
+                              paste(item, data_info[[names(item)]], sep = ': '),
+                              h),
+                            '  '))
+          } else {
+            to_append <- 
+              append(to_append,
+                     paste0('  \n', add_markup(data_info[[names(item)]], h),
+                            '  '))
+          }
         }
       }
     }
@@ -1413,9 +1415,9 @@ build_heading_pander <- function(format_info, data_info) {
   
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
-    head3 <- append_items(list(c(Variable       = '')),
+    head3 <- append_items(list(c(Variable       = ''),
                                c(Variable.label = trs('label')),
-                               c(Data.type      = trs('type')))
+                               c(Data.type      = trs('type'))))
     return(list(head3))
   } else if (isTRUE(format_info$group.only)) {
     head3 <- append_items(list(c(Group = trs('group')),
@@ -1581,7 +1583,15 @@ build_heading_html <- function(format_info, data_info, method) {
   }
   
   else if (!isTRUE(format_info$headings)) {
-    return(list())
+    if ("var.only" %in% names(format_info)) {
+      head3 <- append_items(list(c(Variable       = trs('variable')),
+                                 c(Variable.label = trs('label')),
+                                 c(Data.type      = trs('type'))))
+      
+      return(list(head3))
+    } else {
+      return(list())
+    }
   }
   
   # Regular cases - Build primary, secondary and third headings
@@ -1601,15 +1611,22 @@ build_heading_html <- function(format_info, data_info, method) {
       if (method == 'render') {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
-        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        if(!("var.only" %in% names(format_info))) {
+          head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        }
       }
     }
-    
-    head3 <- append_items(list(c(Variable.label = trs('label')),
-                               c(Data.type      = trs('type')),
-                               c(Weights        = trs('weights')),
-                               c(Group          = trs('group'))))
-    
+
+    if ("var.only" %in% names(format_info)) {
+      head3 <- append_items(list(c(Variable       = trs('variable')),
+                                 c(Variable.label = trs('label')),
+                                 c(Data.type      = trs('type'))))
+    } else {
+      head3 <- append_items(list(c(Variable.label = trs('label')),
+                                 c(Data.type      = trs('type')),
+                                 c(Weights        = trs('weights')),
+                                 c(Group          = trs('group'))))
+    }    
   } else if (caller == 'print_ctable') {
     
     head1 <- 
@@ -1639,6 +1656,11 @@ build_heading_html <- function(format_info, data_info, method) {
     head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
                                            trs('title.descr.weighted'), 
                                            trs('title.descr')))))
+    
+    if ("byvar" %in% names(data_info)) {
+      data_info$Variable <- (paste(data_info$Variable, trs("by"), 
+                                   data_info$byvar))
+    }
     
     if ('Variable' %in% names(data_info)) {
       if (method == 'render') {
