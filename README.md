@@ -18,16 +18,21 @@ Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recomm
 
 … by submitting your own language file\! Go to [this
 page](https://github.com/dcomtois/summarytools/tree/dev-current/translations),
-copy the template and turn it into a new set of translations, and do a
-pull request\! If you don’t have a GitHub account (and don’t want to
-become one, even though it’s awesome), just send me an email (see bottom
-of this page). Danke in advance\! :)
+copy the template, fill out the fields and do a pull request. If you’re
+not a GitHub user (and don’t want to become one, even though it’s
+awesome), just send me an email (see bottom of this page). Danke in
+advance. :)
 
-To download 0.9.0:  
-**`devtools::install_github("dcomtois/summarytools", ref =
-"dev-current")`**
+To download 0.9.0:
 
-To switch languages, simply use: **`st_options(lang = "fr")`**.
+`devtools::install_github("dcomtois/summarytools", ref = "dev-current")`
+
+To switch languages, simply use:
+
+`st_options(lang = "fr")`
+
+With the new function `useTranslations()`, you can also test your
+translations or simply use the terms you wish in summarytools.
 
 # What is summarytools?
 
