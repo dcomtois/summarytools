@@ -169,8 +169,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (identical(names(sys_frames[[i_]])[1:3], c("i", "X", "FUN"))) {
         var_names  <- names(df_[sys_frames[[i_]]$i])
         var_labels <- label(df_[sys_frames[[i_]]$i])
+        break
       }
-      break
     }
   }
   
@@ -206,8 +206,21 @@ parse_args <- function(sys_calls, sys_frames, match_call,
             if (max.varnames > 0) {
               col_names <- colnames(df_)
               if (length(intersect(allnames, col_names)) > 0) {
-                var_names <- intersect(allnames, col_names)
-                var_labels <- label(df_[var_names])
+                # Check that the varname is not used in an expression, 
+                # sur as is "age > 50"
+                if (exists("by_call")) {
+                  check_expr <- grep(intersect(allnames, col_names)[1], 
+                                     by_call, value = TRUE)
+                } else {
+                  check_expr <- grep(intersect(allnames, col_names)[1], match_call, 
+                                     value = TRUE)
+                }
+                if (!grepl("[!><=()]", check_expr)) {
+                  var_names <- intersect(allnames, col_names)[1]
+                  var_labels <- label(df_[var_names])
+                } else {
+                  var_names <- check_expr
+                }
               }
             }
             cont <- FALSE
