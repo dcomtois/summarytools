@@ -23,6 +23,12 @@ pull request\! If you don’t have a GitHub account (and don’t want to
 become one, even though it’s awesome), just send me an email (see bottom
 of this page). Danke in advance\! :)
 
+To download 0.9.0:  
+**`devtools::install_github("dcomtois/summarytools", ref =
+"dev-current")`**
+
+To switch languages, simply use: **`st_options(lang = "fr")`**.
+
 # What is summarytools?
 
 *summarytools* is an [R](http://r-project.org) package providing tools
