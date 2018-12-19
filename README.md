@@ -10,16 +10,18 @@ The following vignette complements this page: [Recommendations for Using
 summarytools With
 Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 
-## A Big Forward in 0.9.0: Say ¡Hola\! to Translations\!
+## A Big Step Forward in 0.9.0: Say ¡Hola\! to Translations\!
 
 ![A Russian version of freq)](img/Russian-freq.png)
 
-Contribute to summarytools by submitting your language file\! Go to
-[this
+### Contribute to summarytools…
+
+… by submitting your own language file\! Go to [this
 page](https://github.com/dcomtois/summarytools/tree/dev-current/translations),
-turn the template into a new set of translations, and do a pull request
-if you have a GitHub account. If you don’t, just send me an email (see
-bottom of this page). Danke in advance\! :)
+copy the template and turn it into a new set of translations, and do a
+pull request\! If you don’t have a GitHub account (and don’t want to
+become one, even though it’s awesome), just send me an email (see bottom
+of this page). Danke in advance\! :)
 
 # What is summarytools?
 
