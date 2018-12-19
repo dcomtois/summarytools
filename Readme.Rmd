@@ -17,6 +17,16 @@ st_options('footnote', NA)
 
 The following vignette complements this page: [Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 
+## A Big Forward in 0.9.0: Say ¡Hola! to Translations!
+![A Russian version of freq)](img/Russian-freq.png)
+
+Contribute to summarytools by submitting your language file! Go to
+[this page](https://github.com/dcomtois/summarytools/tree/dev-current/translations),
+turn the template into a new set of translations, and do a pull request if you
+have a GitHub account. If you don't, just send me an email (see bottom of this
+page). Danke in advance! :)
+
+
 # What is summarytools?
 
 *summarytools* is an [R](http://r-project.org) package providing tools

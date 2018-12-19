@@ -10,6 +10,17 @@ The following vignette complements this page: [Recommendations for Using
 summarytools With
 Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 
+## A Big Forward in 0.9.0: Say ¡Hola\! to Translations\!
+
+![A Russian version of freq)](img/Russian-freq.png)
+
+Contribute to summarytools by submitting your language file\! Go to
+[this
+page](https://github.com/dcomtois/summarytools/tree/dev-current/translations),
+turn the template into a new set of translations, and do a pull request
+if you have a GitHub account. If you don’t, just send me an email (see
+bottom of this page). Danke in advance\! :)
+
 # What is summarytools?
 
 *summarytools* is an [R](http://r-project.org) package providing tools
@@ -132,9 +143,9 @@ freq(iris$Species, style = "rmarkdown")
 
 ### Frequencies
 
-**Variable:** iris$Species  
-**Type:** Factor
-(unordered)
+**iris$Species**  
+**Type:**
+Factor
 
 |                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | -------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -303,27 +314,27 @@ descr(iris, style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**Data Frame:** iris  
+**iris**  
 **N:**
 150
 
-|                 | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width |
+|                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
-|        **Mean** |         5.84 |        3.06 |         3.76 |        1.20 |
-|     **Std.Dev** |         0.83 |        0.44 |         1.77 |        0.76 |
-|         **Min** |         4.30 |        2.00 |         1.00 |        0.10 |
-|          **Q1** |         5.10 |        2.80 |         1.60 |        0.30 |
-|      **Median** |         5.80 |        3.00 |         4.35 |        1.30 |
-|          **Q3** |         6.40 |        3.30 |         5.10 |        1.80 |
-|         **Max** |         7.90 |        4.40 |         6.90 |        2.50 |
-|         **MAD** |         1.04 |        0.44 |         1.85 |        1.04 |
-|         **IQR** |         1.30 |        0.50 |         3.50 |        1.50 |
-|          **CV** |         0.14 |        0.14 |         0.47 |        0.64 |
-|    **Skewness** |         0.31 |        0.31 |       \-0.27 |      \-0.10 |
+|        **Mean** |         3.76 |        1.20 |         5.84 |        3.06 |
+|     **Std.Dev** |         1.77 |        0.76 |         0.83 |        0.44 |
+|         **Min** |         1.00 |        0.10 |         4.30 |        2.00 |
+|          **Q1** |         1.60 |        0.30 |         5.10 |        2.80 |
+|      **Median** |         4.35 |        1.30 |         5.80 |        3.00 |
+|          **Q3** |         5.10 |        1.80 |         6.40 |        3.30 |
+|         **Max** |         6.90 |        2.50 |         7.90 |        4.40 |
+|         **MAD** |         1.85 |        1.04 |         1.04 |        0.44 |
+|         **IQR** |         3.50 |        1.50 |         1.30 |        0.50 |
+|          **CV** |         0.47 |        0.64 |         0.14 |        0.14 |
+|    **Skewness** |       \-0.27 |      \-0.10 |         0.31 |        0.31 |
 | **SE.Skewness** |         0.20 |        0.20 |         0.20 |        0.20 |
-|    **Kurtosis** |       \-0.61 |        0.14 |       \-1.42 |      \-1.36 |
+|    **Kurtosis** |       \-1.42 |      \-1.36 |       \-0.61 |        0.14 |
 |     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
-|   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
+|     **% Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
 
 ### Transposing and selecting only the stats you need
 
@@ -345,10 +356,10 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 
 |                  | Mean | Std.Dev |  Min | Median |  Max |
 | ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
-|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
 | **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
 |  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
+| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
+|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
 
 ## 4 - dfSummary() : Data Frame Summaries
 
@@ -391,11 +402,11 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
 <colgroup>
 <col style="width: 4%" />
 <col style="width: 14%" />
-<col style="width: 25%" />
-<col style="width: 20%" />
-<col style="width: 16%" />
-<col style="width: 9%" />
-<col style="width: 9%" />
+<col style="width: 28%" />
+<col style="width: 19%" />
+<col style="width: 15%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -428,10 +439,10 @@ IIIIIIIIII</td>
 <td>2</td>
 <td>age<br />
 [numeric]</td>
-<td>mean (sd) : 49.6 (18.29)<br />
-min &lt; med &lt; max :<br />
+<td>Mean (Std.Dev) :49.6 (18.29)<br />
+min &lt; med &lt; max:<br />
 18 &lt; 50 &lt; 80<br />
-IQR (CV) : 32 (0.37)</td>
+IQR (CV) :32 (0.37)</td>
 <td>63 distinct values</td>
 <td></td>
 <td>975<br />
@@ -464,10 +475,10 @@ III</td>
 <td>4</td>
 <td>BMI<br />
 [numeric]</td>
-<td>mean (sd) : 25.73 (4.49)<br />
-min &lt; med &lt; max :<br />
+<td>Mean (Std.Dev) :25.73 (4.49)<br />
+min &lt; med &lt; max:<br />
 8.83 &lt; 25.62 &lt; 39.44<br />
-IQR (CV) : 5.72 (0.17)</td>
+IQR (CV) :5.72 (0.17)</td>
 <td>974 distinct values</td>
 <td></td>
 <td>974<br />
@@ -494,10 +505,10 @@ IIIIIIIIIIIIII</td>
 <td>6</td>
 <td>cigs.per.day<br />
 [numeric]</td>
-<td>mean (sd) : 6.78 (11.88)<br />
-min &lt; med &lt; max :<br />
+<td>Mean (Std.Dev) :6.78 (11.88)<br />
+min &lt; med &lt; max:<br />
 0 &lt; 0 &lt; 40<br />
-IQR (CV) : 11 (1.75)</td>
+IQR (CV) :11 (1.75)</td>
 <td>37 distinct values</td>
 <td></td>
 <td>965<br />
@@ -566,10 +577,10 @@ I</td>
 <td>9</td>
 <td>samp.wgts<br />
 [numeric]</td>
-<td>mean (sd) : 1 (0.08)<br />
-min &lt; med &lt; max :<br />
+<td>Mean (Std.Dev) :1 (0.08)<br />
+min &lt; med &lt; max:<br />
 0.86 &lt; 1.04 &lt; 1.06<br />
-IQR (CV) : 0.19 (0.08)</td>
+IQR (CV) :0.19 (0.08)</td>
 <td>0.86!: 267 (26.7%)<br />
 1.04!: 249 (24.9%)<br />
 1.05!: 324 (32.4%)<br />
@@ -628,36 +639,36 @@ view(iris_stats_by_species, method = "pander", style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**Data Frame:** iris  
+**iris**  
 **Group:** Species = setosa  
 **N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max |
 | ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.01 |    0.35 | 4.30 |   5.00 | 5.80 |
-|  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |
 | **Petal.Length** | 1.46 |    0.17 | 1.00 |   1.50 | 1.90 |
 |  **Petal.Width** | 0.25 |    0.11 | 0.10 |   0.20 | 0.60 |
+| **Sepal.Length** | 5.01 |    0.35 | 4.30 |   5.00 | 5.80 |
+|  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |
 
 **Group:** Species = versicolor  
 **N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max |
 | ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.94 |    0.52 | 4.90 |   5.90 | 7.00 |
-|  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |
 | **Petal.Length** | 4.26 |    0.47 | 3.00 |   4.35 | 5.10 |
 |  **Petal.Width** | 1.33 |    0.20 | 1.00 |   1.30 | 1.80 |
+| **Sepal.Length** | 5.94 |    0.52 | 4.90 |   5.90 | 7.00 |
+|  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |
 
 **Group:** Species = virginica  
 **N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max |
 | ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 6.59 |    0.64 | 4.90 |   6.50 | 7.90 |
-|  **Sepal.Width** | 2.97 |    0.32 | 2.20 |   3.00 | 3.80 |
 | **Petal.Length** | 5.55 |    0.55 | 4.50 |   5.55 | 6.90 |
 |  **Petal.Width** | 2.03 |    0.27 | 1.40 |   2.00 | 2.50 |
+| **Sepal.Length** | 6.59 |    0.64 | 4.90 |   6.50 | 7.90 |
+|  **Sepal.Width** | 2.97 |    0.32 | 2.20 |   3.00 | 3.80 |
 
 To see an *html* version of these results, we’d simply do this (results
 not shown):
@@ -680,7 +691,7 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**Variable:** tobacco$BMI by age.gr
+**tobacco$BMI by age.gr**
 
 |             | 18-34 | 35-50 | 51-70 |  71 + |
 | ----------: | ----: | ----: | ----: | ----: |
