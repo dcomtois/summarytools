@@ -54,7 +54,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx,"data_info"))]
     
     attr(xx, 'formatting') <- attr(x[[1]], 'formatting')
-    attr(xx, 'user_fmt')   <- attr(x, 'user_fmt')
+    attr(xx, 'user_fmt')   <- attr(x[[1]], 'user_fmt')
+    attr(xx, "lang")       <- attr(x[[1]], 'lang')
     
     print.summarytools(xx,
                        method        = method,
