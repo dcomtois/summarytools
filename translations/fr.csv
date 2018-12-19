@@ -7,7 +7,7 @@ title.ctable.col     ,main heading                    ,Proportions par colonnes
 title.ctable.tot     ,main heading                    ,Proportions sur le total
 title.descr          ,main heading                    ,Statistiques descriptives
 title.descr.weighted ,main heading                    ,Statistiques descriptives pondérées
-title.dfSummary      ,main heading                    ,Tableau synthèse
+title.dfSummary      ,main heading                    ,Synthèse de data frame
 n                    ,heading label                   ,N
 dimensions           ,heading label                   ,Dimensions
 duplicates           ,heading label                   ,Doublons
