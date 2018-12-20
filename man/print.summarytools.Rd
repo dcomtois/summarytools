@@ -117,8 +117,8 @@ The following additional arguments can be used to override
 The following additional arguments can be used to override
   heading elements to be printed:
    \itemize{
-     \item \code{Dataframe}
-     \item \code{Dataframe.label}
+     \item \code{Data.frame}
+     \item \code{Data.frame.label}
      \item \code{Variable}
      \item \code{Variable.label}
      \item \code{Group}
