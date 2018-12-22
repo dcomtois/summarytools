@@ -59,7 +59,6 @@
 #'   Defaults to \code{40}.
 #' @param split.tables \pkg{pander} argument which determines the maximum width
 #'   of a table. Keeping the default value (\code{Inf}) is recommended.
-#' @param utf8.graphs Makes pretty utf8 graphs -- not supported on Windows yet.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A data frame with additional class \code{summarytools} containing as
@@ -120,7 +119,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       display.labels = st_options('display.labels'),
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
-                      utf8.graphs = FALSE, split.tables = Inf, ...) {
+                      split.tables = Inf, ...) {
 
 
   # Validate arguments ---------------------------------------------------------
@@ -355,14 +354,12 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
 }
 
 #' @keywords internal
-txtbarplot <- function(props, maxwidth = 20, utf8.graphs) {
+txtbarplot <- function(props, maxwidth = 20) {
   #widths <- props / max(props) * maxwidth
   widths <- props * maxwidth
   outstr <- character(0)
   for (i in seq_along(widths)) {
-    outstr <- paste(outstr, paste0(rep(x = ifelse(isTRUE(utf8.graphs), 
-                                                  intToUtf8(0x2588), 'I'),
-                                       times = widths[i]),
+    outstr <- paste(outstr, paste0(rep(x = 'I', times = widths[i]),
                                    collapse = ""),
                     sep = " \\ \n")
   }
@@ -372,7 +369,7 @@ txtbarplot <- function(props, maxwidth = 20, utf8.graphs) {
 
 #' @importFrom grDevices nclass.Sturges
 #' @keywords internal
-txthist <- function(data, utf8.graphs) {
+txthist <- function(data) {
   data <- data[!is.na(data)]
   breaks_x <- pretty(range(data), n = nclass.Sturges(data), min.n = 1)
   if (length(breaks_x) <= 10) {
@@ -387,17 +384,9 @@ txthist <- function(data, utf8.graphs) {
   for (ro in 6:1) {
     for (co in seq_along(counts)) {
       if (counts[co] > 1) {
-        if (isTRUE(utf8.graphs)) {
-          graph[ro,co] <- intToUtf8(0x2588)
-        } else {
-          graph[ro,co] <- ": "
-        }
+        graph[ro,co] <- ": "
       } else if (counts[co] > 0) {
-        if (isTRUE(utf8.graphs)) {
-          graph[ro,co] <- intToUtf8(0x2584)
-        } else {
-          graph[ro,co] <- ". "
-        }
+        graph[ro,co] <- ". "
       } else {
         if (sum(counts[1, co:length(counts)] > 0)) {
           graph[ro,co] <- "\\ \\ "
@@ -490,8 +479,7 @@ crunch_factor <- function(column_data) {
     if (isTRUE(parent.frame()$graph.col) &&
         any(!is.na(column_data))) {
       outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-      outlist[[4]] <- txtbarplot(prop.table(counts), 
-                                 utf8.graphs = parent.frame()$utf8.graphs)
+      outlist[[4]] <- txtbarplot(prop.table(counts))
     }
 
   } else {
@@ -529,8 +517,7 @@ crunch_factor <- function(column_data) {
         paste("[", n_extra_levels, trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
       outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
-      outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)), 
-                                 utf8.graphs = parent.frame()$utf8.graphs)
+      outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)))
     }
   }
   return(outlist)
@@ -586,8 +573,7 @@ crunch_character <- function(column_data) {
       outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
       if (isTRUE(parent.frame()$graph.col)) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        outlist[[4]] <- txtbarplot(prop.table(counts), 
-                                   utf8.graphs = parent.frame()$utf8.graphs)
+        outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     } else {
       # Too many values - report most common strings
@@ -619,8 +605,7 @@ crunch_character <- function(column_data) {
           paste("[", n_extra_values, trs("others"),"]")
         counts <- counts[1:(max.distinct.values + 1)]
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        outlist[[4]] <- txtbarplot(prop.table(counts),
-                                   utf8.graphs = parent.frame()$utf8.graphs)
+        outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     }
   }
@@ -678,9 +663,8 @@ crunch_numeric <- function(column_data) {
 
         # Data is binary: add mode
         if (length(counts) == 2 && counts[1] != counts[2]) {
-          outlist[[1]] <- 
-            paste0(outlist[[1]], "mode: ",
-                   names(counts)[which.max(parent.frame()$counts)])
+          outlist[[1]] <- paste0(outlist[[1]], "mode: ",
+                                 names(counts)[which.max(parent.frame()$counts)])
 
         } else if (length(counts) >= 3) {
           # Data has 3+ distinct values: add IQR and CV
@@ -717,9 +701,8 @@ crunch_numeric <- function(column_data) {
       else if (length(counts) <= max.distinct.values &&
                (all(column_data %% 1 == 0, na.rm = TRUE) ||
                 identical(names(column_data), "0") ||
-                all(abs(as.numeric(names(
-                  counts[-which(names(counts) == "0")]))) >= 10^-round.digits))
-      ) {
+                all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
+                    10^-round.digits))) {
 
         props <- round(prop.table(counts), round.digits + 2)
         counts_props <- align_numbers_dfs(counts, props)
@@ -730,7 +713,7 @@ crunch_numeric <- function(column_data) {
                      format(round(as.numeric(names(counts)), round.digits),
                             nsmall = round.digits * !all(column_data %% 1 == 0,
                                                          na.rm = TRUE)),
-                   ifelse(as.numeric(names(counts)) !=as.numeric(rounded_names),
+                   ifelse(as.numeric(names(counts)) != as.numeric(rounded_names),
                           "!", " ")),
             counts_props, sep = ": ", collapse = "\\\n"
           )
@@ -745,20 +728,16 @@ crunch_numeric <- function(column_data) {
         # Do not display specific values - only the number of distinct values
         outlist[[2]] <- paste(length(counts), trs("distinct.values"))
         if (parent.frame()$n_miss == 0 &&
-            (isTRUE(all.equal(column_data, 
-                              min(column_data):max(column_data))) ||
-             isTRUE(all.equal(column_data, 
-                              max(column_data):min(column_data))))) {
-          outlist[[2]] <- paste(outlist[[2]], 
-                                trs("integer.sequence"), sep = "\\\n")
+            (isTRUE(all.equal(column_data, min(column_data):max(column_data))) ||
+             isTRUE(all.equal(column_data, max(column_data):min(column_data))))) {
+          outlist[[2]] <- paste(outlist[[2]], "(Integer sequence)", sep = "\\\n")
         }
       }
 
       if (isTRUE(parent.frame()$graph.col)) {
         if (length(counts) <= max.distinct.values) {
           outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-          outlist[[4]] <- txtbarplot(prop.table(counts), 
-                                     utf8.graphs = parent.frame()$utf8.graphs)
+          outlist[[4]] <- txtbarplot(prop.table(counts))
 
           if (isTRUE(extra_space)) {
             outlist[[3]] <- paste0(outlist[[3]], "\n\n")
@@ -766,8 +745,7 @@ crunch_numeric <- function(column_data) {
           }
         } else {
           outlist[[3]] <- encode_graph(column_data, "histogram", graph.magnif)
-          outlist[[4]] <- txthist(column_data, 
-                                  utf8.graphs = parent.frame()$utf8.graphs)
+          outlist[[4]] <- txthist(column_data)
         }
       }
     }
@@ -804,8 +782,7 @@ crunch_time_date <- function(column_data) {
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
       outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-      outlist[[4]] <- txtbarplot(prop.table(counts),
-                                 utf8.graphs = parent.frame()$utf8.graphs)
+      outlist[[4]] <- txtbarplot(prop.table(counts))
 
     } else {
 
@@ -822,8 +799,7 @@ crunch_time_date <- function(column_data) {
       if (isTRUE(parent.frame()$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
         outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
-        outlist[[4]] <- txthist(tmp - mean(tmp), 
-                                utf8.graphs = parent.frame()$utf8.graphs)
+        outlist[[4]] <- txthist(tmp - mean(tmp))
       }
     }
   }
