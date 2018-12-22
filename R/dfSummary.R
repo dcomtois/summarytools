@@ -244,9 +244,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   }
 
   # Prepare output object ------------------------------------------------------
-
   if (!isTRUE(varnumbers)) {
-    output$No <- NULL
+    output$no <- NULL
   }
 
   if (!isTRUE(labels.col)) {
@@ -254,16 +253,16 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   }
 
   if (!isTRUE(graph.col)) {
-    output$Graph <- NULL
-    output[['Text Graph']] <- NULL
+    output$graph <- NULL
+    output$text.graph <- NULL
   }
 
   if (!isTRUE(valid.col)) {
-    output$Valid <- NULL
+    output$valid <- NULL
   }
 
   if (!isTRUE(na.col)) {
-    output$Missing <- NULL
+    output$missing <- NULL
   }
 
   # apply translations to colnames
