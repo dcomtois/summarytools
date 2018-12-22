@@ -15,7 +15,8 @@ dfSummary(x, round.digits = st_options("round.digits"),
   justify = "left", headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
-  max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
+  max.string.width = 25, split.cells = 40, utf8.graphs = FALSE,
+  split.tables = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -87,6 +88,8 @@ frequency tables. Defaults to \code{25}.}
 \item{split.cells}{A numeric argument passed to \code{\link[pander]{pander}}.
 It is the number of characters allowed on a line before splitting the cell.
 Defaults to \code{40}.}
+
+\item{utf8.graphs}{Makes pretty utf8 graphs -- not supported on Windows yet.}
 
 \item{split.tables}{\pkg{pander} argument which determines the maximum width
 of a table. Keeping the default value (\code{Inf}) is recommended.}

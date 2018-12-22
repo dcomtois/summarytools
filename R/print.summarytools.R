@@ -167,16 +167,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   if ("group.only" %in% names(dotArgs)) {
     attr(x, "formatting")$group.only <- eval(dotArgs[["group.only"]])
-  } #else {
-    #attr(x, "formatting")$group.only <- FALSE
-  #}
+  }
 
   if ("var.only" %in% names(dotArgs)) {
     attr(x, "formatting")$var.only <- eval(dotArgs[["var.only"]])
-  }# else {
-  #  attr(x, "formatting")$var.only <- FALSE
-  #}
-
+  }
+  
   # Parameter validation -------------------------------------------------------
   errmsg <- character()
   
@@ -445,7 +441,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if (!isTRUE(attr(x, "formatting")$headings)) {
       res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
     }
-
+    
     cat(do.call(paste, res), file = file, append = append)
     
     if (file != "" && !isTRUE(silent)) {
@@ -455,9 +451,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         message(paste0("Output file written: ", file))
       return(invisible())
     }
-
+    
   } else {
-
+    
     # Print or write to file - html --------------------------------------------
     
     if (isTRUE(append)) {
