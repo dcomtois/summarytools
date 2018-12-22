@@ -1233,10 +1233,10 @@ print_dfs <- function(x, method) {
              x = x[[trs("freqs.pct.valid")]], perl=TRUE)
       
       # Remove txt histograms b/c not supported in rmarkdown (for now)
-      if (trs("text.graph") %in% names(x)) {
-        x[[trs("text.graph")]][which(grepl('[:.]', 
-                                           x[[trs("text.graph")]]))] <- ""
-      }
+      # if (trs("text.graph") %in% names(x)) {
+      #   x[[trs("text.graph")]][which(grepl('[:.]', 
+      #                                      x[[trs("text.graph")]]))] <- ""
+      # }
     }
     
     # set column names encoding to native to allow proper display of non-ascii
