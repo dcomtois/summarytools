@@ -1282,13 +1282,34 @@ print_dfs <- function(x, method) {
     
     table_head <- list()
     for(cn in colnames(x)) {
-      if (cn %in% c(trs("no"), trs("valid"), trs("missing"))) {
-        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
+      table_head %+=% list(tags$th(tags$strong(cn), 
+                                   class = inv_trs(cn),
+                                   align = "center"))
+    }
+
+    colgroup <- NA    
+    if ("col.widths" %in% names(format_info)) {
+      if (length(format_info$col.widths) != ncol(x)) {
+        stop("Number of elements in 'col.widths' (",
+             (length(format_info$col.widths)), ") is not equal to number of ",
+             "columns to display (", ncol(x), ")")
+      }
+      colgroup <- tags$colgroup()
+      if (is.numeric(format_info$col.widths)) {
+        for (i in format_info$col.widths) {
+          colgroup <- tagAppendChild(
+            colgroup, tags$col(style = paste0("width:", i, "px"))
+          )
+        }
       } else {
-        table_head %+=% list(tags$th(tags$strong(cn), align = "center"))
+        for (i in format_info$col.widths) {
+          colgroup <- tagAppendChild(
+            colgroup, tags$col(style = paste("width", i, sep = ":"))
+          )
+        }
       }
     }
-    
+
     table_rows <- list()
     for (ro in seq_len(nrow(x))) {
       table_row <- list()
@@ -1316,7 +1337,7 @@ print_dfs <- function(x, method) {
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
                                       align = "left"))
         } else if (colnames(x)[co] == trs("graph")) {
-          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
+          table_row %+=% list(tags$td(HTML(cell),
                                       align = "center", border = "0"))
         }
       }
@@ -1325,6 +1346,8 @@ print_dfs <- function(x, method) {
     
     dfs_table_html <-
       tags$table(
+        if (!identical(colgroup, NA)) 
+          colgroup,
         tags$thead(tags$tr(table_head)),
         tags$tbody(table_rows),
         class = paste(

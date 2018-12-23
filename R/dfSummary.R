@@ -40,6 +40,10 @@
 #'   \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l}
 #'   (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
+#' @param col.widths Numeric or character. Vector of column widths. If numeric,
+#'   values are assumed to be numbers of pixels. Otherwise, any CSS-supported
+#'   units can be used. \code{NA} by default, meaning widths are calculated 
+#'   automatically.
 #' @param headings Logical. Set to \code{FALSE} to omit headings. To change this
 #'   default value globally, see \code{\link{st_options}}.
 #' @param display.labels Logical. Should data frame label be displayed in the
@@ -115,7 +119,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                       graph.magnif = st_options('dfSummary.graph.magnif'),
                       style = "multiline",
                       plain.ascii = st_options('plain.ascii'),
-                      justify = "left", headings = st_options('headings'),
+                      justify = "left", col.widths = NA, 
+                      headings = st_options('headings'),
                       display.labels = st_options('display.labels'),
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
@@ -289,11 +294,12 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
                                      round.digits   = round.digits,
                                      plain.ascii    = plain.ascii,
                                      justify        = justify,
-                                     headings       =  headings,
+                                     headings       = headings,
                                      display.labels = display.labels,
                                      labels.col     = labels.col,
                                      split.cells    = split.cells,
-                                     split.tables   = split.tables)
+                                     split.tables   = split.tables,
+                                     col.widths     = col.widths)
 
   attr(output, "user_fmt") <- list(... = ...)
 
