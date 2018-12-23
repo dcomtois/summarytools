@@ -290,17 +290,19 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <- list(style          = style,
-                                     round.digits   = round.digits,
-                                     plain.ascii    = plain.ascii,
-                                     justify        = justify,
-                                     headings       = headings,
-                                     display.labels = display.labels,
-                                     labels.col     = labels.col,
-                                     split.cells    = split.cells,
-                                     split.tables   = split.tables,
-                                     col.widths     = col.widths)
-
+  format_info <- list(style          = style,
+                      round.digits   = round.digits,
+                      plain.ascii    = plain.ascii,
+                      justify        = justify,
+                      headings       = headings,
+                      display.labels = display.labels,
+                      labels.col     = labels.col,
+                      split.cells    = split.cells,
+                      split.tables   = split.tables,
+                      col.widths     = col.widths)
+  
+  attr(output, "format_info") <- data_info[!is.na(format_info)]
+  
   attr(output, "user_fmt") <- list(... = ...)
 
   attr(output, "lang") <- st_options('lang')

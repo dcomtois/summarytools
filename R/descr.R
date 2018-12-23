@@ -350,13 +350,13 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
-  attr(output, "formatting") <- list(style          = style,
-                                     round.digits   = round.digits,
-                                     plain.ascii    = plain.ascii,
-                                     justify        = justify,
-                                     headings       = headings,
-                                     display.labels = display.labels,
-                                     split.tables   = split.tables)
+  attr(output, "format_info") <- list(style          = style,
+                                      round.digits   = round.digits,
+                                      plain.ascii    = plain.ascii,
+                                      justify        = justify,
+                                      headings       = headings,
+                                      display.labels = display.labels,
+                                      split.tables   = split.tables)
   
   attr(output, "user_fmt") <- list(... = ...)
   

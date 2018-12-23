@@ -88,6 +88,7 @@
 #'      \item \code{graph.col}     (\code{\link{dfSummary}} objects)
 #'      \item \code{valid.col}     (\code{\link{dfSummary}} objects)
 #'      \item \code{na.col}         (\code{\link{dfSummary}} objects)
+#'      \item \code{col.widths}     (\code{\link{dfSummary}} objects)
 #'      \item \code{split.tables}
 #'      \item \code{report.nas}    (\code{\link{freq}} objects)
 #'      \item \code{display.type}  (\code{\link{freq}} objects)
@@ -166,11 +167,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   if ("group.only" %in% names(dotArgs)) {
-    attr(x, "formatting")$group.only <- eval(dotArgs[["group.only"]])
+    attr(x, "format_info")$group.only <- eval(dotArgs[["group.only"]])
   }
 
   if ("var.only" %in% names(dotArgs)) {
-    attr(x, "formatting")$var.only <- eval(dotArgs[["var.only"]])
+    attr(x, "format_info")$var.only <- eval(dotArgs[["var.only"]])
   }
   
   # Parameter validation -------------------------------------------------------
@@ -264,7 +265,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
   
-  # Override of x's attributes (formatting and heading info) -------------------
+  # Override of x's attributes (format_info and heading info) -------------------
   if ("date" %in% names(dotArgs)) {
     attr(x, "date") <- dotArgs[["date"]]
   }
@@ -279,9 +280,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   for (format_element in c("style", "plain.ascii", "round.digits",
                            "justify", "headings", "display.labels",
                            "display.type",  "varnumbers", "labels.col", 
-                           "graph.col", "na.col", "valid.col", "split.tables",
-                           "totals", "report.nas", "missing", "totals",
-                           "omit.headings")) {
+                           "graph.col", "col.widths", "na.col", "valid.col", 
+                           "split.tables", "totals", "report.nas", "missing",
+                           "totals", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
       if (format_element == 'omit.headings') {
         
@@ -294,11 +295,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           message(msg)
         }
         
-        attr(x, "formatting")[['headings']] <- 
+        attr(x, "format_info")[['headings']] <- 
           !isTRUE(eval(dotArgs[["omit.headings"]]))
         overrided_args <- append(overrided_args, 'headings')
       } else {
-        attr(x, "formatting")[[format_element]] <- dotArgs[[format_element]]
+        attr(x, "format_info")[[format_element]] <- dotArgs[[format_element]]
         overrided_args <- append(overrided_args, format_element)
       }
     }
@@ -315,7 +316,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             'omit.headings' %in% names(attr(x, "fn_call")))) {
         if (!(format_element == 'style' &&
               attr(x, "st_type") == 'dfSummary')) {
-          attr(x, "formatting")[[format_element]] <- st_options(format_element)
+          attr(x, "format_info")[[format_element]] <- st_options(format_element)
         }
       }
     }
@@ -328,7 +329,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                   fixed = TRUE),
                              fixed = TRUE)) {
     if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
-      attr(x, "formatting")[[format_element]] <- 
+      attr(x, "format_info")[[format_element]] <- 
         st_options(paste0(prefix, format_element))
     }
   }
@@ -364,21 +365,18 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
   # explicitly specified
-  if (method == "pander" && attr(x, "formatting")$style == "rmarkdown" &&
-      isTRUE(attr(x, "formatting")$plain.ascii) &&
+  if (method == "pander" && attr(x, "format_info")$style == "rmarkdown" &&
+      isTRUE(attr(x, "format_info")$plain.ascii) &&
       (!"plain.ascii" %in% (names(dotArgs)))) {
-    attr(x, "formatting")$plain.ascii <- FALSE
+    attr(x, "format_info")$plain.ascii <- FALSE
   }
 
   # Evaluate formatting attributes that are symbols at this stage (F, T)
-  for (i in seq_along(attr(x, "formatting"))) {
-    if (is.symbol(attr(x, "formatting")[[i]])) {
-      attr(x, "formatting")[[i]] <- eval(attr(x, "formatting")[[i]])
+  for (i in seq_along(attr(x, "format_info"))) {
+    if (is.symbol(attr(x, "format_info")[[i]])) {
+      attr(x, "format_info")[[i]] <- eval(attr(x, "format_info")[[i]])
     }
   }
-  
-  # Extract formatting information from x attributes
-  # format_info <- attr(x, "formatting")
   
   stpath <- find.package("summarytools")
   
@@ -438,7 +436,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if (method == "pander") {
 
     # remove initial linefeed if headings is FALSE
-    if (!isTRUE(attr(x, "formatting")$headings)) {
+    if (!isTRUE(attr(x, "format_info")$headings)) {
       res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
     }
     
@@ -576,7 +574,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 print_freq <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "formatting")
+  format_info <- attr(x, "format_info")
   
   if (!isTRUE(format_info$report.nas)) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
@@ -805,7 +803,7 @@ print_ctable <- function(x, method) {
   }
   
   data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "formatting")
+  format_info <- attr(x, "format_info")
   
   if (!isTRUE(format_info$totals)) {
     x$cross_table <-
@@ -969,7 +967,7 @@ print_ctable <- function(x, method) {
 print_descr <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "formatting")
+  format_info <- attr(x, "format_info")
   
   if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by.first" %in% names(data_info) || 
@@ -1151,7 +1149,7 @@ print_descr <- function(x, method) {
 print_dfs <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "formatting")
+  format_info <- attr(x, "format_info")
   
   # Remove Var number ("No") column if specified in call to print/view
   if (trs('no') %in% names(x) && 

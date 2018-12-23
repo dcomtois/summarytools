@@ -225,14 +225,14 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <-  list(style         = style,
-                                      round.digits  = round.digits,
-                                      plain.ascii   = plain.ascii,
-                                      justify       = justify,
-                                      totals        = totals,
-                                      split.tables  = split.tables,
-                                      headings      = headings,
-                                      display.labels = display.labels)
+  attr(output, "format_info") <-  list(style         = style,
+                                       round.digits  = round.digits,
+                                       plain.ascii   = plain.ascii,
+                                       justify       = justify,
+                                       totals        = totals,
+                                       split.tables  = split.tables,
+                                       headings      = headings,
+                                       display.labels = display.labels)
   
   attr(output, "user_fmt") <- list(... = ...)
 
