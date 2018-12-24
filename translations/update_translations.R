@@ -20,7 +20,7 @@ for (f in list.files("translations")) {
   colnames(tr) <- items
   tr <- as.data.frame(tr, stringsAsFactors = FALSE)
   rownames(tr) <- substr(f, 1, 2)
-  translations[nrow(translations) + 1, ] <-tr
+  translations[nrow(translations) + 1, ] <- tr
 }
 
 usethis::use_data(translations, internal = TRUE, overwrite = TRUE)

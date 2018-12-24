@@ -54,11 +54,15 @@ freqs.pct.valid      ,column name (dfSummary)         ,Freqs (% of Valid)
 graph                ,column name (dfSummary)         ,Graph
 text.graph           ,column name (dfSummary)         ,Text Graph
 missing              ,column name (dfSummary)         ,Missing
+distinct.value       ,cell content (dfSummary)        ,distinct value
 distinct.values      ,cell content (dfSummary)        ,distinct values
+all.nas              ,cell content (dfSummary)        ,All NA's
+all.empty.str        ,cell content (dfSummary)        ,All empty strings
+all.empty.str.nas    ,cell content (dfSummary)        ,All empty strings / NA's
 int.sequence         ,cell content (dfSummary)        ,Integer sequence
 rounded              ,cell content (dfSummary)        ,rounded
 others               ,cell content (dfSummary)        ,others
-code                 ,cell content (dfSummary)        ,code
+codes                ,cell content (dfSummary)        ,codes
 mode                 ,cell content (dfSummary)        ,mode
 med.short            ,cell content (dfSummary)        ,med
 start                ,cell content (dfSummary)        ,Start
