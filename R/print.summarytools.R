@@ -993,7 +993,7 @@ print_descr <- function(x, method) {
       row.names(x) <- enc2native(row.names(x))
       colnames(x)  <- enc2native(colnames(x))
     }
-
+    
     pander_args <- append(list(style        = format_info$style,
                                plain.ascii  = format_info$plain.ascii,
                                split.tables = format_info$split.tables,
@@ -1227,10 +1227,10 @@ print_dfs <- function(x, method) {
              x = x[[trs("freqs.pct.valid")]], perl=TRUE)
       
       # Remove txt histograms b/c not supported in rmarkdown (for now)
-      if (trs("text.graph") %in% names(x)) {
-        x[[trs("text.graph")]][which(grepl('[:.]', 
-                                           x[[trs("text.graph")]]))] <- ""
-      }
+      # if (trs("text.graph") %in% names(x)) {
+      #   x[[trs("text.graph")]][which(grepl('[:.]', 
+      #                                      x[[trs("text.graph")]]))] <- ""
+      # }
     }
     
     # set column names encoding to native to allow proper display of non-ascii
@@ -1247,7 +1247,7 @@ print_dfs <- function(x, method) {
                           attr(x, "user_fmt"))
     
     main_sect <- build_heading_pander(format_info, data_info)
-    
+
     main_sect %+=%
       paste(
         capture.output(
@@ -1326,6 +1326,7 @@ print_dfs <- function(x, method) {
         } else if (colnames(x)[co] %in% 
                    c(trs("variable"), trs("stats.values"))) {
           cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
+          cell <- gsub('\\s{2,}', " ", cell)
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
                                       align = "left"))
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {

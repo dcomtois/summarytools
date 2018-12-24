@@ -12,7 +12,8 @@ dfSummary(x, round.digits = st_options("round.digits"),
   graph.col = st_options("dfSummary.graph.col"),
   graph.magnif = st_options("dfSummary.graph.magnif"),
   style = "multiline", plain.ascii = st_options("plain.ascii"),
-  justify = "left", headings = st_options("headings"),
+  justify = "left", col.widths = NA,
+  headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
   max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
@@ -64,6 +65,11 @@ markdown rendering. To change the default value globally, see
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l}
 (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
+
+\item{col.widths}{Numeric or character. Vector of column widths. If numeric,
+values are assumed to be numbers of pixels. Otherwise, any CSS-supported
+units can be used. \code{NA} by default, meaning widths are calculated 
+automatically.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit headings. To change this
 default value globally, see \code{\link{st_options}}.}

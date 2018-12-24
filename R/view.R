@@ -344,7 +344,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         "or a list of freq() objects created using lapply().",
         "Support for by() used with ctable() may be available in future ",
         "realeases."
-        )
       )
+    )
   }
 }
