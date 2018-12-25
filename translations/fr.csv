@@ -1,6 +1,6 @@
 item                 ,context                         ,fr
-title.freq           ,main heading                    ,Fréquences
-title.freq.weighted  ,main heading                    ,Fréquences pondérées
+title.freq           ,main heading                    ,Tableau de fréquences
+title.freq.weighted  ,main heading                    ,Tableau de fréquences pondérées
 title.ctable         ,main heading                    ,Tableau croisé
 title.ctable.row     ,main heading                    ,% par rangées
 title.ctable.col     ,main heading                    ,% par colonnes
