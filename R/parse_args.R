@@ -163,7 +163,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   else if (length(lapply_pos) == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[lapply_pos]]))
     df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
-    df_ <- eval(expr = lapply_call$X, envir = sys_frames[[lapply_pos]])
+    #df_ <- eval(expr = lapply_call$X, envir = sys_frames[[lapply_pos]])
+    df_ <- eval(expr = sys_frames[[lapply_pos]]$X)
     df_label <- label(df_)
     for (i_ in seq_along(sys_frames)) {
       if (identical(names(sys_frames[[i_]])[1:3], c("i", "X", "FUN"))) {
@@ -219,7 +220,15 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                   var_names <- intersect(allnames, col_names)[1]
                   var_labels <- label(df_[var_names])
                 } else {
-                  var_names <- check_expr
+                  var_names <- sub("^(.+?)\\[.+$", "\\1", check_expr)
+                  var_names <- sub(paste0("^", df_name, "\\$"), "", var_names)
+                  if (var_names %in% col_names) {
+                    var_labels <- label(df_[[var_names]])
+                  } else if (!exists("dnn", envir = parent.frame()) ||
+                                     is.list(parent.frame()$dnn)) {
+                    message("Variable name '", var_names, "' was guessed but ",
+                            "could not be confirmed")
+                  }
                 }
               }
             }
