@@ -118,8 +118,8 @@
 #'
 #' @references
 #' \href{http://rstudio.com}{Rstudio}
-#' \href{https://github.com/dcomtois/summarytools}{Summarytools on Github}
-#' \href{http://rapporter.github.io/pander/#general-options}{List of pander options on Github}
+#' \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
+#' \href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
 #' \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
 #'
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
@@ -155,7 +155,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
   panderOptions("knitr.auto.asis", FALSE)
   
-  on.exit(panderOptions("knitr.auto.asis",knitr.auto.asis.value))
+  on.exit(panderOptions("knitr.auto.asis", knitr.auto.asis.value))
   
   dotArgs <- list(...)
   
@@ -279,7 +279,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Todo: remove 'omit.headings' in next release
   for (format_element in c("style", "plain.ascii", "round.digits",
                            "justify", "headings", "display.labels",
-                           "display.type",  "varnumbers", "labels.col", 
+                           "display.type", "varnumbers", "labels.col", 
                            "graph.col", "col.widths", "na.col", "valid.col", 
                            "split.tables", "totals", "report.nas", "missing",
                            "totals", "omit.headings")) {
@@ -380,7 +380,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   
   stpath <- find.package("summarytools")
   
-  # Build footnote
+  # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
       paste0(
@@ -516,7 +516,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     if (method == "viewer") {
-      if (file == "" || open.doc) {
+      if (file == "" || isTRUE(open.doc)) {
         if(.Platform$GUI == "RStudio") {
           viewer <- getOption("viewer")
           if (!is.null(viewer)) {
@@ -538,7 +538,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     # For method "browser", we don't use utils::browseURL() because of 
     # compatibility issues with RStudio
     if (method == "browser") {
-      if (file == "" || open.doc) {
+      if (file == "" || isTRUE(open.doc)) {
         switch(Sys.info()[["sysname"]],
                Windows = {shell.exec(file = paste0("file:///", outfile_path))},
                Linux   = {system(paste("/usr/bin/xdg-open", outfile_path), 
@@ -575,6 +575,7 @@ print_freq <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
+  user_fmt    <- attr(x, "user_fmt")
   
   if (!isTRUE(format_info$report.nas)) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
@@ -609,9 +610,9 @@ print_freq <- function(x, method) {
     }
     
     # Remove .00 digits in Freq column when weights are not used
-    if (!"Weights" %in% names(data_info))
+    if (!"Weights" %in% names(data_info)) {
       freq_table[ ,1] <- sub("\\.0+", "", freq_table[ ,1])
-    
+    }
     
     # Escape "<" and ">" when used in pairs in rownames
     if (!isTRUE(format_info$plain.ascii)) {
@@ -631,7 +632,7 @@ print_freq <- function(x, method) {
                                justify      = justify,
                                missing      = format_info$missing,
                                split.tables = Inf),
-                          attr(x, "user_fmt"))
+                          user_fmt)
     
     main_sect <- build_heading_pander(format_info, data_info)
     
@@ -767,6 +768,10 @@ print_freq <- function(x, method) {
 #' @keywords internal
 print_ctable <- function(x, method) {
   
+  data_info   <- attr(x, "data_info")
+  format_info <- attr(x, "format_info")
+  user_fmt    <- attr(x, "user_fmt")
+  
   align_numbers <- function(counts, props) {
     res <- sapply(seq_len(ncol(counts)), function(colnum) {
       
@@ -801,9 +806,6 @@ print_ctable <- function(x, method) {
     
     return(res)
   }
-  
-  data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "format_info")
   
   if (!isTRUE(format_info$totals)) {
     x$cross_table <-
@@ -844,7 +846,7 @@ print_ctable <- function(x, method) {
                                plain.ascii  = format_info$plain.ascii,
                                justify      = format_info$justify,
                                split.tables = format_info$split.tables),
-                          attr(x, "user_fmt"))
+                          user_fmt)
     
     main_sect <- build_heading_pander(format_info, data_info)
     
@@ -968,6 +970,7 @@ print_descr <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
+  user_fmt    <- attr(x, "user_fmt")
   
   if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by.first" %in% names(data_info) || 
@@ -998,7 +1001,7 @@ print_descr <- function(x, method) {
                                plain.ascii  = format_info$plain.ascii,
                                split.tables = format_info$split.tables,
                                justify      = justify),
-                          attr("x", "user_fmt"))
+                          user_fmt)
     
     main_sect <- build_heading_pander(format_info, data_info)  
     
@@ -1150,6 +1153,7 @@ print_dfs <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
+  user_fmt    <- attr(x, "user_fmt")
   
   # Remove Var number ("No") column if specified in call to print/view
   if (trs('no') %in% names(x) && 
@@ -1244,7 +1248,7 @@ print_dfs <- function(x, method) {
                                split.cells      = format_info$split.cells,
                                split.tables     = format_info$split.tables,
                                keep.line.breaks = TRUE),
-                          attr(x, "user_fmt"))
+                          user_fmt)
     
     main_sect <- build_heading_pander(format_info, data_info)
 
@@ -1386,7 +1390,8 @@ build_heading_pander <- function(format_info, data_info) {
   caller <- as.character(sys.call(-1))[1]
   head1 = NA # Main title (e.g. 'Data Frame Summary')
   head2 = NA # The data frame, the variable, or the 2 variables for ctable
-  head3 = NA # Additional elements
+  head3 = NA # Additional elements (includes Variable exceptionnaly when
+             # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
     if (!isTRUE(format_info$plain.ascii)) {
@@ -1443,23 +1448,24 @@ build_heading_pander <- function(format_info, data_info) {
     return(list(head3))
   } else if (!isTRUE(format_info$headings)) {
     if ("var.only" %in% names(format_info)) {
-      head3 <- append_items(list(c(Variable       = trs('variable')),
+      head3 <- append_items(list(c(Variable       = ""),
                                  c(Variable.label = trs('label')),
                                  c(Data.type      = trs('type'))))
       
       return(list(head3))
+    } else if ("Group" %in% names(data_info)) {
+      head3 <- append_items(list(c(Group    = trs('group')),
+                                 c(N.Obs    = trs('n'))))
+      return(list(head3))
     } else {
+      #head3 <- add_markup(paste0('  \n', data_info$Variable))
+      #return(list(head3))
       return(list())
     }
   }
-  
-  #   (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-  #   return(list(head2))
-  # }
 
-  # Regular cases - Build primary and secondary headings
+  # Regular cases - Build the 3 heading elementss
   if (caller == 'print_freq') {
-    
     head1 <- add_markup(ifelse('Weights' %in% names(data_info),
                                trs('title.freq.weighted'), 
                                trs('title.freq')), h = 3)
@@ -1556,6 +1562,12 @@ build_heading_pander <- function(format_info, data_info) {
 #' @keywords internal
 #' @import htmltools
 build_heading_html <- function(format_info, data_info, method) {
+
+  caller <- as.character(sys.call(-1))[1]
+  
+  head1  <- NA # uses h3()
+  head2  <- NA # uses h4() for viewer/browser, and <strong> for render
+  head3  <- NA # uses <strong>...</strong>
   
   append_items <- function(items) {
     to_append_html <- character()
@@ -1591,44 +1603,35 @@ build_heading_html <- function(format_info, data_info, method) {
     return(HTML(to_append_html))
   }
   
-  # Special cases where no title is needed
+  # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
-    head2 <- append_items(list(c(Variable       = trs('variable')),
-                               c(Variable.label = trs('label')),
+    head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+    head3 <- append_items(list(c(Variable.label = trs('label')),
                                c(Data.type      = trs('type'))))
-    return(list(head2))
-  }
-  
-  else if (isTRUE(format_info$group.only) ||
-           ('by.first' %in% names(data_info) && 
-            (!isTRUE(data_info$by.first) || !isTRUE(format_info$headings)))) {
-    head2 <- append_items(list(c(Group = trs('group')),
+    return(list(head2, head3))
+  } else if (isTRUE(format_info$group.only)) {
+    head3 <- append_items(list(c(Group = trs('group')),
                                c(N.Obs = trs('n'))))
     
-    return(list(head2))
-  }
-  
-  else if (!isTRUE(format_info$headings)) {
+    return(list(head3))
+  } else if (!isTRUE(format_info$headings)) {
     if ("var.only" %in% names(format_info)) {
-      head3 <- append_items(list(c(Variable       = trs('variable')),
-                                 c(Variable.label = trs('label')),
+      head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+      head3 <- append_items(list(c(Variable.label = trs('label')),
                                  c(Data.type      = trs('type'))))
       
+      return(list(head2, head3))
+    } else if ("Group" %in% names(data_info)) {
+      head3 <- append_items(list(c(Group    = trs('group')),
+                                 c(N.Obs    = trs('n'))))
       return(list(head3))
     } else {
       return(list())
     }
   }
   
-  # Regular cases - Build primary, secondary and third headings
-  head1  <- NA # uses h3()
-  head2  <- NA # uses h4() for viewer/browser, and <strong> for render
-  head3  <- NA # uses <strong>...</strong>
-  
-  caller <- as.character(sys.call(-1))[1]
-  
+  # Regular cases - Build the 3 heading elementss
   if (caller == 'print_freq') {
-    
     head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
                                            trs('title.freq.weighted'), 
                                            trs('title.freq')))))
@@ -1637,15 +1640,15 @@ build_heading_html <- function(format_info, data_info, method) {
       if (method == 'render') {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
-        if(!("var.only" %in% names(format_info))) {
-          head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
-        }
+        # if(!("var.only" %in% names(format_info))) {
+        #   head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        # }
+        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
     }
 
     if ("var.only" %in% names(format_info)) {
-      head3 <- append_items(list(c(Variable       = trs('variable')),
-                                 c(Variable.label = trs('label')),
+      head3 <- append_items(list(c(Variable.label = trs('label')),
                                  c(Data.type      = trs('type'))))
     } else {
       head3 <- append_items(list(c(Variable.label = trs('label')),
