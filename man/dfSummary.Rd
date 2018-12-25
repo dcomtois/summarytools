@@ -6,7 +6,7 @@
 \usage{
 dfSummary(x, round.digits = st_options("round.digits"),
   varnumbers = st_options("dfSummary.varnumbers"),
-  labels.col = length(label(x, all = TRUE)) > 0,
+  labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
   na.col = st_options("dfSummary.na.col"),
   graph.col = st_options("dfSummary.graph.col"),
@@ -30,8 +30,10 @@ option \dQuote{dfSummary.varnumbers}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-functions) will be displayed. By default, the \emph{labels} column is shown
-if at least one column has a defined label.}
+functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
+column is only shown if at least one column has a defined label. This
+option can also be set globally; see \code{\link{st_options}}, option 
+\dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
 valid (non-missing) values. \code{TRUE} by default, but can be set

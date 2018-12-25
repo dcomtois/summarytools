@@ -32,7 +32,7 @@ or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
 \item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
 using summarytools with a rendering tool such as \code{knitr} or when
-creating rmarkdown output files to be converted with Pandoc. Note hoewever
+creating rmarkdown output files to be converted with Pandoc. Note however
 that its value will automatically be set to \code{FALSE} whenever
 \code{style} is set to \dQuote{rmarkdown}).}
 

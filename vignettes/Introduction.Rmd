@@ -177,9 +177,9 @@ show statistics split by a ventilation / categorical variable. *R*’s
 `by()` function returns a `list` containing as many *summarytools* objects
 as there are categories in our ventilation variable. 
 
-To propertly display the content present in that list, **we use
+To properly display the content present in that list, **we use
 the `view()` function**. Using `print()`, while technically possible,
-will not give as much satisfactory results.
+will not give as satisfactory results.
 
 #### Example 
 
