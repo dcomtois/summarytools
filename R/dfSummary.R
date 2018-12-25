@@ -12,8 +12,10 @@
 #'   option \dQuote{dfSummary.varnumbers}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-#'   functions) will be displayed. By default, the \emph{labels} column is shown
-#'   if at least one column has a defined label.
+#'   functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
+#'   column is only shown if at least one column has a defined label. This
+#'   option can also be set globally; see \code{\link{st_options}}, option 
+#'   \dQuote{dfSummary.labels.col}.
 #' @param valid.col Logical. Include column indicating count and proportion of
 #'   valid (non-missing) values. \code{TRUE} by default, but can be set
 #'   globally; see \code{\link{st_options}}, option
@@ -112,7 +114,7 @@
 #' @export
 dfSummary <- function(x, round.digits = st_options('round.digits'),
                       varnumbers = st_options('dfSummary.varnumbers'),
-                      labels.col = length(label(x, all = TRUE)) > 0,
+                      labels.col = st_options('dfSummary.labels.col'),
                       valid.col = st_options('dfSummary.valid.col'),
                       na.col = st_options('dfSummary.na.col'),
                       graph.col = st_options('dfSummary.graph.col'),
@@ -153,6 +155,10 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
 
   # End of arguments validation ------------------------------------------------
 
+  if (isTRUE(labels.col) && length(label(x, all = TRUE)) == 0) {
+    labels.col <- FALSE
+  }
+  
   # Get info on x from parsing function ----------------------------------------
   max.varnames <- as.numeric(converted_to_df)
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
@@ -394,6 +400,9 @@ crunch_factor <- function(column_data) {
       outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)))
     }
   }
+  Encoding(outlist[[1]]) <- "UTF-8"
+  Encoding(outlist[[2]]) <- "UTF-8"
+  Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
 
@@ -418,11 +427,11 @@ crunch_character <- function(column_data) {
   n_empty <- sum(column_data == "", na.rm = TRUE)
 
   if (n_empty == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.empty.str")
+    outlist[[1]] <- paste0(trs("all.empty.str"), "\n")
   } else if (parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.nas")
+    outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
   } else if (n_empty + parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.empty.str.nas")
+    outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
   } else {
 
     counts <- table(column_data, useNA = "no")
@@ -474,6 +483,9 @@ crunch_character <- function(column_data) {
       }
     }
   }
+  Encoding(outlist[[1]]) <- "UTF-8"
+  Encoding(outlist[[2]]) <- "UTF-8"
+  Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
 
@@ -493,7 +505,7 @@ crunch_numeric <- function(column_data, is_barcode) {
   round.digits        <- parent.frame()$round.digits
 
   if (parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.nas")
+    outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
     counts <- table(column_data, useNA = "no")
 
@@ -615,6 +627,9 @@ crunch_numeric <- function(column_data, is_barcode) {
       }
     }
   }
+  Encoding(outlist[[1]]) <- "UTF-8"
+  Encoding(outlist[[2]]) <- "UTF-8"
+  Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
 
@@ -634,7 +649,7 @@ crunch_time_date <- function(column_data) {
   round.digits        <- parent.frame()$round.digits
 
   if (parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.nas")
+    outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
 
     counts <- table(column_data, useNA = "no")
@@ -688,7 +703,7 @@ crunch_other <- function(column_data) {
   counts <- table(column_data, useNA = "no")
 
   if (parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- trs("all.nas")
+    outlist[[1]] <- paste0(trs("all.nas"), "\n")
 
   } else if (length(counts) <= max.distinct.values) {
     props <- round(prop.table(counts), parent.frame()$round.digits + 2)
