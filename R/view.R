@@ -8,7 +8,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  ...) {
 
   # Objects not created via by() or lapply() -----------------------------------
-  if ("summarytools" %in% class(x)) {
+  if (inherits(x, "summarytools")) {
     print.summarytools(x,
                        method        = method,
                        file          = file,
@@ -70,7 +70,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        escape.pipe   = escape.pipe,
                        ...)
     
-  } else if ("by" %in% class(x) &&
+  } else if (inherits(x, "by") &&
              attr(x[[1]], "st_type") %in% c("freq", "descr")) {
 
     if (method %in% c("viewer", "browser")) {
@@ -210,7 +210,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       }
     }
     
-  } else if ("list" %in% class(x) && "summarytools" %in% class(x[[1]]) &&
+  } else if (inherits(x = x, what = "list") &&
+             inherits(x[[1]], "summarytools") && 
              attr(x[[1]], "st_type") == "freq") {
 
     if (method %in% c("viewer", "browser")) {
