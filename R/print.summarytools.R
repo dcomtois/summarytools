@@ -974,7 +974,7 @@ print_descr <- function(x, method) {
   
   if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by.first" %in% names(data_info) || 
-      isTRUE(as.logical(data_info$by.last))) &&
+      isTRUE(as.logical(data_info$by.first))) &&
      "ignored" %in% names(attributes(x))) {
     message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
   }
