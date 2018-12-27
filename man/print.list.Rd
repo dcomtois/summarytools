@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.list.R
 \name{print.list}
 \alias{print.list}
-\title{print.list}
+\title{Print Method for Objects of Class \dQuote{list}}
 \usage{
 \method{print}{list}(x, method = "pander", file = "", 
   append = FALSE, report.title = NA, table.classes = NA, 
@@ -62,5 +62,5 @@ this default value globally, see \code{\link{st_options}}.}
 as attributes in the object being printed. See \emph{Details} section.}
 }
 \description{
-Print Method for Objects of Class \code{list}.
+Displays a list comprised of summarytools objects created with \code{lapply}.
 }

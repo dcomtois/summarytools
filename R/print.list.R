@@ -1,6 +1,6 @@
-#' print.list
+#' Print Method for Objects of Class \dQuote{list}
 #'
-#' Print Method for Objects of Class \code{list}.
+#' Displays a list comprised of summarytools objects created with \code{lapply}. 
 #'
 #' @usage
 #'  \method{print}{list}(x, method = "pander", file = "", 
