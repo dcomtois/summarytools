@@ -1,9 +1,7 @@
-#' Print Method for Objects of Class \code{summarytools}.
-#'
+#' print.summarytools
+#' 
 #' Display \code{summarytools} objects in the console, in Web Browser or in
 #'  \emph{RStudio}'s Viewer, or write content to file.
-#'
-#' @aliases print view
 #'
 #' @usage
 #'  \method{print}{summarytools}(x, method = "pander", file = "",
@@ -12,14 +10,6 @@
 #'    custom.css = st_options('custom.css'), silent = FALSE, 
 #'    footnote = st_options('footnote'), 
 #'    escape.pipe = st_options('escape.pipe'), \dots)
-#'
-#' view(x, method = "viewer", file = "", append = FALSE,
-#'   report.title = NA, table.classes = NA, 
-#'   bootstrap.css = st_options('bootstrap.css'), 
-#'   custom.css = st_options('custom.css'), silent = FALSE, 
-#'   footnote = st_options('footnote'), 
-#'   escape.pipe = st_options('escape.pipe'), \dots)
-#'    
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -69,10 +59,6 @@
 #'   \code{\link[pander]{pander}}. See \emph{References} section
 #'   for a list of all available \emph{pander} options.
 #'
-#' To print objects of class \dQuote{by}, use \code{\link{view}}. This
-#'   function also makes it more practical to generate \emph{html} files (see
-#'   examples).
-#'
 #' The following additional arguments can be used to override
 #'   formatting attributes stored in the object to be printed. Refer to the 
 #'   function's documentation for details on these arguments.
@@ -116,6 +102,8 @@
 #'      \item \code{Col.variable.label} (\code{\link{ctable}} objects)
 #'    }
 #'
+#' @method print summarytools
+#'
 #' @references
 #' \href{http://rstudio.com}{Rstudio}
 #' \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
@@ -137,7 +125,6 @@
 #'   print(descr(exams), headings = FALSE)
 #'
 #' @keywords print methods
-#'
 #' @export
 #' @import htmltools
 #' @importFrom pander pander panderOptions
@@ -1451,7 +1438,7 @@ build_heading_pander <- function(format_info, data_info) {
       head3 <- append_items(list(c(Group = trs('group')),
                                  c(N.Obs = trs('n'))))
     } else {
-      head3 <- append_item(list(c(Group = trs("group"))))
+      head3 <- append_items(list(c(Group = trs("group"))))
     }
     return(list(head3))
   } else if (isFALSE(format_info$headings)) {

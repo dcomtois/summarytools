@@ -1,3 +1,29 @@
+#' view
+#' 
+#' Visualize results in RStudio's Viewer or in Web Browser
+#'
+#' @usage
+#' view(x, method = "viewer", file = "", append = FALSE,
+#'   report.title = NA, table.classes = NA, 
+#'   bootstrap.css = st_options('bootstrap.css'), 
+#'   custom.css = st_options('custom.css'), silent = FALSE, 
+#'   footnote = st_options('footnote'), 
+#'   escape.pipe = st_options('escape.pipe'), \dots)
+#'
+#' @inheritParams print.summarytools
+#' 
+#' @details 
+#' Creates \emph{html} outputs and opens them in the Viewer, in a browser or
+#' renders the \emph{html} code appropriate for \emph{Rmarkdown} documents. 
+#'
+#' For objects of class \dQuote{summarytools}, this function is simply
+#' a wrapper around \code{link{print.summarytools}} with \emph{method} set to
+#' \dQuote{viewer}.
+#'  
+#' Objects of class \dQuote{by} or \dQuote{list} are dispatched to the present
+#' function, as it can manage multiple objects, whereas 
+#' \code{\link{print.summarytools}} can only manage one object at a time. 
+#'  
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, 
                  report.title = NA, table.classes = NA, 
