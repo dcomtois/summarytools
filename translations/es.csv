@@ -54,11 +54,15 @@ freqs.pct.valid      ,column name (dfSummary)         ,Frec. (% sobre válido)
 graph                ,column name (dfSummary)         ,Gráfico
 text.graph           ,column name (dfSummary)         ,Gráfico texto / ascii?
 missing              ,column name (dfSummary)         ,Faltante
+distinct.value       ,cell content (dfSummary)        ,valor distinto
 distinct.values      ,cell content (dfSummary)        ,valores distintos
+all.nas              ,cell content (dfSummary)        ,Todos NA's
+all.empty.str        ,cell content (dfSummary)        ,Todos [empty strings]
+all.empty.str.nas    ,cell content (dfSummary)        ,Todos [empty strings / NA's]
 int.sequence         ,cell content (dfSummary)        ,Secuencia de enteros
 rounded              ,cell content (dfSummary)        ,redondeo
 others               ,cell content (dfSummary)        ,otros
-code                 ,cell content (dfSummary)        ,(codigos)
+codes                ,cell content (dfSummary)        ,codigos
 mode                 ,cell content (dfSummary)        ,modo
 med.short            ,cell content (dfSummary)        ,mediana
 start                ,cell content (dfSummary)        ,principio

@@ -55,7 +55,7 @@
 #' freq(tobacco$gender, totals = FALSE)
 #' freq(tobacco$gender, display.nas = FALSE)
 #' freq(tobacco$gender, style="rmarkdown")
-#' with(tobacco, view(by(diseased, smoker, freq), method = "pander"))
+#' with(tobacco, by(diseased, smoker, freq))
 #' 
 #' @seealso \code{\link[base]{table}}
 #'
@@ -263,16 +263,16 @@ freq <- function(x, round.digits = st_options('round.digits'),
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <- list(style          = style,
-                                     round.digits   = round.digits,
-                                     plain.ascii    = plain.ascii,
-                                     justify        = justify,
-                                     totals         = totals,
-                                     report.nas     = report.nas,
-                                     missing        = missing,
-                                     display.type   = display.type,
-                                     display.labels = display.labels,
-                                     headings       = headings)
+  attr(output, "format_info") <- list(style          = style,
+                                      round.digits   = round.digits,
+                                      plain.ascii    = plain.ascii,
+                                      justify        = justify,
+                                      totals         = totals,
+                                      report.nas     = report.nas,
+                                      missing        = missing,
+                                      display.type   = display.type,
+                                      display.labels = display.labels,
+                                      headings       = headings)
 
   attr(output, "user_fmt") <- list(... = ...)
 

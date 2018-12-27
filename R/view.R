@@ -1,3 +1,29 @@
+#' view
+#' 
+#' Visualize results in RStudio's Viewer or in Web Browser
+#'
+#' @usage
+#' view(x, method = "viewer", file = "", append = FALSE,
+#'   report.title = NA, table.classes = NA, 
+#'   bootstrap.css = st_options('bootstrap.css'), 
+#'   custom.css = st_options('custom.css'), silent = FALSE, 
+#'   footnote = st_options('footnote'), 
+#'   escape.pipe = st_options('escape.pipe'), \dots)
+#'
+#' @inheritParams print.summarytools
+#' 
+#' @details 
+#' Creates \emph{html} outputs and opens them in the Viewer, in a browser or
+#' renders the \emph{html} code appropriate for \emph{Rmarkdown} documents. 
+#'
+#' For objects of class \dQuote{summarytools}, this function is simply
+#' a wrapper around \code{link{print.summarytools}} with \emph{method} set to
+#' \dQuote{viewer}.
+#'  
+#' Objects of class \dQuote{by} or \dQuote{list} are dispatched to the present
+#' function, as it can manage multiple objects, whereas 
+#' \code{\link{print.summarytools}} can only manage one object at a time. 
+#'  
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, 
                  report.title = NA, table.classes = NA, 
@@ -8,7 +34,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  ...) {
 
   # Objects not created via by() or lapply() -----------------------------------
-  if ("summarytools" %in% class(x)) {
+  if (inherits(x, "summarytools")) {
     print.summarytools(x,
                        method        = method,
                        file          = file,
@@ -23,7 +49,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        ...)
 
     
-  } else if ("by" %in% class(x) &&
+  } else if (inherits(x = x, what = "by") &&
              attr(x[[1]], "st_type") == "descr" &&
              ((!attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[2] == 1) || 
               ( attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[1] == 1))) {
@@ -53,9 +79,9 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     
     attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx,"data_info"))]
     
-    attr(xx, 'formatting') <- attr(x[[1]], 'formatting')
-    attr(xx, 'user_fmt')   <- attr(x[[1]], 'user_fmt')
-    attr(xx, "lang")       <- attr(x[[1]], 'lang')
+    attr(xx, 'format_info') <- attr(x[[1]], 'format_info')
+    attr(xx, 'user_fmt')    <- attr(x[[1]], 'user_fmt')
+    attr(xx, "lang")        <- attr(x[[1]], 'lang')
     
     print.summarytools(xx,
                        method        = method,
@@ -70,7 +96,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        escape.pipe   = escape.pipe,
                        ...)
     
-  } else if ("by" %in% class(x) &&
+  } else if (inherits(x, "by") &&
              attr(x[[1]], "st_type") %in% c("freq", "descr")) {
 
     if (method %in% c("viewer", "browser")) {
@@ -79,13 +105,17 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
             
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       
-      if (grepl(tempdir(), file, fixed = TRUE)) {
-        open.doc <- TRUE
-      } else {
-        open.doc <- FALSE
-      }
-      
       for (i in seq_along(x)) {
+
+        if (grepl(tempdir(), file, fixed = TRUE) && i == length(x)) {
+          open.doc <- TRUE
+          footnote <- footnote
+        } else {
+          open.doc <- FALSE
+          footnote <- NA
+        }
+        
+        
         
         if (i == 1) {
           if (isTRUE(append) && !is.na(custom.css)) {
@@ -104,32 +134,34 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                              bootstrap.css = bootstrap.css,
                              custom.css    = custom.css,
                              silent        = silent,
-                             footnote      = NA,
+                             footnote      = footnote,
                              escape.pipe   = escape.pipe,
+                             open.doc      = open.doc,
                              ...)
 
         } else if (i < length(x)) {
           print.summarytools(x[[i]],
-                             method = method,
-                             file = file,
-                             append = TRUE,
+                             method        = method,
+                             file          = file,
+                             append        = TRUE,
                              table.classes = table.classes,
-                             silent = TRUE,
-                             footnote = NA,
-                             escape.pipe = escape.pipe,
-                             group.only = TRUE,
+                             silent        = TRUE,
+                             footnote      = footnote,
+                             escape.pipe   = escape.pipe,
+                             group.only    = TRUE,
+                             open.doc      = open.doc,
                              ...)
         } else {
           print.summarytools(x[[i]],
-                             method = method,
-                             file = file,
-                             append = TRUE,
-                             escape.pipe = escape.pipe,
+                             method        = method,
+                             file          = file,
+                             append        = TRUE,
+                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
-                             silent = silent,
-                             footnote = footnote,
-                             group.only = TRUE,
-                             open.doc = open.doc,
+                             silent        = silent,
+                             footnote      = footnote,
+                             group.only    = TRUE,
+                             open.doc      = open.doc,
                              ...)
         }
       }
@@ -143,33 +175,33 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         if (i == 1) {
           html_content <- 
             list(print.summarytools(x[[i]],
-                                    method = method,
+                                    method        = method,
                                     table.classes = table.classes,
                                     bootstrap.css = bootstrap.css,
-                                    custom.css = custom.css,
-                                    silent = silent,
-                                    footnote = NA,
+                                    custom.css    = custom.css,
+                                    silent        = silent,
+                                    footnote      = NA,
                                     ...))
           
         } else if (i < length(x)) {
           html_content[[i]] <- 
             print.summarytools(x[[i]],
-                               method = method,
+                               method        = method,
                                table.classes = table.classes,
-                               silent = silent,
-                               footnote = NA,
-                               group.only = TRUE,
+                               silent        = silent,
+                               footnote      = NA,
+                               group.only    = TRUE,
                                ...)
           
           
         } else {
           html_content[[i]] <- 
             print.summarytools(x[[i]],
-                               method = method,
+                               method        = method,
                                table.classes = table.classes,
-                               silent = silent,
-                               footnote = footnote,
-                               group.only = TRUE,
+                               silent        = silent,
+                               footnote      = footnote,
+                               group.only    = TRUE,
                                ...)
           
         }
@@ -184,27 +216,28 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       for (i in seq_along(x)) {
         if (i == 1) {
           print.summarytools(x[[1]],
-                             method = "pander",
-                             silent = silent,
-                             file = file,
-                             append = append,
-                             group.only = FALSE,
+                             method      = "pander",
+                             silent      = silent,
+                             file        = file,
+                             append      = append,
+                             group.only  = FALSE,
                              escape.pipe = escape.pipe,
                              ...)
         } else {
           print.summarytools(x[[i]],
-                             method = "pander",
-                             silent = silent,
-                             file = file,
-                             append = ifelse(file == "", FALSE, TRUE),
-                             group.only = TRUE,
+                             method      = "pander",
+                             silent      = silent,
+                             file        = file,
+                             append      = ifelse(file == "", FALSE, TRUE),
+                             group.only  = TRUE,
                              escape.pipe = escape.pipe,
                              ...)
         }
       }
     }
     
-  } else if ("list" %in% class(x) && "summarytools" %in% class(x[[1]]) &&
+  } else if (inherits(x = x, what = "list") &&
+             inherits(x[[1]], "summarytools") && 
              attr(x[[1]], "st_type") == "freq") {
 
     if (method %in% c("viewer", "browser")) {
@@ -222,41 +255,41 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       for (i in seq_along(x)) {
         if (i == 1) {
           print.summarytools(x[[1]],
-                             method = method,
-                             file = file,
-                             silent = silent,
-                             footnote = NA,
-                             append = FALSE,
-                             var.only = FALSE,
-                             report.title = report.title,
-                             escape.pipe = escape.pipe,
+                             method        = method,
+                             file          = file,
+                             silent        = silent,
+                             footnote      = NA,
+                             append        = FALSE,
+                             var.only      = FALSE,
+                             report.title  = report.title,
+                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
                              bootstrap.css = bootstrap.css,
-                             custom.css = custom.css,
+                             custom.css    = custom.css,
                              ...)
           
         } else if (i < length(x)) {
           print.summarytools(x[[i]],
-                             method = method,
-                             file = file,
-                             append = TRUE,
-                             var.only = TRUE,
-                             silent = TRUE,
-                             footnote = NA,
-                             escape.pipe = escape.pipe,
+                             method        = method,
+                             file          = file,
+                             append        = TRUE,
+                             var.only      = TRUE,
+                             silent        = TRUE,
+                             footnote      = NA,
+                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
                              ...)
         } else {
           print.summarytools(x[[i]],
-                             method = method,
-                             file = file,
-                             append = TRUE,
-                             var.only = TRUE,
-                             silent = silent,
-                             footnote = footnote,
-                             escape.pipe = escape.pipe,
+                             method        = method,
+                             file          = file,
+                             append        = TRUE,
+                             var.only      = TRUE,
+                             silent        = silent,
+                             footnote      = footnote,
+                             escape.pipe   = escape.pipe,
                              table.classes = table.classes,
-                             open.doc = open.doc,
+                             open.doc      = open.doc,
                              ...)
         }
       }
@@ -268,36 +301,36 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         if (i == 1) {
           html_content <- 
             list(print.summarytools(x[[i]],
-                                    method = method,
-                                    silent = TRUE,
-                                    footnote = NA,
+                                    method        = method,
+                                    silent        = TRUE,
+                                    footnote      = NA,
                                     table.classes = table.classes,
                                     bootstrap.css = bootstrap.css,
-                                    custom.css = custom.css,
-                                    var.only = FALSE,
+                                    custom.css    = custom.css,
+                                    var.only      = FALSE,
                                     ...))
           
         } else if (i < length(x)) {
           html_content[[i]] <-
             print.summarytools(x[[i]],
-                             method = method,
-                             var.only = TRUE,
-                             silent = TRUE,
-                             footnote = NA,
+                             method        = method,
+                             var.only      = TRUE,
+                             silent        = TRUE,
+                             footnote      = NA,
                              table.classes = table.classes,
                              bootstrap.css = FALSE,
-                             var.only = TRUE,
+                             var.only      = TRUE,
                              ...)
         } else {
           html_content[[i]] <- 
             print.summarytools(x[[i]],
-                               method = method,
-                               var.only = TRUE,
-                               silent = silent,
-                               footnote = footnote,
+                               method        = method,
+                               var.only      = TRUE,
+                               silent        = silent,
+                               footnote      = footnote,
                                table.classes = table.classes,
                                bootstrap.css = FALSE,
-                               var.only = TRUE,
+                               var.only      = TRUE,
                                ...)
         }
       }
@@ -315,20 +348,20 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         if (i == 1) {
           #if (isTRUE(var.only)) {
             print.summarytools(x[[1]],
-                               method = "pander",
-                               file = file,
-                               silent = silent,
-                               append = append,
+                               method      = "pander",
+                               file        = file,
+                               silent      = silent,
+                               append      = append,
                                escape.pipe = escape.pipe,
-                               var.only = var.only,
+                               var.only    = var.only,
                                ...)
         } else {
           print.summarytools(x[[i]],
-                             method = "pander",
-                             file = file,
-                             silent = silent,
-                             append = ifelse(file == "", FALSE, TRUE),
-                             var.only = TRUE,
+                             method      = "pander",
+                             file        = file,
+                             silent      = silent,
+                             append      = ifelse(file == "", FALSE, TRUE),
+                             var.only    = TRUE,
                              escape.pipe = escape.pipe,
                              ...)
         }
@@ -344,7 +377,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         "or a list of freq() objects created using lapply().",
         "Support for by() used with ctable() may be available in future ",
         "realeases."
-        )
       )
+    )
   }
 }

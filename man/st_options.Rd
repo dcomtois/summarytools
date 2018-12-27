@@ -32,7 +32,7 @@ or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
 \item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
 using summarytools with a rendering tool such as \code{knitr} or when
-creating rmarkdown output files to be converted with Pandoc. Note hoewever
+creating rmarkdown output files to be converted with Pandoc. Note however
 that its value will automatically be set to \code{FALSE} whenever
 \code{style} is set to \dQuote{rmarkdown}).}
 
@@ -43,8 +43,8 @@ will still appear before the tables. \code{FALSE} by default.}
 
 \item{footnote}{Character. When the default value \dQuote{default} is used,
 the package name & version, as well as the R version number are displayed
-below html outputs. Set no \code{NA} to omit the footnote, or provide a
-custom string. Applies only to \emph{html} outputs.}
+below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 
+provide a custom string. Applies only to \emph{html} outputs.}
 
 \item{display.labels}{Logical. \code{TRUE} by default. Set to \code{FALSE} to
 omit data frame and variable labels in the headings section.}

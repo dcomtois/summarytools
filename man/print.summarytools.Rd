@@ -2,9 +2,7 @@
 % Please edit documentation in R/print.summarytools.R
 \name{print.summarytools}
 \alias{print.summarytools}
-\alias{print}
-\alias{view}
-\title{Print Method for Objects of Class \code{summarytools}.}
+\title{print.summarytools}
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "",
    append = FALSE, report.title = NA, table.classes = NA,
@@ -12,13 +10,6 @@
    custom.css = st_options('custom.css'), silent = FALSE, 
    footnote = st_options('footnote'), 
    escape.pipe = st_options('escape.pipe'), \dots)
-
-view(x, method = "viewer", file = "", append = FALSE,
-  report.title = NA, table.classes = NA, 
-  bootstrap.css = st_options('bootstrap.css'), 
-  custom.css = st_options('custom.css'), silent = FALSE, 
-  footnote = st_options('footnote'), 
-  escape.pipe = st_options('escape.pipe'), \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -85,10 +76,6 @@ Plain ascii and \emph{rmarkdown} tables are generated via
   \code{\link[pander]{pander}}. See \emph{References} section
   for a list of all available \emph{pander} options.
 
-To print objects of class \dQuote{by}, use \code{\link{view}}. This
-  function also makes it more practical to generate \emph{html} files (see
-  examples).
-
 The following additional arguments can be used to override
   formatting attributes stored in the object to be printed. Refer to the 
   function's documentation for details on these arguments.
@@ -104,6 +91,7 @@ The following additional arguments can be used to override
      \item \code{graph.col}     (\code{\link{dfSummary}} objects)
      \item \code{valid.col}     (\code{\link{dfSummary}} objects)
      \item \code{na.col}         (\code{\link{dfSummary}} objects)
+     \item \code{col.widths}     (\code{\link{dfSummary}} objects)
      \item \code{split.tables}
      \item \code{report.nas}    (\code{\link{freq}} objects)
      \item \code{display.type}  (\code{\link{freq}} objects)
@@ -143,8 +131,8 @@ The following additional arguments can be used to override
 }
 \references{
 \href{http://rstudio.com}{Rstudio}
-\href{https://github.com/dcomtois/summarytools}{Summarytools on Github}
-\href{http://rapporter.github.io/pander/#general-options}{List of pander options on Github}
+\href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
+\href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
 \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
 }
 \seealso{

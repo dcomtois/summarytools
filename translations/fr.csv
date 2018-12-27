@@ -1,10 +1,10 @@
 item                 ,context                         ,fr
-title.freq           ,main heading                    ,Fréquences
-title.freq.weighted  ,main heading                    ,Fréquences pondérées
+title.freq           ,main heading                    ,Tableau de fréquences
+title.freq.weighted  ,main heading                    ,Tableau de fréquences pondérées
 title.ctable         ,main heading                    ,Tableau croisé
-title.ctable.row     ,main heading                    ,Proportions par rangées
-title.ctable.col     ,main heading                    ,Proportions par colonnes
-title.ctable.tot     ,main heading                    ,Proportions sur le total
+title.ctable.row     ,main heading                    ,% par rangées
+title.ctable.col     ,main heading                    ,% par colonnes
+title.ctable.tot     ,main heading                    ,% sur total
 title.descr          ,main heading                    ,Statistiques descriptives
 title.descr.weighted ,main heading                    ,Statistiques descriptives pondérées
 title.dfSummary      ,main heading                    ,Synthèse de data frame
@@ -34,7 +34,7 @@ pct.cum              ,column name (freq)              ,% Cum.
 valid                ,column name (freq & dfSummary)  ,Valide
 total                ,column grouping (freq)          ,Total
 mean                 ,row name (descr)                ,Moy
-sd                   ,row name (descr)                ,É-t
+sd                   ,row name (descr)                ,é-t
 min                  ,row name (descr)                ,Min
 q1                   ,row name (descr)                ,Q1
 med                  ,row name (descr)                ,Médiane
@@ -54,11 +54,15 @@ freqs.pct.valid      ,column name (dfSummary)         ,Fréq. (% de valide)
 graph                ,column name (dfSummary)         ,Diagramme
 text.graph           ,column name (dfSummary)         ,Diagramme texte
 missing              ,column name (dfSummary)         ,Manquant
+distinct.value       ,cell content (dfSummary)        ,valeur unique
 distinct.values      ,cell content (dfSummary)        ,valeurs uniques
+all.nas              ,cell content (dfSummary)        ,Aucune donnée valide
+all.empty.str        ,cell content (dfSummary)        ,Chaînes vides seul.
+all.empty.str.nas    ,cell content (dfSummary)        ,Chaînes vides / NAs seul.
 int.sequence         ,cell content (dfSummary)        ,Séquence d'entiers
 rounded              ,cell content (dfSummary)        ,arrondi
 others               ,cell content (dfSummary)        ,autres
-code                 ,cell content (dfSummary)        ,(codes)
+codes                ,cell content (dfSummary)        ,codes
 mode                 ,cell content (dfSummary)        ,mode
 med.short            ,cell content (dfSummary)        ,med
 start                ,cell content (dfSummary)        ,Début

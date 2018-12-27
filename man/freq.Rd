@@ -85,7 +85,7 @@ freq(tobacco$gender)
 freq(tobacco$gender, totals = FALSE)
 freq(tobacco$gender, display.nas = FALSE)
 freq(tobacco$gender, style="rmarkdown")
-with(tobacco, view(by(diseased, smoker, freq), method = "pander"))
+with(tobacco, by(diseased, smoker, freq))
 
 }
 \seealso{

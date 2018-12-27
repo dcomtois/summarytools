@@ -80,7 +80,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
    `st_options()`; each option has its own parameter, so you can set as many
    as you need in just one function call. The legacy way of setting options
    is still supported
- - `dfSummary()` went through somw changes:
+ - `dfSummary()` went through some changes:
     + number of culumns is shown in heading, as well as number of duplicated rows 
       (credits to [Paul Feitsma](https://github.com/paulfeitsma) for the good idea)
     + UPC and EAN codes are now detected as well as sequences of integers 
@@ -101,7 +101,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
    `headings`. `omit.heandings` is still supported in this version but will be
    deprecated in the future
  - Finally, because it was subject to errors, the _Rows Subset_ heading element
-   has been removed. In case of a massive public outry, I'll bring it back ;)
+   has been removed. In case of a massive public outcry, I'll bring it back ;)
  - Under the hood, much has been going; the lengthier functions have been
    split into more manageable parts, facilitating maintenance and improving 
    readability 
@@ -445,12 +445,12 @@ print(age_stats, style = "rmarkdown", report.nas = FALSE,
                  totals = FALSE, headings = FALSE)
 ```
 
-Note that the overridden attributes are stil part of the _age\_stats_ object.
+Note that the overridden attributes are still part of the _age\_stats_ object.
 
 ## Order of Priority for options
 
 1.  Options overridden explicitly with `print()` or `view()` have
-    precendence
+    precedence
 2.  options specified as explicit arguments to `freq() / ctable() /
     descr() / dfSummary()` come second
 3.  Global options, which can be set with `st_options`, come third

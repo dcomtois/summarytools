@@ -431,10 +431,21 @@ conv_non_ascii <- function(...) {
 # Shorcut function to get translation strings
 #' @keywords internal
 trs <- function(item, l = st_options('lang')) {
-  l = force(l)
+  l <- force(l)
   if (l != "custom") {
     translations[l,item]
   } else {
     .st_env$custom_lang['custom', item]
+  }
+}
+
+# Shortcut function to get the item name of a translated element
+#' @keywords internal
+inv_trs <- function(name, l = st_options('lang')) {
+  l <- force(l)
+  if(l != "custom") {
+    colnames(translations)[which(translations["en",] == name)]
+  } else {
+    colnames(.st_env$custom_lang)[which(.st_env$custom_lang['custom',] == name)]
   }
 }

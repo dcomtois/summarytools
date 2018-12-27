@@ -6,17 +6,17 @@
 \usage{
 dfSummary(x, round.digits = st_options("round.digits"),
   varnumbers = st_options("dfSummary.varnumbers"),
-  labels.col = length(label(x, all = TRUE)) > 0,
+  labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
   na.col = st_options("dfSummary.na.col"),
   graph.col = st_options("dfSummary.graph.col"),
   graph.magnif = st_options("dfSummary.graph.magnif"),
   style = "multiline", plain.ascii = st_options("plain.ascii"),
-  justify = "left", headings = st_options("headings"),
+  justify = "left", col.widths = NA,
+  headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
-  max.string.width = 25, split.cells = 40, utf8.graphs = FALSE,
-  split.tables = Inf, ...)
+  max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -30,8 +30,10 @@ option \dQuote{dfSummary.varnumbers}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-functions) will be displayed. By default, the \emph{labels} column is shown
-if at least one column has a defined label.}
+functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
+column is only shown if at least one column has a defined label. This
+option can also be set globally; see \code{\link{st_options}}, option 
+\dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
 valid (non-missing) values. \code{TRUE} by default, but can be set
@@ -66,6 +68,11 @@ markdown rendering. To change the default value globally, see
 \item{justify}{String indicating alignment of columns; one of \dQuote{l}
 (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
 
+\item{col.widths}{Numeric or character. Vector of column widths. If numeric,
+values are assumed to be numbers of pixels. Otherwise, any CSS-supported
+units can be used. \code{NA} by default, meaning widths are calculated 
+automatically.}
+
 \item{headings}{Logical. Set to \code{FALSE} to omit headings. To change this
 default value globally, see \code{\link{st_options}}.}
 
@@ -88,8 +95,6 @@ frequency tables. Defaults to \code{25}.}
 \item{split.cells}{A numeric argument passed to \code{\link[pander]{pander}}.
 It is the number of characters allowed on a line before splitting the cell.
 Defaults to \code{40}.}
-
-\item{utf8.graphs}{Makes pretty utf8 graphs -- not supported on Windows yet.}
 
 \item{split.tables}{\pkg{pander} argument which determines the maximum width
 of a table. Keeping the default value (\code{Inf}) is recommended.}

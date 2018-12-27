@@ -42,7 +42,11 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
         lbl <- NA
       }
     }
-  } else if (is.data.frame(x)) {
+  } else {
+    if (!is.data.frame(x)) {
+      x <- as.data.frame(x)
+    }
+    
     if (isTRUE(all)) {
       lbl <- lapply(x, attr, which = 'label', exact = TRUE)
       lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- NA
@@ -66,6 +70,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
       }
     }
   }
+  
   return(lbl)
 }
 

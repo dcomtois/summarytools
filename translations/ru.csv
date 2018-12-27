@@ -54,11 +54,15 @@ freqs.pct.valid      ,column name (dfSummary)         ,[Freqs (% of Valid)]
 graph                ,column name (dfSummary)         ,диаграмма
 text.graph           ,column name (dfSummary)         ,текст. диаграмма
 missing              ,column name (dfSummary)         ,отсутствующее
+distinct.value       ,cell content (dfSummary)        ,[уникальные значения]
 distinct.values      ,cell content (dfSummary)        ,уникальные значения
+all.nas              ,cell content (dfSummary)        ,[All NA's]
+all.empty.str        ,cell content (dfSummary)        ,[All empty strings]
+all.empty.str.nas    ,cell content (dfSummary)        ,[All empty strings / NA's]
 int.sequence         ,cell content (dfSummary)        ,целочисленная последовательность
 rounded              ,cell content (dfSummary)        ,округлённое
 others               ,cell content (dfSummary)        ,остальные
-code                 ,cell content (dfSummary)        ,[код]
+codes                ,cell content (dfSummary)        ,[коды]
 mode                 ,cell content (dfSummary)        ,[mode]
 med.short            ,cell content (dfSummary)        ,[med]
 start                ,cell content (dfSummary)        ,начало
