@@ -63,6 +63,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
+#' @importFrom dplyr n_distinct
 freq <- function(x, round.digits = st_options('round.digits'), 
                  order = "default", style = st_options('style'), 
                  plain.ascii = st_options('plain.ascii'), 
@@ -73,6 +74,32 @@ freq <- function(x, round.digits = st_options('round.digits'),
                  headings = st_options('headings'), weights = NA, 
                  rescale.weights = FALSE, ...) {
 
+  if (is.data.frame(x) && ncol(x) > 1) {
+    # Get information about x from parsing function
+    parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
+                                 silent = TRUE),
+                      silent = TRUE)
+    
+    if (inherits(parse_info, "try-error")) {
+      parse_info <- list()
+    }
+    
+    out <- list()
+    ignored <- character()
+    for (i in seq_along(x)) {
+      if (!class(x[[i]]) %in% c("character", "factor") && n_distinct(x[[i]] > 25)) {
+        ignored %+=% names(x)[i] 
+        next 
+      }
+      out[[length(out) + 1]] <- freq(x[i])
+      attr(out, "data_info")$Data.frame <- parse_info$df_name
+      if (length(ignored) > 0) {
+        attr(out, "ignored") <- ignored
+      }
+    }
+    class(out) <- c("list", "summarytools")
+    return(out)
+  }
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored in here
   

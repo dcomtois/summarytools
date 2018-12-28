@@ -139,6 +139,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options('footnote'), 
                                escape.pipe = st_options('escape.pipe'), ...) {
 
+  if (is.list(x)) {
+    view(x, method = method, file = file, append = append,
+         report.title = report.title, table.classes = table.classes, 
+         bootstrap.css = bootstrap.css, custom.css = custom.css, 
+         silent = silent, footnote = footnote, 
+         escape.pipe = escape.pipe, ...)
+    return(invisible())
+  }
+  
   knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
   panderOptions("knitr.auto.asis", FALSE)
   
@@ -963,7 +972,7 @@ print_descr <- function(x, method) {
      (!"by.first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by.first))) &&
      "ignored" %in% names(attributes(x))) {
-    message("Non-numerical variable(s) ignored: ", attr(x, "ignored"))
+    message("Non-numerical variable(s) ignored: ", paste(attr(x, "ignored"), collapse = ", "))
   }
   
   justify <- switch(tolower(substring(format_info$justify, 1, 1)),

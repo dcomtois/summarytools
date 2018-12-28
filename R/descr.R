@@ -149,7 +149,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   col_to_remove <- which(!vapply(x.df, is.numeric, logical(1)))
   
   if (length(col_to_remove) > 0) {
-    ignored <- paste(colnames(x.df)[col_to_remove], collapse=", ")
+    ignored <- colnames(x.df)[col_to_remove]
     x.df <- x.df[-col_to_remove]
     parse_info$var_names <- parse_info$var_names[-col_to_remove]
   }
