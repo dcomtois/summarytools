@@ -34,7 +34,9 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  ...) {
 
   # Objects not created via by() or lapply() -----------------------------------
-  if (inherits(x, "summarytools") && !inherits(x, "list")) {
+  if (inherits(x, "summarytools") && 
+      (attr(x, "st_type") %in% c("freq", "ctable", "descr", "dfSummary"))) {
+    
     print.summarytools(x,
                        method        = method,
                        file          = file,
@@ -97,7 +99,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        ...)
     
   } else if (inherits(x, "by") &&
-             attr(x[[1]], "st_type") %in% c("freq", "descr")) {
+             attr(x[[1]], "st_type") %in% c("freq", "ctable",
+                                            "descr", "dfSummary")) {
 
     if (method %in% c("viewer", "browser")) {
 
@@ -241,7 +244,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
              attr(x[[1]], "st_type") == "freq") {
 
     if("ignored" %in% names(attributes(x))) {
-      message("Variable(s) ignored: ", paste(attr(x, "ignored"), collapse = ", "))
+      message("Variable(s) ignored: ", paste(attr(x, "ignored"), 
+                                             collapse = ", "))
     }
     
     if (method %in% c("viewer", "browser")) {

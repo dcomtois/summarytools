@@ -139,7 +139,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options('footnote'), 
                                escape.pipe = st_options('escape.pipe'), ...) {
 
-  if (is.list(x)) {
+  # object is a list (either created with lapply() or by running freq with
+  # a dataframe as x)
+  if (is.list(x) && 
+      !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
     view(x, method = method, file = file, append = append,
          report.title = report.title, table.classes = table.classes, 
          bootstrap.css = bootstrap.css, custom.css = custom.css, 
