@@ -62,7 +62,7 @@ RStudio's for [rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yi
 [htmltools](https://CRAN.R-project.org/package=htmltools)**, the 
 outputs produced by summarytools can be:
 
-  - Displayed in plain text in the *R* console (default behaviour)
+  - Displayed in plain text in the *R* console (default behavior)
   - Used in *Rmarkdown* documents and *knitted* along with other text and
     *R* output
   - Written to *html* files that fire up in
@@ -81,7 +81,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
    as you need in just one function call. The legacy way of setting options
    is still supported
  - `dfSummary()` went through some changes:
-    + number of culumns is shown in heading, as well as number of duplicated rows 
+    + number of columns is shown in heading, as well as number of duplicated rows 
       (credits to [Paul Feitsma](https://github.com/paulfeitsma) for the good idea)
     + UPC and EAN codes are now detected as well as sequences of integers 
       (thanks to Paul one more)
@@ -337,7 +337,7 @@ get started:
 more on _knitr_'s options.
 
   - To get better results when using html (with `method = 'render'`),
-    set up your .Rmd document so it includes *summarytool*’s css.
+    set up your .Rmd document so it includes *summarytools*’s css.
 
 #### Example
 

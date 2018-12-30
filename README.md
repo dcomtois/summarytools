@@ -81,8 +81,8 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
     `st_options()`; each option has its own parameter, so you can set as
     many as you need in just one function call. The legacy way of
     setting options is still supported
-  - `dfSummary()` went through somw changes:
-      - number of culumns is shown in heading, as well as number of
+  - `dfSummary()` went through some changes:
+      - number of columns is shown in heading, as well as number of
         duplicated rows (credits to [Paul
         Feitsma](https://github.com/paulfeitsma) for the good idea)
       - UPC and EAN codes are now detected as well as sequences of
@@ -105,7 +105,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
     straightforward `headings`. `omit.heandings` is still supported in
     this version but will be deprecated in the future
   - Finally, because it was subject to errors, the *Rows Subset* heading
-    element has been removed. In case of a massive public outry, I’ll
+    element has been removed. In case of a massive public outcry, I’ll
     bring it back ;)
   - Under the hood, much has been going; the lengthier functions have
     been split into more manageable parts, facilitating maintenance and
@@ -762,7 +762,7 @@ tips to get started:
 on *knitr*’s options.
 
   - To get better results when using html (with `method = 'render'`),
-    set up your .Rmd document so it includes *summarytool*’s css.
+    set up your .Rmd document so it includes *summarytools*’s css.
 
 #### Example
 
@@ -877,13 +877,13 @@ print(age_stats, style = "rmarkdown", report.nas = FALSE,
 | **51-70** |  317 | 32.51 |  83.69 |
 |  **71 +** |  159 | 16.31 | 100.00 |
 
-Note that the overridden attributes are stil part of the *age\_stats*
+Note that the overridden attributes are still part of the *age\_stats*
 object.
 
 ## Order of Priority for options
 
 1.  Options overridden explicitly with `print()` or `view()` have
-    precendence
+    precedence
 2.  options specified as explicit arguments to `freq() / ctable() /
     descr() / dfSummary()` come second
 3.  Global options, which can be set with `st_options`, come third
