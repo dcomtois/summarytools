@@ -40,9 +40,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   var_names   <- character()
   var_labels  <- character()
   data_str    <- character()
-  by_group <- character()
-  by_first <- logical()
-  by_last  <- logical()
+  by_var      <- character()
+  by_group    <- character()
+  by_first    <- logical()
+  by_last     <- logical()
 
   # Look for position of by(), tapply(), with() and lapply() in sys.calls()
   by_pos     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
@@ -118,6 +119,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
     by_call <- as.list(standardise_call(sys_calls[[by_pos]]))
 
+    by_var <- deparse(by_call$INDICES)
+    
     # On first iteration, generate levels based on IND variables, and store
     if (length(.st_env$byInfo) == 0) {
       if (is.null(names(sys_frames[[tapply_pos]]$namelist)) ||
@@ -137,6 +140,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
             as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
             sep=" = ", collapse = ", ")
 
+    
     # by_first and by_last are used by print.summarytools when printing objects
     # passed by the by() function
     if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
@@ -201,7 +205,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
           if (is.data.frame(df_)) {
             # df found - look for label and column names / labels
             df_name   <- obj.name
-            df_pos    <- no.frame
             df_label  <- label(df_)
 
             if (max.varnames > 0) {
@@ -398,6 +401,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                  df_label   = df_label,
                  var_names  = var_names,
                  var_labels = var_labels,
+                 by_var     = by_var,
                  by_group   = by_group,
                  by_first   = by_first,
                  by_last    = by_last)
