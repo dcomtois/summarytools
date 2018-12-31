@@ -1489,12 +1489,13 @@ build_heading_pander <- function(format_info, data_info) {
   
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
-    if(isTRUE(format_info$headings)) {
+    if(!isTRUE(format_info$headings)) {
+      head3 <- append_items(list(c(Variable       = '')))
+    } else {
       head3 <- append_items(list(c(Variable       = ''),
                                  c(Variable.label = trs('label')),
-                                 c(Data.type      = trs('type'))))
-    } else {
-      head3 <- append_items(list(c(Variable       = '')))
+                                 c(Data.type      = trs('type')),
+                                 c(N.obs          = trs('n'))))
     }
     return(list(head3))
   } else if (isTRUE(format_info$group.only)) {
@@ -1510,7 +1511,7 @@ build_heading_pander <- function(format_info, data_info) {
       head3 <- append_items(list(c(Variable = "")))
       return(list(head3))
     } else if ("Group" %in% names(data_info)) {
-      head3 <- append_items(list(c(Group    = trs('group'))))
+      head3 <- append_items(list(c(Group = trs('group'))))
       return(list(head3))
     } else {
       return(list())
@@ -1522,13 +1523,58 @@ build_heading_pander <- function(format_info, data_info) {
     head1 <- add_markup(ifelse('Weights' %in% names(data_info),
                                trs('title.freq.weighted'), 
                                trs('title.freq')), h = 3)
-
-    head2 <- append_items(list(c(Variable = "")))
-    
-    head3 <- append_items(list(c(Variable.label = trs('label')),
-                               c(Data.type      = trs('type')),
-                               c(Weights        = trs('weights')),
-                               c(Group          = trs('group'))))
+    if ("Variable" %in% names(data_info)) {
+      if ("var.only" %in% names(format_info)) {
+        head2 <- append_items(list(c(Data.frame       = trs('data.frame'))))
+        head3 <- append_items(list(c(Data.frame.label = trs('label')),
+                                   c(Variable         = ''),
+                                   c(Data.type        = trs('type'))))
+      } else {
+        head2 <- append_items(list(c(Variable = '')))
+        #head2 <- add_markup(paste0('  \n', data_info$Variable))
+        if ("by.first" %in% names(data_info)) {
+          if (!isTRUE(data_info$by.first)) {
+            head3 <- append_items(list(c(Variable.label = trs('label')),
+                                       c(Group          = trs('group'))))
+          } else {
+            head3 <- append_items(list(c(Variable.label = trs('label')),
+                                       c(Weights        = trs('weights')),
+                                       c(Group          = trs('group'))))
+          }
+        } else {
+          head3 <- append_items(list(c(Variable.label = trs('label')),
+                                     c(Data.type      = trs('type')),
+                                     c(Weights        = trs('weights')),
+                                     c(Group          = trs('group'))))
+        }
+      }    
+    } else if ("Data.frame" %in% names(data_info)) {
+      if (isTRUE(format_info$var.only)) {
+        head2 <- append_items(list(c(Data.frame       = trs('data.frame'))))
+        head3 <- append_items(list(c(Data.frame.label = trs('label')),
+                                   c(Data.type        = trs('type'))))
+      } else {
+        head2 <- add_markup(paste0('  \n', data_info$Data.frame))
+        if ("by.first" %in% names(data_info)) {
+          if (!isTRUE(data_info$by.first)) {
+            head3 <- append_items(list(c(Group = trs('group'))))
+          } else {
+            head3 <- append_items(c(Weights = trs('weights')),
+                                  c(Group   = trs('group')))
+          }
+        }
+      }
+    }
+    # head1 <- add_markup(ifelse('Weights' %in% names(data_info),
+    #                            trs('title.freq.weighted'), 
+    #                            trs('title.freq')), h = 3)
+    # 
+    # head2 <- append_items(list(c(Variable = "")))
+    # 
+    # head3 <- append_items(list(c(Variable.label = trs('label')),
+    #                            c(Data.type      = trs('type')),
+    #                            c(Weights        = trs('weights')),
+    #                            c(Group          = trs('group'))))
     
   } else if (caller == 'print_ctable') {
     head1 <- add_markup(
@@ -1553,26 +1599,25 @@ build_heading_pander <- function(format_info, data_info) {
                                trs('title.descr.weighted'), 
                                trs('title.descr')), h = 3)
 
-    if ("byvar" %in% names(data_info)) {
+    if ("by.var.special" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable, " ", 
-                                 trs("by"), " ", data_info$byvar))
-      if (isTRUE(data_info$by.first)) {
-        if ("Variable" %in% names(data_info)) {
-          head3 <- append_items(list(c(Variable.label = trs('label')),
-                                     c(Weights        = trs('weights')),
-                                     c(Group          = trs('group')),
-                                     c(N.Obs          = trs('n'))))
-        } else if ("Data.frame" %in% names(data_info)) {
-          head3 <- append_items(list(c(Data.frame       = ''),
-                                     c(Data.frame.label = trs('label')),
-                                     c(Weights          = trs('weights')),
-                                     c(Group            = trs('group')),
-                                     c(N.Obs            = trs('n'))))
-        }
-      } else {
-        head3 <- append_items(list(c(Group          = trs('group')),
+                                 trs("by"), " ", data_info$by.var.special))
+      
+      if ("Variable" %in% names(data_info)) {
+        head3 <- append_items(list(c(Variable.label = trs('label')),
+                                   c(Weights        = trs('weights')),
+                                   c(Group          = trs('group')),
                                    c(N.Obs          = trs('n'))))
+      } else if ("Data.frame" %in% names(data_info)) {
+        head3 <- append_items(list(c(Data.frame       = ''),
+                                   c(Data.frame.label = trs('label')),
+                                   c(Weights          = trs('weights')),
+                                   c(Group            = trs('group')),
+                                   c(N.Obs            = trs('n'))))
       }
+      
+      #  head3 <- append_items(list(c(Group          = trs('group')),
+      #                             c(N.Obs          = trs('n'))))
     } else if ("Variable" %in% names(data_info)) {
       head2 <- add_markup(paste0('  \n', data_info$Variable))
       head3 <- append_items(list(c(Variable.label = trs('label')),
@@ -1607,6 +1652,7 @@ build_heading_pander <- function(format_info, data_info) {
   return(tmp[which(!is.na(tmp))])
 }
 
+# Build headings (html) --------------------------------------------------------
 #' @keywords internal
 #' @import htmltools
 build_heading_html <- function(format_info, data_info, method) {
@@ -1733,7 +1779,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs('title.descr.weighted'), 
                                            trs('title.descr')))))
     
-    if ("byvar" %in% names(data_info)) {
+    if ("by.var.special" %in% names(data_info)) {
       data_info$Variable <- (paste(data_info$Variable, trs("by"), 
                                    data_info$byvar))
     }

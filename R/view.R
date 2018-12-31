@@ -35,7 +35,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
 
   # Objects not created via by() or lapply() -----------------------------------
   if (inherits(x, "summarytools") && 
-      (attr(x, "st_type") %in% c("freq", "ctable", "descr", "dfSummary"))) {
+      (isTRUE(attr(x, "st_type") %in% 
+              c("freq", "ctable", "descr", "dfSummary")))) {
     
     print.summarytools(x,
                        method        = method,
@@ -58,8 +59,6 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     
     # Special case: descr by() objects with 1 variable -------------------------
     
-    byvar <- sub("^.*\\$(.+)", "\\1", names(attributes(x)$dimnames))
-    
     if (attr(x[[1]], 'data_info')$transposed) {
       xx <- do.call(rbind, x)
     } else {
@@ -73,13 +72,16 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     attr(xx, 'date')      <- attr(x[[1]], 'date')
     attr(xx, 'data_info') <- attr(x[[1]], 'data_info')
     
-    attr(xx, 'data_info')$byvar    <- byvar
+    attr(xx, 'data_info')$by.var.special <- 
+      sub("^.*\\$(.+)", "\\1", attr(x[[1]], "data_info")$by.var)
     attr(xx, 'data_info')$Group    <- NULL
     attr(xx, 'data_info')$by.first <- NULL
     attr(xx, 'data_info')$by.last  <- NULL
-    attr(xx, 'data_info')$N.Obs    <- NULL
+    attr(xx, 'data_info')$N.Obs    <- attr(x[[1]], 'data_info')$N.Obs
     
-    attr(xx, "data_info") <- attr(xx, "data_info")[!is.na(attr(xx,"data_info"))]
+    # Remove NA items if any
+    attr(xx, "data_info") <- attr(xx,"data_info")[!is.na(attr(xx, "data_info"))]
+    
     
     attr(xx, 'format_info') <- attr(x[[1]], 'format_info')
     attr(xx, 'user_fmt')    <- attr(x[[1]], 'user_fmt')
@@ -117,9 +119,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
           open.doc <- FALSE
           footnote <- NA
         }
-        
-        
-        
+
         if (i == 1) {
           if (isTRUE(append) && !is.na(custom.css)) {
             stop("Can't append existing html file with new custom.css")
@@ -381,10 +381,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     message(
       paste(
         "x must either be a summarytools object created with freq(), descr(),",
-        "or a list of freq() / descr() objects created using by(),",
-        "or a list of freq() objects created using lapply().",
-        "Support for by() used with ctable() may be available in future ",
-        "realeases."
+        "or a list of summarytools objects created using by()"
       )
     )
   }
