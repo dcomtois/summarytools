@@ -129,7 +129,7 @@ check_arguments <- function(mc, dotArgs) {
   
   # freq & descr arguments -----------------------------------------------------
   if (caller %in% c("freq", "descr")) {
-    if ('weights' %in% names(mc) && length(pf$weights) != length(pf$x)) {
+    if (!is.na(pf$weights) && length(pf$weights) != length(pf$x)) {
       msg %+=% "'weights' must have same length as 'x'"      
     }
     
