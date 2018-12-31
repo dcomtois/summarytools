@@ -235,11 +235,47 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
      errmsg %+=% "'file' path is not valid - check that directory exists"
   }
   
-  if (file != "" && 
-      grepl(pattern = "\\.html$", x = file, ignore.case = TRUE, perl = TRUE) &&
-      !grepl(pattern = tempdir(), x = file, fixed = TRUE)) {
+  # Change method to viewer when file name was (most likely) provided by user
+  if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
+      !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
+      method == "pander") {
     method <- "viewer"
+    message("Switching to 'viewer' method, as 'pander' is incompatible with",
+            " html output file format")
   }
+  
+  # Set plain.ascii to false and adjust style when file name ends with .md
+  if (grepl("\\.md$", file, ignore.case = TRUE, perl = TRUE) 
+      && !"style" %in% names(dotArgs)) {
+    if (isTRUE(attr(x, "format_info")$plain.ascii) && 
+        !"plain.ascii" %in% names(dotArgs)) {
+      tmp_msg_flag <- TRUE
+      dotArgs %+=% list(plain.ascii = FALSE)
+    } else {
+      tmp_msg_flag <- FALSE
+    }
+
+    newstyle = switch(attr(x, "st_type"),
+                      freq      = "rmarkdown",
+                      ctable    = "grid",
+                      descr     = "rmarkdown",
+                      dfSummary = "grid")
+    
+    if (attr(x, "format_info")$style %in% c("simple", "multiline")) {
+      dotArgs %+=% list(style = newstyle)
+      if (isTRUE(tmp_msg_flag)) {
+        message("Setting 'plain.ascii' to FALSE and Changing style to '",
+                newstyle, "' for improved markdown compatibility")
+      } else {
+        message("Changing style to '",newstyle, "' for improved markdown",
+                "compatibility")
+      }
+    } else if (isTRUE(tmp_msg_flag)) {
+      message("Setting 'plain.ascii' to FALSE for improved markdown",
+              "compatibility")
+    }
+  }
+  
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
@@ -575,6 +611,14 @@ print_freq <- function(x, method) {
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
+  
+  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
+     (!"by.first" %in% names(data_info) || 
+      isTRUE(as.logical(data_info$by.first))) &&
+     "ignored" %in% names(attributes(x))) {
+    message("Non-numerical variable(s) ignored: ",
+            paste(attr(x, "ignored"), collapse = ", "))
+  }
   
   if (!isTRUE(format_info$report.nas)) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
@@ -975,7 +1019,8 @@ print_descr <- function(x, method) {
      (!"by.first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by.first))) &&
      "ignored" %in% names(attributes(x))) {
-    message("Non-numerical variable(s) ignored: ", paste(attr(x, "ignored"), collapse = ", "))
+    message("Non-numerical variable(s) ignored: ", 
+            paste(attr(x, "ignored"), collapse = ", "))
   }
   
   justify <- switch(tolower(substring(format_info$justify, 1, 1)),
@@ -1414,6 +1459,13 @@ build_heading_pander <- function(format_info, data_info) {
             (names(item) == 'Data.type' && 
              isTRUE(format_info$display.type)) ||
             !grepl('(label|Data\\.type)', names(item))) {
+          
+          if (names(item) == "Variable" && 
+              "var.only" %in% names(format_info) && caller == "print_freq") {
+            data_info[["Variable"]] <- 
+              sub(paste0(data_info[["Data.frame"]], "$"), "", 
+                  data_info[["Variable"]], fixed = TRUE)
+          }
 
           if (item != "") {
             to_append <- 
