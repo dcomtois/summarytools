@@ -15,10 +15,10 @@
 #' @export
 print.by <- function(x, method = "pander", file = "", append = FALSE, 
                      report.title = NA, table.classes = NA, 
-                     bootstrap.css = st_options('bootstrap.css'), 
-                     custom.css = st_options('custom.css'),
-                     silent = FALSE, footnote = st_options('footnote'), 
-                     escape.pipe = st_options('escape.pipe'), ...) {
+                     bootstrap.css = st_options("bootstrap.css"), 
+                     custom.css = st_options("custom.css"),
+                     silent = FALSE, footnote = st_options("footnote"), 
+                     escape.pipe = st_options("escape.pipe"), ...) {
   if (inherits(x[[1]], "summarytools")) {
     view(x, method = method, file = file, append = append, 
          report.title = report.title, table.classes = table.classes, 

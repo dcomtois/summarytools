@@ -57,13 +57,13 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats addmargins na.omit
-ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany', 
-                   totals = st_options('ctable.totals'), 
-                   style = st_options('style'), 
-                   round.digits = 1, justify = 'right', 
-                   plain.ascii = st_options('plain.ascii'),
-                   headings = st_options('headings'),
-                   display.labels = st_options('display.labels'),
+ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany", 
+                   totals = st_options("ctable.totals"), 
+                   style = st_options("style"), 
+                   round.digits = 1, justify = "right", 
+                   plain.ascii = st_options("plain.ascii"),
+                   headings = st_options("headings"),
+                   display.labels = st_options("display.labels"),
                    split.tables = Inf, 
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
@@ -160,8 +160,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
 
   # Add totals
   freq_table <- addmargins(freq_table)
-  rownames(freq_table)[nrow(freq_table)] <- trs('total')
-  colnames(freq_table)[ncol(freq_table)] <- trs('total')
+  rownames(freq_table)[nrow(freq_table)] <- trs("total")
+  colnames(freq_table)[ncol(freq_table)] <- trs("total")
   if (!is.null(prop_table)) {
     prop_table[is.nan(prop_table)] <- 0 # NaN's can occur
     if (prop == "t") {
@@ -178,8 +178,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
       prop_table <- cbind(prop_table, sum_props)
     }
 
-    rownames(prop_table)[nrow(prop_table)] <- trs('total')
-    colnames(prop_table)[ncol(prop_table)] <- trs('total')
+    rownames(prop_table)[nrow(prop_table)] <- trs("total")
+    colnames(prop_table)[ncol(prop_table)] <- trs("total")
   }
 
   # Change name of NA items to avoid potential problems when echoing to console
@@ -236,7 +236,7 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   
   attr(output, "user_fmt") <- list(... = ...)
 
-  attr(output, "lang") <- st_options('lang')
+  attr(output, "lang") <- st_options("lang")
   
   return(output)
 }

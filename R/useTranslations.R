@@ -30,5 +30,5 @@ useTranslations <- function(file) {
   # end test
 
   .st_env$custom_lang <- tr
-  st_options(lang = 'custom')
+  st_options(lang = "custom")
 }

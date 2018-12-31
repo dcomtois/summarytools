@@ -133,11 +133,11 @@
 #'             test_string check_file_exists
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, table.classes = NA, 
-                               bootstrap.css = st_options('bootstrap.css'),
-                               custom.css = st_options('custom.css'), 
+                               bootstrap.css = st_options("bootstrap.css"),
+                               custom.css = st_options("custom.css"), 
                                silent = FALSE, 
-                               footnote = st_options('footnote'), 
-                               escape.pipe = st_options('escape.pipe'), ...) {
+                               footnote = st_options("footnote"), 
+                               escape.pipe = st_options("escape.pipe"), ...) {
 
   # object is a list (either created with lapply() or by running freq with
   # a dataframe as x)
@@ -182,9 +182,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                    v = "viewer",
                    r = "render")
 
-  if (attr(x, 'lang') != st_options('lang')) {
-    op <- st_options('lang')
-    st_options(lang = attr(x, 'lang'))
+  if (attr(x, "lang") != st_options("lang")) {
+    op <- st_options("lang")
+    st_options(lang = attr(x, "lang"))
     on.exit(st_options(lang = op), add = TRUE)
   }
 
@@ -311,7 +311,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Here we check for arguments that can be specified at the function level for
   # freq, descr, ctable and dfSummary (we don't include  print/view args)
   overrided_args <- character()
-  # Todo: remove 'omit.headings' in next release
+  # Todo: remove "omit.headings" in next release
   for (format_element in c("style", "plain.ascii", "round.digits",
                            "justify", "headings", "display.labels",
                            "display.type", "varnumbers", "labels.col", 
@@ -319,7 +319,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "split.tables", "totals", "report.nas", "missing",
                            "totals", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
-      if (format_element == 'omit.headings') {
+      if (format_element == "omit.headings") {
         
         msg <- paste("'omit.headings' will disappear in future releases;",
                      "use 'headings' instead")
@@ -330,9 +330,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           message(msg)
         }
         
-        attr(x, "format_info")[['headings']] <- 
+        attr(x, "format_info")[["headings"]] <- 
           !isTRUE(eval(dotArgs[["omit.headings"]]))
-        overrided_args <- append(overrided_args, 'headings')
+        overrided_args <- append(overrided_args, "headings")
       } else {
         attr(x, "format_info")[[format_element]] <- dotArgs[[format_element]]
         overrided_args <- append(overrided_args, format_element)
@@ -347,10 +347,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "headings", "display.labels")) {
     if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
       # Todo: following condition is to be removed in further releases
-      if (!(format_element == 'headings' &&
-            'omit.headings' %in% names(attr(x, "fn_call")))) {
-        if (!(format_element == 'style' &&
-              attr(x, "st_type") == 'dfSummary')) {
+      if (!(format_element == "headings" &&
+            "omit.headings" %in% names(attr(x, "fn_call")))) {
+        if (!(format_element == "style" &&
+              attr(x, "st_type") == "dfSummary")) {
           attr(x, "format_info")[[format_element]] <- st_options(format_element)
         }
       }
@@ -419,11 +419,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
       paste0(
-        "<p>", conv_non_ascii(trs('generated.by')),
+        "<p>", conv_non_ascii(trs("generated.by")),
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
-        " (<a href='https://www.r-project.org/'>R</a> ", trs('version'), ' ', 
-        getRversion(), ")", "<br/>", strftime(Sys.Date(),trs('date.fmt')),"</p>"
+        " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
+        getRversion(), ")", "<br/>", strftime(Sys.Date(),trs("date.fmt")),"</p>"
       )
   }
 
@@ -441,29 +441,29 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     res <- print_freq(x, method)
     if (is.na(report.title)) {
       if (!("Weights" %in% names(attr(x, "data_info")))) {
-        report.title <- trs('title.freq')
+        report.title <- trs("title.freq")
       } else {
-        report.title <- trs('title.freq.weighted')
+        report.title <- trs("title.freq.weighted")
       }
     }
   } else if (attr(x, "st_type") == "ctable") {
     res <- print_ctable(x, method)
     if (is.na(report.title)) {
-      report.title <- trs('title.ctable')
+      report.title <- trs("title.ctable")
     }
   } else if (attr(x, "st_type") == "descr") {
     res <- print_descr(x, method)
     if (is.na(report.title)) {
       if (!("Weights" %in% names(attr(x, "data_info")))) {
-        report.title <- trs('title.descr')
+        report.title <- trs("title.descr")
       } else {
-        report.title <- trs('title.descr.weighted')
+        report.title <- trs("title.descr.weighted")
       }
     }
   } else if(attr(x, "st_type") == "dfSummary") {
     res <- print_dfs(x, method)
     if (is.na(report.title)) {
-      report.title <- trs('title.dfSummary')
+      report.title <- trs("title.dfSummary")
     }
   }
 
@@ -524,7 +524,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             res)
         
       } else {
-        # method == 'render'
+        # method == "render"
         html_content <-
           tags$div(
             class="container st-container",
@@ -623,7 +623,7 @@ print_freq <- function(x, method) {
   if (!isTRUE(format_info$report.nas)) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     x <- x[-(nrow(x)-1),1:3]
-    colnames(x) <- c(trs('freq'), "%", trs('pct.cum'))
+    colnames(x) <- c(trs("freq"), "%", trs("pct.cum"))
   }
   
   if (!isTRUE(format_info$totals)) {
@@ -733,15 +733,15 @@ print_freq <- function(x, method) {
     
     if (isTRUE(format_info$report.nas)) {
       table_head[[1]] <- list(tags$th("", colspan = 2),
-                              tags$th(trs('valid'), colspan = 2),
-                              tags$th(trs('total'), colspan = 2))
+                              tags$th(trs("valid"), colspan = 2),
+                              tags$th(trs("total"), colspan = 2))
       table_head[[2]] <- list(tags$th(sub("^.*\\$(.+)$", "\\1", 
                                           data_info$Variable)),
-                              tags$th(HTML(trs('freq'))),
+                              tags$th(HTML(trs("freq"))),
                               tags$th("%"),
-                              tags$th(HTML(trs('pct.cum'))),
+                              tags$th(HTML(trs("pct.cum"))),
                               tags$th("%"),
-                              tags$th(HTML(trs('pct.cum'))))
+                              tags$th(HTML(trs("pct.cum"))))
       
       freq_table_html <-
         tags$table(
@@ -760,9 +760,9 @@ print_freq <- function(x, method) {
       
       # no reporting of missing values (NA)
       table_head <- list(tags$th(data_info$Variable),
-                         tags$th(trs('freq')),
+                         tags$th(trs("freq")),
                          tags$th("%"),
-                         tags$th(HTML(trs('pct.cum'))))
+                         tags$th(HTML(trs("pct.cum"))))
       
       freq_table_html <-
         tags$table(
@@ -798,7 +798,7 @@ print_freq <- function(x, method) {
     div_list %+=% list(HTML(text = conv_non_ascii(freq_table_html)))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      fn <- conv_non_ascii(parent.frame()[["footnote"]])
       div_list %+=% list(HTML(text = fn))
     }
   }
@@ -852,12 +852,12 @@ print_ctable <- function(x, method) {
   
   if (!isTRUE(format_info$totals)) {
     x$cross_table <-
-      x$cross_table[which(rownames(x$cross_table) != trs('total')), 
-                    which(colnames(x$cross_table) != trs('total'))]
+      x$cross_table[which(rownames(x$cross_table) != trs("total")), 
+                    which(colnames(x$cross_table) != trs("total"))]
     if (data_info$Proportions != "None") {
       x$proportions <- 
-        x$proportions[which(rownames(x$proportions) != trs('total')), 
-                      which(colnames(x$proportions) != trs('total'))]
+        x$proportions[which(rownames(x$proportions) != trs("total")), 
+                      which(colnames(x$proportions) != trs("total"))]
     }
   }
   
@@ -901,7 +901,7 @@ print_ctable <- function(x, method) {
         ),
         collapse = "\n")
     
-    if (isTRUE(format_info$headings) && format_info$style != 'grid') {
+    if (isTRUE(format_info$headings) && format_info$style != "grid") {
       main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", 
                                             main_sect[[length(main_sect)]])
     }
@@ -998,7 +998,7 @@ print_ctable <- function(x, method) {
     div_list %+=% list(cross_table_html)
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      fn <- conv_non_ascii(parent.frame()[["footnote"]])
       div_list %+=% list(HTML(text = fn))
     }
   }
@@ -1104,8 +1104,8 @@ print_descr <- function(x, method) {
         # cell is NA
         if (is.na(x[ro,co])) {
           table_row %+=% list(tags$td(format_info$missing))
-        } else if ((rownames(x)[ro] == trs('n.valid') || 
-                    colnames(x)[co] == trs('n.valid')) && 
+        } else if ((rownames(x)[ro] == trs("n.valid") || 
+                    colnames(x)[co] == trs("n.valid")) && 
                    !"Weights" %in% names(data_info)) {
           table_row %+=% list(tags$td(tags$span(round(x[ro,co], 0))))
         } else {
@@ -1167,7 +1167,7 @@ print_descr <- function(x, method) {
                              x = descr_table_html,
                              perl = TRUE)
     descr_table_html <- gsub(pattern = '(<td align="right">)\\s+(<)',
-                             replacement = '\\1\\2',
+                             replacement = "\\1\\2",
                              x = descr_table_html,
                              perl = TRUE)
     descr_table_html <- conv_non_ascii(descr_table_html)
@@ -1182,7 +1182,7 @@ print_descr <- function(x, method) {
     div_list %+=% list(HTML(text = descr_table_html))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      fn <- conv_non_ascii(parent.frame()[["footnote"]])
       div_list %+=% list(HTML(text = fn))
     }
   }
@@ -1200,31 +1200,31 @@ print_dfs <- function(x, method) {
   user_fmt    <- attr(x, "user_fmt")
   
   # Remove Var number ("No") column if specified in call to print/view
-  if (trs('no') %in% names(x) && 
+  if (trs("no") %in% names(x) && 
       "varnumbers" %in% names(format_info) && 
       !isTRUE(format_info$varnumbers)) {
-    x <- x[ ,-which(names(x) == trs('no'))]
+    x <- x[ ,-which(names(x) == trs("no"))]
   }
   
   # Remove Label column if specified in call to print/view
   if (trs("label") %in% names(x) && 
       "Labels.col" %in% names(format_info) && 
       !isTRUE(format_info$labels.col)) {
-    x <- x[ ,-which(names(x) == trs('label'))]
+    x <- x[ ,-which(names(x) == trs("label"))]
   }
   
   # Remove Valid column if specified in call to print/view
-  if (trs('valid') %in% names(x) && 
+  if (trs("valid") %in% names(x) && 
       "valid.col" %in% names(format_info) && 
       !isTRUE(format_info$valid.col)) {
-    x <- x[ ,-which(names(x) == trs('valid'))]
+    x <- x[ ,-which(names(x) == trs("valid"))]
   }
   
   # Remove Missing column if specified in call to print/view
-  if (trs('missing') %in% names(x) && 
+  if (trs("missing") %in% names(x) && 
       "na.col" %in% names(format_info) && 
       !isTRUE(format_info$na.col)) {
-    x <- x[ ,-which(names(x) == trs('missing'))]
+    x <- x[ ,-which(names(x) == trs("missing"))]
   }
   
   # print_dfs - pander section -------------------------------------------------  
@@ -1236,15 +1236,15 @@ print_dfs <- function(x, method) {
     }
     
     # Remove graph if specified in call to print/view
-    if (trs('text.graph') %in% names(x) && 
+    if (trs("text.graph") %in% names(x) && 
         "graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) {
-      x <- x[ ,-which(names(x) == trs('text.graph'))]
+      x <- x[ ,-which(names(x) == trs("text.graph"))]
     }
     
-    # Check that style is not 'simple' or 'rmarkdown'
-    if (isTRUE(format_info$style == 'simple')) {
-      format_info$style <- 'multiline'
+    # Check that style is not "simple" or "rmarkdown"
+    if (isTRUE(format_info$style == "simple")) {
+      format_info$style <- "multiline"
     }
     
     if (!isTRUE(format_info$plain.ascii)) {
@@ -1276,7 +1276,7 @@ print_dfs <- function(x, method) {
       
       # Remove txt histograms b/c not supported in rmarkdown (for now)
       # if (trs("text.graph") %in% names(x)) {
-      #   x[[trs("text.graph")]][which(grepl('[:.]', 
+      #   x[[trs("text.graph")]][which(grepl("[:.]", 
       #                                      x[[trs("text.graph")]]))] <- ""
       # }
     }
@@ -1336,7 +1336,7 @@ print_dfs <- function(x, method) {
     colgroup <- NA    
     if ("col.widths" %in% names(format_info)) {
       if (length(format_info$col.widths) != ncol(x)) {
-        stop("Number of elements in 'col.widths' (",
+        stop("Number of elements in 'col.widths', (",
              (length(format_info$col.widths)), ") is not equal to number of ",
              "columns to display (", ncol(x), ")")
       }
@@ -1361,20 +1361,20 @@ print_dfs <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
         cell <- x[ro,co]
-        cell <- gsub('\\\\\n', '\n', cell)
+        cell <- gsub("\\\\\n", "\n", cell)
         if (colnames(x)[co] %in% c(trs("no"), trs("valid"), trs("missing"))) {
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
                                       align = "center"))
         } else if (colnames(x)[co] == trs("label")) {
-          cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
+          cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
           cell <- paste(strwrap(cell, width = format_info$split.cells, 
                                 simplify = TRUE), collapse = "\n")
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
                                       align = "left"))
         } else if (colnames(x)[co] %in% 
                    c(trs("variable"), trs("stats.values"))) {
-          cell <- gsub('(\\d+)\\\\\\.', '\\1.', cell)
-          cell <- gsub('\\s{2,}', " ", cell)
+          cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
+          cell <- gsub("\\s{2,}", " ", cell)
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
                                       align = "left"))
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
@@ -1406,7 +1406,7 @@ print_dfs <- function(x, method) {
       )
     
     dfs_table_html <-
-      gsub(pattern = '(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)',
+      gsub(pattern = "(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)",
            replacement = "\\1\\2\\3", x = dfs_table_html)
     
     # Prepare the main "div" for the html report
@@ -1420,7 +1420,7 @@ print_dfs <- function(x, method) {
     div_list %+=% list(HTML(text = dfs_table_html))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[['footnote']])
+      fn <- conv_non_ascii(parent.frame()[["footnote"]])
       div_list %+=% list(HTML(text = fn))
     }
   }
@@ -1432,7 +1432,7 @@ print_dfs <- function(x, method) {
 build_heading_pander <- function(format_info, data_info) {
   
   caller <- as.character(sys.call(-1))[1]
-  head1 = NA # Main title (e.g. 'Data Frame Summary')
+  head1 = NA # Main title (e.g. "Data Frame Summary")
   head2 = NA # The data frame, the variable, or the 2 variables for ctable
   head3 = NA # Additional elements (includes Variable exceptionnaly when
              # headings = FALSE and by() or lapply() were used
@@ -1440,11 +1440,11 @@ build_heading_pander <- function(format_info, data_info) {
   add_markup <- function(str, h = 0) {
     if (isFALSE(format_info$plain.ascii)) {
       if (h == 0) {
-        str <- sub(pattern = '^(\\s*)(.+?)((:)\\s(.+))?\\s*$',
-                   replacement = '\\1**\\2\\4** \\5',
+        str <- sub(pattern = "^(\\s*)(.+?)((:)\\s(.+))?\\s*$",
+                   replacement = "\\1**\\2\\4** \\5",
                    x = str, perl = TRUE)
       } else {
-        str <- paste(paste0(rep(x = '#', times = h), collapse = ""), str)
+        str <- paste(paste0(rep(x = "#", times = h), collapse = ""), str)
       }
     }
     return(str)
@@ -1454,11 +1454,11 @@ build_heading_pander <- function(format_info, data_info) {
     to_append <- c()
     for (item in items) {
       if (names(item) %in% names(data_info)) {
-        if ((grepl(pattern = 'label', names(item)) && 
+        if ((grepl(pattern = "label", names(item)) && 
              isTRUE(format_info$display.labels)) ||
-            (names(item) == 'Data.type' && 
+            (names(item) == "Data.type" && 
              isTRUE(format_info$display.type)) ||
-            !grepl('(label|Data\\.type)', names(item))) {
+            !grepl("(label|Data\\.type)", names(item))) {
           
           if (names(item) == "Variable" && 
               "var.only" %in% names(format_info) && caller == "print_freq") {
@@ -1470,16 +1470,16 @@ build_heading_pander <- function(format_info, data_info) {
           if (item != "") {
             to_append <- 
               append(to_append,
-                     paste0('  \n', 
+                     paste0("  \n", 
                             add_markup(
-                              paste(item, data_info[[names(item)]], sep = ': '),
+                              paste(item, data_info[[names(item)]], sep = ": "),
                               h),
-                            '  '))
+                            "  "))
           } else {
             to_append <- 
               append(to_append,
-                     paste0('  \n', add_markup(data_info[[names(item)]], h),
-                            '  '))
+                     paste0("  \n", add_markup(data_info[[names(item)]], h),
+                            "  "))
           }
         }
       }
@@ -1493,15 +1493,15 @@ build_heading_pander <- function(format_info, data_info) {
       head3 <- append_items(list(c(Variable       = '')))
     } else {
       head3 <- append_items(list(c(Variable       = ''),
-                                 c(Variable.label = trs('label')),
-                                 c(Data.type      = trs('type')),
-                                 c(N.obs          = trs('n'))))
+                                 c(Variable.label = trs("label")),
+                                 c(Data.type      = trs("type")),
+                                 c(N.obs          = trs("n"))))
     }
     return(list(head3))
   } else if (isTRUE(format_info$group.only)) {
     if (isTRUE(format_info$headings)) {
-      head3 <- append_items(list(c(Group = trs('group')),
-                                 c(N.Obs = trs('n'))))
+      head3 <- append_items(list(c(Group = trs("group")),
+                                 c(N.Obs = trs("n"))))
     } else {
       head3 <- append_items(list(c(Group = trs("group"))))
     }
@@ -1511,7 +1511,7 @@ build_heading_pander <- function(format_info, data_info) {
       head3 <- append_items(list(c(Variable = "")))
       return(list(head3))
     } else if ("Group" %in% names(data_info)) {
-      head3 <- append_items(list(c(Group = trs('group'))))
+      head3 <- append_items(list(c(Group = trs("group"))))
       return(list(head3))
     } else {
       return(list())
@@ -1519,126 +1519,126 @@ build_heading_pander <- function(format_info, data_info) {
   }
 
   # Regular cases - Build the 3 heading elementss
-  if (caller == 'print_freq') {
-    head1 <- add_markup(ifelse('Weights' %in% names(data_info),
-                               trs('title.freq.weighted'), 
-                               trs('title.freq')), h = 3)
+  if (caller == "print_freq") {
+    head1 <- add_markup(ifelse("Weights" %in% names(data_info),
+                               trs("title.freq.weighted"), 
+                               trs("title.freq")), h = 3)
     if ("Variable" %in% names(data_info)) {
       if ("var.only" %in% names(format_info)) {
-        head2 <- append_items(list(c(Data.frame       = trs('data.frame'))))
-        head3 <- append_items(list(c(Data.frame.label = trs('label')),
+        head2 <- append_items(list(c(Data.frame       = trs("data.frame"))))
+        head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                    c(Variable         = ''),
-                                   c(Data.type        = trs('type'))))
+                                   c(Data.type        = trs("type"))))
       } else {
         head2 <- append_items(list(c(Variable = '')))
-        #head2 <- add_markup(paste0('  \n', data_info$Variable))
+        #head2 <- add_markup(paste0("  \n", data_info$Variable))
         if ("by.first" %in% names(data_info)) {
           if (!isTRUE(data_info$by.first)) {
-            head3 <- append_items(list(c(Variable.label = trs('label')),
-                                       c(Group          = trs('group'))))
+            head3 <- append_items(list(c(Variable.label = trs("label")),
+                                       c(Group          = trs("group"))))
           } else {
-            head3 <- append_items(list(c(Variable.label = trs('label')),
-                                       c(Weights        = trs('weights')),
-                                       c(Group          = trs('group'))))
+            head3 <- append_items(list(c(Variable.label = trs("label")),
+                                       c(Weights        = trs("weights")),
+                                       c(Group          = trs("group"))))
           }
         } else {
-          head3 <- append_items(list(c(Variable.label = trs('label')),
-                                     c(Data.type      = trs('type')),
-                                     c(Weights        = trs('weights')),
-                                     c(Group          = trs('group'))))
+          head3 <- append_items(list(c(Variable.label = trs("label")),
+                                     c(Data.type      = trs("type")),
+                                     c(Weights        = trs("weights")),
+                                     c(Group          = trs("group"))))
         }
       }    
     } else if ("Data.frame" %in% names(data_info)) {
       if (isTRUE(format_info$var.only)) {
-        head2 <- append_items(list(c(Data.frame       = trs('data.frame'))))
-        head3 <- append_items(list(c(Data.frame.label = trs('label')),
-                                   c(Data.type        = trs('type'))))
+        head2 <- append_items(list(c(Data.frame       = trs("data.frame"))))
+        head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                                   c(Data.type        = trs("type"))))
       } else {
-        head2 <- add_markup(paste0('  \n', data_info$Data.frame))
+        head2 <- add_markup(paste0("  \n", data_info$Data.frame))
         if ("by.first" %in% names(data_info)) {
           if (!isTRUE(data_info$by.first)) {
-            head3 <- append_items(list(c(Group = trs('group'))))
+            head3 <- append_items(list(c(Group = trs("group"))))
           } else {
-            head3 <- append_items(c(Weights = trs('weights')),
-                                  c(Group   = trs('group')))
+            head3 <- append_items(c(Weights = trs("weights")),
+                                  c(Group   = trs("group")))
           }
         }
       }
     }
-    # head1 <- add_markup(ifelse('Weights' %in% names(data_info),
-    #                            trs('title.freq.weighted'), 
-    #                            trs('title.freq')), h = 3)
+    # head1 <- add_markup(ifelse("Weights" %in% names(data_info),
+    #                            trs("title.freq.weighted"), 
+    #                            trs("title.freq")), h = 3)
     # 
     # head2 <- append_items(list(c(Variable = "")))
     # 
-    # head3 <- append_items(list(c(Variable.label = trs('label')),
-    #                            c(Data.type      = trs('type')),
-    #                            c(Weights        = trs('weights')),
-    #                            c(Group          = trs('group'))))
+    # head3 <- append_items(list(c(Variable.label = trs("label")),
+    #                            c(Data.type      = trs("type")),
+    #                            c(Weights        = trs("weights")),
+    #                            c(Group          = trs("group"))))
     
-  } else if (caller == 'print_ctable') {
+  } else if (caller == "print_ctable") {
     head1 <- add_markup(
       switch(data_info$Proportions,
-             Row    = paste(trs('title.ctable'), trs('title.ctable.row'), 
-                            sep = ', '),
-             Column = paste(trs('title.ctable'), trs('title.ctable.col'), 
-                            sep = ', '),
-             Total  = paste(trs('title.ctable'), trs('title.ctable.tot'), 
-                            sep = ', '),
-             None   = trs('title.ctable')), h = 3
+             Row    = paste(trs("title.ctable"), trs("title.ctable.row"), 
+                            sep = ", "),
+             Column = paste(trs("title.ctable"), trs("title.ctable.col"), 
+                            sep = ", "),
+             Total  = paste(trs("title.ctable"), trs("title.ctable.tot"), 
+                            sep = ", "),
+             None   = trs("title.ctable")), h = 3
     )
     
     head2 <- append_items(list(c(Row.x.Col = "")))
 
-    head3 <- append_items(list(c(Data.frame       = trs('data.frame')),
-                               c(Data.frame.label = trs('label')),
-                               c(Group            = trs('group'))))
+    head3 <- append_items(list(c(Data.frame       = trs("data.frame")),
+                               c(Data.frame.label = trs("label")),
+                               c(Group            = trs("group"))))
     
-  } else if (caller == 'print_descr') {
-    head1 <- add_markup(ifelse('Weights' %in% names(data_info),
-                               trs('title.descr.weighted'), 
-                               trs('title.descr')), h = 3)
+  } else if (caller == "print_descr") {
+    head1 <- add_markup(ifelse("Weights" %in% names(data_info),
+                               trs("title.descr.weighted"), 
+                               trs("title.descr")), h = 3)
 
     if ("by.var.special" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable, " ", 
                                  trs("by"), " ", data_info$by.var.special))
       
       if ("Variable" %in% names(data_info)) {
-        head3 <- append_items(list(c(Variable.label = trs('label')),
-                                   c(Weights        = trs('weights')),
-                                   c(Group          = trs('group')),
-                                   c(N.Obs          = trs('n'))))
+        head3 <- append_items(list(c(Variable.label = trs("label")),
+                                   c(Weights        = trs("weights")),
+                                   c(Group          = trs("group")),
+                                   c(N.Obs          = trs("n"))))
       } else if ("Data.frame" %in% names(data_info)) {
         head3 <- append_items(list(c(Data.frame       = ''),
-                                   c(Data.frame.label = trs('label')),
-                                   c(Weights          = trs('weights')),
-                                   c(Group            = trs('group')),
-                                   c(N.Obs            = trs('n'))))
+                                   c(Data.frame.label = trs("label")),
+                                   c(Weights          = trs("weights")),
+                                   c(Group            = trs("group")),
+                                   c(N.Obs            = trs("n"))))
       }
       
-      #  head3 <- append_items(list(c(Group          = trs('group')),
-      #                             c(N.Obs          = trs('n'))))
+      #  head3 <- append_items(list(c(Group          = trs("group")),
+      #                             c(N.Obs          = trs("n"))))
     } else if ("Variable" %in% names(data_info)) {
-      head2 <- add_markup(paste0('  \n', data_info$Variable))
-      head3 <- append_items(list(c(Variable.label = trs('label')),
-                                 c(Weights        = trs('weights')),
-                                 c(Group          = trs('group')),
-                                 c(N.Obs          = trs('n'))))
+      head2 <- add_markup(paste0("  \n", data_info$Variable))
+      head3 <- append_items(list(c(Variable.label = trs("label")),
+                                 c(Weights        = trs("weights")),
+                                 c(Group          = trs("group")),
+                                 c(N.Obs          = trs("n"))))
     } else if ("Data.frame" %in% names(data_info)) {
-      head2 <- add_markup(paste0('  \n', data_info$Data.frame))
-      head3 <- append_items(list(c(Data.frame.label = trs('label')),
-                                 c(Weights          = trs('weights')),
-                                 c(Group            = trs('group')),
-                                 c(N.Obs            = trs('n'))))
+      head2 <- add_markup(paste0("  \n", data_info$Data.frame))
+      head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                                 c(Weights          = trs("weights")),
+                                 c(Group            = trs("group")),
+                                 c(N.Obs            = trs("n"))))
     }
-  } else if (caller == 'print_dfs') {
-    head1 <- add_markup(trs('title.dfSummary'), h = 3)
+  } else if (caller == "print_dfs") {
+    head1 <- add_markup(trs("title.dfSummary"), h = 3)
     if ("Data.frame" %in% names(data_info)) {
-      head2 <- add_markup(paste0('  \n', data_info$Data.frame))
+      head2 <- add_markup(paste0("  \n", data_info$Data.frame))
     }
-    head3 <- append_items(list(c(Data.frame.label = trs('label')),
-                               c(Dimensions       = trs('dimensions')),
-                               c(Duplicates       = trs('duplicates'))))
+    head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                               c(Dimensions       = trs("dimensions")),
+                               c(Duplicates       = trs("duplicates"))))
   }
   
   if (!is.na(head1))
@@ -1666,25 +1666,25 @@ build_heading_html <- function(format_info, data_info, method) {
     to_append_html <- character()
     for (item in items) {
       if (names(item) %in% names(data_info)) {
-        if ((grepl(pattern = 'label', names(item)) && 
+        if ((grepl(pattern = "label", names(item)) && 
              isTRUE(format_info$display.labels)) ||
-            (names(item) == 'Data.type' && 
+            (names(item) == "Data.type" && 
              isTRUE(format_info$display.type)) ||
-            !grepl('(label|Data\\.type)', names(item))) {
+            !grepl("(label|Data\\.type)", names(item))) {
           
           div_str_item <-
-            paste(paste0('<strong>', HTML(conv_non_ascii(item)), '</strong>'),
+            paste(paste0("<strong>", HTML(conv_non_ascii(item)), "</strong>"),
                   ifelse(is.character(data_info[[names(item)]]),
                          conv_non_ascii(data_info[[names(item)]]),
                          data_info[[names(item)]]),
-                  sep = ': ')
+                  sep = ": ")
           
           if (identical(to_append_html, character())) {
             to_append_html <- div_str_item
           } else {
             to_append_html <- paste(to_append_html,
                                     div_str_item,
-                                    sep = '\n  <br/>')
+                                    sep = "\n  <br/>")
           }
         }
       }
@@ -1702,26 +1702,26 @@ build_heading_html <- function(format_info, data_info, method) {
     if (isFALSE(format_info$headings)) {
       return(list())
     } else {
-      if (method == 'render') {
+      if (method == "render") {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
-      head3 <- append_items(list(c(Variable.label = trs('label')),
-                                 c(Data.type      = trs('type'))))
+      head3 <- append_items(list(c(Variable.label = trs("label")),
+                                 c(Data.type      = trs("type"))))
       return(list(head2, head3))
     }
   } else if (isTRUE(format_info$group.only)) {
     if (isTRUE(format_info$headings)) {
-      head3 <- append_items(list(c(Group = trs('group')),
-                                 c(N.Obs = trs('n'))))
+      head3 <- append_items(list(c(Group = trs("group")),
+                                 c(N.Obs = trs("n"))))
     } else {
-      head3 <- append_items(list(c(Group = trs('group'))))
+      head3 <- append_items(list(c(Group = trs("group"))))
     }    
     return(list(head3))
   } else if (isFALSE(format_info$headings)) {
     if ("Group" %in% names(data_info)) {
-      head3 <- append_items(list(c(Group = trs('group'))))
+      head3 <- append_items(list(c(Group = trs("group"))))
       return(list(head3))
     } else {
       return(list())
@@ -1729,97 +1729,97 @@ build_heading_html <- function(format_info, data_info, method) {
   }
 
   # Regular cases - Build the 3 heading elements
-  if (caller == 'print_freq') {
-    head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
-                                           trs('title.freq.weighted'), 
-                                           trs('title.freq')))))
+  if (caller == "print_freq") {
+    head1 <- h3(HTML(conv_non_ascii(ifelse("Weights" %in% names(data_info),
+                                           trs("title.freq.weighted"), 
+                                           trs("title.freq")))))
 
-    if (method == 'render') {
+    if (method == "render") {
       head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
     } else {
       head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
     }
 
     if ("var.only" %in% names(format_info)) {
-      head3 <- append_items(list(c(Variable.label = trs('label')),
-                                 c(Data.type      = trs('type'))))
+      head3 <- append_items(list(c(Variable.label = trs("label")),
+                                 c(Data.type      = trs("type"))))
     } else {
-      head3 <- append_items(list(c(Variable.label = trs('label')),
-                                 c(Data.type      = trs('type')),
-                                 c(Weights        = trs('weights')),
-                                 c(Group          = trs('group'))))
+      head3 <- append_items(list(c(Variable.label = trs("label")),
+                                 c(Data.type      = trs("type")),
+                                 c(Weights        = trs("weights")),
+                                 c(Group          = trs("group"))))
     }    
-  } else if (caller == 'print_ctable') {
+  } else if (caller == "print_ctable") {
     
     head1 <- 
       h3(switch(data_info$Proportions,
-                Row    = paste(trs('title.ctable'), trs('title.ctable.row'), 
-                               sep = ', '),
-                Column = paste(trs('title.ctable'), trs('title.ctable.col'), 
-                               sep = ', '),
-                Total  = paste(trs('title.ctable'), trs('title.ctable.tot'), 
-                               sep = ', '),
-                None   = trs('title.ctable')))
+                Row    = paste(trs("title.ctable"), trs("title.ctable.row"), 
+                               sep = ", "),
+                Column = paste(trs("title.ctable"), trs("title.ctable.col"), 
+                               sep = ", "),
+                Total  = paste(trs("title.ctable"), trs("title.ctable.tot"), 
+                               sep = ", "),
+                None   = trs("title.ctable")))
     
-    if ('Row.x.Col' %in% names(data_info)) {
-      if (method == 'render') {
+    if ("Row.x.Col" %in% names(data_info)) {
+      if (method == "render") {
         head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Row.x.Col)))
       }
     }
     
-    head3 <- append_items(list(c(Data.frame       = trs('data.frame')),
-                               c(Data.frame.label = trs('label')),
-                               c(Group            = trs('group'))))
+    head3 <- append_items(list(c(Data.frame       = trs("data.frame")),
+                               c(Data.frame.label = trs("label")),
+                               c(Group            = trs("group"))))
     
-  } else if (caller == 'print_descr') {
+  } else if (caller == "print_descr") {
     
-    head1 <- h3(HTML(conv_non_ascii(ifelse('Weights' %in% names(data_info),
-                                           trs('title.descr.weighted'), 
-                                           trs('title.descr')))))
+    head1 <- h3(HTML(conv_non_ascii(ifelse("Weights" %in% names(data_info),
+                                           trs("title.descr.weighted"), 
+                                           trs("title.descr")))))
     
     if ("by.var.special" %in% names(data_info)) {
       data_info$Variable <- (paste(data_info$Variable, trs("by"), 
                                    data_info$byvar))
     }
     
-    if ('Variable' %in% names(data_info)) {
-      if (method == 'render') {
+    if ("Variable" %in% names(data_info)) {
+      if (method == "render") {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
       
-      head3 <- append_items(list(c(Variable.label = trs('label')),
-                                 c(Weights        = trs('weights')),
-                                 c(Group          = trs('group')),
-                                 c(N.Obs          = trs('n'))))
+      head3 <- append_items(list(c(Variable.label = trs("label")),
+                                 c(Weights        = trs("weights")),
+                                 c(Group          = trs("group")),
+                                 c(N.Obs          = trs("n"))))
     } else {
-      if (method == 'render') {
+      if (method == "render") {
         head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
       }
       
-      head3 <- append_items(list(c(Data.frame.label = trs('label')),
-                                 c(Weights          = trs('weights')),
-                                 c(Group            = trs('group')),
-                                 c(N.Obs            = trs('n'))))
+      head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                                 c(Weights          = trs("weights")),
+                                 c(Group            = trs("group")),
+                                 c(N.Obs            = trs("n"))))
     }
     
-  } else if (caller == 'print_dfs') {
+  } else if (caller == "print_dfs") {
     
-    head1 <- h3(HTML(conv_non_ascii(trs('title.dfSummary'))))
-    if (method == 'render') {
+    head1 <- h3(HTML(conv_non_ascii(trs("title.dfSummary"))))
+    if (method == "render") {
       head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
     } else {
       head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
     }
     
-    head3 <- append_items(list(c(Data.frame.label = trs('label')),
-                               c(Dimensions       = trs('dimensions')),
-                               c(Duplicates       = trs('duplicates'))))
+    head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                               c(Dimensions       = trs("dimensions")),
+                               c(Duplicates       = trs("duplicates"))))
   }
   
   tmp <- list(head1, head2, head3)

@@ -112,18 +112,18 @@
 #' @importFrom dplyr n_distinct
 #' @importFrom stats start end
 #' @export
-dfSummary <- function(x, round.digits = st_options('round.digits'),
-                      varnumbers = st_options('dfSummary.varnumbers'),
-                      labels.col = st_options('dfSummary.labels.col'),
-                      valid.col = st_options('dfSummary.valid.col'),
-                      na.col = st_options('dfSummary.na.col'),
-                      graph.col = st_options('dfSummary.graph.col'),
-                      graph.magnif = st_options('dfSummary.graph.magnif'),
+dfSummary <- function(x, round.digits = st_options("round.digits"),
+                      varnumbers = st_options("dfSummary.varnumbers"),
+                      labels.col = st_options("dfSummary.labels.col"),
+                      valid.col = st_options("dfSummary.valid.col"),
+                      na.col = st_options("dfSummary.na.col"),
+                      graph.col = st_options("dfSummary.graph.col"),
+                      graph.magnif = st_options("dfSummary.graph.magnif"),
                       style = "multiline",
-                      plain.ascii = st_options('plain.ascii'),
+                      plain.ascii = st_options("plain.ascii"),
                       justify = "left", col.widths = NA, 
-                      headings = st_options('headings'),
-                      display.labels = st_options('display.labels'),
+                      headings = st_options("headings"),
+                      display.labels = st_options("display.labels"),
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
@@ -174,7 +174,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   }
 
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
-    if ('var.names' %in% names(parse_info)) {
+    if ("var.names" %in% names(parse_info)) {
       colnames(x) <- parse_info$var.names
     } else {
       colnames(x) <- parse_info$df.name
@@ -318,7 +318,7 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   
   attr(output, "user_fmt") <- list(... = ...)
 
-  attr(output, "lang") <- st_options('lang')
+  attr(output, "lang") <- st_options("lang")
   
   return(output)
 }
@@ -513,7 +513,7 @@ crunch_numeric <- function(column_data, is_barcode) {
       outlist[[1]] <- paste(1, trs("distinct.value"))
     } else {
       if (isTRUE(is_barcode)) {
-        maxchars <- max(nchar(c(trs('min'), trs('max'), trs('mode'))))
+        maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mode"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
           min(column_data, na.rm = TRUE), "\\\n",
@@ -523,7 +523,7 @@ crunch_numeric <- function(column_data, is_barcode) {
           max(column_data, na.rm = TRUE)
         )
       } else if (length(counts) == 2) {
-        maxchars <- max(nchar(c(trs('min'), trs('max'), trs('mean'))))
+        maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
           round(min(column_data, na.rm = TRUE), round.digits), "\\\n",
@@ -537,11 +537,11 @@ crunch_numeric <- function(column_data, is_barcode) {
           trs("mean"), paste0(" (", trs("sd"), ") : "),
           round(mean(column_data, na.rm = TRUE), round.digits),
           " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
-          tolower(paste(trs('min'), "<", trs('med.short'), "<", trs('max'))),
+          tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
           ":\\\n", round(min(column_data, na.rm = TRUE), round.digits),
           " < ", round(median(column_data, na.rm = TRUE), round.digits),
           " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
-          paste0(trs("iqr"), " (", trs('cv'), ") : "),
+          paste0(trs("iqr"), " (", trs("cv"), ") : "),
           round(IQR(column_data, na.rm = TRUE), round.digits),
           " (", round(sd(column_data, na.rm = TRUE) /
                         mean(column_data, na.rm = TRUE),
@@ -554,15 +554,15 @@ crunch_numeric <- function(column_data, is_barcode) {
     # Values columns
     # for "ts" objects, display n distinct & start / end
     if (inherits(column_data, "ts")) {
-      maxchars <- max(nchar(c(trs('start'), trs('end'))))
+      maxchars <- max(nchar(c(trs("start"), trs("end"))))
       outlist[[2]] <-
         paste(length(counts), trs("distinct.values"),
-              paste0("\\\n", trs('start'),
-                     strrep(" ", maxchars - nchar(trs('start'))), ":"),
+              paste0("\\\n", trs("start"),
+                     strrep(" ", maxchars - nchar(trs("start"))), ":"),
               paste(sprintf("%02d", start(column_data)),
                     collapse = "-"),
-              paste0("\\\n", trs('end'),
-                     strrep(" ", maxchars - nchar(trs('end'))), ":"),
+              paste0("\\\n", trs("end"),
+                     strrep(" ", maxchars - nchar(trs("end"))), ":"),
               paste(sprintf("%02d", end(column_data)),
                     collapse = "-"))
     }
@@ -596,7 +596,7 @@ crunch_numeric <- function(column_data, is_barcode) {
 
       if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
         extra_space <- TRUE
-        outlist[[2]] <- paste(outlist[[2]], paste("!", trs('rounded')),
+        outlist[[2]] <- paste(outlist[[2]], paste("!", trs("rounded")),
                               sep = "\\\n")
       }
 
@@ -775,7 +775,7 @@ txtbarplot <- function(props, maxwidth = 20) {
   widths <- props * maxwidth
   outstr <- character(0)
   for (i in seq_along(widths)) {
-    outstr <- paste(outstr, paste0(rep(x = 'I', times = widths[i]),
+    outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]),
                                    collapse = ""),
                     sep = " \\ \n")
   }

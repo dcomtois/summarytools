@@ -65,17 +65,17 @@
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct
 freq <- function(x, 
-                 round.digits    = st_options('round.digits'), 
+                 round.digits    = st_options("round.digits"), 
                  order           = "default", 
-                 style           = st_options('style'), 
-                 plain.ascii     = st_options('plain.ascii'), 
+                 style           = st_options("style"), 
+                 plain.ascii     = st_options("plain.ascii"), 
                  justify         = "default", 
-                 totals          = st_options('freq.totals'), 
-                 report.nas      = st_options('freq.report.nas'), 
+                 totals          = st_options("freq.totals"), 
+                 report.nas      = st_options("freq.report.nas"), 
                  missing         = "", 
                  display.type    = TRUE, 
-                 display.labels  = st_options('display.labels'), 
-                 headings        = st_options('headings'), 
+                 display.labels  = st_options("display.labels"), 
+                 headings        = st_options("headings"), 
                  weights         = NA, 
                  rescale.weights = FALSE, ...) {
 
@@ -160,7 +160,7 @@ freq <- function(x,
   
   # End of arguments validation ------------------------------------------------
   
-  # When style = 'rmarkdown', make plain.ascii FALSE unless specified explicitly
+  # When style = "rmarkdown", make plain.ascii FALSE unless specified explicitly
   if (style %in% c("grid", "rmarkdown") && 
       !("plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
@@ -174,14 +174,14 @@ freq <- function(x,
   
   # Get information about x from parsing function
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               silent = exists('varname')),
+                               silent = exists("varname")),
                     silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
   
-  if (!("var.names" %in% names(parse_info)) && exists('varname')) {
+  if (!("var.names" %in% names(parse_info)) && exists("varname")) {
     parse_info$var.names <- varname
   }
   
@@ -211,7 +211,7 @@ freq <- function(x,
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
     
-    # Add '<NA>' item to the proportions; this assures
+    # Add "<NA>" item to the proportions; this assures
     # proper length when cbind'ing later on
     P_valid["<NA>"] <- NA
     
@@ -272,9 +272,9 @@ freq <- function(x,
   
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c(trs('freq'), trs('pct.valid'), trs('pct.valid.cum'), 
-                        trs('pct.total'), trs('pct.total.cum'))
-  rownames(output) <- c(names(freq_table), trs('total'))
+  colnames(output) <- c(trs("freq"), trs("pct.valid"), trs("pct.valid.cum"), 
+                        trs("pct.total"), trs("pct.total.cum"))
+  rownames(output) <- c(names(freq_table), trs("total"))
   
   # Update the output class and attributes ------------------------------------
   
@@ -286,19 +286,19 @@ freq <- function(x,
   
   # Determine data "type", in a non-strict way
   if (all(c("ordered", "factor") %in% class(x))) {
-    Data.type <- trs('factor.ordered')
+    Data.type <- trs("factor.ordered")
   } else if ("factor" %in% class(x)) {
-    Data.type <- trs('factor')
+    Data.type <- trs("factor")
   } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { # TODO: see what other classes correspond to datetime
-    Data.type <- trs('datetime')
+    Data.type <- trs("datetime")
   } else if ("Date" %in% class(x)) {
-    Data.type <- trs('date')
+    Data.type <- trs("date")
   } else if ("logical" %in% class(x)) {
-    Data.type <- trs('logical')
+    Data.type <- trs("logical")
   } else if ("character" %in% class(x)) {
-    Data.type <- trs('character')
+    Data.type <- trs("character")
   } else if ("numeric" %in% class(x)) {
-    Data.type <- trs('numeric')
+    Data.type <- trs("numeric")
   } else {
     Data.type <- NA
   }
@@ -339,7 +339,7 @@ freq <- function(x,
 
   attr(output, "user_fmt") <- list(... = ...)
 
-  attr(output, "lang") <- st_options('lang')
+  attr(output, "lang") <- st_options("lang")
   
   return(output)
 }

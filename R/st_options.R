@@ -83,20 +83,20 @@
 #' st_options('reset')            # reset all summarytools global options
 #' }
 #' @export
-st_options <- function(option = NULL, value = NULL, style = 'simple', 
+st_options <- function(option = NULL, value = NULL, style = "simple", 
                        round.digits = 2, plain.ascii = TRUE, headings = TRUE,
-                       footnote = 'default', display.labels = TRUE,
+                       footnote = "default", display.labels = TRUE,
                        bootstrap.css = TRUE, custom.css = NA,
                        escape.pipe = FALSE, freq.totals = TRUE,
-                       freq.report.nas = TRUE, ctable.prop = 'r',
-                       ctable.totals = TRUE, descr.stats = 'all',
+                       freq.report.nas = TRUE, ctable.prop = "r",
+                       ctable.totals = TRUE, descr.stats = "all",
                        descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
                        dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
                        dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, lang = 'en',
+                       dfSummary.graph.magnif = 1, lang = "en",
                        omit.headings = !headings) {
   
-  allOpts <- getOption('summarytools')
+  allOpts <- getOption("summarytools")
   
   
   # Validate arguments
@@ -121,16 +121,16 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
   if (length(mc) == 2 && "option" %in% names(mc) && option != "reset") {
     # Check that option is among the existing ones
     for (o in option) {
-      if (!o %in% c(names(allOpts), 'omit.headings')) {
-        stop('Option ', o, ' not recognized / not available')
+      if (!o %in% c(names(allOpts), "omit.headings")) {
+        stop("Option ", o, " not recognized / not available")
       }
     }
     
     if (length(option) == 1) {
-      if (option == 'omit.headings') {
+      if (option == "omit.headings") {
         message("'omit.headings' has been replaced by 'headings'. ",
                 "Returning !headings instead")
-        return(!allOpts[['headings']])
+        return(!allOpts[["headings"]])
       } else {
         return(allOpts[[option]])
       }
@@ -139,36 +139,36 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     }
   }
 
-  if (isTRUE(option == 'reset')) {
+  if (isTRUE(option == "reset")) {
     if (length(mc) > 2) {
-      stop('Cannot reset options and set them at the same time')
+      stop("Cannot reset options and set them at the same time")
     }
     
-    options('summarytools' = 
-              list('style'                  = 'simple',
-                   'plain.ascii'            = TRUE,
-                   'round.digits'           = 2,
-                   'headings'               = TRUE,
-                   'footnote'               = 'default',
-                   'display.labels'         = TRUE,
-                   'bootstrap.css'          = TRUE,
-                   'custom.css'             = NA,
-                   'escape.pipe'            = FALSE,
-                   'freq.totals'            = TRUE,
-                   'freq.report.nas'        = TRUE,
-                   'ctable.prop'            = 'r',
-                   'ctable.totals'          = TRUE,
-                   'descr.stats'            = 'all',
-                   'descr.transpose'        = FALSE,
-                   'dfSummary.varnumbers'   = TRUE,
-                   'dfSummary.labels.col'   = TRUE,
-                   'dfSummary.graph.col'    = TRUE,
-                   'dfSummary.valid.col'    = TRUE,
-                   'dfSummary.na.col'       = TRUE,
-                   'dfSummary.graph.magnif' = 1,
-                   'lang'                   = 'en'))
+    options("summarytools" = 
+              list("style"                  = "simple",
+                   "plain.ascii"            = TRUE,
+                   "round.digits"           = 2,
+                   "headings"               = TRUE,
+                   "footnote"               = "default",
+                   "display.labels"         = TRUE,
+                   "bootstrap.css"          = TRUE,
+                   "custom.css"             = NA,
+                   "escape.pipe"            = FALSE,
+                   "freq.totals"            = TRUE,
+                   "freq.report.nas"        = TRUE,
+                   "ctable.prop"            = "r",
+                   "ctable.totals"          = TRUE,
+                   "descr.stats"            = "all",
+                   "descr.transpose"        = FALSE,
+                   "dfSummary.varnumbers"   = TRUE,
+                   "dfSummary.labels.col"   = TRUE,
+                   "dfSummary.graph.col"    = TRUE,
+                   "dfSummary.valid.col"    = TRUE,
+                   "dfSummary.na.col"       = TRUE,
+                   "dfSummary.graph.magnif" = 1,
+                   "lang"                   = "en"))
     
-    message('summarytools options have been reset')
+    message("summarytools options have been reset")
     return(invisible())
   }
 
@@ -179,27 +179,27 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
       stop("Cannot set more than one option at a time in the legacy way; ",
            "Use separate arguments for each option instead")
     }
-    if (option == 'omit.headings') {
+    if (option == "omit.headings") {
       message("'omit.headings' has been replaced by 'headings'. Setting ",
               "'headings' to ", !isTRUE(value))
-      allOpts[['headings']] <- !isTRUE(value)
+      allOpts[["headings"]] <- !isTRUE(value)
     } else if (!option %in% names(allOpts)) {
-      stop('Option ', option, 'not recognized / not available')
+      stop("Option ", option, "not recognized / not available")
     } else {
       allOpts[[option]] <- value
     }
-    options('summarytools' = allOpts)
+    options("summarytools" = allOpts)
     return(invisible())
   }
   
   # Regular way of setting options    
   for (o in setdiff(names(mc), c("", "option", "value"))) {
-    if (o == 'omit.headings') {
+    if (o == "omit.headings") {
       message("'omit.headings' has been replaced by 'headings' and will be ",
               "deprecated in future releases.")
-      if (!'headings' %in% names(mc)) {
+      if (!"headings" %in% names(mc)) {
         message("Setting 'headings' to ", !isTRUE(get(o)))
-        allOpts[['headings']] <- !isTRUE(get(o))
+        allOpts[["headings"]] <- !isTRUE(get(o))
       } else {
         message("Ignoring this option as 'headings' is also specified")
       }
@@ -207,7 +207,7 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
       allOpts[[o]] <- get(o)
     }
   }
-  options('summarytools' = allOpts)
+  options("summarytools" = allOpts)
   
   return(invisible())
 }

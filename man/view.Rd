@@ -6,10 +6,10 @@
 \usage{
 view(x, method = "viewer", file = "", append = FALSE,
   report.title = NA, table.classes = NA, 
-  bootstrap.css = st_options('bootstrap.css'), 
-  custom.css = st_options('custom.css'), silent = FALSE, 
-  footnote = st_options('footnote'), 
-  escape.pipe = st_options('escape.pipe'), \dots)
+  bootstrap.css = st_options("bootstrap.css"), 
+  custom.css = st_options("custom.css"), silent = FALSE, 
+  footnote = st_options("footnote"), 
+  escape.pipe = st_options("escape.pipe"), \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},

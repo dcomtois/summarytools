@@ -5,10 +5,10 @@
 #' @usage
 #' view(x, method = "viewer", file = "", append = FALSE,
 #'   report.title = NA, table.classes = NA, 
-#'   bootstrap.css = st_options('bootstrap.css'), 
-#'   custom.css = st_options('custom.css'), silent = FALSE, 
-#'   footnote = st_options('footnote'), 
-#'   escape.pipe = st_options('escape.pipe'), \dots)
+#'   bootstrap.css = st_options("bootstrap.css"), 
+#'   custom.css = st_options("custom.css"), silent = FALSE, 
+#'   footnote = st_options("footnote"), 
+#'   escape.pipe = st_options("escape.pipe"), \dots)
 #'
 #' @inheritParams print.summarytools
 #' 
@@ -27,10 +27,10 @@
 #' @export
 view <- function(x, method = "viewer", file = "", append = FALSE, 
                  report.title = NA, table.classes = NA, 
-                 bootstrap.css = st_options('bootstrap.css'), 
-                 custom.css = st_options('custom.css'), silent = FALSE, 
-                 footnote = st_options('footnote'), 
-                 escape.pipe = st_options('escape.pipe'),
+                 bootstrap.css = st_options("bootstrap.css"), 
+                 custom.css = st_options("custom.css"), silent = FALSE, 
+                 footnote = st_options("footnote"), 
+                 escape.pipe = st_options("escape.pipe"),
                  ...) {
 
   # Objects not created via by() or lapply() -----------------------------------
@@ -54,12 +54,12 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     
   } else if (inherits(x = x, what = "by") &&
              attr(x[[1]], "st_type") == "descr" &&
-             ((!attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[2] == 1) || 
-              ( attr(x[[1]], 'data_info')$transposed && dim(x[[1]])[1] == 1))) {
+             ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) || 
+              ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
     
     # Special case: descr by() objects with 1 variable -------------------------
     
-    if (attr(x[[1]], 'data_info')$transposed) {
+    if (attr(x[[1]], "data_info")$transposed) {
       xx <- do.call(rbind, x)
     } else {
       # 1 Column several times - use cbind
@@ -68,24 +68,24 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
       colnames(xx)  <- names(x)
     }
     
-    attr(xx, 'st_type')   <- "descr"
-    attr(xx, 'date')      <- attr(x[[1]], 'date')
-    attr(xx, 'data_info') <- attr(x[[1]], 'data_info')
+    attr(xx, "st_type")   <- "descr"
+    attr(xx, "date")      <- attr(x[[1]], "date")
+    attr(xx, "data_info") <- attr(x[[1]], "data_info")
     
-    attr(xx, 'data_info')$by.var.special <- 
+    attr(xx, "data_info")$by.var.special <- 
       sub("^.*\\$(.+)", "\\1", attr(x[[1]], "data_info")$by.var)
-    attr(xx, 'data_info')$Group    <- NULL
-    attr(xx, 'data_info')$by.first <- NULL
-    attr(xx, 'data_info')$by.last  <- NULL
-    attr(xx, 'data_info')$N.Obs    <- attr(x[[1]], 'data_info')$N.Obs
+    attr(xx, "data_info")$Group    <- NULL
+    attr(xx, "data_info")$by.first <- NULL
+    attr(xx, "data_info")$by.last  <- NULL
+    attr(xx, "data_info")$N.Obs    <- attr(x[[1]], "data_info")$N.Obs
     
     # Remove NA items if any
     attr(xx, "data_info") <- attr(xx,"data_info")[!is.na(attr(xx, "data_info"))]
     
     
-    attr(xx, 'format_info') <- attr(x[[1]], 'format_info')
-    attr(xx, 'user_fmt')    <- attr(x[[1]], 'user_fmt')
-    attr(xx, "lang")        <- attr(x[[1]], 'lang')
+    attr(xx, "format_info") <- attr(x[[1]], "format_info")
+    attr(xx, "user_fmt")    <- attr(x[[1]], "user_fmt")
+    attr(xx, "lang")        <- attr(x[[1]], "lang")
     
     print.summarytools(xx,
                        method        = method,

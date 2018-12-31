@@ -20,28 +20,28 @@ utils::globalVariables(c("."))
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
   options(summarytools =
-            list('style'                  = 'simple',
-                 'round.digits'           = 2,
-                 'plain.ascii'            = TRUE,
-                 'headings'               = TRUE,
-                 'footnote'               = 'default',
-                 'display.labels'         = TRUE,
-                 'bootstrap.css'          = TRUE,
-                 'custom.css'             = NA,
-                 'escape.pipe'            = FALSE,
-                 'freq.totals'            = TRUE,
-                 'freq.report.nas'        = TRUE,
-                 'ctable.prop'            = 'r',
-                 'ctable.totals'          = TRUE,
-                 'descr.stats'            = 'all',
-                 'descr.transpose'        = FALSE,
-                 'dfSummary.varnumbers'   = TRUE,
-                 'dfSummary.labels.col'   = TRUE,
-                 'dfSummary.graph.col'    = TRUE,
-                 'dfSummary.valid.col'    = TRUE,
-                 'dfSummary.na.col'       = TRUE,
-                 'dfSummary.graph.magnif' = 1,
-                 'lang'                   = 'en'))
+            list("style"                  = "simple",
+                 "round.digits"           = 2,
+                 "plain.ascii"            = TRUE,
+                 "headings"               = TRUE,
+                 "footnote"               = "default",
+                 "display.labels"         = TRUE,
+                 "bootstrap.css"          = TRUE,
+                 "custom.css"             = NA,
+                 "escape.pipe"            = FALSE,
+                 "freq.totals"            = TRUE,
+                 "freq.report.nas"        = TRUE,
+                 "ctable.prop"            = "r",
+                 "ctable.totals"          = TRUE,
+                 "descr.stats"            = "all",
+                 "descr.transpose"        = FALSE,
+                 "dfSummary.varnumbers"   = TRUE,
+                 "dfSummary.labels.col"   = TRUE,
+                 "dfSummary.graph.col"    = TRUE,
+                 "dfSummary.valid.col"    = TRUE,
+                 "dfSummary.na.col"       = TRUE,
+                 "dfSummary.graph.magnif" = 1,
+                 "lang"                   = "en"))
 
   return(invisible())
 }
@@ -50,7 +50,7 @@ utils::globalVariables(c("."))
 #' @importFrom pander panderOptions
 .onAttach <- function(libname, pkgname) {
   #panderOptions("knitr.auto.asis", FALSE)
-  if (packageDate('pander',date.fields = 'Packaged') <= "2018-11-06")
+  if (packageDate("pander",date.fields = "Packaged") <= "2018-11-06")
     packageStartupMessage("For best results, consider updating pander to its ",
                           "most recent version. You can do so by using \n",
                           "devtools::install_github('rapporter/pander')")

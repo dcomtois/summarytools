@@ -65,13 +65,13 @@
 #' @importFrom utils head
 #' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all
 #' @importFrom tidyr separate gather spread
-descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
-                  round.digits = st_options('round.digits'),
-                  transpose = st_options('descr.transpose'), 
-                  style = st_options('style'), 
-                  plain.ascii = st_options('plain.ascii'),
-                  justify = "right", headings = st_options('headings'), 
-                  display.labels = st_options('display.labels'),  
+descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE, 
+                  round.digits = st_options("round.digits"),
+                  transpose = st_options("descr.transpose"), 
+                  style = st_options("style"), 
+                  plain.ascii = st_options("plain.ascii"),
+                  justify = "right", headings = st_options("headings"), 
+                  display.labels = st_options("display.labels"),  
                   split.tables = 100, weights = NA, rescale.weights = FALSE,
                   ...) {
   
@@ -199,18 +199,18 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     }
 
     # Calculate additionnal stats if needed
-    if ('cv' %in% stats) {
+    if ("cv" %in% stats) {
       output$cv <- output$sd / output$mean
     }
     
-    if ('se.skewness' %in% stats) {
+    if ("se.skewness" %in% stats) {
       output$se.skewness <- 
         with(output, 
              sqrt((6 * n.valid * (n.valid - 1)) / 
                     ((n.valid - 2) * (n.valid + 1) * (n.valid + 3))))
     }
     
-    if ('pct.valid' %in% stats) {
+    if ("pct.valid" %in% stats) {
       output$pct.valid <- output$n.valid *100 / nrow(x.df)
     }
     
@@ -362,7 +362,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   attr(output, "user_fmt") <- list(... = ...)
   
-  attr(output, "lang") <- st_options('lang')
+  attr(output, "lang") <- st_options("lang")
   
   if (exists("ignored"))
     attr(output, "ignored") <- ignored
