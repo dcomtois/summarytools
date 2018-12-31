@@ -64,17 +64,24 @@
 #' @export
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct
-freq <- function(x, round.digits = st_options('round.digits'), 
-                 order = "default", style = st_options('style'), 
-                 plain.ascii = st_options('plain.ascii'), 
-                 justify = "default", totals = st_options('freq.totals'), 
-                 report.nas = st_options('freq.report.nas'), 
-                 missing = "", display.type = TRUE, 
-                 display.labels = st_options('display.labels'), 
-                 headings = st_options('headings'), weights = NA, 
+freq <- function(x, 
+                 round.digits    = st_options('round.digits'), 
+                 order           = "default", 
+                 style           = st_options('style'), 
+                 plain.ascii     = st_options('plain.ascii'), 
+                 justify         = "default", 
+                 totals          = st_options('freq.totals'), 
+                 report.nas      = st_options('freq.report.nas'), 
+                 missing         = "", 
+                 display.type    = TRUE, 
+                 display.labels  = st_options('display.labels'), 
+                 headings        = st_options('headings'), 
+                 weights         = NA, 
                  rescale.weights = FALSE, ...) {
 
+  # When x is a dataframe, we make recursive calls to freq() with each variable
   if (is.data.frame(x) && ncol(x) > 1) {
+    
     # Get information about x from parsing function
     parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
                                  silent = TRUE),
@@ -82,17 +89,45 @@ freq <- function(x, round.digits = st_options('round.digits'),
     
     if (inherits(parse_info, "try-error")) {
       parse_info <- list()
+      df_name <- deparse(substitute(x))
+    } else {
+      df_name <- parse_info$df_name
     }
     
     out <- list()
     ignored <- character()
     for (i in seq_along(x)) {
-      if (!class(x[[i]]) %in% c("character", "factor") && n_distinct(x[[i]] > 25)) {
+      if (!class(x[[i]]) %in% c("character", "factor") &&
+          n_distinct(x[[i]] > 25)) {
         ignored %+=% names(x)[i] 
         next 
       }
-      out[[length(out) + 1]] <- freq(x[i])
-      attr(out, "data_info")$Data.frame <- parse_info$df_name
+      
+      out[[length(out) + 1]] <- 
+        freq(x[i],
+             round.digits = round.digits, 
+             order = order,
+             style = style, 
+             plain.ascii = plain.ascii, 
+             justify = justify, 
+             totals = totals, 
+             report.nas = report.nas, 
+             missing = missing, 
+             display.type = display.type, 
+             display.labels = display.labels, 
+             headings = headings, 
+             weights = weights, 
+             rescale.weights = rescale.weights, 
+             ...)
+      
+      attr(out[[length(out)]], "data_info")$Data.frame <- df_name
+      
+      if (length(out) == 1) {
+        attr(out[[length(out)]], "format_info")$var.only <- FALSE
+      } else {
+        attr(out[[length(out)]], "format_info")$var.only <- TRUE
+      }
+      
       if (length(ignored) > 0) {
         attr(out, "ignored") <- ignored
       }
@@ -100,6 +135,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     class(out) <- c("list", "summarytools")
     return(out)
   }
+  
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored in here
   
