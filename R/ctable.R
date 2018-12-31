@@ -127,24 +127,24 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
     parse_info_y <- list()
   }
 
-  if (length(parse_info_x$df_name) == 1 &&
-      length(parse_info_y$df_name) == 1 &&
-      isTRUE(parse_info_x$df_name == parse_info_y$df_name)) {
-    df_name <- parse_info_x$df_name
+  if (length(parse_info_x$df.name) == 1 &&
+      length(parse_info_y$df.name) == 1 &&
+      isTRUE(parse_info_x$df.name == parse_info_y$df.name)) {
+    df.name <- parse_info_x$df.name
   }
   
   if ("dnn" %in% names(match.call())) {
     x_name <- dnn[1]
     y_name <- dnn[2]
   } else {
-    x_name  <- na.omit(c(parse_info_x$var_names, deparse(dnn[[1]])))[1]
-    y_name  <- na.omit(c(parse_info_y$var_names, deparse(dnn[[2]])))[1]
+    x_name  <- na.omit(c(parse_info_x$var.names, deparse(dnn[[1]])))[1]
+    y_name  <- na.omit(c(parse_info_y$var.names, deparse(dnn[[2]])))[1]
   }
   
-  if (length(parse_info_x$df_label) == 1 &&
-      length(parse_info_y$df_label) == 1 &&
-      isTRUE(parse_info_x$df_label == parse_info_y$df_label)) {
-    df_label <- parse_info_x$df_label
+  if (length(parse_info_x$df.label) == 1 &&
+      length(parse_info_y$df.label) == 1 &&
+      isTRUE(parse_info_x$df.label == parse_info_y$df.label)) {
+    df.label <- parse_info_x$df.label
   }
 
   # Create cross-freq table ----------------------------------------------------
@@ -210,8 +210,8 @@ ctable <- function(x, y, prop = st_options('ctable.prop'), useNA = 'ifany',
   attr(output, "date") <- Sys.Date()
 
   data_info <-
-    list(Data.frame          = ifelse(exists("df_name"), df_name, NA),
-         Data.frame.label    = ifelse(exists("df_label"), df_label, NA),
+    list(Data.frame          = ifelse(exists("df.name"), df.name, NA),
+         Data.frame.label    = ifelse(exists("df.label"), df.label, NA),
          Row.variable        = x_name,
          Row.variable.label  = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable        = y_name,

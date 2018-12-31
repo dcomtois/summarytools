@@ -142,8 +142,8 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
       errmsg %+=% paste(deparse(xnames), " is not coercible to a data frame")
     } else {
       converted_to_df <- TRUE
-      df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
-      message(df_name, " was converted to a data frame")
+      df.name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
+      message(df.name, " was converted to a data frame")
     }
   }
 
@@ -169,15 +169,15 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
     parse_info <- list()
   }
 
-  if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
-    parse_info$df_name <- df_name
+  if (!("df.name" %in% names(parse_info)) && exists("df.name")) {
+    parse_info$df.name <- df.name
   }
 
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
-    if ('var_names' %in% names(parse_info)) {
-      colnames(x) <- parse_info$var_names
+    if ('var.names' %in% names(parse_info)) {
+      colnames(x) <- parse_info$var.names
     } else {
-      colnames(x) <- parse_info$df_name
+      colnames(x) <- parse_info$df.name
     }
   }
 
@@ -295,9 +295,9 @@ dfSummary <- function(x, round.digits = st_options('round.digits'),
   attr(output, "fn_call") <- match.call()
 
   data_info <-
-    list(Data.frame       = parse_info$df_name,
-         Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
-                                   parse_info$df_label, NA),
+    list(Data.frame       = parse_info$df.name,
+         Dataf.rame.label = ifelse("df.label" %in% names(parse_info),
+                                   parse_info$df.label, NA),
          Dimensions       = paste(n_tot, "x", ncol(x)),
          Duplicates       = n_tot - n_distinct(x))
 

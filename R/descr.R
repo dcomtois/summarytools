@@ -141,8 +141,8 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     parse_info <- list()
   }
 
-  if (!"var_names" %in% names(parse_info)) {
-    parse_info$var_names <- colnames(x.df)
+  if (!"var.names" %in% names(parse_info)) {
+    parse_info$var.names <- colnames(x.df)
   }
   
   # Identify and exclude non-numerical columns from x
@@ -151,7 +151,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   if (length(col_to_remove) > 0) {
     ignored <- colnames(x.df)[col_to_remove]
     x.df <- x.df[-col_to_remove]
-    parse_info$var_names <- parse_info$var_names[-col_to_remove]
+    parse_info$var.names <- parse_info$var.names[-col_to_remove]
   }
   
   if (ncol(x.df) == 0) {
@@ -195,7 +195,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
     } else {
       output <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
         as.data.frame
-      rownames(output) <- parse_info$var_names
+      rownames(output) <- parse_info$var.names
     }
 
     # Calculate additionnal stats if needed
@@ -295,7 +295,7 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
     
-    rownames(output) <- parse_info$var_names
+    rownames(output) <- parse_info$var.names
     
   }
   
@@ -325,28 +325,28 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   
   data_info <-
     list(
-      Data.frame       = ifelse("df_name" %in% names(parse_info), 
-                                parse_info$df_name, NA),
-      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
-                                parse_info$df_label, NA),
-      Variable         = ifelse("var_names" %in% names(parse_info) && 
-                                  length(parse_info$var_names) == 1,
-                                parse_info$var_names, NA),
+      Data.frame       = ifelse("df.name" %in% names(parse_info), 
+                                parse_info$df.name, NA),
+      Data.frame.label = ifelse("df.label" %in% names(parse_info), 
+                                parse_info$df.label, NA),
+      Variable         = ifelse("var.names" %in% names(parse_info) && 
+                                  length(parse_info$var.names) == 1,
+                                parse_info$var.names, NA),
       Variable.label   = ifelse("var_label" %in% names(parse_info) &&
                                   length(parse_info$var_label) == 1,
                                 parse_info$var_label, NA),
       Weights          = ifelse(identical(weights, NA), NA,
-                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                sub(pattern = paste0(parse_info$df.name, "$"), 
                                     replacement = "", x = weights_string, 
                                     fixed = TRUE)),
-      by.var           = ifelse("by_var" %in% names(parse_info),
-                                parse_info$by_var, NA),
-      Group            = ifelse("by_group" %in% names(parse_info),
-                                parse_info$by_group, NA),
-      by.first         = ifelse("by_group" %in% names(parse_info), 
-                                parse_info$by_first, NA),
-      by.last          = ifelse("by_group" %in% names(parse_info), 
-                                parse_info$by_last, NA),
+      by.var           = ifelse("by.var" %in% names(parse_info),
+                                parse_info$by.var, NA),
+      Group            = ifelse("by.group" %in% names(parse_info),
+                                parse_info$by.group, NA),
+      by.first         = ifelse("by.group" %in% names(parse_info), 
+                                parse_info$by.first, NA),
+      by.last          = ifelse("by.group" %in% names(parse_info), 
+                                parse_info$by.last, NA),
       transposed       = transpose,
       N.Obs            = nrow(x.df))
   

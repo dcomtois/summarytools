@@ -89,9 +89,9 @@ freq <- function(x,
     
     if (inherits(parse_info, "try-error")) {
       parse_info <- list()
-      df_name <- deparse(substitute(x))
+      df.name <- deparse(substitute(x))
     } else {
-      df_name <- parse_info$df_name
+      df.name <- parse_info$df.name
     }
     
     out <- list()
@@ -120,7 +120,7 @@ freq <- function(x,
              rescale.weights = rescale.weights, 
              ...)
       
-      attr(out[[length(out)]], "data_info")$Data.frame <- df_name
+      attr(out[[length(out)]], "data_info")$Data.frame <- df.name
       
       if (length(out) == 1) {
         attr(out[[length(out)]], "format_info")$var.only <- FALSE
@@ -181,8 +181,8 @@ freq <- function(x,
     parse_info <- list()
   }
   
-  if (!("var_names" %in% names(parse_info)) && exists('varname')) {
-    parse_info$var_names <- varname
+  if (!("var.names" %in% names(parse_info)) && exists('varname')) {
+    parse_info$var.names <- varname
   }
   
   # No weights are used --------------------------------------------------------
@@ -305,24 +305,24 @@ freq <- function(x,
     
   data_info <-
     list(
-      Data.frame       = ifelse("df_name" %in% names(parse_info), 
-                                parse_info$df_name, NA),
-      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
-                                parse_info$df_label, NA),
-      Variable         = ifelse("var_names" %in% names(parse_info), 
-                                parse_info$var_names, NA),
+      Data.frame       = ifelse("df.name" %in% names(parse_info), 
+                                parse_info$df.name, NA),
+      Data.frame.label = ifelse("df.label" %in% names(parse_info), 
+                                parse_info$df.label, NA),
+      Variable         = ifelse("var.names" %in% names(parse_info), 
+                                parse_info$var.names, NA),
       Variable.label   = label(x),
       Data.type        = Data.type,
       Weights          = ifelse(identical(weights, NA), NA,
-                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                sub(pattern = paste0(parse_info$df.name, "$"), 
                                     replacement = "",
                                     x = weights_string, fixed = TRUE)),
-      Group            = ifelse("by_group" %in% names(parse_info),
-                                parse_info$by_group, NA),
-      by.first         = ifelse("by_group" %in% names(parse_info), 
-                                parse_info$by_first, NA),
-      by.last          = ifelse("by_group" %in% names(parse_info), 
-                                parse_info$by_last , NA))
+      Group            = ifelse("by.group" %in% names(parse_info),
+                                parse_info$by.group, NA),
+      by.first         = ifelse("by.group" %in% names(parse_info), 
+                                parse_info$by.first, NA),
+      by.last          = ifelse("by.group" %in% names(parse_info), 
+                                parse_info$by.last , NA))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
