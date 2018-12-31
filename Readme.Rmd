@@ -91,10 +91,9 @@ You can see the source code and documentation on the official _R_ site
 
 Version 0.9.0 brings several improvements to **summarytools**.
 
-#### Languages
+#### Translations
 
-**Say ¡Hola! to Translations!**
-![A Russian version of freq)](img/Russian-freq.png)
+<img style="float: left;" src="img/Russian-freq.png" width=250px />
 
 To switch languages, simply use:  
 
@@ -103,7 +102,7 @@ To switch languages, simply use:
 With the new function `useTranslations()`, you can also test your translations or simply
 use the terms you wish in summarytools.
 
-For now, aside from English, only French is complete. I'll need your help to add langugages 
+For now, aside from English, only French is complete. I'll need your help to add languages 
 and improve the tentative Spanish and Russian translations. Go to
 [this page](https://github.com/dcomtois/summarytools/tree/dev-current/translations) to see the
 current translation *csv* files.
@@ -117,13 +116,14 @@ Also, `freq()` now accepts data frames as its main argument (x); no more `lapply
 Variables which are not characters or factors will be excluded if they contain more than 25 
 distinct values, this to avoid creating huge frequency tables. This number (25) is arbitrary and
 if you think it should be a parameter, let me know by opening an issue. In the meantime, 
-`lapply()` still works and has no limits. And the simple `print()` does what the good old `view()` trick did. (It does take an explicit call to print however. The "automatic print" does not give 
-good results, as opposed to the objects created with `by()`. This will likely not change, 
-as I've hit the limits of what is doable in terms of printing _list_ objects. 
+`lapply()` still works and has no limits. And the simple `print()` does what the good old 
+`view()` trick did. (It does take an explicit call to print however. The "automatic print" 
+does not give good results, as opposed to the objects created with `by()`. This will likely 
+not change, as I've hit the limits of what is doable in terms of printing _list_ objects. 
 
-#### Full control on column widths in dfSummary()
+#### Full control of column widths in dfSummary()
 
-When generating `dfSummary()` tables in *Rmarkdown* documents, column widhts can sometimes
+When generating `dfSummary()` tables in *Rmarkdown* documents, column widths can sometimes
 wreck the layout of (graphs, in particular). The new parameter `col.widths` allows us to
 specify the width of all columns. The vector we must provide as the parameter value can be
 numerical, in which case the values are taken as number of pixels. It can also be
@@ -152,7 +152,7 @@ view(dfSummary(tobacco, varnumbers = FALSE, labels.col = FALSE, valid.col = FALS
     duplicate rows (credits to [Paul Feitsma](https://github.com/paulfeitsma) for both ideas)
     + UPC and EAN codes are now detected as well as sequences of integers (thanks to Paul here
     too)
-    + barplots more accurately reflect counts as they are no more "stretched"
+    + bar plots more accurately reflect counts as they are no more "stretched"
       to the width of the table "cells"; this allows comparing counts across
       variables
     + Binary and unary columns no more show irrelevant statistics (IQR / CV)
@@ -201,7 +201,7 @@ the package. We want to cross-tabulate the two categorical variables
 `smoker` and `diseased`. By default, `ctable()` gives row proportions,
 but we’ll include the full syntax anyway.
 
-Since *markdown* has not support (yet) for multi-line headings, we’ll
+Since *markdown* has not support (yet) for multiline headings, we’ll
 show an image of the resulting html table.
 
 ```{r, eval = FALSE}
@@ -271,7 +271,9 @@ view(dfSummary(iris))
 The results show up in RStudio's viewer, like so:
 ![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
 
-It is also possible to use `dfSummary()` in *Rmarkdown* documents. Further down, we'll see how to use _html_ rendering to display graphics in their image form instead of their ascii replacements.
+It is also possible to use `dfSummary()` in *Rmarkdown* documents. Further down, 
+we'll see how to use _html_ rendering to display graphics in their image form 
+instead of their ascii replacements.
 
 ```{r}
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
@@ -435,20 +437,20 @@ The following options are customizable with `st_options()`:
 
 **Function-specific options**
 
-| Option name               | Default   | Note                                    |
-| ------------------------: | --------: | :-------------------------------------- |
-| freq.totals               |    TRUE   | Display totals row in freq()            |
-| freq.report.nas           |    TRUE   | Display <NA> row and "valid" columns    |
-| ctable.prop               |     "r"   | Display **r**ow proportions by default  |
-| ctable.totals             |    TRUE   | Show marginal totals                    |
-| descr.stats               |    "all"  | "fivenum", "common" or list of stats    |
-| descr.transpose           |   FALSE   |                                         |
-| dfSummary.varnumbers      |    TRUE   | Show variable numbers in 1st col.       |
-| dfSummary.labels.col      |    TRUE   | Show variable labels when present       |
-| dfSummary.graph.col       |    TRUE   |                                         |
-| dfSummary.valid.col       |    TRUE   |                                         |
-| dfSummary.na.col          |    TRUE   |                                         |
-| dfSummary.graph.magnif    |       1   | Zoom factor for barplots and histograms |
+| Option name               | Default   | Note                                     |
+| ------------------------: | --------: | :--------------------------------------- |
+| freq.totals               |    TRUE   | Display totals row in freq()             |
+| freq.report.nas           |    TRUE   | Display <NA> row and "valid" columns     |
+| ctable.prop               |     "r"   | Display **r**ow proportions by default   |
+| ctable.totals             |    TRUE   | Show marginal totals                     |
+| descr.stats               |    "all"  | "fivenum", "common" or list of stats     |
+| descr.transpose           |   FALSE   |                                          |
+| dfSummary.varnumbers      |    TRUE   | Show variable numbers in 1st col.        |
+| dfSummary.labels.col      |    TRUE   | Show variable labels when present        |
+| dfSummary.graph.col       |    TRUE   |                                          |
+| dfSummary.valid.col       |    TRUE   |                                          |
+| dfSummary.na.col          |    TRUE   |                                          |
+| dfSummary.graph.magnif    |       1   | Zoom factor for bar plots and histograms |
 
 #### Examples
 
