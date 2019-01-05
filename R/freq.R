@@ -104,7 +104,7 @@ freq <- function(x,
       }
       
       out[[length(out) + 1]] <- 
-        freq(x[i],
+        freq(x[[i]],
              round.digits = round.digits, 
              order = order,
              style = style, 
@@ -121,7 +121,11 @@ freq <- function(x,
              ...)
       
       attr(out[[length(out)]], "data_info")$Data.frame <- df_name
-      
+      attr(out[[length(out)]], "data_info")$Variable   <- colnames(x)[i]
+      if (!is.na(label(x[[i]]))) {
+        attr(out[[length(out)]], "data_info")$Variable.label <- label(x[[i]])
+      }
+
       if (length(out) == 1) {
         attr(out[[length(out)]], "format_info")$var.only <- FALSE
       } else {

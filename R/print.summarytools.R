@@ -290,9 +290,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   if (method == "pander" && 
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
-                x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
+                 x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
     msg <- paste("For best results printing list objects with summarytools,",
-                 "use view(x, method = 'pander')")
+                 "use print(x)")
     if (.st_env$last.message$msg != msg || 
         Sys.time() - .st_env$last.message$time > 1) {
       .st_env$last.message$msg <- msg
@@ -1582,9 +1582,9 @@ build_heading_pander <- function(format_info, data_info) {
                                trs("title.descr.weighted"), 
                                trs("title.descr")), h = 3)
 
-    if ("by_var.special" %in% names(data_info)) {
+    if ("by_var_special" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable, " ", 
-                                 trs("by"), " ", data_info$by_var.special))
+                                 trs("by"), " ", data_info$by_var_special))
       
       if ("Variable" %in% names(data_info)) {
         head3 <- append_items(list(c(Variable.label = trs("label")),
@@ -1778,9 +1778,9 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.descr.weighted"), 
                                            trs("title.descr")))))
     
-    if ("by_var.special" %in% names(data_info)) {
+    if ("by_var_special" %in% names(data_info)) {
       data_info$Variable <- (paste(data_info$Variable, trs("by"), 
-                                   data_info$byvar))
+                                   data_info$by_var_special))
     }
     
     if ("Variable" %in% names(data_info)) {

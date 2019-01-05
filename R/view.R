@@ -80,7 +80,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     attr(xx, "date")      <- attr(x[[1]], "date")
     attr(xx, "data_info") <- attr(x[[1]], "data_info")
     
-    attr(xx, "data_info")$by_var.special <- 
+    attr(xx, "data_info")$by_var_special <- 
       sub("^.*\\$(.+)", "\\1", attr(x[[1]], "data_info")$by_var)
     attr(xx, "data_info")$Group    <- NULL
     attr(xx, "data_info")$by_first <- NULL
