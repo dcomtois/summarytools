@@ -139,8 +139,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                footnote = st_options("footnote"), 
                                escape.pipe = st_options("escape.pipe"), ...) {
 
-  # object is a list (either created with lapply() or by running freq with
-  # a dataframe as x)
+  # object is a list, either created
+  # - using lapply() 
+  # - using freq with a dataframe as x
   if (is.list(x) && 
       !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
     view(x, method = method, file = file, append = append,
@@ -235,13 +236,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
      errmsg %+=% "'file' path is not valid - check that directory exists"
   }
   
-  # Change method to viewer when file name was (most likely) provided by user
+  # Change method to browser when file name was (most likely) provided by user
   if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
       !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
       method == "pander") {
-    method <- "viewer"
-    message("Switching to 'viewer' method, as 'pander' is incompatible with",
-            " html output file format")
+    method <- "browser"
+    message("Switching method to 'browser', as 'pander' is incompatible with",
+            " html file format")
   }
   
   # Set plain.ascii to false and adjust style when file name ends with .md
@@ -564,7 +565,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           }
         } else {
           message("Method 'viewer' only valid within RStudio. Switching method",
-                  "to 'browser'.")
+                  " to 'browser'.")
           method <- "browser"
         }
       }
@@ -861,13 +862,13 @@ print_ctable <- function(x, method) {
     }
   }
   
-  if(data_info$Proportions %in% c("Row", "Column", "Total")) {
+  if (data_info$Proportions %in% c("Row", "Column", "Total")) {
     cross_table <- align_numbers(x$cross_table, x$proportions)
   } else {
     cross_table <- x$cross_table
   }
   
-  justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+  format_info$justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                     l = "left",
                     c = "center",
                     r = "right")
@@ -1617,9 +1618,7 @@ build_heading_pander <- function(format_info, data_info) {
                                    c(Group            = trs("group")),
                                    c(N.Obs            = trs("n"))))
       }
-      
-      #  head3 <- append_items(list(c(Group          = trs("group")),
-      #                             c(N.Obs          = trs("n"))))
+
     } else if ("Variable" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable))
       head3 <- append_items(list(c(Variable.label = trs("label")),
