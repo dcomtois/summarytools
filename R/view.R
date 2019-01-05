@@ -80,11 +80,11 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     attr(xx, "date")      <- attr(x[[1]], "date")
     attr(xx, "data_info") <- attr(x[[1]], "data_info")
     
-    attr(xx, "data_info")$by.var.special <- 
-      sub("^.*\\$(.+)", "\\1", attr(x[[1]], "data_info")$by.var)
+    attr(xx, "data_info")$by_var.special <- 
+      sub("^.*\\$(.+)", "\\1", attr(x[[1]], "data_info")$by_var)
     attr(xx, "data_info")$Group    <- NULL
-    attr(xx, "data_info")$by.first <- NULL
-    attr(xx, "data_info")$by.last  <- NULL
+    attr(xx, "data_info")$by_first <- NULL
+    attr(xx, "data_info")$by_last  <- NULL
     attr(xx, "data_info")$N.Obs    <- attr(x[[1]], "data_info")$N.Obs
     
     # Remove NA items if any

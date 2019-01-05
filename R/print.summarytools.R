@@ -614,8 +614,8 @@ print_freq <- function(x, method) {
   user_fmt    <- attr(x, "user_fmt")
   
   if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
-     (!"by.first" %in% names(data_info) || 
-      isTRUE(as.logical(data_info$by.first))) &&
+     (!"by_first" %in% names(data_info) || 
+      isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
     message("Non-numerical variable(s) ignored: ",
             paste(attr(x, "ignored"), collapse = ", "))
@@ -1017,8 +1017,8 @@ print_descr <- function(x, method) {
   user_fmt    <- attr(x, "user_fmt")
   
   if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
-     (!"by.first" %in% names(data_info) || 
-      isTRUE(as.logical(data_info$by.first))) &&
+     (!"by_first" %in% names(data_info) || 
+      isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
     message("Non-numerical variable(s) ignored: ", 
             paste(attr(x, "ignored"), collapse = ", "))
@@ -1548,8 +1548,8 @@ build_heading_pander <- function(format_info, data_info) {
                                    c(Data.type        = trs("type"))))
       } else {
         head2 <- add_markup(paste0("  \n", data_info$Data.frame))
-        if ("by.first" %in% names(data_info)) {
-          # if (!isTRUE(data_info$by.first)) {
+        if ("by_first" %in% names(data_info)) {
+          # if (!isTRUE(data_info$by_first)) {
           #   head3 <- append_items(list(c(Group = trs("group"))))
           # } else {
           head3 <- append_items(c(Weights = trs("weights")),
@@ -1582,9 +1582,9 @@ build_heading_pander <- function(format_info, data_info) {
                                trs("title.descr.weighted"), 
                                trs("title.descr")), h = 3)
 
-    if ("by.var.special" %in% names(data_info)) {
+    if ("by_var.special" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable, " ", 
-                                 trs("by"), " ", data_info$by.var.special))
+                                 trs("by"), " ", data_info$by_var.special))
       
       if ("Variable" %in% names(data_info)) {
         head3 <- append_items(list(c(Variable.label = trs("label")),
@@ -1618,8 +1618,8 @@ build_heading_pander <- function(format_info, data_info) {
       head2 <- add_markup(paste0("  \n", data_info$Data.frame))
     }
     # 
-    # if ("by.first" %in% names(data_info)) {
-    #   if (!isTRUE(data_info$by.first)) {
+    # if ("by_first" %in% names(data_info)) {
+    #   if (!isTRUE(data_info$by_first)) {
     #     head3 <- append_items(list(c(Group            = trs("group")),
     #                                c(Dimensions       = trs("dimensions")),
     #                                c(Duplicates       = trs("duplicates"))))
@@ -1778,7 +1778,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.descr.weighted"), 
                                            trs("title.descr")))))
     
-    if ("by.var.special" %in% names(data_info)) {
+    if ("by_var.special" %in% names(data_info)) {
       data_info$Variable <- (paste(data_info$Variable, trs("by"), 
                                    data_info$byvar))
     }

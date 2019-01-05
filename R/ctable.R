@@ -151,29 +151,29 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
     parse_info_y <- list()
   }
 
-  if ((length(parse_info_x$df.name) == 1 &&
-       length(parse_info_y$df.name) == 1 &&
-       isTRUE(parse_info_x$df.name == parse_info_y$df.name)) ||
-      (isTRUE(flag_by) && length(parse_info_x$df.name) == 1)) {
-    df.name <- parse_info_x$df.name
+  if ((length(parse_info_x$df_name) == 1 &&
+       length(parse_info_y$df_name) == 1 &&
+       isTRUE(parse_info_x$df_name == parse_info_y$df_name)) ||
+      (isTRUE(flag_by) && length(parse_info_x$df_name) == 1)) {
+    df_name <- parse_info_x$df_name
   }
   
-  if ((length(parse_info_x$df.label) == 1 &&
-       length(parse_info_y$df.label) == 1 &&
-       isTRUE(parse_info_x$df.label == parse_info_y$df.label)) ||
-      (isTRUE(flag_by) && length(parse_info_x$df.label) == 1)) {
-    df.label <- parse_info_x$df.label
+  if ((length(parse_info_x$df_label) == 1 &&
+       length(parse_info_y$df_label) == 1 &&
+       isTRUE(parse_info_x$df_label == parse_info_y$df_label)) ||
+      (isTRUE(flag_by) && length(parse_info_x$df_label) == 1)) {
+    df_label <- parse_info_x$df_label
   }
   
   if ("dnn" %in% names(match.call())) {
     x_name <- dnn[1]
     y_name <- dnn[2]
   } else if (!isTRUE(flag_by)) {
-    x_name <- na.omit(c(parse_info_x$var.names, deparse(dnn[[1]])))[1]
-    y_name <- na.omit(c(parse_info_y$var.names, deparse(dnn[[2]])))[1]
+    x_name <- na.omit(c(parse_info_x$var_names, deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_y$var_names, deparse(dnn[[2]])))[1]
   } else {
-    x_name <- na.omit(c(parse_info_x$var.names[1], deparse(dnn[[1]])))[1]
-    y_name <- na.omit(c(parse_info_x$var.names[2], deparse(dnn[[2]])))[1]
+    x_name <- na.omit(c(parse_info_x$var_names[1], deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_x$var_names[2], deparse(dnn[[2]])))[1]
   }
 
   # Create cross-freq table ----------------------------------------------------
@@ -239,8 +239,8 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   attr(output, "date") <- Sys.Date()
 
   data_info <-
-    list(Data.frame          = ifelse(exists("df.name"), df.name, NA),
-         Data.frame.label    = ifelse(exists("df.label"), df.label, NA),
+    list(Data.frame          = ifelse(exists("df_name"), df_name, NA),
+         Data.frame.label    = ifelse(exists("df_label"), df_label, NA),
          Row.variable        = x_name,
          Row.variable.label  = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable        = y_name,
@@ -251,12 +251,12 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                                       c = "Column",
                                       t = "Total",
                                       n = "None"),
-         Group            = ifelse("by.group" %in% names(parse_info_x),
-                                   parse_info_x$by.group, NA),
-         by.first         = ifelse("by.group" %in% names(parse_info_x), 
-                                   parse_info_x$by.first, NA),
-         by.last          = ifelse("by.group" %in% names(parse_info_x), 
-                                   parse_info_x$by.last , NA))
+         Group            = ifelse("by_group" %in% names(parse_info_x),
+                                   parse_info_x$by_group, NA),
+         by_first         = ifelse("by_group" %in% names(parse_info_x), 
+                                   parse_info_x$by_first, NA),
+         by_last          = ifelse("by_group" %in% names(parse_info_x), 
+                                   parse_info_x$by_last , NA))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 

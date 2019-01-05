@@ -142,8 +142,8 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       errmsg %+=% paste(deparse(xnames), " is not coercible to a data frame")
     } else {
       converted_to_df <- TRUE
-      df.name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
-      message(df.name, " was converted to a data frame")
+      df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
+      message(df_name, " was converted to a data frame")
     }
   }
 
@@ -169,15 +169,15 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     parse_info <- list()
   }
 
-  if (!("df.name" %in% names(parse_info)) && exists("df.name")) {
-    parse_info$df.name <- df.name
+  if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
+    parse_info$df_name <- df_name
   }
 
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
-    if ("var.names" %in% names(parse_info)) {
-      colnames(x) <- parse_info$var.names
+    if ("var_names" %in% names(parse_info)) {
+      colnames(x) <- parse_info$var_names
     } else {
-      colnames(x) <- parse_info$df.name
+      colnames(x) <- parse_info$df_name
     }
   }
 
@@ -295,17 +295,17 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   attr(output, "fn_call") <- match.call()
 
   data_info <-
-    list(Data.frame       = parse_info$df.name,
-         Dataf.rame.label = ifelse("df.label" %in% names(parse_info),
-                                   parse_info$df.label, NA),
+    list(Data.frame       = parse_info$df_name,
+         Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
+                                   parse_info$df_label, NA),
          Dimensions       = paste(n_tot, "x", ncol(x)),
          Duplicates       = n_tot - n_distinct(x),
-         Group            = ifelse("by.group" %in% names(parse_info),
-                                   parse_info$by.group, NA),
-         by.first         = ifelse("by.group" %in% names(parse_info), 
-                                   parse_info$by.first, NA),
-         by.last          = ifelse("by.group" %in% names(parse_info), 
-                                   parse_info$by.last , NA))
+         Group            = ifelse("by_group" %in% names(parse_info),
+                                   parse_info$by_group, NA),
+         by_first         = ifelse("by_group" %in% names(parse_info), 
+                                   parse_info$by_first, NA),
+         by_last          = ifelse("by_group" %in% names(parse_info), 
+                                   parse_info$by_last , NA))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
