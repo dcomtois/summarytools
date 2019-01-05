@@ -68,6 +68,26 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                    dnn=c(substitute(x), substitute(y)),
                    ...) {
 
+  # Support for by()
+  # caller <- as.character(sys.call(-1))[1]
+  
+  if (length(dim(x)) == 2) {
+    x_tmp <- x[[1]]
+    y <- x[[2]]
+    x <- x_tmp
+    flag_by <- TRUE
+  } else {
+    flag_by <- FALSE
+  }
+  
+  if (inherits(x, "data.frame") && ncol(x) == 1) {
+    x <- x[[1]]
+  }
+  
+  if (inherits(y, "data.frame") && ncol(y) == 1) {
+    y <- y[[1]]
+  }
+  
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
@@ -110,7 +130,7 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
 
   # Get into about x & y from parsing function
   parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "x", max.varnames = 1,
+                                 var = "x", max.varnames = 1 + flag_by,
                                  silent = "dnn" %in% names(match.call())),
                       silent = TRUE)
                       
@@ -118,33 +138,42 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
     parse_info_x <- list()
   }
 
-  parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "y", max.varnames = 1,
-                                 silent = "dnn" %in% names(match.call())),
-                      silent = TRUE)
-  
-  if (inherits(parse_info_y, "try-error")) {
+  if (!isTRUE(flag_by)) {
+    parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
+                                   var = "y", max.varnames = 1 + flag_by,
+                                   silent = "dnn" %in% names(match.call())),
+                        silent = TRUE)
+    
+    if (inherits(parse_info_y, "try-error")) {
+      parse_info_y <- list()
+    }
+  } else {
     parse_info_y <- list()
   }
 
-  if (length(parse_info_x$df.name) == 1 &&
-      length(parse_info_y$df.name) == 1 &&
-      isTRUE(parse_info_x$df.name == parse_info_y$df.name)) {
+  if ((length(parse_info_x$df.name) == 1 &&
+       length(parse_info_y$df.name) == 1 &&
+       isTRUE(parse_info_x$df.name == parse_info_y$df.name)) ||
+      (isTRUE(flag_by) && length(parse_info_x$df.name) == 1)) {
     df.name <- parse_info_x$df.name
+  }
+  
+  if ((length(parse_info_x$df.label) == 1 &&
+       length(parse_info_y$df.label) == 1 &&
+       isTRUE(parse_info_x$df.label == parse_info_y$df.label)) ||
+      (isTRUE(flag_by) && length(parse_info_x$df.label) == 1)) {
+    df.label <- parse_info_x$df.label
   }
   
   if ("dnn" %in% names(match.call())) {
     x_name <- dnn[1]
     y_name <- dnn[2]
+  } else if (!isTRUE(flag_by)) {
+    x_name <- na.omit(c(parse_info_x$var.names, deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_y$var.names, deparse(dnn[[2]])))[1]
   } else {
-    x_name  <- na.omit(c(parse_info_x$var.names, deparse(dnn[[1]])))[1]
-    y_name  <- na.omit(c(parse_info_y$var.names, deparse(dnn[[2]])))[1]
-  }
-  
-  if (length(parse_info_x$df.label) == 1 &&
-      length(parse_info_y$df.label) == 1 &&
-      isTRUE(parse_info_x$df.label == parse_info_y$df.label)) {
-    df.label <- parse_info_x$df.label
+    x_name <- na.omit(c(parse_info_x$var.names[1], deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_x$var.names[2], deparse(dnn[[2]])))[1]
   }
 
   # Create cross-freq table ----------------------------------------------------
@@ -221,17 +250,23 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                                       r = "Row",
                                       c = "Column",
                                       t = "Total",
-                                      n = "None"))
+                                      n = "None"),
+         Group            = ifelse("by.group" %in% names(parse_info_x),
+                                   parse_info_x$by.group, NA),
+         by.first         = ifelse("by.group" %in% names(parse_info_x), 
+                                   parse_info_x$by.first, NA),
+         by.last          = ifelse("by.group" %in% names(parse_info_x), 
+                                   parse_info_x$by.last , NA))
 
   attr(output, "data_info") <-  data_info[!is.na(data_info)]
 
-  attr(output, "format_info") <-  list(style         = style,
-                                       round.digits  = round.digits,
-                                       plain.ascii   = plain.ascii,
-                                       justify       = justify,
-                                       totals        = totals,
-                                       split.tables  = split.tables,
-                                       headings      = headings,
+  attr(output, "format_info") <-  list(style          = style,
+                                       round.digits   = round.digits,
+                                       plain.ascii    = plain.ascii,
+                                       justify        = justify,
+                                       totals         = totals,
+                                       split.tables   = split.tables,
+                                       headings       = headings,
                                        display.labels = display.labels)
   
   attr(output, "user_fmt") <- list(... = ...)
