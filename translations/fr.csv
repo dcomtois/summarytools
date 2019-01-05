@@ -2,9 +2,9 @@ item                 ,context                         ,fr
 title.freq           ,main heading                    ,Tableau de fréquences
 title.freq.weighted  ,main heading                    ,Tableau de fréquences pondérées
 title.ctable         ,main heading                    ,Tableau croisé
-title.ctable.row     ,main heading                    ,% par rangées
-title.ctable.col     ,main heading                    ,% par colonnes
-title.ctable.tot     ,main heading                    ,% sur total
+title.ctable.row     ,main heading                    ,proportions par rangées
+title.ctable.col     ,main heading                    ,proportions par colonnes
+title.ctable.tot     ,main heading                    ,proportions sur le total
 title.descr          ,main heading                    ,Statistiques descriptives
 title.descr.weighted ,main heading                    ,Statistiques descriptives pondérées
 title.dfSummary      ,main heading                    ,Synthèse de data frame
@@ -14,7 +14,7 @@ duplicates           ,heading label                   ,Doublons
 data.frame           ,heading label                   ,Data frame
 label                ,heading label & column name     ,Étiquette
 variable             ,heading label & column name     ,Variable
-group                ,heading label                   ,Sous-groupe
+group                ,heading label                   ,Groupe
 by                   ,heading label                   ,par
 weights              ,heading label                   ,Poids
 type                 ,heading label                   ,Type
