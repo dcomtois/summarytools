@@ -31,7 +31,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
     stop("No variable / data frame provided.")
 
   if (is.null(x))
-    stop("x can not be NULL")
+    stop("cannot extract label from NULL")
 
   if (is.atomic(x)) {
     lbl <- attr(x, which = "label", exact = TRUE)

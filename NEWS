@@ -1,7 +1,10 @@
 Version 0.9.0
 -------------
 Translations are introduced. Function useTranslations() added to allow custom
-translations.
+translations. Optimally printing by() and list() objects in the console is 
+simplified. dfSummary() and ctable() now fully supports by(). In descr() the
+weight variable is automatically removed from the list of variables for which 
+to produce statistics.
 
 Version 0.8.9
 -------------

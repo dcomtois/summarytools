@@ -142,14 +142,19 @@ an in-depth view of those changes, but here are the key points:
      the latter representing the collection of _mean_, _sd_, _min_, _med_, _max_,
      _n.valid_, and _pct.valid_
    + Improved outputs when using `by()` 
+   + The variable used for weights (if any) is removed automatically from the
+     dataset so no stats will be produced for it
 
  - Changes to `freq()`
    + As mentioned earlier, the function now accepts data frames as main argument;
      this makes obsolete the use of `lapply()` with it, and simplifies the
      subsequent printing, as the lists returned by `freq()` will also have the
-     class **summarytools**, ensuring their proper dispatch to the right `print()`
-     method.
-  + Improved outputs when using `by()`
+     class **summarytools**, ensuring their proper dispatch to the packages'
+     `print()` method.
+   + Improved outputs when using `by()`
+  
+ - Changes to `ctable()`
+   + Now fully supports `by()`
 
 ** Other notable changes **
  - The `omit.headings` parameter has been replaced by the more straightforward
