@@ -299,7 +299,13 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
          Dataf.rame.label = ifelse("df.label" %in% names(parse_info),
                                    parse_info$df.label, NA),
          Dimensions       = paste(n_tot, "x", ncol(x)),
-         Duplicates       = n_tot - n_distinct(x))
+         Duplicates       = n_tot - n_distinct(x),
+         Group            = ifelse("by.group" %in% names(parse_info),
+                                   parse_info$by.group, NA),
+         by.first         = ifelse("by.group" %in% names(parse_info), 
+                                   parse_info$by.first, NA),
+         by.last          = ifelse("by.group" %in% names(parse_info), 
+                                   parse_info$by.last , NA))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 

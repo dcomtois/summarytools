@@ -1501,7 +1501,9 @@ build_heading_pander <- function(format_info, data_info) {
   } else if (isTRUE(format_info$group.only)) {
     if (isTRUE(format_info$headings)) {
       head3 <- append_items(list(c(Group = trs("group")),
-                                 c(N.Obs = trs("n"))))
+                                 c(N.Obs = trs("n")),
+                                 c(Dimensions = trs("dimensions")),
+                                 c(Duplicates = trs("duplicates"))))
     } else {
       head3 <- append_items(list(c(Group = trs("group"))))
     }
@@ -1636,7 +1638,22 @@ build_heading_pander <- function(format_info, data_info) {
     if ("Data.frame" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Data.frame))
     }
+    # 
+    # if ("by.first" %in% names(data_info)) {
+    #   if (!isTRUE(data_info$by.first)) {
+    #     head3 <- append_items(list(c(Group            = trs("group")),
+    #                                c(Dimensions       = trs("dimensions")),
+    #                                c(Duplicates       = trs("duplicates"))))
+    #     
+    #   } else {
+    #     head3 <- append_items(list(c(Data.frame.label = trs("label")),
+    #                                c(Group            = trs("group")),
+    #                                c(Dimensions       = trs("dimensions")),
+    #                                c(Duplicates       = trs("duplicates"))))
+    #   }
+    # } else {
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                               c(Group            = trs("group")),
                                c(Dimensions       = trs("dimensions")),
                                c(Duplicates       = trs("duplicates"))))
   }
@@ -1713,8 +1730,10 @@ build_heading_html <- function(format_info, data_info, method) {
     }
   } else if (isTRUE(format_info$group.only)) {
     if (isTRUE(format_info$headings)) {
-      head3 <- append_items(list(c(Group = trs("group")),
-                                 c(N.Obs = trs("n"))))
+      head3 <- append_items(list(c(Group      = trs("group")),
+                                 c(N.Obs      = trs("n")),
+                                 c(Dimensions = trs("dimensions")),
+                                 c(Duplicates = trs("duplicates"))))
     } else {
       head3 <- append_items(list(c(Group = trs("group"))))
     }    
@@ -1818,6 +1837,7 @@ build_heading_html <- function(format_info, data_info, method) {
     }
     
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
+                               c(Group            = trs("group")),
                                c(Dimensions       = trs("dimensions")),
                                c(Duplicates       = trs("duplicates"))))
   }
