@@ -301,7 +301,7 @@ freq <- function(x,
   } else {
     Data.type <- NA
   }
-    
+  
   data_info <-
     list(
       Data.frame       = ifelse("df_name" %in% names(parse_info), 
@@ -310,7 +310,8 @@ freq <- function(x,
                                 parse_info$df_label, NA),
       Variable         = ifelse("var_names" %in% names(parse_info), 
                                 parse_info$var_names, NA),
-      Variable.label   = label(x),
+      Variable.label   = ifelse("var_label" %in% names(parse_info), 
+                                parse_info$var_label, NA),
       Data.type        = Data.type,
       Weights          = ifelse(identical(weights, NA), NA,
                                 sub(pattern = paste0(parse_info$df_name, "$"), 
