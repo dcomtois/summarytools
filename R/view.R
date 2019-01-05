@@ -33,6 +33,14 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  escape.pipe = st_options("escape.pipe"),
                  ...) {
 
+  # Change method to "pander when .md file name was provided by user
+  if (grepl("\\md$", file, ignore.case = TRUE, perl = TRUE) &&
+      method != "pander") {
+    message("Switching method to 'pander', as '", method, "' is incompatible ",
+            "with .md file format")
+    method <- "pander"
+  }
+    
   # Objects not created via by() or lapply() -----------------------------------
   if (inherits(x, "summarytools") && 
       (isTRUE(attr(x, "st_type") %in% 
