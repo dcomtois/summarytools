@@ -104,9 +104,11 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
   } else if (identical(stats, "fivenum")) {
     if (!identical(weights, NA)) {
-      errmsg %+=% "fivenum is not supported when weights are used"
+      errmsg %+=% paste("fivenum is not supported when weights are used; valid",
+                        "stats are:", paste(valid_stats$wgts, collapse = ", "))
+      
     }
-    stats <- c("min", "q1", "med", "mean", "q3", "max")
+    stats <- c("min", "q1", "med", "q3", "max")
   } else if (identical(stats, "common")) {
     stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
   } else {
@@ -218,11 +220,6 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
     
     # Weights being used -------------------------------------------------------
     
-    # Check that weights vector has the right length
-    if (length(weights) != nrow(x.df)) {
-      stop("weights vector must have the same length as x")
-    }
-    
     weights_string <- deparse(substitute(weights))
 
     if (sum(is.na(weights)) > 0) {
@@ -230,7 +227,18 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
               "be treated as zeroes")
       weights[is.na(weights)] <- 0
     }
-    
+
+    # If weights are in x.df, remove them
+    if(length(parse_info$df_name) == 1 && 
+       grepl(parse_info$df_name, weights_string)) {
+      wgts_vname <- sub(paste0(parse_info$df_name, "\\$"), "", weights_string)
+      ind <- which(names(x.df) == wgts_vname)
+      if (length(ind) == 1) {
+        x.df <- x.df[-ind]
+        parse_info$var_names <- setdiff(parse_info$var_names, wgts_vname)  
+      }
+    }
+        
     # Build skeleton for output dataframe
     output <- data.frame(mean      = numeric(),
                          sd        = numeric(),
@@ -247,7 +255,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
       weights <- weights / sum(weights) * nrow(x.df)
     }
     
-    n_tot <- sum(weights)
+    #n_tot <- sum(weights)
     
     for(i in seq_along(x.df)) {
       variable <- as.numeric(x.df[[i]])

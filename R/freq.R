@@ -228,7 +228,6 @@ freq <- function(x,
     }
     
     weights_string <- deparse(substitute(weights))
-    weights_label <- try(label(weights), silent = TRUE)
     
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were ",

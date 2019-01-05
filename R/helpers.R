@@ -116,6 +116,14 @@ check_arguments <- function(mc, dotArgs) {
       }
       assign("order", order, envir = parent.frame())
     }
+    
+    if (!identical(pf$weights, NA)) {
+      if (is.null(pf$weights)) {
+        msg %+=% "weights vector not found"
+      } else if (length(pf$weights) != nrow(as.data.frame(pf$x))) {
+        msg %+=% "weights vector must have same length as 'x'"      
+      }
+    }
   }
   
   # freq & ctable arguments ----------------------------------------------------
@@ -129,10 +137,6 @@ check_arguments <- function(mc, dotArgs) {
   
   # freq & descr arguments -----------------------------------------------------
   if (caller %in% c("freq", "descr")) {
-    if (!is.na(pf$weights) && length(pf$weights) != length(pf$x)) {
-      msg %+=% "'weights' must have same length as 'x'"      
-    }
-    
     if ("rescale.weights" %in% names(mc) &&
         !isTRUE(test_logical(pf$rescale.weights, 
                              len = 1, any.missing = FALSE))) {
@@ -177,8 +181,17 @@ check_arguments <- function(mc, dotArgs) {
         !isTRUE(test_logical(pf$transpose))) {
       msg %+=% "'transpose' must be either TRUE or FALSE"
     }
+
+    if (!identical(pf$weights, NA)) {
+      if (is.null(pf$weights)) {
+        msg %+=% "weights vector not found"
+      } else if (length(pf$weights) != nrow(pf$x.df)) {
+        msg %+=% "weights vector must have same length as 'x'"      
+      }
+    }
   }
-  
+
+    
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
     if ("varnumbers" %in% names(mc) &&
