@@ -176,7 +176,7 @@ When viewed in a browser or in RStudio's Viewer, the results look like this:
 with(tobacco, view(ctable(smoker, diseased)))
 ```
 
-![Example of ctable() output](img/ctable-with-row-props.png)
+![Example of ctable() output](ctable-with-row-props.png)
   
 Notice that instead of `ctable(tobacco$smoker, tobacco$diseased, ...)`,
 we used the `with()` function, making the syntax less redundant.
@@ -234,7 +234,7 @@ view(dfSummary(iris))
 
 The results show up in RStudio's viewer, or in the default Web Browser when not
 using RStudio:
-![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
+![Example of dfSummary Output displayed in RStudio's viewer](dfSummary_in_RStudio_Viewer.png)
 
 It is also possible to use `dfSummary()` in *Rmarkdown* documents. Further down, 
 we'll see how to use _html_ rendering to display graphics in their image form 
@@ -361,7 +361,7 @@ more on _knitr_'s options.
 #       method = 'render', headings = FALSE)
 # ```
 ````
-![Example of rendered output](img/dfSummary-render-in-markdown.png)
+![Example of rendered output](dfSummary-render-in-markdown.png)
 
 ## Writing Output to Files
 

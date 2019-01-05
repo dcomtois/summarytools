@@ -63,7 +63,7 @@ view(freq(iris$Species))
 ```
 
 
-<img style="float: center;" src="img/freq-fr.png" width=260px />
+<img style="float: center;" src="freq-fr.png" width=260px />
 
 The language used for producing the object is stored within it as an attribute.
 This is to avoid problems when switching languages between the moment the 

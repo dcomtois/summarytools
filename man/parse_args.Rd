@@ -25,13 +25,13 @@ names. Defaults to \code{Inf}}
 \value{
 A list consisting of:
 \itemize{
-  \item df.name The data frame name when applicable.
-  \item var.names The variable names when applicable.
-  \item by.group The group, when functions are called through
+  \item df_name The data frame name when applicable.
+  \item var_names The variable names when applicable.
+  \item by_group The group, when functions are called through
     \code{by()}
-  \item by.first A binary indicator used when function was called
+  \item by_first A binary indicator used when function was called
     through \code{by()}
-  \item by.last A binary indicator used when function was called
+  \item by_last A binary indicator used when function was called
     through \code{by()}}
 }
 \description{
