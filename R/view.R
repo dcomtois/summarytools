@@ -103,6 +103,14 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
   } else if (inherits(x, "by") &&
              attr(x[[1]], "st_type") %in% c("freq", "ctable",
                                             "descr", "dfSummary")) {
+    
+    if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
+        !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
+        method == "pander") {
+      method <- "browser"
+      message("Switching method to 'browser', as 'pander' is incompatible with",
+              " html file format")
+    }
 
     if (method %in% c("viewer", "browser")) {
 
@@ -110,13 +118,19 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
             
       file <- ifelse(file == "", paste0(tempfile(),".html"), file)
       
+      footnote_safe <- footnote
+      
       for (i in seq_along(x)) {
 
         if (grepl(tempdir(), file, fixed = TRUE) && i == length(x)) {
           open.doc <- TRUE
-          footnote <- footnote
         } else {
           open.doc <- FALSE
+        }
+        
+        if (i == length(x)) {
+          footnote <- footnote_safe
+        } else {
           footnote <- NA
         }
 
