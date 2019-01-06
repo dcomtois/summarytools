@@ -217,7 +217,10 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       output[i,2] <- paste(output[i,2], 
                            paste(barcode_type, trs("codes")),
                            sep = "\\\n")
-    }  
+      if(is.numeric(column_data)) {
+        column_data <- as.character(column_data)
+      }
+    }
     
     # Add column label (if applicable)
     if (isTRUE(labels.col)) {
@@ -331,33 +334,37 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
 
 #' @keywords internal
 crunch_factor <- function(column_data) {
-
+  
   outlist <- list()
-
+  outlist[[1]] <- ""
+  outlist[[2]] <- ""
+  outlist[[3]] <- ""
+  outlist[[4]] <- ""
+  
   max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
-
+  
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
   props    <- prop.table(counts)
-
-  if (parent.frame()$n_levels == 0 && parent.frame()$n_valid == 0) {
-    ouplist[[1]] <- "No levels defined"
+  
+  if (n_levels == 0 && parent.frame()$n_valid == 0) {
+    outlist[[1]] <- "No levels defined"
     outlist[[2]] <- "All NA's"
     outlist[[3]] <- ""
     outlist[[4]] <- ""
-
+    
   } else if (parent.frame()$n_valid == 0) {
     outlist[[1]] <- paste0(1:n_levels,"\\. ", levels(column_data),
                            collapse = "\\\n")
     outlist[[2]] <- "All NA's"
     outlist[[3]] <- ""
     outlist[[4]] <- ""
-
-  } else if (n_levels <= max.distinct.values) {
-    outlist[[1]] <- paste0(1:n_levels,"\\. ",
+    
+  } else if (n_levels <= max.distinct.values + 1) {
+    outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
                            collapse = "\\\n")
     counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
@@ -367,22 +374,19 @@ crunch_factor <- function(column_data) {
       outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
       outlist[[4]] <- txtbarplot(prop.table(counts))
     }
-
   } else {
-
+    
     # more levels than allowed by max.distinct.values
     n_extra_levels <- n_levels - max.distinct.values
-
+    
     outlist[[1]] <-
       paste0(1:max.distinct.values,"\\. ",
              substr(levels(column_data), 1,
                     max.string.width)[1:max.distinct.values],
-             collapse="\\\n")
-
-    outlist[[1]] <- paste(outlist[[1]],
-                          paste("[", n_extra_levels, trs("others"), "]"),
-                          sep="\\\n")
-
+             collapse="\\\n",
+             paste("\\\n[", n_extra_levels, trs("others"), "]")
+      )
+    
     counts_props <- align_numbers_dfs(
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
@@ -390,12 +394,12 @@ crunch_factor <- function(column_data) {
         round(sum(props[(max.distinct.values + 1):length(props)]),
               round.digits + 2))
     )
-
+    
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-
+    
     if (isTRUE(parent.frame()$graph.col) &&
         any(!is.na(column_data))) {
-      # prepare data for barplot
+      # Prepare data for bar plot
       tmp_data <- column_data
       levels(tmp_data)[max.distinct.values + 1] <-
         paste("[", n_extra_levels, trs("others"), "]")
@@ -406,6 +410,7 @@ crunch_factor <- function(column_data) {
       outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)))
     }
   }
+  
   Encoding(outlist[[1]]) <- "UTF-8"
   Encoding(outlist[[2]]) <- "UTF-8"
   Encoding(outlist[[3]]) <- "UTF-8"
@@ -414,24 +419,24 @@ crunch_factor <- function(column_data) {
 
 #' @keywords internal
 crunch_character <- function(column_data) {
-
+  
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-
+  
   max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
-
+  
   if (isTRUE(parent.frame()$trim.strings)) {
     column_data <- trimws(column_data)
   }
-
+  
   n_empty <- sum(column_data == "", na.rm = TRUE)
-
+  
   if (n_empty == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str"), "\n")
   } else if (parent.frame()$n_miss == parent.frame()$n_tot) {
@@ -439,24 +444,24 @@ crunch_character <- function(column_data) {
   } else if (n_empty + parent.frame()$n_miss == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
   } else {
-
+    
     counts <- table(column_data, useNA = "no")
     props <- prop.table(counts)
-
+    
     if (length(counts) <= max.distinct.values + 1) {
       # Report all frequencies when allowed by max.distinct.values
       outlist[[1]] <- paste0(seq_along(counts), "\\. ",
                              substr(names(counts), 1, max.string.width),
-                             collapse="\\\n")
+                             collapse = "\\\n")
       counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
-      counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
-      outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
-      if (isTRUE(parent.frame()$graph.col)) {
+      outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+      if (isTRUE(parent.frame()$graph.col) &&
+          any(!is.na(column_data))) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     } else {
-      # Too many values - report most common strings
+      # more values than allowed by max.distinct.values
       counts <- sort(counts, decreasing = TRUE)
       props <- sort(props, decreasing = TRUE)
       n_extra_values <- length(counts) - max.distinct.values
@@ -468,17 +473,18 @@ crunch_character <- function(column_data) {
         paste("\\\n[", n_extra_values, trs("others"), "]")
       )
       counts_props <- align_numbers_dfs(
-        counts = c(counts[1:max.distinct.values],
-                   sum(counts[(max.distinct.values + 1):length(counts)])),
-        props = c(props[1:max.distinct.values],
-                  round(sum(props[(max.distinct.values + 1):length(props)]),
-                        round.digits + 2))
+        c(counts[1:max.distinct.values],
+          sum(counts[(max.distinct.values + 1):length(counts)])),
+        c(props[1:max.distinct.values],
+          round(sum(props[(max.distinct.values + 1):length(props)]),
+                round.digits + 2))
       )
-
-      outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
-
-      if (isTRUE(parent.frame()$graph.col)) {
-        # Prepare data for graph
+      
+      outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+      
+      if (isTRUE(parent.frame()$graph.col) &&
+          any(!is.na(column_data))) {
+        # Prepare data for bar plot
         counts[max.distinct.values + 1] <-
           sum(counts[(max.distinct.values + 1):length(counts)])
         names(counts)[max.distinct.values + 1] <-
@@ -486,15 +492,15 @@ crunch_character <- function(column_data) {
         counts <- counts[1:(max.distinct.values + 1)]
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
         outlist[[4]] <- txtbarplot(prop.table(counts))
-      }
+      } 
     }
   }
+  
   Encoding(outlist[[1]]) <- "UTF-8"
   Encoding(outlist[[2]]) <- "UTF-8"
   Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
-
 #' @importFrom stats IQR median ftable sd
 #' @keywords internal
 crunch_numeric <- function(column_data, is_barcode) {
@@ -505,7 +511,7 @@ crunch_numeric <- function(column_data, is_barcode) {
   outlist[[3]] <- ""
   outlist[[4]] <- ""
 
-  max.string.width    <- parent.frame()$max.string.width
+  #max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
@@ -649,7 +655,7 @@ crunch_time_date <- function(column_data) {
   outlist[[3]] <- ""
   outlist[[4]] <- ""
 
-  max.string.width    <- parent.frame()$max.string.width
+  #max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
@@ -701,10 +707,10 @@ crunch_other <- function(column_data) {
   outlist[[3]] <- ""
   outlist[[4]] <- ""
 
-  max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
-  graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
+  #graph.magnif        <- parent.frame()$graph.magnif
+  #max.string.width    <- parent.frame()$max.string.width
 
   counts <- table(column_data, useNA = "no")
 
@@ -712,7 +718,7 @@ crunch_other <- function(column_data) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
 
   } else if (length(counts) <= max.distinct.values) {
-    props <- round(prop.table(counts), parent.frame()$round.digits + 2)
+    props <- round(prop.table(counts), round.digits + 2)
     counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
 
@@ -745,7 +751,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
                        min.n = 1)
-    hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
+    #hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
     cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x,
                                     axes = FALSE, xlab=NULL, ylab=NULL,
                                     main=NULL, col = "grey95",
@@ -763,9 +769,10 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
         bg = "transparent")
     par("mar" = c(0.03,0.01,0.05,0.01))
     data <- rev(data)
-    bp_values <- barplot(data, names.arg = "", axes = FALSE, space = 0.2,
-                         col = "grey97", border = "grey65", horiz = TRUE,
-                         xlim = c(0, sum(data)))
+    #bp_values <- 
+    barplot(data, names.arg = "", axes = FALSE, space = 0.2,
+            col = "grey97", border = "grey65", horiz = TRUE,
+            xlim = c(0, sum(data)))
   }
   
   dev.off()
