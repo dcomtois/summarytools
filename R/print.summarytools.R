@@ -321,7 +321,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "totals", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
       if (format_element == "omit.headings") {
-        
         msg <- paste("'omit.headings' will disappear in future releases;",
                      "use 'headings' instead")
         if (.st_env$last.message$msg != msg || 
@@ -1209,7 +1208,7 @@ print_dfs <- function(x, method) {
   
   # Remove Label column if specified in call to print/view
   if (trs("label") %in% names(x) && 
-      "Labels.col" %in% names(format_info) && 
+      "labels.col" %in% names(format_info) && 
       !isTRUE(format_info$labels.col)) {
     x <- x[ ,-which(names(x) == trs("label"))]
   }
