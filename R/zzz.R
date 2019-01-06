@@ -46,11 +46,13 @@ utils::globalVariables(c("."))
   return(invisible())
 }
 
-#' @importFrom utils packageDate
+#' @importFrom utils packageDescription
 #' @importFrom pander panderOptions
 .onAttach <- function(libname, pkgname) {
-  #panderOptions("knitr.auto.asis", FALSE)
-  if (packageDate("pander",date.fields = "Packaged") <= "2018-11-06")
+  pander_built_dt <- packageDescription("pander")$Built
+  pander_built_dt <- sub(".+?(\\d+\\-\\d+\\-\\d+).+", "\\1", pander_built_dt)
+  should_update <- try(pander_built_dt <= "2018-11-06", silent = TRUE)
+  if(isTRUE(should_update))
     packageStartupMessage("For best results, consider updating pander to its ",
                           "most recent version. You can do so by using \n",
                           "devtools::install_github('rapporter/pander')")

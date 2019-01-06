@@ -213,7 +213,13 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                           "]")
     
     # Add UPC/EAN info if applicable
-    if (!isFALSE(barcode_type <- detect_barcode(column_data))) {
+    if(is.factor(column_data)) {
+      barcode_type <- detect_barcode(levels(column_data))
+    } else {
+      barcode_type <- detect_barcode(column_data)
+    }
+    
+    if (is.character(barcode_type)) {
       output[i,2] <- paste(output[i,2], 
                            paste(barcode_type, trs("codes")),
                            sep = "\\\n")
@@ -245,7 +251,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
 
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
-      output[i,4:7] <- crunch_numeric(column_data, !isFALSE(barcode_type))
+      output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
 
     # Time/date data -----------------------------------------------------------

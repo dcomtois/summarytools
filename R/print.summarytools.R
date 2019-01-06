@@ -125,12 +125,12 @@
 #'   print(descr(exams), headings = FALSE)
 #'
 #' @keywords print methods
-#' @export
 #' @import htmltools
 #' @importFrom pander pander panderOptions
 #' @importFrom utils capture.output packageVersion head
 #' @importFrom checkmate test_logical test_path_for_output test_choice
 #'             test_string check_file_exists
+#' @export
 print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                report.title = NA, table.classes = NA, 
                                bootstrap.css = st_options("bootstrap.css"),
@@ -301,7 +301,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
   
-  # Override of x's attributes (format_info and heading info) -------------------
+  # Override of x's attributes (format_info and heading info) ------------------
   if ("date" %in% names(dotArgs)) {
     attr(x, "date") <- dotArgs[["date"]]
   }
@@ -1440,7 +1440,7 @@ build_heading_pander <- function(format_info, data_info) {
              # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
-    if (isFALSE(format_info$plain.ascii)) {
+    if (!isTRUE(format_info$plain.ascii)) {
       if (h == 0) {
         str <- sub(pattern = "^(\\s*)(.+?)((:)\\s(.+))?\\s*$",
                    replacement = "\\1**\\2\\4** \\5",
@@ -1510,7 +1510,7 @@ build_heading_pander <- function(format_info, data_info) {
       head3 <- append_items(list(c(Group = trs("group"))))
     }
     return(list(head3))
-  } else if (isFALSE(format_info$headings)) {
+  } else if (!isTRUE(format_info$headings)) {
     if ("var.only" %in% names(format_info)) {
       head3 <- append_items(list(c(Variable = "")))
       return(list(head3))
@@ -1694,7 +1694,7 @@ build_heading_html <- function(format_info, data_info, method) {
   
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
-    if (isFALSE(format_info$headings)) {
+    if (!isTRUE(format_info$headings)) {
       return(list())
     } else {
       if (method == "render") {
@@ -1716,7 +1716,7 @@ build_heading_html <- function(format_info, data_info, method) {
       head3 <- append_items(list(c(Group = trs("group"))))
     }    
     return(list(head3))
-  } else if (isFALSE(format_info$headings)) {
+  } else if (!isTRUE(format_info$headings)) {
     if ("Group" %in% names(data_info)) {
       head3 <- append_items(list(c(Group = trs("group"))))
       return(list(head3))
