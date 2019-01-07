@@ -349,7 +349,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       if (!(format_element == "headings" &&
             "omit.headings" %in% names(attr(x, "fn_call")))) {
         if (!(format_element == "style" &&
-              attr(x, "st_type") == "dfSummary")) {
+              attr(x, "st_type") == "dfSummary") &&
+            !(format_element == "round.digits" && 
+              attr(x, "st_type") == "ctable")) {
           attr(x, "format_info")[[format_element]] <- st_options(format_element)
         }
       }
