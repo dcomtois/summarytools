@@ -143,7 +143,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     } else {
       converted_to_df <- TRUE
       df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
-      message(df_name, " was converted to a data frame")
+      message("Object was converted to a data frame")
     }
   }
 
@@ -519,7 +519,6 @@ crunch_numeric <- function(column_data, is_barcode) {
   outlist[[3]] <- ""
   outlist[[4]] <- ""
 
-  #max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
@@ -546,26 +545,26 @@ crunch_numeric <- function(column_data, is_barcode) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          round(min(column_data, na.rm = TRUE), round.digits), "\\\n",
+          round(min(column_data, na.rm = TRUE), 2), "\\\n",
           trs("mean"), strrep(" ", maxchars - nchar(trs("mean"))), " : ",
-          round(mean(column_data, na.rm = TRUE), round.digits), "\\\n",
+          round(mean(column_data, na.rm = TRUE), 2), "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          round(max(column_data, na.rm = TRUE), round.digits)
+          round(max(column_data, na.rm = TRUE), 2)
         )
       } else {
         outlist[[1]] <- paste(
           trs("mean"), paste0(" (", trs("sd"), ") : "),
-          round(mean(column_data, na.rm = TRUE), round.digits),
-          " (", round(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
+          round(mean(column_data, na.rm = TRUE), 2),
+          " (", round(sd(column_data, na.rm = TRUE), 2), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", round(min(column_data, na.rm = TRUE), round.digits),
-          " < ", round(median(column_data, na.rm = TRUE), round.digits),
-          " < ", round(max(column_data, na.rm = TRUE), round.digits), "\\\n",
+          ":\\\n", round(min(column_data, na.rm = TRUE), 2),
+          " < ", round(median(column_data, na.rm = TRUE), 2),
+          " < ", round(max(column_data, na.rm = TRUE), 2), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          round(IQR(column_data, na.rm = TRUE), round.digits),
+          round(IQR(column_data, na.rm = TRUE), 2),
           " (", round(sd(column_data, na.rm = TRUE) /
                         mean(column_data, na.rm = TRUE),
-                      round.digits), ")", collapse="", sep="")
+                      2), ")", collapse="", sep="")
       }
     }
     
