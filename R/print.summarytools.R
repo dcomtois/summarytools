@@ -1198,6 +1198,41 @@ print_dfs <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
+  # Function to align the freqs / proportions in html outputs
+  # A table is built to fit in a single cell of the final table
+  make_tbl_cell <- function(cell) {
+
+    rows <- strsplit(cell, "\\\n")[[1]]
+    rows <- gsub("\\", "", rows, fixed = TRUE)
+    rows <- gsub(" " , "", rows, fixed = TRUE)
+    rows <- gsub(")$", "", rows)
+    rows <- strsplit(rows, "\\(")
+    cnts <- vapply(X = rows, FUN = head, FUN.VALUE = " ", 1)
+    prps <- vapply(X = rows, FUN = tail, FUN.VALUE = " ", 1)
+    
+    celltr <- 
+      paste0(
+        paste0(
+          '<tr style="background-color:transparent"><td style="padding:0 3px;',
+          'margin:0;border:0" align = "right">'
+        ),
+        cnts,
+        paste0(
+          '</td> <td style="padding:0 2px;border:0;" align="left">(</td>',
+          '<td style="padding:0;border:0" align="right">'
+        ),
+        prps,
+        '</td><td style="padding:0 2px;border:0" align="left">)</tr>',
+        collapse = ""
+      )
+    
+    return(
+      HTML(paste0('<td align = "left" style="padding:0 0 0 5px"><table>',
+                  celltr, '</table></td>')
+      )
+    )
+  }
+  
   # Remove Var number ("No") column if specified in call to print/view
   if (trs("no") %in% names(x) && 
       "varnumbers" %in% names(format_info) && 
@@ -1370,18 +1405,22 @@ print_dfs <- function(x, method) {
                                 simplify = TRUE), collapse = "\n")
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
                                       align = "left"))
-        } else if (colnames(x)[co] %in% 
-                   c(trs("variable"), trs("stats.values"))) {
+        } else if (colnames(x)[co] %in% c(trs("variable"), 
+                                          trs("stats.values"))) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
           cell <- gsub("\\s{2,}", " ", cell)
           table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
                                       align = "left"))
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
-          cell <- gsub("\\\\", " ", cell)
-          cell <- gsub(" *(\\d|\\:)", "\\1", cell)
-          cell <- gsub("\\:", " : ", cell)
-          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
-                                      align = "left"))
+          if (cell == "" || grepl(":", cell)) {
+            cell <- gsub("\\\\", " ", cell)
+            cell <- gsub(" *(\\d|\\:)", "\\1", cell)
+            cell <- gsub("\\:", " : ", cell)
+            table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
+                                        align = "left"))
+          } else {
+            table_row %+=% list(HTML(make_tbl_cell(cell)))
+          }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(tags$td(HTML(cell),
                                       align = "center", border = "0"))
