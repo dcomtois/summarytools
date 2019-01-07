@@ -46,17 +46,30 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   by_last     <- logical()
 
   # Look for position of by(), tapply(), with() and lapply() in sys.calls()
-  pos_by     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
-  pos_tapply <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
-  pos_lapply <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
-  # pos_with   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
+  funs_stack <- lapply(sys_calls, head, 1)
+  pos_by     <- which(funs_stack == "by()")
+  pos_tapply <- which(funs_stack == "tapply()")
+  pos_lapply <- which(funs_stack == "lapply()")
+  pos_with   <- which(funs_stack == "with()")
+  pos_pipe   <- which(funs_stack == "`%>%`()")
   
+  frames_obj <- lapply(sys_frames, ls)
   # if (length(pos_with) == 1) {
   #   with_call <- as.list(standardise_call(sys_calls[[pos_with]]))
   #   with_objects <- ls(sys_frames[[pos_with + 3]])
   # }
 
-  # by() was invoked -----------------------------------------------------------
+  # %>% is in the call stack
+  if (length(pos_pipe) == 1) {
+    pipe_call <- as.list(standardise_call(sys_calls[[pos_pipe]]))
+    # See what type (class) of object is on the lhs
+    lhs_obj <- sys_frames[[pos_pipe + 3]]$`_lhs`
+    
+    #lhs_obj_str <- sub("(.+?)\\s*%>%.+", "\\1", deparse(pipe_call$lhs))
+
+  }
+  
+  # by() is in the call stack --------------------------------------------------
   # We use the .st_env environment to store the group-info at each iteration
   if (length(pos_by) == 1) {
 
@@ -120,7 +133,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }
   # End of "by"
 
-  # No by() but rather lapply() ------------------------------------------------
+  # lapply() (not by()) is in the call stack -----------------------------------
   else if (length(pos_lapply) == 1) {
     lapply_call <- as.list(standardise_call(sys_calls[[pos_lapply]]))
     df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
