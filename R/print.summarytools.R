@@ -922,12 +922,19 @@ print_ctable <- function(x, method) {
     table_head <- list()
     table_rows <- list()
     
+    has_prop <- length(x$proportions) > 0
+    
     table_head[[1]] <- 
-      list(tags$th(""), tags$th(dnn[2], colspan = ncol(cross_table) - 
-                                  as.numeric(isTRUE(format_info$totals))))
+      list(tags$th(""), 
+           tags$th(
+             dnn[2], 
+             colspan = (1 + has_prop*2) * 
+               (ncol(cross_table) - as.numeric(isTRUE(format_info$totals)))
+             )
+           )
     
     if (isTRUE(format_info$totals)) {
-      table_head[[1]][[3]] <- tags$th("")
+      table_head[[1]][[3]] <- tags$th("", colspan = (1 + has_prop*2))
     }
     
     table_head[[2]] <-list(tags$td(tags$strong(dnn[1]), align = "center"))
@@ -939,7 +946,8 @@ print_ctable <- function(x, method) {
       cn <- sub("<", "&lt;", cn, fixed = TRUE)
       cn <- sub(">", "&gt;", cn, fixed = TRUE)
       table_head[[2]][[length(table_head[[2]]) + 1]] <- 
-        tags$th(HTML(conv_non_ascii(cn)), align = "center")
+        tags$th(HTML(conv_non_ascii(cn)), 
+                colspan = (1 + has_prop*2), align = "center")
     }
     
     table_rows <- list()
@@ -947,23 +955,56 @@ print_ctable <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(cross_table))) {
         if (co == 1) {
+          
+          rn <- row.names(cross_table)[ro]
+          rn <- sub("<", "&lt;", rn, fixed = TRUE)
+          rn <- sub(">", "&gt;", rn, fixed = TRUE)
+          
           table_row %+=%
-            list(tags$td(tags$strong(row.names(cross_table)[ro]), 
-                         align = "center"))
+            list(
+              tags$td(
+                tags$strong(
+                  HTML(conv_non_ascii(rn)), 
+                  align = "center"
+                  )
+                )
+              )
         }
         
         # No proportions
-        if (length(x$proportions) == 0) {
+        if (!isTRUE(has_prop)) {
           cell <- cross_table[ro,co]
           table_row %+=% list(tags$td(tags$span(cell)))
         } else {
-          # With proportions
-          cell <- sub("\\( *", "("     , cross_table[ro,co])
-          cell <- sub(" *\\)", ")"     , cell)
-          cell <- gsub(" "   , "&nbsp;", cell)
-          cell <- sub("%"    , "&#37;" , cell, fixed = TRUE)
+          cell <- gsub(" ", "", cross_table[ro,co])
+          cell <- sub(")$", "", cell)
+          cell <- strsplit(cell, "\\(")[[1]]
           
-          table_row %+=% list(tags$td(tags$span(HTML(cell))))
+          table_row %+=% list(
+            tags$td(
+              cell[1],
+              align = "right",
+              style = "padding:0 2px 0 15px;border-right:0;text-align:right"
+            )
+          )
+          
+          table_row %+=% list(
+            tags$td(
+              "(", align = "left",
+              style = "padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left"
+              )
+            )
+
+          table_row %+=% list(
+            tags$td(
+              HTML(paste0(cell[2], "&#8202;)")),
+              align = "left",
+              style = "padding:0 15px 0 0;border-left:0;text-align:right"
+            )
+          )
+          
+          # table_row %+=% list(tags$td(tags$span(HTML(cell))))
+          # table_row %+=% list(make_tbl_cell(cross_table[ro,co]))
         }
         
         # On last col, insert row into list
@@ -1209,7 +1250,7 @@ print_dfs <- function(x, method) {
     rows <- gsub(" " , "", rows, fixed = TRUE)
     rows <- gsub(")$", "", rows)
     rows <- strsplit(rows, "[(:]")
-
+    
     if (grepl(":", cell)) {
       
       notice <- NA
@@ -1217,7 +1258,7 @@ print_dfs <- function(x, method) {
         notice <- sub("!", "! ", rows[[length(rows)]], fixed = TRUE)
         length(rows) <- length(rows) - 1
       }
-
+      
       vals <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 1)
       cnts <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 2)
       prps <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 3)
@@ -1252,7 +1293,7 @@ print_dfs <- function(x, method) {
                  notice, "</td></tr>", collapse = "")
       }
     } else {
-    
+      
       cnts <- vapply(X = rows, FUN = `[`, FUN.VALUE = " ", 1)
       prps <- vapply(X = rows, FUN = `[`, FUN.VALUE = " ", 2)
       
@@ -1279,7 +1320,6 @@ print_dfs <- function(x, method) {
       )
     )
   }
-  
   # Remove Var number ("No") column if specified in call to print/view
   if (trs("no") %in% names(x) && 
       "varnumbers" %in% names(format_info) && 
@@ -1909,3 +1949,4 @@ build_heading_html <- function(format_info, data_info, method) {
   tmp <- list(head1, head2, head3)
   return(tmp[which(!is.na(tmp))])
 }
+
