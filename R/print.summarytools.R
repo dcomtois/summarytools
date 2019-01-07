@@ -241,8 +241,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
       method == "pander") {
     method <- "browser"
-    message("Switching method to 'browser', as 'pander' is incompatible with",
-            " html file format")
+    message("Switching method to 'browser'")
   }
   
   # Set plain.ascii to false and adjust style when file name ends with .md
@@ -475,6 +474,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
     }
     
+    file <- normalizePath(file, mustWork = FALSE)
     cat(do.call(paste, res), file = file, append = append)
     
     if (file != "" && !isTRUE(silent)) {
@@ -543,7 +543,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     outfile_path <- ifelse(file == "", paste0(tempfile(),".html"), file)
-
+    outfile_path <- normalizePath(outfile_path, mustWork = FALSE)
+    
     if (isTRUE(append)) {
       capture.output(cat(html_content, "\n"), file = outfile_path)
     } else {
@@ -563,8 +564,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             method <- "browser"
           }
         } else {
-          message("Method 'viewer' only valid within RStudio. Switching method",
-                  " to 'browser'.")
+          message("Switching method to 'browser'.")
           method <- "browser"
         }
       }
@@ -589,8 +589,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       if (!silent) {
         message(paste0("Output file written: ", outfile_path))
       }
-      return(invisible(normalizePath(outfile_path, winslash = "\\", 
-                                     mustWork = FALSE)))
+      return(invisible(outfile_path))
     } else if (file != "") {
       if (!silent) {
         if (isTRUE(append)) {

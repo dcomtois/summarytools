@@ -36,8 +36,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
   # Change method to "pander when .md file name was provided by user
   if (grepl("\\md$", file, ignore.case = TRUE, perl = TRUE) &&
       method != "pander") {
-    message("Switching method to 'pander', as '", method, "' is incompatible ",
-            "with .md file format")
+    message("Switching method to 'pander'")
     method <- "pander"
   }
     
@@ -116,8 +115,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
         method == "pander") {
       method <- "browser"
-      message("Switching method to 'browser', as 'pander' is incompatible with",
-              " html file format")
+      message("Switching method to 'browser'")
     }
 
     if (method %in% c("viewer", "browser")) {
