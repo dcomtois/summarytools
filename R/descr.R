@@ -85,6 +85,9 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
   # make x a data.frame
   x.df <- as_tibble(x)
   
+  # Get variable label
+  var_label <- label(x.df[[1]])
+  
   if (!is.data.frame(x.df)) {
     errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
                      "a data.table; attempted conversion to tibble failed")
@@ -342,7 +345,8 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
                                 parse_info$var_names, NA),
       Variable.label   = ifelse("var_label" %in% names(parse_info) &&
                                   length(parse_info$var_label) == 1,
-                                parse_info$var_label, NA),
+                                parse_info$var_label,
+                                ifelse(!is.na(var_label, var_label, NA))),
       Weights          = ifelse(identical(weights, NA), NA,
                                 sub(pattern = paste0(parse_info$df_name, "$"), 
                                     replacement = "", x = weights_string, 

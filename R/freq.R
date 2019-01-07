@@ -189,6 +189,10 @@ freq <- function(x,
     parse_info$var_names <- varname
   }
   
+  if (!("var_label" %in% names(parse_info)) && !is.na(label(x))) {
+    parse_info$var_label <- label(x)
+  }
+  
   # No weights are used --------------------------------------------------------
   # create a basic frequency table, always including NA
   if (identical(NA, weights)) {
