@@ -346,7 +346,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
       Variable.label   = ifelse("var_label" %in% names(parse_info) &&
                                   length(parse_info$var_label) == 1,
                                 parse_info$var_label,
-                                ifelse(!is.na(var_label, var_label, NA))),
+                                ifelse(!is.na(var_label), var_label, NA)),
       Weights          = ifelse(identical(weights, NA), NA,
                                 sub(pattern = paste0(parse_info$df_name, "$"), 
                                     replacement = "", x = weights_string, 

@@ -46,29 +46,32 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   by_last     <- logical()
 
   # Look for position of by(), tapply(), with() and lapply() in sys.calls()
-  by_pos     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
-  tapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
-  lapply_pos <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
-
-  # List of classes accepted as "data frames"
-  # classes <- c("data.frame", "data.table", "tbl")
+  pos_by     <- which(as.character(lapply(sys_calls, head, 1)) == "by()")
+  pos_tapply <- which(as.character(lapply(sys_calls, head, 1)) == "tapply()")
+  pos_lapply <- which(as.character(lapply(sys_calls, head, 1)) == "lapply()")
+  # pos_with   <- which(as.character(lapply(sys_calls, head, 1)) == "with()")
+  
+  # if (length(pos_with) == 1) {
+  #   with_call <- as.list(standardise_call(sys_calls[[pos_with]]))
+  #   with_objects <- ls(sys_frames[[pos_with + 3]])
+  # }
 
   # by() was invoked -----------------------------------------------------------
   # We use the .st_env environment to store the group-info at each iteration
-  if (length(by_pos) == 1) {
+  if (length(pos_by) == 1) {
 
-    by_call <- as.list(standardise_call(sys_calls[[by_pos]]))
+    by_call <- as.list(standardise_call(sys_calls[[pos_by]]))
 
     by_var <- deparse(by_call$INDICES)
     
     # On first iteration, generate levels based on IND variables, and store
     if (length(.st_env$byInfo) == 0) {
-      if (is.null(names(sys_frames[[tapply_pos]]$namelist)) ||
-          is.na(names(sys_frames[[tapply_pos]]$namelist)[1])) {
-        names(sys_frames[[tapply_pos]]$namelist) <- 
+      if (is.null(names(sys_frames[[pos_tapply]]$namelist)) ||
+          is.na(names(sys_frames[[pos_tapply]]$namelist)[1])) {
+        names(sys_frames[[pos_tapply]]$namelist) <- 
           as.character(by_call$INDICES)[-1]
       }
-      by_levels <- sys_frames[[tapply_pos]]$namelist
+      by_levels <- sys_frames[[pos_tapply]]$namelist
       .st_env$byInfo$by_levels <- 
         expand.grid(by_levels, stringsAsFactors = FALSE)
       .st_env$byInfo$iter <- 1
@@ -118,11 +121,11 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # End of "by"
 
   # No by() but rather lapply() ------------------------------------------------
-  else if (length(lapply_pos) == 1) {
-    lapply_call <- as.list(standardise_call(sys_calls[[lapply_pos]]))
+  else if (length(pos_lapply) == 1) {
+    lapply_call <- as.list(standardise_call(sys_calls[[pos_lapply]]))
     df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
-    #df_ <- eval(expr = lapply_call$X, envir = sys_frames[[lapply_pos]])
-    df_ <- eval(expr = sys_frames[[lapply_pos]]$X)
+    #df_ <- eval(expr = lapply_call$X, envir = sys_frames[[pos_lapply]])
+    df_ <- eval(expr = sys_frames[[pos_lapply]]$X)
     df_label <- label(df_)
     for (i_ in seq_along(sys_frames)) {
       if (identical(names(sys_frames[[i_]])[1:3], c("i", "X", "FUN"))) {
