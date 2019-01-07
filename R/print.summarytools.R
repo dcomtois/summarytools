@@ -1201,34 +1201,79 @@ print_dfs <- function(x, method) {
   # Function to align the freqs / proportions in html outputs
   # A table is built to fit in a single cell of the final table
   make_tbl_cell <- function(cell) {
-
+    
     rows <- strsplit(cell, "\\\n")[[1]]
     rows <- gsub("\\", "", rows, fixed = TRUE)
     rows <- gsub(" " , "", rows, fixed = TRUE)
     rows <- gsub(")$", "", rows)
-    rows <- strsplit(rows, "\\(")
-    cnts <- vapply(X = rows, FUN = head, FUN.VALUE = " ", 1)
-    prps <- vapply(X = rows, FUN = tail, FUN.VALUE = " ", 1)
+    rows <- strsplit(rows, "[(:]")
+
+    if (grepl(":", cell)) {
+      
+      notice <- NA
+      if (length(rows[[length(rows)]]) == 1) {
+        notice <- sub("!", "! ", rows[[length(rows)]], fixed = TRUE)
+        length(rows) <- length(rows) - 1
+      }
+
+      vals <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 1)
+      cnts <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 2)
+      prps <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 3)
+      
+      cell <- 
+        paste0(
+          paste0(
+            '<tr style="background-color:transparent">',
+            '<td style="padding:0 2px 0 3px;margin:0;border:0" align="right">'
+          ),
+          vals,
+          paste0(
+            '</td><td style="padding:0 2px;border:0;" align="left">:</td>',
+            '<td style="padding:0 1px 0 8px;border:0" align="right">'
+          ),
+          cnts,
+          paste0(
+            '</td><td style="padding:0 2px;border:0" align="left">(</td>',
+            '<td style="padding:0 2px;margin:0;border:0" align="right">'
+          ),
+          prps,
+          paste0('</td><td style="padding:0 0 0 2px;border:0" align="left">)',
+                 '</td></tr>'
+          ),
+          collapse = ""
+        )
+      
+      if (!is.na(notice)) {
+        cell <- 
+          paste0(cell, '<tr style="background-color:transparent">',
+                 '<td style="padding:0 0 0 5px;border:0;margin:0" colspan = 3>',
+                 notice, "</td></tr>", collapse = "")
+      }
+    } else {
     
-    celltr <- 
-      paste0(
+      cnts <- vapply(X = rows, FUN = `[`, FUN.VALUE = " ", 1)
+      prps <- vapply(X = rows, FUN = `[`, FUN.VALUE = " ", 2)
+      
+      cell <- 
         paste0(
-          '<tr style="background-color:transparent"><td style="padding:0 3px;',
-          'margin:0;border:0" align = "right">'
-        ),
-        cnts,
-        paste0(
-          '</td> <td style="padding:0 2px;border:0;" align="left">(</td>',
-          '<td style="padding:0;border:0" align="right">'
-        ),
-        prps,
-        '</td><td style="padding:0 2px;border:0" align="left">)</tr>',
-        collapse = ""
-      )
+          paste0(
+            '<tr style="background-color:transparent">',
+            '<td style="padding:0 5px;margin:0;border:0" align="right">'
+          ),
+          cnts,
+          paste0(
+            '</td><td style="padding:0 2px;border:0;" align="left">(</td>',
+            '<td style="padding:0;border:0" align="right">'
+          ),
+          prps,
+          '</td><td style="padding:0 2px;border:0" align="left">)</td></tr>',
+          collapse = ""
+        )
+    }
     
     return(
-      HTML(paste0('<td align = "left" style="padding:0 0 0 5px"><table>',
-                  celltr, '</table></td>')
+      HTML(paste0('<td align="left" style="padding:0 0 0 5px"><table>',
+                  cell, '</table></td>')
       )
     )
   }
@@ -1403,27 +1448,27 @@ print_dfs <- function(x, method) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
           cell <- paste(strwrap(cell, width = format_info$split.cells, 
                                 simplify = TRUE), collapse = "\n")
-          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)), 
-                                      align = "left"))
+          table_row %+=% list(
+            tags$td(HTML(conv_non_ascii(cell)), align = "left")
+          )
         } else if (colnames(x)[co] %in% c(trs("variable"), 
                                           trs("stats.values"))) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
           cell <- gsub("\\s{2,}", " ", cell)
-          table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
-                                      align = "left"))
+          table_row %+=% list(
+            tags$td(HTML(conv_non_ascii(cell)), align = "left")
+          )
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
-          if (cell == "" || grepl(":", cell)) {
-            cell <- gsub("\\\\", " ", cell)
-            cell <- gsub(" *(\\d|\\:)", "\\1", cell)
-            cell <- gsub("\\:", " : ", cell)
-            table_row %+=% list(tags$td(HTML(conv_non_ascii(cell)),
-                                        align = "left"))
+          if (!grepl("[:)%]", cell)) {
+            table_row %+=% list(
+              tags$td(HTML(cell), align = "center", border = "0")
+            )
           } else {
-            table_row %+=% list(HTML(make_tbl_cell(cell)))
+            table_row %+=% list(make_tbl_cell(cell))
           }
         } else if (colnames(x)[co] == trs("graph")) {
-          table_row %+=% list(tags$td(HTML(cell),
-                                      align = "center", border = "0"))
+          table_row %+=% list(
+            tags$td(HTML(cell), align = "center", border = "0"))
         }
       }
       table_rows %+=% list(tags$tr(table_row))
