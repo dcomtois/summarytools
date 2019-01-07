@@ -389,10 +389,12 @@ crunch_factor <- function(column_data) {
       paste0(1:max.distinct.values,"\\. ",
              substr(levels(column_data), 1,
                     max.string.width)[1:max.distinct.values],
-             collapse="\\\n",
-             paste("\\\n[", n_extra_levels, trs("others"), "]")
-      )
-    
+             collapse="\\\n")
+
+    outlist[[1]] <- paste(outlist[[1]],
+                          paste("[", n_extra_levels, trs("others"), "]"),
+                          sep="\\\n")
+
     counts_props <- align_numbers_dfs(
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
