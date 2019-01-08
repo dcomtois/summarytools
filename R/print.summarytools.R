@@ -1267,7 +1267,7 @@ print_dfs <- function(x, method) {
         paste0(
           paste0(
             '<tr style="background-color:transparent">',
-            '<td style="padding:0 2px 0 3px;margin:0;border:0" align="right">'
+            '<td style="padding:0 0 0 7px;margin:0;border:0" align="right">'
           ),
           vals,
           paste0(
@@ -1289,7 +1289,7 @@ print_dfs <- function(x, method) {
       if (!is.na(notice)) {
         cell <- 
           paste0(cell, '<tr style="background-color:transparent">',
-                 '<td style="padding:0 0 0 5px;border:0;margin:0" colspan = 3>',
+                 '<td style="padding:0 0 0 5px;border:0;margin:0" colspan=3>',
                  notice, "</td></tr>", collapse = "")
       }
     } else {
@@ -1301,7 +1301,7 @@ print_dfs <- function(x, method) {
         paste0(
           paste0(
             '<tr style="background-color:transparent">',
-            '<td style="padding:0 5px;margin:0;border:0" align="right">'
+            '<td style="padding:0 5px 0 7px;margin:0;border:0" align="right">'
           ),
           cnts,
           paste0(
@@ -1315,10 +1315,14 @@ print_dfs <- function(x, method) {
     }
     
     return(
-      HTML(paste0('<td align="left" style="padding:0 0 0 5px"><table>',
-                  cell, '</table></td>')
+      HTML(
+        paste0(
+          '<td align="left" style="padding:0"><table ',
+          'style="border-collapse:collapse;border:none;margin:0">',
+          cell, '</table></td>'
+          )
+        )
       )
-    )
   }
   # Remove Var number ("No") column if specified in call to print/view
   if (trs("no") %in% names(x) && 

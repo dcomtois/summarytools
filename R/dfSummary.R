@@ -751,10 +751,13 @@ align_numbers_dfs <- function(counts, props) {
 #' @importFrom grDevices dev.off nclass.Sturges png
 #' @keywords internal
 encode_graph <- function(data, graph_type, graph.magnif = NA) {
+  bg <- par('bg'=NA)
+  on.exit(par(bg))
   if (graph_type == "histogram") {
     png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 100 * graph.magnif, units = "px", bg = "transparent")
-    par("mar" = c(0.03,0.01,0.07,0.01))
+        height = 95 * graph.magnif, units = "px", bg = "transparent")
+    mar <- par("mar" = c(0.03,0.01,0.00,0.01))
+    on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
                        min.n = 1)
@@ -772,12 +775,12 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
   } else if (graph_type == "barplot") {
     
     png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 26 * length(data) * graph.magnif, units = "px",
+        height = 25.4 * length(data) * graph.magnif, units = "px",
         bg = "transparent")
-    par("mar" = c(0.03,0.01,0.05,0.01))
+    mar <- par("mar" = c(0.03,0.01,0.03,0.01))
+    on.exit(par(mar), add = TRUE)
     data <- rev(data)
-    #bp_values <- 
-    barplot(data, names.arg = "", axes = FALSE, space = 0.2,
+    barplot(data, names.arg = "", axes = FALSE, space = 0.21,
             col = "grey97", border = "grey65", horiz = TRUE,
             xlim = c(0, sum(data)))
   }
@@ -786,7 +789,8 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
   img_txt <- base64Encode(txt = readBin(con = img_png, what = "raw",
                                         n = file.info(img_png)[["size"]]),
                           mode = "character")
-  return(sprintf('<img src="data:image/png;base64,%s">', img_txt))
+  return(sprintf('<img style="border:none;background:none;padding:0" 
+                 src="data:image/png;base64, %s">', img_txt))
 }
 
 #' @keywords internal
