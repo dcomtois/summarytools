@@ -146,8 +146,8 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
     parse_info <- list()
   }
 
-  if (!"var_names" %in% names(parse_info)) {
-    parse_info$var_names <- colnames(x.df)
+  if (!"var_name" %in% names(parse_info)) {
+    parse_info$var_name <- colnames(x.df)
   }
   
   # Identify and exclude non-numerical columns from x
@@ -156,7 +156,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
   if (length(col_to_remove) > 0) {
     ignored <- colnames(x.df)[col_to_remove]
     x.df <- x.df[-col_to_remove]
-    parse_info$var_names <- parse_info$var_names[-col_to_remove]
+    parse_info$var_name <- parse_info$var_name[-col_to_remove]
   }
   
   if (ncol(x.df) == 0) {
@@ -200,7 +200,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
     } else {
       output <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
         as.data.frame
-      rownames(output) <- parse_info$var_names
+      rownames(output) <- parse_info$var_name
     }
 
     # Calculate additionnal stats if needed
@@ -238,7 +238,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
       ind <- which(names(x.df) == wgts_vname)
       if (length(ind) == 1) {
         x.df <- x.df[-ind]
-        parse_info$var_names <- setdiff(parse_info$var_names, wgts_vname)  
+        parse_info$var_name <- setdiff(parse_info$var_name, wgts_vname)  
       }
     }
         
@@ -306,7 +306,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
     
-    rownames(output) <- parse_info$var_names
+    rownames(output) <- parse_info$var_name
     
   }
   
@@ -340,9 +340,9 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
                                 parse_info$df_name, NA),
       Data.frame.label = ifelse("df_label" %in% names(parse_info), 
                                 parse_info$df_label, NA),
-      Variable         = ifelse("var_names" %in% names(parse_info) && 
-                                  length(parse_info$var_names) == 1,
-                                parse_info$var_names, NA),
+      Variable         = ifelse("var_name" %in% names(parse_info) && 
+                                  length(parse_info$var_name) == 1,
+                                parse_info$var_name, NA),
       Variable.label   = ifelse("var_label" %in% names(parse_info) &&
                                   length(parse_info$var_label) == 1,
                                 parse_info$var_label,

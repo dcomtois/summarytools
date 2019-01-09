@@ -174,8 +174,8 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   }
 
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
-    if ("var_names" %in% names(parse_info)) {
-      colnames(x) <- parse_info$var_names
+    if ("var_name" %in% names(parse_info)) {
+      colnames(x) <- parse_info$var_name
     } else {
       colnames(x) <- parse_info$df_name
     }

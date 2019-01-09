@@ -185,8 +185,8 @@ freq <- function(x,
     parse_info <- list()
   }
   
-  if (!("var_names" %in% names(parse_info)) && exists("varname")) {
-    parse_info$var_names <- varname
+  if (!("var_name" %in% names(parse_info)) && exists("varname")) {
+    parse_info$var_name <- varname
   }
   
   if (!("var_label" %in% names(parse_info)) && !is.na(label(x))) {
@@ -316,8 +316,8 @@ freq <- function(x,
                                 parse_info$df_name, NA),
       Data.frame.label = ifelse("df_label" %in% names(parse_info), 
                                 parse_info$df_label, NA),
-      Variable         = ifelse("var_names" %in% names(parse_info), 
-                                parse_info$var_names, NA),
+      Variable         = ifelse("var_name" %in% names(parse_info), 
+                                parse_info$var_name, NA),
       Variable.label   = ifelse("var_label" %in% names(parse_info), 
                                 parse_info$var_label, NA),
       Data.type        = Data.type,
