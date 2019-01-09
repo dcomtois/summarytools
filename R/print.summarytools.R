@@ -9,7 +9,8 @@
 #'    bootstrap.css = st_options('bootstrap.css'), 
 #'    custom.css = st_options('custom.css'), silent = FALSE, 
 #'    footnote = st_options('footnote'), 
-#'    escape.pipe = st_options('escape.pipe'), \dots)
+#'    escape.pipe = st_options('escape.pipe'), 
+#'    include.css = FALSE, \dots)
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -46,6 +47,10 @@
 #'   and \code{file} argument is supplied if the intent is to generate a text
 #'   file that can be converted to other formats using \emph{Pandoc}. To change
 #'   this default value globally, see \code{\link{st_options}}.
+#' @param include.css Logical. Set to \code{TRUE} to insert the content of
+#'   the package's \emph{css} file before printing the usual content. This is
+#'   intended to simplify \emph{Rmarkdown} setup. Only needs to be used once for
+#'   the \emph{css} to apply everywhere. \code{FALSE} by default.
 #' @param \dots Additional arguments can be used to override parameters stored
 #'   as attributes in the object being printed. See \emph{Details} section.
 #'
@@ -137,7 +142,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                custom.css = st_options("custom.css"), 
                                silent = FALSE, 
                                footnote = st_options("footnote"), 
-                               escape.pipe = st_options("escape.pipe"), ...) {
+                               escape.pipe = st_options("escape.pipe"),
+                               include.css = FALSE, ...) {
 
   # object is a list, either created
   # - using lapply() 
@@ -474,6 +480,12 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
     }
     
+    if (isTRUE(include.css)) {
+      res <- append(
+        as.character(includeCSS(system.file("includes/stylesheets/summarytools.css",
+                               package="summarytools"))), res)
+    }
+    
     file <- normalizePath(file, mustWork = FALSE)
     cat(do.call(paste, res), file = file, append = append)
     
@@ -692,7 +704,7 @@ print_freq <- function(x, method) {
     
   } else {
     
-    # print_freq -- html section -----------------------------------------------
+    # print_freq -- method html ------------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "center",
@@ -1741,20 +1753,7 @@ build_heading_pander <- function(format_info, data_info) {
     if ("Data.frame" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Data.frame))
     }
-    # 
-    # if ("by_first" %in% names(data_info)) {
-    #   if (!isTRUE(data_info$by_first)) {
-    #     head3 <- append_items(list(c(Group            = trs("group")),
-    #                                c(Dimensions       = trs("dimensions")),
-    #                                c(Duplicates       = trs("duplicates"))))
-    #     
-    #   } else {
-    #     head3 <- append_items(list(c(Data.frame.label = trs("label")),
-    #                                c(Group            = trs("group")),
-    #                                c(Dimensions       = trs("dimensions")),
-    #                                c(Duplicates       = trs("duplicates"))))
-    #   }
-    # } else {
+
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                c(Group            = trs("group")),
                                c(Dimensions       = trs("dimensions")),
@@ -1822,11 +1821,14 @@ build_heading_html <- function(format_info, data_info, method) {
     if (!isTRUE(format_info$headings)) {
       return(list())
     } else {
-      if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
-      } else {
-        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+      if ("Variable" %in% names(data_info)) {
+        if (method == "render") {
+          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
+        } else {
+          head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        }
       }
+      
       head3 <- append_items(list(c(Variable.label = trs("label")),
                                  c(Data.type      = trs("type"))))
       return(list(head2, head3))
@@ -1856,12 +1858,14 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.freq.weighted"), 
                                            trs("title.freq")))))
 
-    if (method == "render") {
-      head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
-    } else {
-      head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+    if ("Variable" %in% names(data_info)) {
+      if (method == "render") {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
+      } else {
+        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+      }
     }
-
+    
     if ("var.only" %in% names(format_info)) {
       head3 <- append_items(list(c(Variable.label = trs("label")),
                                  c(Data.type      = trs("type"))))
@@ -1919,10 +1923,13 @@ build_heading_html <- function(format_info, data_info, method) {
                                  c(Group          = trs("group")),
                                  c(N.Obs          = trs("n"))))
     } else {
-      if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
-      } else {
-        head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+      
+      if ("Data.frame" %in% names(data_info)) {
+        if (method == "render") {
+          head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
+        } else {
+          head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+        }
       }
       
       head3 <- append_items(list(c(Data.frame.label = trs("label")),
@@ -1934,10 +1941,13 @@ build_heading_html <- function(format_info, data_info, method) {
   } else if (caller == "print_dfs") {
     
     head1 <- h3(HTML(conv_non_ascii(trs("title.dfSummary"))))
-    if (method == "render") {
-      head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
-    } else {
-      head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+    
+    if ("Data.frame" %in% names(data_info)) {
+      if (method == "render") {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
+      } else {
+        head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+      }
     }
     
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
