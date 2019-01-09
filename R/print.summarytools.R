@@ -1274,15 +1274,15 @@ print_dfs <- function(x, method) {
           vals,
           paste0(
             '</td><td style="padding:0 2px;border:0;" align="left">:</td>',
-            '<td style="padding:0 1px 0 8px;border:0" align="right">'
+            '<td style="padding:0 4px 0 6px;margin:0;border:0" align="right">'
           ),
           cnts,
           paste0(
-            '</td><td style="padding:0 2px;border:0" align="left">(</td>',
+            '</td><td style="padding:0;border:0" align="left">(</td>',
             '<td style="padding:0 2px;margin:0;border:0" align="right">'
           ),
           prps,
-          paste0('</td><td style="padding:0 0 0 2px;border:0" align="left">)',
+          paste0('</td><td style="padding:0 4px 0 0;border:0" align="left">)',
                  '</td></tr>'
           ),
           collapse = ""
@@ -1291,7 +1291,7 @@ print_dfs <- function(x, method) {
       if (!is.na(notice)) {
         cell <- 
           paste0(cell, '<tr style="background-color:transparent">',
-                 '<td style="padding:0 0 0 5px;border:0;margin:0" colspan=3>',
+                 '<td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>',
                  notice, "</td></tr>", collapse = "")
       }
     } else {
@@ -1307,11 +1307,11 @@ print_dfs <- function(x, method) {
           ),
           cnts,
           paste0(
-            '</td><td style="padding:0 2px;border:0;" align="left">(</td>',
+            '</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td>',
             '<td style="padding:0;border:0" align="right">'
           ),
           prps,
-          '</td><td style="padding:0 2px;border:0" align="left">)</td></tr>',
+          '</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr>',
           collapse = ""
         )
     }
@@ -1510,14 +1510,15 @@ print_dfs <- function(x, method) {
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
           if (!grepl("[:)%]", cell)) {
             table_row %+=% list(
-              tags$td(HTML(cell), align = "center", border = "0")
+              tags$td(HTML(cell), align = "left") # nb of distinct values
             )
           } else {
             table_row %+=% list(make_tbl_cell(cell))
           }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(
-            tags$td(HTML(cell), align = "center", border = "0"))
+            tags$td(HTML(cell), align = "center", style = "padding:0 4px")
+          )
         }
       }
       table_rows %+=% list(tags$tr(table_row))
