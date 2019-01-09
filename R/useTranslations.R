@@ -12,6 +12,7 @@
 #' and fill out a new column \strong{having \sQuote{custom} on the first line}.
 #' The file must have \emph{UTF-8} encoding.
 #'
+#' @keywords utilities
 #' @importFrom utils read.csv
 #' @export
 useTranslations <- function(file) {

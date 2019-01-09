@@ -9,8 +9,7 @@
    bootstrap.css = st_options('bootstrap.css'), 
    custom.css = st_options('custom.css'), silent = FALSE, 
    footnote = st_options('footnote'), 
-   escape.pipe = st_options('escape.pipe'), 
-   include.css = FALSE, \dots)
+   escape.pipe = st_options('escape.pipe'), \dots)
 }
 \arguments{
 \item{x}{A summarytools object that was generated with \code{\link{freq}},
@@ -58,11 +57,6 @@ value globally, see \code{\link{st_options}}.}
 and \code{file} argument is supplied if the intent is to generate a text
 file that can be converted to other formats using \emph{Pandoc}. To change
 this default value globally, see \code{\link{st_options}}.}
-
-\item{include.css}{Logical. Set to \code{TRUE} to insert the content of
-the package's \emph{css} file before printing the usual content. This is
-intended to simplify \emph{Rmarkdown} setup. Only needs to be used once for
-the \emph{css} to apply everywhere. \code{FALSE} by default.}
 
 \item{\dots}{Additional arguments can be used to override parameters stored
 as attributes in the object being printed. See \emph{Details} section.}
