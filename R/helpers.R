@@ -34,11 +34,8 @@ check_arguments <- function(mc, dotArgs) {
     if (caller %in% c("freq", "descr", "ctable")) {
       if (!isTRUE(test_choice(pf$style, 
                               c("simple", "grid", "rmarkdown")))) {
-        msg %+=% "'style' must be one of 'simple', 'grid', or 'markdown'"
+        msg %+=% "'style' must be one of 'simple', 'grid', or 'rmarkdown'"
       }
-    } else if (!isTRUE(test_choice(pf$style, 
-                                   c("grid", "rmarkdown")))) {
-      msg %+=% "'style' must be either 'grid' or 'markdown'"
     }
   }
   
@@ -194,6 +191,11 @@ check_arguments <- function(mc, dotArgs) {
     
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
+    
+    if (!isTRUE(test_choice(pf$style, c("grid", "multiline")))) {
+      msg %+=% "'style' must be either 'grid' or 'multiline'"
+    }
+
     if ("varnumbers" %in% names(mc) &&
         !isTRUE(test_logical(pf$varnumbers, 
                              len = 1, any.missing = FALSE))) {
@@ -264,10 +266,11 @@ check_arguments_st_options <- function(mc) {
   if ("style" %in% names(mc)) {
     if (!isTRUE(test_choice(pf$style, 
                             c("simple", "grid", "rmarkdown")))) {
-      msg %+=% "'style' must be one of 'simple', 'grid', or 'markdown'"
+      msg %+=% paste("'style' must be one of 'simple', 'grid', or 'markdown';",
+                     "See documentation for details")
     }
   }
-  
+
   if ("round.digits" %in% names(mc) && !isTRUE(test_int(pf$round.digits))) {
     msg %+=% "'round.digits' must be a whole number"
   }
@@ -439,7 +442,6 @@ conv_non_ascii <- function(...) {
   }
   out
 }
-
 
 # Shorcut function to get translation strings
 #' @keywords internal
