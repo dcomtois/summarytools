@@ -14,25 +14,25 @@ parse_args(sys_calls, sys_frames, match_call, var = "x",
 
 \item{match_call}{Object created using \code{match.call()}.}
 
-\item{var}{One of \dQuote{x} or \dQuote{y} (the latter being used only
-in \code{\link{ctable}}).}
+\item{var}{One of \dQuote{x} (default) or \dQuote{y} (the latter being used
+only in \code{\link{ctable}}).}
 
 \item{max.varnames}{Numeric. Allows limiting the number of expected variable
-names. Defaults to \code{Inf}}
+names. Defaults to \code{1}}
 
-\item{silent}{Logical. Hide console messages. \code{FALSE} by default.}
+\item{silent}{Logical. Hide console messages. \code{TRUE} by default.}
 }
 \value{
-A list consisting of:
+A list consisting of one or many of the following items
 \itemize{
-  \item df_name The data frame name when applicable.
-  \item var_names The variable names when applicable.
-  \item by_group The group, when functions are called through
-    \code{by()}
-  \item by_first A binary indicator used when function was called
-    through \code{by()}
-  \item by_last A binary indicator used when function was called
-    through \code{by()}}
+  \item df_name The data frame name
+  \item df_label The data frame label
+  \item var_name The variable name(s)
+  \item var_label The variable label
+  \item by_var The variable used in \code{by()}, when in the call stack
+  \item by_group The group, when \code{by()} was used
+  \item by_first Binary indicator used when \code{by()} is in the call stack
+  \item by_last Binary indicator}
 }
 \description{
 Using sys.calls(), sys.frames() and match.call(), this utility function

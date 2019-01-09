@@ -24,7 +24,7 @@
 #'   \item by_var The variable used in \code{by()}, when in the call stack
 #'   \item by_group The group, when \code{by()} was used
 #'   \item by_first Binary indicator used when \code{by()} is in the call stack
-#'   \item by_last Binary indicator
+#'   \item by_last Binary indicator}
 #'
 #' @keywords internal misc
 #'
