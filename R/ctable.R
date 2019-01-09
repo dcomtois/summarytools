@@ -169,11 +169,11 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
     x_name <- dnn[1]
     y_name <- dnn[2]
   } else if (!isTRUE(flag_by)) {
-    x_name <- na.omit(c(parse_info_x$var_names, deparse(dnn[[1]])))[1]
-    y_name <- na.omit(c(parse_info_y$var_names, deparse(dnn[[2]])))[1]
+    x_name <- na.omit(c(parse_info_x$var_name, deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_y$var_name, deparse(dnn[[2]])))[1]
   } else {
-    x_name <- na.omit(c(parse_info_x$var_names[1], deparse(dnn[[1]])))[1]
-    y_name <- na.omit(c(parse_info_x$var_names[2], deparse(dnn[[2]])))[1]
+    x_name <- na.omit(c(parse_info_x$var_name[1], deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_x$var_name[2], deparse(dnn[[2]])))[1]
   }
 
   # Create cross-freq table ----------------------------------------------------

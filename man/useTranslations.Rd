@@ -21,3 +21,4 @@ or use the \href{https://raw.githubusercontent.com/dcomtois/summarytools/dev-cur
 and fill out a new column \strong{having \sQuote{custom} on the first line}.
 The file must have \emph{UTF-8} encoding.
 }
+\keyword{utilities}
