@@ -494,7 +494,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       html_content_in <- paste(readLines(f, warn = FALSE, encoding = "utf-8"), 
                                collapse="\n")
       close(f)
-      top_part <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
+      top_part    <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
       insert_part <- 
         iconv(paste(capture.output(tags$div(class="container st-container", 
@@ -629,7 +629,7 @@ print_freq <- function(x, method) {
   
   if(method=="pander") {
     
-    # print_freq -- pander section ---------------------------------------------
+    # print_freq -- pander method ---------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "centre",
@@ -692,7 +692,7 @@ print_freq <- function(x, method) {
     
   } else {
     
-    # print_freq -- method html ------------------------------------------------
+    # print_freq -- html method ------------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
                       c = "center",
@@ -706,7 +706,8 @@ print_freq <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
         if (co == 1) {
-          table_row %+=% list(tags$th(row.names(x)[ro]))
+          table_row %+=% list(tags$th(row.names(x)[ro], align = "center",
+                              class = "st-protect-top-border"))
           if (!"Weights" %in% names(data_info)) {
             cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
                         perl = TRUE)
@@ -730,15 +731,17 @@ print_freq <- function(x, method) {
     
     if (isTRUE(format_info$report.nas)) {
       table_head[[1]] <- list(tags$th("", colspan = 2),
-                              tags$th(trs("valid"), colspan = 2),
-                              tags$th(trs("total"), colspan = 2))
+                              tags$th(trs("valid"), colspan=2, align="center",
+                                      class = "st-protect-top-border"),
+                              tags$th(trs("total"), colspan=2, align="center",
+                                      class = "st-protect-top-border"))
       table_head[[2]] <- list(tags$th(sub("^.*\\$(.+)$", "\\1", 
-                                          data_info$Variable)),
-                              tags$th(HTML(trs("freq"))),
-                              tags$th("%"),
-                              tags$th(HTML(trs("pct.cum"))),
-                              tags$th("%"),
-                              tags$th(HTML(trs("pct.cum"))))
+                                          data_info$Variable), align="center"),
+                              tags$th(HTML(trs("freq")), align="center"),
+                              tags$th("%", align="center"),
+                              tags$th(HTML(trs("pct.cum")), align="center"),
+                              tags$th("%", align="center"),
+                              tags$th(HTML(trs("pct.cum"))), align="center")
       
       freq_table_html <-
         tags$table(
@@ -816,6 +819,7 @@ print_ctable <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
+  # align_numbers --------------------------------------------------------------
   align_numbers <- function(counts, props) {
     res <- sapply(seq_len(ncol(counts)), function(colnum) {
       
@@ -873,7 +877,7 @@ print_ctable <- function(x, method) {
                     c = "center",
                     r = "right")
   
-  # print_ctable -- pander section ---------------------------------------------
+  # print_ctable -- pander method ----------------------------------------------
   if(method == "pander") {
     
     # Escape "<" and ">" when used in pairs in rownames or colnames
@@ -916,7 +920,7 @@ print_ctable <- function(x, method) {
     
   } else {
     
-    # print_ctable -- html section ---------------------------------------------
+    # print_ctable -- html method ----------------------------------------------
     dnn <- names(dimnames(cross_table))
     
     table_head <- list()
@@ -928,13 +932,14 @@ print_ctable <- function(x, method) {
       list(tags$th(""), 
            tags$th(
              dnn[2], 
-             colspan = (1 + has_prop*2) * 
-               (ncol(cross_table) - as.numeric(isTRUE(format_info$totals)))
+             colspan = (1 + has_prop*3) * 
+               (ncol(cross_table) - as.numeric(isTRUE(format_info$totals))),
+             align = "center", class = "st-protect-top-border"  
              )
            )
     
     if (isTRUE(format_info$totals)) {
-      table_head[[1]][[3]] <- tags$th("", colspan = (1 + has_prop*2))
+      table_head[[1]][[3]] <- tags$th("", colspan = (1 + has_prop*3))
     }
     
     table_head[[2]] <-list(tags$td(tags$strong(dnn[1]), align = "center"))
@@ -947,7 +952,7 @@ print_ctable <- function(x, method) {
       cn <- sub(">", "&gt;", cn, fixed = TRUE)
       table_head[[2]][[length(table_head[[2]]) + 1]] <- 
         tags$th(HTML(conv_non_ascii(cn)), 
-                colspan = (1 + has_prop*2), align = "center")
+                colspan = (1 + has_prop*3), align = "center")
     }
     
     table_rows <- list()
@@ -984,25 +989,31 @@ print_ctable <- function(x, method) {
             tags$td(
               cell[1],
               align = "right",
-              style = "padding:0 2px 0 15px;border-right:0;text-align:right"
+              style = "padding:0 0 0 15px;border-right:0;text-align:right"
             )
           )
           
           table_row %+=% list(
             tags$td(
               "(", align = "left",
-              style = "padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left"
+              style = "padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left"
               )
             )
 
           table_row %+=% list(
             tags$td(
-              HTML(paste0(cell[2], "&#8202;)")),
+              HTML(cell[2]),
               align = "left",
-              style = "padding:0 15px 0 0;border-left:0;text-align:right"
+              style = "padding:0;border-left:0;border-right:0;text-align:right"
             )
           )
           
+          table_row %+=% list(
+            tags$td(")",
+                    align = "left",
+                    style = "padding:0 15px 0 1px;border-left:0;text-align:right"
+            )
+          )
           # table_row %+=% list(tags$td(tags$span(HTML(cell))))
           # table_row %+=% list(make_tbl_cell(cross_table[ro,co]))
         }
@@ -1072,7 +1083,7 @@ print_descr <- function(x, method) {
   
   if(method=="pander") {
     
-    # print_descr -- pander section --------------------------------------------
+    # print_descr -- pander method ---------------------------------------------
     # Format numbers (avoids inconsistencies with pander rounding digits)
     x <- format(round(x, format_info$round.digits),
                 nsmall = format_info$round.digits)
@@ -1243,6 +1254,7 @@ print_dfs <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
+  # make_tbl_cell --------------------------------------------------------------
   # Function to align the freqs / proportions in html outputs
   # A table is built to fit in a single cell of the final table
   make_tbl_cell <- function(cell) {
@@ -1326,6 +1338,7 @@ print_dfs <- function(x, method) {
         )
       )
   }
+  
   # Remove Var number ("No") column if specified in call to print/view
   if (trs("no") %in% names(x) && 
       "varnumbers" %in% names(format_info) && 
@@ -1354,7 +1367,7 @@ print_dfs <- function(x, method) {
     x <- x[ ,-which(names(x) == trs("missing"))]
   }
   
-  # print_dfs - pander section -------------------------------------------------  
+  # print_dfs - pander method -------------------------------------------------  
   if (method == "pander") {
     
     # remove html graphs
@@ -1439,7 +1452,7 @@ print_dfs <- function(x, method) {
     
   } else {
     
-    # print_dfs - html section -------------------------------------------------
+    # print_dfs - html method --------------------------------------------------
     
     # remove text graph
     if (trs("text.graph") %in% names(x)) {
@@ -1819,7 +1832,7 @@ build_heading_html <- function(format_info, data_info, method) {
     } else {
       if ("Variable" %in% names(data_info)) {
         if (method == "render") {
-          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
+          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
         } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
         }
@@ -1856,7 +1869,7 @@ build_heading_html <- function(format_info, data_info, method) {
 
     if ("Variable" %in% names(data_info)) {
       if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
@@ -1886,7 +1899,7 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("Row.x.Col" %in% names(data_info)) {
       if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Row.x.Col)))
       }
@@ -1909,7 +1922,7 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("Variable" %in% names(data_info)) {
       if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
       }
@@ -1922,7 +1935,7 @@ build_heading_html <- function(format_info, data_info, method) {
       
       if ("Data.frame" %in% names(data_info)) {
         if (method == "render") {
-          head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
+          head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
         } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
         }
@@ -1940,7 +1953,7 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("Data.frame" %in% names(data_info)) {
       if (method == "render") {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)))
+        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
       }
