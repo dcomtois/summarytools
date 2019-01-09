@@ -756,11 +756,15 @@ print_freq <- function(x, method) {
     } else {
       
       # no reporting of missing values (NA)
-      table_head <- list(tags$th(data_info$Variable),
-                         tags$th(trs("freq")),
-                         tags$th("%"),
-                         tags$th(HTML(trs("pct.cum"))))
-      
+      table_head <- list(tags$th(data_info$Variable, align = "center",
+                                 class = "st-protect-top-border"),
+                         tags$th(trs("freq"), align = "center",
+                                 class = "st-protect-top-border"),
+                         tags$th("%", align = "center",
+                                 class = "st-protect-top-border"),
+                         tags$th(HTML(trs("pct.cum")), align = "center",
+                                 class = "st-protect-top-border"))
+                         
       freq_table_html <-
         tags$table(
           tags$thead(tags$tr(table_head)),
@@ -1103,13 +1107,14 @@ print_descr <- function(x, method) {
     
   } else {
     
-    # print_descr -- html section ----------------------------------------------
+    # print_descr -- html method ----------------------------------------------
     
     if ("byvar" %in% names(data_info) && !data_info$transpose) {
       table_head <- list()
       table_head[[1]] <- list(tags$th(""),
                               tags$th(data_info$byvar,
-                                      colspan = ncol(x)))
+                                      colspan = ncol(x),
+                                      class = "st-protect-top-border"))
       
       table_head[[2]] <-  list(tags$th()) 
       
@@ -1125,13 +1130,14 @@ print_descr <- function(x, method) {
       
     } else {
       
-      table_head <- list(tags$th(""))
+      table_head <- list(tags$th("", class = "st-protect-top-border"))
       
       for(cn in colnames(x)) {
         if (nchar(cn) > 12) {
           cn <- smart_split(cn, 12)
         }
-        table_head %+=% list(tags$th(HTML(cn), align = "center"))
+        table_head %+=% list(tags$th(HTML(cn), align = "center",
+                                     class = "st-protect-top-border"))
       }
     }
     
@@ -1451,7 +1457,8 @@ print_dfs <- function(x, method) {
     for(cn in colnames(x)) {
       table_head %+=% list(tags$th(tags$strong(cn), 
                                    class = inv_trs(cn),
-                                   align = "center"))
+                                   align = "center",
+                                   class = "st-protect-top-border"))
     }
 
     colgroup <- NA    
