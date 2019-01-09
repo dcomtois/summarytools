@@ -139,13 +139,18 @@ changes, but here are the key points:
         allowed, the latter representing the collection of *mean*, *sd*,
         *min*, *med*, *max*, *n.valid*, and *pct.valid*
       - Improved outputs when using `by()`
+      - The variable used for weights (if any) is removed automatically
+        from the dataset so no stats will be produced for it
   - Changes to `freq()`
       - As mentioned earlier, the function now accepts data frames as
         main argument; this makes obsolete the use of `lapply()` with
         it, and simplifies the subsequent printing, as the lists
         returned by `freq()` will also have the class **summarytools**,
-        ensuring their proper dispatch to the right `print()` method.
-  - Improved outputs when using `by()`
+        ensuring their proper dispatch to the packages’ `print()`
+        method.
+      - Improved outputs when using `by()`
+  - Changes to `ctable()`
+      - Now fully supports `by()`
 
 \*\* Other notable changes \*\* - The `omit.headings` parameter has been
 replaced by the more straightforward `headings`. `omit.heandings` is
@@ -231,8 +236,8 @@ Cross-Tabulation, Row Proportions
 
 </h3>
 
-<strong>smoker \* diseased</strong> <strong>Data Frame</strong>: tobacco
-<br/>
+<strong>smoker \*
+diseased</strong>
 
 <table class="table table-bordered st-table st-table-bordered st-cross-table ">
 
@@ -244,13 +249,13 @@ Cross-Tabulation, Row Proportions
 
 </th>
 
-<th colspan="2">
+<th colspan="6">
 
 diseased
 
 </th>
 
-<th>
+<th colspan="3">
 
 </th>
 
@@ -264,19 +269,19 @@ diseased
 
 </td>
 
-<th align="center">
+<th colspan="3" align="center">
 
 Yes
 
 </th>
 
-<th align="center">
+<th colspan="3" align="center">
 
 No
 
 </th>
 
-<th align="center">
+<th colspan="3" align="center">
 
 Total
 
@@ -290,27 +295,63 @@ Total
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>Yes</strong>
+<strong align="center">Yes</strong>
 
 </td>
 
-<td>
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
 
-<span>125 (41.95%)</span>
-
-</td>
-
-<td>
-
-<span>173 (58.05%)</span>
+125
 
 </td>
 
-<td>
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
 
-<span> 298 (100.00%)</span>
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+41.9% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+173
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+58.1% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+298
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+100.0% )
 
 </td>
 
@@ -318,27 +359,63 @@ Total
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>No</strong>
+<strong align="center">No</strong>
 
 </td>
 
-<td>
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
 
-<span> 99 (14.10%)</span>
-
-</td>
-
-<td>
-
-<span>603 (85.90%)</span>
+99
 
 </td>
 
-<td>
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
 
-<span> 702 (100.00%)</span>
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+14.1% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+603
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+85.9% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+702
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+100.0% )
 
 </td>
 
@@ -346,27 +423,63 @@ Total
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>Total</strong>
+<strong align="center">Total</strong>
 
 </td>
 
-<td>
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
 
-<span>224 (22.40%)</span>
-
-</td>
-
-<td>
-
-<span>776 (77.60%)</span>
+224
 
 </td>
 
-<td>
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
 
-<span>1000 (100.00%)</span>
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+22.4% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+776
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+77.6% )
+
+</td>
+
+<td align="right" style="padding:0 2px 0 15px;border-right:0;text-align:right">
+
+1000
+
+</td>
+
+<td align="left" style="padding:0 2px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0 15px 0 0;border-left:0;text-align:right">
+
+100.0% )
 
 </td>
 
@@ -435,13 +548,13 @@ diseased
 
 </td>
 
-<th align="center">
+<th colspan="1" align="center">
 
 Yes
 
 </th>
 
-<th align="center">
+<th colspan="1" align="center">
 
 No
 
@@ -455,9 +568,9 @@ No
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>Yes</strong>
+<strong align="center">Yes</strong>
 
 </td>
 
@@ -477,9 +590,9 @@ No
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>No</strong>
+<strong align="center">No</strong>
 
 </td>
 
@@ -883,7 +996,7 @@ print(BMI_by_age, style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**tobacco$BMI by age.gr**  
+**BMI by age.gr**  
 **N:** 258
 
 |             | 18-34 | 35-50 | 51-70 |  71 + |
