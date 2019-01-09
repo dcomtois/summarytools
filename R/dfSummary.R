@@ -545,26 +545,26 @@ crunch_numeric <- function(column_data, is_barcode) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          round(min(column_data, na.rm = TRUE), 2), "\\\n",
+          round(min(column_data, na.rm = TRUE), 1), "\\\n",
           trs("mean"), strrep(" ", maxchars - nchar(trs("mean"))), " : ",
-          round(mean(column_data, na.rm = TRUE), 2), "\\\n",
+          round(mean(column_data, na.rm = TRUE), 1), "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          round(max(column_data, na.rm = TRUE), 2)
+          round(max(column_data, na.rm = TRUE), 1)
         )
       } else {
         outlist[[1]] <- paste(
           trs("mean"), paste0(" (", trs("sd"), ") : "),
-          round(mean(column_data, na.rm = TRUE), 2),
-          " (", round(sd(column_data, na.rm = TRUE), 2), ")\\\n",
+          round(mean(column_data, na.rm = TRUE), 1),
+          " (", round(sd(column_data, na.rm = TRUE), 1), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", round(min(column_data, na.rm = TRUE), 2),
-          " < ", round(median(column_data, na.rm = TRUE), 2),
-          " < ", round(max(column_data, na.rm = TRUE), 2), "\\\n",
+          ":\\\n", round(min(column_data, na.rm = TRUE), 1),
+          " < ", round(median(column_data, na.rm = TRUE), 1),
+          " < ", round(max(column_data, na.rm = TRUE), 1), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          round(IQR(column_data, na.rm = TRUE), 2),
+          round(IQR(column_data, na.rm = TRUE), 1),
           " (", round(sd(column_data, na.rm = TRUE) /
                         mean(column_data, na.rm = TRUE),
-                      2), ")", collapse="", sep="")
+                      1), ")", collapse="", sep="")
       }
     }
     
