@@ -414,8 +414,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
   
-  stpath <- find.package("summarytools")
-  
   # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
@@ -514,12 +512,10 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             tags$head(
               tags$title(HTML(conv_non_ascii(report.title))),
               if (isTRUE(bootstrap.css))
-                includeCSS(
-                  path = paste(stpath, "includes/stylesheets/bootstrap.min.css",
-                               sep="/")),
-              includeCSS(
-                path = paste(stpath, "includes/stylesheets/summarytools.css",
-                             sep="/")),
+                includeCSS(system.file(package="summarytools", 
+                                       "includes/stylesheets/bootstrap.css")),
+              includeCSS(system.file(package="summarytools", 
+                                     "includes/stylesheets/summarytools.css")),
               if (!is.na(custom.css)) 
                 includeCSS(path = custom.css)
             ),
@@ -531,11 +527,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           tags$div(
             class="container st-container",
             tags$head(
-              includeCSS(path = paste(stpath, 
-                                      "includes/stylesheets/summarytools.css", 
-                                      sep="/")),
+              includeCSS(system.file(package="summarytools", 
+                                     "includes/stylesheets/summarytools.css")),
               if (!is.na(custom.css))
-                includeCSS(path = custom.css)),
+                includeCSS(path = custom.css)
+            ),
             res)
       }
     }
