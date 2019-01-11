@@ -741,7 +741,7 @@ print_freq <- function(x, method) {
                               tags$th("%", align="center"),
                               tags$th(HTML(trs("pct.cum")), align="center"),
                               tags$th("%", align="center"),
-                              tags$th(HTML(trs("pct.cum"))), align="center")
+                              tags$th(HTML(trs("pct.cum")), align="center"))
       
       freq_table_html <-
         tags$table(
