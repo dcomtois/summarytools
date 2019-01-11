@@ -129,9 +129,11 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   }
 
   # Get into about x & y from parsing function
-  parse_info_x <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                 var = "x", max.varnames = 1 + flag_by,
-                                 silent = "dnn" %in% names(match.call())),
+  parse_info_x <- try(get_names(sys.calls(), sys.frames(), match.call(), 
+                                var = "x", max.varnames = 1 + flag_by,
+                                silent = "dnn" %in% names(match.call()),
+                                caller = "ctable", 
+                                what = c("df_name", "df_label", "var_name")),
                       silent = TRUE)
                       
   if (inherits(parse_info_x, "try-error")) {
@@ -140,8 +142,10 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
 
   if (!isTRUE(flag_by)) {
     parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                   var = "y", max.varnames = 1 + flag_by,
-                                   silent = "dnn" %in% names(match.call())),
+                                   var = "y", max.varnames = 1,
+                                   silent = "dnn" %in% names(match.call()),
+                                   caller = "ctable",
+                                   what = c("df_name", "df_label", "var_name")),
                         silent = TRUE)
     
     if (inherits(parse_info_y, "try-error")) {

@@ -5,7 +5,8 @@
 \title{Extract Data Information From Arguments Passed to Functions}
 \usage{
 parse_args(sys_calls, sys_frames, match_call, var = "x",
-  max.varnames = Inf, silent = FALSE)
+  max.varnames = 1, silent = FALSE, caller = NA,
+  what = c("df_name", "df_label", "var_name", "var_label"))
 }
 \arguments{
 \item{sys_calls}{Object created using \code{sys.calls()}.}
