@@ -117,7 +117,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     else if (length(pos_pipe) == 1) {
       std_call <- as.list(standardise_call(sys_calls[[pos_pipe]]))
       if (is.data.frame(eval(std_call$lhs))) {
-        nn <- as.character(pipe_call$lhs)
+        nn <- as.character(std_call$lhs)
         if (length(nn) > 1) {
           nn <- setdiff(nn, c("%>%", "[", "[[", "$", ":"))[1]
         }
@@ -199,23 +199,25 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # find_var_name --------------------------------------------------------------
   find_var_name <- function() {
     if (df$method == "with") {
-      nn <- as.character(df$call)
-      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df_name, caller))[1]
+      nn <- as.character(df$call$expr)
+      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df$name, caller))[1]
       return(var_name)
     }
 
     else if (df$method == "by") {
-      return(colnames(eval(df$df)))
+      nn <- as.character(df$call$data)
+      var_name <- setdiff(nn, c("$", "[", "[[", ":", df$name))[1]
+      return(var_name)
     }
 
     else if (df$method == "pipe") {
-      nn <- all.names(df$call)
-      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df_name, caller))
+      nn <- all.names(df$call$lhs)
+      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df$name, caller))
       return(var_name)
     }
     
     else if (df$method == "lapply") {
-      nn <- colnames(eval(df$call))
+      nn <- colnames(eval(df$call$X))
       # Find position in sys_frames that corresponds to the lapply envir.
       # to get "i"
       pos <- unlist(lapply(ls_sys_frames,
@@ -347,10 +349,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       return(output)
     }
   }
-  browser()
+
   df <- get_df()
   
-  if ("df_label" %in% what && !iidentical(df$df, NA)) {
+  if ("df_label" %in% what && !identical(df$df, NA)) {
     df_label  <- label(df$df)
   }
   
@@ -361,8 +363,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
   
-  if ("var_label" %in% what) {
-    if (!iidentical(df$df, NA)) {
+  if ("var_label" %in% what && length(var_name) == 1) {
+    if (!identical(df$df, NA)) {
       var_label <- label(df$df[[var_name]])
     } else {
       var_env   <- where(var_name)
