@@ -49,22 +49,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   found     <- character()
   df_name   <- character()
   df_label  <- character()
-  df_expr   <- expression()
+  df_call   <- expression()
   var_name  <- character()
   var_label <- character()
   by_var    <- character()
   by_group  <- character()
   by_first  <- logical()
   by_last   <- logical()
-  data_str  <- character()
 
   # Declare functions   
   # Find df_name ---------------------------------------------------------------
   find_df_name <- function() {
-    sys_calls  <- parent.frame()$sys_calls
-    sys_frames <- parent.frame()$sys_frames
-    funs_stack <- parent.frame()$funs_stack
-    
+
     if (length(pos_with) == 1) {
       assign("with_call", envir = parent.frame(), 
              value = as.list(standardise_call(sys_calls[[pos_with]])))
@@ -161,16 +157,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     # function was called directly - find position in sys_calls
     pos_fn <- which(grepl(caller, as.character(sys_calls)))
     nn <- all.names(sys_calls[[pos_fn]])
-    if (!any(c("$", "[", "[[") %in% nn)) {
-      assign("df_env", envir = parent.frame(),
-             value = NA)
-      assign("df_call", envir = parent.frame(),
-             value = expression())
-      assign("method", envir = parent.frame(), value = "none")
-      return(df_name)
-    }
-    pos <- which(nn %in% c("$", "[", "[[")) + 1
-    df_name <- nn[pos]
+    df_name <- setdiff(nn, c("$", "[", "[[", ":", caller))[1]
     df_env <- where(df_name)
     if (is.data.frame(df_env[[df_name]])) {
       assign("found", envir = parent.frame(),
@@ -182,8 +169,12 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       assign("method", envir = parent.frame(), value = "none")
       return(df_name)
     }
+    
+    # No df_name found
+    assign("method", envir = parent.frame(), value = "none")
+    return(NA)
   }
-  
+
   # find_df_label --------------------------------------------------------------
   find_df_label <- function() {
     if (length(df_call) > 0) {
@@ -225,11 +216,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     if (method == "none") {
       pos_fn <- which(grepl(caller, as.character(sys_calls)))
       nn <- as.character(sys_calls[[pos_fn]])
-      nn <- nn[-which(nn == caller)]
-      if (length(nn) == 1) {
-        return(nn)
+      if (!is.na(df_name)) {
+        var_name <- setdiff(nn, c(caller, df_name))
+      } else {
+        var_name <- setdiff(nn, caller)
+      }
+      if (length(var_name) > 0) {
+        return(var_name)
+      } else {
+        return(NA)
       }
     }
+    
     return(NA)
   }
   
@@ -237,6 +235,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   find_var_label <- function() {
     if(!is.na(df_name) && !is.na(var_name) && length(var_name) == 1) {
       return(label(eval(df_call)[[var_name]]))
+    } else if (is.na(df_name) && length(var_name) == 1) {
+      return(label(get(var_name, envir = where(var_name))))
     } else {
       return(NA)
     }
@@ -342,19 +342,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
   
-  df_name   <- find_df_name()
+  df_name <- find_df_name()
   
-  if ("df_label" %in% what && !is.na(df_name) && !is.null(df_name)) {
+  if ("df_label" %in% what && !is.na(df_name)) {
     df_label  <- find_df_label()
   }
   
   if ("var_name" %in% what) {
     var_name  <- find_var_name()
+    if (!is.na(var_name) && !is.na(df_name)) {
+      var_name <- sub(paste0("^", df_name, "\\$"), "", var_name)
+    } 
   }
-  
-  if (!is.na(var_name) && !is.na(df_name)) {
-    var_name <- sub(paste0("^", df_name, "\\$"), "", var_name)
-  } 
   
   if ("var_label" %in% what) {
     var_label <- find_var_label()
