@@ -59,151 +59,163 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # Declare functions   
   # Find df_name ---------------------------------------------------------------
-  find_df_name <- function() {
+  get_df <- function() {
 
+    # We get the name and create 2 instances of df__ ; depending on where df
+    # was created, and how the function is called the labels 
     if (length(pos_with) == 1) {
-      assign("with_call", envir = parent.frame(), 
-             value = as.list(standardise_call(sys_calls[[pos_with]])))
-      if (length(with_call$data) == 1) {
-        if (is.data.frame(eval(with_call$data))) {
-          assign("found", envir = parent.frame(),
-                 value = append(found, "df_name"))
-          assign("df_call", envir = parent.frame(), value = with_call$data)
-          assign("method", envir = parent.frame(), value = "with")
-          return(as.character(with_call$data))
+      std_call <- as.list(standardise_call(sys_calls[[pos_with]]))
+      if (is.data.frame(eval(std_call$data))) {
+        df_name <- deparse(std_call$data)
+        for (i in seq_along(sys_frames)) {
+          if (df_name %in% ls(sys_frames[[i]])) {
+            if (is.data.frame(sys_frames[[i]][[df_name]])) {
+              df__ <- sys_frames[[i]][[df_name]]
+              break
+            }
+          }
         }
-      }
-    }
-    
-    if (length(pos_by) == 1) {
-      assign("by_call", envir = parent.frame(), 
-             value = as.list(standardise_call(sys_calls[[pos_by]])))
-      if (length(by_call$data) == 1) {
-        if (is.data.frame(eval(by_call$data))) {
-          assign("found", envir = parent.frame(), 
-                 value = append(found, df_name))
-          assign("df_call", envir = parent.frame(),
-                 value = by_call$data)
-          assign("method", envir = parent.frame(), value = "by")
-          return(as.character(by_call$data))
-        }
-      } else {
-        nn <- all.names(by_call$data)
-        df_name <- setdiff(nn, c("$", "[", "[["))[1]
-        if (length(df_name) == 1) {
-          # find in what envir is df
+        if (!exists("df__", where = -1, inherits = FALSE)) {
           df_env <- where(df_name)
-          assign("found", envir = parent.frame(),
-                 value = append(found, df_name))
-          assign("df_env", envir = parent.frame(),
-                 value = df_env)
-          assign("df_call", envir = parent.frame(),
-                 value = expression(get(df_name, envir = df_env)))
-          assign("method", envir = parent.frame(), value = "by")
-          return(df_name)
+          df__   <- get(df_name, envir = df_env)
         }
+        return(list(name = df_name, df = df__, 
+                    call = std_call, method = "with"))
       }
+      return(list(name = NA, df = NA, call = std_call, method = "with"))
     }
     
-    if (length(pos_pipe) == 1) {
-      assign("pipe_call", envir = parent.frame(),
-             value = as.list(standardise_call(sys_calls[[pos_pipe]])))
-      if (is.data.frame(eval(pipe_call$lhs))) {
-        df_name <- as.character(pipe_call$lhs)
-        if (length(df_name) > 1) {
-          pos <- which(!df_name %in% c("%>%", "[", "[[", "$"))[1]
-          df_name <- df_name[pos]
-        }
-        # find in what envir is df
-        df_env <- where(df_name)
-        assign("found", envir = parent.frame(),
-               value = append(found, df_name))
-        assign("df_env", envir = parent.frame(),
-               value = df_env)
-        assign("df_call", envir = parent.frame(),
-               value = expression(get(df_name, envir = df_env)))
-        assign("method", envir = parent.frame(), value = "pipe")
-        return(df_name)
-      } else {
-        nn <- all.names(sys_calls[[pos_pipe]])
-        df_name <- setdiff(nn, c("%>%", "$", "[", "[["))[1]
-        # Find the envir containing the df
-        df_env <- where(df_name)
-        if (is.data.frame(df_env[[df_name]])) {
-          assign("found", envir = parent.frame(),
-                 value = append(found, "df_name"))
-          assign("df_env", envir = parent.frame(),
-                 value = df_env)
-          assign("df_call", envir = parent.frame(),
-                 value = expression(get(df_name, envir = df_env)))
-          assign("method", envir = parent.frame(), value = "pipe")
-          return(df_name)
-        }
+    else if (length(pos_by) == 1) {
+      std_call <- as.list(standardise_call(sys_calls[[pos_by]]))
+      nn <- all.names(by_call$data)
+      if (length(nn) > 1) {
+        nn <- setdiff(nn, c("$", "[", "[[", ":"))[1]
       }
+      df_env <- where(nn)
+      if (is.data.frame(get(nn, envir = df_env))) {
+        df_name <- nn
+        for (i in seq_along(sys_frames)) {
+          if (df_name %in% ls(sys_frames[[i]])) {
+            if (is.data.frame(sys_frames[[i]][[df_name]])) {
+              df__ <- sys_frames[[i]][[df_name]]
+              break
+            }
+          }
+        }
+        if (!exists("df__", where = -1, inherits = FALSE)) {
+          df_env <- where(df_name)
+          df__   <- get(df_name, envir = df_env)
+        }
+        return(list(name = df_name, df = df__, 
+                    call = std_call, method = "by"))
+      }
+      return(list(name = NA, df = NA, call = std_call, method = "by"))
     }
-
-    if (length(pos_lapply) == 1) {
-      assign("lapply_call", envir = parent.frame(),
-             value = as.list(standardise_call(sys_calls[[pos_lapply]])))
-      df_name <- setdiff(all.names(lapply_call$X), c("[", "[[", "$"))[1]
-      assign("df_call", envir = parent.frame(),
-             value = lapply_call$X)
-      assign("found", envir = parent.frame(),
-             value = append(found, "df_name"))
-      assign("method", envir = parent.frame(), value = "lapply")
-      return(df_name)
-    }
-
-    # function was called directly - find position in sys_calls
-    pos_fn <- which(grepl(caller, as.character(sys_calls)))
-    nn <- all.names(sys_calls[[pos_fn]])
-    df_name <- setdiff(nn, c("$", "[", "[[", ":", caller))[1]
-    df_env <- where(df_name)
-    if (is.data.frame(df_env[[df_name]])) {
-      assign("found", envir = parent.frame(),
-             value = append(found, "df_name"))
-      assign("df_env", envir = parent.frame(),
-             value = df_env)
-      assign("df_call", envir = parent.frame(),
-             value = expression(get(df_name, envir = df_env)))
-      assign("method", envir = parent.frame(), value = "none")
-      return(df_name)
-    }
+    #df__  <- get(nn, envir = df_env)
+    #df__2   <- sys_frames[[pos_by]]$data
     
-    # No df_name found
-    assign("method", envir = parent.frame(), value = "none")
-    return(NA)
-  }
-
-  # find_df_label --------------------------------------------------------------
-  find_df_label <- function() {
-    if (length(df_call) > 0) {
-      return(label(eval(df_call)))
-    } else {
-      return(NA)
+    else if (length(pos_pipe) == 1) {
+      std_call <- as.list(standardise_call(sys_calls[[pos_pipe]]))
+      if (is.data.frame(eval(std_call$lhs))) {
+        nn <- as.character(pipe_call$lhs)
+        if (length(nn) > 1) {
+          nn <- setdiff(nn, c("%>%", "[", "[[", "$", ":"))[1]
+        }
+        # Find the envir containing the potential df
+        df_env <- where(nn)
+        if (is.data.frame(get(nn, envir = df_env))) {
+          df_name <- nn
+          for (i in seq_along(sys_frames)) {
+            if (df_name %in% ls(sys_frames[[i]])) {
+              if (is.data.frame(sys_frames[[i]][[df_name]])) {
+                df__ <- sys_frames[[i]][[df_name]]
+                break
+              }
+            }
+          }
+          if (!exists("df__", where = -1, inherits = FALSE)) {
+            df_env <- where(df_name)
+            df__   <- get(df_name, envir = df_env)
+          }
+        } else {
+          df_name <- std_call$lhs
+          df__    <- eval(std_call$lhs)
+        }
+        return(list(name = df_name, df = df__, 
+                    call = std_call, method = "pipe"))
+        
+      }
+      return(name = NA, df = NA, call = std_call, method = "pipe")
     }
-  }
+
+    else if (length(pos_lapply) == 1) {
+      std_call <- as.list(standardise_call(sys_calls[[pos_lapply]]))
+      nn <- all.names(lapply_call$X)
+      df_env <- where(nn)
+      if (is.data.frame(get(nn, envir = df_env))) {
+        df_name <- setdiff(nn, c("[", "[[", "$"))[1]
+        for (i in seq_along(sys_frames)) {
+          if (df_name %in% ls(sys_frames[[i]])) {
+            if (is.data.frame(sys_frames[[i]][[df_name]])) {
+              df__ <- sys_frames[[i]][[df_name]]
+              break
+            }
+          }
+        }
+        if (!exists("df__", where = -1, inherits = FALSE)) {
+          df_env <- where(df_name)
+          df__   <- get(df_name, envir = df_env)
+        }
+        return(list(name = df_name, df = df__, 
+                    call = std_call, method = "lapply"))
+      }
+      return(list(name = NA, df = NA, call = std_call, method = "lapply"))
+    }
   
+    # function was called directly - find position in sys_calls
+    else {
+      pos_fn <- which(grepl(paste0("^", caller), as.character(sys_calls)))
+      nn <- all.names(sys_calls[[pos_fn]])
+      nn <- setdiff(nn, c("$", "[", "[[", ":", caller))[1]
+      df_env <- where(nn)
+      if (is.data.frame(get(nn, envir = df_env))) {
+        df_name <- nn
+        for (i in seq_along(sys_frames)) {
+          if (df_name %in% ls(sys_frames[[i]])) {
+            df__ <- sys_frames[[i]][[df_name]]
+            break
+          }
+        }
+        if (!exists("df__", where = -1, inherits = FALSE)) {
+          df_env <- where(df_name)
+          df__   <- get(df_name, envir = df_env)
+        } 
+        return(list(name = df_name, df = df__, method = "none"))
+      }
+      return(list(name = NA, df = NA, method = "none"))
+    }
+  }
+
   # find_var_name --------------------------------------------------------------
   find_var_name <- function() {
-    if (method == "with") {
-      nn <- as.character(with_call$data)
+    if (df$method == "with") {
+      nn <- as.character(df$call)
+      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df_name, caller))[1]
+      return(var_name)
+    }
+
+    else if (df$method == "by") {
+      return(colnames(eval(df$df)))
+    }
+
+    else if (df$method == "pipe") {
+      nn <- all.names(df$call)
       var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df_name, caller))
       return(var_name)
     }
-      
-    if (method == "by") {
-      return(colnames(eval(by_call$data)))
-    }
     
-    if (method == "pipe") {
-      nn <- all.names(sys_calls[[pos_pipe]])
-      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df_name, caller))
-      return(var_name)
-    }
-    
-    if (method == "lapply") {
-      nn <- colnames(eval(lapply_call$X))
+    else if (df$method == "lapply") {
+      nn <- colnames(eval(df$call))
       # Find position in sys_frames that corresponds to the lapply envir.
       # to get "i"
       pos <- unlist(lapply(ls_sys_frames,
@@ -213,13 +225,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       return(nn[i])
     }
     
-    if (method == "none") {
-      pos_fn <- which(grepl(caller, as.character(sys_calls)))
-      nn <- as.character(sys_calls[[pos_fn]])
-      if (!is.na(df_name)) {
-        var_name <- setdiff(nn, c(caller, df_name))
+    else if (df$method == "none") {
+      pos_fn <- which(grepl(paste0("^",caller), as.character(sys_calls)))
+      nn <- all.names(sys_calls[[pos_fn]])
+      # for (i in seq_along(pos_fn)) {
+      #   nn <- all.names(sys_calls[[pos_fn[i]]])
+      #   if (caller %in% nn)
+      #     break
+      # }
+      if (!is.na(df$name)) {
+        var_name <- setdiff(nn, c(caller, "$", "[", "[[", ":", df$name))
       } else {
-        var_name <- setdiff(nn, caller)
+        var_name <- setdiff(nn, c(caller, "$", "[", "[[", ":"))
       }
       if (length(var_name) > 0) {
         return(var_name)
@@ -227,19 +244,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         return(NA)
       }
     }
-    
     return(NA)
-  }
-  
-  # find_var_label -------------------------------------------------------------
-  find_var_label <- function() {
-    if(!is.na(df_name) && !is.na(var_name) && length(var_name) == 1) {
-      return(label(eval(df_call)[[var_name]]))
-    } else if (is.na(df_name) && length(var_name) == 1) {
-      return(label(get(var_name, envir = where(var_name))))
-    } else {
-      return(NA)
-    }
   }
   
   # prep_return ----------------------------------------------------------------
@@ -250,12 +255,12 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     
     # Remove dataframe name from items having form df_name$var_name 
     # by_group string and the same
-    if (length(by_group) > 0 && !is.na(df_name)) {
-      by_group <- sub(pattern = paste0(df_name,"$"), replacement = "", 
+    if (length(by_group) > 0 && !is.na(df$name)) {
+      by_group <- sub(pattern = paste0(df$name,"$"), replacement = "", 
                       x = by_group, fixed = TRUE)
     }
     
-    output <- list(df_name    = df_name,
+    output <- list(df_name    = df$name,
                    df_label   = df_label,
                    var_name   = var_name,
                    var_label  = var_label,
@@ -320,20 +325,21 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     # by() was called on ctable (both "x" and "y" and in by_call$data)
     if (length(by_call$data) > 1 && deparse(by_call$data[[1]]) == "list" && 
         identical(names(by_call$data), c("", "x", "y"))) {
+      df <- list()
       var_name <- c(deparse(by_call$data$x), deparse(by_call$data$y))
       if (any(grepl("$", var_name, fixed = TRUE))) {
         df_name    <- sub("^([a-zA-Z0-9._]+)\\$.+$", "\\1", var_name[1])
         df_name[2] <- sub("^([a-zA-Z0-9._]+)\\$.+$", "\\1", var_name[2])
       }
       if (isTRUE(df_name[1] == df_name[2])) {
-        df_name <- df_name[1]
+        df$name <- df_name[1]
         var_name[1] <- sub(paste0(df_name, "$"), "", var_name[1])
         var_name[2] <- sub(paste0(df_name, "$"), "", var_name[2])
       } else {
         if (length(pos_with) == 1) {
           with_call <- as.list(standardise_call(sys_calls[[pos_with]]))
           if (length(with_call$data) == 1) {
-            df_name <- as.character(with_call$data)
+            df$name <- as.character(with_call$data)
           }
         }
       }
@@ -341,22 +347,27 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       return(output)
     }
   }
+  browser()
+  df <- get_df()
   
-  df_name <- find_df_name()
-  
-  if ("df_label" %in% what && !is.na(df_name)) {
-    df_label  <- find_df_label()
+  if ("df_label" %in% what && !iidentical(df$df, NA)) {
+    df_label  <- label(df$df)
   }
   
   if ("var_name" %in% what) {
     var_name  <- find_var_name()
-    if (!is.na(var_name) && !is.na(df_name)) {
-      var_name <- sub(paste0("^", df_name, "\\$"), "", var_name)
-    } 
+    if (!is.na(var_name) && !is.na(df$name)) {
+      var_name <- sub(paste0("^", df$name, "\\$"), "", var_name)
+    }
   }
   
   if ("var_label" %in% what) {
-    var_label <- find_var_label()
+    if (!iidentical(df$df, NA)) {
+      var_label <- label(df$df[[var_name]])
+    } else {
+      var_env   <- where(var_name)
+      var_label <- label(get(var_name, envir = var_env))
+    }
   }
   
   output <- prep_return()
