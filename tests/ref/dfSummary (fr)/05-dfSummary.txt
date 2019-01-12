@@ -1,0 +1,1457 @@
+
+# --------------------------- 5.dfSummary.R  -----------------------------------  
+
+> data(tobacco) 
+> tobacco <- tibble::as.tibble(tobacco) 
+> label(tobacco) <- "A Study on Tobacco Use and Health" 
+> label(tobacco$gender) <- "Subject's Gender" 
+> label(tobacco$BMI) <- "Body Mass Index" 
+> label(tobacco$smoker) <- "Smoking Status" 
+> label(tobacco$samp.wgts) <- "Sampling Weights" 
+
+# Bare-bones ------------------------------------------------------------------- 
+
+> (dfs1 <- dfSummary(tobacco)) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+---------------------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Valide    Manquant  
+---- --------------- ------------------ --------------------------- --------------------- ------------------------------ --------- ----------
+1    gender          Subject's Gender   1. F                        489 (50.0%)           IIIIIIIIII                     978       22        
+     [factor]                           2. M                        489 (50.0%)           IIIIIIIIII                     (97.8%)   (2.2%)    
+
+2    age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            975       25        
+     [numeric]                          min < med < max:                                  : : : : : . : : : :            (97.5%)   (2.5%)    
+                                        18 < 50 < 80                                      : : : : : : : : : :                                
+                                        ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                                
+                                                                                          : : : : : : : : : :                                
+
+3    age.gr                             1. 18-34                    258 (26.5%)           IIIII                          975       25        
+     [factor]                           2. 35-50                    241 (24.7%)           IIII                           (97.5%)   (2.5%)    
+                                        3. 51-70                    317 (32.5%)           IIIIII                                             
+                                        4. 71 +                     159 (16.3%)           III                                                
+
+4    BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    974       26        
+     [numeric]                          min < med < max:                                          : : :                  (97.4%)   (2.6%)    
+                                        8.83 < 25.62 < 39.44                                      : : :                                      
+                                        ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                                    
+                                                                                              . : : : : : .                                  
+
+5    smoker          Smoking Status     1. Yes                      298 (29.8%)           IIIII                          1000      0         
+     [factor]                           2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (100%)    (0%)      
+
+6    cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              965       35        
+     [numeric]                          min < med < max:                                  :                              (96.5%)   (3.5%)    
+                                        0 < 0 < 40                                        :                                                  
+                                        ÉIQ (CV) : 11 (1.75)                              :                                                  
+                                                                                          :   . . . . . .                                    
+
+7    diseased                           1. Yes                      224 (22.4%)           IIII                           1000      0         
+     [factor]                           2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (100%)    (0%)      
+
+8    disease                            1. Hypertension             36 (16.2%)            III                            222       778       
+     [character]                        2. Cancer                   34 (15.3%)            III                            (22.2%)   (77.8%)   
+                                        3. Cholesterol              21 ( 9.5%)            I                                                  
+                                        4. Heart                    20 ( 9.0%)            I                                                  
+                                        5. Pulmonary                20 ( 9.0%)            I                                                  
+                                        6. Musculoskeletal          19 ( 8.6%)            I                                                  
+                                        7. Diabetes                 14 ( 6.3%)            I                                                  
+                                        8. Hearing                  14 ( 6.3%)            I                                                  
+                                        9. Digestive                12 ( 5.4%)            I                                                  
+                                        10. Hypotension             11 ( 5.0%)                                                               
+                                        [ 3 autres ]                21 ( 9.5%)            I                                                  
+
+9    samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000      0         
+     [numeric]                          min < med < max:            1.04!: 249 (24.9%)    IIII                           (100%)    (0%)      
+                                        0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                             
+                                        ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                                
+                                                                    ! arrondi                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs1, headings = FALSE) 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Valide    Manquant  
+---- --------------- ------------------ --------------------------- --------------------- ------------------------------ --------- ----------
+1    gender          Subject's Gender   1. F                        489 (50.0%)           IIIIIIIIII                     978       22        
+     [factor]                           2. M                        489 (50.0%)           IIIIIIIIII                     (97.8%)   (2.2%)    
+
+2    age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            975       25        
+     [numeric]                          min < med < max:                                  : : : : : . : : : :            (97.5%)   (2.5%)    
+                                        18 < 50 < 80                                      : : : : : : : : : :                                
+                                        ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                                
+                                                                                          : : : : : : : : : :                                
+
+3    age.gr                             1. 18-34                    258 (26.5%)           IIIII                          975       25        
+     [factor]                           2. 35-50                    241 (24.7%)           IIII                           (97.5%)   (2.5%)    
+                                        3. 51-70                    317 (32.5%)           IIIIII                                             
+                                        4. 71 +                     159 (16.3%)           III                                                
+
+4    BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    974       26        
+     [numeric]                          min < med < max:                                          : : :                  (97.4%)   (2.6%)    
+                                        8.83 < 25.62 < 39.44                                      : : :                                      
+                                        ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                                    
+                                                                                              . : : : : : .                                  
+
+5    smoker          Smoking Status     1. Yes                      298 (29.8%)           IIIII                          1000      0         
+     [factor]                           2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (100%)    (0%)      
+
+6    cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              965       35        
+     [numeric]                          min < med < max:                                  :                              (96.5%)   (3.5%)    
+                                        0 < 0 < 40                                        :                                                  
+                                        ÉIQ (CV) : 11 (1.75)                              :                                                  
+                                                                                          :   . . . . . .                                    
+
+7    diseased                           1. Yes                      224 (22.4%)           IIII                           1000      0         
+     [factor]                           2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (100%)    (0%)      
+
+8    disease                            1. Hypertension             36 (16.2%)            III                            222       778       
+     [character]                        2. Cancer                   34 (15.3%)            III                            (22.2%)   (77.8%)   
+                                        3. Cholesterol              21 ( 9.5%)            I                                                  
+                                        4. Heart                    20 ( 9.0%)            I                                                  
+                                        5. Pulmonary                20 ( 9.0%)            I                                                  
+                                        6. Musculoskeletal          19 ( 8.6%)            I                                                  
+                                        7. Diabetes                 14 ( 6.3%)            I                                                  
+                                        8. Hearing                  14 ( 6.3%)            I                                                  
+                                        9. Digestive                12 ( 5.4%)            I                                                  
+                                        10. Hypotension             11 ( 5.0%)                                                               
+                                        [ 3 autres ]                21 ( 9.5%)            I                                                  
+
+9    samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000      0         
+     [numeric]                          min < med < max:            1.04!: 249 (24.9%)    IIII                           (100%)    (0%)      
+                                        0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                             
+                                        ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                                
+                                                                    ! arrondi                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Omit columns ----------------------------------------------------------------- 
+
+> print(dfs1, varnumbers = FALSE) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+----------------------------------------------------------------------------------------------------------------------------------------
+Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Valide    Manquant  
+--------------- ------------------ --------------------------- --------------------- ------------------------------ --------- ----------
+gender          Subject's Gender   1. F                        489 (50.0%)           IIIIIIIIII                     978       22        
+[factor]                           2. M                        489 (50.0%)           IIIIIIIIII                     (97.8%)   (2.2%)    
+
+age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            975       25        
+[numeric]                          min < med < max:                                  : : : : : . : : : :            (97.5%)   (2.5%)    
+                                   18 < 50 < 80                                      : : : : : : : : : :                                
+                                   ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                                
+                                                                                     : : : : : : : : : :                                
+
+age.gr                             1. 18-34                    258 (26.5%)           IIIII                          975       25        
+[factor]                           2. 35-50                    241 (24.7%)           IIII                           (97.5%)   (2.5%)    
+                                   3. 51-70                    317 (32.5%)           IIIIII                                             
+                                   4. 71 +                     159 (16.3%)           III                                                
+
+BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    974       26        
+[numeric]                          min < med < max:                                          : : :                  (97.4%)   (2.6%)    
+                                   8.83 < 25.62 < 39.44                                      : : :                                      
+                                   ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                                    
+                                                                                         . : : : : : .                                  
+
+smoker          Smoking Status     1. Yes                      298 (29.8%)           IIIII                          1000      0         
+[factor]                           2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (100%)    (0%)      
+
+cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              965       35        
+[numeric]                          min < med < max:                                  :                              (96.5%)   (3.5%)    
+                                   0 < 0 < 40                                        :                                                  
+                                   ÉIQ (CV) : 11 (1.75)                              :                                                  
+                                                                                     :   . . . . . .                                    
+
+diseased                           1. Yes                      224 (22.4%)           IIII                           1000      0         
+[factor]                           2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (100%)    (0%)      
+
+disease                            1. Hypertension             36 (16.2%)            III                            222       778       
+[character]                        2. Cancer                   34 (15.3%)            III                            (22.2%)   (77.8%)   
+                                   3. Cholesterol              21 ( 9.5%)            I                                                  
+                                   4. Heart                    20 ( 9.0%)            I                                                  
+                                   5. Pulmonary                20 ( 9.0%)            I                                                  
+                                   6. Musculoskeletal          19 ( 8.6%)            I                                                  
+                                   7. Diabetes                 14 ( 6.3%)            I                                                  
+                                   8. Hearing                  14 ( 6.3%)            I                                                  
+                                   9. Digestive                12 ( 5.4%)            I                                                  
+                                   10. Hypotension             11 ( 5.0%)                                                               
+                                   [ 3 autres ]                21 ( 9.5%)            I                                                  
+
+samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000      0         
+[numeric]                          min < med < max:            1.04!: 249 (24.9%)    IIII                           (100%)    (0%)      
+                                   0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                             
+                                   ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                                
+                                                               ! arrondi                                                                
+----------------------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs1, labels.col = FALSE) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+--------------------------------------------------------------------------------------------------------------------------
+No   Variable        Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Valide    Manquant  
+---- --------------- --------------------------- --------------------- ------------------------------ --------- ----------
+1    gender          1. F                        489 (50.0%)           IIIIIIIIII                     978       22        
+     [factor]        2. M                        489 (50.0%)           IIIIIIIIII                     (97.8%)   (2.2%)    
+
+2    age             Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            975       25        
+     [numeric]       min < med < max:                                  : : : : : . : : : :            (97.5%)   (2.5%)    
+                     18 < 50 < 80                                      : : : : : : : : : :                                
+                     ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                                
+                                                                       : : : : : : : : : :                                
+
+3    age.gr          1. 18-34                    258 (26.5%)           IIIII                          975       25        
+     [factor]        2. 35-50                    241 (24.7%)           IIII                           (97.5%)   (2.5%)    
+                     3. 51-70                    317 (32.5%)           IIIIII                                             
+                     4. 71 +                     159 (16.3%)           III                                                
+
+4    BMI             Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    974       26        
+     [numeric]       min < med < max:                                          : : :                  (97.4%)   (2.6%)    
+                     8.83 < 25.62 < 39.44                                      : : :                                      
+                     ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                                    
+                                                                           . : : : : : .                                  
+
+5    smoker          1. Yes                      298 (29.8%)           IIIII                          1000      0         
+     [factor]        2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (100%)    (0%)      
+
+6    cigs.per.day    Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              965       35        
+     [numeric]       min < med < max:                                  :                              (96.5%)   (3.5%)    
+                     0 < 0 < 40                                        :                                                  
+                     ÉIQ (CV) : 11 (1.75)                              :                                                  
+                                                                       :   . . . . . .                                    
+
+7    diseased        1. Yes                      224 (22.4%)           IIII                           1000      0         
+     [factor]        2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (100%)    (0%)      
+
+8    disease         1. Hypertension             36 (16.2%)            III                            222       778       
+     [character]     2. Cancer                   34 (15.3%)            III                            (22.2%)   (77.8%)   
+                     3. Cholesterol              21 ( 9.5%)            I                                                  
+                     4. Heart                    20 ( 9.0%)            I                                                  
+                     5. Pulmonary                20 ( 9.0%)            I                                                  
+                     6. Musculoskeletal          19 ( 8.6%)            I                                                  
+                     7. Diabetes                 14 ( 6.3%)            I                                                  
+                     8. Hearing                  14 ( 6.3%)            I                                                  
+                     9. Digestive                12 ( 5.4%)            I                                                  
+                     10. Hypotension             11 ( 5.0%)                                                               
+                     [ 3 autres ]                21 ( 9.5%)            I                                                  
+
+9    samp.wgts       Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000      0         
+     [numeric]       min < med < max:            1.04!: 249 (24.9%)    IIII                           (100%)    (0%)      
+                     0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                             
+                     ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                                
+                                                 ! arrondi                                                                
+--------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs1, valid.col = FALSE) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+-----------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Manquant  
+---- --------------- ------------------ --------------------------- --------------------- ------------------------------ ----------
+1    gender          Subject's Gender   1. F                        489 (50.0%)           IIIIIIIIII                     22        
+     [factor]                           2. M                        489 (50.0%)           IIIIIIIIII                     (2.2%)    
+
+2    age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            25        
+     [numeric]                          min < med < max:                                  : : : : : . : : : :            (2.5%)    
+                                        18 < 50 < 80                                      : : : : : : : : : :                      
+                                        ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                      
+                                                                                          : : : : : : : : : :                      
+
+3    age.gr                             1. 18-34                    258 (26.5%)           IIIII                          25        
+     [factor]                           2. 35-50                    241 (24.7%)           IIII                           (2.5%)    
+                                        3. 51-70                    317 (32.5%)           IIIIII                                   
+                                        4. 71 +                     159 (16.3%)           III                                      
+
+4    BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    26        
+     [numeric]                          min < med < max:                                          : : :                  (2.6%)    
+                                        8.83 < 25.62 < 39.44                                      : : :                            
+                                        ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                          
+                                                                                              . : : : : : .                        
+
+5    smoker          Smoking Status     1. Yes                      298 (29.8%)           IIIII                          0         
+     [factor]                           2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (0%)      
+
+6    cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              35        
+     [numeric]                          min < med < max:                                  :                              (3.5%)    
+                                        0 < 0 < 40                                        :                                        
+                                        ÉIQ (CV) : 11 (1.75)                              :                                        
+                                                                                          :   . . . . . .                          
+
+7    diseased                           1. Yes                      224 (22.4%)           IIII                           0         
+     [factor]                           2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (0%)      
+
+8    disease                            1. Hypertension             36 (16.2%)            III                            778       
+     [character]                        2. Cancer                   34 (15.3%)            III                            (77.8%)   
+                                        3. Cholesterol              21 ( 9.5%)            I                                        
+                                        4. Heart                    20 ( 9.0%)            I                                        
+                                        5. Pulmonary                20 ( 9.0%)            I                                        
+                                        6. Musculoskeletal          19 ( 8.6%)            I                                        
+                                        7. Diabetes                 14 ( 6.3%)            I                                        
+                                        8. Hearing                  14 ( 6.3%)            I                                        
+                                        9. Digestive                12 ( 5.4%)            I                                        
+                                        10. Hypotension             11 ( 5.0%)                                                     
+                                        [ 3 autres ]                21 ( 9.5%)            I                                        
+
+9    samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          0         
+     [numeric]                          min < med < max:            1.04!: 249 (24.9%)    IIII                           (0%)      
+                                        0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                   
+                                        ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                      
+                                                                    ! arrondi                                                      
+-----------------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs1, na.col = FALSE) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+----------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Diagramme texte                Valide   
+---- --------------- ------------------ --------------------------- --------------------- ------------------------------ ---------
+1    gender          Subject's Gender   1. F                        489 (50.0%)           IIIIIIIIII                     978      
+     [factor]                           2. M                        489 (50.0%)           IIIIIIIIII                     (97.8%)  
+
+2    age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    .     .     . . . :            975      
+     [numeric]                          min < med < max:                                  : : : : : . : : : :            (97.5%)  
+                                        18 < 50 < 80                                      : : : : : : : : : :                     
+                                        ÉIQ (CV) : 32 (0.37)                              : : : : : : : : : :                     
+                                                                                          : : : : : : : : : :                     
+
+3    age.gr                             1. 18-34                    258 (26.5%)           IIIII                          975      
+     [factor]                           2. 35-50                    241 (24.7%)           IIII                           (97.5%)  
+                                        3. 51-70                    317 (32.5%)           IIIIII                                  
+                                        4. 71 +                     159 (16.3%)           III                                     
+
+4    BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques             :                    974      
+     [numeric]                          min < med < max:                                          : : :                  (97.4%)  
+                                        8.83 < 25.62 < 39.44                                      : : :                           
+                                        ÉIQ (CV) : 5.72 (0.17)                                  : : : : :                         
+                                                                                              . : : : : : .                       
+
+5    smoker          Smoking Status     1. Yes                      298 (29.8%)           IIIII                          1000     
+     [factor]                           2. No                       702 (70.2%)           IIIIIIIIIIIIII                 (100%)   
+
+6    cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    :                              965      
+     [numeric]                          min < med < max:                                  :                              (96.5%)  
+                                        0 < 0 < 40                                        :                                       
+                                        ÉIQ (CV) : 11 (1.75)                              :                                       
+                                                                                          :   . . . . . .                         
+
+7    diseased                           1. Yes                      224 (22.4%)           IIII                           1000     
+     [factor]                           2. No                       776 (77.6%)           IIIIIIIIIIIIIII                (100%)   
+
+8    disease                            1. Hypertension             36 (16.2%)            III                            222      
+     [character]                        2. Cancer                   34 (15.3%)            III                            (22.2%)  
+                                        3. Cholesterol              21 ( 9.5%)            I                                       
+                                        4. Heart                    20 ( 9.0%)            I                                       
+                                        5. Pulmonary                20 ( 9.0%)            I                                       
+                                        6. Musculoskeletal          19 ( 8.6%)            I                                       
+                                        7. Diabetes                 14 ( 6.3%)            I                                       
+                                        8. Hearing                  14 ( 6.3%)            I                                       
+                                        9. Digestive                12 ( 5.4%)            I                                       
+                                        10. Hypotension             11 ( 5.0%)                                                    
+                                        [ 3 autres ]                21 ( 9.5%)            I                                       
+
+9    samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000     
+     [numeric]                          min < med < max:            1.04!: 249 (24.9%)    IIII                           (100%)   
+                                        0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)    IIIIII                                  
+                                        ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)    III                                     
+                                                                    ! arrondi                                                     
+----------------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs1, graph.col = FALSE) 
+
+Tableau-synthèse   
+tobacco   
+Dimensions: 1000 x 9    
+Doublons: 2   
+--------------------------------------------------------------------------------------------------------------
+No   Variable        Étiquette          Stats / valeurs             Fréq. (% de valide)   Valide    Manquant  
+---- --------------- ------------------ --------------------------- --------------------- --------- ----------
+1    gender          Subject's Gender   1. F                        489 (50.0%)           978       22        
+     [factor]                           2. M                        489 (50.0%)           (97.8%)   (2.2%)    
+
+2    age                                Moy (é-t) : 49.6 (18.29)    63 valeurs uniques    975       25        
+     [numeric]                          min < med < max:                                  (97.5%)   (2.5%)    
+                                        18 < 50 < 80                                                          
+                                        ÉIQ (CV) : 32 (0.37)                                                  
+
+3    age.gr                             1. 18-34                    258 (26.5%)           975       25        
+     [factor]                           2. 35-50                    241 (24.7%)           (97.5%)   (2.5%)    
+                                        3. 51-70                    317 (32.5%)                               
+                                        4. 71 +                     159 (16.3%)                               
+
+4    BMI             Body Mass Index    Moy (é-t) : 25.73 (4.49)    974 valeurs uniques   974       26        
+     [numeric]                          min < med < max:                                  (97.4%)   (2.6%)    
+                                        8.83 < 25.62 < 39.44                                                  
+                                        ÉIQ (CV) : 5.72 (0.17)                                                
+
+5    smoker          Smoking Status     1. Yes                      298 (29.8%)           1000      0         
+     [factor]                           2. No                       702 (70.2%)           (100%)    (0%)      
+
+6    cigs.per.day                       Moy (é-t) : 6.78 (11.88)    37 valeurs uniques    965       35        
+     [numeric]                          min < med < max:                                  (96.5%)   (3.5%)    
+                                        0 < 0 < 40                                                            
+                                        ÉIQ (CV) : 11 (1.75)                                                  
+
+7    diseased                           1. Yes                      224 (22.4%)           1000      0         
+     [factor]                           2. No                       776 (77.6%)           (100%)    (0%)      
+
+8    disease                            1. Hypertension             36 (16.2%)            222       778       
+     [character]                        2. Cancer                   34 (15.3%)            (22.2%)   (77.8%)   
+                                        3. Cholesterol              21 ( 9.5%)                                
+                                        4. Heart                    20 ( 9.0%)                                
+                                        5. Pulmonary                20 ( 9.0%)                                
+                                        6. Musculoskeletal          19 ( 8.6%)                                
+                                        7. Diabetes                 14 ( 6.3%)                                
+                                        8. Hearing                  14 ( 6.3%)                                
+                                        9. Digestive                12 ( 5.4%)                                
+                                        10. Hypotension             11 ( 5.0%)                                
+                                        [ 3 autres ]                21 ( 9.5%)                                
+
+9    samp.wgts       Sampling Weights   Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)    1000      0         
+     [numeric]                          min < med < max:            1.04!: 249 (24.9%)    (100%)    (0%)      
+                                        0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)                        
+                                        ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)                        
+                                                                    ! arrondi                                 
+--------------------------------------------------------------------------------------------------------------
+
+
+# Minimal results using print overrides ---------------------------------------- 
+
+> print(dfs1, headings = FALSE, labels.col = FALSE, varnumbers = FALSE, valid.col = FALSE, na.col = FALSE, graph.col = FALSE) 
+
+
+-----------------------------------------------------------------
+Variable        Stats / valeurs             Fréq. (% de valide)  
+--------------- --------------------------- ---------------------
+gender          1. F                        489 (50.0%)          
+[factor]        2. M                        489 (50.0%)          
+
+age             Moy (é-t) : 49.6 (18.29)    63 valeurs uniques   
+[numeric]       min < med < max:                                 
+                18 < 50 < 80                                     
+                ÉIQ (CV) : 32 (0.37)                             
+
+age.gr          1. 18-34                    258 (26.5%)          
+[factor]        2. 35-50                    241 (24.7%)          
+                3. 51-70                    317 (32.5%)          
+                4. 71 +                     159 (16.3%)          
+
+BMI             Moy (é-t) : 25.73 (4.49)    974 valeurs uniques  
+[numeric]       min < med < max:                                 
+                8.83 < 25.62 < 39.44                             
+                ÉIQ (CV) : 5.72 (0.17)                           
+
+smoker          1. Yes                      298 (29.8%)          
+[factor]        2. No                       702 (70.2%)          
+
+cigs.per.day    Moy (é-t) : 6.78 (11.88)    37 valeurs uniques   
+[numeric]       min < med < max:                                 
+                0 < 0 < 40                                       
+                ÉIQ (CV) : 11 (1.75)                             
+
+diseased        1. Yes                      224 (22.4%)          
+[factor]        2. No                       776 (77.6%)          
+
+disease         1. Hypertension             36 (16.2%)           
+[character]     2. Cancer                   34 (15.3%)           
+                3. Cholesterol              21 ( 9.5%)           
+                4. Heart                    20 ( 9.0%)           
+                5. Pulmonary                20 ( 9.0%)           
+                6. Musculoskeletal          19 ( 8.6%)           
+                7. Diabetes                 14 ( 6.3%)           
+                8. Hearing                  14 ( 6.3%)           
+                9. Digestive                12 ( 5.4%)           
+                10. Hypotension             11 ( 5.0%)           
+                [ 3 autres ]                21 ( 9.5%)           
+
+samp.wgts       Moy (é-t) : 1 (0.08)        0.86!: 267 (26.7%)   
+[numeric]       min < med < max:            1.04!: 249 (24.9%)   
+                0.86 < 1.04 < 1.06          1.05!: 324 (32.4%)   
+                ÉIQ (CV) : 0.19 (0.08)      1.06!: 160 (16.0%)   
+                                            ! arrondi            
+-----------------------------------------------------------------
+
+
+# Print to file ---------------------------------------------------------------- 
+
+> print(dfs1, file = "dfs1.html") 
+-- Switching method to 'browser'
+-- Output file written
+
+
+# Test global options (1/2) ---------------------------------------------------- 
+
+> st_options('reset') 
+-- summarytools options have been reset
+
+> st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.valid.col = F) 
+> print(dfSummary(tobacco), file = "01 - basic.html") 
+-- Switching method to 'browser'
+-- Output file written
+
+
+# Test global options (2/2) ---------------------------------------------------- 
+
+> st_options('reset') 
+-- summarytools options have been reset
+
+> st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.graph.col = F, dfSummary.valid.col = F, dfSummary.na.col = F) 
+> (dfs2 <- dfSummary(tobacco)) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 1000 x 9    
+Duplicates: 2   
+----------------------------------------------------------------------
+Variable        Stats / Values                   Freqs (% of Valid)   
+--------------- -------------------------------- ---------------------
+gender          1. F                             489 (50.0%)          
+[factor]        2. M                             489 (50.0%)          
+
+age             Mean (Std.Dev) : 49.6 (18.29)    63 distinct values   
+[numeric]       min < med < max:                                      
+                18 < 50 < 80                                          
+                IQR (CV) : 32 (0.37)                                  
+
+age.gr          1. 18-34                         258 (26.5%)          
+[factor]        2. 35-50                         241 (24.7%)          
+                3. 51-70                         317 (32.5%)          
+                4. 71 +                          159 (16.3%)          
+
+BMI             Mean (Std.Dev) : 25.73 (4.49)    974 distinct values  
+[numeric]       min < med < max:                                      
+                8.83 < 25.62 < 39.44                                  
+                IQR (CV) : 5.72 (0.17)                                
+
+smoker          1. Yes                           298 (29.8%)          
+[factor]        2. No                            702 (70.2%)          
+
+cigs.per.day    Mean (Std.Dev) : 6.78 (11.88)    37 distinct values   
+[numeric]       min < med < max:                                      
+                0 < 0 < 40                                            
+                IQR (CV) : 11 (1.75)                                  
+
+diseased        1. Yes                           224 (22.4%)          
+[factor]        2. No                            776 (77.6%)          
+
+disease         1. Hypertension                  36 (16.2%)           
+[character]     2. Cancer                        34 (15.3%)           
+                3. Cholesterol                   21 ( 9.5%)           
+                4. Heart                         20 ( 9.0%)           
+                5. Pulmonary                     20 ( 9.0%)           
+                6. Musculoskeletal               19 ( 8.6%)           
+                7. Diabetes                      14 ( 6.3%)           
+                8. Hearing                       14 ( 6.3%)           
+                9. Digestive                     12 ( 5.4%)           
+                10. Hypotension                  11 ( 5.0%)           
+                [ 3 others ]                     21 ( 9.5%)           
+
+samp.wgts       Mean (Std.Dev) : 1 (0.08)        0.86!: 267 (26.7%)   
+[numeric]       min < med < max:                 1.04!: 249 (24.9%)   
+                0.86 < 1.04 < 1.06               1.05!: 324 (32.4%)   
+                IQR (CV) : 0.19 (0.08)           1.06!: 160 (16.0%)   
+                                                 ! rounded            
+----------------------------------------------------------------------
+
+> view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal width cols", file = "02 - equal widths.html") 
+-- Output file written
+
+> st_options('reset') 
+-- summarytools options have been reset
+
+> tobacco$disease.f <- as.factor(tobacco$disease) 
+> (dfs3 <- dfSummary(tobacco, round.digits = 2, max.distinct.values = 4, varnumbers = FALSE, labels.col = TRUE, valid.col = FALSE, na.col = FALSE, max.string.width = 20)) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 1000 x 10    
+Duplicates: 2   
+------------------------------------------------------------------------------------------------------------------------
+Variable        Label              Stats / Values                   Freqs (% of Valid)    Text Graph                    
+--------------- ------------------ -------------------------------- --------------------- ------------------------------
+gender          Subject's Gender   1. F                             489 (50.0%)           IIIIIIIIII                    
+[factor]                           2. M                             489 (50.0%)           IIIIIIIIII                    
+
+age                                Mean (Std.Dev) : 49.6 (18.29)    63 distinct values    .     .     . . . :           
+[numeric]                          min < med < max:                                       : : : : : . : : : :           
+                                   18 < 50 < 80                                           : : : : : : : : : :           
+                                   IQR (CV) : 32 (0.37)                                   : : : : : : : : : :           
+                                                                                          : : : : : : : : : :           
+
+age.gr                             1. 18-34                         258 (26.5%)           IIIII                         
+[factor]                           2. 35-50                         241 (24.7%)           IIII                          
+                                   3. 51-70                         317 (32.5%)           IIIIII                        
+                                   4. 71 +                          159 (16.3%)           III                           
+
+BMI             Body Mass Index    Mean (Std.Dev) : 25.73 (4.49)    974 distinct values             :                   
+[numeric]                          min < med < max:                                               : : :                 
+                                   8.83 < 25.62 < 39.44                                           : : :                 
+                                   IQR (CV) : 5.72 (0.17)                                       : : : : :               
+                                                                                              . : : : : : .             
+
+smoker          Smoking Status     1. Yes                           298 (29.8%)           IIIII                         
+[factor]                           2. No                            702 (70.2%)           IIIIIIIIIIIIII                
+
+cigs.per.day                       Mean (Std.Dev) : 6.78 (11.88)    37 distinct values    :                             
+[numeric]                          min < med < max:                                       :                             
+                                   0 < 0 < 40                                             :                             
+                                   IQR (CV) : 11 (1.75)                                   :                             
+                                                                                          :   . . . . . .               
+
+diseased                           1. Yes                           224 (22.4%)           IIII                          
+[factor]                           2. No                            776 (77.6%)           IIIIIIIIIIIIIII               
+
+disease                            1. Hypertension                   36 (16.2%)           III                           
+[character]                        2. Cancer                         34 (15.3%)           III                           
+                                   3. Cholesterol                    21 ( 9.5%)           I                             
+                                   4. Heart                          20 ( 9.0%)           I                             
+                                   [ 9 others ]                     111 (50.0%)           IIIIIIIIII                    
+
+samp.wgts       Sampling Weights   Mean (Std.Dev) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                         
+[numeric]                          min < med < max:                 1.04!: 249 (24.9%)    IIII                          
+                                   0.86 < 1.04 < 1.06               1.05!: 324 (32.4%)    IIIIII                        
+                                   IQR (CV) : 0.19 (0.08)           1.06!: 160 (16.0%)    III                           
+                                                                    ! rounded                                           
+
+disease.f                          1. Cancer                         34 (15.3%)           III                           
+[factor]                           2. Cholesterol                    21 ( 9.5%)           I                             
+                                   3. Diabetes                       14 ( 6.3%)           I                             
+                                   4. Digestive                      12 ( 5.4%)           I                             
+                                   [ 9 others ]                     141 (63.5%)           IIIIIIIIIIII                  
+------------------------------------------------------------------------------------------------------------------------
+
+> print(dfs3, footnote = "4 distinct vals.", report.title = "DFS - 4 distinct values", file = "03 - 4 distinct val.html") 
+-- Switching method to 'browser'
+-- Output file written
+
+> data(cars) 
+> (dfs4 <- dfSummary(cars)) 
+
+Data Frame Summary   
+cars   
+Dimensions: 50 x 2    
+Duplicates: 1   
+---------------------------------------------------------------------------------------------------------
+No   Variable    Stats / Values                    Freqs (% of Valid)   Text Graph     Valid    Missing  
+---- ----------- --------------------------------- -------------------- -------------- -------- ---------
+1    speed       Mean (Std.Dev) : 15.4 (5.29)      19 distinct values       : :        50       0        
+     [numeric]   min < med < max:                                           : :        (100%)   (0%)     
+                 4 < 15 < 25                                                : :                          
+                 IQR (CV) : 7 (0.34)                                      : : : :                        
+                                                                        . : : : :                        
+
+2    dist        Mean (Std.Dev) : 42.98 (25.77)    35 distinct values     :            50       0        
+     [numeric]   min < med < max:                                         :            (100%)   (0%)     
+                 2 < 36 < 120                                           : : :                            
+                 IQR (CV) : 30 (0.6)                                    : : : .                          
+                                                                        : : : : : .                      
+---------------------------------------------------------------------------------------------------------
+
+> view(dfs4, method="browser", footnote = "cars", file = "04 - cars.html") 
+-- Output file written
+
+
+# Test special variables (ean, binary, ternary, na's, etc) --------------------- 
+
+> load("~/GitHub/summarytools/tests/data/special_vars.RData") 
+> (dfs_special <- dfSummary(special_vars)) 
+
+Data Frame Summary   
+special_vars   
+Dimensions: 1000 x 19    
+Duplicates: 0   
+--------------------------------------------------------------------------------------------------------------------
+No   Variable       Stats / Values                   Freqs (% of Valid)   Text Graph             Valid     Missing  
+---- -------------- -------------------------------- -------------------- ---------------------- --------- ---------
+1    bin            Min  : 2                         2   :  31 ( 3.3%)                           937       63       
+     [numeric]      Mean : 239.86                    248 : 906 (96.7%)    IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)   
+                    Max  : 248                                                                                      
+
+2    bin_char       1. 2                              31 ( 3.3%)                                 937       63       
+     [character]    2. 248                           906 (96.7%)          IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)   
+
+3    bin_fact       1. 2                              31 ( 3.3%)                                 937       63       
+     [factor]       2. 248                           906 (96.7%)          IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)   
+
+4    tri            Mean (Std.Dev) : 21.17 (2.45)    15 :  29 ( 3.0%)                            972       28       
+     [numeric]      min < med < max:                 20 : 686 (70.6%)     IIIIIIIIIIIIII         (97.2%)   (2.8%)   
+                    15 < 20 < 25                     25 : 257 (26.4%)     IIIII                                     
+                    IQR (CV) : 5 (0.12)                                                                             
+
+5    tri_char       1. 15                             29 ( 3.0%)                                 972       28       
+     [character]    2. 20                            686 (70.6%)          IIIIIIIIIIIIII         (97.2%)   (2.8%)   
+                    3. 25                            257 (26.4%)          IIIII                                     
+
+6    tri_fact       1. 15                             29 ( 3.0%)                                 972       28       
+     [factor]       2. 20                            686 (70.6%)          IIIIIIIIIIIIII         (97.2%)   (2.8%)   
+                    3. 25                            257 (26.4%)          IIIII                                     
+
+7    nans           All NA's                                                                     0         1000     
+     [numeric]                                                                                   (0%)      (100%)   
+
+8    nas_logi       All NA's                                                                     0         1000     
+     [logical]                                                                                   (0%)      (100%)   
+
+9    nas_real       All NA's                                                                     0         1000     
+     [numeric]                                                                                   (0%)      (100%)   
+
+10   nas_int        All NA's                                                                     0         1000     
+     [integer]                                                                                   (0%)      (100%)   
+
+11   nas_compl      All NA's                                                                     0         1000     
+     [complex]                                                                                   (0%)      (100%)   
+
+12   nas_char       All NA's                                                                     0         1000     
+     [character]                                                                                 (0%)      (100%)   
+
+13   empty_char     All empty strings                                                            1000      0        
+     [character]                                                                                 (100%)    (0%)     
+
+14   empty_fact     1.                               1000 (100.0%)        IIIIIIIIIIIIIIIIIIII   1000      0        
+     [factor]                                                                                    (100%)    (0%)     
+
+15   empty_na       All empty strings / NA's                                                     631       369      
+     [character]                                                                                 (63.1%)   (36.9%)  
+
+16   empty_na_f     1.                               631 (100.0%)         IIIIIIIIIIIIIIIIIIII   631       369      
+     [factor]                                                                                    (63.1%)   (36.9%)  
+
+17   ean_num        1. 8716892700004                 312 (31.2%)          IIIIII                 1000      0        
+     [numeric]      2. 8716892720002                 188 (18.8%)          III                    (100%)    (0%)     
+     EAN-13 codes   3. 8716892750009                 106 (10.6%)          II                                        
+                    4. 8716892000005                  82 ( 8.2%)          I                                         
+                    5. 8716874000009                  74 ( 7.4%)          I                                         
+                    6. 8716892710003                  50 ( 5.0%)          I                                         
+                    7. 8716886000004                  40 ( 4.0%)                                                    
+                    8. 8716946000005                  34 ( 3.4%)                                                    
+                    9. 8716921000006                  31 ( 3.1%)                                                    
+                    10. 8716924000003                 30 ( 3.0%)                                                    
+                    [ 2 others ]                      53 ( 5.3%)          I                                         
+
+18   ean_char       1. 8716892700004                 312 (31.2%)          IIIIII                 1000      0        
+     [character]    2. 8716892720002                 188 (18.8%)          III                    (100%)    (0%)     
+     EAN-13 codes   3. 8716892750009                 106 (10.6%)          II                                        
+                    4. 8716892000005                  82 ( 8.2%)          I                                         
+                    5. 8716874000009                  74 ( 7.4%)          I                                         
+                    6. 8716892710003                  50 ( 5.0%)          I                                         
+                    7. 8716886000004                  40 ( 4.0%)                                                    
+                    8. 8716946000005                  34 ( 3.4%)                                                    
+                    9. 8716921000006                  31 ( 3.1%)                                                    
+                    10. 8716924000003                 30 ( 3.0%)                                                    
+                    [ 2 others ]                      53 ( 5.3%)          I                                         
+
+19   ean_fact       1. 8716874000009                  74 ( 7.4%)          I                      1000      0        
+     [factor]       2. 8716886000004                  40 ( 4.0%)                                 (100%)    (0%)     
+                    3. 8716892000005                  82 ( 8.2%)          I                                         
+                    4. 8716892700004                 312 (31.2%)          IIIIII                                    
+                    5. 8716892710003                  50 ( 5.0%)          I                                         
+                    6. 8716892720002                 188 (18.8%)          III                                       
+                    7. 8716892740000                  23 ( 2.3%)                                                    
+                    8. 8716892750009                 106 (10.6%)          II                                        
+                    9. 8716921000006                  31 ( 3.1%)                                                    
+                    10. 8716924000003                 30 ( 3.0%)                                                    
+                    [ 2 others ]                      64 ( 6.4%)          I                                         
+--------------------------------------------------------------------------------------------------------------------
+
+> view(dfs_special, method = "browser", file = "02 - special vars.html", open.doc = TRUE) 
+-- Output file written
+
+
+# One variable only ------------------------------------------------------------ 
+
+> data(iris) 
+> dfSummary(iris$Sepal.Length) 
+-- Object was converted to a data frame
+
+Data Frame Summary   
+iris   
+Dimensions: 150 x 1    
+Duplicates: 115   
+--------------------------------------------------------------------------------------------------------------
+No   Variable        Stats / Values                  Freqs (% of Valid)   Text Graph        Valid    Missing  
+---- --------------- ------------------------------- -------------------- ----------------- -------- ---------
+1    Sepal.Length    Mean (Std.Dev) : 5.84 (0.83)    35 distinct values     . . : :         150      0        
+     [numeric]       min < med < max:                                       : : : :         (100%)   (0%)     
+                     4.3 < 5.8 < 7.9                                        : : : : :                         
+                     IQR (CV) : 1.3 (0.14)                                  : : : : :                         
+                                                                          : : : : : : : :                     
+--------------------------------------------------------------------------------------------------------------
+
+> dfSummary(iris['Sepal.Length']) 
+
+Data Frame Summary   
+iris   
+Dimensions: 150 x 1    
+Duplicates: 115   
+--------------------------------------------------------------------------------------------------------------
+No   Variable        Stats / Values                  Freqs (% of Valid)   Text Graph        Valid    Missing  
+---- --------------- ------------------------------- -------------------- ----------------- -------- ---------
+1    Sepal.Length    Mean (Std.Dev) : 5.84 (0.83)    35 distinct values     . . : :         150      0        
+     [numeric]       min < med < max:                                       : : : :         (100%)   (0%)     
+                     4.3 < 5.8 < 7.9                                        : : : : :                         
+                     IQR (CV) : 1.3 (0.14)                                  : : : : :                         
+                                                                          : : : : : : : :                     
+--------------------------------------------------------------------------------------------------------------
+
+> dfSummary(iris[['Sepal.Length']]) 
+-- Object was converted to a data frame
+
+Data Frame Summary   
+iris   
+Dimensions: 150 x 1    
+Duplicates: 115   
+----------------------------------------------------------------------------------------------------------
+No   Variable    Stats / Values                  Freqs (% of Valid)   Text Graph        Valid    Missing  
+---- ----------- ------------------------------- -------------------- ----------------- -------- ---------
+1    iris        Mean (Std.Dev) : 5.84 (0.83)    35 distinct values     . . : :         150      0        
+     [numeric]   min < med < max:                                       : : : :         (100%)   (0%)     
+                 4.3 < 5.8 < 7.9                                        : : : : :                         
+                 IQR (CV) : 1.3 (0.14)                                  : : : : :                         
+                                                                      : : : : : : : :                     
+----------------------------------------------------------------------------------------------------------
+
+> dfSummary(iris[["Sepal.Length"]]) 
+-- Object was converted to a data frame
+
+Data Frame Summary   
+iris   
+Dimensions: 150 x 1    
+Duplicates: 115   
+----------------------------------------------------------------------------------------------------------
+No   Variable    Stats / Values                  Freqs (% of Valid)   Text Graph        Valid    Missing  
+---- ----------- ------------------------------- -------------------- ----------------- -------- ---------
+1    iris        Mean (Std.Dev) : 5.84 (0.83)    35 distinct values     . . : :         150      0        
+     [numeric]   min < med < max:                                       : : : :         (100%)   (0%)     
+                 4.3 < 5.8 < 7.9                                        : : : : :                         
+                 IQR (CV) : 1.3 (0.14)                                  : : : : :                         
+                                                                      : : : : : : : :                     
+----------------------------------------------------------------------------------------------------------
+
+> data("AirPassengers") 
+> view(dfSummary(AirPassengers), file = "03 - AirPassengers.html") 
+-- Object was converted to a data frame
+-- Output file written
+
+
+# subsetting ------------------------------------------------------------------- 
+
+> dfSummary(tobacco[1:100,]) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 100 x 10    
+Duplicates: 0   
+----------------------------------------------------------------------------------------------------------------------------
+No   Variable        Stats / Values                    Freqs (% of Valid)    Text Graph                   Valid    Missing  
+---- --------------- --------------------------------- --------------------- ---------------------------- -------- ---------
+1    gender          1. F                              53 (54.1%)            IIIIIIIIII                   98       2        
+     [factor]        2. M                              45 (45.9%)            IIIIIIIII                    (98%)    (2%)     
+
+2    age             Mean (Std.Dev) : 50.39 (18.87)    54 distinct values      .       . :                99       1        
+     [numeric]       min < med < max:                                          : . :   : :                (99%)    (1%)     
+                     18 < 49 < 80                                              : : : : : :                                  
+                     IQR (CV) : 35 (0.37)                                      : : : : : :                                  
+                                                                             : : : : : : :                                  
+
+3    age.gr          1. 18-34                          26 (26.3%)            IIIII                        99       1        
+     [factor]        2. 35-50                          24 (24.2%)            IIII                         (99%)    (1%)     
+                     3. 51-70                          30 (30.3%)            IIIIII                                         
+                     4. 71 +                           19 (19.2%)            III                                            
+
+4    BMI             Mean (Std.Dev) : 24.99 (4.48)     100 distinct values           :                    100      0        
+     [numeric]       min < med < max:                                                : .                  (100%)   (0%)     
+                     14.18 < 24.43 < 34.27                                         . : : : .                                
+                     IQR (CV) : 5.74 (0.18)                                        : : : : : . .                            
+                                                                             . : : : : : : : : :                            
+
+5    smoker          1. Yes                            27 (27.0%)            IIIII                        100      0        
+     [factor]        2. No                             73 (73.0%)            IIIIIIIIIIIIII               (100%)   (0%)     
+
+6    cigs.per.day    Mean (Std.Dev) : 7.11 (12.43)     22 distinct values    :                            96       4        
+     [numeric]       min < med < max:                                        :                            (96%)    (4%)     
+                     0 < 0 < 39                                              :                                              
+                     IQR (CV) : 9 (1.75)                                     :                                              
+                                                                             :       . . .                                  
+
+7    diseased        1. Yes                            24 (24.0%)            IIII                         100      0        
+     [factor]        2. No                             76 (76.0%)            IIIIIIIIIIIIIII              (100%)   (0%)     
+
+8    disease         1. Musculoskeletal                4 (16.7%)             III                          24       76       
+     [character]     2. Cancer                         3 (12.5%)             II                           (24%)    (76%)    
+                     3. Heart                          3 (12.5%)             II                                             
+                     4. Hypertension                   3 (12.5%)             II                                             
+                     5. Cholesterol                    2 ( 8.3%)             I                                              
+                     6. Neurological                   2 ( 8.3%)             I                                              
+                     7. Vision                         2 ( 8.3%)             I                                              
+                     8. Diabetes                       1 ( 4.2%)                                                            
+                     9. Hearing                        1 ( 4.2%)                                                            
+                     10. Hypotension                   1 ( 4.2%)                                                            
+                     [ 2 others ]                      2 ( 8.3%)             I                                              
+
+9    samp.wgts       Mean (Std.Dev) : 1 (0.08)         0.86!: 26 (26.0%)     IIIII                        100      0        
+     [numeric]       min < med < max:                  1.04!: 24 (24.0%)     IIII                         (100%)   (0%)     
+                     0.86 < 1.05 < 1.06                1.05!: 31 (31.0%)     IIIIII                                         
+                     IQR (CV) : 0.19 (0.08)            1.06!: 19 (19.0%)     III                                            
+                                                       ! rounded                                                            
+
+10   disease.f       1. Cancer                         3 (12.5%)             II                           24       76       
+     [factor]        2. Cholesterol                    2 ( 8.3%)             I                            (24%)    (76%)    
+                     3. Diabetes                       1 ( 4.2%)                                                            
+                     4. Digestive                      0 ( 0.0%)                                                            
+                     5. Hearing                        1 ( 4.2%)                                                            
+                     6. Heart                          3 (12.5%)             II                                             
+                     7. Hypertension                   3 (12.5%)             II                                             
+                     8. Hypotension                    1 ( 4.2%)                                                            
+                     9. Musculoskeletal                4 (16.7%)             III                                            
+                     10. Neurological                  2 ( 8.3%)             I                                              
+                     [ 3 others ]                      4 (16.7%)             III                                            
+----------------------------------------------------------------------------------------------------------------------------
+
+> print(dfSummary(tobacco[1:100,1:4]), footnote = "subset = [1:100, 1:4]", file = "04 - tobacco subset.html") 
+-- Switching method to 'browser'
+-- Output file written
+
+
+# round.digits and frequencies ------------------------------------------------- 
+
+> tobacco$samp.wgts.3 <- round(tobacco$samp.wgts, 3) 
+> tobacco$samp.wgts.3[tobacco$samp.wgts.3 == 0.861] <- 0 
+> tobacco$samp.wgts.4 <- round(tobacco$samp.wgts, 4) 
+> tobacco$samp.wgts.4 <- round(tobacco$samp.wgts, 1) 
+> dfSummary(tobacco, round.digits = 2) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 1000 x 12    
+Duplicates: 2   
+-------------------------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Label              Stats / Values                   Freqs (% of Valid)    Text Graph                     Valid     Missing  
+---- --------------- ------------------ -------------------------------- --------------------- ------------------------------ --------- ---------
+1    gender          Subject's Gender   1. F                             489 (50.0%)           IIIIIIIIII                     978       22       
+     [factor]                           2. M                             489 (50.0%)           IIIIIIIIII                     (97.8%)   (2.2%)   
+
+2    age                                Mean (Std.Dev) : 49.6 (18.29)    63 distinct values    .     .     . . . :            975       25       
+     [numeric]                          min < med < max:                                       : : : : : . : : : :            (97.5%)   (2.5%)   
+                                        18 < 50 < 80                                           : : : : : : : : : :                               
+                                        IQR (CV) : 32 (0.37)                                   : : : : : : : : : :                               
+                                                                                               : : : : : : : : : :                               
+
+3    age.gr                             1. 18-34                         258 (26.5%)           IIIII                          975       25       
+     [factor]                           2. 35-50                         241 (24.7%)           IIII                           (97.5%)   (2.5%)   
+                                        3. 51-70                         317 (32.5%)           IIIIII                                            
+                                        4. 71 +                          159 (16.3%)           III                                               
+
+4    BMI             Body Mass Index    Mean (Std.Dev) : 25.73 (4.49)    974 distinct values             :                    974       26       
+     [numeric]                          min < med < max:                                               : : :                  (97.4%)   (2.6%)   
+                                        8.83 < 25.62 < 39.44                                           : : :                                     
+                                        IQR (CV) : 5.72 (0.17)                                       : : : : :                                   
+                                                                                                   . : : : : : .                                 
+
+5    smoker          Smoking Status     1. Yes                           298 (29.8%)           IIIII                          1000      0        
+     [factor]                           2. No                            702 (70.2%)           IIIIIIIIIIIIII                 (100%)    (0%)     
+
+6    cigs.per.day                       Mean (Std.Dev) : 6.78 (11.88)    37 distinct values    :                              965       35       
+     [numeric]                          min < med < max:                                       :                              (96.5%)   (3.5%)   
+                                        0 < 0 < 40                                             :                                                 
+                                        IQR (CV) : 11 (1.75)                                   :                                                 
+                                                                                               :   . . . . . .                                   
+
+7    diseased                           1. Yes                           224 (22.4%)           IIII                           1000      0        
+     [factor]                           2. No                            776 (77.6%)           IIIIIIIIIIIIIII                (100%)    (0%)     
+
+8    disease                            1. Hypertension                  36 (16.2%)            III                            222       778      
+     [character]                        2. Cancer                        34 (15.3%)            III                            (22.2%)   (77.8%)  
+                                        3. Cholesterol                   21 ( 9.5%)            I                                                 
+                                        4. Heart                         20 ( 9.0%)            I                                                 
+                                        5. Pulmonary                     20 ( 9.0%)            I                                                 
+                                        6. Musculoskeletal               19 ( 8.6%)            I                                                 
+                                        7. Diabetes                      14 ( 6.3%)            I                                                 
+                                        8. Hearing                       14 ( 6.3%)            I                                                 
+                                        9. Digestive                     12 ( 5.4%)            I                                                 
+                                        10. Hypotension                  11 ( 5.0%)                                                              
+                                        [ 3 others ]                     21 ( 9.5%)            I                                                 
+
+9    samp.wgts       Sampling Weights   Mean (Std.Dev) : 1 (0.08)        0.86!: 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.04!: 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0.86 < 1.04 < 1.06               1.05!: 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 0.19 (0.08)           1.06!: 160 (16.0%)    III                                               
+                                                                         ! rounded                                                               
+
+10   disease.f                          1. Cancer                        34 (15.3%)            III                            222       778      
+     [factor]                           2. Cholesterol                   21 ( 9.5%)            I                              (22.2%)   (77.8%)  
+                                        3. Diabetes                      14 ( 6.3%)            I                                                 
+                                        4. Digestive                     12 ( 5.4%)            I                                                 
+                                        5. Hearing                       14 ( 6.3%)            I                                                 
+                                        6. Heart                         20 ( 9.0%)            I                                                 
+                                        7. Hypertension                  36 (16.2%)            III                                               
+                                        8. Hypotension                   11 ( 5.0%)                                                              
+                                        9. Musculoskeletal               19 ( 8.6%)            I                                                 
+                                        10. Neurological                 10 ( 4.5%)                                                              
+                                        [ 3 others ]                     31 (14.0%)            II                                                
+
+11   samp.wgts.3     Sampling Weights   Mean (Std.Dev) : 0.77 (0.46)     0.00 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.04!: 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0 < 1.04 < 1.06                  1.05!: 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 1.05 (0.6)            1.06!: 160 (16.0%)    III                                               
+                                                                         ! rounded                                                               
+
+12   samp.wgts.4     Sampling Weights   Mean (Std.Dev) : 0.99 (0.06)     0.90 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.00 : 573 (57.3%)    IIIIIIIIIII                    (100%)    (0%)     
+                                        0.9 < 1 < 1.1                    1.10 : 160 (16.0%)    III                                               
+                                        IQR (CV) : 0.1 (0.07)                                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+> dfSummary(tobacco, round.digits = 3) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 1000 x 12    
+Duplicates: 2   
+--------------------------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Label              Stats / Values                   Freqs (% of Valid)     Text Graph                     Valid     Missing  
+---- --------------- ------------------ -------------------------------- ---------------------- ------------------------------ --------- ---------
+1    gender          Subject's Gender   1. F                             489 (50.0%)            IIIIIIIIII                     978       22       
+     [factor]                           2. M                             489 (50.0%)            IIIIIIIIII                     (97.8%)   (2.2%)   
+
+2    age                                Mean (Std.Dev) : 49.6 (18.29)    63 distinct values     .     .     . . . :            975       25       
+     [numeric]                          min < med < max:                                        : : : : : . : : : :            (97.5%)   (2.5%)   
+                                        18 < 50 < 80                                            : : : : : : : : : :                               
+                                        IQR (CV) : 32 (0.37)                                    : : : : : : : : : :                               
+                                                                                                : : : : : : : : : :                               
+
+3    age.gr                             1. 18-34                         258 (26.5%)            IIIII                          975       25       
+     [factor]                           2. 35-50                         241 (24.7%)            IIII                           (97.5%)   (2.5%)   
+                                        3. 51-70                         317 (32.5%)            IIIIII                                            
+                                        4. 71 +                          159 (16.3%)            III                                               
+
+4    BMI             Body Mass Index    Mean (Std.Dev) : 25.73 (4.49)    974 distinct values              :                    974       26       
+     [numeric]                          min < med < max:                                                : : :                  (97.4%)   (2.6%)   
+                                        8.83 < 25.62 < 39.44                                            : : :                                     
+                                        IQR (CV) : 5.72 (0.17)                                        : : : : :                                   
+                                                                                                    . : : : : : .                                 
+
+5    smoker          Smoking Status     1. Yes                           298 (29.8%)            IIIII                          1000      0        
+     [factor]                           2. No                            702 (70.2%)            IIIIIIIIIIIIII                 (100%)    (0%)     
+
+6    cigs.per.day                       Mean (Std.Dev) : 6.78 (11.88)    37 distinct values     :                              965       35       
+     [numeric]                          min < med < max:                                        :                              (96.5%)   (3.5%)   
+                                        0 < 0 < 40                                              :                                                 
+                                        IQR (CV) : 11 (1.75)                                    :                                                 
+                                                                                                :   . . . . . .                                   
+
+7    diseased                           1. Yes                           224 (22.4%)            IIII                           1000      0        
+     [factor]                           2. No                            776 (77.6%)            IIIIIIIIIIIIIII                (100%)    (0%)     
+
+8    disease                            1. Hypertension                  36 (16.2%)             III                            222       778      
+     [character]                        2. Cancer                        34 (15.3%)             III                            (22.2%)   (77.8%)  
+                                        3. Cholesterol                   21 ( 9.5%)             I                                                 
+                                        4. Heart                         20 ( 9.0%)             I                                                 
+                                        5. Pulmonary                     20 ( 9.0%)             I                                                 
+                                        6. Musculoskeletal               19 ( 8.6%)             I                                                 
+                                        7. Diabetes                      14 ( 6.3%)             I                                                 
+                                        8. Hearing                       14 ( 6.3%)             I                                                 
+                                        9. Digestive                     12 ( 5.4%)             I                                                 
+                                        10. Hypotension                  11 ( 5.0%)                                                               
+                                        [ 3 others ]                     21 ( 9.5%)             I                                                 
+
+9    samp.wgts       Sampling Weights   Mean (Std.Dev) : 1 (0.08)        0.861!: 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.044!: 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0.86 < 1.04 < 1.06               1.049!: 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 0.19 (0.08)           1.062!: 160 (16.0%)    III                                               
+                                                                         ! rounded                                                                
+
+10   disease.f                          1. Cancer                        34 (15.3%)             III                            222       778      
+     [factor]                           2. Cholesterol                   21 ( 9.5%)             I                              (22.2%)   (77.8%)  
+                                        3. Diabetes                      14 ( 6.3%)             I                                                 
+                                        4. Digestive                     12 ( 5.4%)             I                                                 
+                                        5. Hearing                       14 ( 6.3%)             I                                                 
+                                        6. Heart                         20 ( 9.0%)             I                                                 
+                                        7. Hypertension                  36 (16.2%)             III                                               
+                                        8. Hypotension                   11 ( 5.0%)                                                               
+                                        9. Musculoskeletal               19 ( 8.6%)             I                                                 
+                                        10. Neurological                 10 ( 4.5%)                                                               
+                                        [ 3 others ]                     31 (14.0%)             II                                                
+
+11   samp.wgts.3     Sampling Weights   Mean (Std.Dev) : 0.77 (0.46)     0.000 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.044 : 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0 < 1.04 < 1.06                  1.049 : 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 1.05 (0.6)            1.062 : 160 (16.0%)    III                                               
+
+12   samp.wgts.4     Sampling Weights   Mean (Std.Dev) : 0.99 (0.06)     0.900 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.000 : 573 (57.3%)    IIIIIIIIIII                    (100%)    (0%)     
+                                        0.9 < 1 < 1.1                    1.100 : 160 (16.0%)    III                                               
+                                        IQR (CV) : 0.1 (0.07)                                                                                     
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+> dfSummary(tobacco, round.digits = 4) 
+
+Data Frame Summary   
+tobacco   
+Dimensions: 1000 x 12    
+Duplicates: 2   
+---------------------------------------------------------------------------------------------------------------------------------------------------
+No   Variable        Label              Stats / Values                   Freqs (% of Valid)      Text Graph                     Valid     Missing  
+---- --------------- ------------------ -------------------------------- ----------------------- ------------------------------ --------- ---------
+1    gender          Subject's Gender   1. F                             489 (50.0%)             IIIIIIIIII                     978       22       
+     [factor]                           2. M                             489 (50.0%)             IIIIIIIIII                     (97.8%)   (2.2%)   
+
+2    age                                Mean (Std.Dev) : 49.6 (18.29)    63 distinct values      .     .     . . . :            975       25       
+     [numeric]                          min < med < max:                                         : : : : : . : : : :            (97.5%)   (2.5%)   
+                                        18 < 50 < 80                                             : : : : : : : : : :                               
+                                        IQR (CV) : 32 (0.37)                                     : : : : : : : : : :                               
+                                                                                                 : : : : : : : : : :                               
+
+3    age.gr                             1. 18-34                         258 (26.5%)             IIIII                          975       25       
+     [factor]                           2. 35-50                         241 (24.7%)             IIII                           (97.5%)   (2.5%)   
+                                        3. 51-70                         317 (32.5%)             IIIIII                                            
+                                        4. 71 +                          159 (16.3%)             III                                               
+
+4    BMI             Body Mass Index    Mean (Std.Dev) : 25.73 (4.49)    974 distinct values               :                    974       26       
+     [numeric]                          min < med < max:                                                 : : :                  (97.4%)   (2.6%)   
+                                        8.83 < 25.62 < 39.44                                             : : :                                     
+                                        IQR (CV) : 5.72 (0.17)                                         : : : : :                                   
+                                                                                                     . : : : : : .                                 
+
+5    smoker          Smoking Status     1. Yes                           298 (29.8%)             IIIII                          1000      0        
+     [factor]                           2. No                            702 (70.2%)             IIIIIIIIIIIIII                 (100%)    (0%)     
+
+6    cigs.per.day                       Mean (Std.Dev) : 6.78 (11.88)    37 distinct values      :                              965       35       
+     [numeric]                          min < med < max:                                         :                              (96.5%)   (3.5%)   
+                                        0 < 0 < 40                                               :                                                 
+                                        IQR (CV) : 11 (1.75)                                     :                                                 
+                                                                                                 :   . . . . . .                                   
+
+7    diseased                           1. Yes                           224 (22.4%)             IIII                           1000      0        
+     [factor]                           2. No                            776 (77.6%)             IIIIIIIIIIIIIII                (100%)    (0%)     
+
+8    disease                            1. Hypertension                  36 (16.2%)              III                            222       778      
+     [character]                        2. Cancer                        34 (15.3%)              III                            (22.2%)   (77.8%)  
+                                        3. Cholesterol                   21 ( 9.5%)              I                                                 
+                                        4. Heart                         20 ( 9.0%)              I                                                 
+                                        5. Pulmonary                     20 ( 9.0%)              I                                                 
+                                        6. Musculoskeletal               19 ( 8.6%)              I                                                 
+                                        7. Diabetes                      14 ( 6.3%)              I                                                 
+                                        8. Hearing                       14 ( 6.3%)              I                                                 
+                                        9. Digestive                     12 ( 5.4%)              I                                                 
+                                        10. Hypotension                  11 ( 5.0%)                                                                
+                                        [ 3 others ]                     21 ( 9.5%)              I                                                 
+
+9    samp.wgts       Sampling Weights   Mean (Std.Dev) : 1 (0.08)        0.8614!: 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.0442!: 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0.86 < 1.04 < 1.06               1.0494!: 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 0.19 (0.08)           1.0625 : 160 (16.0%)    III                                               
+                                                                         ! rounded                                                                 
+
+10   disease.f                          1. Cancer                        34 (15.3%)              III                            222       778      
+     [factor]                           2. Cholesterol                   21 ( 9.5%)              I                              (22.2%)   (77.8%)  
+                                        3. Diabetes                      14 ( 6.3%)              I                                                 
+                                        4. Digestive                     12 ( 5.4%)              I                                                 
+                                        5. Hearing                       14 ( 6.3%)              I                                                 
+                                        6. Heart                         20 ( 9.0%)              I                                                 
+                                        7. Hypertension                  36 (16.2%)              III                                               
+                                        8. Hypotension                   11 ( 5.0%)                                                                
+                                        9. Musculoskeletal               19 ( 8.6%)              I                                                 
+                                        10. Neurological                 10 ( 4.5%)                                                                
+                                        [ 3 others ]                     31 (14.0%)              II                                                
+
+11   samp.wgts.3     Sampling Weights   Mean (Std.Dev) : 0.77 (0.46)     0.0000 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.0440 : 249 (24.9%)    IIII                           (100%)    (0%)     
+                                        0 < 1.04 < 1.06                  1.0490 : 324 (32.4%)    IIIIII                                            
+                                        IQR (CV) : 1.05 (0.6)            1.0620 : 160 (16.0%)    III                                               
+
+12   samp.wgts.4     Sampling Weights   Mean (Std.Dev) : 0.99 (0.06)     0.9000 : 267 (26.7%)    IIIII                          1000      0        
+     [numeric]                          min < med < max:                 1.0000 : 573 (57.3%)    IIIIIIIIIII                    (100%)    (0%)     
+                                        0.9 < 1 < 1.1                    1.1000 : 160 (16.0%)    III                                               
+                                        IQR (CV) : 0.1 (0.07)                                                                                      
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# st-small --------------------------------------------------------------------- 
+
+> print(dfSummary(tobacco, graph.magnif = 0.8, table.classes = 'st-small'), footnote = "st_small", file = "05 - st_small.html") 
+-- Switching method to 'browser'
+-- Output file written
+
+
+# render ----------------------------------------------------------------------- 
+
+> print(dfSummary(tobacco), method = "render") 
+
+<div class="container st-container">
+  <h3>Data Frame Summary</h3>
+  <strong>tobacco</strong>
+  <strong>Dimensions</strong>: 1000 x 12
+  <br/><strong>Duplicates</strong>: 2
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline ">
+  <thead>
+    <tr>
+      <th class="no" align="center"><strong>No</strong></th>
+      <th class="variable" align="center"><strong>Variable</strong></th>
+      <th class="label" align="center"><strong>Label</strong></th>
+      <th class="stats.values" align="center"><strong>Stats / Values</strong></th>
+      <th class="freqs.pct.valid" align="center"><strong>Freqs (% of Valid)</strong></th>
+      <th class="graph" align="center"><strong>Graph</strong></th>
+      <th class="valid" align="center"><strong>Valid</strong></th>
+      <th class="missing" align="center"><strong>Missing</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">1</td>
+      <td align="left">gender
+[factor]</td>
+      <td align="left">Subject's Gender</td>
+      <td align="left">1. F
+2. M</td>
+      <td align="left">489 (50.0%)
+489 (50.0%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAA0CAMAAABfCzE1AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAFtJREFUWIXt18EJwDAMBEHF7r/nNBAwhoPcY7YAMQ/podmVzd+A7+bJFWWtVFhYWFhYWFhYWFhYWK2fT3BWMKybWner9RKxsLCwsLCwsLCwsA6szhcjOCtYKesF399MvPZbVd8AAAAASUVORK5CYII="></td>
+      <td align="center">978
+(97.8%)</td>
+      <td align="center">22
+(2.2%)</td>
+    </tr>
+    <tr>
+      <td align="center">2</td>
+      <td align="left">age
+[numeric]</td>
+      <td align="left"></td>
+      <td align="left">Mean (Std.Dev) : 49.6 (18.29)
+min < med < max:
+18 < 50 < 80
+IQR (CV) : 32 (0.37)</td>
+      <td align="left">63 distinct values</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAAMpJREFUaIHt2NEORDAQBVDs///zPm1WGKVYM8me+yRR12kTJYZXyQzZgDhYPXmcNX7TGPU8a/rkVtZ4bLqPs6ZDvVhY/8ca41xmhVtBB2s2Mjo8zYoafsJabYYr1t5638iK7jRtsfYmdh8rPo+FVYHVeGgyWY2Geqz2B2Eaa9FVjxUtXAHWshYLCyuZFb6m8lnXLsLCwsLCwsLCwsLCwsKqwNr4N5rOOteAhYWFhYWFhYWFhYWFhYWFhYWFhYWVwCqUGatcsHpSlPUGaMmAM3ZRL6MAAAAASUVORK5CYII="></td>
+      <td align="center">975
+(97.5%)</td>
+      <td align="center">25
+(2.5%)</td>
+    </tr>
+    <tr>
+      <td align="center">3</td>
+      <td align="left">age.gr
+[factor]</td>
+      <td align="left"></td>
+      <td align="left">1. 18-34
+2. 35-50
+3. 51-70
+4. 71 +</td>
+      <td align="left">258 (26.5%)
+241 (24.7%)
+317 (32.5%)
+159 (16.3%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABoCAMAAAAkR/m5AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAKBJREFUaIHt2EEOgCAMRUHU+9/ZvdGk3ZRvMu8CnQUQYF2Rrd2A97A6raPYNOsshYWFhYWFhYWFhYWVxsp8YsyOq4bVqbi25lmB+xALCwsLCwsLCwsLq8DKfGJMD6yF1an8NTK7zKofScObEgsLCwsLCwsLCyuJlXmXH5nSDqtTKivmN+TB2noQYGFhYWFhYWFhYf2BlXmX3zr9M6xOoawbhzyoPziXWXUAAAAASUVORK5CYII="></td>
+      <td align="center">975
+(97.5%)</td>
+      <td align="center">25
+(2.5%)</td>
+    </tr>
+    <tr>
+      <td align="center">4</td>
+      <td align="left">BMI
+[numeric]</td>
+      <td align="left">Body Mass Index</td>
+      <td align="left">Mean (Std.Dev) : 25.73 (4.49)
+min < med < max:
+8.83 < 25.62 < 39.44
+IQR (CV) : 5.72 (0.17)</td>
+      <td align="left">974 distinct values</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAANxJREFUaIHt2cEOhCAMRVF0/v+fZ2OaKJq2gLTqfSvDwp4URdHyS5kSDTgPLE8GshZJ/7lGstYtsAyB5QksT2B5AsuT9Kz+h+MtrP62wZrMkispGavSwIIFCxYsWLBgwYIF6+Gs5m3svazmrsGClY+1HDf5SVhVcVivZrmX+zksGYAFCxYsWLBgwYL1VNblX81gll4c1hiWda8xmWVtGyxYsGC9lqV/k4xhqbVgfY2lvElEsZSuwfoAq1pFk7DstZpYF7dkNEsG9r5ymKowlhycsuJjmsSgwPIkKesPDqObwaeRn98AAAAASUVORK5CYII="></td>
+      <td align="center">974
+(97.4%)</td>
+      <td align="center">26
+(2.6%)</td>
+    </tr>
+    <tr>
+      <td align="center">5</td>
+      <td align="left">smoker
+[factor]</td>
+      <td align="left">Smoking Status</td>
+      <td align="left">1. Yes
+2. No</td>
+      <td align="left">298 (29.8%)
+702 (70.2%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAA0CAMAAABfCzE1AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAGFJREFUWIXt17ENgDAMRUED++/MAkjkK8i4uFdH8hVx4bpGVn8DnqsjqZF1roeFhYWFhYWFhYWFhfXGmnn5tE2KwkrK/tZWGSvYxK2wsLCwsLCwsLCwsL5lzTwxksd9DWXdejtMwjg63wIAAAAASUVORK5CYII="></td>
+      <td align="center">1000
+(100%)</td>
+      <td align="center">0
+(0%)</td>
+    </tr>
+    <tr>
+      <td align="center">6</td>
+      <td align="left">cigs.per.day
+[numeric]</td>
+      <td align="left"></td>
+      <td align="left">Mean (Std.Dev) : 6.78 (11.88)
+min < med < max:
+0 < 0 < 40
+IQR (CV) : 11 (1.75)</td>
+      <td align="left">37 distinct values</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABkCAMAAABThTnCAAAADFBMVEX9/v2mpqby8vL9/v28xacEAAAABHRSTlP///8AQCqp9AAAAJJJREFUaIHt27kOgCAQQEHU//9nCxsjEo6grsm8knBM6DdtIUtfA+7D6ulgLXkhWOs1LCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCysf7DendZoZz3yn6XZlImshvGXfEfh4SKrekHLE/VLelkTFsbOYI2yAnVihQurp6CsHdlXpCr1fx4CAAAAAElFTkSuQmCC"></td>
+      <td align="center">965
+(96.5%)</td>
+      <td align="center">35
+(3.5%)</td>
+    </tr>
+    <tr>
+      <td align="center">7</td>
+      <td align="left">diseased
+[factor]</td>
+      <td align="left"></td>
+      <td align="left">1. Yes
+2. No</td>
+      <td align="left">224 (22.4%)
+776 (77.6%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAA0CAMAAABfCzE1AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAGFJREFUWIXt17EJwDAMRUEl2X/nLBD4NsRIxb3aoCusQvWMrLoB39UV62HdISwsLCwsLCwsLCwsrA3WzMunY2gOa6eFv3WgBVbaxANhYWFhYWFhYWFhYf3AmnlixBctDWW9Q5ZMzagKnOEAAAAASUVORK5CYII="></td>
+      <td align="center">1000
+(100%)</td>
+      <td align="center">0
+(0%)</td>
+    </tr>
+    <tr>
+      <td align="center">8</td>
+      <td align="left">disease
+[character]</td>
+      <td align="left"></td>
+      <td align="left">1. Hypertension
+2. Cancer
+3. Cholesterol
+4. Heart
+5. Pulmonary
+6. Musculoskeletal
+7. Diabetes
+8. Hearing
+9. Digestive
+10. Hypotension
+[ 3 others ]</td>
+      <td align="left">36 (16.2%)
+34 (15.3%)
+21 (9.5%)
+20 (9.0%)
+20 (9.0%)
+19 (8.6%)
+14 (6.3%)
+14 (6.3%)
+12 (5.4%)
+11 (5.0%)
+21 (9.5%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAEeCAMAAABfSxzRAAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAaJJREFUeJzt3Tlyw0AMAEHa+v+fnfgSaylxokXQ8wF2AKjAhDoeIzt2A9ZhlbBKWCWs0lTWx1WbWZ/rsLCwsLCwsLCwsLB+WDNv+a1PvwyrdDlbu1kTFxELCwsLCwsLCwtrFGvmLb/38Vdhlc6ztdvz3WkTsV6GVcIqYZWwSlglrBJWCauEVZr6irEbsA6rdIwcrdMmYr0Oq4RVwiphlbBKWCWsElZpLGvmLb8bsA6rNHW2pm4i1v2wSlglrBJWCauEVcIqYZWm3vK7AeuwSsfI0XreRKw3YZWwSlglrBJWCauEVcIqYZWmvmLsBqzDKh0DB+vxfxOx3odVwiphlbBKWCWsElYJqzSWNfOW3w1Yh1WaOltTNxHrflglrBJWCauEVcIqYZWwSlNv+d2AdVilqayRE//3A4F1I6wSVgmrhFXCKmGVsEpYpbGsmbf8bsA6rNIxcrR+NxHrTlglrBJWCauEVcIqYZWwSmNZM2/53YB1WKWp/1Dz9P2tMQuJVcIqYZWwSlglrBJWCauEVRrLmvmKsRuwDquEVcIqYZWGsr4AlUTm3rdC4IgAAAAASUVORK5CYII="></td>
+      <td align="center">222
+(22.2%)</td>
+      <td align="center">778
+(77.8%)</td>
+    </tr>
+    <tr>
+      <td align="center">9</td>
+      <td align="left">samp.wgts
+[numeric]</td>
+      <td align="left">Sampling Weights</td>
+      <td align="left">Mean (Std.Dev) : 1 (0.08)
+min < med < max:
+0.86 < 1.04 < 1.06
+IQR (CV) : 0.19 (0.08)</td>
+      <td align="left">0.86! : 267 (26.7%)
+1.04! : 249 (24.9%)
+1.05! : 324 (32.4%)
+1.06! : 160 (16.0%)
+! rounded</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABoCAMAAAAkR/m5AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAKBJREFUaIHt2EEOgCAMRUHU+9/ZvdGk3ZRvMu8CnQUQYF2Rrd2A97A6raPaMOushYWFhYWFhYWFhYUVxsp8YoxOK4fVqbi25ll52xALCwsLCwsLCwsLq8LKfGJMD6yF1an+NTK6zMofSbObEgsLCwsLCwsLCyuJlXmXH5nSDqtTKivmN+TB2noQYGFhYWFhYWFhYf2BlXmX3zr9M6xOoawbl+GoJ4XVXWYAAAAASUVORK5CYII=">
+
+</td>
+      <td align="center">1000
+(100%)</td>
+      <td align="center">0
+(0%)</td>
+    </tr>
+    <tr>
+      <td align="center">10</td>
+      <td align="left">disease.f
+[factor]</td>
+      <td align="left"></td>
+      <td align="left">1. Cancer
+2. Cholesterol
+3. Diabetes
+4. Digestive
+5. Hearing
+6. Heart
+7. Hypertension
+8. Hypotension
+9. Musculoskeletal
+10. Neurological
+[ 3 others ]</td>
+      <td align="left">34 (15.3%)
+21 (9.5%)
+14 (6.3%)
+12 (5.4%)
+14 (6.3%)
+20 (9.0%)
+36 (16.2%)
+11 (5.0%)
+19 (8.6%)
+10 (4.5%)
+31 (14.0%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAEeCAMAAABfSxzRAAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAa5JREFUeJzt3EFOHTEQQMGB3P/OSAmE8OOB/1bdi3oXmFrYUtuy5vq1smsacA6rhFXCKmGVtrJebppmvR7DwsLCwsLCwsLCwvrL2jnLz37+LqzS49qa9rz3sBOxvg2rhFXCKmGVsEpYJawSVmkta+csPw04h1W61i2r333uRKyfwyphlbBKWCWsElYJq4RVwiptPWJMA85hla6VS+tzJ2I9EVYJq4RVwiphlbBKWCWs0lrWzll+GnAOq7T1DmLrjQ3W82GVsEpYJawSVgmrhFXCKm2d5acB57BKD0+tpzkffX2YjvV9WCWsElYJq4RVwiphlbBKWKWtR4xpwDms0u0fpWaX2d3/t4Y3JRYWFhYWFhYWFtYm1s5ZfvTrt2GVrhVL6b8+diLWM2GVsEpYJawSVgmrhFXCKq1l7ZzlpwHnsEpbWXuuQ/7ty0US1g9hlbBKWCWsElYJq4RVwiqtZe2c5acB57BK17ZV9af3nYj1VFglrBJWCauEVcIqYZWwSmtZO2f5acA5rNLNU+t51ushLCwsLCwsLCwsLKz9rJ1HjGnAOawSVgmrhFVaynoDymDm241Js4EAAAAASUVORK5CYII="></td>
+      <td align="center">222
+(22.2%)</td>
+      <td align="center">778
+(77.8%)</td>
+    </tr>
+    <tr>
+      <td align="center">11</td>
+      <td align="left">samp.wgts.3
+[numeric]</td>
+      <td align="left">Sampling Weights</td>
+      <td align="left">Mean (Std.Dev) : 0.77 (0.46)
+min < med < max:
+0 < 1.04 < 1.06
+IQR (CV) : 1.05 (0.6)</td>
+      <td align="left">0.00 : 267 (26.7%)
+1.04! : 249 (24.9%)
+1.05! : 324 (32.4%)
+1.06! : 160 (16.0%)
+! rounded</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABoCAMAAAAkR/m5AAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAKBJREFUaIHt2EEOgCAMRUHU+9/ZvdGk3ZRvMu8CnQUQYF2Rrd2A97A6raPaMOushYWFhYWFhYWFhYUVxsp8YoxOK4fVqbi25ll52xALCwsLCwsLCwsLq8LKfGJMD6yF1an+NTK6zMofSbObEgsLCwsLCwsLCyuJlXmXH5nSDqtTKivmN+TB2noQYGFhYWFhYWFhYf2BlXmX3zr9M6xOoawbl+GoJ4XVXWYAAAAASUVORK5CYII=">
+
+</td>
+      <td align="center">1000
+(100%)</td>
+      <td align="center">0
+(0%)</td>
+    </tr>
+    <tr>
+      <td align="center">12</td>
+      <td align="left">samp.wgts.4
+[numeric]</td>
+      <td align="left">Sampling Weights</td>
+      <td align="left">Mean (Std.Dev) : 0.99 (0.06)
+min < med < max:
+0.9 < 1 < 1.1
+IQR (CV) : 0.1 (0.07)</td>
+      <td align="left">0.90 : 267 (26.7%)
+1.00 : 573 (57.3%)
+1.10 : 160 (16.0%)</td>
+      <td align="center" border="0"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABOCAMAAAD1sh+SAAAADFBMVEX9/v2mpqb39/f9/v0TNkn1AAAABHRSTlP///8AQCqp9AAAAH9JREFUaIHt18ENwCAIQFFb99+5C9QEYlAO7w+g7wAHxmzZuA34ryvriXaY9cbCwsLCwsLCwsLCwmrG6nliHP0tHFam+Gyl2mcFNzEVFhYWFhYWFhYWFlY9q+eJsftATViZ1rN1mVW1TFhYWFhYWFhYWFhYtayeJ8bV35dhZfoArC96ZUha38kAAAAASUVORK5CYII="></td>
+      <td align="center">1000
+(100%)</td>
+      <td align="center">0
+(0%)</td>
+    </tr>
+  </tbody>
+</table>
+  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.0 (<a href='https://www.r-project.org/'>R</a> version 3.5.2)<br/>2019-01-07</p>
+</div>
