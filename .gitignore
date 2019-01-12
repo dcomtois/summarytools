@@ -7,4 +7,4 @@ summarytools.Rproj
 .Rbuildignore
 .Rproj.user
 TODO.R
-tests/
+tests/output
