@@ -129,24 +129,26 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   }
 
   # Get into about x & y from parsing function
-  parse_info_x <- try(get_names(sys.calls(), sys.frames(), match.call(), 
-                                var = "x", max.varnames = 1 + flag_by,
-                                silent = "dnn" %in% names(match.call()),
-                                caller = "ctable", 
-                                what = c("df_name", "df_label", "var_name")),
-                      silent = TRUE)
-                      
+  parse_info_x <- try(
+    parse_args(sys.calls(), sys.frames(), match.call(), 
+               var = "x", max.varnames = 1 + flag_by,
+               silent = "dnn" %in% names(match.call()),
+               df_name = TRUE, df_label = TRUE, var_name = TRUE,
+               caller = "ctable()"),
+    silent = TRUE)
+  
   if (inherits(parse_info_x, "try-error")) {
     parse_info_x <- list()
   }
 
   if (!isTRUE(flag_by)) {
-    parse_info_y <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                                   var = "y", max.varnames = 1,
-                                   silent = "dnn" %in% names(match.call()),
-                                   caller = "ctable",
-                                   what = c("df_name", "df_label", "var_name")),
-                        silent = TRUE)
+    parse_info_y <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(), 
+                 var = "y", max.varnames = 1,
+                 silent = "dnn" %in% names(match.call()),
+                 df_name = TRUE, df_label = TRUE, var_name = TRUE,
+                 caller = "ctable()"),
+      silent = TRUE)
     
     if (inherits(parse_info_y, "try-error")) {
       parse_info_y <- list()

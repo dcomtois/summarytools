@@ -84,8 +84,8 @@ freq <- function(x,
     
     # Get information about x from parsing function
     parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                                 silent = TRUE, caller = "freq", 
-                                 what = "df_name"),
+                                 silent = TRUE, df_name = TRUE,
+                                 caller = "freq()"),
                       silent = TRUE)
     
     if (inherits(parse_info, "try-error")) {
@@ -178,10 +178,12 @@ freq <- function(x,
   }
   
   # Get information about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               silent = exists("varname"), max.varnames = 1,
-                               caller = "freq"),
-                    silent = TRUE)
+  parse_info <- try(
+    parse_args(sys.calls(), sys.frames(), match.call(),
+               silent = exists("varname", iinherits = FALSE),
+               max.varnames = 1, df_name = TRUE, df_label = TRUE, 
+               var_name = TRUE, var_label = TRUE, caller = "freq()"),
+    silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()

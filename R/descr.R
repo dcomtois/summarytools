@@ -139,9 +139,13 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
   }
   
   # Get info about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(), 
-                    max.varnames = 1, caller = "descr"),
-                    silent = TRUE)
+  parse_info <- try(
+    parse_args(sys.calls(), sys.frames(), match.call(),
+               df_name = TRUE, df_label = TRUE, 
+               var_name = (ncol(x.df) == 1),
+               var_label = (ncol(x.df) == 1),
+               max.varnames = 1, caller = "descr()"),
+    silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()

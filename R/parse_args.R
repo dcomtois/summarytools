@@ -32,41 +32,200 @@
 #'
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head
+#' @importFrom rapportools is.empty
 parse_args <- function(sys_calls, sys_frames, match_call, 
                        var = "x", max.varnames = 1, silent = FALSE, 
-                       caller = NA, what = c("df_name", "df_label", 
-                                             "var_name", "var_label")) {
+                       df_name = NA, df_label = NA,
+                       var_name = NA, var_label = NA,
+                       caller = NA) {
+
+  # Declare functions ----------------------------------------------------------
+  update_output <- function(..., force = FALSE) {
+    items <- list(...)
+    for (i in seq_along(items)) {
+      name_ <- names(items)[i]
+      if(is.empty(output[[name_]]) || isTRUE(force)) {
+        if (class(items[[i]]) == class(output[[name_]])) {
+          output[[name_]] <<- items[[i]]
+        } else {
+          message("Wrong class for ", name_, " in parse_args()")
+        }
+      }
+    }
+    if (sum(is.empty(output)) == 0) {
+      return_()
+    }
+  }
+  
+  return_ <- function() {
+    # Remove dataframe name from items having form df_name$var_name 
+    # by_group string and the same
+    if (!is.na(df$name)) {
+      output$by_group <- sub(pattern = paste0(df$name,"$"), replacement = "", 
+                             x = output$by_group, fixed = TRUE)
+      output$var_name <- sub(pattern = paste0(df$name,"$"), replacement = "", 
+                             x = output$var_name, fixed = TRUE)
+    }
+
+    output$df_name <- df$name
+    output <<- output[!is.empty(output)]
+    eval.parent(return(output))
+  }
+
+  update_by_info <- function() {
+    
+    by_var  <- deparse(calls$by$INDICES)
+    
+    # On first iteration, generate levels based on IND variables, and store
+    if (length(.st_env$byInfo) == 0) {
+      if (is.null(names(sys_frames[[pos$tapply]]$namelist)) ||
+          is.na(names(sys_frames[[pos$tapply]]$namelist)[1])) {
+        names(sys_frames[[pos$tapply]]$namelist) <- 
+          as.character(calls$by$INDICES)[-1]
+      }
+      by_levels <- sys_frames[[pos$tapply]]$namelist
+      .st_env$byInfo$by_levels <- 
+        expand.grid(by_levels, stringsAsFactors = FALSE)
+      .st_env$byInfo$iter <- 1
+    }
+    
+    # Populate by_group item
+    by_group <- 
+      paste(colnames(.st_env$byInfo$by_levels),
+            as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
+            sep=" = ", collapse = ", ")
+    
+    # by_first and by_last are used by print.summarytools when printing objects
+    # passed by the by() function
+    if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
+      by_first <- TRUE
+      by_last  <- TRUE
+      .st_env$byInfo <- list()
+    } else if (.st_env$byInfo$iter == 1) {
+      by_first <- TRUE
+      by_last  <- FALSE
+      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
+    } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
+      by_first <- FALSE
+      by_last  <- TRUE
+      .st_env$byInfo <- list()
+    } else {
+      by_first <- FALSE
+      by_last <- FALSE
+      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
+    }
+    
+    update_output(by_var   = by_var, 
+                  by_group = by_group,
+                  by_first = by_first,
+                  by_last  = by_last)
+  }
+  
+  by_ctable_case <- function() {
+    var_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
+    update_output(var_name = var_name)
+    
+    if (!"with" %in% names(calls)) {
+      if (any(grepl("\\$", var_name))) {
+        df_name    <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[1], perl = TRUE)
+        df_name[2] <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[2], perl = TRUE)
+      }
+      
+      if (isTRUE(df_name[1] == df_name[2])) {
+        df_name <- df_name[1]
+      } 
+    }
+    
+    update_output(var_name = var_name, force = TRUE)
+    update_output(df_name = df_name)
+  }
+  
+  # initialise output elements
+  output <- list()
+  if (isTRUE(df_name))
+    output %+=% list(df_name   = character())
+  if (isTRUE(df_label))
+    output %+=% list(df_label  = character())
+  if (isTRUE(var_name))
+    output %+=% list(var_name  = character())
+  if (isTRUE(var_label))
+    output %+=% list(var_label = character())
+
+  
+  # Initialisie df list, which will store dataframe name & content
+  df <- list(name = NA, df = NA, method = NA)
+  
+  # list of all data items contained in the environments
+  ls_sys_frames <- lapply(sys_frames, ls)
+  funs_stack    <- lapply(sys_calls, head, 1)
+  names(ls_sys_frames) = as.character(unlist(funs_stack))
 
   # Look for position of by() + tapply(), with() lapply() and %>% in sys.calls()
-  funs_stack    <- lapply(sys_calls, head, 1)
-  pos_by        <- which(funs_stack == "by()")
-  pos_tapply    <- which(funs_stack == "tapply()")
-  pos_lapply    <- which(funs_stack == "lapply()")
-  pos_with      <- which(funs_stack == "with()")
-  pos_pipe      <- which(funs_stack == "`%>%`()")
+  pos <- list()
+  pos$by      <- which(funs_stack == "by()")
+  pos$with    <- which(funs_stack == "with()")
+  pos$pipe    <- which(funs_stack == "`%>%`()")
+  pos$lapply  <- which(funs_stack == "lapply()")
+  pos$tapply  <- which(funs_stack == "tapply()")
+  pos$fun     <- which(funs_stack == caller)  # détecte-t-il freq sans les () ??
   
-  ls_sys_frames <- lapply(sys_frames, ls)
-
-  # Extract the string describing the data passed to the caller function
+  pos <- pos[which(!is.empty(pos))]
   
-  if (length(pos_by) == 0) {
+  if ("by" %in% names(pos)) {
+    output %+=% list(by_var   = character(),
+                     by_group = character(),
+                     by_first = logical(),
+                     by_last  = logical())
+  }
+  
+  browser()    
+  # Generate standardized calls
+  calls <- list()
+  for (i in seq_along(pos)) {
+    call_ <- try(standardise_call(call = sys_calls[[pos[[i]]]]), silent = TRUE)
+    if (!inherits(call_, "try-error")) {
+      calls[[names(pos)[i]]] <- call_
+    }
+  }
+  
+  # iterate through std_calls items to get data information
+  for (i in seq_along(calls)) {
+    item <- names(calls)[i]
+    if (item == "by") {
+      update_by_info()
+      # process special case of by() called on ctable
+      if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list" && 
+          identical(names(calls$by$data), c("", "x", "y"))) {
+        by_ctable_case()
+      }    
+    }
+    
+    if (item == "with") {
+      
+    }
+  }
+  
+  #pos_fn      <- which(grepl("^by\\(", as.character(sys_calls))) # attn! pas bon avec by() (et lapply?)
+  # Extract, if possible:
+  #  - string describing the data passed to the caller function
+  #  - position in the call stack where the data (with its labels) can be found
+  #  - 
+  
+  if (length(pos_with) == 1) {
+    std_call <- list()
+    std_call <- as.list(standardise_call(sys_calls[[pos_with]]))
+    std_call %+=% as.list(standardise_call(std_call$expr))
+  } else if (length(pos_by) == 1) {
+    pos_fn   <- which(grepl("^by\\(", as.character(sys_calls)))
+    data_str <- deparse(sys_calls[[pos_fn]]$data)
+  } else {
     pos_fn   <- which(grepl(paste0("^", caller), as.character(sys_calls)))
     std_call <- as.list(standardise_call(sys_calls[[pos_fn]]))
     data_str <- deparse(std_call$x)
     #data_str <- setdiff(as.character(sys_calls[[pos_fn]]), caller)
-  } else {
-    pos_fn   <- which(grepl("^by\\(", as.character(sys_calls)))
-    data_str <- deparse(sys_calls[[pos_fn]]$data)
   }
   
-  # initialise output elements
-  df_label  <- character()
-  var_name  <- character()
-  var_label <- character()
-  by_var    <- character()
-  by_group  <- character()
-  by_first  <- logical()
-  by_last   <- logical()
+
   
   # operators to remove from vectors of all.names()
   oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "%>%")
@@ -300,106 +459,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     return(data_str)
   }
       
-  # prep_return ----------------------------------------------------------------
-  prep_return <- function() {
-    if (length(var_name) > max.varnames) {
-      length(var_name) <- max.varnames
-    }
-    
-    # Remove dataframe name from items having form df_name$var_name 
-    # by_group string and the same
-    if (length(by_group) > 0 && !is.na(df$name)) {
-      by_group <- sub(pattern = paste0(df$name,"$"), replacement = "", 
-                      x = by_group, fixed = TRUE)
-    }
-    
-    output <- list(df_name    = df$name,
-                   df_label   = df_label,
-                   var_name   = var_name,
-                   var_label  = var_label,
-                   by_var     = by_var,
-                   by_group   = by_group,
-                   by_first   = by_first,
-                   by_last    = by_last)
-    
-    output <- output[which(mapply(length, output, SIMPLIFY = TRUE) > 0)]
-    
-    return(output[!is.na(output)])
-  }
   
   
-  # by() is in the call stack --------------------------------------------------
-  # We use the .st_env environment to store the group-info at each iteration
-  # and find df_name and var_names, then return
-  if (length(pos_by) == 1) {
-
-    by_call <- as.list(standardise_call(sys_calls[[pos_by]]))
-    by_var  <- deparse(by_call$INDICES)
-    
-    # On first iteration, generate levels based on IND variables, and store
-    if (length(.st_env$byInfo) == 0) {
-      if (is.null(names(sys_frames[[pos_tapply]]$namelist)) ||
-          is.na(names(sys_frames[[pos_tapply]]$namelist)[1])) {
-        names(sys_frames[[pos_tapply]]$namelist) <- 
-          as.character(by_call$INDICES)[-1]
-      }
-      by_levels <- sys_frames[[pos_tapply]]$namelist
-      .st_env$byInfo$by_levels <- 
-        expand.grid(by_levels, stringsAsFactors = FALSE)
-      .st_env$byInfo$iter <- 1
-    }
-
-    # Populate by_group item
-    by_group <- 
-      paste(colnames(.st_env$byInfo$by_levels),
-            as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
-            sep=" = ", collapse = ", ")
-
-    # by_first and by_last are used by print.summarytools when printing objects
-    # passed by the by() function
-    if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
-      by_first <- TRUE
-      by_last  <- TRUE
-      .st_env$byInfo <- list()
-    } else if (.st_env$byInfo$iter == 1) {
-      by_first <- TRUE
-      by_last  <- FALSE
-      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
-    } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
-      by_first <- FALSE
-      by_last  <- TRUE
-      .st_env$byInfo <- list()
-    } else {
-      by_first <- FALSE
-      by_last <- FALSE
-      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
-    }
-    
-    # by() was called on ctable (both "x" and "y" and in by_call$data)
-    if (length(by_call$data) > 1 && deparse(by_call$data[[1]]) == "list" && 
-        identical(names(by_call$data), c("", "x", "y"))) {
-      df <- list()
-      var_name <- c(deparse(by_call$data$x), deparse(by_call$data$y))
-      if (any(grepl("$", var_name, fixed = TRUE))) {
-        df_name    <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[1])
-        df_name[2] <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[2])
-      }
-      if (isTRUE(df_name[1] == df_name[2])) {
-        df$name <- df_name[1]
-        var_name[1] <- sub(paste0(df_name, "$"), "", var_name[1])
-        var_name[2] <- sub(paste0(df_name, "$"), "", var_name[2])
-      } else {
-        if (length(pos_with) == 1) {
-          with_call <- as.list(standardise_call(sys_calls[[pos_with]]))
-          if (length(with_call$data) == 1) {
-            df$name <- as.character(with_call$data)
-          }
-        }
-      }
-      output <- prep_return()
-      return(output)
-    }
-  }
 
   df <- get_df()
   
@@ -435,4 +496,5 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   output <- prep_return()
   return(output)
-}
+  }
+  
