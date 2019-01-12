@@ -44,20 +44,33 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   pos_lapply    <- which(funs_stack == "lapply()")
   pos_with      <- which(funs_stack == "with()")
   pos_pipe      <- which(funs_stack == "`%>%`()")
+  
   ls_sys_frames <- lapply(sys_frames, ls)
 
-  found     <- character()
-  df_name   <- character()
+  # Extract the string describing the data passed to the caller function
+  
+  if (length(pos_by) == 0) {
+    pos_fn   <- which(grepl(paste0("^", caller), as.character(sys_calls)))
+    std_call <- as.list(standardise_call(sys_calls[[pos_fn]]))
+    data_str <- deparse(std_call$x)
+    #data_str <- setdiff(as.character(sys_calls[[pos_fn]]), caller)
+  } else {
+    pos_fn   <- which(grepl("^by\\(", as.character(sys_calls)))
+    data_str <- deparse(sys_calls[[pos_fn]]$data)
+  }
+  
+  # initialise output elements
   df_label  <- character()
-  df_call   <- expression()
   var_name  <- character()
   var_label <- character()
   by_var    <- character()
   by_group  <- character()
   by_first  <- logical()
   by_last   <- logical()
-
-  # Declare functions   
+  
+  # operators to remove from vectors of all.names()
+  oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "%>%")
+  # Declare functions
   # Find df_name ---------------------------------------------------------------
   get_df <- function() {
 
@@ -89,7 +102,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       std_call <- as.list(standardise_call(sys_calls[[pos_by]]))
       nn <- all.names(by_call$data)
       if (length(nn) > 1) {
-        nn <- setdiff(nn, c("$", "[", "[[", ":"))[1]
+        nn <- setdiff(nn, oper)[1]
       }
       df_env <- where(nn)
       if (is.data.frame(get(nn, envir = df_env))) {
@@ -119,7 +132,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (is.data.frame(eval(std_call$lhs))) {
         nn <- as.character(std_call$lhs)
         if (length(nn) > 1) {
-          nn <- setdiff(nn, c("%>%", "[", "[[", "$", ":"))[1]
+          nn <- setdiff(nn, oper)[1]
         }
         # Find the envir containing the potential df
         df_env <- where(nn)
@@ -153,7 +166,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       nn <- all.names(lapply_call$X)
       df_env <- where(nn)
       if (is.data.frame(get(nn, envir = df_env))) {
-        df_name <- setdiff(nn, c("[", "[[", "$"))[1]
+        df_name <- setdiff(nn, oper)[1]
         for (i in seq_along(sys_frames)) {
           if (df_name %in% ls(sys_frames[[i]])) {
             if (is.data.frame(sys_frames[[i]][[df_name]])) {
@@ -174,9 +187,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
     # function was called directly - find position in sys_calls
     else {
-      pos_fn <- which(grepl(paste0("^", caller), as.character(sys_calls)))
       nn <- all.names(sys_calls[[pos_fn]])
-      nn <- setdiff(nn, c("$", "[", "[[", ":", caller))[1]
+      nn <- setdiff(nn, c(caller, oper))[1]
       df_env <- where(nn)
       if (is.data.frame(get(nn, envir = df_env))) {
         df_name <- nn
@@ -198,21 +210,23 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # find_var_name --------------------------------------------------------------
   find_var_name <- function() {
+    # Recalculate max.varnames in case it's too high
+    
     if (df$method == "with") {
       nn <- as.character(df$call$expr)
-      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df$name, caller))[1]
+      var_name <- setdiff(nn, c(oper, df$name, caller))[1]
       return(var_name)
     }
 
     else if (df$method == "by") {
       nn <- as.character(df$call$data)
-      var_name <- setdiff(nn, c("$", "[", "[[", ":", df$name))[1]
+      var_name <- setdiff(nn, c(oper, df$name))[1]
       return(var_name)
     }
 
     else if (df$method == "pipe") {
       nn <- all.names(df$call$lhs)
-      var_name <- setdiff(nn, c("%>%", "$", "[", "[[", ":", df$name, caller))
+      var_name <- setdiff(nn, c(oper, df$name, caller))
       return(var_name)
     }
     
@@ -228,27 +242,64 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
     
     else if (df$method == "none") {
-      pos_fn <- which(grepl(paste0("^",caller), as.character(sys_calls)))
       nn <- all.names(sys_calls[[pos_fn]])
-      # for (i in seq_along(pos_fn)) {
-      #   nn <- all.names(sys_calls[[pos_fn[i]]])
-      #   if (caller %in% nn)
-      #     break
-      # }
       if (!is.na(df$name)) {
-        var_name <- setdiff(nn, c(caller, "$", "[", "[[", ":", df$name))
+        var_name <- setdiff(nn, c(caller, oper, df$name))[1:max.varnames]
+        if (all(var_name %in% colnames(df$df))) {
+          return(var_name)
+        }
       } else {
-        var_name <- setdiff(nn, c(caller, "$", "[", "[[", ":"))
+        var_name <- setdiff(nn, c(caller, oper))[1:max.varnames]
+        if (all(exists("var_name"))) {
+          return(var_name)
+        }
       }
-      if (length(var_name) > 0) {
-        return(var_name)
+      if (length(var_name) > 0 && !is.na(var_name)) {
+        return(var_name)[1:max.varnames]
       } else {
-        return(NA)
+        if (is.data.frame(sys_frames[[pos_fn]]$x)) {
+          return(colnames(sys_frames[[pos_fn]]$x))
+        } else {
+          if (is.atomic(sys_frames[[pos_fn]]$x) && !is.na(df$name)) {
+            # See if indexing of type [,X] was used
+            # Declare regular expressions for matching "df[,9]" column indexing
+            re <- 
+              paste0(
+                "^([\\w\\.\\_]+)\\s*",        # data frame name          (1)
+                "\\[(.+)?",                   # row indexing             (2)
+                "(\\,\\s)",                   # comma followed by space  (3)
+                '(\\d+|\\".+\\"|\\\'.+\\\')', # column indexing          (4)
+                "\\]$")                       # end of indexing  
+            if (grepl(re, data_str, perl = TRUE)) {
+              ind <- sub(re, "\\4", data_str, perl = TRUE)
+              if (grepl("\\d+", ind)) {
+                ind <- as.numeric(ind)
+              }
+              var_name <- colnames(df$df[ind])
+              return(var_name)
+            } else {
+              re <-
+                paste0("^([\\w\\.\\_]+)",                        # df name   (1)
+                       '\\[{2}(\\d+|\\".+\\"|\\\'.+\\\')\\]{2}', # indexing  (2)
+                       "(\\s*\\[\\s*(.*)\\s*\\])?")              # row ind.  (4)
+              if (grepl(re, data_str, perl = TRUE)) {
+                ind <- sub(re, "\\2", data_str, perl = TRUE)
+                if (grepl("\\d+", ind)) {
+                  ind <- as.numeric(ind)
+                }
+                var_name <- colnames(df$df[ind])
+                return(var_name)
+              } else {
+                return(NA)
+              }
+            }
+          }
+        }
       }
     }
-    return(NA)
+    return(data_str)
   }
-  
+      
   # prep_return ----------------------------------------------------------------
   prep_return <- function() {
     if (length(var_name) > max.varnames) {
@@ -330,8 +381,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       df <- list()
       var_name <- c(deparse(by_call$data$x), deparse(by_call$data$y))
       if (any(grepl("$", var_name, fixed = TRUE))) {
-        df_name    <- sub("^([a-zA-Z0-9._]+)\\$.+$", "\\1", var_name[1])
-        df_name[2] <- sub("^([a-zA-Z0-9._]+)\\$.+$", "\\1", var_name[2])
+        df_name    <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[1])
+        df_name[2] <- sub("^([\\w._]+)\\$.+$", "\\1", var_name[2])
       }
       if (isTRUE(df_name[1] == df_name[2])) {
         df$name <- df_name[1]
@@ -367,8 +418,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     if (!identical(df$df, NA)) {
       var_label <- label(df$df[[var_name]])
     } else {
-      var_env   <- where(var_name)
-      var_label <- label(get(var_name, envir = var_env))
+      for (i in seq_along(sys_frames)) {
+        if (var_name %in% ls(sys_frames[[i]])) {
+          if (is.atomic(sys_frames[[i]][[var_name]])) {
+            var_label <- label(sys_frames[[i]][[var_name]])
+            break
+          }
+        }
+      }
+      if (length(var_label) == 0) {
+        var_env   <- where(var_name)
+        var_label <- label(get(var_name, envir = var_env))
+      }
     }
   }
   
