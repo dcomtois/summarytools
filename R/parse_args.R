@@ -32,7 +32,6 @@
 #'
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head
-#' @importFrom rapportools is.empty
 parse_args <- function(sys_calls, sys_frames, match_call, 
                        var = "x", max.varnames = 1, silent = FALSE, 
                        df_name = NA, df_label = NA,
@@ -52,7 +51,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       }
     }
-    if (sum(is.empty(output)) == 0) {
+    if (count.empty(output) == 0) {
       return_()
     }
   }
@@ -67,11 +66,29 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                              x = output$var_name, fixed = TRUE)
     }
 
-    output$df_name <- df$name
-    output <<- output[!is.empty(output)]
+    #output$df_name <- df$name
+    empty_elements <- which(vapply(output, 
+                                   function(x) {is.na(x) || !length(x) },
+                                   TRUE))
+    if (length(empty_elements) > 0) {
+      output <- output[-empty_elements]
+    }
+    
+    assign("output", envir = parent.frame(), output)
     eval.parent(return(output))
   }
 
+  get_object <- function(name, class) {
+    for (i in seq_along(sys_frames)) {
+      if (name %in% ls(sys_frames[[i]])) {
+        if (inherits(sys_frames[[i]][[df_name]], class)) {
+          return(sys_frames[[i]][[df_name]])
+        }
+      }
+    }
+    return(NA)
+  }
+  
   update_by_info <- function() {
     
     by_var  <- deparse(calls$by$INDICES)
@@ -123,7 +140,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   by_ctable_case <- function() {
     var_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
-    update_output(var_name = var_name)
+    update_output(var_name = var_name, force = TRUE)
     
     if (!"with" %in% names(calls)) {
       if (any(grepl("\\$", var_name))) {
@@ -134,10 +151,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (isTRUE(df_name[1] == df_name[2])) {
         df_name <- df_name[1]
       } 
+      update_output(df_name = df_name)
     }
-    
-    update_output(var_name = var_name, force = TRUE)
-    update_output(df_name = df_name)
   }
   
   # initialise output elements
@@ -151,7 +166,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   if (isTRUE(var_label))
     output %+=% list(var_label = character())
 
-  
   # Initialisie df list, which will store dataframe name & content
   df <- list(name = NA, df = NA, method = NA)
   
@@ -169,7 +183,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   pos$tapply  <- which(funs_stack == "tapply()")
   pos$fun     <- which(funs_stack == caller)  # détecte-t-il freq sans les () ??
   
-  pos <- pos[which(!is.empty(pos))]
+  pos <- pos[-which(unlist(lapply(pos, length)) == 0)]
   
   if ("by" %in% names(pos)) {
     output %+=% list(by_var   = character(),
@@ -178,7 +192,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                      by_last  = logical())
   }
   
-  browser()    
   # Generate standardized calls
   calls <- list()
   for (i in seq_along(pos)) {
@@ -188,7 +201,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
   
-  # iterate through std_calls items to get data information
+  # iterate over std_calls to get data information
   for (i in seq_along(calls)) {
     item <- names(calls)[i]
     if (item == "by") {
@@ -197,14 +210,54 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list" && 
           identical(names(calls$by$data), c("", "x", "y"))) {
         by_ctable_case()
-      }    
+        next
+      }
+      x <- sys_frames[[pos$by]]$data
+      if (is.data.frame(x)) {
+        df$df   <- x
+        df$name <- deparse(calls$by$data)
+        update_output(df_name  = df$name,
+                      df_label = label(x))
+      } else if (is.atomic(x)) {
+        if (length(calls$by$data) == 1) {
+          update_output(var_name  = deparse(calls$by$data),
+                        var_label = label(x))
+        } else {
+          x_str <- deparse(calls$by$data)
+          re <- "^([\\w._]+)(\\$|\\[+)([\\w._]+)\\]*$"
+          if (grepl(re, x_str, perl = TRUE)) {
+            df$name   <- sub(re, "\\1", x_str, perl = TRUE)
+            df$df     <- get_object(tmp_df_name, "data.frame")
+            df_label  <- label(df$df)
+            var_name  <- sub(re, "\\3", x_str, perl = TRUE)
+            var_label <- label(df$df[[var_name]])
+            
+            update_output(
+              df_name = df$name,
+              df_label = df_label,
+              var_name = var_name,
+              var_label = var_label
+            )
+          }
+        }
+      }
     }
     
     if (item == "with") {
-      
+      x <- sys_frames[[pos$with]]$data
+      if (is.data.frame(x)) {
+        df$name <- deparse(calls$with$data)
+        df$df   <- x
+        df_label <- label(x)
+        update_output(df_name = df$name,
+                      df_label = df_label)
+      }
     }
   }
-  
+
+
+    
+    
   #pos_fn      <- which(grepl("^by\\(", as.character(sys_calls))) # attn! pas bon avec by() (et lapply?)
   # Extract, if possible:
   #  - string describing the data passed to the caller function

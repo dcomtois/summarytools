@@ -85,6 +85,7 @@ eval_with_feedback <- function(filename, lang, outdir) {
   #shell.exec(test_dir)
   #shell.exec(ref_dir)
   system(paste0('compare "', ref_dir, '" "', test_dir, '"'))
+  setwd(orig.dir)
 }
 
 eval_with_feedback(testfiles[1],  lang = "fr", outdir = "st_options (fr)") # st_options
