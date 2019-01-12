@@ -1,11 +1,14 @@
 # Setup
 # rm(list=ls())
-setwd("~/Github/summarytools")
+# setwd("~/Github/summarytools")
 (orig.dir <- getwd())
-(newdir <- paste0("~/GitHub/summarytools/tests/Outputs/", 
-                  format(Sys.time(), format = "%Y-%m-%d (%Hh%M)")))
+refdir <- paste(orig.dir, "tests/ref"
+
+(newdir <- paste(orig.dir, "tests/test-outputs", 
+                 format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
+                 sep = "/"))
+
 dir.create(newdir)
-refdir <- "~/GitHub/summarytools/tests/Outputs/ref"
 
 (testfiles <- grep(dir("~/GitHub/summarytools/tests/"), pattern = "\\d(?!0)\\d",
                   perl = TRUE, value = TRUE))
@@ -85,7 +88,6 @@ eval_with_feedback <- function(filename, lang, outdir) {
   #shell.exec(test_dir)
   #shell.exec(ref_dir)
   system(paste0('compare "', ref_dir, '" "', test_dir, '"'))
-  setwd(orig.dir)
 }
 
 eval_with_feedback(testfiles[1],  lang = "fr", outdir = "st_options (fr)") # st_options
