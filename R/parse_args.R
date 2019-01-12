@@ -164,10 +164,14 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
   
-  #browser()
+  # operators to remove from vectors of all.names()
+  oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "%>%")
+  
+  # Reference to the current environment, this will be useful to
+  # return the output from a function called from another function (and so on)
   current_env <- environment()
   
-  # initialise output elements
+  # initialise basic output elements
   output <- list()
   if (isTRUE(df_name))
     output %+=% list(df_name   = character())
@@ -178,8 +182,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   if (isTRUE(var_label))
     output %+=% list(var_label = character())
   
-  # Initialisie df list, which will store dataframe name & content
-  df <- list(name = NA, df = NA, method = NA)
+  # Initialise df list, which will store dataframe name & content
+  # df <- list(name = NA, df = NA, method = NA)
   
   # list of all data items contained in the environments
   ls_sys_frames <- lapply(sys_frames, ls)
@@ -193,7 +197,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   pos$pipe    <- which(funs_stack == "`%>%`()")
   pos$lapply  <- which(funs_stack == "lapply()")
   pos$tapply  <- which(funs_stack == "tapply()")
-  pos$fun     <- which(funs_stack == caller)  # détecte-t-il freq sans les () ??
+  pos$fun     <- which(funs_stack == paste0(caller, "()"))
   
   pos <- pos[-which(unlist(lapply(pos, length)) == 0)]
   
@@ -213,39 +217,56 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     }
   }
   
-  # iterate over std_calls to get data information when 
+  # Iterate through std_calls to get data information when 
   # by(), with(), lapply() or %`% were used
-  if (any(c("by", "with", "lapply", "%>%") %in% names(calls))) {
+  if (any(c("by", "with", "lapply", "pipe") %in% names(calls))) {
     for (i in seq_along(calls)) {
       #browser()
-      item <- names(calls)[i]
-      if (item == "by") {
+      func <- names(calls)[i]
+      if (func == "by") {
         update_by_info()
-        # process special case of by() called on ctable
-        if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list" && 
-            identical(names(calls$by$data), c("", "x", "y"))) {
+        # treat special case of by() called on ctable, with ou without "with()"
+        if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
+            && identical(names(calls$by$data), c("", "x", "y"))) {
           by_ctable_case()
           next
         }
         x <- sys_frames[[pos$by]]$data
         if (is.data.frame(x)) {
-          df$df   <- x
-          df$name <- deparse(calls$by$data)
-          update_output(df_name  = df$name,
-                        df_label = label(x))
+          df_     <- x
+          df_name <- deparse(calls$by$data)
+          update_output(df_name  = df_name)
+          df_label <- label(x)
+          if (!is.na(df_label)) {
+            update_output(df_label = df_label)
+          }
         } else if (is.atomic(x)) {
           if (length(calls$by$data) == 1) {
-            update_output(var_name  = deparse(calls$by$data),
-                          var_label = label(x))
+            update_output(var_name  = deparse(calls$by$data))
+            var_label <- label(x)
+            if (!is.na(x)) {
+              update_output(var_label = var_label)
+            }
           } else {
+            # use a regex to parse df_name & var_name
             x_str <- deparse(calls$by$data)
             re <- "^([\\w._]+)(\\$|\\[+)([\\w._]+)\\]*$"
             if (grepl(re, x_str, perl = TRUE)) {
-              df$name   <- sub(re, "\\1", x_str, perl = TRUE)
-              df$df     <- get_object(tmp_df_name, "data.frame")
-              df_label  <- label(df$df)
-              var_name  <- sub(re, "\\3", x_str, perl = TRUE)
-              var_label <- label(df$df[[var_name]])
+              df_name   <- sub(re, "\\1", x_str, perl = TRUE)
+              df_       <- get_object(df_name, "data.frame")
+              if (!is.na(df_)) {
+                update_output(df_name = df_name)
+                df_label <- label(df_)
+                if (!is.na(df_label)) {
+                  update_output(df_label = df_label)
+                }
+                var_name  <- sub(re, "\\3", x_str, perl = TRUE)
+                if (var_name %in% colnames(dl_)) {
+                  update_output(var_name = var_name)
+                  var_label <- 
+                }
+                var_label <- label(df$df[[var_name]])
+              }
               
               update_output(
                 df_name = df$name,
@@ -258,14 +279,24 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       }
       
-      if (item == "with") {
+      if (func == "with") {
         x <- sys_frames[[pos$with]]$data
         if (is.data.frame(x)) {
-          df$name <- deparse(calls$with$data)
+          names_ <- as.character(calls$with$data)
+          names_ <- setdiff(names_, oper)[1]
           df$df   <- x
           df_label <- label(x)
           update_output(df_name  = df$name,
                         df_label = df_label)
+          names_ <- as.character(calls$with$expr)
+          names_ <- setdiff(names, c(open, caller))
+          if (length(names_) == 1) {
+            if (names_ %in% colnames(x)) {
+              update_output(var_name = names_)
+              var_label <- x[[names_]]
+            }
+          }
+          
         }
       }
     }

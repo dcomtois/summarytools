@@ -166,7 +166,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                                df_name = TRUE, df_label = TRUE,
                                var_name = converted_to_df, 
                                var_label = converted_to_df,
-                               caller = "dfSummary()"),
+                               caller = "dfSummary"),
                     silent = TRUE)
 
   if (inherits(parse_info, "try-error")) {

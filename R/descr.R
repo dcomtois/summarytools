@@ -144,7 +144,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
                df_name = TRUE, df_label = TRUE, 
                var_name = (ncol(x.df) == 1),
                var_label = (ncol(x.df) == 1),
-               max.varnames = 1, caller = "descr()"),
+               max.varnames = 1, caller = "descr"),
     silent = TRUE)
   
   if (inherits(parse_info, "try-error")) {

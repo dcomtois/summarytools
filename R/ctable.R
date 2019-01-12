@@ -134,7 +134,7 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                var = "x", max.varnames = 1 + flag_by,
                silent = "dnn" %in% names(match.call()),
                df_name = TRUE, df_label = TRUE, var_name = TRUE,
-               caller = "ctable()"),
+               caller = "ctable"),
     silent = TRUE)
   
   if (inherits(parse_info_x, "try-error")) {
@@ -147,7 +147,7 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                  var = "y", max.varnames = 1,
                  silent = "dnn" %in% names(match.call()),
                  df_name = TRUE, df_label = TRUE, var_name = TRUE,
-                 caller = "ctable()"),
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_y, "try-error")) {
