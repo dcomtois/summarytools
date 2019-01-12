@@ -74,8 +74,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       output <- output[-empty_elements]
     }
     
-    assign("output", envir = parent.frame(), output)
-    eval.parent(return(output))
+    assign("output", envir = current_env, output)
+    eval(return(output), envir = current_env)
   }
 
   get_object <- function(name, class) {
@@ -154,6 +154,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       update_output(df_name = df_name)
     }
   }
+  
+  current_env <- environment()
   
   # initialise output elements
   output <- list()
