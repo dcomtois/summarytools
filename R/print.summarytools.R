@@ -1694,12 +1694,8 @@ build_heading_pander <- function(format_info, data_info) {
       } else {
         head2 <- add_markup(paste0("  \n", data_info$Data.frame))
         if ("by_first" %in% names(data_info)) {
-          # if (!isTRUE(data_info$by_first)) {
-          #   head3 <- append_items(list(c(Group = trs("group"))))
-          # } else {
-          head3 <- append_items(c(Weights = trs("weights")),
-                                c(Group   = trs("group")))
-          # }
+          head3 <- append_items(list(c(Weights = trs("weights")),
+                                     c(Group   = trs("group"))))
         }
       }
     }
