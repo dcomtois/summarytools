@@ -69,8 +69,6 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
                    ...) {
 
   # Support for by()
-  # caller <- as.character(sys.call(-1))[1]
-  
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
     y <- x[[2]]
@@ -80,6 +78,7 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
     flag_by <- FALSE
   }
   
+  # Convert 1-column data frames into vectors
   if (inherits(x, "data.frame") && ncol(x) == 1) {
     x <- x[[1]]
   }
@@ -129,46 +128,51 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   }
 
   # Get into about x & y from parsing function
-  parse_info_x <- try(
-    parse_args(sys.calls(), sys.frames(), match.call(), 
-               var = "x", max.varnames = 1 + flag_by,
-               silent = "dnn" %in% names(match.call()),
-               df_name = TRUE, df_label = TRUE, var_name = TRUE,
-               caller = "ctable"),
-    silent = TRUE)
-  
-  if (inherits(parse_info_x, "try-error")) {
-    parse_info_x <- list()
-  }
-
-  if (!isTRUE(flag_by)) {
-    parse_info_y <- try(
+  if (isTRUE(flag_by)) {
+    parse_info_x <- try(
       parse_args(sys.calls(), sys.frames(), match.call(), 
-                 var = "y", max.varnames = 1,
-                 silent = "dnn" %in% names(match.call()),
-                 df_name = TRUE, df_label = TRUE, var_name = TRUE,
-                 caller = "ctable"),
+                 var = c("x", "y"), silent = "dnn" %in% names(match.call()),
+                 var_label = FALSE, caller = "ctable"),
       silent = TRUE)
     
+    if (inherits(parse_info_x, "try-error")) {
+      parse_info_x <- list()
+    } else {
+      if (!is.null(parse_info_x$df_name)) {
+        df_name <- parse_info_x$df_name
+      }
+      if (!is.null(parse_info_x$df_label)) {
+        df_label <- parse_info_x$df_label
+      }
+    }
+  } else {
+    parse_info_x <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(), 
+                 var = "x", silent = "dnn" %in% names(match.call()),
+                 var_label = FALSE, caller = "ctable"),
+      silent = TRUE)
+    if (inherits(parse_info_x, "try-error")) {
+      parse_info_x <- list()
+    }
+    
+    parse_info_y <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(), 
+                 var = "y", silent = "dnn" %in% names(match.call()),
+                 var_label = FALSE, caller = "ctable"),
+      silent = TRUE)
     if (inherits(parse_info_y, "try-error")) {
       parse_info_y <- list()
     }
-  } else {
-    parse_info_y <- list()
-  }
-
-  if ((length(parse_info_x$df_name) == 1 &&
-       length(parse_info_y$df_name) == 1 &&
-       isTRUE(parse_info_x$df_name == parse_info_y$df_name)) ||
-      (isTRUE(flag_by) && length(parse_info_x$df_name) == 1)) {
-    df_name <- parse_info_x$df_name
-  }
+    
+    if (length(parse_info_x$df_name) == 1 &&
+        length(parse_info_y$df_name) == 1 &&
+        isTRUE(parse_info_x$df_name == parse_info_y$df_name)) {
+      df_name <- parse_info_x$df_name
+    }
   
-  if ((length(parse_info_x$df_label) == 1 &&
-       length(parse_info_y$df_label) == 1 &&
-       isTRUE(parse_info_x$df_label == parse_info_y$df_label)) ||
-      (isTRUE(flag_by) && length(parse_info_x$df_label) == 1)) {
-    df_label <- parse_info_x$df_label
+    if (length(parse_info_x$df_label) == 1) {
+      df_label <- parse_info_x$df_label
+    }
   }
   
   if ("dnn" %in% names(match.call())) {
@@ -182,7 +186,7 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
     y_name <- na.omit(c(parse_info_x$var_name[2], deparse(dnn[[2]])))[1]
   }
 
-  # Create cross-freq table ----------------------------------------------------
+  # Create xfreq table ---------------------------------------------------------
   freq_table <- table(x, y, useNA = useNA)
 
   names(dimnames(freq_table)) <- c(x_name, y_name)
@@ -245,8 +249,10 @@ ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   attr(output, "date") <- Sys.Date()
 
   data_info <-
-    list(Data.frame          = ifelse(exists("df_name"), df_name, NA),
-         Data.frame.label    = ifelse(exists("df_label"), df_label, NA),
+    list(Data.frame          = ifelse(exists("df_name", inherits = FALSE), 
+                                      df_name, NA),
+         Data.frame.label    = ifelse(exists("df_label", inherits = FALSE),
+                                      df_label, NA),
          Row.variable        = x_name,
          Row.variable.label  = ifelse(!is.na(label(x)), label(x), NA),
          Col.variable        = y_name,

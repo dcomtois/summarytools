@@ -160,10 +160,9 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   }
   
   # Get info on x from parsing function ----------------------------------------
-  max.varnames <- as.numeric(converted_to_df)
+  #max.varnames <- as.numeric(converted_to_df)
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               max.varnames = max.varnames,
-                               df_name = TRUE, df_label = TRUE,
+                               #max.varnames = max.varnames,
                                var_name = converted_to_df, 
                                var_label = converted_to_df,
                                caller = "dfSummary"),

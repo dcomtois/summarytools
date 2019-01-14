@@ -1608,7 +1608,7 @@ build_heading_pander <- function(format_info, data_info) {
              isTRUE(format_info$display.type)) ||
             !grepl("(label|Data\\.type)", names(item))) {
           
-          if (names(item) == "Variable" && 
+          if (names(item) == "Variable" && "Data.frame" %in% names(data_info) &&
               "var.only" %in% names(format_info) && caller == "print_freq") {
             data_info[["Variable"]] <- 
               sub(paste0(data_info[["Data.frame"]], "$"), "", 

@@ -16,16 +16,16 @@ freq(tobacco$smoker[1:100])
 freq(tobacco[1:100, "smoker"])
 freq(tobacco[1:100, 5])
 freq(tobacco[[5]][1:100])
-freq(tobacco$smoker[tobacco$smoker=="Yes"]) 
+freq(tobacco$smoker[tobacco$smoker=="Yes"])
 
 # Standalone variable
-smoker <- tobacco$smoker 
-freq(smoker) 
+smoker <- tobacco$smoker
+freq(smoker)
 
 # with
 with(tobacco, freq(smoker))               # ok
 with(tobacco, descr(age))                 # ok
-with(tobacco, ctable(smoker, diseased))   # pas ok
+with(tobacco, ctable(smoker, diseased))   # ok
 
 # pipe
 library(magrittr)
@@ -40,8 +40,10 @@ by(tobacco$smoker, tobacco$gender, freq)           # ok
 by(tobacco["smoker"], tobacco["gender"], freq)     # ok
 by(tobacco[,"smoker"], tobacco[,"gender"], freq)   # ok
 by(tobacco[["smoker"]], tobacco[["gender"]], freq) # ok
+# by, numeric column indexing
 by(tobacco[[5]], tobacco[[1]], freq)               # ok
 by(tobacco[,5], tobacco[,1], freq)                 # ok
+# by with ctable
 by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
 
 # with + by

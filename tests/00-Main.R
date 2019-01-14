@@ -2,9 +2,9 @@
 # rm(list=ls())
 # setwd("~/Github/summarytools")
 (orig.dir <- getwd())
-refdir <- paste(orig.dir, "tests/ref"
+(refdir <- paste(orig.dir, "tests/ref", sep = "/"))
 
-(newdir <- paste(orig.dir, "tests/test-outputs", 
+(newdir <- paste(orig.dir, "tests/output", 
                  format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
                  sep = "/"))
 
@@ -15,7 +15,7 @@ dir.create(newdir)
 setwd(newdir)
 
 eval_with_feedback <- function(filename, lang, outdir) {
-  
+  on.exit(setwd(orig.dir))  
   setwd(newdir)
   dir.create(outdir, showWarnings = FALSE)
   setwd(outdir)
@@ -24,7 +24,8 @@ eval_with_feedback <- function(filename, lang, outdir) {
   st_options(lang = lang)
   
   cat("reading ", filename, "...\n")
-  contents <- readLines(paste0("../../../",filename), encoding = 'UTF-8')
+  contents <- readLines(paste(orig.dir, "tests", filename, sep = "/"), 
+                        encoding = 'UTF-8')
   Encoding(contents) <- "UTF-8"
   path_out <- paste0(basename(tools::file_path_sans_ext(filename)), ".txt")
   
@@ -81,16 +82,12 @@ eval_with_feedback <- function(filename, lang, outdir) {
   cat("Closing", path_out, "...\n")
   close(outfile)
   detach("package:summarytools", unload = TRUE)
-  #browser()
-  #shell.exec(path_out)
   test_dir <- normalizePath(paste(newdir, outdir, sep = "/"))
   ref_dir  <- normalizePath(paste(refdir, outdir, sep = "/"))
-  #shell.exec(test_dir)
-  #shell.exec(ref_dir)
   system(paste0('compare "', ref_dir, '" "', test_dir, '"'))
 }
 
-eval_with_feedback(testfiles[1],  lang = "fr", outdir = "st_options (fr)") # st_options
+eval_with_feedback(testfiles[1],  lang = "fr", outdir = "parse_args (fr)") # st_options
 eval_with_feedback(testfiles[2],  lang = "fr", outdir = "freq (fr)") # freq
 eval_with_feedback(testfiles[3],  lang = "fr", outdir = "ctable (fr)") # ctable
 eval_with_feedback(testfiles[4],  lang = "fr", outdir = "descr (fr)") # descr

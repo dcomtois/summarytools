@@ -9,10 +9,8 @@
 #' @param sys_calls Object created using \code{sys.calls()}.
 #' @param sys_frames Object created using \code{sys.frames()}.
 #' @param match_call Object created using \code{match.call()}.
-#' @param var One of \dQuote{x} (default) or \dQuote{y} (the latter being used
-#'   only in \code{\link{ctable}}).
-#' @param  max.varnames Numeric. Allows limiting the number of expected variable
-#'   names. Defaults to \code{1}
+#' @param var Character. \dQuote{x} (default) and/or \dQuote{y} (the latter 
+#'   being used only in \code{\link{ctable}}).
 #' @param silent Logical. Hide console messages. \code{TRUE} by default.
 #' 
 #' @return A list consisting of one or many of the following items
@@ -33,10 +31,10 @@
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head
 parse_args <- function(sys_calls, sys_frames, match_call, 
-                       var = "x", max.varnames = 1, silent = FALSE, 
-                       df_name = NA, df_label = NA,
-                       var_name = NA, var_label = NA,
-                       caller = NA) {
+                       var = "x", silent = FALSE, 
+                       df_name = TRUE, df_label = TRUE,
+                       var_name = TRUE, var_label = TRUE,
+                       caller = "") {
   
   upd_output <- function(item, value, force = FALSE) {
     if (isTRUE(force) || 
@@ -73,7 +71,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         assign("do_return", envir = fn.env, value = TRUE)        
       }
     }
-  }  
+  }
 
   populate_by_info <- function() {
     
@@ -145,6 +143,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     upd_output("by_group", by_group)
     upd_output("by_first", by_first)
     upd_output("by_last",  by_last)
+    TRUE
   }
   
   by_ctable_case <- function() {
@@ -159,9 +158,11 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       
       if (isTRUE(df_name[1] == df_name[2])) {
         df_name <- df_name[1]
-        df_ <- get_object(df_name)
-        upd_output("df_name", df_name)
-        upd_output("df_label", label(df_))
+        df_ <- get_object(df_name, "data.frame")
+        if (!identical(df_, NA)) {
+          upd_output("df_name", df_name)
+          upd_output("df_label", label(df_))
+        }
       } else {
         upd_output("df_name", NA_character_)
         upd_output("df_label", NA_character_)
@@ -173,8 +174,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   get_object <- function(name, class) {
     for (i in seq_along(sys_frames)) {
       if (name %in% ls(sys_frames[[i]])) {
-        if (inherits(sys_frames[[i]][[df_name]], class)) {
-          return(sys_frames[[i]][[df_name]])
+        if (inherits(sys_frames[[i]][[name]], class)) {
+          return(sys_frames[[i]][[name]])
         }
       }
     }
@@ -224,9 +225,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         return(TRUE)
       }
     }
-    upd_output("df_name", NA_character_)
-    upd_output("var_name", NA_character_)
-    upd_output("df_label", NA_character_)
+    upd_output("df_name",   NA_character_)
+    upd_output("var_name",  NA_character_)
+    upd_output("df_label",  NA_character_)
     upd_output("var_label", NA_character_)
     return(FALSE)
   }
@@ -283,14 +284,15 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # Generate standardized calls
   calls <- list()
   for (i in seq_along(pos)) {
-    call_ <- try(standardise_call(call = sys_calls[[pos[[i]]]]), silent = TRUE)
-    if (!inherits(call_, "try-error")) {
-      calls[[names(pos)[i]]] <- call_
-    }
+    calls[[names(pos)[i]]] <- sys_calls[[pos[[i]]]]
   }
 
   # in the call stack: by() ----------------------------------------------------  
   if ("by" %in% names(calls)) {
+    calls$by <- standardise_call(calls$by)
+    try(calls$lapply <- standardise_call(calls$lapply[-4]), silent = TRUE)
+    try(calls$tapply <- standardise_call(calls$tapply), silent = TRUE)
+
     populate_by_info()
     # treat special case of by() called on ctable, with ou without "with()"
     if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
@@ -304,7 +306,6 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (is.data.frame(x)) {
         if (length(calls$by$data) == 1) {
           upd_output("df_name", deparse(calls$by$data))
-          # browser() # nécessaire de chercher le df ailleurs?
           upd_output("df_label",
                      label(get_object(deparse(calls$by$data), "data.frame")))
         } else {
@@ -328,20 +329,27 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # in the call stack: with() --------------------------------------------------  
   if ("with" %in% names(calls)) {
     x <- sys_frames[[pos$with]]$data
+    calls$with <- standardise_call(calls$with)
+    calls$with$expr <- standardise_call(calls$with$expr)
     if (is.data.frame(x)) {
-      names_1  <- as.character(calls$with$data)
-      df_name <- setdiff(names_1, oper)[1]
-      upd_output("df_name", df_name)
+      if (length(calls$with$data) == 1) {
+        upd_output("df_name", deparse(calls$with$data))
+      } else {
+        upd_output("df_name", setdiff(as.character(calls$with$data), oper)[1])
+      }
       upd_output("df_label", label(x))
-      ind_ctable <- as.numeric(caller == "ctable")
-      names_2 <- setdiff(names_2, c(oper, caller))[1 + ind_ctable]
-      if (all(names_2 %in% colnames(x))) {
-        upd_output("var_name", names_2, force = as.logical(ind_ctable))
-        if (ind_ctable == 1) {
-          upd_output("var_label", NA_character_)
-        } else {
-          upd_output("var_label", label(x[[names_2]]))
-        }
+      if (do_return) {
+        return(output)
+      }
+      if (length(var) == 2) {
+        var_name <- deparse(calls$with$expr$data$x)
+        var_name %+=% deparse(calls$with$expr$data$y)
+        upd_output("var_name", var_name, force = TRUE)
+        upd_output("var_label", NA_character_)
+      } else {
+        var_name <- deparse(calls$with$expr[[var]])
+        upd_output("var_name",  var_name)
+        upd_output("var_label", label(x[[var_name]]))
       }
     }
     if (isTRUE(do_return)) {
@@ -351,6 +359,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
     # in the call stack: %>% -----------------------------------------------------
   if ("pipe" %in% names(calls)) {
+    calls$pipe <- standardise_call(calls$pipe)
     obj_name <- deparse(calls$pipe$lhs)
     obj <- eval(sys_frames[[pos$pipe]]$lhs, 
                 envir = sys_frames[[pos$pipe]]$parent)
@@ -381,7 +390,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # in the call stack: lapply() ------------------------------------------------
   if ("lapply" %in% names(calls)) {
-    
+    try(calls$lapply <- standardise_call(calls$lapply[-4]))
+        
     iter <- sys_frames[[pos$lapply]]$i
     obj  <- sys_frames[[pos$lapply]]$X[iter]
     
@@ -417,6 +427,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }  
       
   if ("fun" %in% names(calls)) {
+    calls$fun <- standardise_call(calls$fun)
     obj <- sys_frames[[pos$fun]]$x
     if (is.data.frame(obj)) {
       if (length(calls$fun$x) == 1) {
