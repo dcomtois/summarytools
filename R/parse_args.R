@@ -342,9 +342,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       return(output)
     }
   }
-  
-      
-  # in the call stack: %>% -----------------------------------------------------
+
+    # in the call stack: %>% -----------------------------------------------------
   if ("pipe" %in% names(calls)) {
     obj_name <- deparse(calls$pipe$lhs)
     obj <- eval(sys_frames[[pos$pipe]]$lhs, 
@@ -355,7 +354,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       } else {
         upd_output("df_name", setdiff(as.character(calls$pipe$lhs), oper)[1])
       }
-      upd_output("df_label", label(x))
+      upd_output("df_label", label(obj))
       var_name <- setdiff(as.character(calls$pipe$rhs), c(caller, oper))
       if (var_name %in% colnames(obj)) {
         upd_output("var_name", var_name)
@@ -376,35 +375,47 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   # in the call stack: lapply() ------------------------------------------------
   if ("lapply" %in% names(calls)) {
-    names_ <- all.names(lapply_call$X)
-  #   df_env <- where(nn)
-  #   if (is.data.frame(get(nn, envir = df_env))) {
-  #     df_name <- setdiff(nn, oper)[1]
-  #     for (i in seq_along(sys_frames)) {
-  #       if (df_name %in% ls(sys_frames[[i]])) {
-  #         if (is.data.frame(sys_frames[[i]][[df_name]])) {
-  #           df__ <- sys_frames[[i]][[df_name]]
-  #           break
-  #         }
-  #       }
-  #     }
-  #     if (!exists("df__", where = -1, inherits = FALSE)) {
-  #       df_env <- where(df_name)
-  #       df__   <- get(df_name, envir = df_env)
-  #     }
-  #     return(list(name = df_name, df = df__,
-  #                 call = std_call, method = "lapply"))
-  #   }
-  #   return(list(name = NA, df = NA, call = std_call, method = "lapply"))
+    
+    iter <- sys_frames[[pos$lapply]]$i
+    obj  <- sys_frames[[pos$lapply]]$X[iter]
+    
+    if (is.atomic(obj[[1]])) {
+      var_name <- names(obj)
+      upd_output("var_name",  var_name)
+      upd_output("var_label", label(obj))
+      
+      # Find the data frame
+      df_name <- setdiff(all.names(calls$lapply$X), oper)[1]
+      df_     <- get_object(df_name, "data.frame")
+      if (is.na(df_)) {
+        env <- try(where(df_name))
+        if (!inherits(env, "try-error")) {
+          df_ <- get(df_name, envir = env)
+        }
+      }
+      if (is.data.frame(df_) && var_name %in% colnames(df_)) {
+        upd_output("df_name", df_name)
+        upd_output("df_label", label(df_))
+      }
+    } else if (is.data.frame(obj[[1]])) {
+      df_name <- names(obj)
+      upd_output("df_name",  df_name)
+      upd_output("df_label", label(obj))
+      upd_output("var_name", NA_character_)
+      upd_output("var_label", NA_character_)
+    }
+    
     if (isTRUE(do_return)) {
       return(output)
     }
+  }  
+      
+  if ("fun" %in% names(calls)) {
+    browser()
   }
-  return(output)
-}
-
   
-
+  
+}
   #   #pos_fn      <- which(grepl("^by\\(", as.character(sys_calls))) # attn! pas bon avec by() (et lapply?)
   #   # Extract, if possible:
   #   #  - string describing the data passed to the caller function
