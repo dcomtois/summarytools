@@ -236,13 +236,15 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   fn.env <- environment()
   do_return <- FALSE
   # regex ; both names are there (df$name, df['name']), etc.
-  re1 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?['\"]?([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}$"
+  re1 <- paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?['\"]?",
+                "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$")
   # regex ; there is numeric indexing (df[[2]], df[ ,2], df[2])
-  re2 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?(\\d+)\\]{1,2}$"
+  re2 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?(\\d+)\\]{1,2}(\\[.+)?$"
   # regex : When we can only get one name (fallback solution)
-  re3 <- "^([a-zA-Z._][\\w.]*)"
+  re3 <- "^([a-zA-Z._][\\w.]*)(.*?)$"
   # re4 is like re1 but doesn't match df$name
-  re4 <- "^([\\w.]+)(\\[{1,2})(.*\\,\\s)?['\"]?([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}$"
+  re4 <- paste0("^([\\w.]+)(\\[{1,2})(.*\\,\\s)?['\"]?",
+                "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$")
   
   # Initialize output object
   output <- list()
@@ -302,7 +304,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       if (is.data.frame(x)) {
         if (length(calls$by$data) == 1) {
           upd_output("df_name", deparse(calls$by$data))
-          browser() # nécessaire de chercher le df ailleurs?
+          # browser() # nécessaire de chercher le df ailleurs?
           upd_output("df_label",
                      label(get_object(deparse(calls$by$data), "data.frame")))
         } else {
@@ -330,12 +332,16 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       names_1  <- as.character(calls$with$data)
       df_name <- setdiff(names_1, oper)[1]
       upd_output("df_name", df_name)
-      upd_output("df_label", label(x), force = TRUE)
-      names_2 <- as.character(calls$with$expr)
-      names_2 <- setdiff(names_2, c(oper, caller))[1]
-      if (names_2 %in% colnames(x)) {
-        upd_output("var_name", names_2)
-        upd_output("var_label", label(x[[names_2]]), force = TRUE)
+      upd_output("df_label", label(x))
+      ind_ctable <- as.numeric(caller == "ctable")
+      names_2 <- setdiff(names_2, c(oper, caller))[1 + ind_ctable]
+      if (all(names_2 %in% colnames(x))) {
+        upd_output("var_name", names_2, force = as.logical(ind_ctable))
+        if (ind_ctable == 1) {
+          upd_output("var_label", NA_character_)
+        } else {
+          upd_output("var_label", label(x[[names_2]]))
+        }
       }
     }
     if (isTRUE(do_return)) {
@@ -381,27 +387,27 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     
     if (is.atomic(obj[[1]])) {
       var_name <- names(obj)
-      upd_output("var_name",  var_name)
-      upd_output("var_label", label(obj))
       
       # Find the data frame
       df_name <- setdiff(all.names(calls$lapply$X), oper)[1]
       df_     <- get_object(df_name, "data.frame")
-      if (is.na(df_)) {
+      if (identical(df_, NA)) {
         env <- try(where(df_name))
         if (!inherits(env, "try-error")) {
           df_ <- get(df_name, envir = env)
         }
       }
       if (is.data.frame(df_) && var_name %in% colnames(df_)) {
-        upd_output("df_name", df_name)
-        upd_output("df_label", label(df_))
+        upd_output("var_name",  paste(df_name, var_name, sep = "$"))
+        upd_output("var_label", label(obj))
+        upd_output("df_name",   NA_character_)
+        upd_output("df_label",  NA_character_)
       }
     } else if (is.data.frame(obj[[1]])) {
       df_name <- names(obj)
-      upd_output("df_name",  df_name)
-      upd_output("df_label", label(obj))
-      upd_output("var_name", NA_character_)
+      upd_output("df_name",   df_name)
+      upd_output("df_label",  label(obj))
+      upd_output("var_name",  NA_character_)
       upd_output("var_label", NA_character_)
     }
     
@@ -411,11 +417,30 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   }  
       
   if ("fun" %in% names(calls)) {
-    browser()
+    obj <- sys_frames[[pos$fun]]$x
+    if (is.data.frame(obj)) {
+      if (length(calls$fun$x) == 1) {
+        upd_output("df_name",   deparse(calls$fun$x))
+        upd_output("df_label",  label(obj))
+        upd_output("var_name",  NA_character_)
+        upd_output("var_label", NA_character_)
+      }
+    } else if (is.atomic(obj)) {
+      if (length(calls$fun$x) == 1) {
+        upd_output("var_name",  deparse(calls$fun$x))
+        upd_output("var_label", label(obj))
+        upd_output("df_name",   NA_character_)
+        upd_output("df_label",  NA_character_)
+      } else {
+        parse_data_str(deparse(calls$fun$x))
+      }
+    }
+    if (isTRUE(do_return)) {
+      return(output)
+    }
   }
-  
-  
 }
+
   #   #pos_fn      <- which(grepl("^by\\(", as.character(sys_calls))) # attn! pas bon avec by() (et lapply?)
   #   # Extract, if possible:
   #   #  - string describing the data passed to the caller function
