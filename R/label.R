@@ -39,7 +39,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
       if (isTRUE(fallback)) {
         lbl <- tail(as.character(substitute(x)), 1)
       } else {
-        lbl <- NA
+        lbl <- NA_character_
       }
     }
   } else {
@@ -49,7 +49,8 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
     
     if (isTRUE(all)) {
       lbl <- lapply(x, attr, which = "label", exact = TRUE)
-      lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- NA
+      lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- 
+        NA_character_
       
       if (isTRUE(fallback)) {
         lbl[which(is.na(lbl))] <- colnames(x)[which(is.na(lbl))]
@@ -65,7 +66,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
         if (isTRUE(fallback)) {
           lbl <- tail(as.character(substitute(x)), 1)
         } else {
-          lbl <- NA
+          lbl <- NA_character_
         }
       }
     }
