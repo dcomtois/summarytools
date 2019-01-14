@@ -38,68 +38,68 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                        var_name = NA, var_label = NA,
                        caller = NA) {
   
-  # Declare functions ----------------------------------------------------------
-  update_output <- function(..., force = FALSE) {
-    items <- list(...)
-    for (i in seq_along(items)) {
-      name_ <- names(items)[i]
-      if(length(output[[name_]]) == 0 || isTRUE(force)) {
-        if (class(items[[i]]) == class(output[[name_]])) {
-          output[[name_]] <<- items[[i]]
-        } else {
-          message("Wrong class for ", name_, " in parse_args()")
+  upd_output <- function(item, value, force = FALSE) {
+    if (isTRUE(force) || 
+        ((length(output[[item]]) == 0 || is.na(output[[item]])) &&
+          length(value) == 1 && class(value) == class(output[[item]]))) {
+      output[[item]] <<- value
+      
+      # Check if output is ready to be returned
+      if (count.empty(output, count.nas = FALSE) == 0) {
+        # Cleanup
+        if (length(output$df_name) == 1 && !is.na(output$df_name)) {
+          for (item in intersect(c("var_name", "by_var", "by_group"),
+                                 names(output))) {
+            re <- paste0("^",output$df_name,  # starts with df_name
+                         "[$[]*['\"]?",       # subsetting chars
+                         "([\\w_.]+)",        # var_name (group 1)
+                         "['\"]?\\]{0,2}",    # closing subsetting char(s)
+                         "(.*)$")             # remainder of expression (gr. 2)
+            output[[item]] <<- sub(pattern = re,
+                                   replacement = "\\1\\2", 
+                                   x = output[[item]], perl = TRUE)
+          }
         }
-      }
-    }
-    if (count.empty(output) == 0) {
-      return_()
-    }
-  }
-  
-  return_ <- function() {
-    # Remove dataframe name from items having form df_name$var_name 
-    # by_group string and the same
-    if (!is.na(output$df_name)) {
-      output$var_name <- sub(pattern = paste0(output$df_name, "$"),
-                             replacement = "", 
-                             x = output$var_name, fixed = TRUE)
-      if ("by_group" %in% names(output)) {
-        output$by_group <- sub(pattern = paste0(output$df_name,"$"), 
-                               replacement = "", 
-                               x = output$by_group, fixed = TRUE)
-        output$by_var <- sub(pattern = paste0(output$df_name, "$"),
-                             replacement = "", 
-                             x = output$by_var, fixed = TRUE)
-      }
-    }
-    browser()
-    #output$df_name <- df$name
-    empty_elements <- as.numeric(
-      which(vapply(output, function(x) {is.na(x) || !length(x) }, TRUE))
-    )
-    
-    if (length(empty_elements) > 0) {
-      output <- output[-empty_elements]
-    }
-    
-    assign("output", envir = current_env, output)
-    eval(return(output), envir = current_env)
-  }
-  
-  get_object <- function(name, class) {
-    for (i in seq_along(sys_frames)) {
-      if (name %in% ls(sys_frames[[i]])) {
-        if (inherits(sys_frames[[i]][[df_name]], class)) {
-          return(sys_frames[[i]][[df_name]])
+        
+        empty_elements <- as.numeric(
+          which(vapply(output, function(x) {is.na(x) || !length(x)}, 
+                       TRUE))
+        )
+        
+        if (length(empty_elements) > 0) {
+          output <<- output[-empty_elements]
         }
+        
+        assign("do_return", envir = fn.env, value = TRUE)        
       }
     }
-    return(NA)
-  }
-  
-  update_by_info <- function() {
+  }  
+
+  populate_by_info <- function() {
     
     by_var  <- deparse(calls$by$INDICES)
+
+    # Normalize variable name
+    if (grepl(re4, by_var, perl = TRUE)) {
+      df_name   <- sub(re1, "\\1", by_var, perl = TRUE)
+      df_       <- get_object(df_name, "data.frame")
+      if (!identical(df_, NA)) {
+        var_name <- sub(re1, "\\4", by_var, perl = TRUE)
+        if (var_name %in% colnames(df_)) {
+          by_var <- paste(df_name, var_name, sep = "$")
+        }
+      }
+    }
+      
+    if (grepl(re2, by_var, perl = TRUE)) {
+      df_name   <- sub(re2, "\\1", by_var, perl = TRUE)
+      df_       <- get_object(df_name, "data.frame")
+      if (!identical(df_, NA)) {
+        var_number <- as.numeric(sub(re2, "\\4", by_var, perl = TRUE))
+        var_name <- colnames(df_)[var_number]
+        by_var <- paste(df_name, var_name, sep = "$")
+      }
+    }
     
     # On first iteration, generate levels based on IND variables, and store
     if (length(.st_env$byInfo) == 0) {
@@ -111,6 +111,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       by_levels <- sys_frames[[pos$tapply]]$namelist
       .st_env$byInfo$by_levels <- 
         expand.grid(by_levels, stringsAsFactors = FALSE)
+      colnames(.st_env$byInfo$by_levels) <- by_var
       .st_env$byInfo$iter <- 1
     }
     
@@ -140,16 +141,15 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
     }
     
-    update_output(by_var   = by_var, 
-                  by_group = by_group,
-                  by_first = by_first,
-                  by_last  = by_last)
+    upd_output("by_var",   by_var)
+    upd_output("by_group", by_group)
+    upd_output("by_first", by_first)
+    upd_output("by_last",  by_last)
   }
   
   by_ctable_case <- function() {
-    #browser()
+    
     var_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
-    update_output(var_name = var_name, force = TRUE)
     
     if (!"with" %in% names(calls)) {
       if (any(grepl("\\$", var_name))) {
@@ -159,19 +159,92 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       
       if (isTRUE(df_name[1] == df_name[2])) {
         df_name <- df_name[1]
-      } 
-      update_output(df_name = df_name)
+        df_ <- get_object(df_name)
+        upd_output("df_name", df_name)
+        upd_output("df_label", label(df_))
+      } else {
+        upd_output("df_name", NA_character_)
+        upd_output("df_label", NA_character_)
+      }
     }
+    upd_output("var_name", var_name, force = TRUE)
   }
-  
-  # operators to remove from vectors of all.names()
+
+  get_object <- function(name, class) {
+    for (i in seq_along(sys_frames)) {
+      if (name %in% ls(sys_frames[[i]])) {
+        if (inherits(sys_frames[[i]][[df_name]], class)) {
+          return(sys_frames[[i]][[df_name]])
+        }
+      }
+    }
+    # fallback method
+    env <- where(name = name)
+    return(get(name, env))
+  }
+
+  parse_data_str <- function(str) {
+    
+    if (grepl(re1, str, perl = TRUE)) {
+      df_name   <- sub(re1, "\\1", str, perl = TRUE)
+      df_       <- get_object(df_name, "data.frame")
+      if (!identical(df_, NA)) {
+        upd_output("df_name", df_name)
+        upd_output("df_label", label(df_))
+        var_name <- sub(re1, "\\4", str, perl = TRUE)
+        if (var_name %in% colnames(df_)) {
+          upd_output("var_name", var_name)
+          upd_output("var_label", label(df_[[var_name]]))
+          return(TRUE)
+        }
+      }
+    } else if (grepl(re2, str, perl = TRUE)) {
+      df_name   <- sub(re2, "\\1", str, perl = TRUE)
+      df_       <- get_object(df_name, "data.frame")
+      if (!identical(df_, NA)) {
+        upd_output("df_name", df_name)
+        upd_output("df_label", label(df_))
+        var_number <- as.numeric(sub(re2, "\\4", str, perl = TRUE))
+        upd_output("var_name", colnames(df_)[var_number])
+        upd_output("var_label", label(df_[[var_number]]))
+        return(TRUE)
+      }
+    } else if (grepl(re3, str, perl = TRUE)) {
+      obj_name <- sub(re3, str, perl = TRUE)
+      obj_env <- try(where(obj_name))
+      if (!inherits(obj_env, "try-error")) {
+        obj <- get(obj_name, envir = obj_env)
+        if (is.data.frame(obj)) {
+          upd_output("df_name", obj_name)
+          upd_output("df_label", label(obj))
+        } else if (is.atomic(obj)) {
+          upd_output("var_name", obj_name)
+          upd_output("var_label", label(obj))
+        }
+        return(TRUE)
+      }
+    }
+    upd_output("df_name", NA_character_)
+    upd_output("var_name", NA_character_)
+    upd_output("df_label", NA_character_)
+    upd_output("var_label", NA_character_)
+    return(FALSE)
+  }
+    
+  # Declare a few "constant" ---------------------------------------------------
   oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "%>%")
+  fn.env <- environment()
+  do_return <- FALSE
+  # regex ; both names are there (df$name, df['name']), etc.
+  re1 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?['\"]?([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}$"
+  # regex ; there is numeric indexing (df[[2]], df[ ,2], df[2])
+  re2 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?(\\d+)\\]{1,2}$"
+  # regex : When we can only get one name (fallback solution)
+  re3 <- "^([a-zA-Z._][\\w.]*)"
+  # re4 is like re1 but doesn't match df$name
+  re4 <- "^([\\w.]+)(\\[{1,2})(.*\\,\\s)?['\"]?([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}$"
   
-  # Reference to the current environment, this will be useful to
-  # return the output from a function called from another function (and so on)
-  current_env <- environment()
-  
-  # initialise basic output elements
+  # Initialize output object
   output <- list()
   if (isTRUE(df_name))
     output %+=% list(df_name   = character())
@@ -182,10 +255,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   if (isTRUE(var_label))
     output %+=% list(var_label = character())
   
-  # Initialise df list, which will store dataframe name & content
-  # df <- list(name = NA, df = NA, method = NA)
-  
-  # list of all data items contained in the environments
+  #  Make a list of all data items contained in the environments
   ls_sys_frames <- lapply(sys_frames, ls)
   funs_stack    <- lapply(sys_calls, head, 1)
   names(ls_sys_frames) = as.character(unlist(funs_stack))
@@ -216,94 +286,125 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       calls[[names(pos)[i]]] <- call_
     }
   }
-  
-  # Iterate through std_calls to get data information when 
-  # by(), with(), lapply() or %`% were used
-  if (any(c("by", "with", "lapply", "pipe") %in% names(calls))) {
-    for (i in seq_along(calls)) {
-      #browser()
-      func <- names(calls)[i]
-      if (func == "by") {
-        update_by_info()
-        # treat special case of by() called on ctable, with ou without "with()"
-        if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
-            && identical(names(calls$by$data), c("", "x", "y"))) {
-          by_ctable_case()
-          next
+
+  # in the call stack: by() ----------------------------------------------------  
+  if ("by" %in% names(calls)) {
+    populate_by_info()
+    # treat special case of by() called on ctable, with ou without "with()"
+    if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
+        && identical(names(calls$by$data), c("", "x", "y"))) {
+      by_ctable_case()
+      if (isTRUE(do_return)) {
+        return(output)
+      }      
+    } else {
+      x <- sys_frames[[pos$by]]$data
+      if (is.data.frame(x)) {
+        if (length(calls$by$data) == 1) {
+          upd_output("df_name", deparse(calls$by$data))
+          browser() # nécessaire de chercher le df ailleurs?
+          upd_output("df_label",
+                     label(get_object(deparse(calls$by$data), "data.frame")))
+        } else {
+          parse_data_str(deparse(calls$by$data))
         }
-        x <- sys_frames[[pos$by]]$data
-        if (is.data.frame(x)) {
-          df_     <- x
-          df_name <- deparse(calls$by$data)
-          update_output(df_name  = df_name)
-          df_label <- label(x)
-          if (!is.na(df_label)) {
-            update_output(df_label = df_label)
-          }
-        } else if (is.atomic(x)) {
-          if (length(calls$by$data) == 1) {
-            update_output(var_name  = deparse(calls$by$data))
-            var_label <- label(x)
-            if (!is.na(x)) {
-              update_output(var_label = var_label)
-            }
-          } else {
-            # use a regex to parse df_name & var_name
-            x_str <- deparse(calls$by$data)
-            re <- "^([\\w._]+)(\\$|\\[+)([\\w._]+)\\]*$"
-            if (grepl(re, x_str, perl = TRUE)) {
-              df_name   <- sub(re, "\\1", x_str, perl = TRUE)
-              df_       <- get_object(df_name, "data.frame")
-              if (!is.na(df_)) {
-                update_output(df_name = df_name)
-                df_label <- label(df_)
-                if (!is.na(df_label)) {
-                  update_output(df_label = df_label)
-                }
-                var_name  <- sub(re, "\\3", x_str, perl = TRUE)
-                if (var_name %in% colnames(dl_)) {
-                  update_output(var_name = var_name)
-                  var_label <- 
-                }
-                var_label <- label(df$df[[var_name]])
-              }
-              
-              update_output(
-                df_name = df$name,
-                df_label = df_label,
-                var_name = var_name,
-                var_label = var_label
-              )
-            }
-          }
-        }
-      }
-      
-      if (func == "with") {
-        x <- sys_frames[[pos$with]]$data
-        if (is.data.frame(x)) {
-          names_ <- as.character(calls$with$data)
-          names_ <- setdiff(names_, oper)[1]
-          df$df   <- x
-          df_label <- label(x)
-          update_output(df_name  = df$name,
-                        df_label = df_label)
-          names_ <- as.character(calls$with$expr)
-          names_ <- setdiff(names, c(open, caller))
-          if (length(names_) == 1) {
-            if (names_ %in% colnames(x)) {
-              update_output(var_name = names_)
-              var_label <- x[[names_]]
-            }
-          }
-          
+      } else if (is.atomic(x)) {
+        if (length(calls$by$data) == 1) {
+          upd_output("var_name", deparse(calls$by$data))
+          upd_output("var_label", label(x))
+        } else {
+          x_str <- deparse(calls$by$data)
+          parse_data_str(x_str)
         }
       }
     }
+    if (isTRUE(do_return)) {
+      return(output)
+    }
   }
-  return_()    
-}
   
+  # in the call stack: with() --------------------------------------------------  
+  if ("with" %in% names(calls)) {
+    x <- sys_frames[[pos$with]]$data
+    if (is.data.frame(x)) {
+      names_1  <- as.character(calls$with$data)
+      df_name <- setdiff(names_1, oper)[1]
+      upd_output("df_name", df_name)
+      upd_output("df_label", label(x), force = TRUE)
+      names_2 <- as.character(calls$with$expr)
+      names_2 <- setdiff(names_2, c(oper, caller))[1]
+      if (names_2 %in% colnames(x)) {
+        upd_output("var_name", names_2)
+        upd_output("var_label", label(x[[names_2]]), force = TRUE)
+      }
+    }
+    if (isTRUE(do_return)) {
+      return(output)
+    }
+  }
+  
+      
+  # in the call stack: %>% -----------------------------------------------------
+  if ("pipe" %in% names(calls)) {
+    obj_name <- deparse(calls$pipe$lhs)
+    obj <- eval(sys_frames[[pos$pipe]]$lhs, 
+                envir = sys_frames[[pos$pipe]]$parent)
+    if (is.data.frame(obj)) {
+      if (length(calls$pipe$lhs) == 1) {
+        upd_output("df_name", obj_name)
+      } else {
+        upd_output("df_name", setdiff(as.character(calls$pipe$lhs), oper)[1])
+      }
+      upd_output("df_label", label(x))
+      var_name <- setdiff(as.character(calls$pipe$rhs), c(caller, oper))
+      if (var_name %in% colnames(obj)) {
+        upd_output("var_name", var_name)
+        upd_output("var_label", label(obj[[var_name]]))
+      }
+    } else if (is.atomic(obj)) {
+      if(length(calls$pipe$lhs) == 1) {
+        upd_output("var_name", obj_name)
+        upd_output("var_label", label(obj))
+      } else {
+        parse_data_str(obj_name)
+      }
+    }
+    if (isTRUE(do_return)) {
+      return(output)
+    }
+  }
+
+  # in the call stack: lapply() ------------------------------------------------
+  if ("lapply" %in% names(calls)) {
+    names_ <- all.names(lapply_call$X)
+  #   df_env <- where(nn)
+  #   if (is.data.frame(get(nn, envir = df_env))) {
+  #     df_name <- setdiff(nn, oper)[1]
+  #     for (i in seq_along(sys_frames)) {
+  #       if (df_name %in% ls(sys_frames[[i]])) {
+  #         if (is.data.frame(sys_frames[[i]][[df_name]])) {
+  #           df__ <- sys_frames[[i]][[df_name]]
+  #           break
+  #         }
+  #       }
+  #     }
+  #     if (!exists("df__", where = -1, inherits = FALSE)) {
+  #       df_env <- where(df_name)
+  #       df__   <- get(df_name, envir = df_env)
+  #     }
+  #     return(list(name = df_name, df = df__,
+  #                 call = std_call, method = "lapply"))
+  #   }
+  #   return(list(name = NA, df = NA, call = std_call, method = "lapply"))
+    if (isTRUE(do_return)) {
+      return(output)
+    }
+  }
+  return(output)
+}
+
+  
+
   #   #pos_fn      <- which(grepl("^by\\(", as.character(sys_calls))) # attn! pas bon avec by() (et lapply?)
   #   # Extract, if possible:
   #   #  - string describing the data passed to the caller function
@@ -597,3 +698,31 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   # return(output)
   # }
   # 
+# output$return <- function() {
+#   # Remove dataframe name from items having form df_name$var_name 
+#   # by_group string and the same
+#   if (length(output$df_name) == 1 && !is.na(output$df_name)) {
+#     for (item in c("var_name", "by_var", "by_group")) {
+#       re <- paste0("^",df_name,      # starts with df_name
+#                    "[$[]*['\"]?",    # subsetting chars
+#                    "([\\w_.]+)",     # var_name (group 1)
+#                    "['\"]?\\]{0,2}", # closing subsetting char(s)
+#                    "(.*)$")          # remainder of expression (group 2)
+#       output[[item]] <- sub(pattern = ,
+#                             replacement = "\\1\\2", 
+#                             x = output[[item]])
+#     }
+#   }
+#   
+#   empty_elements <- as.numeric(
+#     which(vapply(output[-1:-3], function(x) {is.na(x) || !length(x)}, TRUE))
+#   )
+#   
+#   if (length(empty_elements) > 0) {
+#     output <<- output[-(empty_elements + 3)]
+#   }
+#   
+#   ret(output[-1:-3])
+#   #stop()
+#   #eval(return(output[-1:-3]), envir = env.1)
+# }
