@@ -467,15 +467,14 @@ inv_trs <- function(name, l = st_options("lang")) {
 
 # Checks if a list contains only "empty" elements (NA's / vectors of size 0)
 #' @keywords internal
-count.empty <- function(x) {
+count.empty <- function(x, count.nas = TRUE) {
   n <- 0
   for (item in x) {
     if(length(item) == 0) {
       n <- n + 1
-    } else {
+    } else if (isTRUE(count.nas)) {
       n <- n + sum(is.na(item))
     }
   }
   n
 }
-            
