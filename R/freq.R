@@ -180,7 +180,7 @@ freq <- function(x,
   # Get information about x from parsing function
   parse_info <- try(
     parse_args(sys.calls(), sys.frames(), match.call(),
-               silent = exists("varname", iinherits = FALSE),
+               silent = exists("varname", inherits = FALSE),
                max.varnames = 1, df_name = TRUE, df_label = TRUE, 
                var_name = TRUE, var_label = TRUE, caller = "freq"),
     silent = TRUE)
