@@ -5,8 +5,8 @@
 \title{Extract Data Information From Arguments Passed to Functions}
 \usage{
 parse_args(sys_calls, sys_frames, match_call, var = "x",
-  max.varnames = 1, silent = FALSE, df_name = NA, df_label = NA,
-  var_name = NA, var_label = NA, caller = NA)
+  silent = FALSE, df_name = TRUE, df_label = TRUE, var_name = TRUE,
+  var_label = TRUE, caller = "")
 }
 \arguments{
 \item{sys_calls}{Object created using \code{sys.calls()}.}
@@ -15,11 +15,8 @@ parse_args(sys_calls, sys_frames, match_call, var = "x",
 
 \item{match_call}{Object created using \code{match.call()}.}
 
-\item{var}{One of \dQuote{x} (default) or \dQuote{y} (the latter being used
-only in \code{\link{ctable}}).}
-
-\item{max.varnames}{Numeric. Allows limiting the number of expected variable
-names. Defaults to \code{1}}
+\item{var}{Character. \dQuote{x} (default) and/or \dQuote{y} (the latter 
+being used only in \code{\link{ctable}}).}
 
 \item{silent}{Logical. Hide console messages. \code{TRUE} by default.}
 }

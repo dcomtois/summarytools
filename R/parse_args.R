@@ -59,6 +59,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
           }
         }
         
+        output <- lapply(output, function(x) gsub("['\"]", "", x))
+             
         empty_elements <- as.numeric(
           which(vapply(output, function(x) {is.na(x) || !length(x)}, 
                        TRUE))
@@ -222,7 +224,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
             obj2_name <- sub(re3, "\\2", str, perl = TRUE)
             obj2      <- try(eval(parse(text = obj2_name), envir = obj))
             if (!inherits(obj2, "try-error") && is.atomic(obj2)) {
-              upd_output("var_name",  gsub("['\"]", "", obj2_name))
+              upd_output("var_name",  obj2_name)
               upd_output("var_label", NA_character_)
             }
           }
@@ -437,17 +439,19 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       
   if ("fun" %in% names(calls)) {
     calls$fun <- standardise_call(calls$fun)
-    obj <- sys_frames[[pos$fun]]$x
+    obj <- sys_frames[[pos$fun]][[var]]
     if (is.data.frame(obj)) {
-      if (length(calls$fun$x) == 1) {
-        upd_output("df_name",   deparse(calls$fun$x))
+      if (length(calls$fun[[var]]) == 1) {
+        upd_output("df_name",   deparse(calls$fun[[var]]))
         upd_output("df_label",  label(obj))
         upd_output("var_name",  NA_character_)
         upd_output("var_label", NA_character_)
+      } else {
+        parse_data_str(deparse(calls$fun[[var]]))
       }
     } else if (is.atomic(obj)) {
-      if (length(calls$fun$x) == 1) {
-        upd_output("var_name",  deparse(calls$fun$x))
+      if (length(calls$fun[[var]]) == 1) {
+        upd_output("var_name",  deparse(calls$fun[[var]]))
         upd_output("var_label", label(obj))
         upd_output("df_name",   NA_character_)
         upd_output("df_label",  NA_character_)
