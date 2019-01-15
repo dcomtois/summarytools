@@ -1,5 +1,4 @@
 Meta
-doc
 .Rprofile
 .Rhistory
 .Renviron
@@ -8,3 +7,5 @@ summarytools.Rproj
 .Rproj.user
 TODO.R
 tests/output
+tests/output/*
+tests/other
