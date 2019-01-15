@@ -349,18 +349,20 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         upd_output("df_name", setdiff(as.character(calls$with$data), oper)[1])
       }
       upd_output("df_label", label(x))
-      if (do_return) {
-        return(output)
+
+      if (is.call(calls$with$expr$x)) {
+        v_name    <- deparse(standardise_call(calls$with$expr$x)$x)
+        v_name[2] <- deparse(standardise_call(calls$with$expr$x)$y)
+      } else {
+        v_name    <- deparse(calls$with$expr$x)
+        v_name[2] <- deparse(calls$with$expr$y)
       }
-      if (length(var) == 2) {
-        v_name <- deparse(calls$with$expr$data$x)
-        v_name %+=% deparse(calls$with$expr$data$y)
+      if (length(var) == 1) {
+        upd_output("var_name",  v_name[1])
+        upd_output("var_label", label(x[[v_name[1]]]))
+      } else {
         upd_output("var_name", v_name, force = TRUE)
         upd_output("var_label", NA_character_)
-      } else {
-        v_name <- deparse(calls$with$expr[[var]])
-        upd_output("var_name",  v_name)
-        upd_output("var_label", label(x[[v_name]]))
       }
     }
     if (isTRUE(do_return)) {
