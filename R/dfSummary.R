@@ -759,7 +759,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
   if (graph_type == "histogram") {
     png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
         height = 95 * graph.magnif, units = "px", bg = "transparent")
-    mar <- par("mar" = c(0.01,0.01,0.01,0.01))
+    mar <- par("mar" = c(0.01,0.01,0.01,0.01)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
@@ -780,7 +780,7 @@ encode_graph <- function(data, graph_type, graph.magnif = NA) {
     png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
         height = 25.4 * length(data) * graph.magnif, units = "px",
         bg = "transparent")
-    mar <- par("mar" = c(0.12,0.27,0.12,0.08)) # bottom, left, top, right
+    mar <- par("mar" = c(0.12,0.27,0.35,0.08)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
     barplot(data, names.arg = "", axes = FALSE, space = 0.21,
