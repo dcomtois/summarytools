@@ -127,6 +127,7 @@ table.st-table td span {
 .st-cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
   border:none;
   background-color: #ffffff;
+  text-align: center;
 }
 
 .st-freq-table > thead > tr > th,
@@ -151,6 +152,10 @@ table.st-table td span {
   padding-right: 20px;
 }
 
+
+.st-protect-top-border {
+  border-top:1px solid #cccccc !important;
+}
 
 .st-cross-table td {
   text-align: center;
@@ -186,21 +191,21 @@ table.st-table td span {
   <thead>
     <tr>
       <th colspan="2"></th>
-      <th colspan="2">Valide</th>
-      <th colspan="2">Total</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valide</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
     </tr>
     <tr>
-      <th>gender</th>
-      <th>Fr&#0233;q.</th>
-      <th>%</th>
-      <th>% Cum.</th>
-      <th>%</th>
-      <th>% Cum.</th>
+      <th align="center">gender</th>
+      <th align="center">Fr&#0233;q.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>F</th>
+      <th align="center" class="st-protect-top-border">F</th>
       <td align="center">489</td>
       <td align="center">50.00</td>
       <td align="center">50.00</td>
@@ -208,7 +213,7 @@ table.st-table td span {
       <td align="center">48.90</td>
     </tr>
     <tr>
-      <th>M</th>
+      <th align="center" class="st-protect-top-border">M</th>
       <td align="center">489</td>
       <td align="center">50.00</td>
       <td align="center">100.00</td>
@@ -216,7 +221,7 @@ table.st-table td span {
       <td align="center">97.80</td>
     </tr>
     <tr>
-      <th>&lt;NA&gt;</th>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
       <td align="center">22</td>
       <td align="center"></td>
       <td align="center"></td>
@@ -224,7 +229,7 @@ table.st-table td span {
       <td align="center">100.00</td>
     </tr>
     <tr>
-      <th>Total</th>
+      <th align="center" class="st-protect-top-border">Total</th>
       <td align="center">1000</td>
       <td align="center">100.00</td>
       <td align="center">100.00</td>

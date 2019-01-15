@@ -324,7 +324,7 @@ Type: Facteur
        <NA>      22                                 2.20         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco[[3]])  
+> freq(tobacco[[3]]) 
 
 Tableau de fréquences   
 tobacco$age.gr     
@@ -555,6 +555,7 @@ Groupe: Sepal.Length > mean(iris$Sepal.Length) = TRUE
 
 Tableau de fréquences   
 tobacco$diseased     
+Étiquette: Subject has an illness    
 Type: Facteur    
 Groupe: smoker = Yes   
 
@@ -802,9 +803,8 @@ disease
 > tobacco_subset <- tobacco[,c(3,5,6)] 
 > lapply(tobacco_subset, freq, style = "rmarkdown") 
 
-### Tableau de fréquences   
-**Data frame:** tobacco_subset     
-**age.gr**     
+### Tableau de fréquences    
+**tobacco_subset$age.gr**     
 **Type:** Facteur   
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -816,7 +816,7 @@ disease
 | **\<NA\>** |    25 |          |               |    2.50 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
   
-**smoker**     
+**tobacco_subset$smoker**     
 **Étiquette:** Subject Smokes    
 **Type:** Facteur   
 
@@ -827,7 +827,7 @@ disease
 | **\<NA\>** |     0 |          |               |    0.00 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
   
-**cigs.per.day**     
+**tobacco_subset$cigs.per.day**     
 **Type:** Numérique   
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
