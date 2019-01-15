@@ -429,7 +429,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Concatenate data frame + $ + variable name where appropriate
   if (!("Variable" %in% overrided_args) && 
       length(attr(x, "data_info")$Variable) == 1 && 
-      length(attr(x, "data_info")$Data.frame) == 1) {
+      length(attr(x, "data_info")$Data.frame) == 1 &&
+      !("by_var_special" %in% names(attr(x, "data_info")))) {
     attr(x, "data_info")$Variable <- paste(attr(x, "data_info")$Data.frame,
                                            attr(x, "data_info")$Variable, 
                                            sep = "$")
@@ -1727,18 +1728,11 @@ build_heading_pander <- function(format_info, data_info) {
       head2 <- add_markup(paste0("  \n", data_info$Variable, " ", 
                                  trs("by"), " ", data_info$by_var_special))
       
-      if ("Variable" %in% names(data_info)) {
-        head3 <- append_items(list(c(Variable.label = trs("label")),
-                                   c(Weights        = trs("weights")),
-                                   c(Group          = trs("group")),
-                                   c(N.Obs          = trs("n"))))
-      } else if ("Data.frame" %in% names(data_info)) {
-        head3 <- append_items(list(c(Data.frame       = ''),
-                                   c(Data.frame.label = trs("label")),
-                                   c(Weights          = trs("weights")),
-                                   c(Group            = trs("group")),
-                                   c(N.Obs            = trs("n"))))
-      }
+      head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
+                                 c(Variable.label = trs("label")),
+                                 c(Weights        = trs("weights")),
+                                 c(Group          = trs("group")),
+                                 c(N.Obs          = trs("n"))))
 
     } else if ("Variable" %in% names(data_info)) {
       head2 <- add_markup(paste0("  \n", data_info$Variable))
@@ -1914,9 +1908,15 @@ build_heading_html <- function(format_info, data_info, method) {
     if ("by_var_special" %in% names(data_info)) {
       data_info$Variable <- (paste(data_info$Variable, trs("by"), 
                                    data_info$by_var_special))
-    }
-    
-    if ("Variable" %in% names(data_info)) {
+      
+      head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
+
+      head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
+                                 c(Variable.label = trs("label")),
+                                 c(Weights        = trs("weights")),
+                                 c(Group          = trs("group")),
+                                 c(N.Obs          = trs("n"))))
+    } else if ("Variable" %in% names(data_info)) {
       if (method == "render") {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       } else {
