@@ -61,8 +61,8 @@ imported data frames.
 
 Versions 0.9.0 and 0.8.9 (which was only released on GitHub) brought many
 changes and improvements to **summarytools**. This 
-[document-vignette](https://TODO) gives
-a detailed description of those changes, but a summary can be found [at the end of
+[document/vignette](http://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/dev-current/doc/Introduction%20to%20summarytools.htm) gives
+a detailed description of all the changes, but a summary can be found [at the end of
 this document](#changes).
 
 Now we'll describe the four main functions of the package.
@@ -113,10 +113,8 @@ When viewed in a browser or in RStudio's Viewer, the results look like this:
 ```{r, eval=FALSE}
 with(tobacco, view(ctable(smoker, diseased)))
 ```
+<img src="ctable-with-row-props.png" style="border:0" />
 
-<img src="ctable-with-row-props.png" style="border:0;align=center;" width=70% />
-![Example of ctable() output](ctable-with-row-props.png)
-  
 Notice that instead of `ctable(tobacco$smoker, tobacco$diseased, ...)`,
 we used the `with()` function, making the syntax less redundant.
 
@@ -173,7 +171,7 @@ view(dfSummary(iris))
 
 The results show up in RStudio's viewer, or in the default Web Browser when not
 using RStudio:
-<img src="dfSummary_in_RStudio_Viewer.png" width=100% border=0/>
+<img src="dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
 It is also possible to use `dfSummary()` in *Rmarkdown* documents. Further down, 
 we'll see how to use _html_ rendering to display graphics in their image form 
 instead of their ascii replacements. <!-- TODO! -->
@@ -295,11 +293,17 @@ more on _knitr_'s options.
 # ```{r, results='asis'}
 # library(summarytools)  
 # 
-# print(dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.85), 
-#       method = 'render', headings = FALSE)
+# print(dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.78), 
+#       method = 'render', headings = FALSE, varnumbers=FALSE, valid.col = FALSE)
 # ```
 ````
-![Example of rendered output](dfSummary-render-in-markdown.png)
+
+```{r, results='asis'}
+library(summarytools)  
+
+print(dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.78), 
+     method = 'render', headings = FALSE, varnumbers=FALSE, valid.col = FALSE)
+```
 
 ## Writing Output to Files
 
