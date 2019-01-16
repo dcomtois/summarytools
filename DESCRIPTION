@@ -16,6 +16,7 @@ Imports:
   grDevices,
   htmltools,
   lubridate,
+  magick,
   matrixStats,
   methods,
   pander,
