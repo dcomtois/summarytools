@@ -1414,12 +1414,6 @@ print_dfs <- function(x, method) {
       x[[trs("freqs.pct.valid")]] <- 
         gsub(pattern = "\\n\\\\ *", replacement = "\n",
              x = x[[trs("freqs.pct.valid")]], perl=TRUE)
-      
-      # Remove txt histograms b/c not supported in rmarkdown (for now)
-      if (trs("text.graph") %in% names(x)) {
-        x[[trs("text.graph")]][which(grepl("[:.]",
-                                           x[[trs("text.graph")]]))] <- ""
-      }
     }
     
     # set column names encoding to native to allow proper display of non-ascii
@@ -1531,7 +1525,7 @@ print_dfs <- function(x, method) {
           }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(
-            tags$td(HTML(cell), align = "center", style = "padding:0 4px")
+            tags$td(HTML(cell), align = "center", style = "padding:0")
           )
         }
       }
