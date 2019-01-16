@@ -1,30 +1,30 @@
 # Setup
 # rm(list=ls())
-# setwd("~/Github/summarytools")
-(orig.dir <- getwd())
-(refdir <- paste(orig.dir, "tests/ref", sep = "/"))
+# setwd("~/GitHub/summarytools")
+(orig_dir <- getwd())
+(ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
 
-(newdir <- paste(orig.dir, "tests/output", 
-                 format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
-                 sep = "/"))
+(date_dir <- paste(orig_dir, "tests/output", 
+                   format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
+                   sep = "/"))
 
-dir.create(newdir)
+(dir.create(date_dir, recursive = TRUE))
 
 (testfiles <- grep(dir("~/GitHub/summarytools/tests/"), pattern = "\\d(?!0)\\d",
                   perl = TRUE, value = TRUE))
-setwd(newdir)
 
-eval_with_feedback <- function(filename, lang, outdir) {
-  on.exit(setwd(orig.dir))  
-  setwd(newdir)
-  dir.create(outdir, showWarnings = FALSE)
-  setwd(outdir)
+eval_with_feedback <- function(filename, lang, out_dir) {
+  on.exit(setwd(orig_dir))
+  setwd(date_dir)
+  dir.create(paste(date_dir, out_dir, sep = "/"), showWarnings = FALSE)
+  setwd(paste(date_dir, out_dir, sep = "/"))
   
+  detach("package:summarytools", unload = TRUE)
   library(summarytools)
   st_options(lang = lang)
   
   cat("reading ", filename, "...\n")
-  contents <- readLines(paste(orig.dir, "tests", filename, sep = "/"), 
+  contents <- readLines(paste(orig_dir, "tests", filename, sep = "/"), 
                         encoding = 'UTF-8')
   Encoding(contents) <- "UTF-8"
   path_out <- paste0(basename(tools::file_path_sans_ext(filename)), ".txt")
@@ -81,22 +81,25 @@ eval_with_feedback <- function(filename, lang, outdir) {
   
   cat("Closing", path_out, "...\n")
   close(outfile)
-  detach("package:summarytools", unload = TRUE)
-  test_dir <- normalizePath(paste(newdir, outdir, sep = "/"))
-  ref_dir  <- normalizePath(paste(refdir, outdir, sep = "/"))
-  system(paste0('compare "', ref_dir, '" "', test_dir, '"'))
+  test_dir <- normalizePath(paste(date_dir, out_dir, sep = "/"))
+  ref_dir  <- normalizePath(paste(ref_dir, out_dir, sep = "/"))
+  if (Sys.info()[['sysname']] == "Linux") {
+    system(paste0('meld "', ref_dir, '" "', test_dir, '"'), wait = FALSE)
+  } else {
+    system(paste0('compare "', ref_dir, '" "', test_dir, '"'))
+  }
 }
 
-eval_with_feedback(testfiles[1],  lang = "fr", outdir = "parse_args (fr)") # st_options
-eval_with_feedback(testfiles[2],  lang = "fr", outdir = "freq (fr)") # freq
-eval_with_feedback(testfiles[3],  lang = "fr", outdir = "ctable (fr)") # ctable
-eval_with_feedback(testfiles[4],  lang = "fr", outdir = "descr (fr)") # descr
-eval_with_feedback(testfiles[5],  lang = "fr", outdir = "dfSummary (fr)") # dfSummary
-#eval_with_feedback(testfiles[6],  lang = "fr", outdir = overrides (fr)) # overrides
-#eval_with_feedback(testfiles[7],  lang = "fr", outdir = with-by (fr)) # with/by
-#eval_with_feedback(testfiles[8],  lang = "fr", outdir = lapply (fr)) # lapply
-#eval_with_feedback(testfiles[9],  lang = "fr", outdir = view-print (fr)) # view/print
-#eval_with_feedback(testfiles[10], lang = "fr", outdir = misc (fr)) # 11-misc
-#eval_with_feedback(testfiles[11], lang = "fr", outdir = special cases (fr)) # 12-special cases
+eval_with_feedback(testfiles[1],  lang = "fr", out_dir = "parse_args (fr)") # st_options
+eval_with_feedback(testfiles[2],  lang = "fr", out_dir = "freq (fr)") # freq
+eval_with_feedback(testfiles[3],  lang = "fr", out_dir = "ctable (fr)") # ctable
+eval_with_feedback(testfiles[4],  lang = "fr", out_dir = "descr (fr)") # descr
+eval_with_feedback(testfiles[5],  lang = "fr", out_dir = "dfSummary (fr)") # dfSummary
+#eval_with_feedback(testfiles[6],  lang = "fr", out_dir = overrides (fr)) # overrides
+#eval_with_feedback(testfiles[7],  lang = "fr", out_dir = with-by (fr)) # with/by
+#eval_with_feedback(testfiles[8],  lang = "fr", out_dir = lapply (fr)) # lapply
+#eval_with_feedback(testfiles[9],  lang = "fr", out_dir = view-print (fr)) # view/print
+#eval_with_feedback(testfiles[10], lang = "fr", out_dir = misc (fr)) # 11-misc
+#eval_with_feedback(testfiles[11], lang = "fr", out_dir = special cases (fr)) # 12-special cases
 #
 #setwd(orig.dir)
