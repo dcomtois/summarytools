@@ -19,7 +19,7 @@ eval_with_feedback <- function(filename, lang, out_dir) {
   dir.create(paste(date_dir, out_dir, sep = "/"), showWarnings = FALSE)
   setwd(paste(date_dir, out_dir, sep = "/"))
   
-  detach("package:summarytools", unload = TRUE)
+  try(detach("package:summarytools", unload = TRUE), silent = TRUE)
   library(summarytools)
   st_options(lang = lang)
   
