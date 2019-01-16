@@ -40,6 +40,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     if (isTRUE(force) || 
         ((length(output[[item]]) == 0 || is.na(output[[item]])) &&
           length(value) == 1 && class(value) == class(output[[item]]))) {
+      names(value) <- NULL
       output[[item]] <<- value
       
       # Check if output is ready to be returned
@@ -349,24 +350,42 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         upd_output("df_name", setdiff(as.character(calls$with$data), oper)[1])
       }
       upd_output("df_label", label(x))
-
-      if (is.call(calls$with$expr$x)) {
-        v_name    <- deparse(standardise_call(calls$with$expr$x)$x)
-        v_name[2] <- deparse(standardise_call(calls$with$expr$x)$y)
-      } else {
-        v_name    <- deparse(calls$with$expr$x)
-        v_name[2] <- deparse(calls$with$expr$y)
+      if (isTRUE(do_return)) {
+        return(output)
       }
-      if (length(var) == 1) {
-        upd_output("var_name",  v_name[1])
-        upd_output("var_label", label(x[[v_name[1]]]))
-      } else {
-        upd_output("var_name", v_name, force = TRUE)
-        upd_output("var_label", NA_character_)
+      
+      if ("x" %in% names(calls$with$expr)) {
+        if (is.call(calls$with$expr$x)) {
+          v_name <- c(x = deparse(standardise_call(calls$with$expr$x)$x),
+                      y = deparse(standardise_call(calls$with$expr$x)$y))
+        } else {
+          v_name <- c(x = deparse(calls$with$expr$x),
+                      y = deparse(calls$with$expr$y))
+        }
+        if (length(var) == 1) {
+          upd_output("var_name",  v_name[[var]])
+          upd_output("var_label", label(x[[v_name[[var]]]]))
+        } else {
+          upd_output("var_name", v_name, force = TRUE)
+          upd_output("var_label", NA_character_)
+        }
+      } else if ("data" %in% names(calls$with$expr)) {
+        calls$with$expr$data <- standardise_call(calls$with$expr$data)
+        if ("x" %in% names(calls$with$expr$data)) {
+          v_name <- c(x = deparse(calls$with$expr$data$x),
+                      y = deparse(calls$with$expr$data$y))
+          if (length(var) == 1) {
+            upd_output("var_name",  v_name[[var]])
+            upd_output("var_label", label(x[[v_name[[var]]]]))
+          } else {
+            upd_output("var_name", v_name, force = TRUE)
+            upd_output("var_label", NA_character_)
+          }
+        }
       }
-    }
-    if (isTRUE(do_return)) {
-      return(output)
+      if (isTRUE(do_return)) {
+        return(output)
+      }
     }
   }
 
