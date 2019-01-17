@@ -446,7 +446,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       }
       if (is.data.frame(df_) && v_name %in% colnames(df_)) {
         upd_output("var_name",  paste(df_nm, v_name, sep = "$"))
-        upd_output("var_label", label(obj))
+        upd_output("var_label", label(df_[[v_name]]))
         upd_output("df_name",   NA_character_)
         upd_output("df_label",  NA_character_)
       }
