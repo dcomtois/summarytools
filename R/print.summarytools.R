@@ -220,14 +220,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     errmsg %+=% "'custom.css' must point to an existing file."
   }
 
-  if (method == "pander" && !is.na(table.classes)) {
-    errmsg %+=% "'table.classes' option does not apply to method 'pander'"
-  }
-  
-  if (method == "pander" && !is.na(custom.css)) {
-    errmsg %+=% "'custom.css' option does not apply to method 'pander'"
-  }
-
   if (!isTRUE(test_logical(silent, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'silent' must be either TRUE or FALSE"
   }
@@ -242,6 +234,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       method == "pander") {
     method <- "browser"
     message("Switching method to 'browser'")
+  }
+  
+  if (method == "pander" && !is.na(table.classes)) {
+    errmsg %+=% "'table.classes' option does not apply to method 'pander'"
+  }
+  
+  if (method == "pander" && !is.na(custom.css)) {
+    errmsg %+=% "'custom.css' option does not apply to method 'pander'"
   }
   
   # Set plain.ascii to false and adjust style when file name ends with .md
@@ -1259,7 +1259,6 @@ print_dfs <- function(x, method) {
   # Function to align the freqs / proportions in html outputs
   # A table is built to fit in a single cell of the final table
   make_tbl_cell <- function(cell) {
-    
     rows <- strsplit(cell, "\\\n")[[1]]
     rows <- gsub("\\", "", rows, fixed = TRUE)
     rows <- gsub(" " , "", rows, fixed = TRUE)
@@ -1517,7 +1516,7 @@ print_dfs <- function(x, method) {
           )
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
           if (grepl(paste0("(",trs("distinct.value"), "|",
-                           trs("distinct.vlues"), ")"), cell)) {
+                           trs("distinct.values"), ")"), cell) || cell == "") {
             table_row %+=% list(
               tags$td(HTML(cell), align = "left") # nb of distinct values
             )
@@ -1674,6 +1673,7 @@ build_heading_pander <- function(format_info, data_info) {
         head2 <- append_items(list(c(Data.frame       = trs("data.frame"))))
         head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                    c(Variable         = ''),
+                                   c(Variable.label   = trs("label")),
                                    c(Data.type        = trs("type"))))
       } else {
         head2 <- append_items(list(c(Variable = '')))
