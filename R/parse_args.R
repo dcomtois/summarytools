@@ -330,6 +330,8 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       } else if (is.atomic(x)) {
         if (length(calls$by$data) == 1) {
+          upd_output("df_name", NA_character_)
+          upd_output("df_label", NA_character_)
           upd_output("var_name", deparse(calls$by$data))
           upd_output("var_label", label(x))
         } else {
