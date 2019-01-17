@@ -46,9 +46,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       # Check if output is ready to be returned
       if (count.empty(output, count.nas = FALSE) == 0) {
         # Cleanup
-        if (length(output$df_name) == 1 && !is.na(output$df_name)) {
-          for (item in intersect(c("var_name", "by_var", "by_group"),
+        for (item in intersect(c("var_name", "by_var", "by_group"),
                                  names(output))) {
+          if (length(output$df_name) == 1 && !is.na(output$df_name)) {
+            
             re <- paste0("^",output$df_name,  # starts with df_name
                          "[$[]*['\"]?",       # subsetting chars
                          "([\\w_.]+)",        # var_name (group 1)
@@ -57,15 +58,19 @@ parse_args <- function(sys_calls, sys_frames, match_call,
             output[[item]] <<- sub(pattern = re,
                                    replacement = "\\1\\2", 
                                    x = output[[item]], perl = TRUE)
+            
+            if (item == "by_group") {
+              output$by_group <- gsub(paste0(output$df_name, "\\$"), "", output$by_group)
+            }
+            
           }
+          output[[item]] <- gsub("['\"]", "", output[[item]])
         }
-        
-        output <- lapply(output, function(x) gsub("['\"]", "", x))
-             
+      
         empty_elements <- as.numeric(
           which(vapply(output, function(x) {is.na(x) || !length(x)}, 
                        TRUE))
-        )
+          )
         
         if (length(empty_elements) > 0) {
           output <<- output[-empty_elements]
