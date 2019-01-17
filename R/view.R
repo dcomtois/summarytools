@@ -34,11 +34,11 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  ...) {
 
   # Check that the appropriate method is chosen when a file name is given
-  if (grepl("\\md$", file, ignore.case = TRUE, perl = TRUE) &&
+  if (grepl("\\.r?md$", file, ignore.case = TRUE, perl = TRUE) &&
       method != "pander") {
     msg("Switching method to 'pander'")
     method <- "pander"
-  } else if (grepl("\\html$", file, ignore.case = TRUE, perl = TRUE) &&
+  } else if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
       method == "pander") {
     msg("Switching method to 'browser'")
     method <- "browser"
