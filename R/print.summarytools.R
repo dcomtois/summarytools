@@ -1516,7 +1516,8 @@ print_dfs <- function(x, method) {
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
         } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
-          if (!grepl("[:)%]", cell)) {
+          if (grepl(paste0("(",trs("distinct.value"), "|",
+                           trs("distinct.vlues"), ")"), cell)) {
             table_row %+=% list(
               tags$td(HTML(cell), align = "left") # nb of distinct values
             )
