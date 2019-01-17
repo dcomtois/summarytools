@@ -1,8 +1,7 @@
 #-------------------------------- 4-descr.R ------------------------------------
 # library(summarytools)
 
-tobacco <- tibble::as.tibble(tobacco)
-st_options('reset')
+tobacco <- tibble::as_tibble(tobacco)
 (d1 <- descr(tobacco))
 
 print(d1, plain.ascii = F)
@@ -26,6 +25,7 @@ print(d2, file = "descr-d2-1.html")
 view(d2, footnote = "test: àéïôù", file = "descr-d2-2.html")
 
 # long var names
+st_options(descr.transpose = FALSE)
 some.long.variable.name <- tobacco$age
 some.long.variabl.name <- tobacco$age
 print(descr(some.long.variable.name), file = "descr-long-name-1.html")
@@ -60,9 +60,9 @@ print(d7, file = "descr-d7-by-special-print.html")
 
 # by() - whole data frame
 (d8 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr))
-view(d7, file = "descr-d8-by-view.md")
+view(d8, file = "descr-d8-by-view.md")
 
 # with() + by()
 label(tobacco$BMI) <- "Body Mass Index"
 (d9 <- with(tobacco, by(BMI, gender, descr)))
-view(d8, file = "descr-d9-by-special-view.html")
+view(d9, file = "descr-d9-by-special-view.html")

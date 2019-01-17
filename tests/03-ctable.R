@@ -1,7 +1,7 @@
 # -------------------------- 3-ctable.R ----------------------------------------
 # library(summarytools)
 data(tobacco)
-tobacco <- tibble::as.tibble(tobacco)
+tobacco <- tibble::as_tibble(tobacco)
 
 ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
 
