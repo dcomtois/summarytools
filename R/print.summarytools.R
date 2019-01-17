@@ -1119,38 +1119,14 @@ print_descr <- function(x, method) {
     
   } else {
     
-    # print_descr -- html method ----------------------------------------------
-    
-    if ("byvar" %in% names(data_info) && !data_info$transpose) {
-      table_head <- list()
-      table_head[[1]] <- list(tags$th(""),
-                              tags$th(data_info$byvar,
-                                      colspan = ncol(x),
-                                      class = "st-protect-top-border"))
-      
-      table_head[[2]] <-  list(tags$th()) 
-      
-      for(cn in colnames(x)) {
-        if (nchar(cn) > 12) {
-          cn <- smart_split(cn, 12)
-        }
-        cn <- sub("<", "&lt;", cn, fixed = TRUE)
-        cn <- sub(">", "&gt;", cn, fixed = TRUE)
-        table_head[[2]][[length(table_head[[2]]) + 1]] <- 
-          tags$th(HTML(cn), align = "center")
-      } 
-      
-    } else {
-      
-      table_head <- list(tags$th("", class = "st-protect-top-border"))
-      
-      for(cn in colnames(x)) {
-        if (nchar(cn) > 12) {
-          cn <- smart_split(cn, 12)
-        }
-        table_head %+=% list(tags$th(HTML(cn), align = "center",
-                                     class = "st-protect-top-border"))
+    table_head <- list(tags$th("", class = "st-protect-top-border"))
+
+    for(cn in colnames(x)) {
+      if (nchar(cn) > 12) {
+        cn <- smart_split(cn, 12)
       }
+      table_head %+=% list(tags$th(HTML(cn), align = "center",
+                                   class = "st-protect-top-border"))
     }
     
     table_rows <- list()
@@ -1175,38 +1151,17 @@ print_descr <- function(x, method) {
         }
       }
     }
-    
-    if ("byvar" %in% names(data_info) && !isTRUE(data_info$transpose)) {
-      descr_table_html <-
-        tags$table(
-          tags$thead(
-            tags$tr(table_head[[1]]),
-            tags$tr(table_head[[2]])
-          ),
-          tags$tbody(
-            table_rows
-          ),
-          class = paste(
-            "table table-bordered table-striped",
-            "st-table st-table-bordered st-table-striped st-freq-table",
-            "st-descr-table",
-            ifelse(is.na(parent.frame()$table.classes), "", 
-                   parent.frame()$table.classes))
-        )
-      
-    } else {
-      
-      descr_table_html <-
-        tags$table(
-          tags$thead(tags$tr(table_head)),
-          tags$tbody(table_rows),
-          class = paste(
-            "table table-bordered table-striped",
-            "st-table st-table-bordered st-table-striped st-descr-table",
-            ifelse(is.na(parent.frame()$table.classes), "", 
-                   parent.frame()$table.classes))
-        )
-    }
+
+    descr_table_html <-
+      tags$table(
+        tags$thead(tags$tr(table_head)),
+        tags$tbody(table_rows),
+        class = paste(
+          "table table-bordered table-striped",
+          "st-table st-table-bordered st-table-striped st-descr-table",
+          ifelse(is.na(parent.frame()$table.classes), "", 
+                 parent.frame()$table.classes))
+      )
     
     # Cleanup some extra spacing & html linefeeds to avoid weirdness in layout
     # of source code
@@ -1909,7 +1864,8 @@ build_heading_html <- function(format_info, data_info, method) {
     if ("by_var_special" %in% names(data_info)) {
       head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
                           "</strong> ", conv_non_ascii(trs("by")), " <strong>",
-                          conv_non_ascii(data_info$by_var_special), "<br/>"))
+                          conv_non_ascii(data_info$by_var_special),
+                          "</strong><br/>"))
       
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
                                  c(Variable.label = trs("label")),
