@@ -2,39 +2,40 @@ item                 ,context                         ,es
 title.freq           ,main heading                    ,Frecuencias
 title.freq.weighted  ,main heading                    ,Frecuencías ponderadas
 title.ctable         ,main heading                    ,Tabulación cruzada
-title.ctable.row     ,main heading                    ,proporciónes por líneas/filas?
-title.ctable.col     ,main heading                    ,proporciónes por columnas
-title.ctable.tot     ,main heading                    ,proporcíones sobre total
+title.ctable.row     ,main heading                    ,proporciones por líneas?
+title.ctable.col     ,main heading                    ,proporciones por columnas
+title.ctable.tot     ,main heading                    ,proporcíón del total
 title.descr          ,main heading                    ,Estadísticas descriptivas
 title.descr.weighted ,main heading                    ,Estadísticas descriptivas ponderadas
-title.dfSummary      ,main heading                    ,Resumen de data frame
+title.dfSummary      ,main heading                    ,Tabla resumen
 n                    ,heading label                   ,N
-dimensions           ,heading label                   ,Dimensiónes
+dimensions           ,heading label                   ,Dimensiones
 duplicates           ,heading label                   ,Duplicados
 data.frame           ,heading label                   ,Data frame
 label                ,heading label & column name     ,Etiqueta
 variable             ,heading label & column name     ,Variable
 group                ,heading label                   ,Subgrupo
 by                   ,heading label                   ,por
-weights              ,heading label                   ,Ponderaciones
+weights              ,heading label                   ,Pesos
 type                 ,heading label                   ,Tipo
 logical              ,heading value for type          ,Booleana
-character            ,heading value for type          ,Alpahnumérico
+character            ,heading value for type          ,Alfahnumérico
 numeric              ,heading value for type          ,Numérico
 factor               ,heading value for type          ,Factor
-factor.ordered       ,heading value for type          ,Forctor ordenado
+factor.ordered       ,heading value for type          ,Factor ordenado
 date                 ,heading value for type          ,Fecha
 datetime             ,heading value for type          ,Fecha y hora
 freq                 ,column name (freq)              ,Frec.
 pct.valid            ,column name (freq)              ,% Válido
-pct.valid.cum        ,column name (freq)              ,% Válido cum.
+pct.valid.cum        ,column name (freq)              ,% Válido acu.
 pct.total            ,column name (freq)              ,% Total
-pct.total.cum        ,column name (freq)              ,% Total cum.
-pct.cum              ,column name (freq)              ,% Cum.
+pct.total.cum        ,column name (freq)              ,% Total acu.
+pct.cum              ,column name (freq)              ,% Acu.
 valid                ,column name (freq & dfSummary)  ,Válido
 total                ,column grouping (freq)          ,Total
 mean                 ,row name (descr)                ,Media
-sd                   ,row name (descr)                ,D-std.
+sd.long              ,row name (descr)                ,Dev.std.
+sd                   ,cell content (dfSummary)        ,d-s
 min                  ,row name (descr)                ,Min
 q1                   ,row name (descr)                ,Q1
 med                  ,row name (descr)                ,Mediana
@@ -50,10 +51,9 @@ n.valid              ,row name (descr)                ,Num.Válido
 pct.valid            ,row name (descr)                ,Pct.Válido
 no                   ,column name (dfSummary)         ,No
 stats.values         ,column name (dfSummary)         ,Estadísticas / Valores
-freqs.pct.valid      ,column name (dfSummary)         ,Frec. (% sobre válido)
+freqs.pct.valid      ,column name (dfSummary)         ,Frec. (% sobre válidos)
 graph                ,column name (dfSummary)         ,Gráfico
-text.graph           ,column name (dfSummary)         ,Gráfico texto / ascii?
-missing              ,column name (dfSummary)         ,Faltante
+missing              ,column name (dfSummary)         ,Perdidos
 distinct.value       ,cell content (dfSummary)        ,valor distinto
 distinct.values      ,cell content (dfSummary)        ,valores distintos
 all.nas              ,cell content (dfSummary)        ,Todos NA's
@@ -62,11 +62,11 @@ all.empty.str.nas    ,cell content (dfSummary)        ,Todos [empty strings / NA
 int.sequence         ,cell content (dfSummary)        ,Secuencia de enteros
 rounded              ,cell content (dfSummary)        ,redondeo
 others               ,cell content (dfSummary)        ,otros
-codes                ,cell content (dfSummary)        ,codigos
+codes                ,cell content (dfSummary)        ,códigos
 mode                 ,cell content (dfSummary)        ,modo
 med.short            ,cell content (dfSummary)        ,mediana
 start                ,cell content (dfSummary)        ,principio
-end                  ,cell content (dfSummary)        ,término
+end                  ,cell content (dfSummary)        ,fin
 generated.by         ,footnote                        ,Generado por
 version              ,footnote                        ,versión
 date.fmt             ,footnote                        ,%Y-%m-%d
