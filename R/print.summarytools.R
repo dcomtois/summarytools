@@ -233,7 +233,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
       method == "pander") {
     method <- "browser"
-    message("Switching method to 'browser'")
+    msg("Switching method to 'browser'")
   }
   
   if (method == "pander" && !is.na(table.classes)) {
@@ -264,15 +264,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if (attr(x, "format_info")$style %in% c("simple", "multiline")) {
       dotArgs %+=% list(style = newstyle)
       if (isTRUE(tmp_msg_flag)) {
-        message("Setting 'plain.ascii' to FALSE and Changing style to '",
-                newstyle, "' for improved markdown compatibility")
+        msg(paste0("Setting 'plain.ascii' to FALSE and Changing style to '",
+                   newstyle, "' for improved markdown compatibility"))
       } else {
-        message("Changing style to '",newstyle, "' for improved markdown",
-                "compatibility")
+        msg(paste0("Changing style to '", newstyle, "' for improved markdown",
+                   "compatibility"))
       }
     } else if (isTRUE(tmp_msg_flag)) {
-      message("Setting 'plain.ascii' to FALSE for improved markdown",
-              "compatibility")
+      msg(paste("Setting 'plain.ascii' to FALSE for improved markdown",
+                "compatibility"))
     }
   }
   
@@ -290,14 +290,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
                  x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
-    msg <- paste("For best results printing list objects with summarytools,",
-                 "use print(x)")
-    if (.st_env$last.message$msg != msg || 
-        Sys.time() - .st_env$last.message$time > 1) {
-      .st_env$last.message$msg <- msg
-      .st_env$last.message$time <- Sys.time()
-      message(msg)
-    }
+    msg(paste("For best results printing list objects with summarytools,",
+              "use print(x)"))
   }
   
   # Override of x's attributes (format_info and heading info) ------------------
@@ -320,15 +314,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "totals", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
       if (format_element == "omit.headings") {
-        msg <- paste("'omit.headings' will disappear in future releases;",
-                     "use 'headings' instead")
-        if (.st_env$last.message$msg != msg || 
-            Sys.time() - .st_env$last.message$time > 1) {
-          .st_env$last.message$msg <- msg
-          .st_env$last.message$time <- Sys.time()
-          message(msg)
-        }
-        
+        msg(paste("'omit.headings' will disappear in future releases;",
+                  "use 'headings' instead"))
         attr(x, "format_info")[["headings"]] <- 
           !isTRUE(eval(dotArgs[["omit.headings"]]))
         overrided_args <- append(overrided_args, "headings")
@@ -373,13 +360,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Override of data info attributes
   if ("dataframe" %in% tolower(names(dotArgs))) {
     dotArgs$Data.frame = dotArgs$Dataframe
-    message("Attribute 'Dataframe' has been renamed to 'Data.frame'")
+    msg("Attribute 'Dataframe' has been renamed to 'Data.frame'")
   }
   
   if ("dataframe.label" %in% tolower(names(dotArgs))) {
     dotArgs$Data.frame.label = dotArgs$Dataframe.label
-    message("Attribute 'Dataframe.label' has been renamed to ",
-            "'Data.frame.label'")
+    msg(paste("Attribute 'Dataframe.label' has been renamed to",
+              "'Data.frame.label'"))
   }
   
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
@@ -480,9 +467,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
-        message(paste0("Output file appended: ", file))
+        msg(paste("Output file appended:", file))
       else
-        message(paste0("Output file written: ", file))
+        msg(paste("Output file written:", file))
       return(invisible())
     }
     
@@ -557,13 +544,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (!is.null(viewer)) {
             viewer(outfile_path)
           } else {
-            message("To view html content in RStudio, please run ",
-                    "install.packages('rstudioapi').")
-            message("Switching method to 'browser'")
+            msg(paste("To view html content in RStudio, please run",
+                      "install.packages('rstudioapi')"))
+            msg("Switching method to 'browser'")
             method <- "browser"
           }
         } else {
-          message("Switching method to 'browser'.")
+          msg("Switching method to 'browser'")
           method <- "browser"
         }
       }
@@ -586,15 +573,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if(file == "" && method %in% c("browser", "viewer")) {
       .st_env$tmpfiles <- c(.st_env$tmpfiles, outfile_path)
       if (!silent) {
-        message(paste0("Output file written: ", outfile_path))
+        msg(paste("Output file written:", outfile_path))
       }
       return(invisible(outfile_path))
     } else if (file != "") {
       if (!silent) {
         if (isTRUE(append)) {
-          message(paste0("Output file appended: ", outfile_path))
+          msg(paste("Output file appended:", outfile_path))
         } else {
-          message(paste0("Output file written: ", outfile_path))
+          msg(paste("Output file written:", outfile_path))
         }
       }
       return(invisible())
@@ -614,8 +601,8 @@ print_freq <- function(x, method) {
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
-    message("Non-numerical variable(s) ignored: ",
-            paste(attr(x, "ignored"), collapse = ", "))
+    msg(paste("Non-numerical variable(s) ignored:",
+            paste(attr(x, "ignored"), collapse = ", ")))
   }
   
   if (!isTRUE(format_info$report.nas)) {
@@ -1073,8 +1060,8 @@ print_descr <- function(x, method) {
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
-    message("Non-numerical variable(s) ignored: ", 
-            paste(attr(x, "ignored"), collapse = ", "))
+    msg(paste("Non-numerical variable(s) ignored:",
+              paste(attr(x, "ignored"), collapse = ", ")))
   }
   
   justify <- switch(tolower(substring(format_info$justify, 1, 1)),
@@ -1082,7 +1069,7 @@ print_descr <- function(x, method) {
                     c = "center",
                     r = "right")
   
-  if(method=="pander") {
+  if(method == "pander") {
     
     # print_descr -- pander method ---------------------------------------------
     # Format numbers (avoids inconsistencies with pander rounding digits)

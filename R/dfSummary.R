@@ -143,7 +143,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     } else {
       converted_to_df <- TRUE
       df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
-      message("Object was converted to a data frame")
+      msg(paste(deparse(xnames), "was converted to a data frame"))
     }
   }
 

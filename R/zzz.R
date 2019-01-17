@@ -7,8 +7,10 @@
 # Initialize list used by view() when printing an object of class "by"
 .st_env$byInfo <- list()
 
-# Initialise message to be displayed in some specific circumstances
-.st_env$last.message <- list(msg = "", time = 0)
+# Initialise list of displayed messages, to avoid repeating the same
+# message several times in a short period of time
+.st_env$messages <- data.frame(msg = character(), time = numeric(),
+                               stringsAsFactors = FALSE)
 
 # Placeholder for customized translations
 .st_env$custom_lang <- list()
