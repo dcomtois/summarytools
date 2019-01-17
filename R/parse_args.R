@@ -412,9 +412,17 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       }
       upd_output("df_label", label(obj))
       v_name <- setdiff(as.character(calls$pipe$rhs), c(caller, oper))
-      if (v_name %in% colnames(obj)) {
+      if (length(v_name) == 1 && v_name %in% colnames(obj)) {
         upd_output("var_name", v_name)
         upd_output("var_label", label(obj[[v_name]]))
+      } else {
+        if (ncol(obj) == 1) {
+          upd_output("var_name", names(obj))
+          upd_output("var_label", label(obj[[1]]))
+        } else {
+          upd_output("var_name", NA_character_)
+          upd_output("var_label", NA_character_)
+        }
       }
     } else if (is.atomic(obj)) {
       if(length(calls$pipe$lhs) == 1) {

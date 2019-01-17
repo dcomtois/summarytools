@@ -96,6 +96,16 @@ eval_with_feedback <- function(filename, lang) {
   }
 }
 
+eval_with_feedback(testfiles[1],  lang = "en") # parse-args
+eval_with_feedback(testfiles[2],  lang = "en") # freq
+eval_with_feedback(testfiles[3],  lang = "en") # ctable
+eval_with_feedback(testfiles[4],  lang = "en") # descr
+eval_with_feedback(testfiles[5],  lang = "en") # dfSummary
+eval_with_feedback(testfiles[6],  lang = "en") # overrides
+eval_with_feedback(testfiles[7],  lang = "en") # lapply
+eval_with_feedback(testfiles[8],  lang = "en") # with/by
+eval_with_feedback(testfiles[9],  lang = "en") # st_options
+
 eval_with_feedback(testfiles[1],  lang = "fr") # parse-args
 eval_with_feedback(testfiles[2],  lang = "fr") # freq
 eval_with_feedback(testfiles[3],  lang = "fr") # ctable

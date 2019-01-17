@@ -29,6 +29,7 @@ with(tobacco, ctable(smoker, diseased))   # ok
 
 # pipe
 library(magrittr)
+label(tobacco$smoker) <- "Subject smokes"
 tobacco$smoker %>% freq()      # ok
 tobacco["smoker"] %>% freq()   # ok
 tobacco[["smoker"]] %>% freq() # ok
