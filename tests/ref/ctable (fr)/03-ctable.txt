@@ -105,18 +105,20 @@ Data frame: tobacco
 Tableau croisé, proportions par rangées   
 gender * french < 60     
 Data frame: exams   
--------- ------------------- ------------- ---------- ---------- -------------
-           exams$french < 60         FALSE       TRUE       <NA>         Total
-  gender                                                                      
-    Girl                       13 ( 86.7%)   1 (6.7%)   1 (6.7%)   15 (100.0%)
-     Boy                       15 (100.0%)   0 (0.0%)   0 (0.0%)   15 (100.0%)
-   Total                       28 ( 93.3%)   1 (3.3%)   1 (3.3%)   30 (100.0%)
--------- ------------------- ------------- ---------- ---------- -------------
+
+-------- ------------- ------------- ---------- ---------- -------------
+           french < 60         FALSE       TRUE       <NA>         Total
+  gender                                                                
+    Girl                 13 ( 86.7%)   1 (6.7%)   1 (6.7%)   15 (100.0%)
+     Boy                 15 (100.0%)   0 (0.0%)   0 (0.0%)   15 (100.0%)
+   Total                 28 ( 93.3%)   1 (3.3%)   1 (3.3%)   30 (100.0%)
+-------- ------------- ------------- ---------- ---------- -------------
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use") 
 
 Tableau croisé, proportions par rangées   
-Gender * Failed French Class    
+Gender * Failed French Class     
+Data frame: exams   
 
 -------- --------------------- ------------- ---------- ---------- -------------
            Failed French Class         FALSE       TRUE       <NA>         Total
@@ -277,3 +279,4 @@ Groupe: gender = M
 > view(wbc, headings = T, file = "ctable-wbc-view-with-head.html") 
 -- Output file written
 -- Output file appended
+

@@ -2,7 +2,7 @@
 # library(summarytools)
 
 data(tobacco)
-tobacco <- tibble::as.tibble(tobacco)
+tobacco <- tibble::as_tibble(tobacco)
 
 label(tobacco) <- "A Study on Tobacco Use and Health"
 label(tobacco$gender) <- "Subject's Gender"
@@ -48,9 +48,9 @@ data(cars)
 view(dfs4, method="browser", footnote = "cars", file = "04 - cars.html")
 
 # Test special variables (ean, binary, ternary, na's, etc)
-load("~/GitHub/summarytools/tests/data/special_vars.RData")
+load("../../../data/special_vars.RData")
 (dfs_special <- dfSummary(special_vars))
-view(dfs_special, method = "browser", file = "02 - special vars.html", open.doc = TRUE)
+view(dfs_special, method = "browser", file = "02 - special vars.html")
 
 # One variable only
 data(iris)

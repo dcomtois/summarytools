@@ -1,7 +1,7 @@
 # -------------------------- 2-freq.R ------------------------------------------
 # library(summarytools)
 data(tobacco)
-tobacco <- tibble::as.tibble(tobacco)
+tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
 
 # Basic tables + general formatting (style / plain.ascii)

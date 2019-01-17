@@ -1,6 +1,6 @@
 # Setup
 # rm(list=ls())
-# setwd("~/GitHub/summarytools")
+# setwd("~/github/summarytools")
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
 
@@ -10,7 +10,7 @@
 
 (dir.create(date_dir, recursive = TRUE))
 
-(testfiles <- grep(dir("~/GitHub/summarytools/tests/"), pattern = "\\d(?!0)\\d",
+(testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "\\d(?!0)\\d",
                   perl = TRUE, value = TRUE))
 
 eval_with_feedback <- function(filename, lang, out_dir) {
