@@ -1,5 +1,4 @@
-# -------------------------- 2-freq.R ------------------------------------------
-# library(summarytools)
+# ---------------------------- freq.R ------------------------------------------
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"

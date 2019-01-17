@@ -1,6 +1,4 @@
-# --------------------------- 5.dfSummary.R  -----------------------------------
-# library(summarytools)
-
+# ----------------------------- dfSummary.R  -----------------------------------
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 

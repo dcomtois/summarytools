@@ -1,0 +1,731 @@
+
+#-------------------------------- with-by.R ------------------------------------  
+
+
+# with ------------------------------------------------------------------------- 
+
+> w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)) 
+> view(w1, file = "01 - with.md") 
+-- Switching method to 'pander'
+-- Changing style to 'rmarkdown' for improved markdowncompatibility
+-- Output file written
+
+> view(w1, file = "01 - with.html") 
+-- Output file written
+
+> (w2 <- with(tobacco, descr(BMI, transpose = TRUE))) 
+
+Descriptive Statistics   
+tobacco$BMI   
+N: 1000   
+
+             Mean   Std.Dev.    Min      Q1   Median      Q3     Max    MAD    IQR     CV   Skewness
+--------- ------- ---------- ------ ------- -------- ------- ------- ------ ------ ------ ----------
+      BMI   25.73       4.49   8.83   22.93    25.62   28.65   39.44   4.18   5.72   0.17       0.02
+
+Table: Table continues below
+
+ 
+
+            SE.Skewness   Kurtosis   N.Valid   % Valid
+--------- ------------- ---------- --------- ---------
+      BMI          0.08       0.26    974.00     97.40
+
+> view(w2, footnote = "with, transpose", file = "02 - with-transposed.html") 
+-- Output file written
+
+> view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander") 
+
+Cross-Tabulation, Row Proportions   
+gender * diseased     
+Data Frame: tobacco   
+
++--------+----------+-------------+-------------+---------------+
+|        | diseased |         Yes |          No |         Total |
++--------+----------+-------------+-------------+---------------+
+| gender |          |             |             |               |
++--------+----------+-------------+-------------+---------------+
+|      F |          | 111 (22.7%) | 378 (77.3%) |  489 (100.0%) |
++--------+----------+-------------+-------------+---------------+
+|      M |          | 110 (22.5%) | 379 (77.5%) |  489 (100.0%) |
++--------+----------+-------------+-------------+---------------+
+|   <NA> |          |   3 (13.6%) |  19 (86.4%) |   22 (100.0%) |
++--------+----------+-------------+-------------+---------------+
+|  Total |          | 224 (22.4%) | 776 (77.6%) | 1000 (100.0%) |
++--------+----------+-------------+-------------+---------------+
+
+> (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C"))) 
+
+Cross-Tabulation, Column Proportions   
+gender * diseased     
+Data Frame: tobacco   
+
++--------+----------+--------------+--------------+---------------+
+|        | diseased |          Yes |           No |         Total |
++--------+----------+--------------+--------------+---------------+
+| gender |          |              |              |               |
++--------+----------+--------------+--------------+---------------+
+|      F |          | 111 ( 49.6%) | 378 ( 48.7%) |  489 ( 48.9%) |
++--------+----------+--------------+--------------+---------------+
+|      M |          | 110 ( 49.1%) | 379 ( 48.8%) |  489 ( 48.9%) |
++--------+----------+--------------+--------------+---------------+
+|   <NA> |          |    3 ( 1.3%) |   19 ( 2.4%) |    22 ( 2.2%) |
++--------+----------+--------------+--------------+---------------+
+|  Total |          | 224 (100.0%) | 776 (100.0%) | 1000 (100.0%) |
++--------+----------+--------------+--------------+---------------+
+
+> view(w3, method = "browser", footnote = "with, prop = c", file = "03 - with-col props.html") 
+-- Output file written
+
+
+# by --------------------------------------------------------------------------- 
+
+> bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq) 
+> view(bf1, 'pander') 
+
+Frequencies   
+tobacco$diseased     
+Type: Factor    
+Group: smoker = Yes   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    125     41.95          41.95     41.95          41.95
+         No    173     58.05         100.00     58.05         100.00
+       <NA>      0                               0.00         100.00
+      Total    298    100.00         100.00    100.00         100.00
+  
+Group: smoker = No   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     99     14.10          14.10     14.10          14.10
+         No    603     85.90         100.00     85.90         100.00
+       <NA>      0                               0.00         100.00
+      Total    702    100.00         100.00    100.00         100.00
+
+> view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE) 
+
+  
+**Group:** smoker = Yes   
+
+      &nbsp;   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+------------ ------ --------- -------------- --------- --------------
+     **Yes**    125     41.95          41.95     41.95          41.95
+      **No**    173     58.05         100.00     58.05         100.00
+  **\<NA\>**      0                               0.00         100.00
+   **Total**    298    100.00         100.00    100.00         100.00
+  
+**Group:** smoker = No   
+
+      &nbsp;   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+------------ ------ --------- -------------- --------- --------------
+     **Yes**     99     14.10          14.10     14.10          14.10
+      **No**    603     85.90         100.00     85.90         100.00
+  **\<NA\>**      0                               0.00         100.00
+   **Total**    702    100.00         100.00    100.00         100.00
+
+> print(bf1) 
+
+Frequencies   
+tobacco$diseased     
+Type: Factor    
+Group: smoker = Yes   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    125     41.95          41.95     41.95          41.95
+         No    173     58.05         100.00     58.05         100.00
+       <NA>      0                               0.00         100.00
+      Total    298    100.00         100.00    100.00         100.00
+  
+Group: smoker = No   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     99     14.10          14.10     14.10          14.10
+         No    603     85.90         100.00     85.90         100.00
+       <NA>      0                               0.00         100.00
+      Total    702    100.00         100.00    100.00         100.00
+
+> view(bf1, file = "04 - by.html", missing = "xxxx") 
+-- Output file written
+-- Output file appended
+
+
+# with + by -------------------------------------------------------------------- 
+
+> label(tobacco$BMI) <- "Body Mass Index" 
+> label(tobacco$diseased) <- "Subject has illness" 
+> view(by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "04 - with and by.html") 
+-- Output file written
+-- Output file appended
+
+> view(by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "05 - with and by.md") 
+-- Switching method to 'pander'
+-- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+-- Output file written
+
+> bf2 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq) 
+> view(bf2, 'pander') # 7-23 
+
+Frequencies   
+iris$Species     
+Type: Factor    
+Group: Sepal.Length > mean(Sepal.Length) = FALSE   
+
+                   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+---------------- ------ --------- -------------- --------- --------------
+          setosa     50     62.50          62.50     62.50          62.50
+      versicolor     24     30.00          92.50     30.00          92.50
+       virginica      6      7.50         100.00      7.50         100.00
+            <NA>      0                               0.00         100.00
+           Total     80    100.00         100.00    100.00         100.00
+  
+Group: Sepal.Length > mean(Sepal.Length) = TRUE   
+
+                   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+---------------- ------ --------- -------------- --------- --------------
+          setosa      0      0.00           0.00      0.00           0.00
+      versicolor     26     37.14          37.14     37.14          37.14
+       virginica     44     62.86         100.00     62.86         100.00
+            <NA>      0                               0.00         100.00
+           Total     70    100.00         100.00    100.00         100.00
+
+> view(bf2, method = "browser", footnote = "condition pour by", file = "7-24.html") 
+-- Output file written
+-- Output file appended
+
+> bd1 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid") # 7-11 
+> view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "7-12.html") 
+-- Output file written
+
+> view(bd1, method = 'pander') # 7-13 
+
+Descriptive Statistics   
+BMI by gender   
+Data Frame: tobacco    
+Label: Body Mass Index    
+N: 489   
+
+                         F        M
+----------------- -------- --------
+             Mean    26.10    25.31
+         Std.Dev.     4.95     3.98
+              Min     9.01     8.83
+               Q1    22.98    22.52
+           Median    25.87    25.14
+               Q3    29.48    27.96
+              Max    39.44    36.76
+              MAD     4.75     4.02
+              IQR     6.49     5.44
+               CV     0.19     0.16
+         Skewness    -0.02    -0.04
+      SE.Skewness     0.11     0.11
+         Kurtosis     0.09     0.17
+          N.Valid   475.00   477.00
+          % Valid    97.14    97.55
+
+> bd2 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr) # 7-14 
+> view(bd2, method = "browser", file = "7-15.html") 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> view(bd2, method = "pander") 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics   
+tobacco   
+Group: gender = F    
+N: 489   
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.56    26.10           6.88        1.00
+         Std.Dev.    18.28     4.95          12.04        0.08
+              Min    18.00     9.01           0.00        0.86
+               Q1    34.00    22.98           0.00        0.86
+           Median    50.00    25.87           0.00        1.04
+               Q3    66.00    29.48          10.50        1.05
+              Max    80.00    39.44          40.00        1.06
+              MAD    23.72     4.75           0.00        0.01
+              IQR    32.00     6.49          10.25        0.19
+               CV     0.37     0.19           1.75        0.08
+         Skewness    -0.04    -0.02           1.53       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.25     0.09           0.85       -0.92
+          N.Valid   475.00   475.00         468.00      489.00
+          % Valid    97.14    97.14          95.71      100.00
+  
+Group: gender = M    
+N: 489   
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.58    25.31           6.72        1.00
+         Std.Dev.    18.34     3.98          11.83        0.08
+              Min    18.00     8.83           0.00        0.86
+               Q1    34.00    22.52           0.00        0.86
+           Median    49.50    25.14           0.00        1.04
+               Q3    66.00    27.96          11.00        1.05
+              Max    80.00    36.76          40.00        1.06
+              MAD    24.46     4.02           0.00        0.01
+              IQR    32.00     5.44          11.00        0.19
+               CV     0.37     0.16           1.76        0.08
+         Skewness    -0.04    -0.04           1.54       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.27     0.17           0.92       -0.92
+          N.Valid   478.00   477.00         475.00      489.00
+          % Valid    97.75    97.55          97.14      100.00
+
+> label(tobacco) <- "Blabla" 
+> bd3 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr) # 7-16 
+> st_options(display.labels = FALSE) 
+> view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "7-17.html") 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> view(bd3, method = "pander") # 7-18 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics   
+tobacco   
+Group: gender = F    
+N: 489   
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.56    26.10           6.88        1.00
+         Std.Dev.    18.28     4.95          12.04        0.08
+              Min    18.00     9.01           0.00        0.86
+               Q1    34.00    22.98           0.00        0.86
+           Median    50.00    25.87           0.00        1.04
+               Q3    66.00    29.48          10.50        1.05
+              Max    80.00    39.44          40.00        1.06
+              MAD    23.72     4.75           0.00        0.01
+              IQR    32.00     6.49          10.25        0.19
+               CV     0.37     0.19           1.75        0.08
+         Skewness    -0.04    -0.02           1.53       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.25     0.09           0.85       -0.92
+          N.Valid   475.00   475.00         468.00      489.00
+          % Valid    97.14    97.14          95.71      100.00
+  
+Group: gender = M    
+N: 489   
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.58    25.31           6.72        1.00
+         Std.Dev.    18.34     3.98          11.83        0.08
+              Min    18.00     8.83           0.00        0.86
+               Q1    34.00    22.52           0.00        0.86
+           Median    49.50    25.14           0.00        1.04
+               Q3    66.00    27.96          11.00        1.05
+              Max    80.00    36.76          40.00        1.06
+              MAD    24.46     4.02           0.00        0.01
+              IQR    32.00     5.44          11.00        0.19
+               CV     0.37     0.16           1.76        0.08
+         Skewness    -0.04    -0.04           1.54       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.27     0.17           0.92       -0.92
+          N.Valid   478.00   477.00         475.00      489.00
+          % Valid    97.75    97.55          97.14      100.00
+
+> attach(tobacco) 
+-- The following objects are masked from tobacco (pos = 3):
+-- 
+--     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
+-- 
+
+> bd4 <- by(data = BMI, INDICES = gender, FUN = descr) # 7-18 
+> view(bd4, method = "browser", footnote = "floating variable", file = "7-19.html") 
+-- Output file written
+
+> view(bd4, method = 'pander') # 7-20 
+
+Descriptive Statistics   
+BMI by gender   
+N: 489   
+
+                         F        M
+----------------- -------- --------
+             Mean    26.10    25.31
+         Std.Dev.     4.95     3.98
+              Min     9.01     8.83
+               Q1    22.98    22.52
+           Median    25.87    25.14
+               Q3    29.48    27.96
+              Max    39.44    36.76
+              MAD     4.75     4.02
+              IQR     6.49     5.44
+               CV     0.19     0.16
+         Skewness    -0.02    -0.04
+      SE.Skewness     0.11     0.11
+         Kurtosis     0.09     0.17
+          N.Valid   475.00   477.00
+          % Valid    97.14    97.55
+
+> detach(tobacco) 
+
+# cas particulier - by, 1 groupe seul. ----------------------------------------- 
+
+> (b8 <- by(iris, !is.na(iris$Species), descr)) # 7-25 
+-- Non-numerical variable(s) ignored: Species
+
+Descriptive Statistics   
+iris   
+Group: !is.na(Species) = TRUE    
+N: 150   
+
+                    Petal.Length   Petal.Width   Sepal.Length   Sepal.Width
+----------------- -------------- ------------- -------------- -------------
+             Mean           3.76          1.20           5.84          3.06
+         Std.Dev.           1.77          0.76           0.83          0.44
+              Min           1.00          0.10           4.30          2.00
+               Q1           1.60          0.30           5.10          2.80
+           Median           4.35          1.30           5.80          3.00
+               Q3           5.10          1.80           6.40          3.30
+              Max           6.90          2.50           7.90          4.40
+              MAD           1.85          1.04           1.04          0.44
+              IQR           3.50          1.50           1.30          0.50
+               CV           0.47          0.64           0.14          0.14
+         Skewness          -0.27         -0.10           0.31          0.31
+      SE.Skewness           0.20          0.20           0.20          0.20
+         Kurtosis          -1.42         -1.36          -0.61          0.14
+          N.Valid         150.00        150.00         150.00        150.00
+          % Valid         100.00        100.00         100.00        100.00
+
+> view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "7-27.html") 
+-- Output file written
+
+> attach(tobacco) 
+-- The following objects are masked from tobacco (pos = 3):
+-- 
+--     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
+-- 
+
+> view(by(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "7-29.html") # 7-29 
+-- Output file written
+
+> view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") # 7-30 
+
+### Descriptive Statistics   
+**BMI** by **gender**   
+**N:** 489   
+
+|          &nbsp; |      F |      M |
+|----------------:|-------:|-------:|
+|        **Mean** |  26.10 |  25.31 |
+|    **Std.Dev.** |   4.95 |   3.98 |
+|         **Min** |   9.01 |   8.83 |
+|          **Q1** |  22.98 |  22.52 |
+|      **Median** |  25.87 |  25.14 |
+|          **Q3** |  29.48 |  27.96 |
+|         **Max** |  39.44 |  36.76 |
+|         **MAD** |   4.75 |   4.02 |
+|         **IQR** |   6.49 |   5.44 |
+|          **CV** |   0.19 |   0.16 |
+|    **Skewness** |  -0.02 |  -0.04 |
+| **SE.Skewness** |   0.11 |   0.11 |
+|    **Kurtosis** |   0.09 |   0.17 |
+|     **N.Valid** | 475.00 | 477.00 |
+|     **% Valid** |  97.14 |  97.55 |
+
+> view(by(data = BMI, INDICES = gender, FUN = descr), method = "render") # 7-31 
+
+<div class="container st-container">
+  <h3>Descriptive Statistics</h3>
+  <strong>BMI</strong> by <strong>gender</strong><br/>
+  <strong>N</strong>: 489
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th class="st-protect-top-border"></th>
+      <th align="center" class="st-protect-top-border">F</th>
+      <th align="center" class="st-protect-top-border">M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>26.10</span></td>
+      <td><span>25.31</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev.</strong></td>
+      <td><span>4.95</span></td>
+      <td><span>3.98</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>9.01</span></td>
+      <td><span>8.83</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Q1</strong></td>
+      <td><span>22.98</span></td>
+      <td><span>22.52</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>25.87</span></td>
+      <td><span>25.14</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Q3</strong></td>
+      <td><span>29.48</span></td>
+      <td><span>27.96</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>39.44</span></td>
+      <td><span>36.76</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>MAD</strong></td>
+      <td><span>4.75</span></td>
+      <td><span>4.02</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>IQR</strong></td>
+      <td><span>6.49</span></td>
+      <td><span>5.44</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>CV</strong></td>
+      <td><span>0.19</span></td>
+      <td><span>0.16</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Skewness</strong></td>
+      <td><span>-0.02</span></td>
+      <td><span>-0.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>SE.Skewness</strong></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Kurtosis</strong></td>
+      <td><span>0.09</span></td>
+      <td><span>0.17</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>475</span></td>
+      <td><span>477</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>% Valid</strong></td>
+      <td><span>97.14</span></td>
+      <td><span>97.55</span></td>
+    </tr>
+  </tbody>
+</table>
+  Placeholder footnote
+</div>
+
+> detach(tobacco) 
+> b9 <- by(tobacco, tobacco$gender, dfSummary) 
+
+# with + by -------------------------------------------------------------------- 
+
+> wb1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq)) # 7-32 
+> view(wb1, method = "pander", caption = "with + by, # 7-32") # 7-32 
+
+Frequencies   
+tobacco$diseased     
+Type: Factor    
+Group: smoker = Yes   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    125     41.95          41.95     41.95          41.95
+         No    173     58.05         100.00     58.05         100.00
+       <NA>      0                               0.00         100.00
+      Total    298    100.00         100.00    100.00         100.00
+
+Table: with + by, # 7-32
+  
+Group: smoker = No   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     99     14.10          14.10     14.10          14.10
+         No    603     85.90         100.00     85.90         100.00
+       <NA>      0                               0.00         100.00
+      Total    702    100.00         100.00    100.00         100.00
+
+Table: with + by, # 7-32
+
+> view(wb1, method = "browser", footnote = "with + by", file = "7-33.html") 
+-- Output file written
+-- Output file appended
+
+> view(wb1, headings = FALSE, footnote = "no headings", file = "7-34.html") 
+-- Output file written
+-- Output file appended
+
+> view(wb1, headings = FALSE, footnote = "no headings", method = "pander") # 7-34b 
+
+  
+Group: smoker = Yes   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    125     41.95          41.95     41.95          41.95
+         No    173     58.05         100.00     58.05         100.00
+       <NA>      0                               0.00         100.00
+      Total    298    100.00         100.00    100.00         100.00
+  
+Group: smoker = No   
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     99     14.10          14.10     14.10          14.10
+         No    603     85.90         100.00     85.90         100.00
+       <NA>      0                               0.00         100.00
+      Total    702    100.00         100.00    100.00         100.00
+
+> wb2 <- with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)) # 7-35 
+> view(wb2, method = "pander") 
+
+Descriptive Statistics   
+BMI by gender   
+Data Frame: tobacco    
+N: 489   
+
+                         F        M
+----------------- -------- --------
+             Mean    26.10    25.31
+         Std.Dev.     4.95     3.98
+              Min     9.01     8.83
+               Q1    22.98    22.52
+           Median    25.87    25.14
+               Q3    29.48    27.96
+              Max    39.44    36.76
+              MAD     4.75     4.02
+              IQR     6.49     5.44
+               CV     0.19     0.16
+         Skewness    -0.02    -0.04
+      SE.Skewness     0.11     0.11
+         Kurtosis     0.09     0.17
+          N.Valid   475.00   477.00
+          % Valid    97.14    97.55
+
+> view(wb2, method = "browser", footnote = "with + by", file = "7-36.html") 
+-- Output file written
+
+> view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr, stats = "fivenum")), method = "browser", footnote = "with + by fivenum", file = "7-36.html") 
+-- Output file written
+
+> (b5 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max")))) 
+
+Descriptive Statistics   
+BMI by age.gr   
+Data Frame: tobacco    
+N: 258   
+
+                 18-34   35-50   51-70    71 +
+-------------- ------- ------- ------- -------
+          Mean   23.84   25.11   26.91   27.45
+      Std.Dev.    4.23    4.34    4.26    4.37
+           Min    8.83   10.35    9.01   16.36
+        Median   24.04   25.11   26.77   27.52
+           Max   34.84   39.44   39.21   38.37
+
+> print(b5, "pander", style = "rmarkdown") # 7-38 
+
+### Descriptive Statistics   
+**BMI** by **age.gr**   
+**Data Frame:** tobacco    
+**N:** 258   
+
+|       &nbsp; | 18-34 | 35-50 | 51-70 |  71 + |
+|-------------:|------:|------:|------:|------:|
+|     **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
+| **Std.Dev.** |  4.23 |  4.34 |  4.26 |  4.37 |
+|      **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
+|   **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
+|      **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
+
+> b6 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE)) 
+> view(b6, "pander") # 7-39 
+
+Descriptive Statistics   
+BMI by age.gr   
+Data Frame: tobacco    
+N: 258   
+
+               Mean   Std.Dev.     Min     Max
+----------- ------- ---------- ------- -------
+      18-34   23.84       4.23    8.83   34.84
+      35-50   25.11       4.34   10.35   39.44
+      51-70   26.91       4.26    9.01   39.21
+       71 +   27.45       4.37   16.36   38.37
+
+
+# TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)  
+
+> view(b6, method = "browser", footnote = "4 stats", file = "7-40.html") 
+-- Output file written
+
+> with(tobacco, view(by(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "7-41.html")) 
+-- Output file written
+-- Output file appended
+
+> view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "7-42.html") 
+-- Output file written
+
+> with(tobacco, view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander")) # 7-43 
+
+Descriptive Statistics   
+BMI by gender   
+Data Frame: tobacco    
+N: 489   
+
+                         F        M
+----------------- -------- --------
+             Mean    26.10    25.31
+         Std.Dev.     4.95     3.98
+              Min     9.01     8.83
+               Q1    22.98    22.52
+           Median    25.87    25.14
+               Q3    29.48    27.96
+              Max    39.44    36.76
+              MAD     4.75     4.02
+              IQR     6.49     5.44
+               CV     0.19     0.16
+         Skewness    -0.02    -0.04
+      SE.Skewness     0.11     0.11
+         Kurtosis     0.09     0.17
+          N.Valid   475.00   477.00
+          % Valid    97.14    97.55
+
+
+# Ouverture dans viewer -------------------------------------------------------- 
+
+> view(b8, footnote = "7-26", method = "viewer") 
+-- Non-numerical variable(s) ignored: Species
+-- Output file written
+
