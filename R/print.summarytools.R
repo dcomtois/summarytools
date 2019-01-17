@@ -1583,9 +1583,15 @@ build_heading_pander <- function(format_info, data_info) {
   add_markup <- function(str, h = 0) {
     if (!isTRUE(format_info$plain.ascii)) {
       if (h == 0) {
-        str <- sub(pattern = "^(\\s*)(.+?)((:)\\s(.+))?\\s*$",
-                   replacement = "\\1**\\2\\4** \\5",
-                   x = str, perl = TRUE)
+        re <- paste0("^(\\s*\\n)(.+)\\s", trs("by"), "\\s(.+)$")
+        if (grepl(re, str, perl = TRUE)) {
+          str <- sub(re, paste0("\\1**", "\\2** ", trs("by"), " **\\3**"), str, 
+                     perl = TRUE)
+        } else {
+          str <- sub(pattern = "^(\\s*)(.+?)((:)\\s(.+))?\\s*$",
+                     replacement = "\\1**\\2\\4** \\5",
+                     x = str, perl = TRUE)
+        }
       } else {
         str <- paste(paste0(rep(x = "#", times = h), collapse = ""), str)
       }
@@ -1901,11 +1907,10 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.descr")))))
     
     if ("by_var_special" %in% names(data_info)) {
-      data_info$Variable <- (paste(data_info$Variable, trs("by"), 
-                                   data_info$by_var_special))
+      head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
+                          "</strong> ", conv_non_ascii(trs("by")), " <strong>",
+                          conv_non_ascii(data_info$by_var_special), "<br/>"))
       
-      head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
-
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
                                  c(Variable.label = trs("label")),
                                  c(Weights        = trs("weights")),
