@@ -34,7 +34,8 @@ pct.cum              ,column name (freq)              ,% Cum.
 valid                ,column name (freq & dfSummary)  ,Valid
 total                ,column grouping (freq)          ,Total
 mean                 ,row name (descr)                ,Mean
-sd                   ,row name (descr)                ,sd
+sd.long              ,row name (descr)                ,Std.Dev.
+sd                   ,cell content (dfSummary)        ,sd
 min                  ,row name (descr)                ,Min
 q1                   ,row name (descr)                ,Q1
 med                  ,row name (descr)                ,Median

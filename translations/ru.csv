@@ -34,7 +34,8 @@ pct.cum              ,column name (freq)              ,% суммы
 valid                ,column name (freq & dfSummary)  ,корректное
 total                ,column grouping (freq)          ,сумма
 mean                 ,row name (descr)                ,среднее значение
-sd                   ,row name (descr)                ,ст. откл.
+sd.long              ,row name (descr)                ,ст. откл.
+sd                   ,cell content (dfSummary)        ,ст. откл.
 min                  ,row name (descr)                ,мин
 q1                   ,row name (descr)                ,Q1
 med                  ,row name (descr)                ,медиана

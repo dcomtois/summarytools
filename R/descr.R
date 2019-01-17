@@ -321,7 +321,11 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
   
   # Apply translations to colnames
   for (i in seq_along(output)) {
-    colnames(output)[i] <- trs(colnames(output)[i])
+    if (colnames(output)[i] == "sd") {
+      colnames(output)[i] <- trs("sd.long")
+    } else {
+      colnames(output)[i] <- trs(colnames(output)[i])
+    }
   }
 
   # Transpose when transpose is FALSE; even though this is counter-intuitive,

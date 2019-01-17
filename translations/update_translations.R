@@ -1,6 +1,6 @@
 # Update package translations
 # Import english file first - the others will be merged to it.
-setwd("~/GitHub/summarytools")
+setwd("~/github/summarytools")
 tr <- read.csv("translations/en.csv", strip.white = TRUE, 
                stringsAsFactors = FALSE, encoding = "UTF-8")
 items <- tr$item
