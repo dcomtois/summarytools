@@ -93,8 +93,8 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                        descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
                        dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
                        dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, lang = "en",
-                       omit.headings = !headings) {
+                       dfSummary.graph.magnif = 1, lang = "en", 
+                       render.strong = TRUE, omit.headings = !headings) {
   
   allOpts <- getOption("summarytools")
   
@@ -166,7 +166,8 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "dfSummary.valid.col"    = TRUE,
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
-                   "lang"                   = "en"))
+                   "lang"                   = "en",
+                   "render.strong"          = TRUE))
     
     message("summarytools options have been reset")
     return(invisible())

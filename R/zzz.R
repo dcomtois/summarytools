@@ -44,7 +44,8 @@ utils::globalVariables(c("."))
                  "dfSummary.valid.col"    = TRUE,
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
-                 "lang"                   = "en"))
+                 "lang"                   = "en",
+                 "render.strong"          = TRUE))
 
   return(invisible())
 }
