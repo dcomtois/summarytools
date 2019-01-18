@@ -53,32 +53,32 @@ freq(tobacco[,1]) # label doesn't show (ok)
 freq(tobacco[[3]])
 
 # Print to files (Style and/or method should be modified with message)
-print(freq1, file = "exemple freq1.md")
-print(freq1, file = "exemple freq1.html")
-print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "freq1-no-bootstrap.html", report.title = "Freq without bootstrap")
+print(freq1, file = "01.md")
+print(freq1, file = "01.html")
+print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap")
 
 # Weights
 (freq3 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
-print(freq3, file = "freq3 - weights.html")
+print(freq3, file = "03 - weights.html")
 
 # with()
 label(tobacco) <- "Study on Tobacco and Health"
 label(tobacco$gender) <- "Subject's Gender"
-(wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))  # Problématique !!!
+(wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
 
 # by()
 label(tobacco$diseased) <- "Subject has an illness"
 (bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 view(bf1, 'pander')
 print(bf1, headings = FALSE, plain.ascii = FALSE)
-print(bf1, footnote = "by", file = "freq-bf1-1.html", missing = "xxxx")
-view(bf1, headings = FALSE, footnote = "no headings", file = "freq-bf1-2.html")
+print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx")
+view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html")
 
 (bf2 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
-print(bf2, file = "freq-bf2.html")
+print(bf2, file = "06 - by.html")
 
 (bf3 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
-print(bf3, file = "freq-bf3.html")
+print(bf3, file = "07 - by.html")
 
 # Using by() + with() --- retrieving labels works only when executed "not in batch"
 label(tobacco$diseased) <- "Subject has an illness"

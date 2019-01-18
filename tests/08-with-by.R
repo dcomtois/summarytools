@@ -18,75 +18,74 @@ view(bf1, 'pander')
 view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 print(bf1)
 
-view(bf1, file = "04 - by.html", missing = "xxxx")
+view(bf1, file = "04 - by freq.html", missing = "xxxx")
 
 # with + by
 label(tobacco$BMI) <- "Body Mass Index"
 label(tobacco$diseased) <- "Subject has illness"
-view(by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "04 - with and by.html")
-view(by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "05 - with and by.md")
+view(by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "05 - with and by freq.html")
+view(by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "06 - with and by descr.md")
 
 bf2 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)
-view(bf2, 'pander') # 7-23
-view(bf2, method = "browser", footnote = "condition pour by", file = "7-24.html")
+view(bf2, 'pander')
+view(bf2, method = "browser", footnote = "condition for by", file = "07 - by calculated freq.html")
 
-bd1 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid") # 7-11
-view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "7-12.html")
-view(bd1, method = 'pander') # 7-13
+bd1 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid")
+view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "08 - by descr no head.html")
+view(bd1, method = 'pander')
 
-bd2 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr) # 7-14
-view(bd2, method = "browser", file = "7-15.html")
-view(bd2, method = "pander")
+bd2 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr)
+view(bd2, method = "browser", file = "09 - by descr.html")
+view(bd2, method = "pander", file = "09 - by descr view.md")
+
 label(tobacco) <- "Blabla"
-
-bd3 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr) # 7-16
+bd3 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 st_options(display.labels = FALSE)
-view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "7-17.html")
-view(bd3, method = "pander") # 7-18
+view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10 - by descr.html")
+print(bd3, file = "10 - by descr.md")
 
 attach(tobacco)
-bd4 <- by(data = BMI, INDICES = gender, FUN = descr) # 7-18
-view(bd4, method = "browser", footnote = "floating variable", file = "7-19.html")
-view(bd4, method = 'pander') # 7-20
-
+bd4 <- by(data = BMI, INDICES = gender, FUN = descr)
+view(bd4, method = "browser", footnote = "stand-alone variable", file = "11 - by descr standalone var.html")
+print(bd4, file = "11 - by descr standalone var.md")
 detach(tobacco)
 
 # cas particulier - by, 1 groupe seul.
-(b8 <- by(iris, !is.na(iris$Species), descr)) # 7-25
-view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "7-27.html")
+(b8 <- by(iris, !is.na(iris$Species), descr))
+view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html")
 
 attach(tobacco)
-view(by(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "7-29.html") # 7-29
-view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") # 7-30
-view(by(data = BMI, INDICES = gender, FUN = descr), method = "render") # 7-31
+view(by(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "13.html") 
+view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") 
+view(by(data = BMI, INDICES = gender, FUN = descr), method = "render") 
 detach(tobacco)
 
 b9 <- by(tobacco, tobacco$gender, dfSummary)
 
 # with + by
-wb1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq)) # 7-32
-view(wb1, method = "pander", caption = "with + by, # 7-32") # 7-32
-view(wb1, method = "browser", footnote = "with + by", file = "7-33.html")
-view(wb1, headings = FALSE, footnote = "no headings", file = "7-34.html")
-view(wb1, headings = FALSE, footnote = "no headings", method = "pander") # 7-34b
+wb1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq)) 
+view(wb1, method = "pander", caption = "with + by")
+view(wb1, method = "browser", footnote = "with + by", file = "14.html")
+view(wb1, headings = FALSE, footnote = "no headings", file = "15.html")
+view(wb1, headings = FALSE, footnote = "no headings", method = "pander") 
 
-wb2 <- with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)) # 7-35
+wb2 <- with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)) 
 view(wb2, method = "pander")
-view(wb2, method = "browser", footnote = "with + by", file = "7-36.html")
+view(wb2, method = "browser", footnote = "with + by", file = "16.html")
 
-view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr, stats = "fivenum")), method = "browser", footnote = "with + by fivenum", file = "7-36.html")
+view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr, stats = "fivenum")), method = "browser", footnote = "with + by fivenum", file = "17.html")
 
 (b5 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max"))))
-print(b5, "pander", style = "rmarkdown") # 7-38
+print(b5, "pander", style = "rmarkdown") 
 
 b6 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE))
-view(b6, "pander") # 7-39
+view(b6, "pander") 
 
 # TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)
-view(b6, method = "browser", footnote = "4 stats", file = "7-40.html")
-with(tobacco, view(by(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "7-41.html"))
-view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "7-42.html")
-with(tobacco, view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander")) # 7-43
+view(b6, method = "browser", footnote = "4 stats", file = "18.html")
+with(tobacco, view(by(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html"))
+view(with(tobacco, by(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html")
+with(tobacco, view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 
 
 # Ouverture dans viewer
-view(b8, footnote = "7-26", method = "viewer")
+view(b8, method = "viewer")

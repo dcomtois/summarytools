@@ -23,34 +23,34 @@ smoker <- tobacco$smoker
 freq(smoker)
 
 # with
-with(tobacco, freq(smoker))               # ok
-with(tobacco, descr(age))                 # ok
-with(tobacco, ctable(smoker, diseased))   # ok
+with(tobacco, freq(smoker))           
+with(tobacco, descr(age))             
+with(tobacco, ctable(smoker, diseased))
 
 # pipe
 library(magrittr)
 label(tobacco$smoker) <- "Subject smokes"
-tobacco$smoker %>% freq()      # ok
-tobacco["smoker"] %>% freq()   # ok
-tobacco[["smoker"]] %>% freq() # ok
-tobacco[,5] %>% freq()         # ok
-tobacco[[5]] %>% freq()        # ok
+tobacco$smoker %>% freq()     
+tobacco["smoker"] %>% freq()  
+tobacco[["smoker"]] %>% freq()
+tobacco[,5] %>% freq()        
+tobacco[[5]] %>% freq()       
 
 # by
-by(tobacco$smoker, tobacco$gender, freq)           # ok
-by(tobacco["smoker"], tobacco["gender"], freq)     # ok
-by(tobacco[,"smoker"], tobacco[,"gender"], freq)   # ok
-by(tobacco[["smoker"]], tobacco[["gender"]], freq) # ok
+by(tobacco$smoker, tobacco$gender, freq)          
+by(tobacco["smoker"], tobacco["gender"], freq)    
+by(tobacco[,"smoker"], tobacco[,"gender"], freq)  
+by(tobacco[["smoker"]], tobacco[["gender"]], freq)
 # by, numeric column indexing
-by(tobacco[[5]], tobacco[[1]], freq)               # ok
-by(tobacco[,5], tobacco[,1], freq)                 # ok
+by(tobacco[[5]], tobacco[[1]], freq)
+by(tobacco[,5], tobacco[,1], freq)  
 # by with ctable
 by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
 
 # with + by
-with(tobacco, by(smoker, gender, freq))                                  # ok
-with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))        # ok
-with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable))   # ok
+with(tobacco, by(smoker, gender, freq))                               
+with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))     
+with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable))
 
 # lapply
 print(lapply(tobacco[c(1,3,5)], freq))
