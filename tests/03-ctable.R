@@ -10,9 +10,9 @@ label(tobacco) <- "A Study on Tobacco Use and Health"
 (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
 
 st_options(display.labels = F)
-print(ct1, file = "ctable-ct1-1.html")
-print(ct1, totals=FALSE, file = "ctable-ct1-no-totals-print.md", style = "grid", plain.ascii = FALSE)
-view(ct1, totals=FALSE, file = "ctable-ct1-no-totals-view.md", style = "grid", plain.ascii = FALSE)
+print(ct1, file = "01.html")
+print(ct1, totals=FALSE, file = "02.md", style = "grid", plain.ascii = FALSE)
+view(ct1, totals=FALSE, file = "03.md", style = "grid", plain.ascii = FALSE)
 
 # Non-default proportions
 ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
@@ -38,7 +38,7 @@ by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 with(tobacco, by(list(x = smoker, y = diseased), gender, ctable)) # problématique!
 wbc <- with(tobacco, by(list(x = smoker, y = diseased), gender, ctable, headings = F))
 print(wbc, headings = T)
-print(wbc, headings = T, file = "ctable-wbc-print.md")
-print(wbc, headings = T, file = "ctable-wbc-print.html")
-view(wbc, headings = T, file = "ctable-wbc-view-with-head.md")
-view(wbc, headings = T, file = "ctable-wbc-view-with-head.html")
+print(wbc, headings = T, file = "04.md")
+print(wbc, headings = T, file = "04.html")
+view(wbc, headings = T, caption = "with head", file = "05.md")
+view(wbc, headings = T, footnote = "with head", file = "05.html")

@@ -19,19 +19,19 @@ label(tobacco$BMI) <- "Body Mass Index"
 (d2 <- descr(tobacco$BMI))
 
 # print to files
-print(d2, file = "descr-d2-1.html")
-view(d2, footnote = "test: àéïôù", file = "descr-d2-2.html")
+print(d2, file = "01.html")
+view(d2, footnote = "test: àéïôù", file = "02.html")
 
 # long var names
 st_options(descr.transpose = FALSE)
 some.long.variable.name <- tobacco$age
 some.long.variabl.name <- tobacco$age
-print(descr(some.long.variable.name), file = "descr-long-name-1.html")
-view(descr(some.long.variabl.name), file = "descr-long-name-2.html")
+print(descr(some.long.variable.name), file = "03.html")
+view(descr(some.long.variabl.name), file = "04.html")
 
 # Round digits
 (d3 <- descr(tobacco$age, round.digits = 1))
-view(d3,  file = "descr-d3.md")
+view(d3,  file = "05.md")
 
 # Fivenum
 (d4 <- descr(tobacco$BMI, stats = 'fivenum', caption = "fivenum"))
@@ -47,20 +47,24 @@ descr(tobacco, weights = tobacco$samp.wgts)
 wgts <- tobacco$samp.wgts
 tobacco_subset <- tobacco[,-9]
 (d5 <- descr(tobacco_subset, weights = wgts))
-print(d5, file = "descr-d5.html", footnote = "Weights")
+print(d5, file = "06.html", footnote = "Weights")
 
-# split tables at 60 char
-print(d5, transpose = TRUE, split.tables = 60)
+# split tables at 40 char
+print(d5, transpose = TRUE, split.tables = 40)
 
 # by(), special case
 (d7 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr))
-print(d7, file = "descr-d7-by-special-print.html")
+print(d7, file = "07.html")
 
 # by() - whole data frame
 (d8 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr))
-view(d8, file = "descr-d8-by-view.md")
+view(d8, file = "08.md")
 
 # with() + by()
 label(tobacco$BMI) <- "Body Mass Index"
 (d9 <- with(tobacco, by(BMI, gender, descr)))
-view(d9, file = "descr-d9-by-special-view.html")
+view(d9, file = "09.html")
+
+# by with weights
+(d10 <- by(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts))
+view(d10)
