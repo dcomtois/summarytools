@@ -1709,7 +1709,7 @@ build_heading_pander <- function(format_info, data_info) {
                                  c(N.Obs          = trs("n"))))
       
     } else if ("Data.frame" %in% names(data_info)) {
-      head2 <- append_iems(
+      head2 <- append_items(
         list(c(Data.frame = "")),
         h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
       )
@@ -1722,9 +1722,10 @@ build_heading_pander <- function(format_info, data_info) {
   } else if (caller == "print_dfs") {
     head1 <- paste(add_markup(trs("title.dfSummary"), h = 3), " \n")
     if ("Data.frame" %in% names(data_info)) {
-      head2 <- add_markup(paste0("  \n", data_info$Data.frame),
-                          h = ifelse(isTRUE(st_options("render.strong")),
-                                     0, 4))
+      head2 <- append_items(
+        list(c(Data.frame = "")),
+        h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
+      )
     }
 
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
