@@ -1584,9 +1584,9 @@ build_heading_pander <- function(format_info, data_info) {
   # Special cases where no primary heading (title) is needed
   if (isTRUE(format_info$var.only)) {
     if(!isTRUE(format_info$headings)) {
-      head3 <- append_items(list(c(Variable       = '')))
+      head3 <- append_items(list(c(Variable       = "")))
     } else {
-      head3 <- append_items(list(c(Variable       = ''),
+      head3 <- append_items(list(c(Variable       = trs("variable")),
                                  c(Variable.label = trs("label")),
                                  c(Data.type      = trs("type")),
                                  c(N.obs          = trs("n"))))
