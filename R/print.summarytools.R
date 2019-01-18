@@ -1622,17 +1622,21 @@ build_heading_pander <- function(format_info, data_info) {
 
     if ("Variable" %in% names(data_info)) {
       if ("var.only" %in% names(format_info)) {
-        head2 <- append_items(list(c(Data.frame       = trs("data.frame"))),
-                              h = ifelse(isTRUE(st_options("render.strong")),
-                                         0, 4))
+        head2 <- append_items(
+          list(c(Data.frame = trs("data.frame"))),
+          h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
+        )
+        
         head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                    c(Variable         = ''),
                                    c(Variable.label   = trs("label")),
                                    c(Data.type        = trs("type"))))
       } else {
-        head2 <- append_items(list(c(Variable = '')),
-                              h = ifelse(isTRUE(st_options("render.strong")),
-                                         0, 4))
+        head2 <- append_items(
+          list(c(Variable = '')),
+          h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
+        )
+        
         head3 <- append_items(list(c(Variable.label = trs("label")),
                                    c(Data.type      = trs("type")),
                                    c(Weights        = trs("weights")),
@@ -1640,15 +1644,17 @@ build_heading_pander <- function(format_info, data_info) {
       }    
     } else if ("Data.frame" %in% names(data_info)) {
       if (isTRUE(format_info$var.only)) {
-        head2 <- append_items(list(c(Data.frame       = trs("data.frame"))),
-                              h = ifelse(isTRUE(st_options("render.strong")),
-                                         0, 4))
+        head2 <- append_items(
+          list(c(Data.frame = trs("data.frame"))),
+          h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
+        )
         head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                    c(Data.type        = trs("type"))))
       } else {
-        head2 <- add_markup(paste0("  \n", data_info$Data.frame),
-                            h = ifelse(isTRUE(st_options("render.strong")),
-                                       0, 4))
+        head2 <- append_items(
+          list(c(Data.frame = "")),
+          h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
+        )
         if ("by_first" %in% names(data_info)) {
           head3 <- append_items(list(c(Weights = trs("weights")),
                                      c(Group   = trs("group"))))
@@ -1669,15 +1675,14 @@ build_heading_pander <- function(format_info, data_info) {
         h = 3), 
       " \n")
     
-    head2 <- append_items(list(c(Row.x.Col = "")),
-                          h = ifelse(isTRUE(st_options("render.strong")),
-                                     0, 4))
-
+    head2 <- append_items(
+      list(c(Row.x.Col = "")),
+      h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
+    )
     head3 <- append_items(list(c(Data.frame       = trs("data.frame")),
                                c(Data.frame.label = trs("label")),
                                c(Group            = trs("group"))))
     
-
   } else if (caller == "print_descr") {
     head1 <- paste(add_markup(ifelse("Weights" %in% names(data_info),
                                      trs("title.descr.weighted"), 
@@ -1687,10 +1692,8 @@ build_heading_pander <- function(format_info, data_info) {
       head2 <- paste(
         add_markup(
           paste(data_info$Variable, trs("by"), data_info$by_var_special),
-          h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
-        ), 
+          h = ifelse(st_options("subtitle.strength") == 1, 0, 4)),
         " \n")
-      
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
                                  c(Variable.label = trs("label")),
                                  c(Weights        = trs("weights")),
@@ -1700,9 +1703,8 @@ build_heading_pander <- function(format_info, data_info) {
     } else if ("Variable" %in% names(data_info)) {
       head2 <- append_items(
         list(c(Variable = "")),
-        h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
+        h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
       )
-      
       head3 <- append_items(list(c(Variable.label = trs("label")),
                                  c(Weights        = trs("weights")),
                                  c(Group          = trs("group")),
@@ -1711,23 +1713,22 @@ build_heading_pander <- function(format_info, data_info) {
     } else if ("Data.frame" %in% names(data_info)) {
       head2 <- append_items(
         list(c(Data.frame = "")),
-        h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
+        h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
       )
-      
       head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                  c(Weights          = trs("weights")),
                                  c(Group            = trs("group")),
                                  c(N.Obs            = trs("n"))))
+      
     }
   } else if (caller == "print_dfs") {
     head1 <- paste(add_markup(trs("title.dfSummary"), h = 3), " \n")
     if ("Data.frame" %in% names(data_info)) {
       head2 <- append_items(
         list(c(Data.frame = "")),
-        h = ifelse(isTRUE(st_options("render.strong")), 0, 4)
+        h = ifelse(st_options("subtitle.strength") == 1, 0, 4)
       )
     }
-
     head3 <- append_items(list(c(Data.frame.label = trs("label")),
                                c(Group            = trs("group")),
                                c(Dimensions       = trs("dimensions")),
@@ -1796,7 +1797,7 @@ build_heading_html <- function(format_info, data_info, method) {
       return(list())
     } else {
       if ("Variable" %in% names(data_info)) {
-        if (method == "render" && isTRUE(st_options("render.strong"))) {
+        if (st_options("subtitle.strength") == 1) {
           head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
         } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
@@ -1833,7 +1834,7 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.freq")))))
 
     if ("Variable" %in% names(data_info)) {
-      if (method == "render" && isTRUE(st_options("render.strong"))) {
+      if (st_options("subtitle.strength") == 1) {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
@@ -1863,7 +1864,7 @@ build_heading_html <- function(format_info, data_info, method) {
     head1 <- h3(HTML(conv_non_ascii(head1)))
     
     if ("Row.x.Col" %in% names(data_info)) {
-      if (method == "render" && isTRUE(st_options("render.strong"))) {
+      if (st_options("subtitle.strength") == 1) {
         head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Row.x.Col)))
@@ -1881,18 +1882,26 @@ build_heading_html <- function(format_info, data_info, method) {
                                            trs("title.descr")))))
     
     if ("by_var_special" %in% names(data_info)) {
-      head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
-                          "</strong> ", conv_non_ascii(trs("by")), " <strong>",
-                          conv_non_ascii(data_info$by_var_special),
-                          "</strong><br/>"))
+      if (st_options("subtitle.strength") == 1) {
+        head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
+                             "</strong> ", conv_non_ascii(trs("by")), " <strong>",
+                             conv_non_ascii(data_info$by_var_special),
+                             "</strong><br/>"))
+      } else {
+        head2 <- HTML(paste0("<h4>", conv_non_ascii(data_info$Variable),
+                             conv_non_ascii(trs("by")),
+                             conv_non_ascii(data_info$by_var_special),
+                             "</h4>"))
+      } 
       
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
                                  c(Variable.label = trs("label")),
                                  c(Weights        = trs("weights")),
                                  c(Group          = trs("group")),
                                  c(N.Obs          = trs("n"))))
+      
     } else if ("Variable" %in% names(data_info)) {
-      if (method == "render" && isTRUE(st_options("render.strong"))) {
+      if (st_options("subtitle.strength") == 1) {
         head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
@@ -1905,7 +1914,7 @@ build_heading_html <- function(format_info, data_info, method) {
     } else {
       
       if ("Data.frame" %in% names(data_info)) {
-        if (method == "render" && isTRUE(st_options("render.strong"))) {
+        if (st_options("subtitle.strength") == 1) {
           head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
         } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
@@ -1923,7 +1932,7 @@ build_heading_html <- function(format_info, data_info, method) {
     head1 <- h3(HTML(conv_non_ascii(trs("title.dfSummary"))))
     
     if ("Data.frame" %in% names(data_info)) {
-      if (method == "render" && isTRUE(st_options("render.strong"))) {
+      if (st_options("subtitle.strength") == 1) {
         head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
       } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
