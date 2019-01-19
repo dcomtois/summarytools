@@ -5,9 +5,9 @@
 > (d1 <- descr(tobacco)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-Statistiques descriptives   
-tobacco   
-N: 1000   
+Statistiques descriptives  
+tobacco  
+N: 1000  
 
                          age      BMI   cigs.per.day   samp.wgts
 ------------------- -------- -------- -------------- -----------
@@ -30,9 +30,9 @@ N: 1000
 > print(d1, plain.ascii = F) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives   
-**tobacco**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco  
+**N:** 1000  
 
              &nbsp;      age      BMI   cigs.per.day   samp.wgts
 ------------------- -------- -------- -------------- -----------
@@ -55,9 +55,9 @@ N: 1000
 > print(d1, style = 'rmarkdown') 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives   
-**tobacco**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco  
+**N:** 1000  
 
 |            &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |------------------:|-------:|-------:|-------------:|----------:|
@@ -80,9 +80,9 @@ N: 1000
 > print(d1, style = 'grid', plain.ascii = FALSE) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives   
-**tobacco**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco  
+**N:** 1000  
 
 +-------------------+--------+--------+--------------+-----------+
 |            &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
@@ -125,9 +125,9 @@ N: 1000
 > (d2 <- descr(tobacco)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives   
-**tobacco**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco  
+**N:** 1000  
 
 |           &nbsp; |   Moy | Écart-type |   Min | Médiane |   Max | Nb.Valide | % Valide |
 |-----------------:|------:|-----------:|------:|--------:|------:|----------:|---------:|
@@ -154,10 +154,10 @@ N: 1000
 > descr(tobacco, style = "simple") 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-Statistiques descriptives   
-tobacco   
-Étiquette: A study on Tobacco and Health    
-N: 1000   
+Statistiques descriptives  
+tobacco  
+Étiquette: A study on Tobacco and Health  
+N: 1000  
 
                        Moy   Écart-type     Min   Médiane     Max   Nb.Valide   % Valide
 ------------------ ------- ------------ ------- --------- ------- ----------- ----------
@@ -169,10 +169,10 @@ N: 1000
 > label(tobacco$BMI) <- "Body Mass Index" 
 > (d2 <- descr(tobacco$BMI)) 
 
-### Statistiques descriptives   
-**tobacco$BMI**    
-**Étiquette:** Body Mass Index    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco$BMI  
+**Étiquette:** Body Mass Index  
+**N:** 1000  
 
 |  &nbsp; |   Moy | Écart-type |  Min | Médiane |   Max | Nb.Valide | % Valide |
 |--------:|------:|-----------:|-----:|--------:|------:|----------:|---------:|
@@ -206,9 +206,9 @@ N: 1000
 
 > (d3 <- descr(tobacco$age, round.digits = 1)) 
 
-### Statistiques descriptives   
-**tobacco$age**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco$age  
+**N:** 1000  
 
 |         &nbsp; |   age |
 |---------------:|------:|
@@ -229,10 +229,10 @@ N: 1000
 
 > (d4 <- descr(tobacco$BMI, stats = 'fivenum', caption = "fivenum")) 
 
-### Statistiques descriptives   
-**tobacco$BMI**    
-**Étiquette:** Body Mass Index    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco$BMI  
+**Étiquette:** Body Mass Index  
+**N:** 1000  
 
 |      &nbsp; |   BMI |
 |------------:|------:|
@@ -249,9 +249,9 @@ Table: fivenum
 
 > descr(tobacco[[2]], stats = c("min", "med", "max")) 
 
-### Statistiques descriptives   
-**tobacco$age**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco$age  
+**N:** 1000  
 
 |      &nbsp; |   age |
 |------------:|------:|
@@ -261,9 +261,9 @@ Table: fivenum
 
 > descr(tobacco[,2], stats = c("min", "med", "max")) 
 
-### Statistiques descriptives   
-**tobacco$age**    
-**N:** 1000   
+### Statistiques descriptives  
+#### tobacco$age  
+**N:** 1000  
 
 |      &nbsp; |   age |
 |------------:|------:|
@@ -277,11 +277,11 @@ Table: fivenum
 > descr(tobacco, weights = tobacco$samp.wgts) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives pondérées   
-**tobacco**    
-**Étiquette:** A study on Tobacco and Health    
-**Poids:** samp.wgts    
-**N:** 1000   
+### Statistiques descriptives pondérées  
+#### tobacco  
+**Étiquette:** A study on Tobacco and Health  
+**Poids:** samp.wgts  
+**N:** 1000  
 
 |         &nbsp; |    age |    BMI | cigs.per.day |
 |---------------:|-------:|-------:|-------------:|
@@ -301,11 +301,11 @@ Table: fivenum
 > (d5 <- descr(tobacco_subset, weights = wgts)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives pondérées   
-**tobacco_subset**    
-**Étiquette:** A study on Tobacco and Health    
-**Poids:** wgts    
-**N:** 1000   
+### Statistiques descriptives pondérées  
+#### tobacco_subset  
+**Étiquette:** A study on Tobacco and Health  
+**Poids:** wgts  
+**N:** 1000  
 
 |         &nbsp; |    age |    BMI | cigs.per.day |
 |---------------:|-------:|-------:|-------------:|
@@ -328,11 +328,11 @@ Table: fivenum
 > print(d5, transpose = TRUE, split.tables = 40) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives pondérées   
-**tobacco_subset**    
-**Étiquette:** A study on Tobacco and Health    
-**Poids:** wgts    
-**N:** 1000   
+### Statistiques descriptives pondérées  
+#### tobacco_subset  
+**Étiquette:** A study on Tobacco and Health  
+**Poids:** wgts  
+**N:** 1000  
 
 |         &nbsp; |    age |    BMI |
 |---------------:|-------:|-------:|
@@ -363,11 +363,11 @@ Table: Table continues below
 
 > (d7 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr)) 
 
-### Statistiques descriptives   
-**BMI** par **gender**   
-**Data frame:** tobacco    
-**Étiquette:** Body Mass Index    
-**N:** 489   
+### Statistiques descriptives  
+#### BMI par gender  
+**Data frame:** tobacco  
+**Étiquette:** Body Mass Index  
+**N:** 489  
 
 |         &nbsp; |      F |      M |
 |---------------:|-------:|-------:|
@@ -389,11 +389,11 @@ Table: Table continues below
 > (d8 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives   
-**tobacco**    
-**Étiquette:** A study on Tobacco and Health    
-**Groupe:** gender = F    
-**N:** 489   
+### Statistiques descriptives  
+#### tobacco  
+**Étiquette:** A study on Tobacco and Health  
+**Groupe:** gender = F  
+**N:** 489  
 
 |         &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |---------------:|-------:|-------:|-------------:|----------:|
@@ -404,9 +404,9 @@ Table: Table continues below
 |        **Max** |  80.00 |  39.44 |        40.00 |      1.06 |
 |  **Nb.Valide** | 475.00 | 475.00 |       468.00 |    489.00 |
 |   **% Valide** |  97.14 |  97.14 |        95.71 |    100.00 |
-  
-**Groupe:** gender = M    
-**N:** 489   
+
+**Groupe:** gender = M  
+**N:** 489  
 
 |         &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |---------------:|-------:|-------:|-------------:|----------:|
@@ -430,11 +430,11 @@ Table: Table continues below
 > label(tobacco$BMI) <- "Body Mass Index" 
 > (d9 <- with(tobacco, by(BMI, gender, descr))) 
 
-### Statistiques descriptives   
-**BMI** par **gender**   
-**Data frame:** tobacco    
-**Étiquette:** Body Mass Index    
-**N:** 489   
+### Statistiques descriptives  
+#### BMI par gender  
+**Data frame:** tobacco  
+**Étiquette:** Body Mass Index  
+**N:** 489  
 
 |         &nbsp; |      F |      M |
 |---------------:|-------:|-------:|
@@ -455,12 +455,12 @@ Table: Table continues below
 > (d10 <- by(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-### Statistiques descriptives pondérées   
-**tobacco**    
-**Étiquette:** A study on Tobacco and Health    
-**Poids:** samp.wgts    
-**Groupe:** smoker = Yes    
-**N:** 298   
+### Statistiques descriptives pondérées  
+#### tobacco  
+**Étiquette:** A study on Tobacco and Health  
+**Poids:** samp.wgts  
+**Groupe:** smoker = Yes  
+**N:** 298  
 
 |         &nbsp; |    age |    BMI | cigs.per.day |
 |---------------:|-------:|-------:|-------------:|
@@ -471,9 +471,9 @@ Table: Table continues below
 |        **Max** |  80.00 |  36.36 |        40.00 |
 |  **Nb.Valide** | 291.00 | 292.08 |       292.26 |
 |   **% Valide** |  29.10 |  29.21 |        29.23 |
-  
-**Groupe:** smoker = No    
-**N:** 702   
+
+**Groupe:** smoker = No  
+**N:** 702  
 
 |         &nbsp; |    age |    BMI | cigs.per.day |
 |---------------:|-------:|-------:|-------------:|

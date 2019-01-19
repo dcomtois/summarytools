@@ -13,10 +13,11 @@
 
 > (dfs1 <- dfSummary(tobacco)) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 --------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph            Valid     Missing  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- --------- ---------
@@ -133,10 +134,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
 
 > print(dfs1, varnumbers = FALSE) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 ---------------------------------------------------------------------------------------------------------------------------
 Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph            Valid     Missing  
 -------------- ------------------ ------------------------- --------------------- --------------------- --------- ---------
@@ -193,10 +195,11 @@ samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)  
 
 > print(dfs1, labels.col = FALSE) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 -------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values            Freqs (% of Valid)    Text Graph            Valid     Missing  
 ---- -------------- ------------------------- --------------------- --------------------- --------- ---------
@@ -253,10 +256,11 @@ No   Variable       Stats / Values            Freqs (% of Valid)    Text Graph  
 
 > print(dfs1, valid.col = FALSE) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 ----------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph            Missing  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- ---------
@@ -313,10 +317,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
 
 > print(dfs1, na.col = FALSE) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 ----------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph            Valid    
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- ---------
@@ -373,10 +378,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
 
 > print(dfs1, graph.col = FALSE) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 ----------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values            Freqs (% of Valid)    Valid     Missing  
 ---- -------------- ------------------ ------------------------- --------------------- --------- ---------
@@ -510,10 +516,11 @@ samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)
 > st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.graph.col = F, dfSummary.valid.col = F, dfSummary.na.col = F) 
 > (dfs2 <- dfSummary(tobacco)) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 9    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 9  
+Duplicates: 2  
+
 --------------------------------------------------------------
 Variable       Stats / Values            Freqs (% of Valid)   
 -------------- ------------------------- ---------------------
@@ -576,10 +583,11 @@ samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)
 > tobacco$disease.f <- as.factor(tobacco$disease) 
 > (dfs3 <- dfSummary(tobacco, round.digits = 2, max.distinct.values = 4, varnumbers = FALSE, labels.col = TRUE, valid.col = FALSE, na.col = FALSE, max.string.width = 20)) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 10    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 10  
+Duplicates: 2  
+
 -------------------------------------------------------------------------------------------------------
 Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph           
 -------------- ------------------ ------------------------- --------------------- ---------------------
@@ -641,10 +649,11 @@ disease.f                         1. Cancer                  34 (15.3%)         
 > data(cars) 
 > (dfs4 <- dfSummary(cars)) 
 
-Data Frame Summary   
-cars   
-Dimensions: 50 x 2    
-Duplicates: 1   
+Data Frame Summary  
+cars  
+Dimensions: 50 x 2  
+Duplicates: 1  
+
 -----------------------------------------------------------------------------------------------
 No   Variable    Stats / Values           Freqs (% of Valid)   Text Graph    Valid    Missing  
 ---- ----------- ------------------------ -------------------- ------------- -------- ---------
@@ -670,10 +679,11 @@ No   Variable    Stats / Values           Freqs (% of Valid)   Text Graph    Val
 > load(paste0(orig_dir, "/tests/data/special_vars.RData")) 
 > (dfs_special <- dfSummary(special_vars)) 
 
-Data Frame Summary   
-special_vars   
-Dimensions: 1000 x 19    
-Duplicates: 0   
+Data Frame Summary  
+special_vars  
+Dimensions: 1000 x 19  
+Duplicates: 0  
+
 --------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values             Freqs (% of Valid)   Text Graph             Valid     Missing  
 ---- -------------- -------------------------- -------------------- ---------------------- --------- ---------
@@ -777,10 +787,11 @@ No   Variable       Stats / Values             Freqs (% of Valid)   Text Graph  
 > dfSummary(iris$Sepal.Length) 
 -- iris$Sepal.Length was converted to a data frame
 
-Data Frame Summary   
-iris   
-Dimensions: 150 x 1    
-Duplicates: 115   
+Data Frame Summary  
+iris  
+Dimensions: 150 x 1  
+Duplicates: 115  
+
 -----------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph        Valid    Missing  
 ---- -------------- ----------------------- -------------------- ----------------- -------- ---------
@@ -793,10 +804,11 @@ No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph     
 
 > dfSummary(iris['Sepal.Length']) 
 
-Data Frame Summary   
-iris   
-Dimensions: 150 x 1    
-Duplicates: 115   
+Data Frame Summary  
+iris  
+Dimensions: 150 x 1  
+Duplicates: 115  
+
 -----------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph        Valid    Missing  
 ---- -------------- ----------------------- -------------------- ----------------- -------- ---------
@@ -810,10 +822,11 @@ No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph     
 > dfSummary(iris[['Sepal.Length']]) 
 -- iris[["Sepal.Length"]] was converted to a data frame
 
-Data Frame Summary   
-iris   
-Dimensions: 150 x 1    
-Duplicates: 115   
+Data Frame Summary  
+iris  
+Dimensions: 150 x 1  
+Duplicates: 115  
+
 -----------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph        Valid    Missing  
 ---- -------------- ----------------------- -------------------- ----------------- -------- ---------
@@ -827,10 +840,11 @@ No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph     
 > dfSummary(iris[["Sepal.Length"]]) 
 -- iris[["Sepal.Length"]] was converted to a data frame
 
-Data Frame Summary   
-iris   
-Dimensions: 150 x 1    
-Duplicates: 115   
+Data Frame Summary  
+iris  
+Dimensions: 150 x 1  
+Duplicates: 115  
+
 -----------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph        Valid    Missing  
 ---- -------------- ----------------------- -------------------- ----------------- -------- ---------
@@ -851,10 +865,11 @@ No   Variable       Stats / Values          Freqs (% of Valid)   Text Graph     
 
 > dfSummary(tobacco[1:100,]) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 100 x 10    
-Duplicates: 0   
+Data Frame Summary  
+tobacco  
+Dimensions: 100 x 10  
+Duplicates: 0  
+
 ------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / Values            Freqs (% of Valid)    Text Graph            Valid    Missing  
 ---- -------------- ------------------------- --------------------- --------------------- -------- ---------
@@ -934,10 +949,11 @@ No   Variable       Stats / Values            Freqs (% of Valid)    Text Graph  
 > tobacco$samp.wgts.4 <- round(tobacco$samp.wgts, 1) 
 > dfSummary(tobacco, round.digits = 2) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 12    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 12  
+Duplicates: 2  
+
 --------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values            Freqs (% of Valid)    Text Graph            Valid     Missing  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- --------- ---------
@@ -1017,10 +1033,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
 
 > dfSummary(tobacco, round.digits = 3) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 12    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 12  
+Duplicates: 2  
+
 ----------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values             Freqs (% of Valid)     Text Graph            Valid     Missing  
 ---- -------------- ------------------ -------------------------- ---------------------- --------------------- --------- ---------
@@ -1099,10 +1116,11 @@ No   Variable       Label              Stats / Values             Freqs (% of Va
 
 > dfSummary(tobacco, round.digits = 4) 
 
-Data Frame Summary   
-tobacco   
-Dimensions: 1000 x 12    
-Duplicates: 2   
+Data Frame Summary  
+tobacco  
+Dimensions: 1000 x 12  
+Duplicates: 2  
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Label              Stats / Values                Freqs (% of Valid)       Text Graph            Valid     Missing  
 ---- -------------- ------------------ ----------------------------- ------------------------ --------------------- --------- ---------
@@ -1193,10 +1211,7 @@ No   Variable       Label              Stats / Values                Freqs (% of
 
 <div class="container st-container">
   <h3>Data Frame Summary</h3>
-  <strong>
-    tobacco
-    <br/>
-  </strong>
+  <h4>tobacco</h4>
   <strong>Dimensions</strong>: 1000 x 12
   <br/><strong>Duplicates</strong>: 2
   <br/>

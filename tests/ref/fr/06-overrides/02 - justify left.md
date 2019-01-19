@@ -1,6 +1,6 @@
-### Tableau de fréquences   
-**tabagisme$maladie**      
-**Type:** Alphanumérique   
+### Tableau de fréquences  
+#### tabagisme$maladie  
+**Type:** Alphanumérique  
 
 | &nbsp;                   | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |:-------------------------|:------|:---------|:--------------|:--------|:-------------|

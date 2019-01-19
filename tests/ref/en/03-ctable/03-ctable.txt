@@ -5,9 +5,9 @@
 > tobacco <- tibble::as_tibble(tobacco) 
 > ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï") 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No           Total
@@ -25,10 +25,10 @@ Table: test encod: éêàáûï
 
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always')) 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco    
-Label: A Study on Tobacco Use and Health   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
+Label: A Study on Tobacco Use and Health  
 
 -------- ---------- ------------- ------------- ---------- ---------------
            diseased           Yes            No       <NA>           Total
@@ -56,9 +56,9 @@ Label: A Study on Tobacco Use and Health
 
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c') 
 
-Cross-Tabulation, Column Proportions   
-smoker * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Column Proportions  
+smoker * diseased  
+Data Frame: tobacco  
 
 -------- ---------- -------------- -------------- ---------------
            diseased            Yes             No           Total
@@ -70,9 +70,9 @@ Data Frame: tobacco
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n') 
 
-Cross-Tabulation   
-smoker * diseased     
-Data Frame: tobacco   
+Cross-Tabulation  
+smoker * diseased  
+Data Frame: tobacco  
 
 -------- ---------- ----- ----- -------
            diseased   Yes    No   Total
@@ -84,9 +84,9 @@ Data Frame: tobacco
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't') 
 
-Cross-Tabulation, Total Proportions   
-smoker * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Total Proportions  
+smoker * diseased  
+Data Frame: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No           Total
@@ -102,9 +102,9 @@ Data Frame: tobacco
 > data(exams) 
 > ctable(exams$gender, exams$french < 60) 
 
-Cross-Tabulation, Row Proportions   
-gender * french < 60     
-Data Frame: exams   
+Cross-Tabulation, Row Proportions  
+gender * french < 60  
+Data Frame: exams  
 
 -------- ------------- ------------- ---------- ---------- -------------
            french < 60         FALSE       TRUE       <NA>         Total
@@ -116,9 +116,9 @@ Data Frame: exams
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use") 
 
-Cross-Tabulation, Row Proportions   
-Gender * Failed French Class     
-Data Frame: exams   
+Cross-Tabulation, Row Proportions  
+Gender * Failed French Class  
+Data Frame: exams  
 
 -------- --------------------- ------------- ---------- ---------- -------------
            Failed French Class         FALSE       TRUE       <NA>         Total
@@ -146,9 +146,9 @@ Table: dnn in use
 
 > ctable(tobacco[[1]], tobacco[,3]) 
 
-Cross-Tabulation, Row Proportions   
-gender * age.gr     
-Data Frame: tobacco   
+Cross-Tabulation, Row Proportions  
+gender * age.gr  
+Data Frame: tobacco  
 
 -------- -------- ------------- ------------- ------------- ------------- ----------- ---------------
            age.gr         18-34         35-50         51-70          71 +        <NA>           Total
@@ -164,9 +164,9 @@ Data Frame: tobacco
 
 > with(tobacco, ctable(smoker,  diseased)) 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No           Total
@@ -181,10 +181,10 @@ Data Frame: tobacco
 
 > by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco    
-Group: gender = F   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
+Group: gender = F  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total
@@ -193,8 +193,8 @@ Group: gender = F
       No               49 (14.3%)   293 (85.7%)   342 (100.0%)
    Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
-  
-Group: gender = M   
+
+Group: gender = M  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total
@@ -209,10 +209,10 @@ Group: gender = M
 
 > with(tobacco, by(list(x = smoker, y = diseased), gender, ctable)) # problématique! 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco    
-Group: gender = F   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
+Group: gender = F  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total
@@ -221,8 +221,8 @@ Group: gender = F
       No               49 (14.3%)   293 (85.7%)   342 (100.0%)
    Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
-  
-Group: gender = M   
+
+Group: gender = M  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total
@@ -235,10 +235,10 @@ Group: gender = M
 > wbc <- with(tobacco, by(list(x = smoker, y = diseased), gender, ctable, headings = F)) 
 > print(wbc, headings = T) 
 
-Cross-Tabulation, Row Proportions   
-smoker * diseased     
-Data Frame: tobacco    
-Group: gender = F   
+Cross-Tabulation, Row Proportions  
+smoker * diseased  
+Data Frame: tobacco  
+Group: gender = F  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total
@@ -247,8 +247,8 @@ Group: gender = F
       No               49 (14.3%)   293 (85.7%)   342 (100.0%)
    Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
-  
-Group: gender = M   
+
+Group: gender = M  
 
 -------- ---------- ------------- ------------- --------------
            diseased           Yes            No          Total

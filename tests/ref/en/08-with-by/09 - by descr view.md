@@ -1,7 +1,7 @@
-### Descriptive Statistics   
-**tobacco**    
-**Group:** gender = F    
-**N:** 489   
+### Descriptive Statistics  
+#### tobacco  
+**Group:** gender = F  
+**N:** 489  
 
 |          &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |----------------:|-------:|-------:|-------------:|----------:|
@@ -20,9 +20,9 @@
 |    **Kurtosis** |  -1.25 |   0.09 |         0.85 |     -0.92 |
 |     **N.Valid** | 475.00 | 475.00 |       468.00 |    489.00 |
 |     **% Valid** |  97.14 |  97.14 |        95.71 |    100.00 |
-  
-**Group:** gender = M    
-**N:** 489   
+
+**Group:** gender = M  
+**N:** 489  
 
 |          &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |----------------:|-------:|-------:|-------------:|----------:|

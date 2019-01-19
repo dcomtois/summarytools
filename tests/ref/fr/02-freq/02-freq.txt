@@ -9,10 +9,10 @@
 
 > (freq1 <- freq(tobacco$gender)) 
 
-Tableau de fréquences   
-tobacco$gender     
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+tobacco$gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -23,10 +23,10 @@ Type: Facteur
 
 > print(freq1, plain.ascii = F) 
 
-### Tableau de fréquences   
-**tobacco$gender**      
-**Étiquette:** Subject's Gender    
-**Type:** Facteur   
+### Tableau de fréquences  
+#### tobacco$gender  
+**Étiquette:** Subject's Gender  
+**Type:** Facteur  
 
       &nbsp;   Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ------------ ------- ---------- --------------- --------- --------------
@@ -37,10 +37,10 @@ Type: Facteur
 
 > print(freq1, plain.ascii = F, style = "rmarkdown") 
 
-### Tableau de fréquences   
-**tobacco$gender**      
-**Étiquette:** Subject's Gender    
-**Type:** Facteur   
+### Tableau de fréquences  
+#### tobacco$gender  
+**Étiquette:** Subject's Gender  
+**Type:** Facteur  
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
@@ -74,10 +74,10 @@ Type: Facteur
 
 > (freq2 <- freq(tabagisme$age.gr, round.digits = 1)) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -93,9 +93,9 @@ Type: Facteur
 
 > print(freq2, display.labels = FALSE) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -108,9 +108,9 @@ Type: Facteur
 
 > print(freq2, display.type = F) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -126,10 +126,10 @@ tabagisme$age.gr
 
 > print(freq2, totals = FALSE) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -141,10 +141,10 @@ Type: Facteur
 
 > print(freq2, report.nas = FALSE) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.       %   % Cum.
 ----------- ------- ------- --------
@@ -156,10 +156,10 @@ Type: Facteur
 
 > print(freq2, report.nas = FALSE, totals = FALSE) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.      %   % Cum.
 ----------- ------- ------ --------
@@ -173,10 +173,10 @@ Type: Facteur
 
 > print(freq2, missing = "---") 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -192,9 +192,9 @@ Type: Facteur
 
 > freq(tobacco$diseased) 
 
-Tableau de fréquences   
-tobacco$diseased     
-Type: Facteur   
+Tableau de fréquences  
+tobacco$diseased  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -208,9 +208,9 @@ Type: Facteur
 
 > freq(tobacco$diseased, order = "freq") 
 
-Tableau de fréquences   
-tobacco$diseased     
-Type: Facteur   
+Tableau de fréquences  
+tobacco$diseased  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -221,9 +221,9 @@ Type: Facteur
 
 > freq(tobacco$diseased, order = "names") 
 
-Tableau de fréquences   
-tobacco$diseased     
-Type: Facteur   
+Tableau de fréquences  
+tobacco$diseased  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -237,10 +237,10 @@ Type: Facteur
 
 > print(freq2, round.digits = 2) 
 
-Tableau de fréquences   
-tabagisme$age.gr     
-Étiquette: Groupe d'âge    
-Type: Facteur   
+Tableau de fréquences  
+tabagisme$age.gr  
+Étiquette: Groupe d'âge  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -258,10 +258,10 @@ Type: Facteur
 > Gender[1] <- "F" 
 > freq(Gender) 
 
-Tableau de fréquences   
-Gender     
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+Gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -281,10 +281,10 @@ Type: Facteur
 
 > freq(tobacco$gender[tobacco$smoker=="Yes"]) 
 
-Tableau de fréquences   
-tobacco$gender     
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+tobacco$gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -295,10 +295,10 @@ Type: Facteur
 
 > freq(tobacco$gender[1:500]) 
 
-Tableau de fréquences   
-tobacco$gender     
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+tobacco$gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -312,10 +312,10 @@ Type: Facteur
 
 > freq(tobacco[,1]) # label doesn't show (ok) 
 
-Tableau de fréquences   
-tobacco$gender     
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+tobacco$gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -326,9 +326,9 @@ Type: Facteur
 
 > freq(tobacco[[3]]) 
 
-Tableau de fréquences   
-tobacco$age.gr     
-Type: Facteur   
+Tableau de fréquences  
+tobacco$age.gr  
+Type: Facteur  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -359,10 +359,10 @@ Type: Facteur
 
 > (freq3 <- freq(tabagisme$maladie, weights = tabagisme$ponderation)) 
 
-Tableau de fréquences pondérées   
-tabagisme$maladie     
-Type: Alphanumérique    
-Poids: ponderation   
+Tableau de fréquences pondérées  
+tabagisme$maladie  
+Type: Alphanumérique  
+Poids: ponderation  
 
                                Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 -------------------------- --------- ---------- --------------- --------- --------------
@@ -393,11 +393,11 @@ Poids: ponderation
 > label(tobacco$gender) <- "Subject's Gender" 
 > (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))) 
 
-### Tableau de fréquences pondérées   
-**tobacco$gender**      
-**Étiquette:** Subject's Gender    
-**Type:** Facteur    
-**Poids:** samp.wgts   
+### Tableau de fréquences pondérées  
+#### tobacco$gender  
+**Étiquette:** Subject's Gender  
+**Type:** Facteur  
+**Poids:** samp.wgts  
 
       &nbsp;     Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ------------ --------- ---------- --------------- --------- --------------
@@ -412,11 +412,11 @@ Poids: ponderation
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
-Tableau de fréquences   
-tobacco$diseased     
-Étiquette: Subject has an illness    
-Type: Facteur    
-Groupe: smoker = Yes   
+Tableau de fréquences  
+tobacco$diseased  
+Étiquette: Subject has an illness  
+Type: Facteur  
+Groupe: smoker = Yes  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -424,8 +424,8 @@ Groupe: smoker = Yes
          No     173      58.05          100.00     58.05         100.00
        <NA>       0                                 0.00         100.00
       Total     298     100.00          100.00    100.00         100.00
-  
-Groupe: smoker = No   
+
+Groupe: smoker = No  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -436,11 +436,11 @@ Groupe: smoker = No
 
 > view(bf1, 'pander') 
 
-Tableau de fréquences   
-tobacco$diseased     
-Étiquette: Subject has an illness    
-Type: Facteur    
-Groupe: smoker = Yes   
+Tableau de fréquences  
+tobacco$diseased  
+Étiquette: Subject has an illness  
+Type: Facteur  
+Groupe: smoker = Yes  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -448,8 +448,8 @@ Groupe: smoker = Yes
          No     173      58.05          100.00     58.05         100.00
        <NA>       0                                 0.00         100.00
       Total     298     100.00          100.00    100.00         100.00
-  
-Groupe: smoker = No   
+
+Groupe: smoker = No  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -460,8 +460,7 @@ Groupe: smoker = No
 
 > print(bf1, headings = FALSE, plain.ascii = FALSE) 
 
-  
-**Groupe:** smoker = Yes   
+**Groupe:** smoker = Yes  
 
       &nbsp;   Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ------------ ------- ---------- --------------- --------- --------------
@@ -469,8 +468,8 @@ Groupe: smoker = No
       **No**     173      58.05          100.00     58.05         100.00
   **\<NA\>**       0                                 0.00         100.00
    **Total**     298     100.00          100.00    100.00         100.00
-  
-**Groupe:** smoker = No   
+
+**Groupe:** smoker = No  
 
       &nbsp;   Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ------------ ------- ---------- --------------- --------- --------------
@@ -490,11 +489,11 @@ Groupe: smoker = No
 
 > (bf2 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
-Tableau de fréquences   
-tobacco$diseased     
-Étiquette: Subject has an illness    
-Type: Facteur    
-Groupe: smoker = Yes   
+Tableau de fréquences  
+tobacco$diseased  
+Étiquette: Subject has an illness  
+Type: Facteur  
+Groupe: smoker = Yes  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -502,8 +501,8 @@ Groupe: smoker = Yes
          No     173      58.05          100.00     58.05         100.00
        <NA>       0                                 0.00         100.00
       Total     298     100.00          100.00    100.00         100.00
-  
-Groupe: smoker = No   
+
+Groupe: smoker = No  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -519,10 +518,10 @@ Groupe: smoker = No
 
 > (bf3 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
 
-Tableau de fréquences   
-iris$Species     
-Type: Facteur    
-Groupe: Sepal.Length > mean(Sepal.Length) = FALSE   
+Tableau de fréquences  
+iris$Species  
+Type: Facteur  
+Groupe: Sepal.Length > mean(Sepal.Length) = FALSE  
 
                    Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ---------------- ------- ---------- --------------- --------- --------------
@@ -531,8 +530,8 @@ Groupe: Sepal.Length > mean(Sepal.Length) = FALSE
        virginica       6       7.50          100.00      7.50         100.00
             <NA>       0                                 0.00         100.00
            Total      80     100.00          100.00    100.00         100.00
-  
-Groupe: Sepal.Length > mean(Sepal.Length) = TRUE   
+
+Groupe: Sepal.Length > mean(Sepal.Length) = TRUE  
 
                    Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ---------------- ------- ---------- --------------- --------- --------------
@@ -553,11 +552,11 @@ Groupe: Sepal.Length > mean(Sepal.Length) = TRUE
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bwf1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq))) 
 
-Tableau de fréquences   
-tobacco$diseased     
-Étiquette: Subject has an illness    
-Type: Facteur    
-Groupe: smoker = Yes   
+Tableau de fréquences  
+tobacco$diseased  
+Étiquette: Subject has an illness  
+Type: Facteur  
+Groupe: smoker = Yes  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -565,8 +564,8 @@ Groupe: smoker = Yes
          No     173      58.05          100.00     58.05         100.00
        <NA>       0                                 0.00         100.00
       Total     298     100.00          100.00    100.00         100.00
-  
-Groupe: smoker = No   
+
+Groupe: smoker = No  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
 ----------- ------- ---------- --------------- --------- --------------
@@ -590,11 +589,10 @@ Groupe: smoker = No
 > (ft <- freq(tobacco)) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-Tableau de fréquences   
-Data frame: tobacco     
-gender    
-Étiquette: Subject's Gender    
-Type: Facteur   
+Tableau de fréquences  
+tobacco$gender  
+Étiquette: Subject's Gender  
+Type: Facteur  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -607,10 +605,10 @@ Type: Facteur
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-age.gr    
-Étiquette: Age Group    
-Type: Facteur   
+
+tobacco$age.gr  
+Étiquette: Age Group  
+Type: Facteur  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -627,10 +625,10 @@ Type: Facteur
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-smoker    
-Étiquette: Subject Smokes    
-Type: Facteur   
+
+tobacco$smoker  
+Étiquette: Subject Smokes  
+Type: Facteur  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -643,10 +641,10 @@ Type: Facteur
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-diseased    
-Étiquette: Subject has an illness    
-Type: Facteur   
+
+tobacco$diseased  
+Étiquette: Subject has an illness  
+Type: Facteur  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -659,9 +657,9 @@ Type: Facteur
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-disease    
-Type: Alphanumérique   
+
+tobacco$disease  
+Type: Alphanumérique  
 
 +---------------------+-------+----------+---------------+---------+--------------+
 |                     | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -700,9 +698,8 @@ Type: Alphanumérique
 > print(ft, display.labels = F, display.type = F) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-Tableau de fréquences   
-Data frame: tobacco     
-gender   
+Tableau de fréquences  
+tobacco$gender  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -715,8 +712,8 @@ gender
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-age.gr   
+
+tobacco$age.gr  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -733,8 +730,8 @@ age.gr
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-smoker   
+
+tobacco$smoker  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -747,8 +744,8 @@ smoker
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-diseased   
+
+tobacco$diseased  
 
 +-----------+-------+----------+---------------+---------+--------------+
 |           | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -761,8 +758,8 @@ diseased
 +-----------+-------+----------+---------------+---------+--------------+
 |     Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------+-------+----------+---------------+---------+--------------+
-  
-disease   
+
+tobacco$disease  
 
 +---------------------+-------+----------+---------------+---------+--------------+
 |                     | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
@@ -804,10 +801,10 @@ disease
 > tobacco_subset <- tobacco[,c(3,5,6)] 
 > lapply(tobacco_subset, freq, style = "rmarkdown") 
 
-### Tableau de fréquences    
-**tobacco_subset$age.gr**     
-**Étiquette:** Age Group    
-**Type:** Facteur   
+### Tableau de fréquences  
+#### tobacco_subset$age.gr  
+**Étiquette:** Age Group  
+**Type:** Facteur  
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
@@ -817,10 +814,10 @@ disease
 |   **71 +** |   159 |    16.31 |        100.00 |   15.90 |        97.50 |
 | **\<NA\>** |    25 |          |               |    2.50 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
-  
-**tobacco_subset$smoker**     
-**Étiquette:** Subject Smokes    
-**Type:** Facteur   
+
+#### tobacco_subset$smoker  
+**Étiquette:** Subject Smokes  
+**Type:** Facteur  
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
@@ -828,9 +825,9 @@ disease
 |     **No** |   702 |    70.20 |        100.00 |   70.20 |       100.00 |
 | **\<NA\>** |     0 |          |               |    0.00 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
-  
-**tobacco_subset$cigs.per.day**     
-**Type:** Numérique   
+
+#### tobacco_subset$cigs.per.day  
+**Type:** Numérique  
 
 |     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|

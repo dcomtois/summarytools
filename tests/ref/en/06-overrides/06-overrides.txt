@@ -6,8 +6,8 @@
 > f1 <- freq(tobacco$age.gr) 
 > print(f1, plain.ascii = F, round.digits = 3, display.labels = FALSE, display.type = F, missing = '------', report.nas = T, totals = F, Variable = "fake var name") # 6-1 
 
-### Frequencies   
-**fake var name**     
+### Frequencies  
+#### fake var name  
 
       &nbsp;   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ------------ ------ --------- -------------- --------- --------------
@@ -24,10 +24,7 @@
 
 <div class="container st-container">
   <h3>Frequencies</h3>
-  <strong>
-    tobacco$age.gr
-    <br/>
-  </strong>
+  <h4>tobacco$age.gr</h4>
   <strong>Label</strong>: Groupe d'&#0226;ge
   <br/><strong>Type</strong>: Factor
   <br/>
@@ -103,9 +100,9 @@
 
 > (f2 <- freq(tabagisme$maladie, order = "freq")) 
 
-Frequencies   
-tabagisme$maladie     
-Type: Character   
+Frequencies  
+tabagisme$maladie  
+Type: Character  
 
                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 -------------------------- ------ --------- -------------- --------- --------------

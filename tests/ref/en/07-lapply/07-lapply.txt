@@ -10,10 +10,10 @@
 > l1 <- lapply(tobacco_subset, freq)  
 > print(l1) 
 
-Frequencies    
-tobacco_subset$gender    
-Label: The Gender    
-Type: Factor   
+Frequencies  
+tobacco_subset$gender  
+Label: The Gender  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -21,10 +21,10 @@ Type: Factor
           M    489     50.00         100.00     48.90          97.80
        <NA>     22                               2.20         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tobacco_subset$age.gr    
-Label: The Age Group    
-Type: Factor   
+
+tobacco_subset$age.gr  
+Label: The Age Group  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -34,10 +34,10 @@ Type: Factor
        71 +    159     16.31         100.00     15.90          97.50
        <NA>     25                               2.50         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tobacco_subset$smoker    
-Label: Subject smokes    
-Type: Factor   
+
+tobacco_subset$smoker  
+Label: Subject smokes  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -48,7 +48,6 @@ Type: Factor
 
 > view(l1, footnote = "freq -- gender/age.gr/smoker", file = "01.html") 
 -- Output file written
--- Output file appended
 
 > label(tabagisme) <- "Label tabagisme" 
 > label(tabagisme$sexe) <- "Le sexe" 
@@ -56,10 +55,10 @@ Type: Factor
 > l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq)  
 > print(l1) 
 
-Frequencies    
-tabagisme$sexe    
-Label: Le sexe    
-Type: Factor   
+Frequencies  
+tabagisme$sexe  
+Label: Le sexe  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -67,10 +66,10 @@ Type: Factor
           M    489     50.00         100.00     48.90          97.80
        <NA>     22                               2.20         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tabagisme$age.gr    
-Label: Groupe d'age    
-Type: Factor   
+
+tabagisme$age.gr  
+Label: Groupe d'age  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -80,9 +79,9 @@ Type: Factor
        71 +    159     16.31         100.00     15.90          97.50
        <NA>     25                               2.50         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tabagisme$fumeur    
-Type: Factor   
+
+tabagisme$fumeur  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -90,9 +89,9 @@ Type: Factor
         Non    702     70.20         100.00     70.20         100.00
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tabagisme$cigs.par.jour    
-Type: Numeric   
+
+tabagisme$cigs.par.jour  
+Type: Numeric  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -135,9 +134,9 @@ Type: Numeric
          40      5      0.52         100.00      0.50          96.50
        <NA>     35                               3.50         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tabagisme$malade    
-Type: Factor   
+
+tabagisme$malade  
+Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -145,9 +144,9 @@ Type: Factor
         Non    776     77.60         100.00     77.60         100.00
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
-  
-tabagisme$maladie    
-Type: Character   
+
+tabagisme$maladie  
+Type: Character  
 
                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 -------------------------- ------ --------- -------------- --------- --------------
@@ -183,10 +182,10 @@ Type: Character
 > l3 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq, totals = FALSE) 
 > print(l3, style = "rmarkdown", caption = "2 columns with row indexing, no totals") 
 
-### Frequencies    
-**tabagisme$sexe**     
-**Label:** Le sexe    
-**Type:** Factor   
+### Frequencies  
+#### tabagisme$sexe  
+**Label:** Le sexe  
+**Type:** Factor  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -195,10 +194,10 @@ Type: Character
 | **\<NA\>** |    1 |         |              |    5.00 |       100.00 |
 
 Table: 2 columns with row indexing, no totals
-  
-**tabagisme$age.gr**     
-**Label:** Groupe d'age    
-**Type:** Factor   
+
+#### tabagisme$age.gr  
+**Label:** Groupe d'age  
+**Type:** Factor  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -212,9 +211,9 @@ Table: 2 columns with row indexing, no totals
 
 > view(l3, method = "pander", style = "rmarkdown", display.type = FALSE, caption = "display.type = FALSE") 
 
-### Frequencies    
-**tabagisme$sexe**     
-**Label:** Le sexe   
+### Frequencies  
+#### tabagisme$sexe  
+**Label:** Le sexe  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -223,9 +222,9 @@ Table: 2 columns with row indexing, no totals
 | **\<NA\>** |    1 |         |              |    5.00 |       100.00 |
 
 Table: display.type = FALSE
-  
-**tabagisme$age.gr**     
-**Label:** Groupe d'age   
+
+#### tabagisme$age.gr  
+**Label:** Groupe d'age  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|-----:|--------:|-------------:|--------:|-------------:|

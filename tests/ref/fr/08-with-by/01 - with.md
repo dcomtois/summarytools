@@ -1,7 +1,7 @@
-### Tableau de fréquences pondérées   
-**tobacco$gender**      
-**Type:** Facteur    
-**Poids:** samp.wgts   
+### Tableau de fréquences pondérées  
+#### tobacco$gender  
+**Type:** Facteur  
+**Poids:** samp.wgts  
 
 |     &nbsp; |   Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 |-----------:|--------:|---------:|--------------:|--------:|-------------:|

@@ -1,7 +1,7 @@
-### Statistiques descriptives   
-**tobacco**    
-**Groupe:** gender = F    
-**N:** 489   
+### Statistiques descriptives  
+#### tobacco  
+**Groupe:** gender = F  
+**N:** 489  
 
 |            &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |------------------:|-------:|-------:|-------------:|----------:|
@@ -20,9 +20,9 @@
 | **Aplatissement** |  -1.25 |   0.09 |         0.85 |     -0.92 |
 |     **Nb.Valide** | 475.00 | 475.00 |       468.00 |    489.00 |
 |      **% Valide** |  97.14 |  97.14 |        95.71 |    100.00 |
-  
-**Groupe:** gender = M    
-**N:** 489   
+
+**Groupe:** gender = M  
+**N:** 489  
 
 |            &nbsp; |    age |    BMI | cigs.per.day | samp.wgts |
 |------------------:|-------:|-------:|-------------:|----------:|

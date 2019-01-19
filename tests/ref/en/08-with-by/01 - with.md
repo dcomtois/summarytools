@@ -1,7 +1,7 @@
-### Weighted Frequencies   
-**tobacco$gender**      
-**Type:** Factor    
-**Weights:** samp.wgts   
+### Weighted Frequencies  
+#### tobacco$gender  
+**Type:** Factor  
+**Weights:** samp.wgts  
 
 |     &nbsp; |    Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|--------:|--------:|-------------:|--------:|-------------:|

@@ -1,8 +1,8 @@
-### Descriptive Statistics   
-**BMI** by **gender**   
-**Data Frame:** tobacco    
-**Label:** Body Mass Index    
-**N:** 489   
+### Descriptive Statistics  
+#### BMI by gender  
+**Data Frame:** tobacco  
+**Label:** Body Mass Index  
+**N:** 489  
 
 |          &nbsp; |      F |      M |
 |----------------:|-------:|-------:|

@@ -15,9 +15,9 @@
 
 > (w2 <- with(tobacco, descr(BMI, transpose = TRUE))) 
 
-Descriptive Statistics   
-tobacco$BMI   
-N: 1000   
+Descriptive Statistics  
+tobacco$BMI  
+N: 1000  
 
              Mean   Std.Dev.    Min      Q1   Median      Q3     Max    MAD    IQR     CV   Skewness
 --------- ------- ---------- ------ ------- -------- ------- ------- ------ ------ ------ ----------
@@ -36,9 +36,9 @@ Table: Table continues below
 
 > view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander") 
 
-Cross-Tabulation, Row Proportions   
-gender * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Row Proportions  
+gender * diseased  
+Data Frame: tobacco  
 
 +--------+----------+-------------+-------------+---------------+
 |        | diseased |         Yes |          No |         Total |
@@ -56,9 +56,9 @@ Data Frame: tobacco
 
 > (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C"))) 
 
-Cross-Tabulation, Column Proportions   
-gender * diseased     
-Data Frame: tobacco   
+Cross-Tabulation, Column Proportions  
+gender * diseased  
+Data Frame: tobacco  
 
 +--------+----------+--------------+--------------+---------------+
 |        | diseased |          Yes |           No |         Total |
@@ -83,10 +83,10 @@ Data Frame: tobacco
 > bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq) 
 > view(bf1, 'pander') 
 
-Frequencies   
-tobacco$diseased     
-Type: Factor    
-Group: smoker = Yes   
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+Group: smoker = Yes  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -94,8 +94,8 @@ Group: smoker = Yes
          No    173     58.05         100.00     58.05         100.00
        <NA>      0                               0.00         100.00
       Total    298    100.00         100.00    100.00         100.00
-  
-Group: smoker = No   
+
+Group: smoker = No  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -106,8 +106,7 @@ Group: smoker = No
 
 > view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE) 
 
-  
-**Group:** smoker = Yes   
+**Group:** smoker = Yes  
 
       &nbsp;   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ------------ ------ --------- -------------- --------- --------------
@@ -115,8 +114,8 @@ Group: smoker = No
       **No**    173     58.05         100.00     58.05         100.00
   **\<NA\>**      0                               0.00         100.00
    **Total**    298    100.00         100.00    100.00         100.00
-  
-**Group:** smoker = No   
+
+**Group:** smoker = No  
 
       &nbsp;   Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ------------ ------ --------- -------------- --------- --------------
@@ -127,10 +126,10 @@ Group: smoker = No
 
 > print(bf1) 
 
-Frequencies   
-tobacco$diseased     
-Type: Factor    
-Group: smoker = Yes   
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+Group: smoker = Yes  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -138,8 +137,8 @@ Group: smoker = Yes
          No    173     58.05         100.00     58.05         100.00
        <NA>      0                               0.00         100.00
       Total    298    100.00         100.00    100.00         100.00
-  
-Group: smoker = No   
+
+Group: smoker = No  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -169,10 +168,10 @@ Group: smoker = No
 > bf2 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq) 
 > view(bf2, 'pander') 
 
-Frequencies   
-iris$Species     
-Type: Factor    
-Group: Sepal.Length > mean(Sepal.Length) = FALSE   
+Frequencies  
+iris$Species  
+Type: Factor  
+Group: Sepal.Length > mean(Sepal.Length) = FALSE  
 
                    Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ---------------- ------ --------- -------------- --------- --------------
@@ -181,8 +180,8 @@ Group: Sepal.Length > mean(Sepal.Length) = FALSE
        virginica      6      7.50         100.00      7.50         100.00
             <NA>      0                               0.00         100.00
            Total     80    100.00         100.00    100.00         100.00
-  
-Group: Sepal.Length > mean(Sepal.Length) = TRUE   
+
+Group: Sepal.Length > mean(Sepal.Length) = TRUE  
 
                    Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ---------------- ------ --------- -------------- --------- --------------
@@ -202,11 +201,11 @@ Group: Sepal.Length > mean(Sepal.Length) = TRUE
 
 > view(bd1, method = 'pander') 
 
-Descriptive Statistics   
-BMI by gender   
-Data Frame: tobacco    
-Label: Body Mass Index    
-N: 489   
+Descriptive Statistics  
+BMI by gender  
+Data Frame: tobacco  
+Label: Body Mass Index  
+N: 489  
 
                          F        M
 ----------------- -------- --------
@@ -275,10 +274,10 @@ N: 489
 > (b8 <- by(iris, !is.na(iris$Species), descr)) 
 -- Non-numerical variable(s) ignored: Species
 
-Descriptive Statistics   
-iris   
-Group: !is.na(Species) = TRUE    
-N: 150   
+Descriptive Statistics  
+iris  
+Group: !is.na(Species) = TRUE  
+N: 150  
 
                     Petal.Length   Petal.Width   Sepal.Length   Sepal.Width
 ----------------- -------------- ------------- -------------- -------------
@@ -312,9 +311,9 @@ N: 150
 
 > view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown")  
 
-### Descriptive Statistics   
-**BMI** by **gender**   
-**N:** 489   
+### Descriptive Statistics  
+#### BMI by gender  
+**N:** 489  
 
 |          &nbsp; |      F |      M |
 |----------------:|-------:|-------:|
@@ -338,7 +337,7 @@ N: 150
 
 <div class="container st-container">
   <h3>Descriptive Statistics</h3>
-  <strong>BMI</strong> by <strong>gender</strong><br/>
+  <h4>BMIbygender</h4>
   <strong>N</strong>: 489
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
@@ -453,10 +452,10 @@ N: 150
 > wb1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq))  
 > view(wb1, method = "pander", caption = "with + by") 
 
-Frequencies   
-tobacco$diseased     
-Type: Factor    
-Group: smoker = Yes   
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+Group: smoker = Yes  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -466,8 +465,8 @@ Group: smoker = Yes
       Total    298    100.00         100.00    100.00         100.00
 
 Table: with + by
-  
-Group: smoker = No   
+
+Group: smoker = No  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -488,8 +487,7 @@ Table: with + by
 
 > view(wb1, headings = FALSE, footnote = "no headings", method = "pander")  
 
-  
-Group: smoker = Yes   
+Group: smoker = Yes  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -497,8 +495,8 @@ Group: smoker = Yes
          No    173     58.05         100.00     58.05         100.00
        <NA>      0                               0.00         100.00
       Total    298    100.00         100.00    100.00         100.00
-  
-Group: smoker = No   
+
+Group: smoker = No  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -510,10 +508,10 @@ Group: smoker = No
 > wb2 <- with(tobacco, by(data = BMI, INDICES = gender, FUN = descr))  
 > view(wb2, method = "pander") 
 
-Descriptive Statistics   
-BMI by gender   
-Data Frame: tobacco    
-N: 489   
+Descriptive Statistics  
+BMI by gender  
+Data Frame: tobacco  
+N: 489  
 
                          F        M
 ----------------- -------- --------
@@ -541,10 +539,10 @@ N: 489
 
 > (b5 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max")))) 
 
-Descriptive Statistics   
-BMI by age.gr   
-Data Frame: tobacco    
-N: 258   
+Descriptive Statistics  
+BMI by age.gr  
+Data Frame: tobacco  
+N: 258  
 
                  18-34   35-50   51-70    71 +
 -------------- ------- ------- ------- -------
@@ -556,10 +554,10 @@ N: 258
 
 > print(b5, "pander", style = "rmarkdown")  
 
-### Descriptive Statistics   
-**BMI** by **age.gr**   
-**Data Frame:** tobacco    
-**N:** 258   
+### Descriptive Statistics  
+#### BMI by age.gr  
+**Data Frame:** tobacco  
+**N:** 258  
 
 |       &nbsp; | 18-34 | 35-50 | 51-70 |  71 + |
 |-------------:|------:|------:|------:|------:|
@@ -572,10 +570,10 @@ N: 258
 > b6 <- with(tobacco, by(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE)) 
 > view(b6, "pander")  
 
-Descriptive Statistics   
-BMI by age.gr   
-Data Frame: tobacco    
-N: 258   
+Descriptive Statistics  
+BMI by age.gr  
+Data Frame: tobacco  
+N: 258  
 
                Mean   Std.Dev.     Min     Max
 ----------- ------- ---------- ------- -------
@@ -599,10 +597,10 @@ N: 258
 
 > with(tobacco, view(by(data = BMI, INDICES = gender, FUN = descr), method = "pander"))  
 
-Descriptive Statistics   
-BMI by gender   
-Data Frame: tobacco    
-N: 489   
+Descriptive Statistics  
+BMI by gender  
+Data Frame: tobacco  
+N: 489  
 
                          F        M
 ----------------- -------- --------

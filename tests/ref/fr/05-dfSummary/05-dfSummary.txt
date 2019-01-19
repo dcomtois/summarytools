@@ -13,10 +13,11 @@
 
 > (dfs1 <- dfSummary(tobacco)) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 ---------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide    Manquant  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- --------- ----------
@@ -133,10 +134,11 @@ No   Variable       Étiquette          Stats / valeurs           Fréq. (% de val
 
 > print(dfs1, varnumbers = FALSE) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 ----------------------------------------------------------------------------------------------------------------------------
 Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide    Manquant  
 -------------- ------------------ ------------------------- --------------------- --------------------- --------- ----------
@@ -193,10 +195,11 @@ samp.wgts      Sampling Weights   Moy (é-t) : 1 (0.1)       0.86!: 267 (26.7%)  
 
 > print(dfs1, labels.col = FALSE) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 --------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide    Manquant  
 ---- -------------- ------------------------- --------------------- --------------------- --------- ----------
@@ -253,10 +256,11 @@ No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme te
 
 > print(dfs1, valid.col = FALSE) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 -----------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Manquant  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- ----------
@@ -313,10 +317,11 @@ No   Variable       Étiquette          Stats / valeurs           Fréq. (% de val
 
 > print(dfs1, na.col = FALSE) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 ----------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide   
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- ---------
@@ -373,10 +378,11 @@ No   Variable       Étiquette          Stats / valeurs           Fréq. (% de val
 
 > print(dfs1, graph.col = FALSE) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 -----------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Valide    Manquant  
 ---- -------------- ------------------ ------------------------- --------------------- --------- ----------
@@ -510,10 +516,11 @@ samp.wgts      Moy (é-t) : 1 (0.1)       0.86!: 267 (26.7%)
 > st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.graph.col = F, dfSummary.valid.col = F, dfSummary.na.col = F) 
 > (dfs2 <- dfSummary(tobacco)) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 9    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 9  
+Doublons: 2  
+
 --------------------------------------------------------------
 Variable       Stats / valeurs           Fréq. (% de valide)  
 -------------- ------------------------- ---------------------
@@ -576,10 +583,11 @@ samp.wgts      Moy (é-t) : 1 (0.1)       0.86!: 267 (26.7%)
 > tobacco$disease.f <- as.factor(tobacco$disease) 
 > (dfs3 <- dfSummary(tobacco, round.digits = 2, max.distinct.values = 4, varnumbers = FALSE, labels.col = TRUE, valid.col = FALSE, na.col = FALSE, max.string.width = 20)) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 10    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 10  
+Doublons: 2  
+
 -------------------------------------------------------------------------------------------------------
 Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte      
 -------------- ------------------ ------------------------- --------------------- ---------------------
@@ -641,10 +649,11 @@ disease.f                         1. Cancer                  34 (15.3%)         
 > data(cars) 
 > (dfs4 <- dfSummary(cars)) 
 
-Tableau-synthèse   
-cars   
-Dimensions: 50 x 2    
-Doublons: 1   
+Tableau-synthèse  
+cars  
+Dimensions: 50 x 2  
+Doublons: 1  
+
 -----------------------------------------------------------------------------------------------------
 No   Variable    Stats / valeurs          Fréq. (% de valide)   Diagramme texte   Valide   Manquant  
 ---- ----------- ------------------------ --------------------- ----------------- -------- ----------
@@ -670,10 +679,11 @@ No   Variable    Stats / valeurs          Fréq. (% de valide)   Diagramme texte 
 > load(paste0(orig_dir, "/tests/data/special_vars.RData")) 
 > (dfs_special <- dfSummary(special_vars)) 
 
-Tableau-synthèse   
-special_vars   
-Dimensions: 1000 x 19    
-Doublons: 0   
+Tableau-synthèse  
+special_vars  
+Dimensions: 1000 x 19  
+Doublons: 0  
+
 -----------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs             Fréq. (% de valide)   Diagramme texte        Valide    Manquant  
 ---- -------------- --------------------------- --------------------- ---------------------- --------- ----------
@@ -777,10 +787,11 @@ No   Variable       Stats / valeurs             Fréq. (% de valide)   Diagramme 
 > dfSummary(iris$Sepal.Length) 
 -- iris$Sepal.Length was converted to a data frame
 
-Tableau-synthèse   
-iris   
-Dimensions: 150 x 1    
-Doublons: 115   
+Tableau-synthèse  
+iris  
+Dimensions: 150 x 1  
+Doublons: 115  
+
 -------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme texte   Valide   Manquant  
 ---- -------------- ----------------------- --------------------- ----------------- -------- ----------
@@ -793,10 +804,11 @@ No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme text
 
 > dfSummary(iris['Sepal.Length']) 
 
-Tableau-synthèse   
-iris   
-Dimensions: 150 x 1    
-Doublons: 115   
+Tableau-synthèse  
+iris  
+Dimensions: 150 x 1  
+Doublons: 115  
+
 -------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme texte   Valide   Manquant  
 ---- -------------- ----------------------- --------------------- ----------------- -------- ----------
@@ -810,10 +822,11 @@ No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme text
 > dfSummary(iris[['Sepal.Length']]) 
 -- iris[["Sepal.Length"]] was converted to a data frame
 
-Tableau-synthèse   
-iris   
-Dimensions: 150 x 1    
-Doublons: 115   
+Tableau-synthèse  
+iris  
+Dimensions: 150 x 1  
+Doublons: 115  
+
 -------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme texte   Valide   Manquant  
 ---- -------------- ----------------------- --------------------- ----------------- -------- ----------
@@ -827,10 +840,11 @@ No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme text
 > dfSummary(iris[["Sepal.Length"]]) 
 -- iris[["Sepal.Length"]] was converted to a data frame
 
-Tableau-synthèse   
-iris   
-Dimensions: 150 x 1    
-Doublons: 115   
+Tableau-synthèse  
+iris  
+Dimensions: 150 x 1  
+Doublons: 115  
+
 -------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme texte   Valide   Manquant  
 ---- -------------- ----------------------- --------------------- ----------------- -------- ----------
@@ -851,10 +865,11 @@ No   Variable       Stats / valeurs         Fréq. (% de valide)   Diagramme text
 
 > dfSummary(tobacco[1:100,]) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 100 x 10    
-Doublons: 0   
+Tableau-synthèse  
+tobacco  
+Dimensions: 100 x 10  
+Doublons: 0  
+
 -------------------------------------------------------------------------------------------------------------
 No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide   Manquant  
 ---- -------------- ------------------------- --------------------- --------------------- -------- ----------
@@ -934,10 +949,11 @@ No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme te
 > tobacco$samp.wgts.4 <- round(tobacco$samp.wgts, 1) 
 > dfSummary(tobacco, round.digits = 2) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 12    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 12  
+Doublons: 2  
+
 ---------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs           Fréq. (% de valide)   Diagramme texte       Valide    Manquant  
 ---- -------------- ------------------ ------------------------- --------------------- --------------------- --------- ----------
@@ -1017,10 +1033,11 @@ No   Variable       Étiquette          Stats / valeurs           Fréq. (% de val
 
 > dfSummary(tobacco, round.digits = 3) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 12    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 12  
+Doublons: 2  
+
 -----------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs            Fréq. (% de valide)    Diagramme texte       Valide    Manquant  
 ---- -------------- ------------------ -------------------------- ---------------------- --------------------- --------- ----------
@@ -1099,10 +1116,11 @@ No   Variable       Étiquette          Stats / valeurs            Fréq. (% de va
 
 > dfSummary(tobacco, round.digits = 4) 
 
-Tableau-synthèse   
-tobacco   
-Dimensions: 1000 x 12    
-Doublons: 2   
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 12  
+Doublons: 2  
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 No   Variable       Étiquette          Stats / valeurs               Fréq. (% de valide)      Diagramme texte       Valide    Manquant  
 ---- -------------- ------------------ ----------------------------- ------------------------ --------------------- --------- ----------
@@ -1193,10 +1211,7 @@ No   Variable       Étiquette          Stats / valeurs               Fréq. (% de
 
 <div class="container st-container">
   <h3>Tableau-synth&#0232;se</h3>
-  <strong>
-    tobacco
-    <br/>
-  </strong>
+  <h4>tobacco</h4>
   <strong>Dimensions</strong>: 1000 x 12
   <br/><strong>Doublons</strong>: 2
   <br/>

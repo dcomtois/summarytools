@@ -1,6 +1,6 @@
-### Frequencies   
-**tabagisme$maladie**      
-**Type:** Character   
+### Frequencies  
+#### tabagisme$maladie  
+**Type:** Character  
 
 | &nbsp;                   | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |:-------------------------|:-----|:--------|:-------------|:--------|:-------------|

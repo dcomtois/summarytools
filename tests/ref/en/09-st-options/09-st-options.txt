@@ -16,6 +16,9 @@ $round.digits
 $plain.ascii
 [1] TRUE
 
+$method
+[1] "pander"
+
 $headings
 [1] TRUE
 
@@ -52,6 +55,9 @@ $descr.stats
 $descr.transpose
 [1] FALSE
 
+$dfSummary.style
+[1] "multiline"
+
 $dfSummary.varnumbers
 [1] TRUE
 
@@ -69,6 +75,9 @@ $dfSummary.na.col
 
 $dfSummary.graph.magnif
 [1] 1
+
+$subtitle.emphasis
+[1] TRUE
 
 $lang
 [1] "en"
@@ -125,6 +134,9 @@ $descr.stats
 $descr.transpose
 [1] FALSE
 
+$dfSummary.style
+[1] "multiline"
+
 $dfSummary.varnumbers
 [1] TRUE
 
@@ -142,6 +154,9 @@ $dfSummary.na.col
 
 $dfSummary.graph.magnif
 [1] 1
+
+$subtitle.emphasis
+[1] TRUE
 
 $lang
 [1] "en"

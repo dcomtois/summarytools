@@ -1,6 +1,6 @@
-### Statistiques descriptives   
-**BMI** par **gender**   
-**N:** 489   
+### Statistiques descriptives  
+#### BMI par gender  
+**N:** 489  
 
 |            &nbsp; |      F |      M |
 |------------------:|-------:|-------:|
