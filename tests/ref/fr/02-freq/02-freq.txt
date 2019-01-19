@@ -342,15 +342,15 @@ Type: Facteur
 
 # Print to files (Style and/or method should be modified with message) --------- 
 
-> print(freq1, file = "exemple freq1.md") 
+> print(freq1, file = "01.md") 
 -- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
 -- Output file written
 
-> print(freq1, file = "exemple freq1.html") 
+> print(freq1, file = "01.html") 
 -- Switching method to 'browser'
 -- Output file written
 
-> print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "freq1-no-bootstrap.html", report.title = "Freq without bootstrap") 
+> print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -382,7 +382,7 @@ Poids: ponderation
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
 
-> print(freq3, file = "freq3 - weights.html") 
+> print(freq3, file = "03 - weights.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -391,7 +391,7 @@ Poids: ponderation
 
 > label(tobacco) <- "Study on Tobacco and Health" 
 > label(tobacco$gender) <- "Subject's Gender" 
-> (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))  # Problématique !!! 
+> (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))) 
 
 ### Tableau de fréquences pondérées   
 **tobacco$gender**      
@@ -479,12 +479,12 @@ Groupe: smoker = No
   **\<NA\>**       0                                 0.00         100.00
    **Total**     702     100.00          100.00    100.00         100.00
 
-> print(bf1, footnote = "by", file = "freq-bf1-1.html", missing = "xxxx") 
+> print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
-> view(bf1, headings = FALSE, footnote = "no headings", file = "freq-bf1-2.html") 
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html") 
 -- Output file written
 -- Output file appended
 
@@ -512,7 +512,7 @@ Groupe: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> print(bf2, file = "freq-bf2.html") 
+> print(bf2, file = "06 - by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -542,7 +542,7 @@ Groupe: Sepal.Length > mean(Sepal.Length) = TRUE
             <NA>       0                                 0.00         100.00
            Total      70     100.00          100.00    100.00         100.00
 
-> print(bf3, file = "freq-bf3.html") 
+> print(bf3, file = "07 - by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended

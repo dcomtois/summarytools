@@ -35,8 +35,11 @@ print(dfSummary(tobacco), file = "02 - basic.html")
 st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.graph.col = F, dfSummary.valid.col = F, dfSummary.na.col = F)
 (dfs2 <- dfSummary(tobacco))
 view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal width cols", file = "03 - equal widths.html")
+
 st_options('reset')
 st_options(lang = lang)
+st_options(footnote = "Placeholder footnote")
+
 tobacco$disease.f <- as.factor(tobacco$disease)
 (dfs3 <- dfSummary(tobacco, round.digits = 2, max.distinct.values = 4, varnumbers = FALSE, labels.col = TRUE, valid.col = FALSE, na.col = FALSE, max.string.width = 20))
 print(dfs3, footnote = "4 distinct vals.", report.title = "DFS - 4 distinct values", file = "04 - 4 distinct val.html")
