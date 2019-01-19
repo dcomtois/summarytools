@@ -5,15 +5,16 @@
 \title{Query and set summarytools global options}
 \usage{
 st_options(option = NULL, value = NULL, style = "simple",
-  round.digits = 2, plain.ascii = TRUE, headings = TRUE,
+  plain.ascii = TRUE, round.digits = 2, headings = TRUE,
   footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
   custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
   freq.report.nas = TRUE, ctable.prop = "r", ctable.totals = TRUE,
   descr.stats = "all", descr.transpose = FALSE,
-  dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
-  dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
-  dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
+  dfSummary.style = "multiline", dfSummary.varnumbers = TRUE,
+  dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE,
+  dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE,
+  dfSummary.graph.magnif = 1, subtitle.emphasis = TRUE, lang = "en",
+  omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -28,13 +29,13 @@ be set via their own parameter. That is, instead of
 \item{style}{Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
-\item{round.digits}{Numeric. Defaults to \code{2}.}
-
 \item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
 using summarytools with a rendering tool such as \code{knitr} or when
 creating rmarkdown output files to be converted with Pandoc. Note however
 that its value will automatically be set to \code{FALSE} whenever
 \code{style} is set to \dQuote{rmarkdown}).}
+
+\item{round.digits}{Numeric. Defaults to \code{2}.}
 
 \item{headings}{Logical. Set to \code{FALSE} to remove all headings from
 outputs. Only the tables will be printed out, except when \code{\link{by}}
@@ -79,6 +80,9 @@ parameter of \code{freq()}. \code{TRUE} by default.}
 
 \item{descr.transpose}{Logical. Corresponds to the \code{transpose} parameter
 of \code{\link{descr}}. \code{FALSE} by default.}
+
+\item{dfSummary.style}{Character. \dQuote{multiline} by default. Set to 
+\dQuote{grid} for \emph{Rmarkdown} documents.}
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
 variable numbers in the first column. Defaults to \code{TRUE}.}

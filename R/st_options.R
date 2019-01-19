@@ -51,6 +51,8 @@
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
 #'   of \code{\link{descr}}. \code{FALSE} by default.
+#' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
+#'   \dQuote{grid} for \emph{Rmarkdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
@@ -89,20 +91,20 @@
 #' }
 #' @export
 st_options <- function(option = NULL, value = NULL, style = "simple", 
-                       round.digits = 2, plain.ascii = TRUE, headings = TRUE,
-                       footnote = "default", display.labels = TRUE,
-                       bootstrap.css = TRUE, custom.css = NA,
-                       escape.pipe = FALSE, freq.totals = TRUE,
+                       plain.ascii = TRUE, round.digits = 2,
+                       headings = TRUE, footnote = "default", 
+                       display.labels = TRUE, bootstrap.css = TRUE, 
+                       custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
                        freq.report.nas = TRUE, ctable.prop = "r",
                        ctable.totals = TRUE, descr.stats = "all",
-                       descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
-                       dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
-                       dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, subtitle.emphasis = TRUE, 
-                       lang = "en", omit.headings = !headings) {
+                       descr.transpose = FALSE, dfSummary.style = "multiline",
+                       dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE, 
+                       dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE, 
+                       dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
+                       subtitle.emphasis = TRUE, lang = "en", 
+                       omit.headings = !headings) {
   
   allOpts <- getOption("summarytools")
-  
   
   # Validate arguments
   mc <- match.call()
@@ -165,6 +167,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "ctable.totals"          = TRUE,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
+                   "dfSummary.style"        = "multiline",
                    "dfSummary.varnumbers"   = TRUE,
                    "dfSummary.labels.col"   = TRUE,
                    "dfSummary.graph.col"    = TRUE,
