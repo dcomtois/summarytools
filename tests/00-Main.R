@@ -100,9 +100,9 @@ eval_with_feedback <- function(filename, lang, compare = TRUE) {
   }
 }
 
-compare_dirs <- function() {
-  ref_dir  <- normalizePath(paste(ref_dir, lang, sub("\\.R", "", filename),
-                                  sep = "/"), mustWork = FALSE)
+compare_dirs <- function(lang) {
+  ref_dir  <- normalizePath(paste(ref_dir, lang, sep = "/"), mustWork = FALSE)
+  out_dir <- paste(date_dir, lang, sep = "/")
   if (!dir.exists(ref_dir)) {
     dir.create(ref_dir, recursive = TRUE)
     return(paste("No ref files exist in", ref_dir))
@@ -123,6 +123,7 @@ eval_with_feedback(testfiles[6],  lang = "en", compare = FALSE) # overrides
 eval_with_feedback(testfiles[7],  lang = "en", compare = FALSE) # lapply
 eval_with_feedback(testfiles[8],  lang = "en", compare = FALSE) # with/by
 eval_with_feedback(testfiles[9],  lang = "en", compare = FALSE) # st_options
+compare_dirs('en')
 
 eval_with_feedback(testfiles[1],  lang = "fr", compare = FALSE) # parse-args
 eval_with_feedback(testfiles[2],  lang = "fr", compare = FALSE) # freq
@@ -133,3 +134,5 @@ eval_with_feedback(testfiles[6],  lang = "fr", compare = FALSE) # overrides
 eval_with_feedback(testfiles[7],  lang = "fr", compare = FALSE) # lapply
 eval_with_feedback(testfiles[8],  lang = "fr", compare = FALSE) # with/by
 eval_with_feedback(testfiles[9],  lang = "fr", compare = FALSE) # st_options
+compare_dirs('fr')
+
