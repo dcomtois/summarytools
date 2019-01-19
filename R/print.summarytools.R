@@ -454,14 +454,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
 
+  # Remove doubled linefeed
+  res[[length(res)]] <- 
+    sub("^\\n\\n", "\n", res[[length(res)]])
+  
+  
   # Print or write to file - pander --------------------------------------------
   if (method == "pander") {
 
-    # remove initial linefeed if headings is FALSE
-    if (!isTRUE(attr(x, "format_info")$headings)) {
-      res[[1]] <- sub("^\\n\\n", "\n", res[[1]])
-    }
-    
     file <- normalizePath(file, mustWork = FALSE)
     cat(do.call(paste0, res), file = file, append = append)
     
