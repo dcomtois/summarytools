@@ -285,6 +285,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   pos$by      <- which(funs_stack == "by()")
   pos$with    <- which(funs_stack == "with()")
   pos$pipe    <- which(funs_stack == "`%>%`()")
+  pos$dollar  <- which(funs_stack == "`%$%`()")
   pos$lapply  <- which(funs_stack == "lapply()")
   pos$tapply  <- which(funs_stack == "tapply()")
   pos$fun     <- which(funs_stack == paste0(caller, "()"))
@@ -354,7 +355,20 @@ parse_args <- function(sys_calls, sys_frames, match_call,
     calls$with$expr <- standardise_call(calls$with$expr)
     if (is.data.frame(x)) {
       if (length(calls$with$data) == 1) {
-        upd_output("df_name", deparse(calls$with$data))
+        tmp_name <- deparse(calls$with$data)
+        if (tmp_name == "." && "dollar" %in% names(calls)) {
+          calls$dollar <- standardise_call(calls$dollar)
+          if (is.call(calls$dollar$rhs) && 
+              identical(standardise_call(calls$dollar$rhs), calls$with$expr)) {
+            tmp_name <- calls$dollar$lhs
+            if (length(tmp_name) == 1) {
+              upd_output("df_name",  deparse(tmp_name))
+              upd_output("df_label", label(x))
+            }
+          }
+        } else {
+          upd_output("df_name", deparse(calls$with$data))
+        }
       } else {
         upd_output("df_name", setdiff(as.character(calls$with$data), oper)[1])
       }
