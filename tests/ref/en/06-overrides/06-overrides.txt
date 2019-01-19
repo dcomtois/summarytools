@@ -98,7 +98,7 @@
     </tr>
   </tbody>
 </table>
-  f1
+  <p>f1</p>
 </div>
 
 > (f2 <- freq(tabagisme$maladie, order = "freq")) 

@@ -40,14 +40,14 @@ Data frame: tobacco
 -------- ---------- ------------- ------------- ---------- ---------------
 
 > st_options(display.labels = F) 
-> print(ct1, file = "ctable-ct1-1.html") 
+> print(ct1, file = "01.html") 
 -- Switching method to 'browser'
 -- Output file written
 
-> print(ct1, totals=FALSE, file = "ctable-ct1-no-totals-print.md", style = "grid", plain.ascii = FALSE) 
+> print(ct1, totals=FALSE, file = "02.md", style = "grid", plain.ascii = FALSE) 
 -- Output file written
 
-> view(ct1, totals=FALSE, file = "ctable-ct1-no-totals-view.md", style = "grid", plain.ascii = FALSE) 
+> view(ct1, totals=FALSE, file = "03.md", style = "grid", plain.ascii = FALSE) 
 -- Switching method to 'pander'
 -- Output file written
 
@@ -258,25 +258,25 @@ Groupe: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> print(wbc, headings = T, file = "ctable-wbc-print.md") 
+> print(wbc, headings = T, file = "04.md") 
 -- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
 -- Output file written
 -- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
 -- Output file appended
 
-> print(wbc, headings = T, file = "ctable-wbc-print.html") 
+> print(wbc, headings = T, file = "04.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
-> view(wbc, headings = T, file = "ctable-wbc-view-with-head.md") 
+> view(wbc, headings = T, caption = "with head", file = "05.md") 
 -- Switching method to 'pander'
 -- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
 -- Output file written
 -- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
 -- Output file appended
 
-> view(wbc, headings = T, file = "ctable-wbc-view-with-head.html") 
+> view(wbc, headings = T, footnote = "with head", file = "05.html") 
 -- Output file written
 -- Output file appended
 

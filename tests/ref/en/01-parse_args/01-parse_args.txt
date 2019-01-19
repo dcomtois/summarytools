@@ -172,7 +172,7 @@ Type: Factor
 
 # with ------------------------------------------------------------------------- 
 
-> with(tobacco, freq(smoker))               # ok 
+> with(tobacco, freq(smoker))            
 
 Frequencies   
 tobacco$smoker     
@@ -186,7 +186,7 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> with(tobacco, descr(age))                 # ok 
+> with(tobacco, descr(age))              
 
 Descriptive Statistics   
 tobacco$age   
@@ -211,7 +211,7 @@ N: 1000
           N.Valid   975.00
           % Valid    97.50
 
-> with(tobacco, ctable(smoker, diseased))   # ok 
+> with(tobacco, ctable(smoker, diseased)) 
 
 Cross-Tabulation, Row Proportions   
 smoker * diseased     
@@ -230,11 +230,12 @@ Label: Tobacco Study
 # pipe ------------------------------------------------------------------------- 
 
 > library(magrittr) 
-> tobacco$smoker %>% freq()      # ok 
+> label(tobacco$smoker) <- "Subject smokes" 
+> tobacco$smoker %>% freq()      
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -244,11 +245,11 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco["smoker"] %>% freq()   # ok 
+> tobacco["smoker"] %>% freq()   
 
 Frequencies   
-smoker     
-Label: Smoking Status    
+tobacco$smoker     
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -258,11 +259,11 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco[["smoker"]] %>% freq() # ok 
+> tobacco[["smoker"]] %>% freq() 
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -272,11 +273,11 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco[,5] %>% freq()         # ok 
+> tobacco[,5] %>% freq()         
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -286,11 +287,11 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco[[5]] %>% freq()        # ok 
+> tobacco[[5]] %>% freq()        
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -303,11 +304,11 @@ Type: Factor
 
 # by --------------------------------------------------------------------------- 
 
-> by(tobacco$smoker, tobacco$gender, freq)           # ok 
+> by(tobacco$smoker, tobacco$gender, freq)           
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -327,11 +328,11 @@ Group: gender = M
        <NA>      0                               0.00         100.00
       Total    489    100.00         100.00    100.00         100.00
 
-> by(tobacco["smoker"], tobacco["gender"], freq)     # ok 
+> by(tobacco["smoker"], tobacco["gender"], freq)     
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -351,11 +352,11 @@ Group: gender = M
        <NA>      0                               0.00         100.00
       Total    489    100.00         100.00    100.00         100.00
 
-> by(tobacco[,"smoker"], tobacco[,"gender"], freq)   # ok 
+> by(tobacco[,"smoker"], tobacco[,"gender"], freq)   
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -375,11 +376,11 @@ Group: gender = M
        <NA>      0                               0.00         100.00
       Total    489    100.00         100.00    100.00         100.00
 
-> by(tobacco[["smoker"]], tobacco[["gender"]], freq) # ok 
+> by(tobacco[["smoker"]], tobacco[["gender"]], freq) 
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -402,11 +403,11 @@ Group: gender = M
 
 # by, numeric column indexing -------------------------------------------------- 
 
-> by(tobacco[[5]], tobacco[[1]], freq)               # ok 
+> by(tobacco[[5]], tobacco[[1]], freq) 
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -426,11 +427,11 @@ Group: gender = M
        <NA>      0                               0.00         100.00
       Total    489    100.00         100.00    100.00         100.00
 
-> by(tobacco[,5], tobacco[,1], freq)                 # ok 
+> by(tobacco[,5], tobacco[,1], freq)   
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -482,11 +483,11 @@ Group: gender = M
 
 # with + by -------------------------------------------------------------------- 
 
-> with(tobacco, by(smoker, gender, freq))                                  # ok 
+> with(tobacco, by(smoker, gender, freq))                                
 
 Frequencies   
 tobacco$smoker     
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor    
 Group: gender = F   
 
@@ -506,7 +507,7 @@ Group: gender = M
        <NA>      0                               0.00         100.00
       Total    489    100.00         100.00    100.00         100.00
 
-> with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))        # ok 
+> with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))      
 
 Cross-Tabulation, Row Proportions   
 smoker * diseased     
@@ -532,7 +533,7 @@ Group: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable))   # ok 
+> with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable)) 
 
 Cross-Tabulation, Row Proportions   
 smoker * diseased     
@@ -586,7 +587,7 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
   
 tobacco$smoker    
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -623,7 +624,7 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
   
 tobacco$smoker    
-Label: Smoking Status    
+Label: Subject smokes    
 Type: Factor   
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.

@@ -181,11 +181,11 @@ N: 1000
 
 # print to files --------------------------------------------------------------- 
 
-> print(d2, file = "descr-d2-1.html") 
+> print(d2, file = "01.html") 
 -- Switching method to 'browser'
 -- Output file written
 
-> view(d2, footnote = "test: ΰιοτω", file = "descr-d2-2.html") 
+> view(d2, footnote = "test: ΰιοτω", file = "02.html") 
 -- Output file written
 
 
@@ -194,11 +194,11 @@ N: 1000
 > st_options(descr.transpose = FALSE) 
 > some.long.variable.name <- tobacco$age 
 > some.long.variabl.name <- tobacco$age 
-> print(descr(some.long.variable.name), file = "descr-long-name-1.html") 
+> print(descr(some.long.variable.name), file = "03.html") 
 -- Switching method to 'browser'
 -- Output file written
 
-> view(descr(some.long.variabl.name), file = "descr-long-name-2.html") 
+> view(descr(some.long.variabl.name), file = "04.html") 
 -- Output file written
 
 
@@ -220,7 +220,7 @@ N: 1000
 |  **N.Valid** | 975.0 |
 |  **% Valid** |  97.5 |
 
-> view(d3,  file = "descr-d3.md") 
+> view(d3,  file = "05.md") 
 -- Switching method to 'pander'
 -- Output file written
 
@@ -317,15 +317,15 @@ Table: fivenum
 |  **N.Valid** | 975.49 | 973.85 |       964.68 |
 |  **% Valid** |  97.55 |  97.38 |        96.47 |
 
-> print(d5, file = "descr-d5.html", footnote = "Weights") 
+> print(d5, file = "06.html", footnote = "Weights") 
 -- Switching method to 'browser'
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 -- Output file written
 
 
-# split tables at 60 char ------------------------------------------------------ 
+# split tables at 40 char ------------------------------------------------------ 
 
-> print(d5, transpose = TRUE, split.tables = 60) 
+> print(d5, transpose = TRUE, split.tables = 40) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
 ### Weighted Descriptive Statistics   
@@ -334,15 +334,29 @@ Table: fivenum
 **Weights:** wgts    
 **N:** 1000   
 
-|       &nbsp; |    age |    BMI | cigs.per.day |
-|-------------:|-------:|-------:|-------------:|
-|     **Mean** |  50.83 |  25.83 |         6.78 |
-| **Std.Dev.** |  17.95 |   4.48 |        11.86 |
-|      **Min** |  18.00 |   8.83 |         0.00 |
-|   **Median** |  52.00 |  25.68 |         0.00 |
-|      **Max** |  80.00 |  39.44 |        40.00 |
-|  **N.Valid** | 975.49 | 973.85 |       964.68 |
-|  **% Valid** |  97.55 |  97.38 |        96.47 |
+|       &nbsp; |    age |    BMI |
+|-------------:|-------:|-------:|
+|     **Mean** |  50.83 |  25.83 |
+| **Std.Dev.** |  17.95 |   4.48 |
+|      **Min** |  18.00 |   8.83 |
+|   **Median** |  52.00 |  25.68 |
+|      **Max** |  80.00 |  39.44 |
+|  **N.Valid** | 975.49 | 973.85 |
+|  **% Valid** |  97.55 |  97.38 |
+
+Table: Table continues below
+
+ 
+
+|       &nbsp; | cigs.per.day |
+|-------------:|-------------:|
+|     **Mean** |         6.78 |
+| **Std.Dev.** |        11.86 |
+|      **Min** |         0.00 |
+|   **Median** |         0.00 |
+|      **Max** |        40.00 |
+|  **N.Valid** |       964.68 |
+|  **% Valid** |        96.47 |
 
 
 # by(), special case ----------------------------------------------------------- 
@@ -365,7 +379,7 @@ Table: fivenum
 |  **N.Valid** | 475.00 | 477.00 |
 |  **% Valid** |  97.14 |  97.55 |
 
-> print(d7, file = "descr-d7-by-special-print.html") 
+> print(d7, file = "07.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -404,7 +418,7 @@ Table: fivenum
 |  **N.Valid** | 478.00 | 477.00 |       475.00 |    489.00 |
 |  **% Valid** |  97.75 |  97.55 |        97.14 |    100.00 |
 
-> view(d8, file = "descr-d8-by-view.md") 
+> view(d8, file = "08.md") 
 -- Switching method to 'pander'
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 -- Output file written
@@ -432,6 +446,47 @@ Table: fivenum
 |  **N.Valid** | 475.00 | 477.00 |
 |  **% Valid** |  97.14 |  97.55 |
 
-> view(d9, file = "descr-d9-by-special-view.html") 
+> view(d9, file = "09.html") 
 -- Output file written
+
+
+# by with weights -------------------------------------------------------------- 
+
+> (d10 <- by(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts)) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+### Weighted Descriptive Statistics   
+**tobacco**    
+**Label:** A study on Tobacco and Health    
+**Weights:** samp.wgts    
+**Group:** smoker = Yes    
+**N:** 298   
+
+|       &nbsp; |    age |    BMI | cigs.per.day |
+|-------------:|-------:|-------:|-------------:|
+|     **Mean** |  49.80 |  25.66 |        22.54 |
+| **Std.Dev.** |  18.75 |   4.22 |        10.69 |
+|      **Min** |  19.00 |   9.01 |         5.00 |
+|   **Median** |  50.00 |  25.70 |        22.00 |
+|      **Max** |  80.00 |  36.36 |        40.00 |
+|  **N.Valid** | 291.00 | 292.08 |       292.26 |
+|  **% Valid** |  29.10 |  29.21 |        29.23 |
+  
+**Group:** smoker = No    
+**N:** 702   
+
+|       &nbsp; |    age |    BMI | cigs.per.day |
+|-------------:|-------:|-------:|-------------:|
+|     **Mean** |  49.38 |  25.77 |         0.00 |
+| **Std.Dev.** |  18.06 |   4.59 |         0.00 |
+|      **Min** |  18.00 |   8.83 |         0.00 |
+|   **Median** |  49.00 |  25.60 |         0.00 |
+|      **Max** |  80.00 |  39.44 |         0.00 |
+|  **N.Valid** | 685.93 | 685.05 |       674.97 |
+|  **% Valid** |  68.59 |  68.50 |        67.50 |
+
+> view(d10) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
 

@@ -1,4 +1,5 @@
 # setwd("~/github/summarytools")
+rm(list=ls())
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
 
@@ -11,7 +12,7 @@
 (testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "\\d(?!0)\\d",
                    perl = TRUE, value = TRUE))
 
-eval_with_feedback <- function(filename, lang) {
+eval_with_feedback <- function(filename, lang, compare = TRUE) {
   on.exit(setwd(orig_dir))
   out_dir <- paste(date_dir, lang, sub("\\.R", "", filename), sep = "/")
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
@@ -83,6 +84,23 @@ eval_with_feedback <- function(filename, lang) {
   
   cat("Closing", path_out, "...\n")
   close(outfile)
+  
+  if (isTRUE(compare)) {
+    ref_dir  <- normalizePath(paste(ref_dir, lang, sub("\\.R", "", filename),
+                                    sep = "/"), mustWork = FALSE)
+    if (!dir.exists(ref_dir)) {
+      dir.create(ref_dir, recursive = TRUE)
+      return(paste("No ref files exist in", ref_dir))
+    }
+    if (Sys.info()[['sysname']] == "Linux") {
+      system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
+    } else {
+      system(paste0('compare "', ref_dir, '" "', out_dir, '"'))
+    }
+  }
+}
+
+compare_dirs <- function() {
   ref_dir  <- normalizePath(paste(ref_dir, lang, sub("\\.R", "", filename),
                                   sep = "/"), mustWork = FALSE)
   if (!dir.exists(ref_dir)) {
@@ -96,22 +114,22 @@ eval_with_feedback <- function(filename, lang) {
   }
 }
 
-eval_with_feedback(testfiles[1],  lang = "en") # parse-args
-eval_with_feedback(testfiles[2],  lang = "en") # freq
-eval_with_feedback(testfiles[3],  lang = "en") # ctable
-eval_with_feedback(testfiles[4],  lang = "en") # descr
-eval_with_feedback(testfiles[5],  lang = "en") # dfSummary
-eval_with_feedback(testfiles[6],  lang = "en") # overrides
-eval_with_feedback(testfiles[7],  lang = "en") # lapply
-eval_with_feedback(testfiles[8],  lang = "en") # with/by
-eval_with_feedback(testfiles[9],  lang = "en") # st_options
+eval_with_feedback(testfiles[1],  lang = "en", compare = FALSE) # parse-args
+eval_with_feedback(testfiles[2],  lang = "en", compare = FALSE) # freq
+eval_with_feedback(testfiles[3],  lang = "en", compare = FALSE) # ctable
+eval_with_feedback(testfiles[4],  lang = "en", compare = FALSE) # descr
+eval_with_feedback(testfiles[5],  lang = "en", compare = FALSE) # dfSummary
+eval_with_feedback(testfiles[6],  lang = "en", compare = FALSE) # overrides
+eval_with_feedback(testfiles[7],  lang = "en", compare = FALSE) # lapply
+eval_with_feedback(testfiles[8],  lang = "en", compare = FALSE) # with/by
+eval_with_feedback(testfiles[9],  lang = "en", compare = FALSE) # st_options
 
-eval_with_feedback(testfiles[1],  lang = "fr") # parse-args
-eval_with_feedback(testfiles[2],  lang = "fr") # freq
-eval_with_feedback(testfiles[3],  lang = "fr") # ctable
-eval_with_feedback(testfiles[4],  lang = "fr") # descr
-eval_with_feedback(testfiles[5],  lang = "fr") # dfSummary
-eval_with_feedback(testfiles[6],  lang = "fr") # overrides
-eval_with_feedback(testfiles[7],  lang = "fr") # lapply
-eval_with_feedback(testfiles[8],  lang = "fr") # with/by
-eval_with_feedback(testfiles[9],  lang = "fr") # st_options
+eval_with_feedback(testfiles[1],  lang = "fr", compare = FALSE) # parse-args
+eval_with_feedback(testfiles[2],  lang = "fr", compare = FALSE) # freq
+eval_with_feedback(testfiles[3],  lang = "fr", compare = FALSE) # ctable
+eval_with_feedback(testfiles[4],  lang = "fr", compare = FALSE) # descr
+eval_with_feedback(testfiles[5],  lang = "fr", compare = FALSE) # dfSummary
+eval_with_feedback(testfiles[6],  lang = "fr", compare = FALSE) # overrides
+eval_with_feedback(testfiles[7],  lang = "fr", compare = FALSE) # lapply
+eval_with_feedback(testfiles[8],  lang = "fr", compare = FALSE) # with/by
+eval_with_feedback(testfiles[9],  lang = "fr", compare = FALSE) # st_options
