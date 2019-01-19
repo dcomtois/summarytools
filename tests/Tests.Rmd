@@ -31,7 +31,28 @@ st_options(style                  = "rmarkdown", # Note that this doesn't apply 
 st_css()
 ```
 
-# pander method
+## pander method, subtitle.emphasis = TRUE (default)
+```{r}
+freq(tobacco$age.gr)
+freq(tobacco)
+descr(tobacco$age)
+descr(tobacco)
+ctable(tobacco$smoker, tobacco$diseased, style = "grid")
+dfSummary(tobacco, style = "grid")
+```
+
+## render method, strength = 2 (stronger)
+
+```{r}
+print(freq(tobacco$age.gr), method = "render")
+print(freq(tobacco), method = "render")
+print(ctable(tobacco$gender, tobacco$smoker), method = "render")
+print(descr(tobacco$age), method = "render")
+print(descr(tobacco), method = "render")
+print(dfSummary(tobacco), method = "render")
+```
+
+
 
 ```{r}
 freq(tobacco$age.gr)

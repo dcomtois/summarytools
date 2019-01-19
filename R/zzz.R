@@ -26,6 +26,7 @@ utils::globalVariables(c("."))
             list("style"                  = "simple",
                  "round.digits"           = 2,
                  "plain.ascii"            = TRUE,
+                 "method"                 = "pander",
                  "headings"               = TRUE,
                  "footnote"               = "default",
                  "display.labels"         = TRUE,
@@ -38,12 +39,14 @@ utils::globalVariables(c("."))
                  "ctable.totals"          = TRUE,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
+                 "dfSummary.style"        = "multiline",
                  "dfSummary.varnumbers"   = TRUE,
                  "dfSummary.labels.col"   = TRUE,
                  "dfSummary.graph.col"    = TRUE,
                  "dfSummary.valid.col"    = TRUE,
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
+                 "subtitle.emphasis"      = TRUE,
                  "lang"                   = "en"))
 
   return(invisible())

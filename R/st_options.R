@@ -51,6 +51,8 @@
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
 #'   of \code{\link{descr}}. \code{FALSE} by default.
+#' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
+#'   \dQuote{grid} for \emph{Rmarkdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
@@ -67,6 +69,11 @@
 #'   \code{\link{dfSummary}} graphs show up too large (then use a value between
 #'   0 and 1) or too small (use a value > 1). Must be positive. Default to
 #'   \code{1}.
+#' @param subtitle.emphases Logical. Controls the formatting of the 
+#'  \dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending on
+#'  the context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+#'  \code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+#'  value gives it stronger emphasis.
 #' @param lang Character. A 2-letter code for the language to use in the
 #'   produced outputs. Currently available languages are: \sQuote{en}, 
 #'   \sQuote{fr}.
@@ -84,20 +91,20 @@
 #' }
 #' @export
 st_options <- function(option = NULL, value = NULL, style = "simple", 
-                       round.digits = 2, plain.ascii = TRUE, headings = TRUE,
-                       footnote = "default", display.labels = TRUE,
-                       bootstrap.css = TRUE, custom.css = NA,
-                       escape.pipe = FALSE, freq.totals = TRUE,
+                       plain.ascii = TRUE, round.digits = 2,
+                       headings = TRUE, footnote = "default", 
+                       display.labels = TRUE, bootstrap.css = TRUE, 
+                       custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
                        freq.report.nas = TRUE, ctable.prop = "r",
                        ctable.totals = TRUE, descr.stats = "all",
-                       descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
-                       dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
-                       dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, lang = "en",
+                       descr.transpose = FALSE, dfSummary.style = "multiline",
+                       dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE, 
+                       dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE, 
+                       dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
+                       subtitle.emphasis = TRUE, lang = "en", 
                        omit.headings = !headings) {
   
   allOpts <- getOption("summarytools")
-  
   
   # Validate arguments
   mc <- match.call()
@@ -160,12 +167,14 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "ctable.totals"          = TRUE,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
+                   "dfSummary.style"        = "multiline",
                    "dfSummary.varnumbers"   = TRUE,
                    "dfSummary.labels.col"   = TRUE,
                    "dfSummary.graph.col"    = TRUE,
                    "dfSummary.valid.col"    = TRUE,
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
+                   "subtitle.emphasis"      = TRUE,
                    "lang"                   = "en"))
     
     message("summarytools options have been reset")
