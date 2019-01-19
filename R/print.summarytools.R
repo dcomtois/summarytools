@@ -790,8 +790,8 @@ print_freq <- function(x, method) {
     div_list %+=% list(HTML(text = conv_non_ascii(freq_table_html)))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[["footnote"]])
-      div_list %+=% list(HTML(text = fn))
+      footn <- conv_non_ascii(parent.frame()[["footnote"]])
+      div_list %+=% list(HTML(text = paste0("<p>", footn, "</p>")))
     }
   }
   
