@@ -13,7 +13,7 @@ st_options(option = NULL, value = NULL, style = "simple",
   dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
   dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
   dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-  lang = "en", omit.headings = !headings)
+  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -107,6 +107,12 @@ produced outputs. Currently available languages are: \sQuote{en},
 \sQuote{fr}.}
 
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
+
+\item{subtitle.emphases}{Logical. Controls the formatting of the 
+\dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending on
+the context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+\code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+value gives it stronger emphasis.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To

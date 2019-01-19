@@ -67,11 +67,11 @@
 #'   \code{\link{dfSummary}} graphs show up too large (then use a value between
 #'   0 and 1) or too small (use a value > 1). Must be positive. Default to
 #'   \code{1}.
-#' @param subtitle.strength Numeric. Controls the formatting of the 
-#'  \dQuote{subtitle} (the \em{data frame} or \em{variable} name, depending on
-#'  the context. Value \code{2} (default), uses \dQuote{h4}, while value
-#'  \code{1} uses \dQuote{bold} / \dQuote{strong} format. Hence the default
-#'  value gives it a stronger emphasis.
+#' @param subtitle.emphases Logical. Controls the formatting of the 
+#'  \dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending on
+#'  the context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+#'  \code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+#'  value gives it stronger emphasis.
 #' @param lang Character. A 2-letter code for the language to use in the
 #'   produced outputs. Currently available languages are: \sQuote{en}, 
 #'   \sQuote{fr}.
@@ -98,7 +98,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                        descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
                        dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
                        dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, subtitle.strength = 2, 
+                       dfSummary.graph.magnif = 1, subtitle.emphasis = TRUE, 
                        lang = "en", omit.headings = !headings) {
   
   allOpts <- getOption("summarytools")
@@ -171,7 +171,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "dfSummary.valid.col"    = TRUE,
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
-                   "subtitle.strength"      = 2,
+                   "subtitle.emphasis"      = TRUE,
                    "lang"                   = "en"))
     
     message("summarytools options have been reset")
