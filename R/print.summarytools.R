@@ -790,8 +790,8 @@ print_freq <- function(x, method) {
     div_list %+=% list(HTML(text = conv_non_ascii(freq_table_html)))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[["footnote"]])
-      div_list %+=% list(HTML(text = fn))
+      footn <- conv_non_ascii(parent.frame()[["footnote"]])
+      div_list %+=% list(HTML(text = paste0("<p>", footn, "</p>")))
     }
   }
   
@@ -1550,13 +1550,6 @@ build_heading_pander <- function(format_info, data_info) {
             (names(item) == "Data.type" && 
              isTRUE(format_info$display.type)) ||
             !grepl("(label|Data\\.type)", names(item))) {
-          
-          if (names(item) == "Variable" && "Data.frame" %in% names(data_info) &&
-              "var.only" %in% names(format_info) && caller == "print_freq") {
-            data_info[["Variable"]] <- 
-              sub(paste0(data_info[["Data.frame"]], "$"), "", 
-                  data_info[["Variable"]], fixed = TRUE)
-          }
 
           if (item != "") {
             to_append <- 
