@@ -1733,7 +1733,7 @@ build_heading_html <- function(format_info, data_info, method) {
 
   caller <- as.character(sys.call(-1))[1]
   head1  <- NA # uses h3()
-  head2  <- NA # uses h4() for viewer/browser, and <strong> for render
+  head2  <- NA # uses h4() or <strong> (see option subtitle.emphasis)
   head3  <- NA # uses <strong>...</strong>
   
   append_items <- function(items) {
@@ -1778,9 +1778,9 @@ build_heading_html <- function(format_info, data_info, method) {
     } else {
       if ("Variable" %in% names(data_info)) {
         if (isTRUE(st_options("subtitle.emphasis"))) {
-          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
-        } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        } else {
+          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
         }
       }
       
@@ -1815,9 +1815,9 @@ build_heading_html <- function(format_info, data_info, method) {
 
     if ("Variable" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
-      } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+      } else {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       }
     }
     
@@ -1845,9 +1845,9 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("Row.x.Col" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)), br())
-      } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Row.x.Col)))
+      } else {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Row.x.Col)), br())
       }
     }
     
@@ -1863,15 +1863,15 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("by_var_special" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
-                             "</strong> ", conv_non_ascii(trs("by")), " <strong>",
-                             conv_non_ascii(data_info$by_var_special),
-                             "</strong><br/>"))
-      } else {
         head2 <- HTML(paste0("<h4>", conv_non_ascii(data_info$Variable),
                              conv_non_ascii(trs("by")),
                              conv_non_ascii(data_info$by_var_special),
                              "</h4>"))
+      } else {
+        head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
+                             "</strong> ", conv_non_ascii(trs("by")), " <strong>",
+                             conv_non_ascii(data_info$by_var_special),
+                             "</strong><br/>"))
       } 
       
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
@@ -1882,9 +1882,9 @@ build_heading_html <- function(format_info, data_info, method) {
       
     } else if ("Variable" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
-      } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+      } else {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
       }
       
       head3 <- append_items(list(c(Variable.label = trs("label")),
@@ -1895,9 +1895,9 @@ build_heading_html <- function(format_info, data_info, method) {
       
       if ("Data.frame" %in% names(data_info)) {
         if (isTRUE(st_options("subtitle.emphasis"))) {
-          head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
-        } else {
           head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+        } else {
+          head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
         }
       }
       
@@ -1913,9 +1913,9 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("Data.frame" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
-      } else {
         head2 <- h4(HTML(conv_non_ascii(data_info$Data.frame)))
+      } else {
+        head2 <- strong(HTML(conv_non_ascii(data_info$Data.frame)), br())
       }
     }
     
