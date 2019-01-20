@@ -105,7 +105,7 @@
 #' @method print summarytools
 #'
 #' @references
-#' \href{http://rstudio.com}{Rstudio}
+#' \href{http://rstudio.com}{RStudio}
 #' \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
 #' \href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
 #' \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
@@ -454,14 +454,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
 
-  # Remove doubled linefeed
-  res[[length(res)]] <- 
-    sub("^\\n\\n", "\n", res[[length(res)]])
-  
-  
   # Print or write to file - pander --------------------------------------------
   if (method == "pander") {
 
+    # Remove doubled linefeed
+    res[[length(res)]] <- 
+      sub("^\\n\\n", "\n", res[[length(res)]])
+    
     file <- normalizePath(file, mustWork = FALSE)
     cat(do.call(paste0, res), file = file, append = append)
     
