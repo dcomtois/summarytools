@@ -361,20 +361,20 @@ The following options can be set with `st_options()`:
 
 **Function-specific options**
 
-| Option name               | Default   | Note                                     |
-| ------------------------: | --------: | :--------------------------------------- |
-| freq.totals               |    TRUE   | Display totals row in freq()             |
-| freq.report.nas           |    TRUE   | Display <NA> row and “valid” columns     |
-| ctable.prop               |     “r”   | Display **r**ow proportions by default   |
-| ctable.totals             |    TRUE   | Show marginal totals                     |
-| descr.stats               |    “all”  | “fivenum”, “common” or list of stats     |
-| descr.transpose           |   FALSE   |                                          |
-| dfSummary.varnumbers      |    TRUE   | Show variable numbers in 1st col.        |
-| dfSummary.labels.col      |    TRUE   | Show variable labels when present        |
-| dfSummary.graph.col       |    TRUE   |                                          |
-| dfSummary.valid.col       |    TRUE   |                                          |
-| dfSummary.na.col          |    TRUE   |                                          |
-| dfSummary.graph.magnif    |       1   | Zoom factor for bar plots and histograms |
+| Option name            |  Default | Note                                     |
+| ---------------------: | -------: | :--------------------------------------- |
+| freq.totals            |   TRUE   | Display totals row in freq()             |
+| freq.report.nas        |   TRUE   | Display <NA> row and “valid” columns     |
+| ctable.prop            |    “r”   | Display **r**ow proportions by default   |
+| ctable.totals          |   TRUE   | Show marginal totals                     |
+| descr.stats            |   “all”  | “fivenum”, “common” or list of stats     |
+| descr.transpose        |  FALSE   |                                          |
+| dfSummary.varnumbers   |   TRUE   | Show variable numbers in 1st col.        |
+| dfSummary.labels.col   |   TRUE   | Show variable labels when present        |
+| dfSummary.graph.col    |   TRUE   |                                          |
+| dfSummary.valid.col    |   TRUE   |                                          |
+| dfSummary.na.col       |   TRUE   |                                          |
+| dfSummary.graph.magnif |      1   | Zoom factor for bar plots and histograms |
 
 #### Examples
 
@@ -472,8 +472,9 @@ print(dfSummary(somedata, graph.magnif = 0.8),
 ## Latest Changes and Improvements {#changes}
 
 Versions 0.9.0 and 0.8.9 (which was only released on GitHub) brought many
-improvements to **summarytools**. This [document-vignette](https://TODO) gives
-a detailed view on those changes, but here are the main elements:
+improvements to **summarytools**. This 
+[vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/New-in-Version-0-9.html) 
+gives a detailed description of all the changes, but here are the main elements:
 
  - Translations
    + For now, only a limited number of languages are available (fr, es, ru), but
@@ -486,10 +487,8 @@ a detailed view on those changes, but here are the main elements:
      [here](https://github.com/dcomtois/summarytools/blob/master/translations/language_template.csv)
 
  - Improved printing of list objects
-   + Objects of class “by” are now printed in the console with optimal results;
-     no more need for `view(x, method = "pander"); this includes automatic
-     printing (when the results are not assigned to a variable, or when we just
-     type in the variable name in the console and press _Enter_
+   + Objects of class “by” are now automatically printed in the console with
+     optimal results; no more need for `view(x, method = "pander")
    + Regular lists containing **summarytools** objects can also be printed with
      optimal results simply by calling `print(x)` (as opposed to “by” objects,
      their automatic printing will **not** be optimal; that being said, `freq()`
@@ -525,10 +524,7 @@ a detailed view on those changes, but here are the main elements:
 
  - Changes to `freq()`
    + As mentioned earlier, the function now accepts data frames as main 
-     argument; this makes obsolete the use of `lapply()` with it, and simplifies
-     the subsequent printing, as the lists returned by `freq()` will also have
-     the class **summarytools**, ensuring their proper dispatch to the package's
-     `print()` method.
+     argument; this makes obsolete the use of `lapply()` with it
   + Improved outputs when using `by()`
   
  - Changes to `ctable()`

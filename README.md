@@ -560,9 +560,7 @@ There are two ways to do that. The one I recommend is passing the data
 frame object (subsetted if needed) directly to `freq()`:
 
 ``` r
-tobacco_subset <- tobacco[ ,c("gender", "age.gr", "smoker")]
-freq_tables <- freq(tobacco_subset)
-print(freq_tables, footnote = NA, file = 'freq-tables.html')
+freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
 As a side note, another way to do it would be using `lapply()`, but it
@@ -604,7 +602,7 @@ on *knitr*’s options.
     # title: "RMarkdown using summarytools"
     # output: html_document
     # ---
-    
+    #
     # ```{r, echo=FALSE}
     # library(summarytools)
     # st_css()
@@ -802,8 +800,9 @@ print(dfSummary(somedata, graph.magnif = 0.8),
 
 Versions 0.9.0 and 0.8.9 (which was only released on GitHub) brought
 many improvements to **summarytools**. This
-[document-vignette](https://TODO) gives a detailed view on those
-changes, but here are the main elements:
+[document](http://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/New-in-Version-0-9.htm)
+gives a detailed description of all the changes, but here are the main
+elements:
 
   - Translations
       - For now, only a limited number of languages are available (fr,
@@ -815,11 +814,9 @@ changes, but here are the main elements:
         custom translations *csv* file; a template is available
         [here](https://github.com/dcomtois/summarytools/blob/master/translations/language_template.csv)
   - Improved printing of list objects
-      - Objects of class “by” are now printed in the console with
-        optimal results; no more need for \`view(x, method = “pander”);
-        this includes automatic printing (when the results are not
-        assigned to a variable, or when we just type in the variable
-        name in the console and press *Enter*
+      - Objects of class “by” are now automatically printed in the
+        console with optimal results; no more need for \`view(x, method
+        = “pander”)
       - Regular lists containing **summarytools** objects can also be
         printed with optimal results simply by calling `print(x)` (as
         opposed to “by” objects, their automatic printing will **not**
@@ -853,25 +850,24 @@ changes, but here are the main elements:
         from the dataset so no stats will be produced for it
   - Changes to `freq()`
       - As mentioned earlier, the function now accepts data frames as
-        main argument; this makes obsolete the use of `lapply()` with
-        it, and simplifies the subsequent printing, as the lists
-        returned by `freq()` will also have the class **summarytools**,
-        ensuring their proper dispatch to the package’s `print()`
-        method.
+        main argument; this makes obsolete the use of `lapply()` with it
       - Improved outputs when using `by()`
   - Changes to `ctable()`
       - Now fully supports `by()`
 
-\*\* Other notable changes \*\* - The `omit.headings` parameter has been
-replaced by the more straightforward `headings`. `omit.heandings` is
-still supported in this version but will be deprecated in some future
-version - Because it was subject to errors, the *Rows Subset* heading
-element has been removed. If there is a strong need for it, I can bring
-it back in a future release (just let me known by email or on GitHub if
-this is what you think) - Under the hood, much has been going on; the
-lengthier functions have been split into more manageable parts, and
-several normalizing operations were done, facilitating maintenance and
-improving code readability
+**Other notable changes**
+
+  - The `omit.headings` parameter has been replaced by the more
+    straightforward `headings`. `omit.heandings` is still supported in
+    this version but will be deprecated in some future version
+  - Because it was subject to errors, the *Rows Subset* heading element
+    has been removed. If there is a strong need for it, I can bring it
+    back in a future release (just let me known by email or on GitHub if
+    this is what you think)
+  - Under the hood, much has been going on; the lengthier functions have
+    been split into more manageable parts, and several normalizing
+    operations were done, facilitating maintenance and improving code
+    readability
 
 # Final notes
 
