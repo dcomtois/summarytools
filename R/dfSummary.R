@@ -768,7 +768,8 @@ crunch_time_date <- function(column_data) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
         outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
         if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif, TRUE)
+          tmp_png <- encode_graph(tmp - mean(tmp), "histogram", 
+                                  graph.magnif, TRUE)
           destfile <- paste0(parent.frame()$store_imgs, "/", 
                              parent.frame()$i, ".png")
           file.copy(tmp_png, destfile, overwrite = TRUE)
@@ -842,7 +843,6 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
                        min.n = 1)
-    #hist_values <- suppressWarnings(hist(data, breaks = breaks_x, plot = FALSE))
     cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x,
                                     axes = FALSE, xlab = NULL, ylab = NULL,
                                     main = NULL, col = "grey95",

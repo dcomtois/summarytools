@@ -983,7 +983,8 @@ print_ctable <- function(x, method) {
           table_row %+=% list(
             tags$td(
               "(", align = "left",
-              style = "padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left"
+              style = paste0("padding:0 1px 0 4px;border-left:0;",
+                             "border-right:0;text-align:left")
               )
             )
 
@@ -1105,7 +1106,7 @@ print_descr <- function(x, method) {
     
   } else {
     
-    table_head <- list(tags$th("", class = "st-protect-top-border"))
+    table_head <- list(tags$th(""))
 
     for(cn in colnames(x)) {
       if (nchar(cn) > 12) {

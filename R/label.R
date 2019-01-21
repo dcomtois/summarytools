@@ -109,7 +109,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
   return(x)
 }
 
-#' Clear Variable or Data Frame Label(s)
+#' Clear Variable and Data Frame Label(s)
 #'
 #' Returns the object with all labels removed. Both the \dQuote{label} attribute
 #' and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
