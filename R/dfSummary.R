@@ -812,7 +812,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
   on.exit(par(bg))
   if (graph_type == "histogram") {
     png(png_loc <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 100 * graph.magnif, units = "px", bg = "transparent")
+        height = 110 * graph.magnif, units = "px", bg = "transparent")
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
@@ -830,7 +830,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     
     dev.off()
     ii <- image_read(png_loc)
-    ii <- image_border(image_trim(ii), color = "white", geometry = "6x2")
+    ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
     
   } else if (graph_type == "barplot") {
     
