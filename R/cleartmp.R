@@ -7,9 +7,11 @@
 #' All temporary files are deleted automatically when R session is ended. This
 #' function is thus an overkill in most circumstances.
 #'
-#' @param all Logical. When \code{TRUE}, all temporary summarytools are deleted.
-#'   When \code{FALSE} (default), only the latest is.
-#' @param silent Hide confirmation messages (\code{FALSE} by default).
+#' @param all Logical. When \code{TRUE} (default), all temporary summarytools 
+#'   files are deleted. When \code{FALSE}, only the latest file is.
+#' @param silent Logical. Hide confirmation messages (\code{FALSE} by default).
+#' @param verbose Logical. Display a message for every file that is deleted.
+#'   \code{FALSE} by default.
 #'
 #' @return NULL
 #'
@@ -19,7 +21,7 @@
 #'
 #' @export
 #' @importFrom utils tail
-cleartmp <- function(all=FALSE, silent=FALSE) {
+cleartmp <- function(all=TRUE, silent = FALSE, verbose = FALSE) {
   if(length(.st_env$tmpfiles) == 0) {
     if (!silent)
       message("No temporary files to delete.")
@@ -27,18 +29,18 @@ cleartmp <- function(all=FALSE, silent=FALSE) {
     nfiles <- 0
     for(tmpfile in .st_env$tmpfiles) {
       nfiles <- nfiles + 1
-      if(!silent)
+      if(isTRUE(verbose))
         message(paste("Deleting", tmpfile))
       unlink(tmpfile)
     }
     .st_env$tmpfiles <- c()
-    if(!silent)
+    if(!isTRUE(silent))
       message(paste(nfiles, "file(s) deleted"))
   } else {
     tmpfile <- tail(.st_env$tmpfiles, 1)
-    if(!silent)
+    if(!isTRUE(silent))
       message(paste("Deleting", tmpfile))
     unlink(tmpfile)
-    .st_env$tmpfiles <- .st_env$tmpfiles[-length(.st_env$tmpfiles)]
+    length(.st_env$tmpfiles) <- length(.st_env$tmpfiles) - 1
   }
 }
