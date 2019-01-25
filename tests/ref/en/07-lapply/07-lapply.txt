@@ -47,8 +47,6 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
 
 > view(l1, footnote = "freq -- gender/age.gr/smoker", file = "01.html") 
--- Output file written
-
 > label(tabagisme) <- "Label tabagisme" 
 > label(tabagisme$sexe) <- "Le sexe" 
 > label(tabagisme$age.gr) <- "Groupe d'age" 

@@ -110,7 +110,9 @@ compare_dirs <- function(lang) {
   if (Sys.info()[['sysname']] == "Linux") {
     system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
   } else {
-    system(paste0('compare "', ref_dir, '" "', out_dir, '"'))
+    browser()
+    system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
+                 ' "', ref_dir, '" "', out_dir, '"'))
   }
 }
 

@@ -343,7 +343,7 @@ N: 150
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
     <tr>
-      <th class="st-protect-top-border"></th>
+      <th></th>
       <th align="center" class="st-protect-top-border">F</th>
       <th align="center" class="st-protect-top-border">M</th>
     </tr>
