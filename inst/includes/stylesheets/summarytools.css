@@ -1,5 +1,6 @@
 img {
   background-color:transparent;
+  border:0;
 }
 
 table.st-table > thead > tr {

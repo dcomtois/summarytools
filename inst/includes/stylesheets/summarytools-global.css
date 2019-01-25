@@ -1,0 +1,11 @@
+.table {
+  width: 25%;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+img {
+  border:none;
+}
