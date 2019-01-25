@@ -24,9 +24,8 @@ utils::globalVariables(c("."))
 .onLoad <- function(libname, pkgname) {
   options(summarytools =
             list("style"                  = "simple",
-                 "round.digits"           = 2,
                  "plain.ascii"            = TRUE,
-                 "method"                 = "pander",
+                 "round.digits"           = 2,
                  "headings"               = TRUE,
                  "footnote"               = "default",
                  "display.labels"         = TRUE,
@@ -39,6 +38,7 @@ utils::globalVariables(c("."))
                  "ctable.totals"          = TRUE,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
+                 "descr.silent"           = FALSE,
                  "dfSummary.style"        = "multiline",
                  "dfSummary.varnumbers"   = TRUE,
                  "dfSummary.labels.col"   = TRUE,
@@ -46,6 +46,7 @@ utils::globalVariables(c("."))
                  "dfSummary.valid.col"    = TRUE,
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
+                 "dfSummary.silent"       = FALSE,
                  "subtitle.emphasis"      = TRUE,
                  "lang"                   = "en"))
 
