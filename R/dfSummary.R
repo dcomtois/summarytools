@@ -187,7 +187,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
     store_imgs <- TRUE
     message("Images used by dfSummary() will be written to ", 
-            "'img' subdiretory")
+            "'img' subdirectory")
     dir.create("img", showWarnings = FALSE)
   } else {
     store_imgs <- FALSE

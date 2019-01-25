@@ -1,6 +1,6 @@
 #' view
 #' 
-#' Visualize results in RStudio's Viewer or in Web Browser
+#' Visualize results in RStudio’s Viewer or in Web Browser
 #'
 #' @usage
 #' view(x, method = "viewer", file = "", append = FALSE,

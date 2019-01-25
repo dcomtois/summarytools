@@ -23,9 +23,9 @@
 #'  \describe{
 #'    \item{plain ascii}{Ideal when looking at results in the console.}
 #'    \item{rmarkdown}{Ideal when writing short papers or presentations.}
-#'    \item{html}{This format is well integrated in \emph{RStudio} (but will
+#'    \item{html}{This format is well integrated in RStudio (but will
 #'    work with any browser). Use the \code{view()} function to see results
-#'    appear directly in \emph{RStudio's Viewer} or in your default Web
+#'    appear directly in RStudio’s Viewer or in your default Web
 #'    Browser.}
 #'  }
 #'
