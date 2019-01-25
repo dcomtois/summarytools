@@ -422,7 +422,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                            attr(x, "data_info")$Variable, 
                                            sep = "$")
   }
-  
+
   # Dispatch to the right function for preparing output ------------------------
   if (attr(x, "st_type") == "freq") {
     res <- print_freq(x, method)
@@ -1320,7 +1320,7 @@ print_dfs <- function(x, method) {
     # Remove graph if specified in call to print/view
     if ("text.graph" %in% names(x) && "graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) {
-      x <- x[ ,-which(names(x) == trs("text.graph"))]
+      x <- x[ ,-which(names(x) == "text.graph")]
     } else {
       colnames(x)[which(names(x) == "text.graph")] <- trs("graph")
     }
