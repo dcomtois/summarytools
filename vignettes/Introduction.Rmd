@@ -118,14 +118,14 @@ It is possible to display *column*, *total*, or no proportions at all, like in
 the next example. We will also omit the marginal totals to have a simple “2 x 2”
 table.
 
-To show column or total proportions, use `prop = "c"` or `prop = "t"`,
-respectively.
-
 ```{r, results = "markup"}
 with(tobacco, 
      print(ctable(smoker, diseased, prop = 'n', totals = FALSE),
            headings = FALSE, method = "render"))
 ```
+
+To show column or total proportions, use `prop = "c"` or `prop = "t"`,
+respectively.
 
 ## 3 - descr() : Descriptive Univariate Stats 
 
@@ -150,7 +150,7 @@ also accepts special values `all`, `fivenum`, and  `common`. See `?descr` for
 The full list of available statistics.
 
 ```{r}
-descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE, 
+descr(iris, stats = "common", transpose = TRUE, 
       headings = FALSE, style = "rmarkdown")
 ```
 
@@ -176,7 +176,8 @@ we'll see how to use _html_ rendering to display graphics in their image form
 instead of their ascii replacements.
 
 ```{r}
-dfSummary(tobacco, plain.ascii = FALSE, style = "grid", valid.col = FALSE)
+dfSummary(tobacco, plain.ascii = FALSE, style = "grid", 
+          graph.magnif = 0.82, valid.col = FALSE)
 ```
 
 ## The print() and view() Functions
@@ -463,7 +464,7 @@ you:
    `print()` method
  
 ```{r, eval=FALSE}
-print(dfSummary(somedata, graph.magnif = 0.8), 
+print(dfSummary(somedata, graph.magnif = 0.82), 
       method = 'render',
       headings = FALSE,
       bootstrap.css = FALSE)

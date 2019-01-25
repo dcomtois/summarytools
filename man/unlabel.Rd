@@ -2,7 +2,7 @@
 % Please edit documentation in R/label.R
 \name{unlabel}
 \alias{unlabel}
-\title{Clear Variable or Data Frame Label(s)}
+\title{Clear Variable and Data Frame Label(s)}
 \usage{
 unlabel(x)
 }

@@ -255,10 +255,10 @@ The results show up in RStudio’s viewer, or in the default Web Browser
 when not using RStudio: ![Example of dfSummary Output displayed in
 RStudio’s viewer](img/dfSummary_in_RStudio_Viewer.png)
 
-It is also possible to use `dfSummary()` in *Rmarkdown* documents.
-Further down, we’ll see how to use *html* rendering to display graphics
-in their image form instead of their ascii
-replacements.
+Of course, it is also possible to use `dfSummary()` in *Rmarkdown*
+documents. It is usually a good idea to exclude a column or two from the
+results, otherwise the table might be a bit too
+wide.
 
 ``` r
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid", valid.col = FALSE)
@@ -287,7 +287,7 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid", valid.col = FALSE)
 <th>Variable</th>
 <th>Stats / Values</th>
 <th>Freqs (% of Valid)</th>
-<th>Text Graph</th>
+<th>Graph</th>
 <th>Missing</th>
 </tr>
 </thead>
