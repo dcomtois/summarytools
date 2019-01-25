@@ -41,9 +41,11 @@ ctable(tobacco$smoker, tobacco$diseased, style = "grid")
 dfSummary(tobacco, style = "grid")
 ```
 
-## render method, strength = 2 (stronger)
+# subtitle.emphasis = FALSE
+## render method
 
 ```{r}
+st_options(subtitle.emphasis = FALSE)
 print(freq(tobacco$age.gr), method = "render")
 print(freq(tobacco), method = "render")
 print(ctable(tobacco$gender, tobacco$smoker), method = "render")
@@ -51,7 +53,6 @@ print(descr(tobacco$age), method = "render")
 print(descr(tobacco), method = "render")
 print(dfSummary(tobacco), method = "render")
 ```
-
 
 
 ```{r}
