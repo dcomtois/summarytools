@@ -127,17 +127,17 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                       max.distinct.values = 10, trim.strings = FALSE,
                       max.string.width = 25, split.cells = 40,
                       split.tables = Inf, ...) {
-
-
+  
+  
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
-
+  
   # Flag to replace colname when x is not a data frame
   converted_to_df <- FALSE
   if (!is.data.frame(x)) {
     xnames <- substitute(x)
     x <- try(as.data.frame(x))
-
+    
     if (inherits(x, "try-error")) {
       errmsg %+=% paste(deparse(xnames), " is not coercible to a data frame")
     } else {
@@ -146,15 +146,15 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       msg(paste(deparse(xnames), "was converted to a data frame"))
     }
   }
-
+  
   errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
-
+  
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
-
+  
   # End of arguments validation ------------------------------------------------
-
+  
   if (isTRUE(labels.col) && length(label(x, all = TRUE)) == 0) {
     labels.col <- FALSE
   }
@@ -167,15 +167,15 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                                var_label = converted_to_df,
                                caller = "dfSummary"),
                     silent = TRUE)
-
+  
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
-
+  
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
     parse_info$df_name <- df_name
   }
-
+  
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
     if ("var_name" %in% names(parse_info)) {
       colnames(x) <- parse_info$var_name
@@ -183,19 +183,18 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       colnames(x) <- parse_info$df_name
     }
   }
-
+  
   if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
-    store_imgs <- paste0("img/", parse_info$df_name)
-    message("Images used in dfSummary() will be written to ", 
-            normalizePath(store_imgs, mustWork = FALSE))
-    dir.create(normalizePath(store_imgs, mustWork = FALSE),
-               showWarnings = FALSE, recursive = TRUE)
+    store_imgs <- TRUE
+    message("Images used by dfSummary() will be written to ", 
+            "'img' subdiretory")
+    dir.create("img", showWarnings = FALSE)
   } else {
-    store_imgs <- NA
+    store_imgs <- FALSE
   }
-
+  
   # Initialize the output data frame -------------------------------------------
-
+  
   output <- data.frame(no               = numeric(),
                        variable         = character(),
                        label            = character(),
@@ -207,20 +206,20 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                        missing          = character(),
                        stringsAsFactors = FALSE,
                        check.names      = FALSE)
-
+  
   n_tot <- nrow(x)
-
+  
   
   # iterate over columns of x --------------------------------------------------
-
+  
   for(i in seq_len(ncol(x))) {
-
+    
     # extract column data
     column_data <- x[[i]]
-
+    
     # Add column number
     output[i,1] <- i
-
+    
     # Add column name and class
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
@@ -248,77 +247,77 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       if (is.na(output[i,3]))
         output[i,3] <- ""
     }
-
+    
     # Calculate valid vs missing data info
     n_miss <- sum(is.na(column_data))
     n_valid <- n_tot - n_miss
-
+    
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
       output[i,4:7] <- crunch_factor(column_data)
     }
-
+    
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
       output[i,4:7] <- crunch_character(column_data)
     }
-
+    
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
       output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
-
+    
     # Time/date data -----------------------------------------------------------
     else if (inherits(column_data, c("Date", "POSIXct"))) {
       output[i,4:7] <- crunch_time_date(column_data)
     }
-
+    
     # Data does not fit in previous categories ---------------------------------
     else {
       output[i,4:7] <- crunch_other(column_data)
     }
-
+    
     output[i,8] <-
       paste0(n_valid, "\\\n(", round(n_valid / n_tot * 100, round.digits), "%)")
     output[i,9] <-
       paste0(n_miss,  "\\\n(", round(n_miss  / n_tot * 100, round.digits), "%)")
   }
-
+  
   # Prepare output object ------------------------------------------------------
   if (!isTRUE(varnumbers)) {
     output$no <- NULL
   }
-
+  
   if (!isTRUE(labels.col)) {
     output$label <- NULL
   }
-
+  
   if (!isTRUE(graph.col)) {
     output$graph <- NULL
     output$text.graph <- NULL
   }
-
+  
   if (!isTRUE(valid.col)) {
     output$valid <- NULL
   }
-
+  
   if (!isTRUE(na.col)) {
     output$missing <- NULL
   }
-
+  
   # apply translations to colnames
   for (i in seq_along(output)) {
     if (colnames(output)[i] == "text.graph")
       next
     colnames(output)[i] <- trs(colnames(output)[i])
   }
-
+  
   # Set output attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- match.call()
-
+  
   data_info <-
     list(Data.frame       = parse_info$df_name,
          Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
@@ -331,9 +330,9 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                                    parse_info$by_first, NA),
          by_last          = ifelse("by_group" %in% names(parse_info), 
                                    parse_info$by_last , NA))
-
+  
   attr(output, "data_info") <- data_info[!is.na(data_info)]
-
+  
   format_info <- list(style          = style,
                       round.digits   = round.digits,
                       plain.ascii    = plain.ascii,
@@ -348,7 +347,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   attr(output, "format_info") <- format_info[!is.na(format_info)]
   
   attr(output, "user_fmt") <- list(... = ...)
-
+  
   attr(output, "lang") <- st_options("lang")
   
   return(output)
@@ -391,15 +390,11 @@ crunch_factor <- function(column_data) {
                            collapse = "\\\n")
     counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-    if (isTRUE(parent.frame()$graph.col) &&
-        any(!is.na(column_data))) {
+    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
       outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-      if (!is.na(parent.frame()$store_imgs)) {
-        tmp_png <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-        destfile <- paste0(parent.frame()$store_imgs, "/", 
-                           parent.frame()$i, ".png")
-        file.copy(tmp_png, destfile, overwrite = TRUE)
-        outlist[[4]] <- paste0("![](", destfile, ")")
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
@@ -414,11 +409,11 @@ crunch_factor <- function(column_data) {
              substr(levels(column_data), 1,
                     max.string.width)[1:max.distinct.values],
              collapse="\\\n")
-
+    
     outlist[[1]] <- paste(outlist[[1]],
                           paste("[", n_extra_levels, trs("others"), "]"),
                           sep="\\\n")
-
+    
     counts_props <- align_numbers_dfs(
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
@@ -439,12 +434,9 @@ crunch_factor <- function(column_data) {
         paste("[", n_extra_levels, trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
       outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
-      if (!is.na(parent.frame()$store_imgs)) {
-        tmp_png <- encode_graph(table(tmp_data), "barplot", graph.magnif, TRUE)
-        destfile <- paste0(parent.frame()$store_imgs, "/", 
-                           parent.frame()$i, ".png")
-        file.copy(tmp_png, destfile, overwrite = TRUE)
-        outlist[[4]] <- paste0("![](", destfile, ")")
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(table(tmp_data), "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
         outlist[[4]] <- txtbarplot(prop.table(table(tmp_data)))
       }
@@ -498,12 +490,9 @@ crunch_character <- function(column_data) {
       if (isTRUE(parent.frame()$graph.col) &&
           any(!is.na(column_data))) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-          destfile <- paste0(parent.frame()$store_imgs, "/", 
-                             parent.frame()$i, ".png")
-          file.copy(tmp_png, destfile, overwrite = TRUE)
-          outlist[[4]] <- paste0("![](", destfile, ")")
+        if (isTRUE(parent.frame()$store_imgs)) {
+          png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+          outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txtbarplot(prop.table(counts))
         }
@@ -539,12 +528,9 @@ crunch_character <- function(column_data) {
           paste("[", n_extra_values, trs("others"),"]")
         counts <- counts[1:(max.distinct.values + 1)]
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-          destfile <- paste0(parent.frame()$store_imgs, "/", 
-                             parent.frame()$i, ".png")
-          file.copy(tmp_png, destfile, overwrite = TRUE)
-          outlist[[4]] <- paste0("![](", destfile, ")")
+        if (isTRUE(parent.frame()$store_imgs)) {
+          png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+          outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txtbarplot(prop.table(counts))
         }
@@ -560,13 +546,13 @@ crunch_character <- function(column_data) {
 #' @importFrom stats IQR median ftable sd
 #' @keywords internal
 crunch_numeric <- function(column_data, is_barcode) {
-
+  
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-
+  
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
@@ -575,7 +561,7 @@ crunch_numeric <- function(column_data, is_barcode) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
     counts <- table(column_data, useNA = "no")
-
+    
     if (length(counts) == 1) {
       outlist[[1]] <- paste(1, trs("distinct.value"))
     } else {
@@ -617,7 +603,7 @@ crunch_numeric <- function(column_data, is_barcode) {
     }
     
     extra_space <- FALSE
-
+    
     # Values columns
     # for "ts" objects, display n distinct & start / end
     if (inherits(column_data, "ts")) {
@@ -633,18 +619,18 @@ crunch_numeric <- function(column_data, is_barcode) {
               paste(sprintf("%02d", end(column_data)),
                     collapse = "-"))
     }
-
+    
     # In specific circumstances, display most common values
     else if (
       length(counts) <= max.distinct.values &&
       (all(column_data %% 1 == 0, na.rm = TRUE) ||
        identical(names(column_data), "0") ||
        all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
-                  10^-round.digits))) {
-
+           10^-round.digits))) {
+      
       props <- round(prop.table(counts), round.digits + 2)
       counts_props <- align_numbers_dfs(counts, props)
-
+      
       rounded_names <- 
         trimws(format(
           round(as.numeric(names(counts)), round.digits),
@@ -652,7 +638,7 @@ crunch_numeric <- function(column_data, is_barcode) {
         ))
       
       maxchars <- max(nchar(rounded_names))
-
+      
       outlist[[2]]  <-
         paste(
           paste0(rounded_names, strrep(" ", maxchars - nchar(rounded_names)),
@@ -660,13 +646,13 @@ crunch_numeric <- function(column_data, is_barcode) {
                         "!", " ")),
           counts_props, sep = ": ", collapse = "\\\n"
         )
-
+      
       if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
         extra_space <- TRUE
         outlist[[2]] <- paste(outlist[[2]], paste("!", trs("rounded")),
                               sep = "\\\n")
       }
-
+      
     } else {
       # Do not display specific values - only the number of distinct values
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
@@ -678,16 +664,13 @@ crunch_numeric <- function(column_data, is_barcode) {
                               sep = "\\\n")
       }
     }
-
+    
     if (isTRUE(parent.frame()$graph.col)) {
       if (length(counts) <= max.distinct.values) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-          destfile <- paste0(parent.frame()$store_imgs, "/", 
-                             parent.frame()$i, ".png")
-          file.copy(tmp_png, destfile, overwrite = TRUE)
-          outlist[[4]] <- paste0("![](", destfile, ")")
+        if (isTRUE(parent.frame()$store_imgs)) {
+          png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+          outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txtbarplot(prop.table(counts))
         }
@@ -698,12 +681,9 @@ crunch_numeric <- function(column_data, is_barcode) {
         }
       } else {
         outlist[[3]] <- encode_graph(column_data, "histogram", graph.magnif)
-        if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(column_data, "histogram", graph.magnif, TRUE)
-          destfile <- paste0(parent.frame()$store_imgs, "/", 
-                             parent.frame()$i, ".png")
-          file.copy(tmp_png, destfile, overwrite = TRUE)
-          outlist[[4]] <- paste0("![](", destfile, ")")
+        if (isTRUE(parent.frame()$store_imgs)) {
+          png_loc <- encode_graph(column_data, "histogram", graph.magnif, TRUE)
+          outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txthist(column_data)
         }
@@ -719,13 +699,13 @@ crunch_numeric <- function(column_data, is_barcode) {
 #' @importFrom lubridate as.period interval
 #' @keywords internal
 crunch_time_date <- function(column_data) {
-
+  
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-
+  
   #max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
@@ -734,9 +714,9 @@ crunch_time_date <- function(column_data) {
   if (parent.frame()$n_miss == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
-
+    
     counts <- table(column_data, useNA = "no")
-
+    
     # Report all frequencies when allowed by max.distinct.values
     if (length(counts) <= max.distinct.values) {
       outlist[[1]] <- paste0(seq_along(counts),". ", names(counts),
@@ -745,17 +725,14 @@ crunch_time_date <- function(column_data) {
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
       outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-      if (!is.na(parent.frame()$store_imgs)) {
-        tmp_png <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-        destfile <- paste0(parent.frame()$store_imgs, "/", 
-                           parent.frame()$i, ".png")
-        file.copy(tmp_png, destfile, overwrite = TRUE)
-        outlist[[4]] <- paste0("![](", destfile, ")")
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     } else {
-
+      
       outlist[[1]] <- paste0(
         "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
         "med : ", median(column_data, na.rm = TRUE), "\\\n",
@@ -763,19 +740,15 @@ crunch_time_date <- function(column_data) {
         "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
                         x = round(as.period(interval(tmin, tmax)),round.digits))
       )
-
+      
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
-
+      
       if (isTRUE(parent.frame()$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
         outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
-        if (!is.na(parent.frame()$store_imgs)) {
-          tmp_png <- encode_graph(tmp - mean(tmp), "histogram", 
-                                  graph.magnif, TRUE)
-          destfile <- paste0(parent.frame()$store_imgs, "/", 
-                             parent.frame()$i, ".png")
-          file.copy(tmp_png, destfile, overwrite = TRUE)
-          outlist[[4]] <- paste0("![](", destfile, ")")
+        if (isTRUE(parent.frame()$store_imgs)) {
+          png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif, TRUE)
+          outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txthist(tmp - mean(tmp))
         }
@@ -787,33 +760,33 @@ crunch_time_date <- function(column_data) {
 
 #' @keywords internal
 crunch_other <- function(column_data) {
-
+  
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-
+  
   max.distinct.values <- parent.frame()$max.distinct.values
   round.digits        <- parent.frame()$round.digits
   #graph.magnif        <- parent.frame()$graph.magnif
   #max.string.width    <- parent.frame()$max.string.width
-
+  
   counts <- table(column_data, useNA = "no")
-
+  
   if (parent.frame()$n_miss == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
-
+    
   } else if (length(counts) <= max.distinct.values) {
     props <- round(prop.table(counts), round.digits + 2)
     counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
-
+    
   } else {
     outlist[[2]] <- paste(as.character(length(unique(column_data))),
                           trs("distinct.values"))
   }
-
+  
   return(outlist)
 }
 
@@ -838,9 +811,9 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
   bg <- par('bg'=NA)
   on.exit(par(bg))
   if (graph_type == "histogram") {
-    png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 110 * graph.magnif, units = "px", bg = "transparent")
-    mar <- par("mar" = c(0.01, 0.00, 0.01, 0.01)) # bottom, left, top, right
+    png(png_loc <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
+        height = 100 * graph.magnif, units = "px", bg = "transparent")
+    mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
@@ -855,33 +828,66 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
       text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
     }
     
+    dev.off()
+    ii <- image_read(png_loc)
+    ii <- image_border(image_trim(ii), color = "white", geometry = "6x2")
+    
   } else if (graph_type == "barplot") {
     
-    png(img_png <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
+    png(png_loc <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
         height = 26 * length(data) * graph.magnif, units = "px",
         bg = "transparent")
-    mar <- par("mar" = c(0.05, 0.30, 0.05, 0.05)) # bottom, left, top, right
+    mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
     barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
             col = "grey97", border = "grey65", horiz = TRUE,
             xlim = c(0, sum(data)))
+    
+    dev.off()
+    ii <- image_read(png_loc)
+    ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
   }
   
-  dev.off()
   if (isTRUE(pandoc)) {
-    if (graph_type == "barplot") {
-      ii <- image_read(img_png)
-      ii <- image_border(image_trim(ii), color = "white", geometry = "4x2")
-      image_write(image_transparent(ii, 'white'), img_png)
-    }
-    return(img_png)
+    png_path <- generate_png_path()
+    image_write(image_transparent(ii, 'white'), 
+                path = png_path)
+    return(png_path)
   } else {
-    img_txt <- base64Encode(txt = readBin(con = img_png, what = "raw",
-                                          n = file.info(img_png)[["size"]]),
+    image_write(image_transparent(ii, 'white'), png_loc)
+    img_txt <- base64Encode(txt = readBin(con = png_loc, what = "raw",
+                                          n = file.info(png_loc)[["size"]]),
                             mode = "character")
-    return(sprintf('<img style="border:none;background:none;padding:0" 
-                 src="data:image/png;base64, %s">', img_txt))
+    return(paste0('<img style="border:none;background-color:transparent;',
+                  'padding:0" src="data:image/png;base64, ', img_txt, '">'))
+  }
+}
+
+#' @keywords internal
+generate_png_path <- function() {
+  d <- dir("img", pattern = "ds\\d+\\.png", full.names = TRUE)
+  if (length(d) == 0) {
+    .st_env$tmpfiles <- c(.st_env$tmpfiles, 
+                          normalizePath("img/ds001.png", mustWork = FALSE))
+    return("img/ds001.png")
+  } else {
+    # if first file created more than 10 minutes ago, we delete the series
+    if (difftime(time1 = Sys.time(), time2 = file.info(d[1])$mtime, 
+                 units = "min") > 10) {
+      message("Deleting older temp files ", d[1], " -- ", tail(d, 1))
+      .st_env$tmpfiles <- setdiff(.st_env$tmpfiles, 
+                                  normalizePath(d, mustWork = FALSE))
+      unlink(x = d)
+      max_num <- 0
+    } else {
+      max_num <- as.numeric(sub("^img/ds(\\d+)\\.png$", "\\1", tail(d, 1)))
+    }
+    
+    png_path <- paste0("img/ds", sprintf("%03d", max_num + 1), ".png")
+    .st_env$tmpfiles <- c(.st_env$tmpfiles,
+                          normalizePath(png_path, mustWork = FALSE))
+    return(png_path)
   }
 }
 
