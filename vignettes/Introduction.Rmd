@@ -169,7 +169,7 @@ library(summarytools)
 view(dfSummary(iris))
 ```
 
-The results show up in RStudio's viewer, or in the default Web Browser when not
+The results show up in RStudio’s viewer, or in the default Web Browser when not
 using RStudio:
 <img src="dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
 It is also possible to use `dfSummary()` in *Rmarkdown* documents. Further down, 

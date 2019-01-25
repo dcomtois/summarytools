@@ -62,7 +62,7 @@ this default value globally, see \code{\link{st_options}}.}
 as attributes in the object being printed. See \emph{Details} section.}
 }
 \description{
-Visualize results in RStudio's Viewer or in Web Browser
+Visualize results in RStudio’s Viewer or in Web Browser
 }
 \details{
 Creates \emph{html} outputs and opens them in the Viewer, in a browser or

@@ -16,7 +16,9 @@ opts_chunk$set(echo = TRUE, results = 'asis')
 
 ```{r st-setup, results='asis', echo=FALSE}
 library(summarytools)
-st_options(footnote = NA, subtitle.emphasis = FALSE)
+st_options(footnote = NA, 
+           subtitle.emphasis = FALSE,
+           dfSummary.silent = TRUE)
 ```
 
 The following vignettes complement this page:
@@ -75,13 +77,25 @@ gives a detailed description of all the changes, but a summary can also be found
 
 # How to install
 
-To install the most recent version on the _R-CRAN_ repository: 
+### From CRAN - version 0.8.8
+
+This version is rather far behind 0.9.0, but if you don't feel like trying new
+features, just install it with `install.packages()`: 
 
 ```{r, eval=FALSE}
 install.packages("summarytools")
+
+The official documentation can be found
+[here](http://cran.r-project.org/web/packages/summarytools/).
 ```
 
-To benefit from all the latest fixes, install it from GitHub:
+### From GitHub - version 0.9.0
+
+There have been quite a few changes since 0.8.8. I recommend you give a try
+to this newer version. I've done some rather extensive testing, and I believe
+it is as much stable as 0.8.8 now, with a lot of additional features and
+improvements. The changes are also well documented. Feedback is most welcome.
+
 
 ```{r, eval=FALSE}
 install.packages("devtools")
@@ -89,18 +103,14 @@ library(devtools)
 install_github('dcomtois/summarytools')
 ```
 
-For enthusiastic users willing to contribute to _summarytools_' development,
-I encourage you to go for the **development** version, which is the most
-up-to-date, but also a _work-in-progress_. Bugs may show up, but if you
-report them I can generally fix them quickly.
 
-```{r, eval=FALSE}
-install.packages("devtools")
-devtools::install_github('dcomtois/summarytools', ref='dev-current')
-```
+### Version 0.8.9
 
-The official documentation for the latest version on CRAN can be found
-[here](http://cran.r-project.org/web/packages/summarytools/).
+For a middle-ground solution, you can install the
+[0.8.9 version](https://github.com/dcomtois/summarytools/releases) from source.
+Note that I do not intend to push this version to CRAN, mainly because I lack
+the time to create extensive documentation for both 0.8.9 and 0.9.0.
+
 
 # The Four Core Functions
 ## 1 - freq() : Frequency Tables
@@ -199,7 +209,7 @@ library(summarytools)
 view(dfSummary(iris))
 ```
 
-The results show up in RStudio's viewer, or in the default Web Browser when not
+The results show up in RStudio’s viewer, or in the default Web Browser when not
 using RStudio:
 ![Example of dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
 

@@ -66,13 +66,15 @@ be found [at the end of this document](#changes).
 
 # How to install
 
-To install the most recent version on the *R-CRAN* repository:
+To install the most recent version from the *R-CRAN* repository:
 
 ``` r
 install.packages("summarytools")
 ```
 
-To benefit from all the latest fixes, install it from GitHub:
+To benefit from all the latest fixes, install it from GitHub: \*\* Note:
+While CRAN features version 0.8.8, the GitHub main version is 0.9.0** **
+If you need the latest fixes from version 0.8.8,
 
 ``` r
 install.packages("devtools")
