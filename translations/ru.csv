@@ -53,7 +53,6 @@ no                   ,column name (dfSummary)         ,№
 stats.values         ,column name (dfSummary)         ,[Stats / Values]
 freqs.pct.valid      ,column name (dfSummary)         ,[Freqs (% of Valid)]
 graph                ,column name (dfSummary)         ,диаграмма
-text.graph           ,column name (dfSummary)         ,текст. диаграмма
 missing              ,column name (dfSummary)         ,отсутствующее
 distinct.value       ,cell content (dfSummary)        ,[уникальные значения]
 distinct.values      ,cell content (dfSummary)        ,уникальные значения

@@ -53,7 +53,6 @@ no                   ,column name (dfSummary)         ,No
 stats.values         ,column name (dfSummary)         ,Stats / Values
 freqs.pct.valid      ,column name (dfSummary)         ,Freqs (% of Valid)
 graph                ,column name (dfSummary)         ,Graph
-text.graph           ,column name (dfSummary)         ,Text Graph
 missing              ,column name (dfSummary)         ,Missing
 distinct.value       ,cell content (dfSummary)        ,distinct value
 distinct.values      ,cell content (dfSummary)        ,distinct values
