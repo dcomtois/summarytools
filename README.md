@@ -257,183 +257,7 @@ RStudio’s viewer](img/dfSummary_in_RStudio_Viewer.png)
 
 Of course, it is also possible to use `dfSummary()` in *Rmarkdown*
 documents. It is usually a good idea to exclude a column or two from the
-results, otherwise the table might be a bit too
-wide.
-
-``` r
-dfSummary(tobacco, plain.ascii = FALSE, style = "grid", valid.col = FALSE)
-```
-
-    ## Images used in dfSummary() will be written to D:\Documents\GitHub\summarytools\img\tobacco
-
-### Data Frame Summary
-
-**tobacco**  
-**Dimensions:** 1000 x 9  
-**Duplicates:** 2
-
-<table>
-<colgroup>
-<col style="width: 4%" />
-<col style="width: 14%" />
-<col style="width: 25%" />
-<col style="width: 20%" />
-<col style="width: 25%" />
-<col style="width: 9%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>No</th>
-<th>Variable</th>
-<th>Stats / Values</th>
-<th>Freqs (% of Valid)</th>
-<th>Graph</th>
-<th>Missing</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>gender<br />
-[factor]</td>
-<td>1. F<br />
-2. M</td>
-<td>489 (50.0%)<br />
-489 (50.0%)</td>
-<td><img src="img/tobacco/1.png" /></td>
-<td>22<br />
-(2.2%)</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>age<br />
-[numeric]</td>
-<td>Mean (sd) : 49.6 (18.3)<br />
-min &lt; med &lt; max:<br />
-18 &lt; 50 &lt; 80<br />
-IQR (CV) : 32 (0.4)</td>
-<td>63 distinct values</td>
-<td><img src="img/tobacco/2.png" /></td>
-<td>25<br />
-(2.5%)</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>age.gr<br />
-[factor]</td>
-<td>1. 18-34<br />
-2. 35-50<br />
-3. 51-70<br />
-4. 71 +</td>
-<td>258 (26.5%)<br />
-241 (24.7%)<br />
-317 (32.5%)<br />
-159 (16.3%)</td>
-<td><img src="img/tobacco/3.png" /></td>
-<td>25<br />
-(2.5%)</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>BMI<br />
-[numeric]</td>
-<td>Mean (sd) : 25.7 (4.5)<br />
-min &lt; med &lt; max:<br />
-8.8 &lt; 25.6 &lt; 39.4<br />
-IQR (CV) : 5.7 (0.2)</td>
-<td>974 distinct values</td>
-<td><img src="img/tobacco/4.png" /></td>
-<td>26<br />
-(2.6%)</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>smoker<br />
-[factor]</td>
-<td>1. Yes<br />
-2. No</td>
-<td>298 (29.8%)<br />
-702 (70.2%)</td>
-<td><img src="img/tobacco/5.png" /></td>
-<td>0<br />
-(0%)</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>cigs.per.day<br />
-[numeric]</td>
-<td>Mean (sd) : 6.8 (11.9)<br />
-min &lt; med &lt; max:<br />
-0 &lt; 0 &lt; 40<br />
-IQR (CV) : 11 (1.8)</td>
-<td>37 distinct values</td>
-<td><img src="img/tobacco/6.png" /></td>
-<td>35<br />
-(3.5%)</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>diseased<br />
-[factor]</td>
-<td>1. Yes<br />
-2. No</td>
-<td>224 (22.4%)<br />
-776 (77.6%)</td>
-<td><img src="img/tobacco/7.png" /></td>
-<td>0<br />
-(0%)</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>disease<br />
-[character]</td>
-<td>1. Hypertension<br />
-2. Cancer<br />
-3. Cholesterol<br />
-4. Heart<br />
-5. Pulmonary<br />
-6. Musculoskeletal<br />
-7. Diabetes<br />
-8. Hearing<br />
-9. Digestive<br />
-10. Hypotension<br />
-[ 3 others ]</td>
-<td>36 (16.2%)<br />
-34 (15.3%)<br />
-21 ( 9.5%)<br />
-20 ( 9.0%)<br />
-20 ( 9.0%)<br />
-19 ( 8.6%)<br />
-14 ( 6.3%)<br />
-14 ( 6.3%)<br />
-12 ( 5.4%)<br />
-11 ( 5.0%)<br />
-21 ( 9.5%)</td>
-<td><img src="img/tobacco/8.png" /></td>
-<td>778<br />
-(77.8%)</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>samp.wgts<br />
-[numeric]</td>
-<td>Mean (sd) : 1 (0.1)<br />
-min &lt; med &lt; max:<br />
-0.9 &lt; 1 &lt; 1.1<br />
-IQR (CV) : 0.2 (0.1)</td>
-<td>0.86!: 267 (26.7%)<br />
-1.04!: 249 (24.9%)<br />
-1.05!: 324 (32.4%)<br />
-1.06!: 160 (16.0%)<br />
-! rounded</td>
-<td><img src="img/tobacco/9.png" /><br />
-<br />
-</td>
-<td>0<br />
-(0%)</td>
-</tr>
-</tbody>
-</table>
+results, otherwise the table might be a bit too wide.
 
 ## The print() and view() Functions
 
@@ -553,6 +377,17 @@ print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 | **35-50** | 25.11 |     4.34 | 10.35 |  25.11 | 39.44 |
 | **51-70** | 26.91 |     4.26 |  9.01 |  26.77 | 39.21 |
 |  **71 +** | 27.45 |     4.37 | 16.36 |  27.52 | 38.37 |
+
+**Using `by()` with `ctable()`**
+
+The syntax to use is the
+following:
+
+``` r
+by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
+# or equivalently
+with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))
+```
 
 ## Generating Several Frequency Tables at Once
 
@@ -687,12 +522,14 @@ options**
 |          ctable.totals |    TRUE | Show marginal totals                     |
 |            descr.stats |   “all” | “fivenum”, “common” or list of stats     |
 |        descr.transpose |   FALSE |                                          |
+|           descr.silent |   FALSE | Hide messages about ignored variables    |
 |   dfSummary.varnumbers |    TRUE | Show variable numbers in 1st col.        |
 |   dfSummary.labels.col |    TRUE | Show variable labels when present        |
-|    dfSummary.graph.col |    TRUE |                                          |
-|    dfSummary.valid.col |    TRUE |                                          |
-|       dfSummary.na.col |    TRUE |                                          |
+|    dfSummary.graph.col |    TRUE | Show graphs                              |
+|    dfSummary.valid.col |    TRUE | Include the Valid column in the output   |
+|       dfSummary.na.col |    TRUE | Include the NA column in the output      |
 | dfSummary.graph.magnif |       1 | Zoom factor for bar plots and histograms |
+|       dfSummary.silent |   FALSE | Hide messages about temporary files      |
 
 #### Examples
 

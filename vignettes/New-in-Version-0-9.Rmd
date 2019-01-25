@@ -6,18 +6,22 @@ output:
   rmarkdown::html_vignette: 
     css: 
     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
-    - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools 0.8}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r knitr-setup, include=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+```
+
+```{r st-setup, results='asis', echo=FALSE}
 library(summarytools)
-st_options(footnote = NA)
+st_options(footnote = NA, subtitle.emphasis = FALSE,
+           dfSummary.silent = TRUE, descr.silent = TRUE)
+st_css()
 ```
 
 Version 0.9.0 is out, and since **summarytools** version 0.8.9 was released only
@@ -69,7 +73,7 @@ The language used for producing the object is stored within it as an attribute.
 This is to avoid problems when switching languages between the moment the 
 object is stored, and the moment at which it is printed.
 
-### Non-UTF8 Considerations
+### Non-UTF8 Locale
 
 On most Windows systems, it will be necessary to change the `LC_CTYPE` element 
 of the locale settings if the character set is not included in the current 
@@ -77,10 +81,9 @@ locale. For instance, in order to get good results -- or rather, any results at
 all -- with the Russian language in a "latin1" environment, we'll need to do 
 this:
 
-```{r, results = 'asis'}
+```{r, eval = FALSE}
 Sys.setlocale("LC_CTYPE", "russian")
 st_options(lang = 'ru')
-freq(tobacco$gender)
 ```
 
 Then, to go back to default setting:

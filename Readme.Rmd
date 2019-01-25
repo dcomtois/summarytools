@@ -207,10 +207,6 @@ Of course, it is also possible to use `dfSummary()` in *Rmarkdown* documents. It
 is usually a good idea to exclude a column or two from the results, otherwise 
 the table might be a bit too wide.
 
-```{r}
-dfSummary(tobacco, plain.ascii = FALSE, style = "grid", valid.col = FALSE)
-```
-
 ## The print() and view() Functions
 
 **summarytools** has a generic `print` method, `print.summarytools()`. By
@@ -271,6 +267,17 @@ BMI_by_age <- with(tobacco,
                    by(BMI, age.gr, descr,  transpose = TRUE,
                       stats = c("mean", "sd", "min", "med", "max")))
 print(BMI_by_age, style = "rmarkdown", headings = FALSE)
+```
+
+**Using `by()` with `ctable()`**
+
+The syntax to use is the following:
+
+```{r, eval=FALSE}
+by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
+# or equivalently
+with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))
+
 ```
 
 ## Generating Several Frequency Tables at Once
@@ -397,12 +404,15 @@ The following options can be set with `st_options()`:
 | ctable.totals          |   TRUE   | Show marginal totals                     |
 | descr.stats            |   “all”  | “fivenum”, “common” or list of stats     |
 | descr.transpose        |  FALSE   |                                          |
+| descr.silent           |  FALSE   | Hide messages about ignored variables    |
 | dfSummary.varnumbers   |   TRUE   | Show variable numbers in 1st col.        |
 | dfSummary.labels.col   |   TRUE   | Show variable labels when present        |
-| dfSummary.graph.col    |   TRUE   |                                          |
-| dfSummary.valid.col    |   TRUE   |                                          |
-| dfSummary.na.col       |   TRUE   |                                          |
+| dfSummary.graph.col    |   TRUE   | Show graphs                              |
+| dfSummary.valid.col    |   TRUE   | Include the Valid column in the output   |
+| dfSummary.na.col       |   TRUE   | Include the NA column in the output      |
 | dfSummary.graph.magnif |      1   | Zoom factor for bar plots and histograms |
+| dfSummary.silent       |  FALSE   | Hide messages about temporary files      |
+
 
 #### Examples
 

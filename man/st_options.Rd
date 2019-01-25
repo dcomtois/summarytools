@@ -9,12 +9,12 @@ st_options(option = NULL, value = NULL, style = "simple",
   footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
   custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
   freq.report.nas = TRUE, ctable.prop = "r", ctable.totals = TRUE,
-  descr.stats = "all", descr.transpose = FALSE,
+  descr.stats = "all", descr.transpose = FALSE, descr.silent = FALSE,
   dfSummary.style = "multiline", dfSummary.varnumbers = TRUE,
   dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE,
   dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE,
-  dfSummary.graph.magnif = 1, subtitle.emphasis = TRUE, lang = "en",
-  omit.headings = !headings)
+  dfSummary.graph.magnif = 1, dfSummary.silent = FALSE,
+  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -81,6 +81,9 @@ parameter of \code{freq()}. \code{TRUE} by default.}
 \item{descr.transpose}{Logical. Corresponds to the \code{transpose} parameter
 of \code{\link{descr}}. \code{FALSE} by default.}
 
+\item{descr.silent}{Logical. Display messages relating to ignored variables. 
+\code{TRUE} by default.}
+
 \item{dfSummary.style}{Character. \dQuote{multiline} by default. Set to 
 \dQuote{grid} for \emph{Rmarkdown} documents.}
 
@@ -106,17 +109,21 @@ default.}
 0 and 1) or too small (use a value > 1). Must be positive. Default to
 \code{1}.}
 
+\item{dfSummary.silent}{Logical. Display messages relating to temporary 
+image files location. \code{TRUE} by default.
+\code{\link{dfSummary}} \emph{html} reports. \code{TRUE} by default.}
+
+\item{subtitle.emphasis}{Logical. Controls the formatting of the 
+\dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending 
+on context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+\code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+value gives it stronger emphasis.}
+
 \item{lang}{Character. A 2-letter code for the language to use in the
 produced outputs. Currently available languages are: \sQuote{en}, 
 \sQuote{fr}.}
 
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
-
-\item{subtitle.emphases}{Logical. Controls the formatting of the 
-\dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending on
-the context. When \code{TRUE} (default), \dQuote{h4} is used, while with
-\code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
-value gives it stronger emphasis.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To
