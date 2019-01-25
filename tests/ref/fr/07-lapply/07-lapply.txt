@@ -1,0 +1,244 @@
+
+# ------------------------------- lapply.R -------------------------------------  
+
+> data("tobacco") 
+> tobacco_subset <- tibble::as_tibble(tobacco[ ,c("gender", "age.gr", "smoker")]) 
+> label(tobacco_subset) <- "subset of tobacco" 
+> label(tobacco_subset$gender) <- "The Gender" 
+> label(tobacco_subset$age.gr) <- "The Age Group" 
+> label(tobacco_subset$smoker) <- "Subject smokes" 
+> l1 <- lapply(tobacco_subset, freq)  
+> print(l1) 
+
+Tableau de fréquences  
+tobacco_subset$gender  
+Étiquette: The Gender  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+          F     489      50.00           50.00     48.90          48.90
+          M     489      50.00          100.00     48.90          97.80
+       <NA>      22                                 2.20         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco_subset$age.gr  
+Étiquette: The Age Group  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco_subset$smoker  
+Étiquette: Subject smokes  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> view(l1, footnote = "freq -- gender/age.gr/smoker", file = "01.html") 
+-- Output file written
+-- Output file appended
+
+> label(tabagisme) <- "Label tabagisme" 
+> label(tabagisme$sexe) <- "Le sexe" 
+> label(tabagisme$age.gr) <- "Groupe d'age" 
+> l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq)  
+> print(l1) 
+
+Tableau de fréquences  
+tabagisme$sexe  
+Étiquette: Le sexe  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+          F     489      50.00           50.00     48.90          48.90
+          M     489      50.00          100.00     48.90          97.80
+       <NA>      22                                 2.20         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tabagisme$age.gr  
+Étiquette: Groupe d'age  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tabagisme$fumeur  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Oui     298      29.80           29.80     29.80          29.80
+        Non     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tabagisme$cigs.par.jour  
+Type: Numérique  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+          0     674      69.84           69.84     67.40          67.40
+          5      11       1.14           70.98      1.10          68.50
+          6       9       0.93           71.92      0.90          69.40
+          7       7       0.73           72.64      0.70          70.10
+          8       6       0.62           73.26      0.60          70.70
+          9       5       0.52           73.78      0.50          71.20
+         10       6       0.62           74.40      0.60          71.80
+         11      19       1.97           76.37      1.90          73.70
+         12       5       0.52           76.89      0.50          74.20
+         13       8       0.83           77.72      0.80          75.00
+         14       9       0.93           78.65      0.90          75.90
+         15      11       1.14           79.79      1.10          77.00
+         16       7       0.73           80.52      0.70          77.70
+         17       6       0.62           81.14      0.60          78.30
+         18       9       0.93           82.07      0.90          79.20
+         19       6       0.62           82.69      0.60          79.80
+         20       7       0.73           83.42      0.70          80.50
+         21      12       1.24           84.66      1.20          81.70
+         22       5       0.52           85.18      0.50          82.20
+         23       8       0.83           86.01      0.80          83.00
+         24       3       0.31           86.32      0.30          83.30
+         25      11       1.14           87.46      1.10          84.40
+         26       5       0.52           87.98      0.50          84.90
+         27       7       0.73           88.70      0.70          85.60
+         28      10       1.04           89.74      1.00          86.60
+         29       8       0.83           90.57      0.80          87.40
+         30       5       0.52           91.09      0.50          87.90
+         31       8       0.83           91.92      0.80          88.70
+         32       7       0.73           92.64      0.70          89.40
+         33       6       0.62           93.26      0.60          90.00
+         34       9       0.93           94.20      0.90          90.90
+         35       8       0.83           95.03      0.80          91.70
+         36       9       0.93           95.96      0.90          92.60
+         37      13       1.35           97.31      1.30          93.90
+         38      14       1.45           98.76      1.40          95.30
+         39       7       0.73           99.48      0.70          96.00
+         40       5       0.52          100.00      0.50          96.50
+       <NA>      35                                 3.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tabagisme$malade  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Oui     224      22.40           22.40     22.40          22.40
+        Non     776      77.60          100.00     77.60         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tabagisme$maladie  
+Type: Alphanumérique  
+
+                             Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+-------------------------- ------- ---------- --------------- --------- --------------
+                     Autre       2       0.90            0.90      0.20           0.20
+                    Cancer      34      15.32           16.22      3.40           3.60
+                 Cardiaque      20       9.01           25.23      2.00           5.60
+               Cholestérol      21       9.46           34.68      2.10           7.70
+                   Diabète      14       6.31           40.99      1.40           9.10
+              Hypertension      36      16.22           57.21      3.60          12.70
+               Hypotension      11       4.95           62.16      1.10          13.80
+      Musculo-squelettique      19       8.56           70.72      1.90          15.70
+              Neurologique      10       4.50           75.23      1.00          16.70
+                      Ouïe      14       6.31           81.53      1.40          18.10
+                Pulmonaire      20       9.01           90.54      2.00          20.10
+          Système digestif      12       5.41           95.95      1.20          21.30
+                       Vue       9       4.05          100.00      0.90          22.20
+                      <NA>     778                                77.80         100.00
+                     Total    1000     100.00          100.00    100.00         100.00
+
+> print(l1, footnote = "freq -- negative indexing on columns", file = "02.html") 
+-- Output file written
+-- Output file appended
+
+> view(l1, headings = FALSE, footnote = "headings = FALSE", file = "03.html")  
+-- Output file written
+-- Output file appended
+
+> l2 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq) 
+> view(l2, footnote = "2 columns with row indexing", file = "04.html") 
+-- Output file written
+-- Output file appended
+
+> l3 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq, totals = FALSE) 
+> print(l3, style = "rmarkdown", caption = "2 columns with row indexing, no totals") 
+
+### Tableau de fréquences  
+#### tabagisme$sexe  
+**Étiquette:** Le sexe  
+**Type:** Facteur  
+
+|     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
+|-----------:|------:|---------:|--------------:|--------:|-------------:|
+|      **F** |     9 |    47.37 |         47.37 |   45.00 |        45.00 |
+|      **M** |    10 |    52.63 |        100.00 |   50.00 |        95.00 |
+| **\<NA\>** |     1 |          |               |    5.00 |       100.00 |
+
+Table: 2 columns with row indexing, no totals
+
+#### tabagisme$age.gr  
+**Étiquette:** Groupe d'age  
+**Type:** Facteur  
+
+|     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
+|-----------:|------:|---------:|--------------:|--------:|-------------:|
+|  **18-34** |     3 |    15.00 |         15.00 |   15.00 |        15.00 |
+|  **35-50** |     8 |    40.00 |         55.00 |   40.00 |        55.00 |
+|  **51-70** |     4 |    20.00 |         75.00 |   20.00 |        75.00 |
+|   **71 +** |     5 |    25.00 |        100.00 |   25.00 |       100.00 |
+| **\<NA\>** |     0 |          |               |    0.00 |       100.00 |
+
+Table: 2 columns with row indexing, no totals
+
+> view(l3, method = "pander", style = "rmarkdown", display.type = FALSE, caption = "display.type = FALSE") 
+
+### Tableau de fréquences  
+#### tabagisme$sexe  
+**Étiquette:** Le sexe  
+
+|     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
+|-----------:|------:|---------:|--------------:|--------:|-------------:|
+|      **F** |     9 |    47.37 |         47.37 |   45.00 |        45.00 |
+|      **M** |    10 |    52.63 |        100.00 |   50.00 |        95.00 |
+| **\<NA\>** |     1 |          |               |    5.00 |       100.00 |
+
+Table: display.type = FALSE
+
+#### tabagisme$age.gr  
+**Étiquette:** Groupe d'age  
+
+|     &nbsp; | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
+|-----------:|------:|---------:|--------------:|--------:|-------------:|
+|  **18-34** |     3 |    15.00 |         15.00 |   15.00 |        15.00 |
+|  **35-50** |     8 |    40.00 |         55.00 |   40.00 |        55.00 |
+|  **51-70** |     4 |    20.00 |         75.00 |   20.00 |        75.00 |
+|   **71 +** |     5 |    25.00 |        100.00 |   25.00 |       100.00 |
+| **\<NA\>** |     0 |          |               |    0.00 |       100.00 |
+
+Table: display.type = FALSE
+
+> print(l3, headings = FALSE, footnote = "no headings", file = "05.html") 
+-- Switching method to 'browser'
+-- Output file written
+-- Output file appended
+

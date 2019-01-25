@@ -4,7 +4,7 @@
 \alias{freq}
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
-freq(x, round.digits = st_options("round.digits"), order = "names",
+freq(x, round.digits = st_options("round.digits"), order = "default",
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),
   justify = "default", totals = st_options("freq.totals"),
   report.nas = st_options("freq.report.nas"), missing = "",
@@ -85,7 +85,7 @@ freq(tobacco$gender)
 freq(tobacco$gender, totals = FALSE)
 freq(tobacco$gender, display.nas = FALSE)
 freq(tobacco$gender, style="rmarkdown")
-with(tobacco, view(by(diseased, smoker, freq), method = "pander"))
+with(tobacco, by(diseased, smoker, freq))
 
 }
 \seealso{

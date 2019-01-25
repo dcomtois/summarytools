@@ -1,7 +1,7 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.8.9
+Version: 0.9.0
 Authors@R: c(person("Comtois", "Dominic", , "dominic.comtois@gmail.com", 
   role = c("aut", "cre")))
 Description: Data frame summaries, cross-tabulations,
@@ -11,20 +11,26 @@ Description: Data frame summaries, cross-tabulations,
   point-of-entry for exploring data, both for experienced
   and new R users.
 Imports:
+  checkmate,
+  dplyr,
   grDevices,
   htmltools,
   lubridate,
+  magick,
   matrixStats,
   methods,
   pander,
   pryr,
   rapportools,
   RCurl,
+  stats,
+  tidyr,
   utils
 Suggests:
   rstudioapi,
   knitr,
   rmarkdown
+Depends: R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
 License: GPL-2

@@ -5,36 +5,37 @@
 \title{Query and set summarytools global options}
 \usage{
 st_options(option = NULL, value = NULL, style = "simple",
-  round.digits = 2, plain.ascii = TRUE, headings = TRUE,
+  plain.ascii = TRUE, round.digits = 2, headings = TRUE,
   footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
   custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
   freq.report.nas = TRUE, ctable.prop = "r", ctable.totals = TRUE,
-  descr.stats = "all", descr.transpose = FALSE,
-  dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
-  dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
-  dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-  omit.headings = !headings)
+  descr.stats = "all", descr.transpose = FALSE, descr.silent = FALSE,
+  dfSummary.style = "multiline", dfSummary.varnumbers = TRUE,
+  dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE,
+  dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE,
+  dfSummary.graph.magnif = 1, dfSummary.silent = FALSE,
+  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
 or a vector of strings to query multiple values.}
 
-\item{value}{the value you wish to assign to the option specified in the first
-argument. This is for backward-compatibility, as all options can now be set
-via their own parameter. That is, instead of 
-\code{st_options('plain.ascii', FALSE))}, it is more practical to use
+\item{value}{the value you wish to assign to the option specified in the
+first argument. This is for backward-compatibility, as all options can now 
+be set via their own parameter. That is, instead of 
+\code{st_options('plain.ascii', FALSE))}, use
 \code{st_options(plain.ascii = FALSE)}.}
 
 \item{style}{Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
-\item{round.digits}{Numeric. Defaults to \code{2}.}
-
 \item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
 using summarytools with a rendering tool such as \code{knitr} or when
-creating rmarkdown output files to be converted with Pandoc. Note hoewever
+creating rmarkdown output files to be converted with Pandoc. Note however
 that its value will automatically be set to \code{FALSE} whenever
 \code{style} is set to \dQuote{rmarkdown}).}
+
+\item{round.digits}{Numeric. Defaults to \code{2}.}
 
 \item{headings}{Logical. Set to \code{FALSE} to remove all headings from
 outputs. Only the tables will be printed out, except when \code{\link{by}}
@@ -43,8 +44,8 @@ will still appear before the tables. \code{FALSE} by default.}
 
 \item{footnote}{Character. When the default value \dQuote{default} is used,
 the package name & version, as well as the R version number are displayed
-below html outputs. Set no \code{NA} to omit the footnote, or provide a
-custom string. Applies only to \emph{html} outputs.}
+below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 
+provide a custom string. Applies only to \emph{html} outputs.}
 
 \item{display.labels}{Logical. \code{TRUE} by default. Set to \code{FALSE} to
 omit data frame and variable labels in the headings section.}
@@ -80,6 +81,12 @@ parameter of \code{freq()}. \code{TRUE} by default.}
 \item{descr.transpose}{Logical. Corresponds to the \code{transpose} parameter
 of \code{\link{descr}}. \code{FALSE} by default.}
 
+\item{descr.silent}{Logical. Display messages relating to ignored variables. 
+\code{TRUE} by default.}
+
+\item{dfSummary.style}{Character. \dQuote{multiline} by default. Set to 
+\dQuote{grid} for \emph{Rmarkdown} documents.}
+
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
 variable numbers in the first column. Defaults to \code{TRUE}.}
 
@@ -102,6 +109,20 @@ default.}
 0 and 1) or too small (use a value > 1). Must be positive. Default to
 \code{1}.}
 
+\item{dfSummary.silent}{Logical. Display messages relating to temporary 
+image files location. \code{TRUE} by default.
+\code{\link{dfSummary}} \emph{html} reports. \code{TRUE} by default.}
+
+\item{subtitle.emphasis}{Logical. Controls the formatting of the 
+\dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending 
+on context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+\code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+value gives it stronger emphasis.}
+
+\item{lang}{Character. A 2-letter code for the language to use in the
+produced outputs. Currently available languages are: \sQuote{en}, 
+\sQuote{fr}.}
+
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
 }
 \description{
@@ -109,9 +130,9 @@ To list all \code{summarytools} global options, call without arguments. To
 display the value of one or several options, enter the name(s) of the
 option(s) in a character vector as sole argument.
 }
-\note{
-Loosely based on Gergely Daróczi's \code{\link[pander]{panderOptions}}
- function.
+\details{
+To learn more about summarytools options, see the 
+\href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
 }
 \examples{
 \dontrun{
@@ -121,7 +142,4 @@ st_options(round.digits = 1)   # set an option
 st_options('round.digits', 1)  # set an option (legacy way)
 st_options('reset')            # reset all summarytools global options
 }
-}
-\author{
-Dominic Comtois, \email{dominic.comtois@gmail.com},
 }

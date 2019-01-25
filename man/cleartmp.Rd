@@ -4,13 +4,16 @@
 \alias{cleartmp}
 \title{Delete Temporary Html Files}
 \usage{
-cleartmp(all = FALSE, silent = FALSE)
+cleartmp(all = TRUE, silent = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{all}{Logical. When \code{TRUE}, all temporary summarytools are deleted.
-When \code{FALSE} (default), only the latest is.}
+\item{all}{Logical. When \code{TRUE} (default), all temporary summarytools 
+files are deleted. When \code{FALSE}, only the latest file is.}
 
-\item{silent}{Hide confirmation messages (\code{FALSE} by default).}
+\item{silent}{Logical. Hide confirmation messages (\code{FALSE} by default).}
+
+\item{verbose}{Logical. Display a message for every file that is deleted.
+\code{FALSE} by default.}
 }
 \description{
 Delete temporary files created when using generic print method with 

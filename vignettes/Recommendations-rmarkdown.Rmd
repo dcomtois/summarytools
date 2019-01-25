@@ -17,39 +17,40 @@ vignette: >
 ```{r, include=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
+#pander::panderOptions('knitr.auto.asis', FALSE)
 library(summarytools)
 ```
 
 This document uses theme `rmarkdown::html_vignette`.
 
-Below are examples using recommended styles for *Rmarkdown* rendering. Available styles in
-summarytools are the same as `pander`'s: 
+Below are examples using recommended styles for *Rmarkdown* rendering. Available
+styles in summarytools are the same as `pander`'s: 
 
 - _simple_ (default)  
 - _rmarkdown_  
 - _grid_  
 - _multiline_  
  
-For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ style is recommended. For
-`dfSummary()`, _grid_ is recommended.
+For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ 
+style is recommended. For`dfSummary()`, _grid_ is recommended.
  
 ## Important Note
 
-`knitr` option `results = 'asis'` must be specified to get good results. This can be done globally via
-`opts_chunk$set(results='asis')`, or in the individual chunks.
+`knitr` option `results = 'asis'` must be specified to get good results. This
+can be done globally via`opts_chunk$set(results='asis')`, or in the individual
+chunks.
 
 The following summarytools global options have been set:
 ```{r}
-#st_options('omit.headings', TRUE)
-st_options('bootstrap.css', FALSE)
-st_options('footnote', NA)
+st_options(bootstrap.css = FALSE, footnote = NA)
 ``` 
 
 ## Using method = 'render'
 
-To generate tables using summarytool's own html rendering, the _.Rmd_ document's configuration part
-(yaml) must point to the package's `summarytools.css` file. This can be achieved in several ways;
-the current vignette uses this configuration:
+To generate tables using summarytool's own html rendering, the _.Rmd_ document's
+configuration part (yaml) must point to the package's `summarytools.css` file.
+This can be achieved in several ways; the current vignette uses this
+configuration:
 
 ````
 output: 
@@ -59,7 +60,8 @@ output:
     - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
 ````
 
-An alternative is to point to the directory on your system containing _summarytools.css_:
+An alternative is to point to the directory on your system containing 
+_summarytools.css_:
 
 ````
 ---
@@ -70,8 +72,8 @@ output:
 ---
 ````
 
-Starting with `freq()`, we'll review the recommended methods and styles to get going with _summarytools_
-in _Rmarkdown_ documents.
+Starting with `freq()`, we'll review the recommended methods and styles to get 
+going with _summarytools_ in _Rmarkdown_ documents.
 
 Jump to...
 
@@ -84,7 +86,8 @@ Jump to...
 
 # freq()
 
-`freq()` is best used with `style = 'rmarkdown'; html rendering is also possible.
+`freq()` is best used with `style = 'rmarkdown'; html rendering is also 
+possible.
 
 ## Rmarkdown Style
 ```{r}
@@ -97,8 +100,8 @@ freq(tobacco$gender, style = 'rmarkdown')
 print(freq(tobacco$gender), method = 'render')
 ```
 
-If you find the table too large, you can use `table.classes = 'st-small'` - an example is provided 
-further below.
+If you find the table too large, you can use `table.classes = 'st-small'` - an 
+example is provided further below.
 
 --------------------------------------------------------------------------------
 
@@ -108,8 +111,8 @@ further below.
 
 ## Rmarkdown Style
 
-Tables with heading spanning over 2 rows are not fully supported in markdown (yet), but the result is 
-getting close to acceptable. 
+Tables with heading spanning over 2 rows are not fully supported in markdown 
+(yet), but the result is getting close to acceptable. 
 
 ```{r}
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
@@ -123,12 +126,13 @@ For best results, use this method.
 print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
 ```
 
---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
  
 <a href="#top">Back to top</a>
  
 # descr() {#descr}
-`descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is also supported.
+`descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is 
+also supported.
 
 ## Rmarkdown Style
 ```{r}
@@ -138,8 +142,8 @@ descr(tobacco, style = 'rmarkdown')
 
 ## HTML Rendering
 
-We'll use table.classes = 'st-small' to show how it affects the table's size (compare to the `freq()`
-table rendered earlier).
+We'll use table.classes = 'st-small' to show how it affects the table's size
+(compare to the `freq()` table rendered earlier).
 
 ```{r}
 print(descr(tobacco), method = 'render', table.classes = 'st-small')
@@ -153,9 +157,9 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 ## Grid Style
 
-This gives good results, although the histograms are not shown. This has to do with an unresolved issue,
-but we're working hard to figure out a solution. Don't forget to specify `plain.ascii = FALSE`, or
-you won't get good results.
+This gives good results, although the histograms are not shown. This has to do 
+with an unresolved issue, but we're working hard to figure out a solution. Don't 
+forget to specify `plain.ascii = FALSE`, or you won't get good results.
 
 ```{r dfs_grid, results='asis'}
 dfSummary(tobacco, style = 'grid', plain.ascii = FALSE)
@@ -163,9 +167,9 @@ dfSummary(tobacco, style = 'grid', plain.ascii = FALSE)
 
 ## HTML Rendering
 
-Although the results are not as neat as they are when simply generating an html report from 
-the R interpreter -- the transparency of the graphs is lost in translation --, this is the
-best method still.
+Although the results are not as neat as they are when simply generating an html 
+report from the R interpreter -- the transparency of the graphs is lost in 
+translation --, this is the best method still.
 
 ```{r}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')

@@ -6,16 +6,16 @@
 #'
 #' @param option option(s) name(s) to query (optional). Can be a single string
 #'   or a vector of strings to query multiple values.
-#' @param value the value you wish to assign to the option specified in the first
-#'   argument. This is for backward-compatibility, as all options can now be set
-#'   via their own parameter. That is, instead of 
-#'   \code{st_options('plain.ascii', FALSE))}, it is more practical to use
+#' @param value the value you wish to assign to the option specified in the
+#'   first argument. This is for backward-compatibility, as all options can now 
+#'   be set via their own parameter. That is, instead of 
+#'   \code{st_options('plain.ascii', FALSE))}, use
 #'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
 #' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when
 #'   using summarytools with a rendering tool such as \code{knitr} or when
-#'   creating rmarkdown output files to be converted with Pandoc. Note hoewever
+#'   creating rmarkdown output files to be converted with Pandoc. Note however
 #'   that its value will automatically be set to \code{FALSE} whenever
 #'   \code{style} is set to \dQuote{rmarkdown}).
 #' @param round.digits Numeric. Defaults to \code{2}.
@@ -25,8 +25,8 @@
 #'   will still appear before the tables. \code{FALSE} by default.
 #' @param footnote Character. When the default value \dQuote{default} is used,
 #'   the package name & version, as well as the R version number are displayed
-#'   below html outputs. Set no \code{NA} to omit the footnote, or provide a
-#'   custom string. Applies only to \emph{html} outputs.
+#'   below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 
+#'   provide a custom string. Applies only to \emph{html} outputs.
 #' @param display.labels Logical. \code{TRUE} by default. Set to \code{FALSE} to
 #'   omit data frame and variable labels in the headings section.
 #' @param bootstrap.css Logical. Specifies whether to Include 
@@ -51,6 +51,10 @@
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
 #'   of \code{\link{descr}}. \code{FALSE} by default.
+#' @param descr.silent Logical. Display messages relating to ignored variables. 
+#'   \code{TRUE} by default.
+#' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
+#'   \dQuote{grid} for \emph{Rmarkdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
@@ -67,12 +71,21 @@
 #'   \code{\link{dfSummary}} graphs show up too large (then use a value between
 #'   0 and 1) or too small (use a value > 1). Must be positive. Default to
 #'   \code{1}.
+#' @param dfSummary.silent Logical. Display messages relating to temporary 
+#'   image files location. \code{TRUE} by default.
+#'   \code{\link{dfSummary}} \emph{html} reports. \code{TRUE} by default.
+#' @param subtitle.emphasis Logical. Controls the formatting of the 
+#'  \dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending 
+#'  on context. When \code{TRUE} (default), \dQuote{h4} is used, while with
+#'  \code{FALSE}, \dQuote{bold} / \dQuote{strong} is used. Hence the default
+#'  value gives it stronger emphasis.
+#' @param lang Character. A 2-letter code for the language to use in the
+#'   produced outputs. Currently available languages are: \sQuote{en}, 
+#'   \sQuote{fr}.
 #' @param omit.headings Logical. Deprecated. Use \code{headings} instead.
 #' 
-#' @author
-#' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' @note Loosely based on Gergely Daróczi's \code{\link[pander]{panderOptions}}
-#'  function.
+#' @details To learn more about summarytools options, see the 
+#' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
 #' 
 #' @examples \dontrun{
 #' st_options()                   # show all summarytools global options
@@ -82,25 +95,34 @@
 #' st_options('reset')            # reset all summarytools global options
 #' }
 #' @export
-st_options <- function(option = NULL, value = NULL, style = 'simple', 
-                       round.digits = 2, plain.ascii = TRUE, headings = TRUE,
-                       footnote = 'default', display.labels = TRUE,
-                       bootstrap.css = TRUE, custom.css = NA,
-                       escape.pipe = FALSE, freq.totals = TRUE,
-                       freq.report.nas = TRUE, ctable.prop = 'r',
-                       ctable.totals = TRUE, descr.stats = 'all',
-                       descr.transpose = FALSE, dfSummary.varnumbers = TRUE,
-                       dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE, 
-                       dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE, 
-                       dfSummary.graph.magnif = 1, omit.headings = !headings) {
+st_options <- function(option = NULL, value = NULL, style = "simple", 
+                       plain.ascii = TRUE, round.digits = 2,
+                       headings = TRUE, footnote = "default", 
+                       display.labels = TRUE, bootstrap.css = TRUE, 
+                       custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
+                       freq.report.nas = TRUE, ctable.prop = "r",
+                       ctable.totals = TRUE, descr.stats = "all",
+                       descr.transpose = FALSE, descr.silent = FALSE,
+                       dfSummary.style = "multiline",
+                       dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE, 
+                       dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE, 
+                       dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
+                       dfSummary.silent = FALSE, subtitle.emphasis = TRUE, 
+                       lang = "en", omit.headings = !headings) {
   
-  allOpts <- getOption('summarytools')
+  allOpts <- getOption("summarytools")
   
+  # Validate arguments
   mc <- match.call()
+  errmsg <- check_arguments_st_options(mc = mc)
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "), "\n No options have been modified")
+  }
   
   if (omit.headings %in% names(mc)) {
-    message("'omit.headings' will be deprecated in future releases. ",
-            "Use 'headings' instead")
+    message("'omit.headings' will disappear in future releases; ",
+            "use 'headings' instead")
   }
   
   # Querying all
@@ -112,18 +134,16 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
   if (length(mc) == 2 && "option" %in% names(mc) && option != "reset") {
     # Check that option is among the existing ones
     for (o in option) {
-      if (!o %in% c(names(allOpts), 'omit.headings')) {
-        message('Available options: ', paste(names(allOpts), collapse = ", "))
-        print(o)
-        stop('Option ', o, 'not recognized / not available')
+      if (!o %in% c(names(allOpts), "omit.headings")) {
+        stop("Option ", o, " not recognized / not available")
       }
     }
     
     if (length(option) == 1) {
-      if (option == 'omit.headings') {
+      if (option == "omit.headings") {
         message("'omit.headings' has been replaced by 'headings'. ",
                 "Returning !headings instead")
-        return(!allOpts[['headings']])
+        return(!allOpts[["headings"]])
       } else {
         return(allOpts[[option]])
       }
@@ -132,67 +152,71 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
     }
   }
 
-  if (isTRUE(option == 'reset')) {
+  if (isTRUE(option == "reset")) {
     if (length(mc) > 2) {
-      stop('Cannot reset options and set them at the same time')
+      stop("Cannot reset options and set them at the same time")
     }
     
-    options('summarytools' = 
-              list('style'                  = 'simple',
-                   'plain.ascii'            = TRUE,
-                   'round.digits'           = 2,
-                   'headings'               = TRUE,
-                   'footnote'               = 'default',
-                   'display.labels'         = TRUE,
-                   'bootstrap.css'          = TRUE,
-                   'custom.css'             = NA,
-                   'escape.pipe'            = FALSE,
-                   'freq.totals'            = TRUE,
-                   'freq.report.nas'        = TRUE,
-                   'ctable.prop'            = 'r',
-                   'ctable.totals'          = TRUE,
-                   'descr.stats'            = 'all',
-                   'descr.transpose'        = FALSE,
-                   'dfSummary.varnumbers'   = TRUE,
-                   'dfSummary.labels.col'   = TRUE,
-                   'dfSummary.graph.col'    = TRUE,
-                   'dfSummary.valid.col'    = TRUE,
-                   'dfSummary.na.col'       = TRUE,
-                   'dfSummary.graph.magnif' = 1))
+    options("summarytools" = 
+              list("style"                  = "simple",
+                   "plain.ascii"            = TRUE,
+                   "round.digits"           = 2,
+                   "headings"               = TRUE,
+                   "footnote"               = "default",
+                   "display.labels"         = TRUE,
+                   "bootstrap.css"          = TRUE,
+                   "custom.css"             = NA,
+                   "escape.pipe"            = FALSE,
+                   "freq.totals"            = TRUE,
+                   "freq.report.nas"        = TRUE,
+                   "ctable.prop"            = "r",
+                   "ctable.totals"          = TRUE,
+                   "descr.stats"            = "all",
+                   "descr.transpose"        = FALSE,
+                   "descr.silent"           = FALSE,
+                   "dfSummary.style"        = "multiline",
+                   "dfSummary.varnumbers"   = TRUE,
+                   "dfSummary.labels.col"   = TRUE,
+                   "dfSummary.graph.col"    = TRUE,
+                   "dfSummary.valid.col"    = TRUE,
+                   "dfSummary.na.col"       = TRUE,
+                   "dfSummary.graph.magnif" = 1,
+                   "dfSummary.silent"       = FALSE,
+                   "subtitle.emphasis"      = TRUE,
+                   "lang"                   = "en"))
     
-    message('summarytools options have been reset')
+    message("summarytools options have been reset")
     return(invisible())
   }
 
   # Legacy way of setting of options
-  if (length(names(mc)) == 3 && identical(sort(names(mc)), 
-                                          c("", "option", "value"))) {
+  if (length(names(mc)) == 3 && 
+      identical(sort(names(mc)), c("", "option", "value"))) {
     if (length(option) > 1) {
-      stop("Cannot set more than one option at a time in the legacy way.",
+      stop("Cannot set more than one option at a time in the legacy way; ",
            "Use separate arguments for each option instead")
     }
-    if (option == 'omit.headings') {
+    if (option == "omit.headings") {
       message("'omit.headings' has been replaced by 'headings'. Setting ",
               "'headings' to ", !isTRUE(value))
-      allOpts[['headings']] <- !isTRUE(value)
+      allOpts[["headings"]] <- !isTRUE(value)
     } else if (!option %in% names(allOpts)) {
-      message('Available options:', paste(names(allOpts), collapse = ", "))
-      stop('Option ', option, 'not recognized / not available')
+      stop("Option ", option, "not recognized / not available")
     } else {
       allOpts[[option]] <- value
     }
-    options('summarytools' = allOpts)
+    options("summarytools" = allOpts)
     return(invisible())
   }
   
   # Regular way of setting options    
   for (o in setdiff(names(mc), c("", "option", "value"))) {
-    if (o == 'omit.headings') {
+    if (o == "omit.headings") {
       message("'omit.headings' has been replaced by 'headings' and will be ",
               "deprecated in future releases.")
-      if (!'headings' %in% names(mc)) {
+      if (!"headings" %in% names(mc)) {
         message("Setting 'headings' to ", !isTRUE(get(o)))
-        allOpts[['headings']] <- !isTRUE(get(o))
+        allOpts[["headings"]] <- !isTRUE(get(o))
       } else {
         message("Ignoring this option as 'headings' is also specified")
       }
@@ -200,6 +224,7 @@ st_options <- function(option = NULL, value = NULL, style = 'simple',
       allOpts[[o]] <- get(o)
     }
   }
-  options('summarytools' = allOpts)
+  options("summarytools" = allOpts)
+  
   return(invisible())
 }

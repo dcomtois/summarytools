@@ -1,0 +1,214 @@
+---
+title: "Changes Introduced in Summarytools 0.9.0"
+author: "Dominic Comtois"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+vignette: >
+  %\VignetteIndexEntry{Introduction to summarytools 0.8}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r knitr-setup, include=FALSE}
+library(knitr)
+opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+```
+
+```{r st-setup, results='asis', echo=FALSE}
+library(summarytools)
+st_options(footnote = NA, subtitle.emphasis = FALSE,
+           dfSummary.silent = TRUE, descr.silent = TRUE)
+st_css()
+```
+
+Version 0.9.0 is out, and since **summarytools** version 0.8.9 was released only
+on GitHub, I thought necessary to create this vignette, since _a lot_ has been 
+going on, both under the hood and in terms of functionality. 
+
+#### Backward Compatibility
+
+No changes break backward compatibility, but at least one legacy feature will be
+abandoned in some further release. Namely, the boolean parameter `omit.headings`, 
+which has been replaced by the more straightforward `headings`. For now, a 
+message is shown whenever the "old" parameter name is used, encouraging users
+to switch to the new name.
+
+Another change concerns global options: `st_options()` now has as many
+parameters as there are global options, so that it is now possible to set all
+global options at once. It also has the added benefit that each option has its
+own small description available when cycling through the function's arguments
+in RStudio. The legacy way of setting options is still supported and
+will probably remain so, as the cost for maintaining it is all but negligeable.
+
+## New Features
+
+### Translations
+
+It is now possible to switch the language used in the outputs. So far, not too
+many languages are available (French, Spanish and Russian), but with the 
+community's participation, I hope we can gather a good number of them in a 
+reasonable time frame.
+
+#### Switching Languages
+
+To switch languages, simply use 
+
+```{r, eval=FALSE}
+st_options(lang = "fr")
+```
+
+Any function will now produce outputs using that language:
+
+```{r, eval=FALSE}
+view(freq(iris$Species))
+```
+
+
+<img style="float: center;" src="freq-fr.png" width=260px />
+
+The language used for producing the object is stored within it as an attribute.
+This is to avoid problems when switching languages between the moment the 
+object is stored, and the moment at which it is printed.
+
+### Non-UTF8 Locale
+
+On most Windows systems, it will be necessary to change the `LC_CTYPE` element 
+of the locale settings if the character set is not included in the current 
+locale. For instance, in order to get good results -- or rather, any results at 
+all -- with the Russian language in a "latin1" environment, we'll need to do 
+this:
+
+```{r, eval = FALSE}
+Sys.setlocale("LC_CTYPE", "russian")
+st_options(lang = 'ru')
+```
+
+Then, to go back to default setting:
+
+```{r}
+Sys.setlocale("LC_CTYPE", "")
+st_options(lang = "en")
+```
+
+
+#### Defining and Using Custom Translations
+
+With the new function `useTranslations()`, we can use our own sets of 
+translations. For this, download the template _csv_ file from
+[this page](https://github.com/dcomtois/summarytools/tree/dev-current/translations).
+After you're done translating the +/- 70 items, simply call the 
+`useTranslations()` function, giving it as sole argument the path to the _csv_
+file you've just created. Note that such custom translations will not persist 
+across R sessions. This means that we should always have handy this _csv_ file 
+if we're to print objects created with it. 
+
+## Better Handling of List Objects
+
+Before version 0.9.0, printing objects created with the use of `by()` or `lapply()`
+was less than ideal, especially for text / markdown output method. We had to use
+`view()` (not `print()`, which would not dispatch to `print.summarytools()`),
+and since `view()`'s default method is "viewer", we needed to change this 
+method to "pander" manually, like so:
+
+```{r, eval=FALSE}
+bystats <- by(data = tobacco$age, INDICES = tobacco$gender, descr)
+view(bystat, method = "pander")
+```
+
+This is now thing of the past. We can simply do:
+
+```{r, eval=FALSE}
+bystats <- by(data = tobacco$age, INDICES = tobacco$gender, descr)
+bystat
+```
+
+Also, `freq()` now accepts data frames as its main argument (x); no more `lapply()` needed.
+Variables which are not characters or factors will be excluded if they count more than 25 
+distinct values; this is to avoid creating huge frequency tables. This number (25) is arbitrary and
+if you think it should be a parameter, let me know by opening an issue.
+
+```{r, eval=FALSE}
+tobacco_subset <- tobacco[,c(3, 5)]
+freq(tobacco_subset)
+```
+
+In the meantime, you can use `lapply()` to bypass this limitation; a simple call 
+"Automatic printing" does not give optimal results however, as opposed to
+objects created with `by()`. But a simple call to `print()` makes things look
+as they should:
+
+```{r, eval=FALSE}
+liststats <- lapply(tobacco_subset, freq)
+print(liststats)
+```
+
+#### Controlling Column Widths in `dfSummary()`
+
+When generating `dfSummary()` tables in *Rmarkdown* documents, column widths can sometimes
+wreck the layout of (graphs, in particular). The new parameter `col.widths` allows us to
+specify the width of all columns. The vector we must provide as the parameter value can be
+numerical, in which case the values are taken as number of pixels. It can also be
+a character, specifying one of the units supported in css. For example: 
+
+```{r, eval=FALSE}
+library(summarytools)
+view(dfSummary(tobacco, varnumbers = FALSE, labels.col = FALSE, valid.col = FALSE), 
+     col.widths = c("10em", "25em", "20em", "25em", "8em"))
+view(dfSummary(tobacco, varnumbers = FALSE, labels.col = FALSE, valid.col = FALSE), 
+     col.widths = c(80, 200, 180, 120, 20))
+```
+
+See [this page](https://www.w3schools.com/csSref/css_units.asp) for a list of 
+accepted units). Note that including all columns (default behavior) can be 
+problematic, especially if some of your variables have labels. You'll need to 
+remove one or two columns for this customization to take effect, otherwise it will
+likely be ignored.
+
+It can help to organize your code in such a way that you know which elements of
+the vector applies to which column. For example: 
+
+```{r, eval=FALSE}
+view(dfSummary(tobacco, labels.col = FALSE, valid.col = FALSE,
+               col.widths = c(40,  # varnum
+                              80,  # varnames
+                              185, # stats/Values 
+                              120, # freqs
+                              120, # graph
+                              16   # missing 
+                              )))
+```
+
+#### Other changes introduced since last CRAN release (0.8.8)
+
+ - Easier management of global settings (customizable defaults) with 
+   `st_options()`; each option has its own parameter, so you can set as many
+   as you need in just one function call; the legacy way of setting options
+   is still supported
+ - `dfSummary()` went through some changes:
+    + number of columns in data frame is now shown in the heading, as well as number of 
+    duplicate rows (credits to [Paul Feitsma](https://github.com/paulfeitsma) for both ideas)
+    + UPC and EAN codes are now detected as well as sequences of integers (thanks to Paul here
+    too)
+    + bar plots more accurately reflect counts as they are no more "stretched"
+      to the width of the table "cells"; this allows comparing counts across
+      variables
+    + Binary and unary columns no more show irrelevant statistics (IQR / CV)
+ - `descr()` allows two new values for the `stats` parameter: *"fivenum"* and
+    *"common"*, the latter being a shortcut for `c("mean", "sd", "min", "med",`
+    `"max", "n.valid", "pct.valid")`
+ - Several more options can be overridden when printing / viewing summarytools 
+   objects; refer to `print.summarytools()`'s documentation for details
+
+**Other notable changes:**   
+
+ - The `omit.headings` parameter has been replaced by the more straightforward
+   `headings`. `omit.heandings` is still supported in this version but will be
+   deprecated in some future version
+ - Because it was subject to errors, the _Rows Subset_ heading element
+   has been removed. In case of a massive public outcry, I can bring it back ;)
+ - Under the hood, much has been going on; the lengthier functions have been
+   split into more manageable parts, facilitating maintenance and improving 
+   readability

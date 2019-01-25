@@ -1,5 +1,5 @@
-Meta
 doc
+Meta
 .Rprofile
 .Rhistory
 .Renviron
@@ -7,3 +7,6 @@ summarytools.Rproj
 .Rbuildignore
 .Rproj.user
 TODO.R
+tests/output
+tests/output/*
+tests/other
