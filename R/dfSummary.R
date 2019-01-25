@@ -119,7 +119,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                       na.col = st_options("dfSummary.na.col"),
                       graph.col = st_options("dfSummary.graph.col"),
                       graph.magnif = st_options("dfSummary.graph.magnif"),
-                      style = "multiline",
+                      style = st_options("dfSummary.style"),
                       plain.ascii = st_options("plain.ascii"),
                       justify = "left", col.widths = NA, 
                       headings = st_options("headings"),
@@ -308,6 +308,8 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
 
   # apply translations to colnames
   for (i in seq_along(output)) {
+    if (colnames(output)[i] == "text.graph")
+      next
     colnames(output)[i] <- trs(colnames(output)[i])
   }
 

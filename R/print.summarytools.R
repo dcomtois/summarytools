@@ -1105,7 +1105,7 @@ print_descr <- function(x, method) {
     return(main_sect)
     
   } else {
-    
+    # print_descr -- html method -----------------------------------------------
     table_head <- list(tags$th(""))
 
     for(cn in colnames(x)) {
@@ -1273,7 +1273,7 @@ print_dfs <- function(x, method) {
     return(
       HTML(
         paste0(
-          '<td align="left" style="padding:0"><table ',
+          '<td align="left" style="padding:0;vertical-align:middle"><table ',
           'style="border-collapse:collapse;border:none;margin:0">',
           cell, '</table></td>'
           )
@@ -1318,10 +1318,11 @@ print_dfs <- function(x, method) {
     }
     
     # Remove graph if specified in call to print/view
-    if (trs("text.graph") %in% names(x) && 
-        "graph.col" %in% names(format_info) &&
+    if ("text.graph" %in% names(x) && "graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) {
       x <- x[ ,-which(names(x) == trs("text.graph"))]
+    } else {
+      colnames(x)[which(names(x) == "text.graph")] <- trs("graph")
     }
     
     # Check that style is not "simple" or "rmarkdown"
@@ -1391,8 +1392,8 @@ print_dfs <- function(x, method) {
     # print_dfs - html method --------------------------------------------------
     
     # remove text graph
-    if (trs("text.graph") %in% names(x)) {
-      x <- x[ ,-which(names(x) == trs("text.graph"))]
+    if ("text.graph" %in% names(x)) {
+      x <- x[ ,-which(names(x) == "text.graph")]
     }
     
     # Remove graph if specified in call to print/view
@@ -1460,14 +1461,17 @@ print_dfs <- function(x, method) {
           if (grepl(paste0("(",trs("distinct.value"), "|",
                            trs("distinct.values"), ")"), cell) || cell == "") {
             table_row %+=% list(
-              tags$td(HTML(cell), align = "left") # nb of distinct values
+              tags$td(HTML(cell), align = "left",
+                      style = "vertical-align:middle")
             )
           } else {
             table_row %+=% list(make_tbl_cell(cell))
           }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(
-            tags$td(HTML(cell), align = "center", style = "padding:0")
+            tags$td(HTML(cell), align = "left", 
+                    style = paste0("vertical-align:middle;padding:0;",
+                                   "background-color:transparent"))
           )
         }
       }
