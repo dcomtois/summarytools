@@ -99,6 +99,7 @@ Mac OS**
 ``` r
 install.packages("devtools")
 library(devtools)
+install_github("rapporter/pander") # Necessary for optimal results!
 install_github("dcomtois/summarytools")
 ```
 

@@ -109,7 +109,7 @@ For older Ubuntu versions Trusty (14.04) and Xenial (16.04) use our PPA:
 ```{r, eval=FALSE}
 install.packages("devtools")
 library(devtools)
-install_github("rapporter/pander")
+install_github("rapporter/pander") # Necessary for optimal results!
 install_github("dcomtois/summarytools")
 ```
 
