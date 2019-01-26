@@ -100,14 +100,24 @@ improvements. The changes are also well documented. Feedback is most welcome.
 ```{r, eval=FALSE}
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools')
+install_github("dcomtois/summarytools")
 ```
 
 
-### Version 0.8.9
+### From GitHub - Version 0.8.9
 
-For a middle-ground solution, you can install the
-[0.8.9 version](https://github.com/dcomtois/summarytools/releases) from source.
+For a middle-ground solution, you can install this inbetween version, although
+I don't see much benefit, to be honest. Version 0.9.0 has been much more
+thoroughly tested and has many advantages over 0.8.9. But still, if you wish
+to try it, here's how:
+
+
+```{r, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("dcomtois/summarytools", ref = "0-8-9")
+```
+
 Note that I do not intend to push this version to CRAN, mainly because I lack
 the time to create extensive documentation for both 0.8.9 and 0.9.0.
 

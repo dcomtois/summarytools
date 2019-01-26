@@ -88,7 +88,7 @@ st_options(lang = 'ru')
 
 Then, to go back to default setting:
 
-```{r}
+```{r, eval=FALSE}
 Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```

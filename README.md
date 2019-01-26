@@ -66,34 +66,48 @@ be found [at the end of this document](#changes).
 
 # How to install
 
-To install the most recent version from the *R-CRAN* repository:
+### From CRAN - version 0.8.8
+
+This version is rather far behind 0.9.0, but if you don’t feel like
+trying new features, just install it with `install.packages()`:
 
 ``` r
 install.packages("summarytools")
+
+The official documentation can be found
+[here](http://cran.r-project.org/web/packages/summarytools/).
 ```
 
-To benefit from all the latest fixes, install it from GitHub: \*\* Note:
-While CRAN features version 0.8.8, the GitHub main version is 0.9.0** **
-If you need the latest fixes from version 0.8.8,
+### From GitHub - version 0.9.0
+
+There have been quite a few changes since 0.8.8. I recommend you give a
+try to this newer version. I’ve done some rather extensive testing, and
+I believe it is as much stable as 0.8.8 now, with a lot of additional
+features and improvements. The changes are also well documented.
+Feedback is most welcome.
 
 ``` r
 install.packages("devtools")
 library(devtools)
-install_github('dcomtois/summarytools')
+install_github("dcomtois/summarytools")
 ```
 
-For enthusiastic users willing to contribute to *summarytools*’
-development, I encourage you to go for the **development** version,
-which is the most up-to-date, but also a *work-in-progress*. Bugs may
-show up, but if you report them I can generally fix them quickly.
+### From GitHub - Version 0.8.9
+
+For a middle-ground solution, you can install this inbetween version,
+although I don’t see much benefit, to be honest. Version 0.9.0 has been
+much more thoroughly tested and has many advantages over 0.8.9. But
+still, if you wish to try it, here’s how:
 
 ``` r
 install.packages("devtools")
-devtools::install_github('dcomtois/summarytools', ref='dev-current')
+library(devtools)
+install_github("dcomtois/summarytools", ref = "0-8-9")
 ```
 
-The official documentation for the latest version on CRAN can be found
-[here](http://cran.r-project.org/web/packages/summarytools/).
+Note that I do not intend to push this version to CRAN, mainly because I
+lack the time to create extensive documentation for both 0.8.9 and
+0.9.0.
 
 # The Four Core Functions
 

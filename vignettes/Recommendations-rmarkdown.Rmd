@@ -6,22 +6,71 @@ output:
   rmarkdown::html_vignette: 
     css: 
     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
-    - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
 vignette: >
   %\VignetteIndexEntry{Recommendations for Rmarkdown}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-
 ---
 
 ```{r, include=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
-#pander::panderOptions('knitr.auto.asis', FALSE)
+```
+```{r, echo=FALSE}
 library(summarytools)
+st_css(bootstrap = FALSE)
 ```
 
 This document uses theme `rmarkdown::html_vignette`.
+
+## Preliminary Note
+
+The information in this document is not 100% up-to-date, but the recommendations
+still hold. The information is accurate, but at times incomplete. An update will
+follow shortly.
+
+## Configuration
+
+The **yaml** section of this document is as follows:
+
+```
+---
+title: "Recommendations for Using summarytools With Rmarkdown"
+author: "Dominic Comtois"
+date: "'r Sys.Date()'"     <--- using backticks, not single quotes
+output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+vignette: >
+  %\VignetteIndexEntry{Recommendations for Rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```
+
+The following **summarytools global options** have been set:
+```{r}
+st_options(bootstrap.css = FALSE,     # Already part of the theme
+           footnote = NA,                 
+           subtitle.emphasis = FALSE) # For the vignette theme, this gives
+                                      # much better results. YMMV
+``` 
+
+Also, the following **knitr chunk options** were set as following:
+```{r, eval=FALSE}
+library(knitr)
+opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
+```
+
+Finally, **summarytools' CSS** has been included in the following manner, with
+chunk option `echo = FALSE`:
+```{r, eval=FALSE}
+library(summarytools)
+st_css(bootstrap = FALSE)
+```
+
+## Demo / Examples
 
 Below are examples using recommended styles for *Rmarkdown* rendering. Available
 styles in summarytools are the same as `pander`'s: 
@@ -34,46 +83,8 @@ styles in summarytools are the same as `pander`'s:
 For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ 
 style is recommended. For`dfSummary()`, _grid_ is recommended.
  
-## Important Note
-
-`knitr` option `results = 'asis'` must be specified to get good results. This
-can be done globally via`opts_chunk$set(results='asis')`, or in the individual
-chunks.
-
-The following summarytools global options have been set:
-```{r}
-st_options(bootstrap.css = FALSE, footnote = NA)
-``` 
-
-## Using method = 'render'
-
-To generate tables using summarytool's own html rendering, the _.Rmd_ document's
-configuration part (yaml) must point to the package's `summarytools.css` file.
-This can be achieved in several ways; the current vignette uses this
-configuration:
-
-````
-output: 
-  rmarkdown::html_vignette: 
-    css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
-    - !expr system.file("includes/stylesheets/summarytools.css", package = "summarytools")
-````
-
-An alternative is to point to the directory on your system containing 
-_summarytools.css_:
-
-````
----
-title: "RMarkdown using summarytools"
-output: 
-  html_document: 
-    css: C:/R/win-library/3.4/summarytools/includes/stylesheets/summarytools.css
----
-````
-
-Starting with `freq()`, we'll review the recommended methods and styles to get 
-going with _summarytools_ in _Rmarkdown_ documents.
+Starting with `freq()`, we'll review the recommended methods and styles to 
+quickly get satisfying results in your _Rmarkdown_ documents.
 
 Jump to...
 
@@ -112,7 +123,8 @@ example is provided further below.
 ## Rmarkdown Style
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
-(yet), but the result is getting close to acceptable. 
+(yet), but the result is getting close to acceptable. This, however, is not
+true for all themes. That's why the rendering method is preferred.
 
 ```{r}
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
@@ -157,22 +169,20 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 ## Grid Style
 
-This gives good results, although the histograms are not shown. This has to do 
-with an unresolved issue, but we're working hard to figure out a solution. Don't 
-forget to specify `plain.ascii = FALSE`, or you won't get good results.
+This style gives good results, and since v0.9, the graphs are shown as true 
+images. Don't forget to specify `plain.ascii = FALSE` (or set it as a global
+option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
 
 ```{r dfs_grid, results='asis'}
-dfSummary(tobacco, style = 'grid', plain.ascii = FALSE)
+dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.72)
 ```
 
 ## HTML Rendering
 
-Although the results are not as neat as they are when simply generating an html 
-report from the R interpreter -- the transparency of the graphs is lost in 
-translation --, this is the best method still.
+This method has also been much improved in v0.9:
 
 ```{r}
-print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
+print(dfSummary(tobacco, graph.magnif = 0.72), method = 'render')
 ```
 
 <a href="#top">Back to top</a>
