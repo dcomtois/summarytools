@@ -76,6 +76,26 @@ I believe it is as much stable as 0.8.8 now, with a lot of additional
 features and improvements. The changes are also well documented.
 Feedback is most welcome.
 
+**[Magick++](https://imagemagick.org/Magick++/) Dependancy on Linux and
+Mac OS**
+
+    Before proceeding, you must install Magick++
+    
+     - deb: 'libmagick++-dev' (Debian, Ubuntu)
+     - rpm: 'ImageMagick-c++-devel' (Fedora, CentOS, RHEL)
+     - csw: 'imagemagick_dev' (Solaris)
+    
+    On MacOS it is recommended to use install ImageMagick-6 from homebrew
+    with extra support for fontconfig and rsvg rendering:
+       brew reinstall imagemagick@6 --with-fontconfig --with-librsvg
+    
+    For older Ubuntu versions Trusty (14.04) and Xenial (16.04) use our PPA:
+       sudo add-apt-repository -y ppa:opencpu/imagemagick
+       sudo apt-get update
+       sudo apt-get install -y libmagick++-dev
+
+…and after this is done:
+
 ``` r
 install.packages("devtools")
 library(devtools)
