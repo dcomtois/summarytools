@@ -60,144 +60,106 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom matrixStats weightedMean weightedSd weightedMedian weightedMad
-#' @importFrom rapportools skewness kurtosis
+#' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE, 
-                  round.digits = st_options('round.digits'),
-                  transpose = st_options('descr.transpose'), 
-                  style = st_options('style'), 
-                  plain.ascii = st_options('plain.ascii'),
-                  justify = "right", headings = st_options('headings'), 
-                  display.labels = st_options('display.labels'),  
+#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all
+#' @importFrom tidyr separate gather spread
+descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE, 
+                  round.digits = st_options("round.digits"),
+                  transpose = st_options("descr.transpose"), 
+                  style = st_options("style"), 
+                  plain.ascii = st_options("plain.ascii"),
+                  justify = "right", headings = st_options("headings"), 
+                  display.labels = st_options("display.labels"),  
                   split.tables = 100, weights = NA, rescale.weights = FALSE,
                   ...) {
   
   # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored here
   
   if (is.atomic(x) && !is.numeric(x)) {
-    stop("x is not numerical")
+    errmsg %+=% "'x' must be numeric"
   }
   
   # make x a data.frame
-  x.df <- as.data.frame(x)
+  x.df <- as_tibble(x)
+  
+  # Get variable label
+  var_label <- label(x.df[[1]])
   
   if (!is.data.frame(x.df)) {
-    stop(paste("x must be a data.frame, a tibble, a data.table or a single",
-               "vector, and attempted conversion failed"))
+    errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
+                     "a data.table; attempted conversion to tibble failed")
   }
   
-  # check that all 'stats' elements are valid
-  valid_stats <- 
-    list(no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
-                     "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                     "n.valid", "pct.valid"),
-         wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-                  "n.valid", "pct.valid"))
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
+  
+  valid_stats <- list(
+    no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+                "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+                "n.valid", "pct.valid"),
+    wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+             "n.valid", "pct.valid")
+  )
   
   if (identical(stats,"all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
-  
   } else if (identical(stats, "fivenum")) {
-    
     if (!identical(weights, NA)) {
-      stop("fivenum is not supported when weights are used")
+      errmsg %+=% paste("fivenum is not supported when weights are used; valid",
+                        "stats are:", paste(valid_stats$wgts, collapse = ", "))
+      
     }
-    
-    stats <- c("min", "q1", "med", "mean", "q3", "max")
-    
+    stats <- c("min", "q1", "med", "q3", "max")
   } else if (identical(stats, "common")) {
-    
     stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
-    
   } else {
-    
     stats <- tolower(stats)
     invalid_stats <- 
       setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
-    
     if (length(invalid_stats) > 0) {
-      stop("valid stats are: ", 
-           paste(valid_stats[[2 - as.numeric(identical(weights, NA))]], 
-                 collapse = ", "),
-           "\n  The following statistics are not recognized, or not allowed: ",
-           paste(invalid_stats, collapse = ", "))
+      errmsg %+=%
+        paste("The following statistics are not recognized, or not allowed: ",
+              paste(dQuote(invalid_stats), collapse = ", ")
+              )
     }
   }
-  
-  if (!na.rm %in% c(TRUE, FALSE)) {
-    stop("'na.rm' argument must be either TRUE or FALSE")
+
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
+
+  # End of arguments validation ------------------------------------------------
   
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
-  
-  if (!transpose %in% c(TRUE, FALSE)) {
-    stop("'transpose' argument must be either TRUE or FALSE")
-  }
-  
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-  
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
-    stop("'plain.ascii' argument must be either TRUE or FALSE")
-  }
-  
-  justify <- switch(tolower(substring(justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    m = "center", # to allow 'middle'
-                    r = "right")
-  
-  if (!justify %in% c("left", "center", "right")) {
-    stop("'justify' argument must be one of 'left', 'center' or 'right'")
-  }
-  
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-  
-  # When style='rmarkdown', make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && plain.ascii==TRUE && 
+  # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
+  if (style=="rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
   
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-  
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
-  }
-  
-  # End of arguments validation
-  
   # Get info about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call()), 
-                    silent = TRUE)
+  parse_info <- try(
+    parse_args(sys.calls(), sys.frames(), match.call(),
+               var_name = (ncol(x.df) == 1),
+               var_label = (ncol(x.df) == 1), caller = "descr"),
+    silent = TRUE)
   
-  if (any(grepl('try-', class(parse_info)))) {
+  if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
 
-  if (!"var_names" %in% names(parse_info)) {
-    parse_info$var_names <- colnames(x.df)
+  if (!"var_name" %in% names(parse_info)) {
+    parse_info$var_name <- colnames(x.df)
   }
   
   # Identify and exclude non-numerical columns from x
   col_to_remove <- which(!vapply(x.df, is.numeric, logical(1)))
   
   if (length(col_to_remove) > 0) {
-    ignored <- paste(colnames(x.df)[col_to_remove], collapse=", ")
+    ignored <- colnames(x.df)[col_to_remove]
     x.df <- x.df[-col_to_remove]
-    parse_info$var_names <- parse_info$var_names[-col_to_remove]
+    parse_info$var_name <- parse_info$var_name[-col_to_remove]
   }
   
   if (ncol(x.df) == 0) {
@@ -206,76 +168,63 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
 
   # No weights being used ------------------------------------------------------
   if (identical(weights, NA)) {
-    # Build skeleton for output dataframe
-    output <- data.frame(mean        = numeric(),
-                         sd          = numeric(),
-                         min         = numeric(),
-                         q1          = numeric(),
-                         med         = numeric(),
-                         q3          = numeric(),
-                         max         = numeric(),
-                         mad         = numeric(),
-                         iqr         = numeric(),
-                         cv          = numeric(),
-                         skewness    = numeric(),
-                         se.skewness = numeric(),
-                         kurtosis    = numeric(),
-                         n.valid     = numeric(),
-                         pct.valid   = numeric())
     
-    # Iterate over columns in x
-    for(i in seq_along(x.df)) {
+    # Prepare the summarizing functions for dplyr::summarize; there are 3 stats
+    # that will be calculated later on so to not slow down the function
+    summar_funs <- funs(mean, 
+                        sd, 
+                        min, 
+                        q1 = quantile(., probs = .25, type = 2, names = FALSE),
+                        med = median,
+                        q3 = quantile(., probs = .75, type = 2, names = FALSE),
+                        max,
+                        mad,
+                        iqr = IQR,
+                        cv = -999,
+                        skewness = rapportools::skewness,
+                        se.skewness = -999,
+                        kurtosis = rapportools::kurtosis,
+                        n.valid = rapportools::nvalid,
+                        pct.valid = -999)
+    
+    summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]  
+
+    if (ncol(x.df) > 1) {
+      results <- suppressWarnings(
+        x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+        gather("variable", "value") %>%
+        separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
+        spread("var", "value")
+      )
       
-      variable <- as.numeric(x.df[ ,i])
-      if (i == 1) {
-        n_tot <- length(variable)
-      }
-      
-      # Extract number and proportion of missing and valid values
-      if (any(c("n.valid", "pct.valid", "se.skewness") %in% stats)) {
-        n_valid <- sum(!is.na(variable))
-        p_valid <- n_valid / length(variable)
-      }
-      
-      # Calculate mean and sd if necessary
-      if (any(c("mean", "cv") %in% stats)) {
-        variable.mean <- mean(variable, na.rm = na.rm)
-      }
-      
-      if (any(c("sd", "cv") %in% stats)) {
-        variable.sd <- sd(variable, na.rm = na.rm)
-      }
-      
-      # Calculate and insert stats into output dataframe
-      output[i, ] <- 
-        c(ifelse("mean" %in% stats, variable.mean, NA),
-          ifelse("sd"   %in% stats, variable.sd, NA),
-          ifelse("min"  %in% stats, min(variable, na.rm=na.rm), NA),
-          ifelse("q1"   %in% stats, quantile(variable, probs = 0.25, 
-                                             na.rm = na.rm, type = 2), NA),
-          ifelse("med"  %in% stats, median(variable, na.rm=na.rm), NA),
-          ifelse("q3"   %in% stats, quantile(variable, probs = 0.75, 
-                                             na.rm = na.rm, type = 2), NA),
-          ifelse("max"  %in% stats, max(variable, na.rm=na.rm), NA),
-          ifelse("mad"  %in% stats, mad(variable, na.rm=na.rm), NA),
-          ifelse("iqr"  %in% stats, IQR(variable, na.rm=na.rm), NA),
-          ifelse("cv"   %in% stats, variable.sd / variable.mean, NA),
-          ifelse("skewness"    %in% stats, skewness(variable, na.rm=na.rm), NA),
-          ifelse("se.skewness" %in% stats,
-                 sqrt((6*n_valid*(n_valid-1)) / 
-                        ((n_valid-2)*(n_valid+1)*(n_valid+3))), NA),
-          ifelse("kurtosis"    %in% stats, kurtosis(variable, na.rm=na.rm), NA),
-          ifelse("n.valid"     %in% stats, n_valid, NA),
-          ifelse("pct.valid"   %in% stats, p_valid * 100, NA))
+      # Transform results into output object
+      output <- as.data.frame(t(results[ ,-1]))
+      colnames(output) <- results$stat
+    } else {
+      output <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+        as.data.frame
+      rownames(output) <- parse_info$var_name
+    }
+
+    # Calculate additionnal stats if needed
+    if ("cv" %in% stats) {
+      output$cv <- output$sd / output$mean
+    }
+    
+    if ("se.skewness" %in% stats) {
+      output$se.skewness <- 
+        with(output, 
+             sqrt((6 * n.valid * (n.valid - 1)) / 
+                    ((n.valid - 2) * (n.valid + 1) * (n.valid + 3))))
+    }
+    
+    if ("pct.valid" %in% stats) {
+      output$pct.valid <- output$n.valid *100 / nrow(x.df)
     }
     
   } else {
-    # Weights being used -------------------------------------------------------
     
-    # Check that weights vector has the right length
-    if (length(weights) != nrow(x.df)) {
-      stop("weights vector must have the same length as x")
-    }
+    # Weights being used -------------------------------------------------------
     
     weights_string <- deparse(substitute(weights))
 
@@ -284,7 +233,18 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
               "be treated as zeroes")
       weights[is.na(weights)] <- 0
     }
-    
+
+    # If weights are in x.df, remove them
+    if(length(parse_info$df_name) == 1 && 
+       grepl(parse_info$df_name, weights_string)) {
+      wgts_vname <- sub(paste0(parse_info$df_name, "\\$"), "", weights_string)
+      ind <- which(names(x.df) == wgts_vname)
+      if (length(ind) == 1) {
+        x.df <- x.df[-ind]
+        parse_info$var_name <- setdiff(parse_info$var_name, wgts_vname)  
+      }
+    }
+        
     # Build skeleton for output dataframe
     output <- data.frame(mean      = numeric(),
                          sd        = numeric(),
@@ -301,10 +261,10 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
       weights <- weights / sum(weights) * nrow(x.df)
     }
     
-    n_tot <- sum(weights)
+    #n_tot <- sum(weights)
     
     for(i in seq_along(x.df)) {
-      variable <- as.numeric(x.df[ ,i])
+      variable <- as.numeric(x.df[[i]])
       
       # Extract number and proportion of missing and valid values
       if (any(c("n.valid", "pct.valid") %in% stats)) {
@@ -348,24 +308,26 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
           ifelse("n.valid"   %in% stats, n_valid, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
+    
+    rownames(output) <- parse_info$var_name
+    
   }
   
-  rownames(output) <- parse_info$var_names
   
   # Prepare output data -------------------------------------------------------
-  
   # Keep and order required stats from output
   output <- output[ ,stats]
   
-  # Make column names prettier
-  cnames <- c(sd = "Std.Dev", med = "Median", mad = "MAD", iqr = "IQR", 
-              cv = "CV", se.skewness = "SE.Skewness", n.valid = "N.Valid",
-              pct.valid = "Pct.Valid")
-  for (i in seq_along(cnames)) {
-    colnames(output)[which(colnames(output) == names(cnames[i]))] <- cnames[i]
-  }
-  colnames(output) <- rapportools::capitalise(colnames(output))
   
+  # Apply translations to colnames
+  for (i in seq_along(output)) {
+    if (colnames(output)[i] == "sd") {
+      colnames(output)[i] <- trs("sd.long")
+    } else {
+      colnames(output)[i] <- trs(colnames(output)[i])
+    }
+  }
+
   # Transpose when transpose is FALSE; even though this is counter-intuitive,
   # we prefer that the "vertical" version be the default one and that at the
   # same time, the default value for transpose be FALSE.
@@ -379,41 +341,47 @@ descr <- function(x, stats = st_options('descr.stats'), na.rm = TRUE,
   attr(output, "date")       <- Sys.Date()
   attr(output, "fn_call")    <- match.call()
   
-  
   data_info <-
     list(
-      Dataframe       = ifelse("df_name" %in% names(parse_info), 
-                               parse_info$df_name, NA),
-      Dataframe.label = ifelse("df_label" %in% names(parse_info), 
-                               parse_info$df_label, NA),
-      Variable        = ifelse("var_names" %in% names(parse_info) && 
-                                 length(parse_info$var_names) == 1,
-                               parse_info$var_names, NA),
-      Variable.label  = ifelse(is.atomic(x), label(x), NA),
-      Weights         = ifelse(identical(weights, NA), NA,
-                               sub(pattern = paste0(parse_info$df_name, "$"), 
-                                   replacement = "", x = weights_string, 
-                                   fixed = TRUE)),
-      Group           = ifelse("by_group" %in% names(parse_info),
-                               parse_info$by_group, NA),
-      by.first        = ifelse("by_group" %in% names(parse_info), 
-                               parse_info$by_first, NA),
-      by.last         = ifelse("by_group" %in% names(parse_info), 
-                               parse_info$by_last, NA),
-      transposed      = transpose,
-      N.Obs           = n_tot)
+      Data.frame       = ifelse("df_name" %in% names(parse_info), 
+                                parse_info$df_name, NA),
+      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
+                                parse_info$df_label, NA),
+      Variable         = ifelse("var_name" %in% names(parse_info) && 
+                                  length(parse_info$var_name) == 1,
+                                parse_info$var_name, NA),
+      Variable.label   = ifelse("var_label" %in% names(parse_info) &&
+                                  length(parse_info$var_label) == 1,
+                                parse_info$var_label,
+                                ifelse(!is.na(var_label), var_label, NA)),
+      Weights          = ifelse(identical(weights, NA), NA,
+                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                    replacement = "", x = weights_string, 
+                                    fixed = TRUE)),
+      by_var           = ifelse("by_var" %in% names(parse_info),
+                                parse_info$by_var, NA),
+      Group            = ifelse("by_group" %in% names(parse_info),
+                                parse_info$by_group, NA),
+      by_first         = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_first, NA),
+      by_last          = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_last, NA),
+      transposed       = transpose,
+      N.Obs            = nrow(x.df))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
-  attr(output, "formatting") <- list(style          = style,
-                                     round.digits   = round.digits,
-                                     plain.ascii    = plain.ascii,
-                                     justify        = justify,
-                                     headings       = headings,
-                                     display.labels = display.labels,
-                                     split.tables   = split.tables)
+  attr(output, "format_info") <- list(style          = style,
+                                      round.digits   = round.digits,
+                                      plain.ascii    = plain.ascii,
+                                      justify        = justify,
+                                      headings       = headings,
+                                      display.labels = display.labels,
+                                      split.tables   = split.tables)
   
   attr(output, "user_fmt") <- list(... = ...)
+  
+  attr(output, "lang") <- st_options("lang")
   
   if (exists("ignored"))
     attr(output, "ignored") <- ignored

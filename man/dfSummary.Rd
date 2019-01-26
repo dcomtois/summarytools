@@ -6,13 +6,14 @@
 \usage{
 dfSummary(x, round.digits = st_options("round.digits"),
   varnumbers = st_options("dfSummary.varnumbers"),
-  labels.col = length(label(x, all = TRUE)) > 0,
+  labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
   na.col = st_options("dfSummary.na.col"),
   graph.col = st_options("dfSummary.graph.col"),
   graph.magnif = st_options("dfSummary.graph.magnif"),
-  style = "multiline", plain.ascii = st_options("plain.ascii"),
-  justify = "left", headings = st_options("headings"),
+  style = st_options("dfSummary.style"),
+  plain.ascii = st_options("plain.ascii"), justify = "left",
+  col.widths = NA, headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
   max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
@@ -29,8 +30,10 @@ option \dQuote{dfSummary.varnumbers}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-functions) will be displayed. By default, the \emph{labels} column is shown
-if at least one column has a defined label.}
+functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
+column is only shown if at least one column has a defined label. This
+option can also be set globally; see \code{\link{st_options}}, option 
+\dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
 valid (non-missing) values. \code{TRUE} by default, but can be set
@@ -64,6 +67,11 @@ markdown rendering. To change the default value globally, see
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l}
 (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
+
+\item{col.widths}{Numeric or character. Vector of column widths. If numeric,
+values are assumed to be numbers of pixels. Otherwise, any CSS-supported
+units can be used. \code{NA} by default, meaning widths are calculated 
+automatically.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit headings. To change this
 default value globally, see \code{\link{st_options}}.}
@@ -101,20 +109,20 @@ A data frame with additional class \code{summarytools} containing as
     \item{No}{Number indicating the order in which column appears in the data
      frame.}
     \item{Variable}{Name of the variable, along with its class(es).}
-    \item{Label}{Label of the variable (if applicable).} 
+    \item{Label}{Label of the variable (if applicable).}
     \item{Stats / Values}{For factors, a list of their values, limited by the
       \code{max.distinct.values} parameter. For character variables, the most
        common values (in descending frequency order), also limited by
       \code{max.distinct.values}. For numerical variables, common univariate
-      statistics (mean, std. deviation, min, med, max, IQR and CV).} 
-    \item{Freqs (\% of Valid)}{For factors and character variables, the 
-      frequencies and proportions of the values listed in the previous 
+      statistics (mean, std. deviation, min, med, max, IQR and CV).}
+    \item{Freqs (\% of Valid)}{For factors and character variables, the
+      frequencies and proportions of the values listed in the previous
       column. For numerical vectors, number of distinct values, or frequency
-      of distinct values if their number is not greater than 
-      \code{max.distinct.values}.} 
+      of distinct values if their number is not greater than
+      \code{max.distinct.values}.}
     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-      barplot for factors and character variables.} \item{Valid}{Number and 
-      proportion of valid values.} 
+      barplot for factors and character variables.} \item{Valid}{Number and
+      proportion of valid values.}
     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 }
 \description{

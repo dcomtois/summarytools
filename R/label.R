@@ -28,24 +28,29 @@
 label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 
   if (missing(x))
-    stop('No variable / data frame provided.')
+    stop("No variable / data frame provided.")
 
   if (is.null(x))
-    stop("x can not be NULL")
+    stop("cannot extract label from NULL")
 
   if (is.atomic(x)) {
-    lbl <- attr(x, which = 'label', exact = TRUE)
+    lbl <- attr(x, which = "label", exact = TRUE)
     if (is.null(lbl)){
       if (isTRUE(fallback)) {
         lbl <- tail(as.character(substitute(x)), 1)
       } else {
-        lbl <- NA
+        lbl <- NA_character_
       }
     }
-  } else if (is.data.frame(x)) {
+  } else {
+    if (!is.data.frame(x)) {
+      x <- as.data.frame(x)
+    }
+    
     if (isTRUE(all)) {
-      lbl <- lapply(x, attr, which = 'label', exact = TRUE)
-      lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- NA
+      lbl <- lapply(x, attr, which = "label", exact = TRUE)
+      lbl[which(vapply(X = lbl, FUN = is.null, FUN.VALUE = logical(1)))] <- 
+        NA_character_
       
       if (isTRUE(fallback)) {
         lbl[which(is.na(lbl))] <- colnames(x)[which(is.na(lbl))]
@@ -56,16 +61,17 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
         lbl <- lbl[which(!is.na(lbl))]
       }
     } else {
-      lbl <- attr(x, which = 'label', exact = TRUE)
+      lbl <- attr(x, which = "label", exact = TRUE)
       if (is.null(lbl)) {
         if (isTRUE(fallback)) {
           lbl <- tail(as.character(substitute(x)), 1)
         } else {
-          lbl <- NA
+          lbl <- NA_character_
         }
       }
     }
   }
+  
   return(lbl)
 }
 
@@ -73,19 +79,19 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 "label<-" <- function(x, value) {
 
   if (missing(x) || missing(value))
-    stop('Both x and value arguments must be provided')
+    stop("Both x and value arguments must be provided")
 
   if (is.data.frame(x)) {
     if (length(value) > 1 && length(value) < ncol(x))
       stop("Number of labels does not match number of columns in x")
 
     if (is.na(value)) {
-      attr(x, 'label') <- NULL
+      attr(x, "label") <- NULL
     } else if (length(value) == 1) {
-      attr(x, 'label') <- value
+      attr(x, "label") <- value
     } else if (length(value) == ncol(x)) {
       for (i in seq_along(value)) {
-        attr(x[[i]], 'label') <- value[i]
+        attr(x[[i]], "label") <- value[i]
       }
     } else {
       stop(paste("provide a single string to label the data frame, or a vector",
@@ -93,17 +99,17 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
     }
   } else if (is.atomic(x)) {
     if (is.na(value)) {
-      attr(x, 'label') <- NULL
+      attr(x, "label") <- NULL
     } else if (length(value) > 1) {
       stop("A variable label must be a character vector of length 1")
     } else {
-      attr(x, 'label') <- value
+      attr(x, "label") <- value
     }
   }
   return(x)
 }
 
-#' Clear Variable or Data Frame Label(s)
+#' Clear Variable and Data Frame Label(s)
 #'
 #' Returns the object with all labels removed. Both the \dQuote{label} attribute
 #' and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
@@ -117,7 +123,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 unlabel <- function(x) {
   if(is.list(x)) {
     for(i in seq_along(x)) {
-      class(x[[i]]) <- setdiff(class(x[[i]]), 'labelled')
+      class(x[[i]]) <- setdiff(class(x[[i]]), "labelled")
     }
     for(i in seq_along(x)) {
       attr(x[[i]],"label") <- NULL

@@ -55,7 +55,7 @@
 #' freq(tobacco$gender, totals = FALSE)
 #' freq(tobacco$gender, display.nas = FALSE)
 #' freq(tobacco$gender, style="rmarkdown")
-#' with(tobacco, view(by(diseased, smoker, freq), method = "pander"))
+#' with(tobacco, by(diseased, smoker, freq))
 #' 
 #' @seealso \code{\link[base]{table}}
 #'
@@ -63,18 +63,88 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-freq <- function(x, round.digits = st_options('round.digits'), 
-                 order = "names", style = st_options('style'), 
-                 plain.ascii = st_options('plain.ascii'), 
-                 justify = "default", totals = st_options('freq.totals'), 
-                 report.nas = st_options('freq.report.nas'), 
-                 missing = "", display.type = TRUE, 
-                 display.labels = st_options('display.labels'), 
-                 headings = st_options('headings'), weights = NA, 
+#' @importFrom dplyr n_distinct
+freq <- function(x, 
+                 round.digits    = st_options("round.digits"), 
+                 order           = "default", 
+                 style           = st_options("style"), 
+                 plain.ascii     = st_options("plain.ascii"), 
+                 justify         = "default", 
+                 totals          = st_options("freq.totals"), 
+                 report.nas      = st_options("freq.report.nas"), 
+                 missing         = "", 
+                 display.type    = TRUE, 
+                 display.labels  = st_options("display.labels"), 
+                 headings        = st_options("headings"), 
+                 weights         = NA, 
                  rescale.weights = FALSE, ...) {
 
-  # Parameter validation ------------------------------------------------------
+  # When x is a dataframe, we make recursive calls to freq() with each variable
+  if (is.data.frame(x) && ncol(x) > 1) {
+    
+    # Get information about x from parsing function
+    parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
+                                 silent = TRUE, var_name = FALSE,
+                                 var_label = FALSE,
+                                 caller = "freq"),
+                      silent = TRUE)
+    
+    if (inherits(parse_info, "try-error")) {
+      parse_info <- list()
+      df_name <- deparse(substitute(x))
+    } else {
+      df_name <- parse_info$df_name
+    }
+    
+    out <- list()
+    ignored <- character()
+    for (i in seq_along(x)) {
+      if (!class(x[[i]]) %in% c("character", "factor") &&
+          n_distinct(x[[i]] > 25)) {
+        ignored %+=% names(x)[i] 
+        next 
+      }
+      
+      out[[length(out) + 1]] <- 
+        freq(x[[i]],
+             round.digits = round.digits, 
+             order = order,
+             style = style, 
+             plain.ascii = plain.ascii, 
+             justify = justify, 
+             totals = totals, 
+             report.nas = report.nas, 
+             missing = missing, 
+             display.type = display.type, 
+             display.labels = display.labels, 
+             headings = headings, 
+             weights = weights, 
+             rescale.weights = rescale.weights, 
+             ...)
+      
+      attr(out[[length(out)]], "data_info")$Data.frame <- df_name
+      attr(out[[length(out)]], "data_info")$Variable   <- colnames(x)[i]
+      if (!is.na(label(x[[i]]))) {
+        attr(out[[length(out)]], "data_info")$Variable.label <- label(x[[i]])
+      }
 
+      if (length(out) == 1) {
+        attr(out[[length(out)]], "format_info")$var.only <- FALSE
+      } else {
+        attr(out[[length(out)]], "format_info")$var.only <- TRUE
+      }
+      
+      if (length(ignored) > 0) {
+        attr(out, "ignored") <- ignored
+      }
+    }
+    class(out) <- c("list", "summarytools")
+    return(out)
+  }
+  
+  # Validate arguments ---------------------------------------------------------
+  errmsg <- character()  # problems with arguments will be stored in here
+  
   # if x is a data.frame with 1 column, extract this column as x
   if (!is.null(ncol(x)) && ncol(x)==1) {
     varname <- colnames(x)
@@ -83,77 +153,24 @@ freq <- function(x, round.digits = st_options('round.digits'),
 
   if (!is.atomic(x)) {
     x <- try(as.vector(x), silent = TRUE)
-    if (any(grepl('try-',class(x))) || !is.atomic(x)) {
-      stop("argument x must be a vector or a factor")
+    if (inherits(x, "try-error") || !is.atomic(x)) {
+      errmsg %+=% "argument x must be a vector or a factor"
     }
   }
 
-  if (!is.numeric(round.digits) || round.digits < 1) {
-    stop("'round.digits' argument must be numerical and >= 1")
-  }
+  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
 
-  order <- switch(tolower(substring(order, 1, 1)),
-                  l = "levels",
-                  f = "freq",
-                  n = "names")
-
-  if (!order %in% c("levels", "freq", "names")) {
-    stop("'order' argument must be one of 'level', 'freq' or 'names'")
-  }
-
-  if (order == "levels" && !is.factor(x)) {
-    stop("'order' argument can be set to 'factor' only for factors. Use 'names'
-         or 'freq', or convert object to factor.")
-  }
-
-  if (!style %in% c("simple", "grid", "rmarkdown")) {
-    stop("'style' argument must be one of 'simple', 'grid' or 'rmarkdown'")
-  }
-
-  if (!plain.ascii %in% c(TRUE, FALSE)) {
-    stop("'plain.ascii' argument must either TRUE or FALSE")
-  }
-
-  if (!justify %in% c("left", "center", "centre", "right", "default")) {
-    stop("'justify' argument must be one of 'default', 'left', 'center', ",
-         "or 'right'")
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
   }
   
-  if (!totals %in% c(TRUE, FALSE)) {
-    stop("'totals' argument must either be TRUE or FALSE")
-  }
+  # End of arguments validation ------------------------------------------------
   
-  if (!report.nas %in% c(TRUE, FALSE)) {
-    stop("'report.nas' argument must either be TRUE or FALSE")
-  }
-  
-  if (!headings %in% c(TRUE, FALSE)) {
-    stop("'headings' argument must either be TRUE or FALSE")
-  }
-  
-  # When style = 'rmarkdown', make plain.ascii FALSE unless specified explicitly
+  # When style = "rmarkdown", make plain.ascii FALSE unless specified explicitly
   if (style %in% c("grid", "rmarkdown") && 
-      !"plain.ascii" %in% (names(match.call()))) {
+      !("plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
-
-  if (!display.labels %in% c(TRUE, FALSE)) {
-    stop("'display.labels' must be either TRUE or FALSE.")
-  }
-  
-  if ("file" %in% names(match.call())) {
-    message(paste0("'file' argument is deprecated; use for instance ",
-                   "print(x, file='a.txt') or view(x, file='a.html') instead"))
-  }
-
-  if ("omit.headings" %in% names(match.call())) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-                   "setting headings = ", 
-                   !isTRUE(eval(match.call()[['omit.headings']]))))
-    headings <- !isTRUE(eval(match.call()[['omit.headings']]))
-  }
-  
-  # End of arguments validation
   
   # Replace NaN's by NA's (This simplifies matters a lot)
   if (NaN %in% x)  {
@@ -162,24 +179,39 @@ freq <- function(x, round.digits = st_options('round.digits'),
   }
   
   # Get information about x from parsing function
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               silent = exists('varname')),
-                    silent = TRUE)
-  if (any(grepl('try-', class(parse_info)))) {
+  parse_info <- try(
+    parse_args(sys.calls(), sys.frames(), match.call(),
+               silent = exists("varname", inherits = FALSE),
+               caller = "freq"),
+    silent = TRUE)
+  
+  if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
   
-  if (!"var_names" %in% names(parse_info) && exists("varname")) {
-    parse_info$var_names <- varname
+  if (!("var_name" %in% names(parse_info)) && exists("varname")) {
+    parse_info$var_name <- varname
   }
   
-  # create a basic frequency table, always including the NA row
+  if (!("var_label" %in% names(parse_info)) && !is.na(label(x))) {
+    parse_info$var_label <- label(x)
+  }
+  
+  # No weights are used --------------------------------------------------------
+  # create a basic frequency table, always including NA
   if (identical(NA, weights)) {
     freq_table <- table(x, useNA = "always")
     
     # Order by frequency if needed
     if (order == "freq") {
       freq_table <- sort(freq_table, decreasing = TRUE)
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
+    
+    # order by names if needed
+    if (is.factor(x) && order == "names") {
+      freq_table <- freq_table[order(names(freq_table))]
       na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
@@ -191,7 +223,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
     
-    # Add '<NA>' item to the proportions; this assures
+    # Add "<NA>" item to the proportions; this assures
     # proper length when cbind'ing later on
     P_valid["<NA>"] <- NA
     
@@ -199,7 +231,7 @@ freq <- function(x, round.digits = st_options('round.digits'),
     P_tot <- prop.table(freq_table) * 100
   }
   
-  # Weights are used ----------------------------------------------------------
+  # Weights are used -----------------------------------------------------------
   else {
     
     # Check that weights vector is of the right length
@@ -208,7 +240,6 @@ freq <- function(x, round.digits = st_options('round.digits'),
     }
     
     weights_string <- deparse(substitute(weights))
-    weights_label <- try(label(weights), silent = TRUE)
     
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and were ",
@@ -223,8 +254,18 @@ freq <- function(x, round.digits = st_options('round.digits'),
     freq_table <- xtabs(formula = weights ~ x)
     
     # Order by frequency if needed
-    if (order == "freq")
-      freq_table <- freq_table[order(freq_table, decreasing = TRUE)]
+    if (order == "freq") {
+      freq_table <- sort(freq_table, decreasing = TRUE)
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
+    
+    # order by names if needed
+    if (is.factor(x) && order == "names") {
+      freq_table <- freq_table[sort(names(freq_table))]
+      na_pos <- which(is.na(names(freq_table)))
+      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
     
     P_valid <- prop.table(freq_table) * 100
     P_valid["<NA>"] <- NA
@@ -242,9 +283,9 @@ freq <- function(x, round.digits = st_options('round.digits'),
   
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c("Freq", "% Valid", "% Valid Cum.", "% Total", 
-                        "% Total Cum.")
-  rownames(output) <- c(names(freq_table), "Total")
+  colnames(output) <- c(trs("freq"), trs("pct.valid"), trs("pct.valid.cum"), 
+                        trs("pct.total"), trs("pct.total.cum"))
+  rownames(output) <- c(names(freq_table), trs("total"))
   
   # Update the output class and attributes ------------------------------------
   
@@ -254,45 +295,63 @@ freq <- function(x, round.digits = st_options('round.digits'),
   attr(output, "fn_call")    <- match.call()
   attr(output, "date")       <- Sys.Date()
   
+  # Determine data "type", in a non-strict way
+  if (all(c("ordered", "factor") %in% class(x))) {
+    Data.type <- trs("factor.ordered")
+  } else if ("factor" %in% class(x)) {
+    Data.type <- trs("factor")
+  } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { # TODO: see what other classes correspond to datetime
+    Data.type <- trs("datetime")
+  } else if ("Date" %in% class(x)) {
+    Data.type <- trs("date")
+  } else if ("logical" %in% class(x)) {
+    Data.type <- trs("logical")
+  } else if ("character" %in% class(x)) {
+    Data.type <- trs("character")
+  } else if ("numeric" %in% class(x)) {
+    Data.type <- trs("numeric")
+  } else {
+    Data.type <- NA
+  }
+  
   data_info <-
     list(
-      Dataframe      = ifelse("df_name"   %in% names(parse_info), 
-                              parse_info$df_name  , NA),
-      Dataframe.label = ifelse("df_label"  %in% names(parse_info), 
-                               parse_info$df_label , NA),
-      Variable       = ifelse("var_names" %in% names(parse_info), 
-                              parse_info$var_names, NA),
-      Variable.label = label(x),
-      Data.type      = ifelse(is.factor(x) && is.ordered(x), "Factor (ordered)",
-                              ifelse(is.factor(x), "Factor (unordered)",
-                                     ifelse(is.character(x), "Character",
-                                            ifelse(is.numeric(x), "Numeric", 
-                                                   class(x))))),
-      Weights       = ifelse(identical(weights, NA), NA,
-                             sub(pattern = paste0(parse_info$df_name, "$"), 
-                                 replacement = "",
-                                 x = weights_string, fixed = TRUE)),
-      Group    = ifelse("by_group" %in% names(parse_info),
-                        parse_info$by_group, NA),
-      by.first = ifelse("by_group" %in% names(parse_info), 
-                        parse_info$by_first, NA),
-      by.last  = ifelse("by_group" %in% names(parse_info), 
-                        parse_info$by_last , NA))
+      Data.frame       = ifelse("df_name" %in% names(parse_info), 
+                                parse_info$df_name, NA),
+      Data.frame.label = ifelse("df_label" %in% names(parse_info), 
+                                parse_info$df_label, NA),
+      Variable         = ifelse("var_name" %in% names(parse_info), 
+                                parse_info$var_name, NA),
+      Variable.label   = ifelse("var_label" %in% names(parse_info), 
+                                parse_info$var_label, NA),
+      Data.type        = Data.type,
+      Weights          = ifelse(identical(weights, NA), NA,
+                                sub(pattern = paste0(parse_info$df_name, "$"), 
+                                    replacement = "",
+                                    x = weights_string, fixed = TRUE)),
+      Group            = ifelse("by_group" %in% names(parse_info),
+                                parse_info$by_group, NA),
+      by_first         = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_first, NA),
+      by_last          = ifelse("by_group" %in% names(parse_info), 
+                                parse_info$by_last , NA))
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
 
-  attr(output, "formatting") <- list(style          = style,
-                                     round.digits   = round.digits,
-                                     plain.ascii    = plain.ascii,
-                                     justify        = justify,
-                                     totals         = totals,
-                                     report.nas     = report.nas,
-                                     missing        = missing,
-                                     display.type   = display.type,
-                                     display.labels = display.labels,
-                                     headings       = headings)
+  attr(output, "format_info") <- list(style          = style,
+                                      round.digits   = round.digits,
+                                      plain.ascii    = plain.ascii,
+                                      justify        = justify,
+                                      totals         = totals,
+                                      report.nas     = report.nas,
+                                      missing        = missing,
+                                      display.type   = display.type,
+                                      display.labels = display.labels,
+                                      headings       = headings)
 
   attr(output, "user_fmt") <- list(... = ...)
 
+  attr(output, "lang") <- st_options("lang")
+  
   return(output)
 }

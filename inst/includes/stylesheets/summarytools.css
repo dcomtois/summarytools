@@ -1,3 +1,8 @@
+img {
+  background-color:transparent;
+  border:0;
+}
+
 table.st-table > thead > tr {
    background-color: #eeeeee;
 }
@@ -121,6 +126,7 @@ table.st-table td span {
 .st-cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
   border:none;
   background-color: #ffffff;
+  text-align: center;
 }
 
 .st-freq-table > thead > tr > th,
@@ -145,6 +151,10 @@ table.st-table td span {
   padding-right: 20px;
 }
 
+
+.st-protect-top-border {
+  border-top:1px solid #cccccc !important;
+}
 
 .st-cross-table td {
   text-align: center;

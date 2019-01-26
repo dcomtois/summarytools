@@ -1,0 +1,76 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+<!-- Ceci fonctionne: -->
+<!-- output:  -->
+<!--   html_document: -->
+<!--     css: C:/R/win-library/3.5/summarytools/includes/stylesheets/summarytools.css -->
+
+<!-- Ceci fonctionne: -->
+<!--    css: !expr system.file("includes/stylesheets/summarytools.css", package="summarytools") -->
+
+<!-- # ceci fonctionne (dans un chunk) -->
+<!-- #cat(as.character(htmltools::includeCSS(system.file("includes/stylesheets/summarytools.css", -->
+<!-- #package="summarytools")))) -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(results = 'asis')
+library(summarytools)
+data(tobacco, tabagisme)
+st_options(style                  = "rmarkdown", # Note that this doesn't apply to dfSummary()
+           plain.ascii            = FALSE,       # Absolutely needed
+           dfSummary.varnumbers   = FALSE,       # Make dfs tables a bit narrower
+           dfSummary.valid.col    = FALSE,       # "   "   "   "   "   "   "   "
+           dfSummary.graph.magnif = .82)         # Your mileage may vary
+```
+
+```{r, results='asis', echo=FALSE}
+st_css()
+```
+
+## pander method, subtitle.emphasis = TRUE (default)
+```{r}
+freq(tobacco$age.gr)
+freq(tobacco)
+descr(tobacco$age)
+descr(tobacco)
+ctable(tobacco$smoker, tobacco$diseased, style = "grid")
+dfSummary(tobacco, style = "grid")
+```
+
+# subtitle.emphasis = FALSE
+## render method
+
+```{r}
+st_options(subtitle.emphasis = FALSE)
+print(freq(tobacco$age.gr), method = "render")
+print(freq(tobacco), method = "render")
+print(ctable(tobacco$gender, tobacco$smoker), method = "render")
+print(descr(tobacco$age), method = "render")
+print(descr(tobacco), method = "render")
+print(dfSummary(tobacco), method = "render")
+```
+
+
+```{r}
+freq(tobacco$age.gr)
+freq(tobacco)
+descr(tobacco$age)
+descr(tobacco)
+ctable(tobacco$smoker, tobacco$diseased, style = "grid")
+dfSummary(tobacco, style = "grid")
+```
+
+## render method
+
+```{r}
+print(freq(tobacco$age.gr), method = "render")
+print(freq(tobacco), method = "render")
+print(ctable(tobacco$gender, tobacco$smoker), method = "render")
+print(descr(tobacco$age), method = "render")
+print(descr(tobacco), method = "render")
+print(dfSummary(tobacco), method = "render")
+```

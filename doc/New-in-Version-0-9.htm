@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="pandoc">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Dominic Comtois">
+
+<meta name="date" content="2019-01-25">
+
+<title>Changes Introduced in Summarytools 0.9.0</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+<script type="text/javascript" src="New-in-Version-0-9_files/MathJax.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+
+
+
+
+<h1 class="title toc-ignore">Changes Introduced in Summarytools 0.9.0</h1>
+<h4 class="author"><em>Dominic Comtois</em></h4>
+<h4 class="date"><em>2019-01-25</em></h4>
+
+
+
+<style type="text/css">
+ img {   background-color:transparent;   border:0; }  table.st-table > thead > tr {    background-color: #eeeeee; }  table.st-table th {   text-align: center; }  table.st-table td span {   display: block; }  .st-container {   width: 100%;   padding-right: 15px;   padding-left: 15px;   margin-right: auto;   margin-left: auto;   margin-top: 15px; }  .st-multiline {   white-space: pre; }  .st-table {     width: auto;     table-layout: auto;     margin-top: 20px;     margin-bottom: 20px;     max-width: 100%;     background-color: transparent;     border-collapse: collapse; }  .st-table > thead > tr > th, .st-table > tbody > tr > th, .st-table > tfoot > tr > th, .st-table > thead > tr > td, .st-table > tbody > tr > td, .st-table > tfoot > tr > td {   vertical-align: middle; }  .st-table-bordered {   border: 1px solid #bbbbbb; }  .st-table-bordered > thead > tr > th, .st-table-bordered > tbody > tr > th, .st-table-bordered > tfoot > tr > th, .st-table-bordered > thead > tr > td, .st-table-bordered > tbody > tr > td, .st-table-bordered > tfoot > tr > td {   border: 1px solid #cccccc; }  .st-table-bordered > thead > tr > th, .st-table-bordered > thead > tr > td, .st-table thead > tr > th {   border-bottom: none; }  .st-table td, .st-table th {   padding: 8px; }  .st-table > thead > tr {    background-color: #eeeeee; }  .st-table-bordered > thead > tr > th, .st-table-bordered > tbody > tr > th, .st-table-bordered > thead > tr > td, .st-table-bordered > tbody > tr > td {   border: 1px solid #cccccc; }   .st-table-striped > tbody > tr:nth-of-type(odd) {   background-color: #ffffff; }  .st-table-striped > tbody > tr:nth-of-type(even) {   background-color: #f8f8f8; }  .st-table-striped > tbody > tr:nth-of-type(odd) {   background-color: #ffffff; }  .st-table-striped > tbody > tr:nth-of-type(even) {   background-color: #f9f9f9; }   .st-descr-table > thead > tr > th, .st-descr-table > tbody > tr > th, .st-descr-table > tfoot > tr > th, .st-descr-table > thead > tr > td, .st-descr-table > tbody > tr > td, .st-descr-table > tfoot > tr > td {   padding-left:  24px;   padding-right: 24px;   word-wrap: break-word; }  .st-descr-table td {   text-align: right; }  .st-freq-table, .st-freq-table-nomiss, .st-cross-table {   border: medium none; }  .st-freq-table  > thead > tr:nth-child(1) > th:nth-child(1), .st-cross-table > thead > tr:nth-child(1) > th:nth-child(1), .st-cross-table > thead > tr:nth-child(1) > th:nth-child(3) {   border:none;   background-color: #ffffff;   text-align: center; }  .st-freq-table > thead > tr > th, .st-freq-table > tbody > tr > th, .st-freq-table > tfoot > tr > th, .st-freq-table > thead > tr > td, .st-freq-table > tbody > tr > td, .st-freq-table > tfoot > tr > td, .st-freq-table-nomiss > thead > tr > th, .st-freq-table-nomiss > tbody > tr > th, .st-freq-table-nomiss > tfoot > tr > th, .st-freq-table-nomiss > thead > tr > td, .st-freq-table-nomiss > tbody > tr > td, .st-freq-table-nomiss > tfoot > tr > td, .st-cross-table > thead > tr > th, .st-cross-table > tbody > tr > th, .st-cross-table > tfoot > tr > th, .st-cross-table > thead > tr > td, .st-cross-table > tbody > tr > td, .st-cross-table > tfoot > tr > td {   padding-left:  20px;   padding-right: 20px; }   .st-protect-top-border {   border-top:1px solid #cccccc !important; }  .st-cross-table td {   text-align: center; }  .st-small {   font-size: 13px; }  .st-small td, .st-small th {   padding: 8px; }  .st-small > thead > tr > th, .st-small > tbody > tr > th, .st-small > tfoot > tr > th, .st-small > thead > tr > td, .st-small > tbody > tr > td, .st-small > tfoot > tr > td {   padding-left:  12px;   padding-right: 12px; } </style>
+<p>Version 0.9.0 is out, and since <strong>summarytools</strong> version 0.8.9 was released only on GitHub, I thought necessary to create this vignette, since <em>a lot</em> has been going on, both under the hood and in terms of functionality.</p>
+<div id="backward-compatibility" class="section level4">
+<h4>Backward Compatibility</h4>
+<p>No changes break backward compatibility, but at least one legacy 
+feature will be abandoned in some further release. Namely, the boolean 
+parameter <code>omit.headings</code>, which has been replaced by the more straightforward <code>headings</code>. For now, a message is shown whenever the “old” parameter name is used, encouraging users to switch to the new name.</p>
+<p>Another change concerns global options: <code>st_options()</code> now
+ has as many parameters as there are global options, so that it is now 
+possible to set all global options at once. It also has the added 
+benefit that each option has its own small description available when 
+cycling through the function’s arguments in RStudio. The legacy way of 
+setting options is still supported and will probably remain so, as the 
+cost for maintaining it is all but negligeable.</p>
+</div>
+<div id="new-features" class="section level2">
+<h2>New Features</h2>
+<div id="translations" class="section level3">
+<h3>Translations</h3>
+<p>It is now possible to switch the language used in the outputs. So 
+far, not too many languages are available (French, Spanish and Russian),
+ but with the community’s participation, I hope we can gather a good 
+number of them in a reasonable time frame.</p>
+<div id="switching-languages" class="section level4">
+<h4>Switching Languages</h4>
+<p>To switch languages, simply use</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">st_options</span>(<span class="dt">lang =</span> <span class="st">"fr"</span>)</a></code></pre></div>
+<p>Any function will now produce outputs using that language:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">view</span>(<span class="kw">freq</span>(iris<span class="op">$</span>Species))</a></code></pre></div>
+<p><img style="float: center;" src="data:image/png;base64,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" width="260px"></p>
+<p>The language used for producing the object is stored within it as an 
+attribute. This is to avoid problems when switching languages between 
+the moment the object is stored, and the moment at which it is printed.</p>
+</div>
+</div>
+<div id="non-utf8-locale" class="section level3">
+<h3>Non-UTF8 Locale</h3>
+<p>On most Windows systems, it will be necessary to change the <code>LC_CTYPE</code>
+ element of the locale settings if the character set is not included in 
+the current locale. For instance, in order to get good results – or 
+rather, any results at all – with the Russian language in a “latin1” 
+environment, we’ll need to do this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">Sys.setlocale</span>(<span class="st">"LC_CTYPE"</span>, <span class="st">"russian"</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">st_options</span>(<span class="dt">lang =</span> <span class="st">'ru'</span>)</a></code></pre></div>
+<p>Then, to go back to default setting:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">Sys.setlocale</span>(<span class="st">"LC_CTYPE"</span>, <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">st_options</span>(<span class="dt">lang =</span> <span class="st">"en"</span>)</a></code></pre></div>
+<div id="defining-and-using-custom-translations" class="section level4">
+<h4>Defining and Using Custom Translations</h4>
+<p>With the new function <code>useTranslations()</code>, we can use our own sets of translations. For this, download the template <em>csv</em> file from <a href="https://github.com/dcomtois/summarytools/tree/dev-current/translations">this page</a>. After you’re done translating the +/- 70 items, simply call the <code>useTranslations()</code> function, giving it as sole argument the path to the <em>csv</em>
+ file you’ve just created. Note that such custom translations will not 
+persist across R sessions. This means that we should always have handy 
+this <em>csv</em> file if we’re to print objects created with it.</p>
+</div>
+</div>
+</div>
+<div id="better-handling-of-list-objects" class="section level2">
+<h2>Better Handling of List Objects</h2>
+<p>Before version 0.9.0, printing objects created with the use of <code>by()</code> or <code>lapply()</code> was less than ideal, especially for text / markdown output method. We had to use <code>view()</code> (not <code>print()</code>, which would not dispatch to <code>print.summarytools()</code>), and since <code>view()</code>’s default method is “viewer”, we needed to change this method to “pander” manually, like so:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">bystats &lt;-<span class="st"> </span><span class="kw">by</span>(<span class="dt">data =</span> tobacco<span class="op">$</span>age, <span class="dt">INDICES =</span> tobacco<span class="op">$</span>gender, descr)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">view</span>(bystat, <span class="dt">method =</span> <span class="st">"pander"</span>)</a></code></pre></div>
+<p>This is now thing of the past. We can simply do:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">bystats &lt;-<span class="st"> </span><span class="kw">by</span>(<span class="dt">data =</span> tobacco<span class="op">$</span>age, <span class="dt">INDICES =</span> tobacco<span class="op">$</span>gender, descr)</a>
+<a class="sourceLine" id="cb6-2" title="2">bystat</a></code></pre></div>
+<p>Also, <code>freq()</code> now accepts data frames as its main argument (x); no more <code>lapply()</code>
+ needed. Variables which are not characters or factors will be excluded 
+if they count more than 25 distinct values; this is to avoid creating 
+huge frequency tables. This number (25) is arbitrary and if you think it
+ should be a parameter, let me know by opening an issue.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">tobacco_subset &lt;-<span class="st"> </span>tobacco[,<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>)]</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">freq</span>(tobacco_subset)</a></code></pre></div>
+<p>In the meantime, you can use <code>lapply()</code> to bypass this 
+limitation; a simple call “Automatic printing” does not give optimal 
+results however, as opposed to objects created with <code>by()</code>. But a simple call to <code>print()</code> makes things look as they should:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">liststats &lt;-<span class="st"> </span><span class="kw">lapply</span>(tobacco_subset, freq)</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">print</span>(liststats)</a></code></pre></div>
+<div id="controlling-column-widths-in-dfsummary" class="section level4">
+<h4>Controlling Column Widths in <code>dfSummary()</code></h4>
+<p>When generating <code>dfSummary()</code> tables in <em>Rmarkdown</em> documents, column widths can sometimes wreck the layout of (graphs, in particular). The new parameter <code>col.widths</code>
+ allows us to specify the width of all columns. The vector we must 
+provide as the parameter value can be numerical, in which case the 
+values are taken as number of pixels. It can also be a character, 
+specifying one of the units supported in css. For example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">library</span>(summarytools)</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">view</span>(<span class="kw">dfSummary</span>(tobacco, <span class="dt">varnumbers =</span> <span class="ot">FALSE</span>, <span class="dt">labels.col =</span> <span class="ot">FALSE</span>, <span class="dt">valid.col =</span> <span class="ot">FALSE</span>), </a>
+<a class="sourceLine" id="cb9-3" title="3">     <span class="dt">col.widths =</span> <span class="kw">c</span>(<span class="st">"10em"</span>, <span class="st">"25em"</span>, <span class="st">"20em"</span>, <span class="st">"25em"</span>, <span class="st">"8em"</span>))</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">view</span>(<span class="kw">dfSummary</span>(tobacco, <span class="dt">varnumbers =</span> <span class="ot">FALSE</span>, <span class="dt">labels.col =</span> <span class="ot">FALSE</span>, <span class="dt">valid.col =</span> <span class="ot">FALSE</span>), </a>
+<a class="sourceLine" id="cb9-5" title="5">     <span class="dt">col.widths =</span> <span class="kw">c</span>(<span class="dv">80</span>, <span class="dv">200</span>, <span class="dv">180</span>, <span class="dv">120</span>, <span class="dv">20</span>))</a></code></pre></div>
+<p>See <a href="https://www.w3schools.com/csSref/css_units.asp">this page</a>
+ for a list of accepted units). Note that including all columns (default
+ behavior) can be problematic, especially if some of your variables have
+ labels. You’ll need to remove one or two columns for this customization
+ to take effect, otherwise it will likely be ignored.</p>
+<p>It can help to organize your code in such a way that you know which elements of the vector applies to which column. For example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">view</span>(<span class="kw">dfSummary</span>(tobacco, <span class="dt">labels.col =</span> <span class="ot">FALSE</span>, <span class="dt">valid.col =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb10-2" title="2">               <span class="dt">col.widths =</span> <span class="kw">c</span>(<span class="dv">40</span>,  <span class="co"># varnum</span></a>
+<a class="sourceLine" id="cb10-3" title="3">                              <span class="dv">80</span>,  <span class="co"># varnames</span></a>
+<a class="sourceLine" id="cb10-4" title="4">                              <span class="dv">185</span>, <span class="co"># stats/Values </span></a>
+<a class="sourceLine" id="cb10-5" title="5">                              <span class="dv">120</span>, <span class="co"># freqs</span></a>
+<a class="sourceLine" id="cb10-6" title="6">                              <span class="dv">120</span>, <span class="co"># graph</span></a>
+<a class="sourceLine" id="cb10-7" title="7">                              <span class="dv">16</span>   <span class="co"># missing </span></a>
+<a class="sourceLine" id="cb10-8" title="8">                              )))</a></code></pre></div>
+</div>
+<div id="other-changes-introduced-since-last-cran-release-0.8.8" class="section level4">
+<h4>Other changes introduced since last CRAN release (0.8.8)</h4>
+<ul>
+<li>Easier management of global settings (customizable defaults) with <code>st_options()</code>;
+ each option has its own parameter, so you can set as many as you need 
+in just one function call; the legacy way of setting options is still 
+supported</li>
+<li><code>dfSummary()</code> went through some changes:
+<ul>
+<li>number of columns in data frame is now shown in the heading, as well as number of duplicate rows (credits to <a href="https://github.com/paulfeitsma">Paul Feitsma</a> for both ideas)</li>
+<li>UPC and EAN codes are now detected as well as sequences of integers (thanks to Paul here too)</li>
+<li>bar plots more accurately reflect counts as they are no more 
+“stretched” to the width of the table “cells”; this allows comparing 
+counts across variables</li>
+<li>Binary and unary columns no more show irrelevant statistics (IQR / CV)</li>
+</ul></li>
+<li><code>descr()</code> allows two new values for the <code>stats</code> parameter: <em>“fivenum”</em> and <em>“common”</em>, the latter being a shortcut for <code>c("mean", "sd", "min", "med",</code> <code>"max", "n.valid", "pct.valid")</code></li>
+<li>Several more options can be overridden when printing / viewing summarytools objects; refer to <code>print.summarytools()</code>’s documentation for details</li>
+</ul>
+<p><strong>Other notable changes:</strong></p>
+<ul>
+<li>The <code>omit.headings</code> parameter has been replaced by the more straightforward <code>headings</code>. <code>omit.heandings</code> is still supported in this version but will be deprecated in some future version</li>
+<li>Because it was subject to errors, the <em>Rows Subset</em> heading element has been removed. In case of a massive public outcry, I can bring it back ;)</li>
+<li>Under the hood, much has been going on; the lengthier functions have
+ been split into more manageable parts, facilitating maintenance and 
+improving readability</li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+
+</body></html>
