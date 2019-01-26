@@ -68,19 +68,7 @@ be found [at the end of the present page](#latest-changes).
 
 # How to install
 
-### From CRAN - version 0.8.8
-
-This version is rather far behind 0.9.0, but if you don’t feel like
-trying new features, just install it with `install.packages()`:
-
-``` r
-install.packages("summarytools")
-
-The official documentation can be found
-[here](http://cran.r-project.org/web/packages/summarytools/).
-```
-
-### From GitHub - version 0.9.0
+### From GitHub - version 0.9.0 (Recommended)
 
 There have been quite a few changes since 0.8.8. I recommend you give a
 try to this newer version. I’ve done some rather extensive testing, and
@@ -94,22 +82,17 @@ library(devtools)
 install_github("dcomtois/summarytools")
 ```
 
-### From GitHub - Version 0.8.9
+### From CRAN - version 0.8.8
 
-For a middle-ground solution, you can install this inbetween version,
-although I don’t see much benefit, to be honest. Version 0.9.0 has been
-much more thoroughly tested and has many advantages over 0.8.9. But
-still, if you wish to try it, here’s how:
+This version is rather far behind 0.9.0, but if you don’t feel like
+trying new features, just install it with `install.packages()`:
 
 ``` r
-install.packages("devtools")
-library(devtools)
-install_github("dcomtois/summarytools", ref = "0-8-9")
-```
+install.packages("summarytools")
 
-Note that I do not intend to push this version to CRAN, mainly because I
-lack the time to create extensive documentation for both 0.8.9 and
-0.9.0.
+The official documentation can be found
+[here](http://cran.r-project.org/web/packages/summarytools/).
+```
 
 # The Four Core Functions
 
@@ -664,14 +647,14 @@ elements:
         es, ru), but as users contribute their own translations, the
         list will hopefully grow much larger
       - To use a different language than English, call the
-        `st_options()` function, like so: \`st\_options(lang = “fr”)
+        `st_options()` function, like so: `st_options(lang = "fr")`
       - An additional function, `useTranslations()` allows using a
-        custom translations *csv* file; a template is available
+        custom translations file; a template is available
         [here](https://github.com/dcomtois/summarytools/blob/master/translations/language_template.csv)
   - Improved printing of list objects
       - Objects of class “by” are now automatically printed in the
-        console with optimal results; no more need for \`view(x, method
-        = “pander”)
+        console with optimal results; no more need for `view(x, method =
+        "pander")`
       - Regular lists containing **summarytools** objects can also be
         printed with optimal results simply by calling `print(x)` (as
         opposed to “by” objects, their automatic printing will **not**
@@ -681,9 +664,12 @@ elements:
   - Easier management of global settings with `st_options()`
       - The `st_options()` function now has as many parameters as there
         are options to set, making it possible to set all options (if
-        ever that is necessary) with only one function call
+        ever that were necessary) with only one function call
       - The legacy way of setting options is still supported
+      - Several global options were added, having in mind *Rmarkdown*
+        ease of use.
   - Changes to `dfSummary()`
+      - Now fully compatible with *Rmarkdown*
       - Number of columns in now included in the heading section
       - Number of duplicated rows is also shown in the heading section
       - Bar plots now more accurately reflect counts, as they are not
@@ -693,9 +679,10 @@ elements:
         sequences, UPC/EAN codes) are treated differently; more relevant
         information is displayed, while irrelevant information is not
       - For *html* outputs, a new parameter `col.widths` may be used to
-        set the width of the output table’s columns, in pixels; this
-        addresses an issue with some graphs not shown at the desired
-        magnification level
+        set the width of the output table’s columns; this addresses an
+        issue with some graphs not shown at the desired magnification
+        level, although much effort has been put into improving this as
+        well
   - Changes to `descr()`
       - For the `stats` argument, Values “fivenum” and “common” are now
         allowed, the latter representing the collection of *mean*, *sd*,
@@ -709,6 +696,7 @@ elements:
       - Improved outputs when using `by()`
   - Changes to `ctable()`
       - Now fully supports `by()`
+      - Alignment of numbers in *html* tables much improved
 
 **Other notable changes**
 
