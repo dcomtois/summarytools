@@ -9,7 +9,9 @@
 The following vignettes complement this page:
 
 [Recommendations for Using summarytools With
-Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
+Rmarkdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Recommendations-rmarkdown.htm)  
+[Changes Introduced in
+Summarytools 0.9.0](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/New-in-Version-0-9.htm)
 
 # What is summarytools?
 
@@ -62,7 +64,7 @@ Versions 0.8.9 (which was only released on GitHub) and 0.9.0 brought
 *many* changes and improvements to **summarytools**. This
 [document](http://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/New-in-Version-0-9.htm)
 gives a detailed description of all the changes, but a summary can also
-be found [at the end of this document](#changes).
+be found [at the end of the present page](#latest-changes).
 
 # How to install
 
@@ -630,7 +632,7 @@ provided css class `st-small`.
 To include **summarytools** functions into **shiny** apps, it is
 recommended that you:
 
-  - set `bootstrap.css = FALSE` to avoid interacting with the app’s
+  - set `bootstrap.css = FASE` to avoid interacting with the app’s
     layout  
   - omit headings by setting `headings = FALSE` in the call to `print()`
     or `view()`
@@ -649,7 +651,7 @@ print(dfSummary(somedata, graph.magnif = 0.8),
       bootstrap.css = FALSE)
 ```
 
-## Latest Changes and Improvements
+## <a id="latest-changes"></a>Latest Changes and Improvements
 
 Versions 0.9.0 and 0.8.9 (which was only released on GitHub) brought
 many improvements to **summarytools**. This
