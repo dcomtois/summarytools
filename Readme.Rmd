@@ -93,6 +93,7 @@ To benefit from all the latest fixes, install it from GitHub:
 ```{r, eval=FALSE}
 install.packages("devtools")
 library(devtools)
+install_github('rapporter/pander')  # You need the github version for optimal results!
 install_github('dcomtois/summarytools')
 ```
 

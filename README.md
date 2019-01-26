@@ -38,7 +38,7 @@ with larger sets of tools such as RStudio’s for
 [htmltools](https://CRAN.R-project.org/package=htmltools)**, the outputs
 produced by summarytools can be:
 
-  - Displayed in plain text in the *R* console (default behaviour)
+  - Displayed in plain text in the *R* console (default behavior)
   - Used in *Rmarkdown* documents and *knitted* along with other text
     and *R* output
   - Written to *html* files that fire up in
@@ -62,7 +62,7 @@ Version 0.8.9 brings several improvements to *summarytools*, notably:
         duplicated rows (credits to [Paul
         Feitsma](https://github.com/paulfeitsma) for the good idea)
       - UPC and EAN codes are now detected as well as sequences of
-        integers (credits to Paul F. here too)
+        integers (thanks to Paul one more)
       - bar plots more accurately reflect counts as they are no more
         “stretched” to the width of the table “cells”; this allows
         comparing counts across variables
@@ -94,6 +94,7 @@ To benefit from all the latest fixes, install it from GitHub:
 ``` r
 install.packages("devtools")
 library(devtools)
+install_github('rapporter/pander')  # You need the github version for optimal results!
 install_github('dcomtois/summarytools')
 ```
 
@@ -132,9 +133,10 @@ freq(iris$Species, style = "rmarkdown")
 
 ### Frequencies
 
-**Variable:** iris$Species  
-**Type:** Factor
-(unordered)
+#### iris$Species
+
+**Type:**
+Factor
 
 |                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | -------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -202,7 +204,7 @@ with(tobacco,
 
 </th>
 
-<th colspan="2">
+<th colspan="2" align="center" class="st-protect-top-border">
 
 diseased
 
@@ -218,13 +220,13 @@ diseased
 
 </td>
 
-<th align="center">
+<th colspan="1" align="center">
 
 Yes
 
 </th>
 
-<th align="center">
+<th colspan="1" align="center">
 
 No
 
@@ -238,9 +240,9 @@ No
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>Yes</strong>
+<strong align="center">Yes</strong>
 
 </td>
 
@@ -260,9 +262,9 @@ No
 
 <tr>
 
-<td align="center">
+<td>
 
-<strong>No</strong>
+<strong align="center">No</strong>
 
 </td>
 
@@ -303,27 +305,28 @@ descr(iris, style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**Data Frame:** iris  
+#### iris
+
 **N:**
 150
 
-|                 | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width |
+|                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
-|        **Mean** |         5.84 |        3.06 |         3.76 |        1.20 |
-|     **Std.Dev** |         0.83 |        0.44 |         1.77 |        0.76 |
-|         **Min** |         4.30 |        2.00 |         1.00 |        0.10 |
-|          **Q1** |         5.10 |        2.80 |         1.60 |        0.30 |
-|      **Median** |         5.80 |        3.00 |         4.35 |        1.30 |
-|          **Q3** |         6.40 |        3.30 |         5.10 |        1.80 |
-|         **Max** |         7.90 |        4.40 |         6.90 |        2.50 |
-|         **MAD** |         1.04 |        0.44 |         1.85 |        1.04 |
-|         **IQR** |         1.30 |        0.50 |         3.50 |        1.50 |
-|          **CV** |         0.14 |        0.14 |         0.47 |        0.64 |
-|    **Skewness** |         0.31 |        0.31 |       \-0.27 |      \-0.10 |
+|        **Mean** |         3.76 |        1.20 |         5.84 |        3.06 |
+|    **Std.Dev.** |         1.77 |        0.76 |         0.83 |        0.44 |
+|         **Min** |         1.00 |        0.10 |         4.30 |        2.00 |
+|          **Q1** |         1.60 |        0.30 |         5.10 |        2.80 |
+|      **Median** |         4.35 |        1.30 |         5.80 |        3.00 |
+|          **Q3** |         5.10 |        1.80 |         6.40 |        3.30 |
+|         **Max** |         6.90 |        2.50 |         7.90 |        4.40 |
+|         **MAD** |         1.85 |        1.04 |         1.04 |        0.44 |
+|         **IQR** |         3.50 |        1.50 |         1.30 |        0.50 |
+|          **CV** |         0.47 |        0.64 |         0.14 |        0.14 |
+|    **Skewness** |       \-0.27 |      \-0.10 |         0.31 |        0.31 |
 | **SE.Skewness** |         0.20 |        0.20 |         0.20 |        0.20 |
-|    **Kurtosis** |       \-0.61 |        0.14 |       \-1.42 |      \-1.36 |
+|    **Kurtosis** |       \-1.42 |      \-1.36 |       \-0.61 |        0.14 |
 |     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
-|   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
+|     **% Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
 
 ### Transposing and selecting only the stats you need
 
@@ -343,12 +346,12 @@ descr(iris, stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE,
 
     ## Non-numerical variable(s) ignored: Species
 
-|                  | Mean | Std.Dev |  Min | Median |  Max |
-| ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |
-|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |
-| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |
-|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |
+|                  | Mean | Std.Dev. |  Min | Median |  Max |
+| ---------------: | ---: | -------: | ---: | -----: | ---: |
+| **Petal.Length** | 3.76 |     1.77 | 1.00 |   4.35 | 6.90 |
+|  **Petal.Width** | 1.20 |     0.76 | 0.10 |   1.30 | 2.50 |
+| **Sepal.Length** | 5.84 |     0.83 | 4.30 |   5.80 | 7.90 |
+|  **Sepal.Width** | 3.06 |     0.44 | 2.00 |   3.00 | 4.40 |
 
 ## 4 - dfSummary() : Data Frame Summaries
 
@@ -383,211 +386,70 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid")
 
 ### Data Frame Summary
 
-**tobacco**  
-**Dimensions:** 1000 x 9  
-**Duplicates:** 2
+#### tobacco
 
-<table>
-<colgroup>
-<col style="width: 4%" />
-<col style="width: 14%" />
-<col style="width: 25%" />
-<col style="width: 20%" />
-<col style="width: 16%" />
-<col style="width: 9%" />
-<col style="width: 9%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>No</th>
-<th>Variable</th>
-<th>Stats / Values</th>
-<th>Freqs (% of Valid)</th>
-<th>Text Graph</th>
-<th>Valid</th>
-<th>Missing</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>gender<br />
-[factor]</td>
-<td>1. F<br />
-2. M</td>
-<td>489 (50.0%)<br />
-489 (50.0%)</td>
-<td>IIIIIIIIII<br />
-IIIIIIIIII</td>
-<td>978<br />
-(97.8%)</td>
-<td>22<br />
-(2.2%)</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>age<br />
-[numeric]</td>
-<td>mean (sd) : 49.6 (18.29)<br />
-min &lt; med &lt; max :<br />
-18 &lt; 50 &lt; 80<br />
-IQR (CV) : 32 (0.37)</td>
-<td>63 distinct values</td>
-<td></td>
-<td>975<br />
-(97.5%)</td>
-<td>25<br />
-(2.5%)</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>age.gr<br />
-[factor]</td>
-<td>1. 18-34<br />
-2. 35-50<br />
-3. 51-70<br />
-4. 71 +</td>
-<td>258 (26.5%)<br />
-241 (24.7%)<br />
-317 (32.5%)<br />
-159 (16.3%)</td>
-<td>IIIII<br />
-IIII<br />
-IIIIII<br />
-III</td>
-<td>975<br />
-(97.5%)</td>
-<td>25<br />
-(2.5%)</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>BMI<br />
-[numeric]</td>
-<td>mean (sd) : 25.73 (4.49)<br />
-min &lt; med &lt; max :<br />
-8.83 &lt; 25.62 &lt; 39.44<br />
-IQR (CV) : 5.72 (0.17)</td>
-<td>974 distinct values</td>
-<td></td>
-<td>974<br />
-(97.4%)</td>
-<td>26<br />
-(2.6%)</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>smoker<br />
-[factor]</td>
-<td>1. Yes<br />
-2. No</td>
-<td>298 (29.8%)<br />
-702 (70.2%)</td>
-<td>IIIII<br />
-IIIIIIIIIIIIII</td>
-<td>1000<br />
-(100%)</td>
-<td>0<br />
-(0%)</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>cigs.per.day<br />
-[numeric]</td>
-<td>mean (sd) : 6.78 (11.88)<br />
-min &lt; med &lt; max :<br />
-0 &lt; 0 &lt; 40<br />
-IQR (CV) : 11 (1.75)</td>
-<td>37 distinct values</td>
-<td></td>
-<td>965<br />
-(96.5%)</td>
-<td>35<br />
-(3.5%)</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>diseased<br />
-[factor]</td>
-<td>1. Yes<br />
-2. No</td>
-<td>224 (22.4%)<br />
-776 (77.6%)</td>
-<td>IIII<br />
-IIIIIIIIIIIIIII</td>
-<td>1000<br />
-(100%)</td>
-<td>0<br />
-(0%)</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>disease<br />
-[character]</td>
-<td>1. Hypertension<br />
-2. Cancer<br />
-3. Cholesterol<br />
-4. Heart<br />
-5. Pulmonary<br />
-6. Musculoskeletal<br />
-7. Diabetes<br />
-8. Hearing<br />
-9. Digestive<br />
-10. Hypotension<br />
-[ 3 others ]</td>
-<td>36 (16.2%)<br />
-34 (15.3%)<br />
-21 ( 9.5%)<br />
-20 ( 9.0%)<br />
-20 ( 9.0%)<br />
-19 ( 8.6%)<br />
-14 ( 6.3%)<br />
-14 ( 6.3%)<br />
-12 ( 5.4%)<br />
-11 ( 5.0%)<br />
-21 ( 9.5%)</td>
-<td>III<br />
-III<br />
-I<br />
-I<br />
-I<br />
-I<br />
-I<br />
-I<br />
-I<br />
-<br />
-I</td>
-<td>222<br />
-(22.2%)</td>
-<td>778<br />
-(77.8%)</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>samp.wgts<br />
-[numeric]</td>
-<td>mean (sd) : 1 (0.08)<br />
-min &lt; med &lt; max :<br />
-0.86 &lt; 1.04 &lt; 1.06<br />
-IQR (CV) : 0.19 (0.08)</td>
-<td>0.86!: 267 (26.7%)<br />
-1.04!: 249 (24.9%)<br />
-1.05!: 324 (32.4%)<br />
-1.06!: 160 (16.0%)<br />
-! rounded</td>
-<td>IIIII<br />
-IIII<br />
-IIIIII<br />
-III<br />
-<br />
-</td>
-<td>1000<br />
-(100%)</td>
-<td>0<br />
-(0%)</td>
-</tr>
-</tbody>
-</table>
+**Dimensions:** 1000 x 9  
+**Duplicates:** 2  
+
+<div data-table-column-width="0.04 0.25 0.32 0.32 0.3 0.14 0.14">
+
+\+—-+—————+————————–+———————+——————————————————————————-+———+———+ | No |
+Variable | Stats / Values | Freqs (% of Valid) | Graph | Valid | Missing
+|
++====+===============+==========================+=====================+===============================================================================+=========+=========+
+| 1 | gender  | 1. F  | 489 (50.0%)  |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd0744c4b82.png)
+| 978  | 22  | | | \[factor\] | 2. M | 489 (50.0%) | | (97.8%) | (2.2%)
+| +—-+—————+————————–+———————+——————————————————————————-+———+———+ | 2 |
+age  | Mean (sd) : 49.6 (18.3) | 63 distinct values |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd03219709f.png)
+| 975  | 25  | | | \[numeric\] | min \< med \< max:  | | | (97.5%) |
+(2.5%) | | | | 18 \< 50 \< 80  | | | | | | | | IQR (CV) : 32 (0.4) | | |
+| | +—-+—————+————————–+———————+——————————————————————————-+———+———+ | 3
+| age.gr  | 1. 18-34  | 258 (26.5%)  |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd053e17323.png)
+| 975  | 25  | | | \[factor\] | 2. 35-50  | 241 (24.7%)  | | (97.5%) |
+(2.5%) | | | | 3. 51-70  | 317 (32.5%)  | | | | | | | 4. 71 + | 159
+(16.3%) | | | |
++—-+—————+————————–+———————+——————————————————————————-+———+———+
+| 4 | BMI  | Mean (sd) : 25.7 (4.5)  | 974 distinct values |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd0e1676ae.png)
+| 974  | 26  | | | \[numeric\] | min \< med \< max:  | | | (97.4%) |
+(2.6%) | | | | 8.8 \< 25.6 \< 39.4  | | | | | | | | IQR (CV) : 5.7 (0.2)
+| | | | |
++—-+—————+————————–+———————+——————————————————————————-+———+———+
+| 5 | smoker  | 1. Yes  | 298 (29.8%)  |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd019cdafe.png)
+| 1000  | 0  | | | \[factor\] | 2. No | 702 (70.2%) | | (100%) | (0%) |
++—-+—————+————————–+———————+——————————————————————————-+———+———+ | 6 |
+cigs.per.day | Mean (sd) : 6.8 (11.9)  | 37 distinct values |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd0c672963.png)
+| 965  | 35  | | | \[numeric\] | min \< med \< max:  | | | (96.5%) |
+(3.5%) | | | | 0 \< 0 \< 40  | | | | | | | | IQR (CV) : 11 (1.8) | | | |
+| +—-+—————+————————–+———————+——————————————————————————-+———+———+ | 7 |
+diseased  | 1. Yes  | 224 (22.4%)  |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd052702673.png)
+| 1000  | 0  | | | \[factor\] | 2. No | 776 (77.6%) | | (100%) | (0%) |
++—-+—————+————————–+———————+——————————————————————————-+———+———+ | 8 |
+disease  | 1. Hypertension  | 36 (16.2%)  |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd051c76bfe.png)
+| 222  | 778  | | | \[character\] | 2. Cancer  | 34 (15.3%)  | | (22.2%)
+| (77.8%) | | | | 3. Cholesterol  | 21 ( 9.5%)  | | | | | | | 4. Heart 
+| 20 ( 9.0%)  | | | | | | | 5. Pulmonary  | 20 ( 9.0%)  | | | | | | | 6.
+Musculoskeletal  | 19 ( 8.6%)  | | | | | | | 7. Diabetes  | 14 ( 6.3%) 
+| | | | | | | 8. Hearing  | 14 ( 6.3%)  | | | | | | | 9. Digestive  | 12
+( 5.4%)  | | | | | | | 10. Hypotension  | 11 ( 5.0%)  | | | | | | | \[ 3
+others \] | 21 ( 9.5%) | | | |
++—-+—————+————————–+———————+——————————————————————————-+———+———+
+| 9 | samp.wgts  | Mean (sd) : 1 (0.1)  | 0.86\!: 267 (26.7%) |
+![](file://C:\\Users\\domin\\AppData\\Local\\Temp\\Rtmp82EdKh\\file1bd076fff45.png)
+| 1000  | 0  | | | \[numeric\] | min \< med \< max:  | 1.04\!: 249
+(24.9%) |   | (100%) | (0%) | | | | 0.9 \< 1 \< 1.1  | 1.05\!: 324
+(32.4%) |   | | | | | | IQR (CV) : 0.2 (0.1) | 1.06\!: 160 (16.0%) | | |
+| | | | | \! rounded | | | |
++—-+—————+————————–+———————+——————————————————————————-+———+———+
+
+</div>
 
 ## The print() and view() Functions
 
@@ -626,38 +488,41 @@ iris_stats_by_species <- by(data = iris,
 view(iris_stats_by_species, method = "pander", style = "rmarkdown")
 ```
 
+    ## Non-numerical variable(s) ignored: Species
+
 ### Descriptive Statistics
 
-**Data Frame:** iris  
+#### iris
+
 **Group:** Species = setosa  
 **N:** 50
 
-|                  | Mean | Std.Dev |  Min | Median |  Max |
-| ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.01 |    0.35 | 4.30 |   5.00 | 5.80 |
-|  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |
-| **Petal.Length** | 1.46 |    0.17 | 1.00 |   1.50 | 1.90 |
-|  **Petal.Width** | 0.25 |    0.11 | 0.10 |   0.20 | 0.60 |
+|                  | Mean | Std.Dev. |  Min | Median |  Max |
+| ---------------: | ---: | -------: | ---: | -----: | ---: |
+| **Petal.Length** | 1.46 |     0.17 | 1.00 |   1.50 | 1.90 |
+|  **Petal.Width** | 0.25 |     0.11 | 0.10 |   0.20 | 0.60 |
+| **Sepal.Length** | 5.01 |     0.35 | 4.30 |   5.00 | 5.80 |
+|  **Sepal.Width** | 3.43 |     0.38 | 2.30 |   3.40 | 4.40 |
 
 **Group:** Species = versicolor  
 **N:** 50
 
-|                  | Mean | Std.Dev |  Min | Median |  Max |
-| ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 5.94 |    0.52 | 4.90 |   5.90 | 7.00 |
-|  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |
-| **Petal.Length** | 4.26 |    0.47 | 3.00 |   4.35 | 5.10 |
-|  **Petal.Width** | 1.33 |    0.20 | 1.00 |   1.30 | 1.80 |
+|                  | Mean | Std.Dev. |  Min | Median |  Max |
+| ---------------: | ---: | -------: | ---: | -----: | ---: |
+| **Petal.Length** | 4.26 |     0.47 | 3.00 |   4.35 | 5.10 |
+|  **Petal.Width** | 1.33 |     0.20 | 1.00 |   1.30 | 1.80 |
+| **Sepal.Length** | 5.94 |     0.52 | 4.90 |   5.90 | 7.00 |
+|  **Sepal.Width** | 2.77 |     0.31 | 2.00 |   2.80 | 3.40 |
 
 **Group:** Species = virginica  
 **N:** 50
 
-|                  | Mean | Std.Dev |  Min | Median |  Max |
-| ---------------: | ---: | ------: | ---: | -----: | ---: |
-| **Sepal.Length** | 6.59 |    0.64 | 4.90 |   6.50 | 7.90 |
-|  **Sepal.Width** | 2.97 |    0.32 | 2.20 |   3.00 | 3.80 |
-| **Petal.Length** | 5.55 |    0.55 | 4.50 |   5.55 | 6.90 |
-|  **Petal.Width** | 2.03 |    0.27 | 1.40 |   2.00 | 2.50 |
+|                  | Mean | Std.Dev. |  Min | Median |  Max |
+| ---------------: | ---: | -------: | ---: | -----: | ---: |
+| **Petal.Length** | 5.55 |     0.55 | 4.50 |   5.55 | 6.90 |
+|  **Petal.Width** | 2.03 |     0.27 | 1.40 |   2.00 | 2.50 |
+| **Sepal.Length** | 6.59 |     0.64 | 4.90 |   6.50 | 7.90 |
+|  **Sepal.Width** | 2.97 |     0.32 | 2.20 |   3.00 | 3.80 |
 
 To see an *html* version of these results, we’d simply do this (results
 not shown):
@@ -680,15 +545,18 @@ view(BMI_by_age, "pander", style = "rmarkdown")
 
 ### Descriptive Statistics
 
-**Variable:** tobacco$BMI by age.gr
+#### BMI by age.gr
 
-|             | 18-34 | 35-50 | 51-70 |  71 + |
-| ----------: | ----: | ----: | ----: | ----: |
-|    **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
-| **Std.Dev** |  4.23 |  4.34 |  4.26 |  4.37 |
-|     **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
-|  **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
-|     **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
+**Data Frame:** tobacco  
+**N:** 258
+
+|              | 18-34 | 35-50 | 51-70 |  71 + |
+| -----------: | ----: | ----: | ----: | ----: |
+|     **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
+| **Std.Dev.** |  4.23 |  4.34 |  4.26 |  4.37 |
+|      **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
+|   **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
+|      **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
 The transposed version looks like this:
 
@@ -699,12 +567,12 @@ BMI_by_age <- with(tobacco,
 view(BMI_by_age, "pander", style = "rmarkdown", headings = FALSE)
 ```
 
-|           |  Mean | Std.Dev |   Min | Median |   Max |
-| --------: | ----: | ------: | ----: | -----: | ----: |
-| **18-34** | 23.84 |    4.23 |  8.83 |  24.04 | 34.84 |
-| **35-50** | 25.11 |    4.34 | 10.35 |  25.11 | 39.44 |
-| **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
-|  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
+|           |  Mean | Std.Dev. |   Min | Median |   Max |
+| --------: | ----: | -------: | ----: | -----: | ----: |
+| **18-34** | 23.84 |     4.23 |  8.83 |  24.04 | 34.84 |
+| **35-50** | 25.11 |     4.34 | 10.35 |  25.11 | 39.44 |
+| **51-70** | 26.91 |     4.26 |  9.01 |  26.77 | 39.21 |
+|  **71 +** | 27.45 |     4.37 | 16.36 |  27.52 | 38.37 |
 
 ## Using lapply() to Show Several freq() tables at once
 
@@ -768,7 +636,7 @@ and location of that file explicitly if you need to reuse it later on:
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 ```
 
-Based on the file extension you provide (\_.html\_ vs others),
+Based on the file extension you provide (*.html* vs others),
 *summarytools* will use the appropriate method; there is no need to
 specify the `method` argument.
 
