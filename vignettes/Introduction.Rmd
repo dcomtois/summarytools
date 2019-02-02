@@ -7,7 +7,7 @@ output:
     css: 
     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
-  %\VignetteIndexEntry{Introduction to summarytools 0.8}
+  %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -51,7 +51,7 @@ outputs produced by **summarytools** can be:
   - Used in *Rmarkdown* documents and *knitted* along with other text and
     *R* output
   - Written to _html_ files that fire up in
-    [*RStudio*](http://www.rstudio.com/)’s Viewer pane or in your default
+    [*RStudio*](https://www.rstudio.com/)’s Viewer pane or in your default
     browser
   - Written to plain or *Rmarkdown* text files
 
@@ -59,15 +59,15 @@ Some users have requested Excel or _csv_ exportation capabilities; these will
 surely show up in an upcoming release.
 
 It is also possible to include **summarytools**' functions in *Shiny apps*. 
-Notably, [radiant](https://cran.r-project.org/web/packages/radiant/index.html),
+Notably, [radiant](https://CRAN.R-project.org/package=radiant),
 a Shiny-based package for business analytics, uses `dfSummary()` to describe
 imported data frames.
 
 ### Latest Improvements
 
-Versions 0.8.9 (which was only released on GitHub) and 0.9.0 brought _many_
-changes and improvements to **summarytools**. This 
-[vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/New-in-Version-0-9.html) 
+Versions 0.8.9 (which was released only on [GitHub](https://github.com/dcomtois/summarytools/releases))
+and 0.9.0 brought _many_ changes and improvements to **summarytools**. This 
+[vignette](library/summarytools/doc/New-in-Version-0-9.html) 
 gives a detailed description of all the changes, but a summary can also be found 
 [at the end of this document](#changes).
 
@@ -275,7 +275,7 @@ print()` to get proper results.
 
 As we have seen, **summarytools** can generate both text/_markdown_ and _html_
 results. Both types of outputs can be used in Rmarkdown documents. The vignette
-[Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
+[Recommendations for Using summarytools With Rmarkdown](library/summarytools/doc/Recommendations-rmarkdown.html)
 provides good guidelines, but here are a few tips to get started:
 
  - Always set the `knitr` chunk option `results = 'asis'`. You can do
@@ -485,7 +485,7 @@ print(dfSummary(somedata, graph.magnif = 0.82),
 
 Versions 0.9.0 and 0.8.9 (which was only released on GitHub) brought many
 improvements to **summarytools**. This 
-[vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/New-in-Version-0-9.html) 
+[vignette](library/summarytools/doc/New-in-Version-0-9.html) 
 gives a detailed description of all the changes, but here are the main elements:
 
  - Translations
@@ -496,7 +496,7 @@ gives a detailed description of all the changes, but here are the main elements:
      like so: `st_options(lang = "fr")
    + An additional function, `useTranslations()` allows using a custom 
      translations _csv_ file; a template is available 
-     [here](https://github.com/dcomtois/summarytools/blob/master/translations/language_template.csv)
+     [here](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv)
 
  - Improved printing of list objects
    + Objects of class “by” are now automatically printed in the console with
