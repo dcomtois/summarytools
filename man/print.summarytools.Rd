@@ -65,7 +65,7 @@ as attributes in the object being printed. See \emph{Details} section.}
 \code{NULL} when \code{method="pander"}; a file path (returned
   invisibly) when \code{method="viewer"} or \code{method="browser"}. In the
   latter case, the file path is also passed to \code{shell.exec} so the
-  document is opened with default Web Browser.
+  document is opened in default Web Browser.
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in

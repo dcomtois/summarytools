@@ -20,7 +20,7 @@ st_options(option = NULL, value = NULL, style = "simple",
 \item{option}{option(s) name(s) to query (optional). Can be a single string
 or a vector of strings to query multiple values.}
 
-\item{value}{the value you wish to assign to the option specified in the
+\item{value}{The value you wish to assign to the option specified in the
 first argument. This is for backward-compatibility, as all options can now 
 be set via their own parameter. That is, instead of 
 \code{st_options('plain.ascii', FALSE))}, use

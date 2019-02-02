@@ -62,5 +62,5 @@ this default value globally, see \code{\link{st_options}}.}
 as attributes in the object being printed. See \emph{Details} section.}
 }
 \description{
-Displays a list comprised of summarytools objects created with \code{lapply}.
+Displays a list comprised of summarytools objects created with \code{by}.
 }

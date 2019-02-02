@@ -294,7 +294,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
               "use print(x)"))
   }
   
-  # Override of x's attributes (format_info and heading info) ------------------
+  # Override x's attributes (format_info and heading info) ---------------------
   if ("date" %in% names(dotArgs)) {
     attr(x, "date") <- dotArgs[["date"]]
   }
@@ -303,7 +303,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # then by looking at the match.call() from x to set global parameters that 
   # were not explicit in the latter.
   # Here we check for arguments that can be specified at the function level for
-  # freq, descr, ctable and dfSummary (we don't include  print/view args)
+  # freq, descr, ctable and dfSummary (we don't include print/view args)
   overrided_args <- character()
   # Todo: remove "omit.headings" in next release
   for (format_element in c("style", "plain.ascii", "round.digits",
@@ -1047,7 +1047,7 @@ print_ctable <- function(x, method) {
   return(div_list)
 }
 
-# Prepare ctable objects for printing ------------------------------------------
+# Prepare descr objects for printing -------------------------------------------
 #' @import htmltools
 #' @keywords internal
 print_descr <- function(x, method) {
@@ -1309,7 +1309,7 @@ print_dfs <- function(x, method) {
     x <- x[ ,-which(names(x) == trs("missing"))]
   }
   
-  # print_dfs - pander method -------------------------------------------------  
+  # print_dfSummary - pander method --------------------------------------------  
   if (method == "pander") {
     
     # remove html graphs
