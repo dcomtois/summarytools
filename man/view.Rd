@@ -8,7 +8,8 @@ view(x, method = "viewer", file = "", append = FALSE,
   report.title = NA, table.classes = NA, 
   bootstrap.css = st_options("bootstrap.css"), 
   custom.css = st_options("custom.css"), silent = FALSE, 
-  footnote = st_options("footnote"), 
+  footnote = st_options("footnote"),
+  max.tbl.height = Inf,
   escape.pipe = st_options("escape.pipe"), \dots)
 }
 \arguments{
@@ -52,6 +53,12 @@ this is the package name and version, R version, and current date). Has no
 effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
 provide your own text, or set to \code{NA} to omit. To change this default
 value globally, see \code{\link{st_options}}.}
+
+\item{max.tbl.height}{Maximum table height (in pixels) allowed in rendered
+\code{dfSummary()} tables. When this argument is used, results will show up
+in a \code{<div>} with the specified height and a scroll bar. Intended
+to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
+\dQuote{pander}. \code{Inf} by default.}
 
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
 and \code{file} argument is supplied if the intent is to generate a text

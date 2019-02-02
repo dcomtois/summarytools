@@ -7,7 +7,8 @@
 #'   report.title = NA, table.classes = NA, 
 #'   bootstrap.css = st_options("bootstrap.css"), 
 #'   custom.css = st_options("custom.css"), silent = FALSE, 
-#'   footnote = st_options("footnote"), 
+#'   footnote = st_options("footnote"),
+#'   max.tbl.height = Inf,
 #'   escape.pipe = st_options("escape.pipe"), \dots)
 #'
 #' @inheritParams print.summarytools
@@ -30,6 +31,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                  bootstrap.css = st_options("bootstrap.css"), 
                  custom.css = st_options("custom.css"), silent = FALSE, 
                  footnote = st_options("footnote"), 
+                 max.tbl.height = Inf,
                  escape.pipe = st_options("escape.pipe"),
                  ...) {
 
@@ -50,16 +52,17 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
               c("freq", "ctable", "descr", "dfSummary")))) {
     
     print.summarytools(x,
-                       method        = method,
-                       file          = file,
-                       append        = append,
-                       report.title  = report.title,
-                       table.classes = table.classes,
-                       bootstrap.css = bootstrap.css,
-                       custom.css    = custom.css,
-                       silent        = silent,
-                       footnote      = footnote,
-                       escape.pipe   = escape.pipe,
+                       method         = method,
+                       file           = file,
+                       append         = append,
+                       report.title   = report.title,
+                       table.classes  = table.classes,
+                       bootstrap.css  = bootstrap.css,
+                       custom.css     = custom.css,
+                       silent         = silent,
+                       footnote       = footnote,
+                       max.tbl.height = max.tbl.height,
+                       escape.pipe    = escape.pipe,
                        ...)
 
     
