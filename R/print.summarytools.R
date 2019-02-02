@@ -8,7 +8,7 @@
 #'    append = FALSE, report.title = NA, table.classes = NA,
 #'    bootstrap.css = st_options('bootstrap.css'), 
 #'    custom.css = st_options('custom.css'), silent = FALSE, 
-#'    footnote = st_options('footnote'), 
+#'    footnote = st_options('footnote'), max.tbl.height = Inf,
 #'    escape.pipe = st_options('escape.pipe'), \dots)
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
