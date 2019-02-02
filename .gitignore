@@ -10,3 +10,4 @@ TODO.R
 tests/output
 tests/output/*
 tests/other
+img/ds*.png

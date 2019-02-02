@@ -53,6 +53,12 @@ effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
 provide your own text, or set to \code{NA} to omit. To change this default
 value globally, see \code{\link{st_options}}.}
 
+\item{max.tbl.height}{Maximum table height (in pixels) allowed in rendered
+\code{dfSummary()} tables. When this argument is used, results will show up
+in a \code{<div>} with the specified height and a scroll bar. Intended
+to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
+\dQuote{pander}. \code{Inf} by default.}
+
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
 and \code{file} argument is supplied if the intent is to generate a text
 file that can be converted to other formats using \emph{Pandoc}. To change

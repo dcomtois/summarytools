@@ -42,6 +42,11 @@
 #'   effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
 #'   provide your own text, or set to \code{NA} to omit. To change this default
 #'   value globally, see \code{\link{st_options}}.
+#' @param max.tbl.height Maximum table height (in pixels) allowed in rendered
+#'  \code{dfSummary()} tables. When this argument is used, results will show up
+#'  in a \code{<div>} with the specified height and a scroll bar. Intended
+#'  to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
+#'  \dQuote{pander}. \code{Inf} by default.
 #' @param escape.pipe Logical. Set to \code{TRUE} when using \code{style='grid'}
 #'   and \code{file} argument is supplied if the intent is to generate a text
 #'   file that can be converted to other formats using \emph{Pandoc}. To change
@@ -52,7 +57,7 @@
 #' @return \code{NULL} when \code{method="pander"}; a file path (returned
 #'   invisibly) when \code{method="viewer"} or \code{method="browser"}. In the
 #'   latter case, the file path is also passed to \code{shell.exec} so the
-#'   document is opened with default Web Browser.
+#'   document is opened in default Web Browser.
 #'
 #' @details
 #'   Plain ascii and \emph{rmarkdown} tables are generated via
@@ -136,7 +141,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                                bootstrap.css = st_options("bootstrap.css"),
                                custom.css = st_options("custom.css"), 
                                silent = FALSE, 
-                               footnote = st_options("footnote"), 
+                               footnote = st_options("footnote"),
+                               max.tbl.height = Inf,
                                escape.pipe = st_options("escape.pipe"), ...) {
 
   # object is a list, either created
@@ -175,6 +181,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
   
   # Parameter validation -------------------------------------------------------
+  # TODO: move after overrides
   errmsg <- character()
   
   method <- switch(tolower(substring(method, 1, 1)),
@@ -195,6 +202,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                       "or 'render'")
   }
 
+  if (!isTRUE(test_int(max.tbl.height, lower = 100, na.ok = FALSE)) &&
+      !is.infinite(max.tbl.height)) {
+    errmsg %+=% "'max.tbl.height' must be an integer between 100 and Inf"
+  } else {
+    attr(x, "format_info")$max.tbl.height <- max.tbl.height
+  }
+  
   if (file == "" && isTRUE(append)) {
     errmsg %+=% "'append' is set to TRUE but no file name has been specified"
   }
@@ -1002,8 +1016,6 @@ print_ctable <- function(x, method) {
                     style = "padding:0 15px 0 1px;border-left:0;text-align:right"
             )
           )
-          # table_row %+=% list(tags$td(tags$span(HTML(cell))))
-          # table_row %+=% list(make_tbl_cell(cross_table[ro,co]))
         }
         
         # On last col, insert row into list
@@ -1478,19 +1490,38 @@ print_dfs <- function(x, method) {
       table_rows %+=% list(tags$tr(table_row))
     }
     
-    dfs_table_html <-
-      tags$table(
-        if (!identical(colgroup, NA)) 
-          colgroup,
-        tags$thead(tags$tr(table_head)),
-        tags$tbody(table_rows),
-        class = paste(
-          "table table-striped table-bordered",
-          "st-table st-table-striped st-table-bordered st-multiline",
-          ifelse(is.na(parent.frame()$table.classes), 
-                 "", parent.frame()$table.classes)
+    if (is.infinite(format_info$max.tbl.height)) {
+      dfs_table_html <-
+        tags$table(
+          if (!identical(colgroup, NA)) 
+            colgroup,
+          tags$thead(tags$tr(table_head)),
+          tags$tbody(table_rows),
+          class = paste(
+            "table table-striped table-bordered",
+            "st-table st-table-striped st-table-bordered st-multiline",
+            ifelse(is.na(parent.frame()$table.classes), 
+                   "", parent.frame()$table.classes)
+          )
         )
-      )
+    } else {
+      dfs_table_html <-
+        tags$div(
+          tags$table(
+            if (!identical(colgroup, NA)) 
+              colgroup,
+            tags$thead(tags$tr(table_head)),
+            tags$tbody(table_rows),
+            class = paste(
+              "table table-striped table-bordered",
+              "st-table st-table-striped st-table-bordered st-multiline",
+              ifelse(is.na(parent.frame()$table.classes), 
+                     "", parent.frame()$table.classes)
+            )
+          ), style = paste0("max-height:", format_info$max.tbl.height,
+                            "px;overflow-y:scroll;margin:10px 2px")
+        )
+    }
     
     dfs_table_html <-
       gsub(pattern = "(<th.*?>)\\s+(<strong>.*?</strong>)\\s+(</th>)",
