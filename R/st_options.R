@@ -87,6 +87,8 @@
 #' @details To learn more about summarytools options, see the 
 #' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
 #' 
+#' @keywords utilities
+#' 
 #' @examples \dontrun{
 #' st_options()                   # show all summarytools global options
 #' st_options('round.digits')     # show a specific global option 

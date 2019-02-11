@@ -103,8 +103,6 @@
 #'      \item \code{Data.type} (\code{\link{freq}} objects)
 #'      \item \code{Row.variable} (\code{\link{ctable}} objects)
 #'      \item \code{Col.variable} (\code{\link{ctable}} objects)
-#'      \item \code{Row.variable.label} (\code{\link{ctable}} objects)
-#'      \item \code{Col.variable.label} (\code{\link{ctable}} objects)
 #'    }
 #'
 #' @method print summarytools
@@ -386,8 +384,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
-                          "Row.variable", "Col.variable",
-                          "Row.variable.label", "Col.variable.label")
+                          "Row.variable", "Col.variable")
   for (data_info_element in data_info_elements) {
     if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
       attr(x, "data_info")[[data_info_element]] <- 

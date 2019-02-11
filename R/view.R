@@ -66,7 +66,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        ...)
 
     
-  } else if (inherits(x = x, what = "by") &&
+  } else if (inherits(x = x, what = c("stby","by")) &&
              attr(x[[1]], "st_type") == "descr" &&
              ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) || 
               ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
@@ -114,7 +114,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
                        escape.pipe   = escape.pipe,
                        ...)
     
-  } else if (inherits(x, "by") &&
+  } else if (inherits(x, what = c("stby", "by")) &&
              attr(x[[1]], "st_type") %in% c("freq", "ctable",
                                             "descr", "dfSummary")) {
     
