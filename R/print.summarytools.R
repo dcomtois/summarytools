@@ -373,16 +373,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   # Override of data info attributes
   if ("dataframe" %in% tolower(names(dotArgs))) {
-    dotArgs$Data.frame = dotArgs$Dataframe
+    dotArgs$Data.frame <- dotArgs$Dataframe
     msg("Attribute 'Dataframe' has been renamed to 'Data.frame'")
   }
   
   if ("dataframe.label" %in% tolower(names(dotArgs))) {
-    dotArgs$Data.frame.label = dotArgs$Dataframe.label
+    dotArgs$Data.frame.label <- dotArgs$Dataframe.label
     msg(paste("Attribute 'Dataframe.label' has been renamed to",
               "'Data.frame.label'"))
   }
-  
+
+
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
                           "Row.variable", "Col.variable",
@@ -390,7 +391,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   for (data_info_element in data_info_elements) {
     if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
       attr(x, "data_info")[[data_info_element]] <- 
-        dotArgs[[grep(data_info_element, names(dotArgs), ignore.case = TRUE)]]
+        dotArgs[[grep(paste0("^", data_info_element, "$"), names(dotArgs), 
+                      ignore.case = TRUE)]]
       overrided_args <- append(overrided_args, data_info_element)
     }
   }
