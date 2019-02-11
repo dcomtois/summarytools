@@ -1,5 +1,5 @@
 ---
-title: "Changes Introduced in Summarytools 0.9.0"
+title: "Changes Introduced in Summarytools 0.9"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output: 
@@ -73,7 +73,7 @@ The language used for producing the object is stored within it as an attribute.
 This is to avoid problems when switching languages between the moment the 
 object is stored, and the moment at which it is printed.
 
-### Non-UTF8 Locale
+### Non-UTF8 Locales
 
 On most Windows systems, it will be necessary to change the `LC_CTYPE` element 
 of the locale settings if the character set is not included in the current 
@@ -108,7 +108,7 @@ if we're to print objects created with it.
 ## Better Handling of List Objects
 
 Before version 0.9.0, printing objects created with the use of `by()` or `lapply()`
-was less than ideal, especially for text / markdown output method. We had to use
+was a bit cumbersome for text / markdown outputs. We had to use
 `view()` (not `print()`, which would not dispatch to `print.summarytools()`),
 and since `view()`'s default method is "viewer", we needed to change this 
 method to "pander" manually, like so:
@@ -121,7 +121,7 @@ view(bystat, method = "pander")
 This is now thing of the past. We can simply do:
 
 ```{r, eval=FALSE}
-bystats <- by(data = tobacco$age, INDICES = tobacco$gender, descr)
+bystats <- stby(data = tobacco$age, INDICES = tobacco$gender, descr)
 bystat
 ```
 

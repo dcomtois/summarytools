@@ -6,11 +6,10 @@
 #'
 #' @param file Character. The path to the translations file.
 #'
-#' @details To build the translations file, you can get
-#' \href{https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/translations/custom_lang_template.csv}{this template},
-#' or use the \href{https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/translations/translations.csv}{current translations definition file}
-#' and fill out a new column \strong{having \sQuote{custom} on the first line}.
-#' The file must have \emph{UTF-8} encoding.
+#' @details To build the translations file, download
+#' \href{https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv}{this template},
+#' and fill out the \sQuote{custom} column, leaving \sQuote{custom} on the first
+#' line. The file must have \emph{UTF-8} encoding.
 #'
 #' @keywords utilities
 #' @importFrom utils read.csv
@@ -23,12 +22,6 @@ useTranslations <- function(file) {
   tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
   colnames(tr) <- items
   rownames(tr) <- "custom"
-
-  # testing this part:
-  # for (cname in colnames(tr)) {
-  #   tr[,cname] <- enc2utf8(tr[,cname])
-  # }
-  # end test
 
   .st_env$custom_lang <- tr
   st_options(lang = "custom")

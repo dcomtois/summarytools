@@ -1,7 +1,7 @@
 Version 0.9.1
 -------------
-stby() is introduced to avoid having to redefine print.by(), which is against
-CRAN policies. 
+stby(), a summarytools-specific version of by(), is introduced, simplifying
+the printing of "by" objects. 
 
 Version 0.9.0
 -------------
