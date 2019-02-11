@@ -243,24 +243,19 @@ the `method = 'viewer'` for us. When used outside *RStudio*,
 the `method` falls back on “browser” and the report is fired up in the
 system’s default browser.
 
-## Using by() to Ventilate Results
+## Using stby() to Ventilate Results
 
-You can use *R*’s base function `by()` will all main functions. It returns a 
-list-type object having class “by” containing as many elements as there are 
-categories in the grouping variable. 
+You can use `stby()` the same way as *R*’s base function `by()` with all main
+summarytools functions. It returns a list-type object having class “stby” and
+containing as many elements as there are categories in the grouping variable. 
 
 Using the _iris_ data frame, we will display descriptive statistics
 broken down by Species.
 
 ```{r}
-# First save the results
-iris_stats_by_species <- by(data = iris, 
-                            INDICES = iris$Species, 
-                            FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
-                            transpose = TRUE)
-
-# Then we can either use `view()` or print()` to visualize the results:
-print(iris_stats_by_species, style = "rmarkdown")
+(iris_stats_by_species <- stby(data = iris, INDICES = iris$Species, 
+                               FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
+                               transpose = TRUE))
 ```
 
 To see an _html_ version of these results, we'd simply use `view()` (also
@@ -280,8 +275,8 @@ will assemble everything into a single table:
 ```{r}
 data(tobacco) # tobacco is an example dataframe included in the package
 BMI_by_age <- with(tobacco, 
-                   by(BMI, age.gr, descr, 
-                      stats = c("mean", "sd", "min", "med", "max")))
+                   stby(BMI, age.gr, descr, 
+                        stats = c("mean", "sd", "min", "med", "max")))
 print(BMI_by_age, style = "rmarkdown")
 ```
 
@@ -289,19 +284,19 @@ The transposed version looks like this:
 
 ```{r}
 BMI_by_age <- with(tobacco, 
-                   by(BMI, age.gr, descr,  transpose = TRUE,
+                   stby(BMI, age.gr, descr,  transpose = TRUE,
                       stats = c("mean", "sd", "min", "med", "max")))
 print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 ```
 
-**Using `by()` with `ctable()`**
+**Using `stby()` with `ctable()`**
 
 The syntax to use is the following:
 
 ```{r, eval=FALSE}
-by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
+stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 # or equivalently
-with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))
+with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 
 ```
 
@@ -456,8 +451,49 @@ When a **summarytools** object is stored, its formatting attributes are
 stored within it. However, you can override most of them when using the
 `print()` method and the `view()` function.
 
-For a full list of arguments that can be used as overrides, please see
-`?print.summarytools`.
+Here is a full list of arguments that can be overridden, and which type
+of object it affects.
+
+### Overriding Function-Specific Arguments
+
+
+| Argument       | freq | ctable | descr | dfSummary |
+| -------------: | :--: | :----: | :---: | :-------: |
+| style          |  x   |   x    |   x   |     x     |
+| round.digits   |  x   |   x    |   x   |           |
+| plain.ascii    |  x   |   x    |   x   |     x     |
+| justify        |  x   |   x    |   x   |     x     |
+| headings       |  x   |   x    |   x   |     x     |
+| display.labels |  x   |   x    |   x   |     x     |
+| varnumbers     |      |        |       |     x     |
+| labels.col     |      |        |       |     x     |
+| graph.col      |      |        |       |     x     |
+| valid.col      |      |        |       |     x     |
+| na.col         |      |        |       |     x     |
+| col.widths     |      |        |       |     x     |
+| split.tables   |  x   |   x    |   x   |     x     |
+| report.nas     |  x   |        |       |           |
+| display.type   |  x   |        |       |           |
+| missing        |  x   |        |       |           |
+| totals         |  x   |   x    |       |           |
+| caption        |  x   |   x    |   x   |     x     |
+
+
+### Overridint Heading Content
+
+| Argument           | freq | ctable | descr | dfSummary |
+| ----------------:  | :--: | :----: | :---: | :-------: |
+| Data.frame         |  x   |   x    |   x   |     x     |
+| Data.frame.label   |  x   |   x    |   x   |     x     |
+| Variable           |  x   |   x    |   x   |           |
+| Variable.label     |  x   |   x    |   x   |           |
+| Group              |  x   |   x    |   x   |     x     |
+| date               |  x   |   x    |   x   |     x     |
+| Weights            |  x   |        |   x   |           |
+| Data.type          |  x   |        |       |     x     |
+| Row.variable       |      |   x    |       |     x     |
+| Col.variable       |      |   x    |       |     x     |
+
 
 #### Example 
 
@@ -465,7 +501,7 @@ For a full list of arguments that can be used as overrides, please see
 age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
                                    # including headings, NA counts, and Totals
 print(age_stats, style = "rmarkdown", report.nas = FALSE, 
-                 totals = FALSE, headings = FALSE)
+                 totals = FALSE, Variable.label = "Age Group")
 ```
 
 Note that the original attributes which we changed temporarily for printing with

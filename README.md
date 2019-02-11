@@ -292,60 +292,55 @@ simply acts as a wrapper around the `print()` method, specifying the
 falls back on “browser” and the report is fired up in the system’s
 default browser.
 
-## Using by() to Ventilate Results
+## Using stby() to Ventilate Results
 
-You can use *R*’s base function `by()` will all main functions. It
-returns a list-type object having class “by” containing as many elements
-as there are categories in the grouping variable.
+You can use `stby()` the same way as *R*’s base function `by()` with all
+main summarytools functions. It returns a list-type object having class
+“stby” and containing as many elements as there are categories in the
+grouping variable.
 
 Using the *iris* data frame, we will display descriptive statistics
 broken down by Species.
 
 ``` r
-# First save the results
-iris_stats_by_species <- by(data = iris, 
-                            INDICES = iris$Species, 
-                            FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
-                            transpose = TRUE)
-
-# Then we can either use `view()` or print()` to visualize the results:
-print(iris_stats_by_species, style = "rmarkdown")
+(iris_stats_by_species <- stby(data = iris, INDICES = iris$Species, 
+                               FUN = descr, stats = c("mean", "sd", "min", "med", "max"), 
+                               transpose = TRUE))
 ```
 
     ## Non-numerical variable(s) ignored: Species
 
-### Descriptive Statistics
+Descriptive Statistics  
+iris  
+Group: Species = setosa  
+N: 50
 
-**iris**  
-**Group:** Species = setosa  
-**N:** 50
+|              | Mean | Std.Dev. |  Min | Median |  Max |
+| ------------ | ---: | -------: | ---: | -----: | ---: |
+| Petal.Length | 1.46 |     0.17 | 1.00 |   1.50 | 1.90 |
+| Petal.Width  | 0.25 |     0.11 | 0.10 |   0.20 | 0.60 |
+| Sepal.Length | 5.01 |     0.35 | 4.30 |   5.00 | 5.80 |
+| Sepal.Width  | 3.43 |     0.38 | 2.30 |   3.40 | 4.40 |
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 1.46 |     0.17 | 1.00 |   1.50 | 1.90 |
-|  **Petal.Width** | 0.25 |     0.11 | 0.10 |   0.20 | 0.60 |
-| **Sepal.Length** | 5.01 |     0.35 | 4.30 |   5.00 | 5.80 |
-|  **Sepal.Width** | 3.43 |     0.38 | 2.30 |   3.40 | 4.40 |
+Group: Species = versicolor  
+N: 50
 
-**Group:** Species = versicolor  
-**N:** 50
+|              | Mean | Std.Dev. |  Min | Median |  Max |
+| ------------ | ---: | -------: | ---: | -----: | ---: |
+| Petal.Length | 4.26 |     0.47 | 3.00 |   4.35 | 5.10 |
+| Petal.Width  | 1.33 |     0.20 | 1.00 |   1.30 | 1.80 |
+| Sepal.Length | 5.94 |     0.52 | 4.90 |   5.90 | 7.00 |
+| Sepal.Width  | 2.77 |     0.31 | 2.00 |   2.80 | 3.40 |
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 4.26 |     0.47 | 3.00 |   4.35 | 5.10 |
-|  **Petal.Width** | 1.33 |     0.20 | 1.00 |   1.30 | 1.80 |
-| **Sepal.Length** | 5.94 |     0.52 | 4.90 |   5.90 | 7.00 |
-|  **Sepal.Width** | 2.77 |     0.31 | 2.00 |   2.80 | 3.40 |
+Group: Species = virginica  
+N: 50
 
-**Group:** Species = virginica  
-**N:** 50
-
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 5.55 |     0.55 | 4.50 |   5.55 | 6.90 |
-|  **Petal.Width** | 2.03 |     0.27 | 1.40 |   2.00 | 2.50 |
-| **Sepal.Length** | 6.59 |     0.64 | 4.90 |   6.50 | 7.90 |
-|  **Sepal.Width** | 2.97 |     0.32 | 2.20 |   3.00 | 3.80 |
+|              | Mean | Std.Dev. |  Min | Median |  Max |
+| ------------ | ---: | -------: | ---: | -----: | ---: |
+| Petal.Length | 5.55 |     0.55 | 4.50 |   5.55 | 6.90 |
+| Petal.Width  | 2.03 |     0.27 | 1.40 |   2.00 | 2.50 |
+| Sepal.Length | 6.59 |     0.64 | 4.90 |   6.50 | 7.90 |
+| Sepal.Width  | 2.97 |     0.32 | 2.20 |   3.00 | 3.80 |
 
 To see an *html* version of these results, we’d simply use `view()`
 (also possible is to use `print()` with the argument `method =
@@ -365,8 +360,8 @@ will assemble everything into a single table:
 ``` r
 data(tobacco) # tobacco is an example dataframe included in the package
 BMI_by_age <- with(tobacco, 
-                   by(BMI, age.gr, descr, 
-                      stats = c("mean", "sd", "min", "med", "max")))
+                   stby(BMI, age.gr, descr, 
+                        stats = c("mean", "sd", "min", "med", "max")))
 print(BMI_by_age, style = "rmarkdown")
 ```
 
@@ -388,7 +383,7 @@ The transposed version looks like this:
 
 ``` r
 BMI_by_age <- with(tobacco, 
-                   by(BMI, age.gr, descr,  transpose = TRUE,
+                   stby(BMI, age.gr, descr,  transpose = TRUE,
                       stats = c("mean", "sd", "min", "med", "max")))
 print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 ```
@@ -400,15 +395,15 @@ print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 | **51-70** | 26.91 |     4.26 |  9.01 |  26.77 | 39.21 |
 |  **71 +** | 27.45 |     4.37 | 16.36 |  27.52 | 38.37 |
 
-**Using `by()` with `ctable()`**
+**Using `stby()` with `ctable()`**
 
 The syntax to use is the
 following:
 
 ``` r
-by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
+stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 # or equivalently
-with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))
+with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ```
 
 ## Generating Several Frequency Tables at Once
@@ -570,8 +565,46 @@ When a **summarytools** object is stored, its formatting attributes are
 stored within it. However, you can override most of them when using the
 `print()` method and the `view()` function.
 
-For a full list of arguments that can be used as overrides, please see
-`?print.summarytools`.
+Here is a full list of arguments that can be overridden, and which type
+of object it affects.
+
+### Overriding Function-Specific Arguments
+
+|       Argument | freq | ctable | descr | dfSummary |
+| -------------: | :--: | :----: | :---: | :-------: |
+|          style |  x   |   x    |   x   |     x     |
+|   round.digits |  x   |   x    |   x   |           |
+|    plain.ascii |  x   |   x    |   x   |     x     |
+|        justify |  x   |   x    |   x   |     x     |
+|       headings |  x   |   x    |   x   |     x     |
+| display.labels |  x   |   x    |   x   |     x     |
+|     varnumbers |      |        |       |     x     |
+|     labels.col |      |        |       |     x     |
+|      graph.col |      |        |       |     x     |
+|      valid.col |      |        |       |     x     |
+|         na.col |      |        |       |     x     |
+|     col.widths |      |        |       |     x     |
+|   split.tables |  x   |   x    |   x   |     x     |
+|     report.nas |  x   |        |       |           |
+|   display.type |  x   |        |       |           |
+|        missing |  x   |        |       |           |
+|         totals |  x   |   x    |       |           |
+|        caption |  x   |   x    |   x   |     x     |
+
+### Overridint Heading Content
+
+|         Argument | freq | ctable | descr | dfSummary |
+| ---------------: | :--: | :----: | :---: | :-------: |
+|       Data.frame |  x   |   x    |   x   |     x     |
+| Data.frame.label |  x   |   x    |   x   |     x     |
+|         Variable |  x   |   x    |   x   |           |
+|   Variable.label |  x   |   x    |   x   |           |
+|            Group |  x   |   x    |   x   |     x     |
+|             date |  x   |   x    |   x   |     x     |
+|          Weights |  x   |        |   x   |           |
+|        Data.type |  x   |        |       |     x     |
+|     Row.variable |      |   x    |       |     x     |
+|     Col.variable |      |   x    |       |     x     |
 
 #### Example
 
@@ -579,8 +612,14 @@ For a full list of arguments that can be used as overrides, please see
 age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
                                    # including headings, NA counts, and Totals
 print(age_stats, style = "rmarkdown", report.nas = FALSE, 
-                 totals = FALSE, headings = FALSE)
+                 totals = FALSE, Variable.label = "Age Group")
 ```
+
+### Frequencies
+
+**tobacco$age.gr**  
+**Label:** Age Group  
+**Type:** Factor
 
 |           | Freq |     % | % Cum. |
 | --------: | ---: | ----: | -----: |
