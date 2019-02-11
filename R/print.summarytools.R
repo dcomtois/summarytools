@@ -422,7 +422,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
         " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
-        getRversion(), ")", "<br/>", strftime(Sys.Date(),trs("date.fmt")),"</p>"
+        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt")),
+        "</p>"
       )
   }
 

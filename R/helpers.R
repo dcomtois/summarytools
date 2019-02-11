@@ -488,7 +488,7 @@ msg <- function(x) {
     message(x)
   } else {
     ind <- which(.st_env$messages$msg == x)
-    if (abs(.st_env$messages$time[ind] - Sys.time()) < 1.5) {
+    if (abs(Sys.time() - .st_env$messages$time[ind]) < 1.5) {
       message(x)
     }
     .st_env$messages$time[ind] <- Sys.time()
