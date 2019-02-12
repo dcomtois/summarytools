@@ -36,20 +36,20 @@ tobacco[,5] %>% freq()
 tobacco[[5]] %>% freq()       
 
 # by
-by(tobacco$smoker, tobacco$gender, freq)          
-by(tobacco["smoker"], tobacco["gender"], freq)    
-by(tobacco[,"smoker"], tobacco[,"gender"], freq)  
-by(tobacco[["smoker"]], tobacco[["gender"]], freq)
+stby(tobacco$smoker, tobacco$gender, freq)          
+stby(tobacco["smoker"], tobacco["gender"], freq)    
+stby(tobacco[,"smoker"], tobacco[,"gender"], freq)  
+stby(tobacco[["smoker"]], tobacco[["gender"]], freq)
 # by, numeric column indexing
-by(tobacco[[5]], tobacco[[1]], freq)
-by(tobacco[,5], tobacco[,1], freq)  
+stby(tobacco[[5]], tobacco[[1]], freq)
+stby(tobacco[,5], tobacco[,1], freq)  
 # by with ctable
-by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
+stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
 
 # with + by
-with(tobacco, by(smoker, gender, freq))                               
-with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))     
-with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable))
+with(tobacco, stby(smoker, gender, freq))                               
+with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))     
+with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable))
 
 # lapply
 print(lapply(tobacco[c(1,3,5)], freq))

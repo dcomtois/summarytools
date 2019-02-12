@@ -303,7 +303,7 @@ Type: Facteur
 
 # by --------------------------------------------------------------------------- 
 
-> by(tobacco$smoker, tobacco$gender, freq)           
+> stby(tobacco$smoker, tobacco$gender, freq)           
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -327,7 +327,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> by(tobacco["smoker"], tobacco["gender"], freq)     
+> stby(tobacco["smoker"], tobacco["gender"], freq)     
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -351,7 +351,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> by(tobacco[,"smoker"], tobacco[,"gender"], freq)   
+> stby(tobacco[,"smoker"], tobacco[,"gender"], freq)   
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -375,7 +375,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> by(tobacco[["smoker"]], tobacco[["gender"]], freq) 
+> stby(tobacco[["smoker"]], tobacco[["gender"]], freq) 
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -402,7 +402,7 @@ Groupe: gender = M
 
 # by, numeric column indexing -------------------------------------------------- 
 
-> by(tobacco[[5]], tobacco[[1]], freq) 
+> stby(tobacco[[5]], tobacco[[1]], freq) 
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -426,7 +426,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> by(tobacco[,5], tobacco[,1], freq)   
+> stby(tobacco[,5], tobacco[,1], freq)   
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -453,7 +453,7 @@ Groupe: gender = M
 
 # by with ctable --------------------------------------------------------------- 
 
-> by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
+> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
 
 Tableau croisé, proportions par rangées  
 smoker * diseased  
@@ -482,7 +482,7 @@ Groupe: gender = M
 
 # with + by -------------------------------------------------------------------- 
 
-> with(tobacco, by(smoker, gender, freq))                                
+> with(tobacco, stby(smoker, gender, freq))                                
 
 Tableau de fréquences  
 tobacco$smoker  
@@ -506,7 +506,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> with(tobacco, by(list(x = smoker, y = diseased), gender, ctable))      
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))      
 
 Tableau croisé, proportions par rangées  
 smoker * diseased  
@@ -532,7 +532,7 @@ Groupe: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> with(tobacco[1:7], by(list(x = smoker, y = diseased), gender, ctable)) 
+> with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable)) 
 
 Tableau croisé, proportions par rangées  
 smoker * diseased  

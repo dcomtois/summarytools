@@ -52,19 +52,19 @@ print(d5, file = "06.html", footnote = "Weights")
 # split tables at 40 char
 print(d5, transpose = TRUE, split.tables = 40)
 
-# by(), special case
-(d7 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr))
+# stby(), special case
+(d7 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr))
 print(d7, file = "07.html")
 
-# by() - whole data frame
-(d8 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr))
+# stby() - whole data frame
+(d8 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr))
 view(d8, file = "08.md")
 
-# with() + by()
+# with() + stby()
 label(tobacco$BMI) <- "Body Mass Index"
-(d9 <- with(tobacco, by(BMI, gender, descr)))
+(d9 <- with(tobacco, stby(BMI, gender, descr)))
 view(d9, file = "09.html")
 
 # by with weights
-(d10 <- by(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts))
+(d10 <- stby(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts))
 view(d10)

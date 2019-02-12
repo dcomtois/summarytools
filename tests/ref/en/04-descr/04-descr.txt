@@ -359,9 +359,9 @@ Table: Table continues below
 |  **% Valid** |        96.47 |
 
 
-# by(), special case ----------------------------------------------------------- 
+# stby(), special case ----------------------------------------------------------- 
 
-> (d7 <- by(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr)) 
+> (d7 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr)) 
 
 ### Descriptive Statistics  
 #### BMI by gender  
@@ -384,9 +384,9 @@ Table: Table continues below
 -- Output file written
 
 
-# by() - whole data frame ------------------------------------------------------ 
+# stby() - whole data frame ------------------------------------------------------ 
 
-> (d8 <- by(data = tobacco, INDICES = tobacco$gender, FUN = descr)) 
+> (d8 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
 ### Descriptive Statistics  
@@ -425,10 +425,10 @@ Table: Table continues below
 -- Output file appended
 
 
-# with() + by() ---------------------------------------------------------------- 
+# with() + stby() ---------------------------------------------------------------- 
 
 > label(tobacco$BMI) <- "Body Mass Index" 
-> (d9 <- with(tobacco, by(BMI, gender, descr))) 
+> (d9 <- with(tobacco, stby(BMI, gender, descr))) 
 
 ### Descriptive Statistics  
 #### BMI by gender  
@@ -452,7 +452,7 @@ Table: Table continues below
 
 # by with weights -------------------------------------------------------------- 
 
-> (d10 <- by(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts)) 
+> (d10 <- stby(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
 ### Weighted Descriptive Statistics  

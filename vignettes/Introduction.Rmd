@@ -19,9 +19,7 @@ library(summarytools)
 st_options(footnote = NA, 
            plain.ascii = FALSE,
            style = "rmarkdown",
-           subtitle.emphasis = FALSE, 
-           dfSummary.silent = TRUE, 
-           descr.silent = TRUE)
+           subtitle.emphasis = FALSE, )
 ```
 
 ```{r, echo=FALSE}
@@ -66,20 +64,39 @@ imported data frames.
 
 ### Latest Improvements
 
-Version 0.9 brings **many** changes and improvements. This
-[vignette](library/summarytools/doc/Changes-Introduced-in-Version-0-9.html) 
-gives a detailed description of those changes, but a summary can also be found 
-[at the end of this vignette](#changes).
-<br/><br/>
+Version 0.9 brings **many** changes and improvements. A summary of those
+changes can be found [at the end of this vignette](#changes).
+
+#### This Document's Setup
+Since this vignette was created using _Rmarkdown_, we've set some global options
+that are appropriate for this format and which avoid redundancy in the code. 
+Here's what the setup chunk looks like:
+
+````
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+library(summarytools)
+st_options(plain.ascii = FALSE,       # This is an absolute must
+           style = "rmarkdown",       # This too
+           footnote = NA,             # Producing footnotes would clutter the results
+           subtitle.emphasis = FALSE  # This is a setting to experiment with - according to
+)                                     # the theme used, it might produce better results one way
+                                      # or another.
+```
+
+```{r, echo=FALSE}
+st_css()    # This is also a must; without it, you can expect odd layout.
+```
+````
+<br/>
+
 
 # The Four Core Functions
 ## 1 - freq() : Frequency Tables
 
 The `freq()` function generates a table of frequencies with counts and
-proportions. Since this vignette was created using _Rmarkdown_, we've set the
-`style` argument to “rmarkdown”; **knitr** takes care of
-converting the generated markup characters into actual _html_ or _pdf_
-formatting.
+proportions.
 
 ```{r}
 library(summarytools)
@@ -244,7 +261,7 @@ BMI_by_age <- with(tobacco,
 print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 ```
 
-### Using stby() with ctable()
+### Using stby() With ctable()
 
 The syntax to use is as follows:
 
@@ -315,6 +332,10 @@ more on _knitr_'s options.
 #       method = 'render', headings = FALSE)
 # ```
 ````
+```{r, echo = FALSE}
+print(dfSummary(tobacco, style = 'grid', graph.magnif = 0.82), 
+      method = 'render', headings = FALSE)
+```
 
 ## Writing Output to Files
 
@@ -501,22 +522,74 @@ print(dfSummary(somedata, graph.magnif = 0.8),
       bootstrap.css = FALSE)
 ```
 
+## Translations
+
+It is now possible to switch the language used in the outputs. So far, not too
+many languages are available (French, Spanish and Russian), but with the 
+community's involvement, I hope we can gather a good number of them in 
+reasonable time.
+
+### Switching Languages
+
+To switch languages, simply use 
+
+```{r, eval=FALSE}
+st_options(lang = "fr")
+```
+
+Any function will now produce outputs using that language:
+
+```{r, eval=FALSE}
+view(freq(iris$Species))
+```
+
+
+<img style="float: center;" src="freq-fr.png" width=320px />
+
+The language used for producing the object is stored within it as an attribute.
+This is to avoid problems when switching languages between the moment the 
+object is stored, and the moment at which it is printed.
+
+### Non-UTF8 Locales
+
+On most Windows systems, it will be necessary to change the `LC_CTYPE` element 
+of the locale settings if the character set is not included in the current 
+locale. For instance, in order to get good results -- or rather, any results at 
+all -- with the Russian language in a "latin1" environment, we'll need to do 
+this:
+
+```{r, eval = FALSE}
+Sys.setlocale("LC_CTYPE", "russian")
+st_options(lang = 'ru')
+```
+
+Then, to go back to default setting:
+
+```{r, eval=FALSE}
+Sys.setlocale("LC_CTYPE", "")
+st_options(lang = "en")
+```
+
+
+### Defining and Using Custom Translations
+
+With the new function `useTranslations()`, you can add your own set of 
+translations. For this, download the template _csv_ file from
+[this page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv).
+
+After you're done translating the +/- 70 items, simply call the 
+`useTranslations()` function, giving it as sole argument the path to the _csv_
+file you've just created. Note that such custom translations will not persist 
+across R sessions. This means that we should always have handy this _csv_ file 
+if we're to print objects created with it. 
+
+
 ## Latest Changes and Improvements {#changes}
 
 As stated earlier, version 0.9 brings **many** improvements
-to **summarytools**. This 
-[vignette](library/summarytools/doc/Changes-Introduced-in-Version-0-9.html) 
-gives a detailed description of the changes, but here are the main elements:
+to **summarytools**. Here are the key elements:
 
  - Translations
-   + For now, only a limited number of languages are available (fr, es, ru), but
-     as users contribute their own translations, the list will hopefully grow
-     much larger
-   + To use a different language than English, call the `st_options()` function, 
-     like so: `st_options(lang = "fr")
-   + An additional function, `useTranslations()` allows using custom
-     translations; a template is available
-     [here](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv)
  - Improved printing of list objects
    + Objects of class “stby” are automatically printed in the console with
      optimal results; no more need for `view(x, method = "pander")`;
@@ -576,6 +649,14 @@ gives a detailed description of the changes, but here are the main elements:
    split into more manageable parts, and several normalizing operations were
    performed, facilitating maintenance and improving code readability
 
+#### Backward Compatibility
+
+No changes break backward compatibility, but at least one legacy feature will be
+abandoned in some further release. Namely, the boolean parameter `omit.headings`, 
+which has been replaced by the more straightforward `headings`. For now, a 
+message is shown whenever the "old" parameter name is used, encouraging users
+to switch to the newer one.
+
 ## Stay Up-to-date
 
 Check out the [GitHub project's page](https://github.com/dcomtois/summarytools) - 
@@ -584,7 +665,7 @@ from there you can see the latest updates and also submit feature requests.
 For a preview of what's coming in the next release, see the 
 [development branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 
-# Final notes
+## Final notes
 
 The package comes with no guarantees. It is a work in progress and
 feedback / feature requests are welcome. Just send me an email
