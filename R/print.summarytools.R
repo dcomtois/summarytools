@@ -614,7 +614,7 @@ print_freq <- function(x, method) {
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
-    msg(paste("Non-numerical variable(s) ignored:",
+    msg(paste("Non-categorical variable(s) ignored:",
             paste(attr(x, "ignored"), collapse = ", ")))
   }
   
@@ -1068,10 +1068,10 @@ print_descr <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
+  if("ignored" %in% names(attributes(x)) && !isTRUE(parent.frame()$silent) &&
+     !isTRUE(st_options("descr.silent")) && !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
-      isTRUE(as.logical(data_info$by_first))) &&
-     "ignored" %in% names(attributes(x))) {
+      isTRUE(as.logical(data_info$by_first)))) {
     msg(paste("Non-numerical variable(s) ignored:",
               paste(attr(x, "ignored"), collapse = ", ")))
   }
