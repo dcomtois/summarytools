@@ -323,8 +323,8 @@ check_arguments_st_options <- function(mc) {
   }
   
   if ("ctable.prop" %in% names(mc) &&
-      !isTRUE(test_logical(pf$ctable.prop, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'ctable.prop' must be either TRUE or FALSE"
+      !isTRUE(test_choice(pf$ctable.prop, c("r", "c", "t", "n")))) {
+    errmsg %+=% "'ctable.prop' must be one of \"r\", \"c\", \"t\", or \"n\""
   }
   
   if ("ctable.totals" %in% names(mc) &&
