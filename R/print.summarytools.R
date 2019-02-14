@@ -162,6 +162,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   on.exit(panderOptions("knitr.auto.asis", knitr.auto.asis.value))
   
   dotArgs <- list(...)
+  mc <- match.call()
   
   # Recup arguments from view() if present -------------------------------------
   if ("open.doc" %in% names(dotArgs)) {
@@ -179,7 +180,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
   
   # Parameter validation -------------------------------------------------------
-  # TODO: move after overrides
   errmsg <- character()
   
   method <- switch(tolower(substring(method, 1, 1)),
@@ -288,7 +288,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
   }
   
-  
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
@@ -297,6 +296,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     footnote <- ""
   }
 
+  if (!"silent" %in% names(mc)) {
+    if (attr(x, "st_type") == "descr") {
+      silent <- st_options("descr.silent")
+    } else if (attr(x, "st_type") == "dfSummary") {
+      silent <- st_options("dfSummary.silent")
+    }
+  }
+  
   # Display message if list object printed with base print() method with pander
   if (method == "pander" && 
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
@@ -407,7 +414,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       (!"plain.ascii" %in% (names(dotArgs)))) {
     attr(x, "format_info")$plain.ascii <- FALSE
   }
-
+  
   # Evaluate formatting attributes that are symbols at this stage (F, T)
   for (i in seq_along(attr(x, "format_info"))) {
     if (is.symbol(attr(x, "format_info")[[i]])) {
@@ -1069,11 +1076,12 @@ print_descr <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if("ignored" %in% names(attributes(x)) && !isTRUE(parent.frame()$silent) &&
-     !isTRUE(st_options("descr.silent")) && !isTRUE(format_info$group.only) && 
+  if(!isTRUE(parent.frame()$silent) &&
+     "ignored" %in% names(attributes(x)) &&
+     !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first)))) {
-    message("Non-numerical variable(s) ignored: ",
+        message("Non-numerical variable(s) ignored: ",
             paste(attr(x, "ignored"), collapse = ", "))
   }
   
