@@ -162,6 +162,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   on.exit(panderOptions("knitr.auto.asis", knitr.auto.asis.value))
   
   dotArgs <- list(...)
+  mc <- match.call()
   
   # Recup arguments from view() if present -------------------------------------
   if ("open.doc" %in% names(dotArgs)) {
@@ -179,7 +180,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
   
   # Parameter validation -------------------------------------------------------
-  # TODO: move after overrides
   errmsg <- character()
   
   method <- switch(tolower(substring(method, 1, 1)),
@@ -245,7 +245,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
       method == "pander") {
     method <- "browser"
-    msg("Switching method to 'browser'")
+    message("Switching method to 'browser'")
   }
   
   if (method == "pander" && !is.na(table.classes)) {
@@ -276,18 +276,17 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if (attr(x, "format_info")$style %in% c("simple", "multiline")) {
       dotArgs %+=% list(style = newstyle)
       if (isTRUE(tmp_msg_flag)) {
-        msg(paste0("Setting 'plain.ascii' to FALSE and Changing style to '",
-                   newstyle, "' for improved markdown compatibility"))
+        message("Setting 'plain.ascii' to FALSE and Changing style to '",
+                newstyle, "' for improved markdown compatibility")
       } else {
-        msg(paste0("Changing style to '", newstyle, "' for improved markdown",
-                   "compatibility"))
+        message("Changing style to '", newstyle, 
+                "' for improved markdown compatibility")
       }
     } else if (isTRUE(tmp_msg_flag)) {
-      msg(paste("Setting 'plain.ascii' to FALSE for improved markdown",
-                "compatibility"))
+      message("Setting 'plain.ascii' to FALSE for improved markdown ",
+              "compatibility")
     }
   }
-  
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
@@ -297,13 +296,21 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     footnote <- ""
   }
 
+  if (!"silent" %in% names(mc)) {
+    if (attr(x, "st_type") == "descr") {
+      silent <- st_options("descr.silent")
+    } else if (attr(x, "st_type") == "dfSummary") {
+      silent <- st_options("dfSummary.silent")
+    }
+  }
+  
   # Display message if list object printed with base print() method with pander
   if (method == "pander" && 
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
                  x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
-    msg(paste("For best results printing list objects with summarytools,",
-              "use print(x)"))
+    message("For best results printing list objects with summarytools, ",
+            "use print(x); if by() was used, use stby() instead")
   }
   
   # Override x's attributes (format_info and heading info) ---------------------
@@ -326,8 +333,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
                            "totals", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
       if (format_element == "omit.headings") {
-        msg(paste("'omit.headings' will disappear in future releases;",
-                  "use 'headings' instead"))
+        message("'omit.headings' will disappear in future releases; ",
+                "use 'headings' instead")
         attr(x, "format_info")[["headings"]] <- 
           !isTRUE(eval(dotArgs[["omit.headings"]]))
         overrided_args <- append(overrided_args, "headings")
@@ -372,13 +379,14 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   # Override of data info attributes
   if ("dataframe" %in% tolower(names(dotArgs))) {
     dotArgs$Data.frame <- dotArgs$Dataframe
-    msg("Attribute 'Dataframe' has been renamed to 'Data.frame'")
+    message("Attribute 'Dataframe' has been renamed to 'Data.frame'; ",
+            "please use the latter in the future")
   }
   
   if ("dataframe.label" %in% tolower(names(dotArgs))) {
     dotArgs$Data.frame.label <- dotArgs$Dataframe.label
-    msg(paste("Attribute 'Dataframe.label' has been renamed to",
-              "'Data.frame.label'"))
+    message("Attribute 'Dataframe.label' has been renamed to ",
+            "'Data.frame.label'; please use the latter in the future")
   }
 
 
@@ -406,7 +414,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
       (!"plain.ascii" %in% (names(dotArgs)))) {
     attr(x, "format_info")$plain.ascii <- FALSE
   }
-
+  
   # Evaluate formatting attributes that are symbols at this stage (F, T)
   for (i in seq_along(attr(x, "format_info"))) {
     if (is.symbol(attr(x, "format_info")[[i]])) {
@@ -480,9 +488,9 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     
     if (file != "" && !isTRUE(silent)) {
       if (isTRUE(append))
-        msg(paste("Output file appended:", file))
+        message("Output file appended: ", file)
       else
-        msg(paste("Output file written:", file))
+        message("Output file written: ", file)
       return(invisible())
     }
     
@@ -557,13 +565,13 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
           if (!is.null(viewer)) {
             viewer(outfile_path)
           } else {
-            msg(paste("To view html content in RStudio, please run",
-                      "install.packages('rstudioapi')"))
-            msg("Switching method to 'browser'")
+            message("To view html content in RStudio, please install ",
+                    "the 'rstudioapi' package")
+            message("Switching method to 'browser'")
             method <- "browser"
           }
         } else {
-          msg("Switching method to 'browser'")
+          message("Switching method to 'browser'")
           method <- "browser"
         }
       }
@@ -586,15 +594,15 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     if(file == "" && method %in% c("browser", "viewer")) {
       .st_env$tmpfiles <- c(.st_env$tmpfiles, outfile_path)
       if (!silent) {
-        msg(paste("Output file written:", outfile_path))
+        message("Output file written: ", outfile_path)
       }
       return(invisible(outfile_path))
     } else if (file != "") {
       if (!silent) {
         if (isTRUE(append)) {
-          msg(paste("Output file appended:", outfile_path))
+          message("Output file appended: ", outfile_path)
         } else {
-          msg(paste("Output file written:", outfile_path))
+          message("Output file written: ", outfile_path)
         }
       }
       return(invisible())
@@ -614,8 +622,8 @@ print_freq <- function(x, method) {
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
-    msg(paste("Non-categorical variable(s) ignored:",
-            paste(attr(x, "ignored"), collapse = ", ")))
+    message("Non-categorical variable(s) ignored: ",
+            paste(attr(x, "ignored"), collapse = ", "))
   }
   
   if (!isTRUE(format_info$report.nas)) {
@@ -1068,12 +1076,13 @@ print_descr <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if("ignored" %in% names(attributes(x)) && !isTRUE(parent.frame()$silent) &&
-     !isTRUE(st_options("descr.silent")) && !isTRUE(format_info$group.only) && 
+  if(!isTRUE(parent.frame()$silent) &&
+     "ignored" %in% names(attributes(x)) &&
+     !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first)))) {
-    msg(paste("Non-numerical variable(s) ignored:",
-              paste(attr(x, "ignored"), collapse = ", ")))
+        message("Non-numerical variable(s) ignored: ",
+            paste(attr(x, "ignored"), collapse = ", "))
   }
   
   justify <- switch(tolower(substring(format_info$justify, 1, 1)),

@@ -1,7 +1,7 @@
 Version 0.9.1
 -------------
-stby(), a summarytools-specific version of by(), is introduced, simplifying
-the printing of "by" objects. 
+stby(), a summarytools-specific version of by(), is introduced, improving
+the printing of "by" objects.
 
 Version 0.9.0
 -------------
@@ -9,7 +9,8 @@ Translations are introduced. Function useTranslations() added to allow custom
 translations. Optimally printing by() and list() objects in the console is 
 simplified. dfSummary() and ctable() now fully supports by(). In descr() the
 weight variable is automatically removed from the list of variables for which 
-to produce statistics.
+to produce statistics. print() / view() argument 'max.tbl.height' allows 
+printing dfSummaries in scrollable windows.
 
 Version 0.8.9
 -------------

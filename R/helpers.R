@@ -10,12 +10,12 @@ check_arguments <- function(mc, dotArgs) {
   
   # Deprecated arguments -------------------------------------------------------
   if ("file" %in% names(dotArgs)) {
-    msg(paste("'file' argument is deprecated; use with print() or view(),",
+    message(paste("'file' argument is deprecated; use with print() or view(),",
               "e.g. print(x, file=", dotArgs$file))
   }
   
   if ("omit.headings" %in% names(dotArgs)) {
-    msg(paste0("'omit.headings' argument has been replaced by 'headings'; ",
+    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
                "setting headings = ", 
                !isTRUE(dotArgs$omit.headings)))
     assign(x = "headings", value = !isTRUE(dotArgs$omit.headings), 
@@ -231,7 +231,7 @@ check_arguments <- function(mc, dotArgs) {
     }
     
     if ("style" %in% names(mc) && pf$style == "rmarkdown") {
-      msg("'rmarkdown' style not supported - using 'multiline' instead")
+      message("'rmarkdown' style not supported - using 'multiline' instead")
       assign("style", "multiline", envir = parent.frame())
     }
     
@@ -477,23 +477,4 @@ count.empty <- function(x, count.nas = TRUE) {
     }
   }
   n
-}
-
-# Display message, first checking if it was displayed very recently (this
-# avoids repeating messages when processing list objects). We keep 3 messages
-# in the queue.
-msg <- function(x) {
-  if (!x %in% .st_env$messages$msg) {
-    .st_env$messages[nrow(.st_env$messages) + 1,] <- list(x, Sys.time())
-    message(x)
-  } else {
-    ind <- which(.st_env$messages$msg == x)
-    if (difftime(Sys.time(), .st_env$messages$time[ind], units = "sec") > 0.1) {
-      message(x)
-    }
-    .st_env$messages$time[ind] <- Sys.time()
-  }
-  if (nrow(.st_env$messages) > 3) {
-    .st_env$messages <- .st_env$messages[1:3,]
-  }
 }

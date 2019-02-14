@@ -11,6 +11,13 @@ st_options(style = 'rmarkdown', descr.stats = "common", descr.transpose = TRUE)
 (d2 <- descr(tobacco))
 print(d2, headings = FALSE)
 
+# Silent Option
+print(descr(tobacco), silent = TRUE)
+st_options(descr.silent = TRUE)
+descr(tobacco)
+print(descr, silent = FALSE)
+st_options(descr.silent = FALSE)
+
 # labels
 label(tobacco) <- "A study on Tobacco and Health"
 descr(tobacco, style = "simple")
