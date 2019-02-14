@@ -49,7 +49,7 @@ for center, or \dQuote{r} for right (default). Has no effect on \emph{html}
 tables.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit heading section. Can be
-set globally via \code{\link{st_options}}.}
+set globally via \code{\link{st_options}}. \code{TRUE} by default.}
 
 \item{display.labels}{Logical. Should variable / data frame labels be
 displayed in the title section?  Default is \code{TRUE}. To change this

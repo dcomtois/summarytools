@@ -384,19 +384,21 @@ The following options can be set with `st_options()`:
 
 ### General Options
 
-| Option name               | Default   | Note                                          |
-| ------------------------: | --------: | :-------------------------------------------- |
-| style                     | “simple”  | Set to “rmarkdown” in .Rmd documents          |
-| plain.ascii               |    TRUE   | Set to FALSE in .Rmd documents                |
-| round.digits              |       2   | Number of decimals to show                    |
-| headings                  |    TRUE   | Formerly “omit.headings”                      |
-| footnote                  | “default” | Personalize, or set to NA to omit             |
-| display.labels            |    TRUE   | Show variable / data frame labels in headings |
-| bootstrap.css             |    TRUE   | Include Bootstrap 4 css in _html_ standalones |
-| custom.css                |      NA   | Path to your own css file                     |
-| escape.pipe               |   FALSE   | Useful for some Pandoc conversions            |
-| subtitle.emphasis         |    TRUE   | Controls headings formatting                  |
-| lang                      |   “en”    | Language (always 2-letter, lowercase)         |
+| Option name               | Default   | Note                                            |
+| ------------------------: | --------: | :---------------------------------------------- |
+| style                     | “simple”  | Set to “rmarkdown” in .Rmd documents            |
+| plain.ascii               |    TRUE   | Set to FALSE in .Rmd documents                  |
+| round.digits              |       2   | Number of decimals to show                      |
+| headings                  |    TRUE   | Formerly “omit.headings”                        |
+| footnote                  | “default” | Personalize, or set to NA to omit               |
+| display.labels            |    TRUE   | Show variable / data frame labels in headings   |
+| bootstrap.css *           |    TRUE   | Include Bootstrap 4 css in _html_ outputs       |
+| custom.css                |      NA   | Path to your own css file                       |
+| escape.pipe               |   FALSE   | Useful for some Pandoc conversions              |
+| subtitle.emphasis         |    TRUE   | Controls headings formatting                    |
+| lang                      |   “en”    | Language (always 2-letter, lowercase)           |
+
+(*) Set to FALSE in Shiny apps
 
 ### Function-Specific Options
 
@@ -451,11 +453,11 @@ stored within it. However, you can override most of them when using the
 | valid.col      |        |        |       |     x     |
 | na.col         |        |        |       |     x     |
 | col.widths     |        |        |       |     x     |
-| split.tables   |   x    |   x    |   x   |     x     |
+| totals         |   x    |   x    |       |           |
 | report.nas     |   x    |        |       |           |
 | display.type   |   x    |        |       |           |
 | missing        |   x    |        |       |           |
-| totals         |   x    |   x    |       |           |
+| split.tables   |   x    |   x    |   x   |     x     |
 | caption        |   x    |   x    |   x   |     x     |
 
 
@@ -477,10 +479,12 @@ stored within it. However, you can override most of them when using the
 
 #### Example 
 
+Here's an example in which we override 3 function-specific arguments, and one
+element of the heading content:
+
 ```{r}
-age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
-                                   # including headings, NA counts, and Totals
-print(age_stats, report.nas = FALSE, totals = FALSE, 
+(age_stats <- freq(tobacco$age.gr)) 
+print(age_stats, report.nas = FALSE, totals = FALSE, display.type = FALSE,
       Variable.label = "Age Group")
 ```
 

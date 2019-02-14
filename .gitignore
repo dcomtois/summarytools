@@ -11,3 +11,5 @@ tests/output
 tests/output/*
 tests/other
 img/ds*.png
+tests/ref - Copy/
+vignettes/img/
