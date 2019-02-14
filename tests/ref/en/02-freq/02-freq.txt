@@ -407,7 +407,7 @@ Weights: ponderation
    **Total**   1000.00    100.00         100.00    100.00         100.00
 
 
-# stby() ----------------------------------------------------------------------- 
+# stby() ------------------------------------------------------------------------- 
 
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 

@@ -359,7 +359,7 @@ Table: Table continues below
 |  **% Valid** |        96.47 |
 
 
-# stby(), special case --------------------------------------------------------- 
+# stby(), special case ----------------------------------------------------------- 
 
 > (d7 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr)) 
 
@@ -384,7 +384,7 @@ Table: Table continues below
 -- Output file written
 
 
-# stby() - whole data frame ---------------------------------------------------- 
+# stby() - whole data frame ------------------------------------------------------ 
 
 > (d8 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -425,7 +425,7 @@ Table: Table continues below
 -- Output file appended
 
 
-# with() + stby() -------------------------------------------------------------- 
+# with() + stby() ---------------------------------------------------------------- 
 
 > label(tobacco$BMI) <- "Body Mass Index" 
 > (d9 <- with(tobacco, stby(BMI, gender, descr))) 

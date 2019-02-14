@@ -7,7 +7,7 @@
 > w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)) 
 > view(w1, file = "01 - with.md") 
 -- Switching method to 'pander'
--- Changing style to 'rmarkdown' for improved markdown compatibility
+-- Changing style to 'rmarkdown' for improved markdowncompatibility
 -- Output file written
 
 > view(w1, file = "01 - with.html") 

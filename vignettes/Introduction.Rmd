@@ -12,14 +12,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r init_setup, include=FALSE}
+```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
 library(summarytools)
 st_options(footnote = NA, 
            plain.ascii = FALSE,
            style = "rmarkdown",
-           subtitle.emphasis = FALSE)
+           subtitle.emphasis = FALSE, )
 ```
 
 ```{r, echo=FALSE}
@@ -64,16 +64,33 @@ imported data frames.
 
 ### Latest Improvements
 
-Version 0.9 brings **many** changes and improvements to **summarytools**. A
-summary of those changes can be found [at the end of this vignette](#changes).
+Version 0.9 brings **many** changes and improvements. A summary of those
+changes can be found [at the end of this vignette](#changes).
 
-<!-- ### This Vignette's Setup -->
+#### This Document's Setup
+Since this vignette was created using _Rmarkdown_, we've set some global options
+that are appropriate for this format and which avoid redundancy in the code. 
+Here's what the setup chunk looks like:
 
-<!-- To avoid redundancy in the code, some global summarytools options have been set. -->
-<!-- See [this section](#st_rmd) for more details; the settings in use are very -->
-<!-- similar to the ones given in the example. -->
+````
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+library(summarytools)
+st_options(plain.ascii = FALSE,       # This is an absolute must
+           style = "rmarkdown",       # This too
+           footnote = NA,             # Producing footnotes would clutter the results
+           subtitle.emphasis = FALSE  # This is a setting to experiment with - according to
+)                                     # the theme used, it might produce better results one way
+                                      # or another.
+```
 
+```{r, echo=FALSE}
+st_css()    # This is also a must; without it, you can expect odd layout.
+```
+````
 <br/>
+
 
 # The Four Core Functions
 ## 1 - freq() : Frequency Tables
@@ -89,7 +106,7 @@ freq(iris$Species, style = "rmarkdown")
 If we do not worry about missing data, we can set `report.nas = FALSE`:
 
 ```{r}
-freq(iris$Species, style = "rmarkdown", report.nas = FALSE, headings = FALSE)
+freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 ```
 
 We can simplify the results further and omit the _Totals_ row by specifying 
@@ -98,9 +115,6 @@ We can simplify the results further and omit the _Totals_ row by specifying
 To get familiar with the various output styles, try different values for 
 `style` -- “simple”, “rmarkdown” or “grid”, and see how this affects the
 results in the console.
-
-<!-- Since the `style` option has been globally set to "rmarkdown" in the vignette's -->
-<!-- setup, we will omit it from future examples. -->
 
 ## 2 - ctable() : Cross-Tabulations
 
@@ -154,7 +168,7 @@ The full list of available statistics.
 
 ```{r}
 descr(iris, stats = "common", transpose = TRUE, 
-      headings = FALSE)
+      headings = FALSE, style = "rmarkdown")
 ```
 
 ## 4 - dfSummary() : Data Frame Summaries
@@ -202,16 +216,9 @@ on “browser” and the report is shown in the system’s default browser.
 
 ## Using stby() to Ventilate Results
 
-We can use `stby()` the same way as *R*’s base function `by()` with the four
-core summarytools functions. It produces a list-type object
+We can use `stby()` the same way as *R*’s base function `by()` with all main
+summarytools functions. This returns a list-type object
 containing as many elements as there are categories in the grouping variable.
-
-**But why not just use `by()`?** The reason is that `by()` produces objects of
-class "by()", which have a dedicated `print()` method which conflict with
-summarytools' way of printing list-type objects. Since `print.by()` can't be
-redefined (as of CRAN policies), the sensible solution was to introduce a 
-function that is essentially a _clone_ of `by()`, except that the objects it
-produces have the class "stby".
 
 Using the _iris_ data frame, we will display descriptive statistics
 by Species.
@@ -239,8 +246,10 @@ single table:
 
 ```{r}
 data(tobacco)
-with(tobacco, stby(BMI, age.gr, descr, 
-                   stats = c("mean", "sd", "min", "med", "max")))
+BMI_by_age <- with(tobacco, 
+                   stby(BMI, age.gr, descr, 
+                        stats = c("mean", "sd", "min", "med", "max")))
+print(BMI_by_age, style = "rmarkdown")
 ```
 
 The transposed version looks like this:
@@ -249,7 +258,7 @@ The transposed version looks like this:
 BMI_by_age <- with(tobacco, 
                    stby(BMI, age.gr, descr,  transpose = TRUE,
                         stats = c("mean", "sd", "min", "med", "max")))
-print(BMI_by_age, headings = FALSE)
+print(BMI_by_age, style = "rmarkdown", headings = FALSE)
 ```
 
 ### Using stby() With ctable()
@@ -275,7 +284,7 @@ Another way to do it would be using `lapply()`, but automatic printing
 will not be optimal; we'll need to explicitly call the `print()` method
 to have proper results (_i.e._ without repeating heading elements).
 
-## Using summarytools in Rmarkdown documents {#st_rmd}
+## Using summarytools in Rmarkdown documents
 
 As we have seen, **summarytools** can generate both text/_markdown_ and _html_
 results. Both types of outputs can be used in Rmarkdown documents. The vignette
@@ -308,13 +317,10 @@ more on _knitr_'s options.
 # library(knitr)
 # opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
 # library(summarytools)
-# st_options(plain.ascii = FALSE,   # This should figure in all Rmd documents
-#            style = "rmarkdown",   # This too
-#            dfSummary.varnumbers = FALSE,  # This will make summaries narrower
-#            dfSummary.valid.col = FALSE,   # This too
-#            subtitle.emphasis = FALSE   # Depending on the theme used, this
-#                                        # setting can improve the headings layout
-#            )
+# st_options(plain.ascii = FALSE, 
+#            style = "rmarkdown",
+#            dfSummary.varnumbers = FALSE,
+#            dfSummary.valid.col = FALSE)
 #```
 #
 # ```{r, echo=FALSE}
@@ -331,23 +337,11 @@ print(dfSummary(tobacco, style = 'grid', graph.magnif = 0.82),
       method = 'render', headings = FALSE)
 ```
 
-### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
-
-For data frames containing numerous variables, we can use the `max.tbl.height`
-argument to wrap the results in a scrollable window having the specified
-height, in pixels. For instance:
-
-```{r}
-print(dfSummary(tobacco), max.tbl.height = 300, method = "render")
-```
-
-
 ## Writing Output to Files
 
-We can use the `file` argument with `print()` or `view()` to indicate that we
-want to save the results in a file, be it _html_, _Rmd_, _md_, or just plain
-text (_txt_). The file extension indicates to **summarytools** what type of file
-should be generated.
+We can use the `file` argument with `print()` or `view()` to indicate that we want
+to save the results in a file, be it _html_, _Rmd_ or plain text. The file extension
+indicates what type of file we wish to generate.
 
 ```{r, eval=FALSE}
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
@@ -461,8 +455,8 @@ stored within it. However, you can override most of them when using the
 ```{r}
 age_stats <- freq(tobacco$age.gr)  # age_stats contains a regular output for freq 
                                    # including headings, NA counts, and Totals
-print(age_stats, report.nas = FALSE, totals = FALSE, 
-      Variable.label = "Age Group")
+print(age_stats, style = "rmarkdown", report.nas = FALSE, 
+                 totals = FALSE, Variable.label = "Age Group")
 ```
 
 Note that the original attributes are still part of the _age\_stats_ object,
