@@ -79,7 +79,7 @@ check_arguments <- function(mc, dotArgs) {
     errmsg %+=% "'headings' must be either be TRUE or FALSE"
   }
   
-  # freq-specific  arguments ---------------------------------------------------
+  # freq-specific arguments ----------------------------------------------------
   if (caller == "freq") {
     
     if ("report.nas" %in% names(mc) && 
@@ -240,6 +240,18 @@ check_arguments <- function(mc, dotArgs) {
                              len = 1, any.missing = FALSE))) {
       errmsg %+=% "'trim.strings' must be either TRUE or FALSE"
     }
+    
+    if ("silent" %in% names(mc) &&
+        !isTRUE(test_logical(pf$silent, len = 1, any.missing = FALSE))) {
+      errmsg %+=% "'silent' must be either TRUE or FALSE"
+    }
+    
+    if ("tmp.img.dir" %in% names(mc) &&
+        (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
+         nchar(pf$tmp.img.dir) > 5)) {
+      errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
+    }
+    
   }
   
   # Order the messages according to arguments order
@@ -390,6 +402,12 @@ check_arguments_st_options <- function(mc) {
   if ("dfSummary.graph.magnif" %in% names(mc) && 
       pf$dfSummary.graph.magnif <= 0) {
     errmsg %+=% "'dfSummary.graph.magnif' must be > 0"
+  }
+  
+  if ("tmp.img.dir" %in% names(mc) &&
+      (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
+       nchar(pf$tmp.img.dir) > 5)) {
+    errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
   }
   
   return(errmsg)

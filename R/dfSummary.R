@@ -65,6 +65,11 @@
 #'   Defaults to \code{40}.
 #' @param split.tables \pkg{pander} argument which determines the maximum width
 #'   of a table. Keeping the default value (\code{Inf}) is recommended.
+#' @param tmp.img.dir Character. Directory used to store temporary images when
+#'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and 
+#'   `style = "grid"`. See \emph{Details}.
+#' @param silent Logical. Hide console messages. \code{FALSE} by default. To 
+#'   change this value globally, see \code{\link{st_options}}.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A data frame with additional class \code{summarytools} containing as
@@ -98,9 +103,19 @@
 #'   \emph{before} calculating frequencies, so those will be impacted
 #'   accordingly.
 #'
-#'   The package vignette \dQuote{Recommendations for Rmarkdown} provides
-#'   valuable information for creating optimal \emph{Rmarkdown} documents with
-#'   summarytools.
+#'   Specifying \code{tmp.img.dir} allows producing results consistent with
+#'   pandoc styling while also showing \emph{png} graphs. Due to the fact that
+#'   in Pandoc, column widths are determined by the length of cell contents
+#'   \strong{even if said content is merely a link to an image}, we cannot
+#'   use the standard R temporary directory to store the images. We need a
+#'   shorter path; on Mac OS and Linux, using \dQuote{/tmp} is a sensible
+#'   choice, since this directory is cleaned up automatically on a regular
+#'   basis. On Windows however, there is no such convenient directory and the
+#'   user will have to choose a directory and cleanup the temporary images
+#'   manually after the document has been rendered. Providing a relative path
+#'   such as dQuote{img} is recommended. The maximum length for this parameter
+#'   is set to 5 characters. It can be set globally using 
+#'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 #'
 #' @examples
 #' data(tobacco)
@@ -124,11 +139,15 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                       justify = "left", col.widths = NA, 
                       headings = st_options("headings"),
                       display.labels = st_options("display.labels"),
-                      max.distinct.values = 10, trim.strings = FALSE,
-                      max.string.width = 25, split.cells = 40,
-                      split.tables = Inf, ...) {
+                      max.distinct.values = 10, 
+                      trim.strings = FALSE,
+                      max.string.width = 25, 
+                      split.cells = 40,
+                      split.tables = Inf,
+                      tmp.img.dir = st_options('tmp.img.dir'),
+                      silent = st_options('dfSummary.silent'), ...) {
   
-  
+
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
@@ -143,7 +162,9 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     } else {
       converted_to_df <- TRUE
       df_name <- setdiff(all.names(xnames), c("[", "[[", ":", "$"))[1]
-      message(deparse(xnames), " was converted to a data frame")
+      if (!isTRUE(silent)) {
+        message(deparse(xnames), " was converted to a data frame")
+      }
     }
   }
   
@@ -185,10 +206,22 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   }
   
   if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
-    store_imgs <- TRUE
-    message("Images used by dfSummary() will be written to ", 
-            "'img' subdirectory")
-    dir.create("img", showWarnings = FALSE)
+    if (is.na(tmp.img.dir)) {
+      store_imgs <- FALSE
+      if(!isTRUE(silent)) {
+        message("text graphs are displayed; set 'tmp.img.dir' parameter to ",
+                "activate png graphs")
+      }
+    } else {    
+      store_imgs <- TRUE
+      dir.create(tmp.img.dir, showWarnings = FALSE)
+      if (Sys.info()[["sysname"]] == "Windows" || tmp.img.dir != "/tmp") {
+        if(!isTRUE(silent)) {
+          message("temporary images written to '", 
+                  normalizePath(tmp.img.dir), "'")
+        }
+      }
+    }
   } else {
     store_imgs <- FALSE
   }
@@ -850,7 +883,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
   }
   
   if (isTRUE(pandoc)) {
-    png_path <- generate_png_path()
+    png_path <- generate_png_path(parent.frame(2)$tmp.img.dir)
     image_write(image_transparent(ii, 'white'), 
                 path = png_path)
     return(png_path)
@@ -865,28 +898,13 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
 }
 
 #' @keywords internal
-generate_png_path <- function() {
-  d <- dir("img", pattern = "ds\\d+\\.png", full.names = TRUE)
-  if (length(d) == 0) {
-    .st_env$tmpfiles <- c(.st_env$tmpfiles, 
-                          normalizePath("img/ds001.png", mustWork = FALSE))
-    return("img/ds001.png")
+generate_png_path <- function(d) {
+  filelist <- dir(d, pattern = "ds\\d+\\.png", full.names = TRUE)
+  if (length(filelist) == 0) {
+    return(paste0(d, "/ds0001.png"))
   } else {
-    # if first file created more than 10 minutes ago, we delete the series
-    if (difftime(time1 = Sys.time(), time2 = file.info(d[1])$mtime, 
-                 units = "min") > 10) {
-      message("Deleting older temp files ", d[1], " -- ", tail(d, 1))
-      .st_env$tmpfiles <- setdiff(.st_env$tmpfiles, 
-                                  normalizePath(d, mustWork = FALSE))
-      unlink(x = d)
-      max_num <- 0
-    } else {
-      max_num <- as.numeric(sub("^img/ds(\\d+)\\.png$", "\\1", tail(d, 1)))
-    }
-    
-    png_path <- paste0("img/ds", sprintf("%03d", max_num + 1), ".png")
-    .st_env$tmpfiles <- c(.st_env$tmpfiles,
-                          normalizePath(png_path, mustWork = FALSE))
+    max_num <- as.numeric(sub("^.+/ds(\\d+)\\.png$", "\\1", tail(filelist, 1)))
+    png_path <- paste0(d, "/ds", sprintf("%04d", max_num + 1), ".png")
     return(png_path)
   }
 }

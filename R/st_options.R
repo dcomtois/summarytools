@@ -51,8 +51,7 @@
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
 #'   of \code{\link{descr}}. \code{FALSE} by default.
-#' @param descr.silent Logical. Display messages relating to ignored variables. 
-#'   \code{TRUE} by default.
+#' @param descr.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
 #'   \dQuote{grid} for \emph{Rmarkdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
@@ -71,9 +70,10 @@
 #'   \code{\link{dfSummary}} graphs show up too large (then use a value between
 #'   0 and 1) or too small (use a value > 1). Must be positive. Default to
 #'   \code{1}.
-#' @param dfSummary.silent Logical. Display messages relating to temporary 
-#'   image files location. \code{TRUE} by default.
-#'   \code{\link{dfSummary}} \emph{html} reports. \code{TRUE} by default.
+#' @param dfSummary.silent Logical. Hide console messages. \code{FALSE} by 
+#'   default.
+#' @param tmp.img.dir Character. Directory used to store temporary images. See
+#'   \emph{Details} section of \code{\link{dfSummary}}. \code{NA} by default.
 #' @param subtitle.emphasis Logical. Controls the formatting of the 
 #'  \dQuote{subtitle} (the \emph{data frame} or \emph{variable} name, depending 
 #'  on context. When \code{TRUE} (default), \dQuote{h4} is used, while with
@@ -109,8 +109,9 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                        dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE, 
                        dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE, 
                        dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-                       dfSummary.silent = FALSE, subtitle.emphasis = TRUE, 
-                       lang = "en", omit.headings = !headings) {
+                       dfSummary.silent = FALSE, tmp.img.dir = NA,
+                       subtitle.emphasis = TRUE, lang = "en", 
+                       omit.headings = !headings) {
   
   allOpts <- getOption("summarytools")
   
@@ -184,6 +185,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
                    "dfSummary.silent"       = FALSE,
+                   "tmp.img.dir"            = NA_character_,
                    "subtitle.emphasis"      = TRUE,
                    "lang"                   = "en"))
     
