@@ -38,11 +38,11 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
   # Check that the appropriate method is chosen when a file name is given
   if (grepl("\\.r?md$", file, ignore.case = TRUE, perl = TRUE) &&
       method != "pander") {
-    msg("Switching method to 'pander'")
+    message("Switching method to 'pander'")
     method <- "pander"
   } else if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
       method == "pander") {
-    msg("Switching method to 'browser'")
+    message("Switching method to 'browser'")
     method <- "browser"
   }
   
@@ -122,7 +122,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
         !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
         method == "pander") {
       method <- "browser"
-      msg("Switching method to 'browser'")
+      message("Switching method to 'browser'")
     }
 
     if (method %in% c("viewer", "browser")) {
@@ -271,8 +271,8 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
              attr(x[[1]], "st_type") == "freq") {
 
     if("ignored" %in% names(attributes(x))) {
-      msg(paste("Variable(s) ignored:",
-                paste(attr(x, "ignored"), collapse = ", ")))
+      message("Variable(s) ignored: ",
+              paste(attr(x, "ignored"), collapse = ", "))
     }
     
     if (method %in% c("viewer", "browser")) {

@@ -7,16 +7,10 @@
 # Initialize list used by view() when printing an object of class "by"
 .st_env$byInfo <- list()
 
-# Initialise list of displayed messages, to avoid repeating the same
-# message several times in a short period of time
-.st_env$messages <- data.frame(msg = character(), time = numeric(),
-                               stringsAsFactors = FALSE)
-class(.st_env$messages$time) <- c("POSIXct", "POSIXt")
-
 # Placeholder for customized translations
 .st_env$custom_lang <- list()
 
-# Hideous hack to avoid warning on check
+# "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 
 # summarytools global options
