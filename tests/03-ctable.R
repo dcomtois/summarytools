@@ -42,3 +42,10 @@ print(wbc, headings = T, file = "04.md")
 print(wbc, headings = T, file = "04.html")
 view(wbc, headings = T, caption = "with head", file = "05.md")
 view(wbc, headings = T, footnote = "with head", file = "05.html")
+
+# Global Options
+st_options(ctable.prop = "t", ctable.totals = FALSE)
+with(tobacco, ctable(smoker, diseased))
+
+st_options(ctable.prop = "n")
+with(tobacco, ctable(smoker, diseased))
