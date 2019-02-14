@@ -66,23 +66,23 @@ label(tobacco) <- "Study on Tobacco and Health"
 label(tobacco$gender) <- "Subject's Gender"
 (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
 
-# by()
+# stby()
 label(tobacco$diseased) <- "Subject has an illness"
-(bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
+(bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 view(bf1, 'pander')
 print(bf1, headings = FALSE, plain.ascii = FALSE)
 print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx")
 view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html")
 
-(bf2 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
+(bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 print(bf2, file = "06 - by.html")
 
-(bf3 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
+(bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
 print(bf3, file = "07 - by.html")
 
-# Using by() + with() --- retrieving labels works only when executed "not in batch"
+# Using stby() + with() --- retrieving labels works only when executed "not in batch"
 label(tobacco$diseased) <- "Subject has an illness"
-(bwf1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq)))
+(bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)))
 view(bwf1)
 
 # Labels, global options

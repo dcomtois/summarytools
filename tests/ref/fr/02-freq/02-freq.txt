@@ -407,10 +407,10 @@ Poids: ponderation
    **Total**   1000.00     100.00          100.00    100.00         100.00
 
 
-# by() ------------------------------------------------------------------------- 
+# stby() ------------------------------------------------------------------------- 
 
 > label(tobacco$diseased) <- "Subject has an illness" 
-> (bf1 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
+> (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
 Tableau de fréquences  
 tobacco$diseased  
@@ -487,7 +487,7 @@ Groupe: smoker = No
 -- Output file written
 -- Output file appended
 
-> (bf2 <- by(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
+> (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
 Tableau de fréquences  
 tobacco$diseased  
@@ -516,7 +516,7 @@ Groupe: smoker = No
 -- Output file written
 -- Output file appended
 
-> (bf3 <- by(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
+> (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
 
 Tableau de fréquences  
 iris$Species  
@@ -547,10 +547,10 @@ Groupe: Sepal.Length > mean(Sepal.Length) = TRUE
 -- Output file appended
 
 
-# Using by() + with() --- retrieving labels works only when executed "not in batch"  
+# Using stby() + with() --- retrieving labels works only when executed "not in batch"  
 
 > label(tobacco$diseased) <- "Subject has an illness" 
-> (bwf1 <- with(tobacco, by(data = diseased, INDICES = smoker, FUN = freq))) 
+> (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))) 
 
 Tableau de fréquences  
 tobacco$diseased  

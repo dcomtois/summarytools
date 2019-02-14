@@ -1,3 +1,8 @@
+Version 0.9.1
+-------------
+stby(), a summarytools-specific version of by(), is introduced, simplifying
+the printing of "by" objects. 
+
 Version 0.9.0
 -------------
 Translations are introduced. Function useTranslations() added to allow custom

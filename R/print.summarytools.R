@@ -103,8 +103,6 @@
 #'      \item \code{Data.type} (\code{\link{freq}} objects)
 #'      \item \code{Row.variable} (\code{\link{ctable}} objects)
 #'      \item \code{Col.variable} (\code{\link{ctable}} objects)
-#'      \item \code{Row.variable.label} (\code{\link{ctable}} objects)
-#'      \item \code{Col.variable.label} (\code{\link{ctable}} objects)
 #'    }
 #'
 #' @method print summarytools
@@ -386,8 +384,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
-                          "Row.variable", "Col.variable",
-                          "Row.variable.label", "Col.variable.label")
+                          "Row.variable", "Col.variable")
   for (data_info_element in data_info_elements) {
     if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
       attr(x, "data_info")[[data_info_element]] <- 
@@ -425,7 +422,8 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
         " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
-        getRversion(), ")", "<br/>", strftime(Sys.Date(),trs("date.fmt")),"</p>"
+        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt")),
+        "</p>"
       )
   }
 
@@ -616,7 +614,7 @@ print_freq <- function(x, method) {
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
-    msg(paste("Non-numerical variable(s) ignored:",
+    msg(paste("Non-categorical variable(s) ignored:",
             paste(attr(x, "ignored"), collapse = ", ")))
   }
   
@@ -1070,10 +1068,10 @@ print_descr <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
+  if("ignored" %in% names(attributes(x)) && !isTRUE(parent.frame()$silent) &&
+     !isTRUE(st_options("descr.silent")) && !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
-      isTRUE(as.logical(data_info$by_first))) &&
-     "ignored" %in% names(attributes(x))) {
+      isTRUE(as.logical(data_info$by_first)))) {
     msg(paste("Non-numerical variable(s) ignored:",
               paste(attr(x, "ignored"), collapse = ", ")))
   }

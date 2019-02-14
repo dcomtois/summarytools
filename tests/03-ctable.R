@@ -31,12 +31,12 @@ ctable(tobacco[[1]], tobacco[,3])
 # with()
 with(tobacco, ctable(smoker,  diseased))
 
-# by() 
-by(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
+# stby() 
+stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 
-# with() + by()
-with(tobacco, by(list(x = smoker, y = diseased), gender, ctable)) # problématique!
-wbc <- with(tobacco, by(list(x = smoker, y = diseased), gender, ctable, headings = F))
+# with() + stby()
+with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
+wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 print(wbc, headings = T)
 print(wbc, headings = T, file = "04.md")
 print(wbc, headings = T, file = "04.html")

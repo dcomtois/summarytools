@@ -15,10 +15,9 @@ language to suit your preference, you can set up a translations file (see
 details) and import it with this function.
 }
 \details{
-To build the translations file, you can get
-\href{https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/translations/custom_lang_template.csv}{this template},
-or use the \href{https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/translations/translations.csv}{current translations definition file}
-and fill out a new column \strong{having \sQuote{custom} on the first line}.
-The file must have \emph{UTF-8} encoding.
+To build the translations file, download
+\href{https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv}{this template},
+and fill out the \sQuote{custom} column, leaving \sQuote{custom} on the first
+line. The file must have \emph{UTF-8} encoding.
 }
 \keyword{utilities}

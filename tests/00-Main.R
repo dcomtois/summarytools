@@ -6,6 +6,7 @@ rm(list=ls())
 (date_dir <- paste(orig_dir, "tests/output", 
                    format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
                    sep = "/"))
+save(date_dir, file = "last_date_dir.Rdata")
 
 (dir.create(date_dir, recursive = TRUE))
 
@@ -110,7 +111,6 @@ compare_dirs <- function(lang) {
   if (Sys.info()[['sysname']] == "Linux") {
     system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
   } else {
-    browser()
     system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
                  ' "', ref_dir, '" "', out_dir, '"'))
   }

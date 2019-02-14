@@ -1,9 +1,9 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.9.0
-Authors@R: c(person("Comtois", "Dominic", , "dominic.comtois@gmail.com", 
-  role = c("aut", "cre")))
+Version: 0.9.1
+Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com", 
+  role = c("aut", "cre"))
 Description: Data frame summaries, cross-tabulations,
   weight-enabled frequency tables and common univariate
   statistics in concise tables available in a variety of

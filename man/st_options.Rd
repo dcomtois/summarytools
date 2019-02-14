@@ -143,3 +143,4 @@ st_options('round.digits', 1)  # set an option (legacy way)
 st_options('reset')            # reset all summarytools global options
 }
 }
+\keyword{utilities}

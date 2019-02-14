@@ -121,8 +121,6 @@ The following additional arguments can be used to override
      \item \code{Data.type} (\code{\link{freq}} objects)
      \item \code{Row.variable} (\code{\link{ctable}} objects)
      \item \code{Col.variable} (\code{\link{ctable}} objects)
-     \item \code{Row.variable.label} (\code{\link{ctable}} objects)
-     \item \code{Col.variable.label} (\code{\link{ctable}} objects)
    }
 }
 \examples{

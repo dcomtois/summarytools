@@ -282,7 +282,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   
   # Look for position of by() + tapply(), with() lapply() and %>% in sys.calls()
   pos <- list()
-  pos$by      <- which(funs_stack == "by()")
+  pos$by      <- which(funs_stack %in% c("by()", "stby()"))
   pos$with    <- which(funs_stack == "with()")
   pos$pipe    <- which(funs_stack == "`%>%`()")
   pos$dollar  <- which(funs_stack == "`%$%`()")
