@@ -40,7 +40,7 @@ stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
   FUNx <- function(x) FUN(data[x, , drop = FALSE], ...)
   nd <- nrow(data)
   structure(eval(substitute(tapply(seq_len(nd), IND, FUNx, 
-                                   simplify = simplify)), data), call = match.call(), class = "stby")
+     simplify = simplify)), data), call = match.call(), class = "stby")
 }
 
 

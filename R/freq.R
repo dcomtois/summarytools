@@ -55,7 +55,7 @@
 #' freq(tobacco$gender, totals = FALSE)
 #' freq(tobacco$gender, display.nas = FALSE)
 #' freq(tobacco$gender, style="rmarkdown")
-#' with(tobacco, by(diseased, smoker, freq))
+#' with(tobacco, stby(diseased, smoker, freq))
 #' 
 #' @seealso \code{\link[base]{table}}
 #'
