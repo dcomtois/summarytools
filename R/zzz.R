@@ -41,6 +41,7 @@ utils::globalVariables(c("."))
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
                  "dfSummary.silent"       = FALSE,
+                 "tmp.img.dir"            = NA_character_,
                  "subtitle.emphasis"      = TRUE,
                  "lang"                   = "en"))
 

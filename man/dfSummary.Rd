@@ -16,7 +16,9 @@ dfSummary(x, round.digits = st_options("round.digits"),
   col.widths = NA, headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   max.distinct.values = 10, trim.strings = FALSE,
-  max.string.width = 25, split.cells = 40, split.tables = Inf, ...)
+  max.string.width = 25, split.cells = 40, split.tables = Inf,
+  tmp.img.dir = st_options("tmp.img.dir"),
+  silent = st_options("dfSummary.silent"), ...)
 }
 \arguments{
 \item{x}{A data frame.}
@@ -99,6 +101,13 @@ Defaults to \code{40}.}
 \item{split.tables}{\pkg{pander} argument which determines the maximum width
 of a table. Keeping the default value (\code{Inf}) is recommended.}
 
+\item{tmp.img.dir}{Character. Directory used to store temporary images when
+rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and 
+`style = "grid"`. See \emph{Details}.}
+
+\item{silent}{Logical. Hide console messages. \code{FALSE} by default. To 
+change this value globally, see \code{\link{st_options}}.}
+
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
 \value{
@@ -139,9 +148,19 @@ The default \code{plain.ascii = TRUE} option is there to make
   \emph{before} calculating frequencies, so those will be impacted
   accordingly.
 
-  The package vignette \dQuote{Recommendations for Rmarkdown} provides
-  valuable information for creating optimal \emph{Rmarkdown} documents with
-  summarytools.
+  Specifying \code{tmp.img.dir} allows producing results consistent with
+  pandoc styling while also showing \emph{png} graphs. Due to the fact that
+  in Pandoc, column widths are determined by the length of cell contents
+  \strong{even if said content is merely a link to an image}, we cannot
+  use the standard R temporary directory to store the images. We need a
+  shorter path; on Mac OS and Linux, using \dQuote{/tmp} is a sensible
+  choice, since this directory is cleaned up automatically on a regular
+  basis. On Windows however, there is no such convenient directory and the
+  user will have to choose a directory and cleanup the temporary images
+  manually after the document has been rendered. Providing a relative path
+  such as dQuote{img} is recommended. The maximum length for this parameter
+  is set to 5 characters. It can be set globally using 
+  \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 }
 \examples{
 data(tobacco)
