@@ -1,4 +1,5 @@
 # ----------------------------- dfSummary.R  -----------------------------------
+st_options(tmp.img.dir = "/tmp")
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 
@@ -29,6 +30,7 @@ print(dfs1, file = "01.html")
 st_options('reset')
 st_options(lang = lang)
 st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.valid.col = F)
+st_options(tmp.img.dir = "/tmp")
 print(dfSummary(tobacco), file = "02 - basic.html")
 
 # Test global options (2/2)
@@ -38,6 +40,7 @@ view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal 
 
 st_options('reset')
 st_options(lang = lang)
+st_options(tmp.img.dir = "/tmp")
 st_options(footnote = "Placeholder footnote")
 
 tobacco$disease.f <- as.factor(tobacco$disease)

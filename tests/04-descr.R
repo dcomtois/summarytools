@@ -15,7 +15,7 @@ print(d2, headings = FALSE)
 print(descr(tobacco), silent = TRUE)
 st_options(descr.silent = TRUE)
 descr(tobacco)
-print(descr, silent = FALSE)
+print(descr(tobacco), silent = FALSE)
 st_options(descr.silent = FALSE)
 
 # labels
