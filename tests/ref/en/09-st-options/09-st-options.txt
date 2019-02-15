@@ -79,6 +79,9 @@ $dfSummary.graph.magnif
 $dfSummary.silent
 [1] FALSE
 
+$tmp.img.dir
+[1] NA
+
 $subtitle.emphasis
 [1] TRUE
 
@@ -163,6 +166,9 @@ $dfSummary.graph.magnif
 
 $dfSummary.silent
 [1] FALSE
+
+$tmp.img.dir
+[1] NA
 
 $subtitle.emphasis
 [1] TRUE

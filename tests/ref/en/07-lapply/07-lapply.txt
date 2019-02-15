@@ -47,6 +47,9 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
 
 > view(l1, footnote = "freq -- gender/age.gr/smoker", file = "01.html") 
+-- Output file written
+-- Output file appended
+
 > label(tabagisme) <- "Label tabagisme" 
 > label(tabagisme$sexe) <- "Le sexe" 
 > label(tabagisme$age.gr) <- "Groupe d'age" 
@@ -165,6 +168,7 @@ Type: Character
                      Total   1000    100.00         100.00    100.00         100.00
 
 > print(l1, footnote = "freq -- negative indexing on columns", file = "02.html") 
+-- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
