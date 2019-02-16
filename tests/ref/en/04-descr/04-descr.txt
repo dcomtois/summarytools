@@ -233,6 +233,9 @@ N: 1000
 > view(d2, footnote = "test: ΰιοτω", file = "02.html") 
 -- Output file written
 
+> print(d2, caption = "test: ΰιοτω", file = "02.md") 
+-- Output file written
+
 
 # long var names --------------------------------------------------------------- 
 

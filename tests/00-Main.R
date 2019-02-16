@@ -1,4 +1,4 @@
-# setwd("~/github/summarytools")
+setwd("~/github/summarytools")
 rm(list=ls())
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
@@ -15,7 +15,7 @@ load(file = paste0(orig_dir, "/last_date_dir.Rdata"))
 (testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "\\d(?!0)\\d",
                    perl = TRUE, value = TRUE))
 
-eval_with_feedback <- function(filename, lang, compare = TRUE) {
+eval_with_feedback <- function(filename, lang, compare = FALSE) {
   on.exit(setwd(orig_dir))
   out_dir <- paste(date_dir, lang, sub("\\.R", "", filename), sep = "/")
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
@@ -127,6 +127,7 @@ eval_with_feedback(testfiles[6],  lang = "en", compare = FALSE) # overrides
 eval_with_feedback(testfiles[7],  lang = "en", compare = FALSE) # lapply
 eval_with_feedback(testfiles[8],  lang = "en", compare = FALSE) # with/by
 eval_with_feedback(testfiles[9],  lang = "en", compare = FALSE) # st_options
+
 compare_dirs('en')
 
 eval_with_feedback(testfiles[1],  lang = "fr", compare = FALSE) # parse-args

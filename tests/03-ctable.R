@@ -14,6 +14,12 @@ print(ct1, file = "01.html")
 print(ct1, totals=FALSE, file = "02.md", style = "grid", plain.ascii = FALSE)
 view(ct1, totals=FALSE, file = "03.md", style = "grid", plain.ascii = FALSE)
 
+# Minimal
+with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n", totals = FALSE))
+
+# Minimal with totals
+with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n"))
+
 # Non-default proportions
 ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
 ctable(tobacco$smoker, tobacco$diseased, prop = 'n')

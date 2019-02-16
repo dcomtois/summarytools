@@ -52,6 +52,35 @@ Label: A Study on Tobacco Use and Health
 -- Output file written
 
 
+# Minimal ---------------------------------------------------------------------- 
+
+> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n", totals = FALSE)) 
+
+
+-------- -------- ----- -----
+           smoker   Yes    No
+  gender                     
+       F            147   342
+       M            143   346
+    <NA>              8    14
+-------- -------- ----- -----
+
+
+# Minimal with totals ---------------------------------------------------------- 
+
+> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n")) 
+
+
+-------- -------- ----- ----- -------
+           smoker   Yes    No   Total
+  gender                             
+       F            147   342     489
+       M            143   346     489
+    <NA>              8    14      22
+   Total            298   702    1000
+-------- -------- ----- ----- -------
+
+
 # Non-default proportions ------------------------------------------------------ 
 
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c') 

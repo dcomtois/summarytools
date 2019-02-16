@@ -28,6 +28,7 @@ label(tobacco$BMI) <- "Body Mass Index"
 # print to files
 print(d2, file = "01.html")
 view(d2, footnote = "test: àéïôù", file = "02.html")
+print(d2, caption = "test: àéïôù", file = "02.md")
 
 # long var names
 st_options(descr.transpose = FALSE)
