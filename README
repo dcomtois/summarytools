@@ -9,9 +9,9 @@ minor backward-compatibility break:
     'headings' will replace 'omit.headings': the 'omit.headings' parameter, 
     common to most summarytools functions, has been replaced by the more 
     straighforward 'headings', which is still boolean and serves the exact same
-    purpose. Simply put, headings = !omit.headings. For now, 'omit.headings' 
+    purpose. Simply put, headings == !omit.headings. For now, 'omit.headings' 
     is still supported, but a message will be displayed in the console whenever
-    it is used, encouraging users make the transition.
+    it is used, encouraging users to make the transition.
     
 Also, to simplify printing summarytools object in the console and in Rmarkdown
 documents, there are three important recommendations to follow:
@@ -24,11 +24,11 @@ documents, there are three important recommendations to follow:
     
    Rather, this single operation will accomplish the same thing:
    
-    > byst(data, indices, summarytools_function)
+    > stby(data, indices, summarytools_function)
     
 2. Do not use lapply() with freq(); simply pass your dataframe - subsetted if
-   needed - to freq(). That way, the printing of the output won't need to rest
-   on view() and will be totally seemless.
+   needed - to freq(). That way, the printing of the output won't rely
+   on view() anymore and will be totally seemless.
    
 3. Read the two vignettes. They will show you how to use summarytools in the
    most effective way.
