@@ -250,14 +250,14 @@ ctable <- function(x, y,
   # Change name of NA items to avoid potential problems when echoing to console
   if (NA %in% rownames(freq_table)) {
     row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
-    if (prop != "None") {
+    if (prop != "n") {
       row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
     }
   }
 
   if (NA %in% colnames(freq_table)) {
     colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
-    if (prop != "None") {
+    if (prop != "n") {
       colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
     }
   }
