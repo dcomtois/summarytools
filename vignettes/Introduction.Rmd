@@ -275,7 +275,7 @@ with(tobacco, stby(BMI, age.gr, descr,
                    stats = c("mean", "sd", "min", "med", "max")))
 ```
 
-The transposed version looks like this:
+**The transposed version looks like this:**
 
 ```{r, echo=FALSE}
 BMI_by_age <- with(tobacco, 

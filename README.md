@@ -464,13 +464,14 @@ provides good guidelines, but here are a few tips to get started:
 
 For data frames containing numerous variables, we can use the
 `max.tbl.height` argument to wrap the results in a scrollable window
-having the specified height, in pixels. For instance: (results not
-shown)
+having the specified height, in pixels. For instance:
 
 ``` r
 print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75), 
       max.tbl.height = 300, method = "render")
 ```
+
+![dfSummary-scroll-window](img/dfSummary-scroll-window.png)
 
 ## Writing Output to Files
 

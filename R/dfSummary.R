@@ -118,9 +118,23 @@
 #'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 #'
 #' @examples
-#' data(tobacco)
+#' data("tobacco")
 #' dfSummary(tobacco)
-#' \dontrun{view(dfSummary(iris))}
+#' 
+#' # Exclude some columns
+#' dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
+#' 
+#' # Limit number of categories to be displayed for factors / categorical data
+#' dfSummary(tobacco, max.distinct.values = 5, style = "grid")
+#' 
+#' \dontrun{
+#' # Show in Viewer or browser (view: no capital V!)
+#' view(dfSummary(iris))
+#' 
+#' # Rmarkdown-ready
+#' dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
+#'           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
+#' }
 #'
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}

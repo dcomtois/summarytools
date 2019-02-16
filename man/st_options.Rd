@@ -130,7 +130,8 @@ produced outputs. Currently available languages are: \sQuote{en},
 \description{
 To list all \code{summarytools} global options, call without arguments. To
 display the value of one or several options, enter the name(s) of the
-option(s) in a character vector as sole argument.
+option(s) in a character vector as sole argument. To \strong{reset} all 
+options, use single unnamed argument \sQuote{reset} or \code{0}.
 }
 \details{
 To learn more about summarytools options, see the 
@@ -138,11 +139,30 @@ To learn more about summarytools options, see the
 }
 \examples{
 \dontrun{
-st_options()                   # show all summarytools global options
-st_options('round.digits')     # show a specific global option 
-st_options(round.digits = 1)   # set an option
-st_options('round.digits', 1)  # set an option (legacy way)
-st_options('reset')            # reset all summarytools global options
+# show all summarytools global options
+st_options()
+
+# show a specific option
+st_options("round.digits")
+
+# show two (or more) options
+st_options(c("plain.ascii", "style", "footnote"))
+
+# set one option
+st_options(plain.ascii = FALSE)
+
+# set one options, legacy way
+st_options("plain.ascii", FALSE)
+
+# set several options
+st_options(plain.ascii = FALSE,
+           style       = "rmarkdown",
+           footnote    = NA)
+
+# reset all
+st_options('reset')
+# ... or
+st_options(0)
 }
 }
 \keyword{utilities}

@@ -44,17 +44,43 @@
 #'   be the same as the unweighted \code{x}. \code{FALSE} by default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
-#' @return A nn object of classes \code{matrix} and \code{summarytools}
+#' @return An object having classes \code{matrix} and \code{summarytools}
 #'   containing the statistics, with extra attributes used by \link{print}
 #'   method.
 #'
 #' @examples
-#' data(exams)
+#' data("exams")
+#' 
+#' # All stats for all numerical variabls
 #' descr(exams)
+#' 
+#' # Only common statistics
 #' descr(exams, stats = "common")
+#' 
+#' # Arbitrary selection of statistics, transposed
 #' descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
-#' data(tobacco)
-#' with(tobacco, stby(BMI, gender, descr, plain.ascii = TRUE))
+#' 
+#' # Rmarkdown-ready
+#' descr(exams, plain.ascii = FALSE, style = "rmarkdown")
+#'
+#' # Grouped statistics
+#' data("tobacco")
+#' with(tobacco, stby(BMI, gender, descr))
+#'
+#' # Grouped statistics, transposed
+#' with(tobacco, stby(BMI, age.gr, descr, stats = "common", transpose = TRUE))
+#'
+#' \dontrun{
+#' # Show in Viewer (or browser if not in RStudio)
+#' view(descr(exams))
+#' 
+#' # Save to html file with title
+#' print(descr(exams),
+#'       file = "descr_exams.html", 
+#'       report.title = "BMI by Age Group",
+#'       footnote = "<b>Schoolyear:</b> 2018-2019<br/><b>Semester:</b> Fall")
+#' 
+#' }
 #'
 #' @keywords univar
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}

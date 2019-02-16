@@ -90,11 +90,30 @@
 #' @keywords utilities
 #' 
 #' @examples \dontrun{
-#' st_options()                   # show all summarytools global options
-#' st_options('round.digits')     # show a specific global option 
-#' st_options(round.digits = 1)   # set an option
-#' st_options('round.digits', 1)  # set an option (legacy way)
-#' st_options('reset')            # reset all summarytools global options
+#' # show all summarytools global options
+#' st_options()
+#' 
+#' # show a specific option
+#' st_options("round.digits")
+#' 
+#' # show two (or more) options
+#' st_options(c("plain.ascii", "style", "footnote"))
+#' 
+#' # set one option
+#' st_options(plain.ascii = FALSE)
+#' 
+#' # set one options, legacy way
+#' st_options("plain.ascii", FALSE)
+#' 
+#' # set several options
+#' st_options(plain.ascii = FALSE,
+#'            style       = "rmarkdown",
+#'            footnote    = NA)
+#'
+#' # reset all
+#' st_options('reset')
+#' # ... or
+#' st_options(0)
 #' }
 #' @export
 st_options <- function(option = NULL, value = NULL, style = "simple", 

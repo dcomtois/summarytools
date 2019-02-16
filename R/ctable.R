@@ -50,15 +50,40 @@
 #' @examples
 #' data("tobacco")
 #' ctable(tobacco$gender, tobacco$smoker)
-#' with(tobacco, ctable(smoker, diseased, style = "grid", totals = FALSE))
+#' 
+#' # Use with() to simplify syntax
+#' with(tobacco, ctable(smoker, diseased))
 #'
+#' # Show column proportions, without totals
+#' with(tobacco, ctable(smoker, diseased, prop = "c", totals = FALSE))
+#' 
+#' # Simple 2 x 2 table
+#' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n"))
+#' 
+#' # Grouped cross-tabulations
+#' with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
+#'
+#' \dontrun{
+#' ct <- ctable(tobacco$gender, tobacco$smoker)
+#' 
+#' # Show html results in browser
+#' print(ct, method = "browser")
+#' 
+#' # Save results to html file
+#' print(ct, file = "ct_gender_smoker.html")
+#' 
+#' # Save results to text file
+#' print(ct, file = "ct_gender_smoker.txt")
+#' }
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
 #'
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats addmargins na.omit
-ctable <- function(x, y, prop = st_options("ctable.prop"), useNA = "ifany", 
+ctable <- function(x, y,
+                   prop = st_options("ctable.prop"),
+                   useNA = "ifany", 
                    totals = st_options("ctable.totals"), 
                    style = st_options("style"), 
                    round.digits = 1, justify = "right", 

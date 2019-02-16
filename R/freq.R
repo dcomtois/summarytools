@@ -53,9 +53,35 @@
 #' data(tobacco)
 #' freq(tobacco$gender)
 #' freq(tobacco$gender, totals = FALSE)
-#' freq(tobacco$gender, display.nas = FALSE)
-#' freq(tobacco$gender, style="rmarkdown")
+#' 
+#' # Ignore NA's, don't show totals, omit headings
+#' freq(tobacco$gender, report.nas = FALSE, totals = FALSE, headings = FALSE)
+#' 
+#' # In .Rmd documents, use the two following arguments, minimally
+#' freq(tobacco$gender, style="rmarkdown", plain.ascii = FALSE)
+#' 
+#' # Grouped Frequencies
 #' with(tobacco, stby(diseased, smoker, freq))
+#' (fr_smoker_by_gender <- with(tobacco, stby(smoker, gender, freq)))
+#' 
+#' # Print html Source
+#' print(fr_smoker_by_gender, method = "render", footnote = NA)
+#' 
+#' \dontrun{
+#' # Display rendered html results in RStudio's Viewer
+#' # notice 'view()' is NOT written with capital V
+#' # If working outside RStudio, Web browser is used instead
+#' # A temporary file is stored in temp dir
+#' view(fr_smoker_by_gender)
+#' 
+#' # Display rendered html results in default Web browser
+#' # A temporary file is stored in temp dir here too
+#' print(fr_smoker_by_gender, method = "browser")
+#' 
+#' # Write results to text file (.txt, .md, .Rmd) or html file (.html)
+#' print(fr_smoker_by_gender, method = "render", file = "fr_smoker_by_gender.md)
+#' print(fr_smoker_by_gender, method = "render", file = "fr_smoker_by_gender.html)
+#' }
 #' 
 #' @seealso \code{\link[base]{table}}
 #'
