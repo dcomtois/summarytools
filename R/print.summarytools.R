@@ -522,7 +522,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
               tags$title(HTML(conv_non_ascii(report.title))),
               if (isTRUE(bootstrap.css))
                 includeCSS(system.file(package="summarytools", 
-                                       "includes/stylesheets/bootstrap.css")),
+                                       "includes/stylesheets/bootstrap.min.css")),
               includeCSS(system.file(package="summarytools", 
                                      "includes/stylesheets/summarytools.css")),
               if (!is.na(custom.css)) 
