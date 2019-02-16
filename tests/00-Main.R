@@ -7,8 +7,8 @@ rm(list=ls())
                    format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
                    sep = "/"))
 
-save(date_dir, file = paste0(orig_dir, "/last_date_dir.Rdata"))
-load(file = paste0(orig_dir, "/last_date_dir.Rdata"))
+save(date_dir, file = paste0(orig_dir, "/tests/last_date_dir.Rdata"))
+load(file = paste0(orig_dir, "/tests/last_date_dir.Rdata"))
 
 (dir.create(date_dir, recursive = TRUE))
 
