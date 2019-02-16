@@ -841,11 +841,30 @@ align_numbers_dfs <- function(counts, props) {
 #'             image_transparent
 #' @keywords internal
 encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
-  bg <- par('bg'=NA)
-  on.exit(par(bg))
+  #bg <- par('bg'=NA)
+  #on.exit(par(bg))
+  
+  devtype <- switch(Sys.info()[["sysname"]],
+                    Windows = "windows",
+                    Linux   = "Xlib",
+                    Darwin  = "quartz")
+    
   if (graph_type == "histogram") {
-    png(png_loc <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 110 * graph.magnif, units = "px", bg = "transparent")
+    rc <- try(png(png_loc <- tempfile(fileext = ".png"), 
+                  width = 150 * graph.magnif,
+                  height = 110 * graph.magnif,
+                  units = "px", bg = "transparent",
+                  type = devtype, antialias = "none"), silent = TRUE)
+    
+    # If it fails, fallback on default device type
+    if (!is.null(rc)) {
+      png(png_loc <- tempfile(fileext = ".png"), 
+          width = 150 * graph.magnif,
+          height = 110 * graph.magnif,
+          units = "px", bg = "transparent", 
+          antialias = "none")
+    }
+    
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
@@ -867,11 +886,21 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     
   } else if (graph_type == "barplot") {
     
-    png(png_loc <- tempfile(fileext = ".png"), 
-        width = 150 * graph.magnif,
-        height = 26 * length(data) * graph.magnif, 
-        units = "px", bg = "transparent",
-        type = ifelse(Sys.info()[["sysname"]] == "Windows", "windows", "quartz"))
+    rc <- try(png(png_loc <- tempfile(fileext = ".png"), 
+                  width = 150 * graph.magnif,
+                  height = 26 * length(data) * graph.magnif, 
+                  units = "px", bg = "transparent",
+                  type = devtype, antialias = "none"), silent = TRUE)
+    
+    # If it fails, fallback on default device type
+    if (!is.null(rc)) {
+      png(png_loc <- tempfile(fileext = ".png"), 
+          width = 150 * graph.magnif,
+          height = 26 * length(data) * graph.magnif, 
+          units = "px", bg = "transparent",
+          antialias = "none")
+    }
+    
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
