@@ -79,6 +79,7 @@ Rmarkdown does not, to this day, support multi-header tables.
 \examples{
 data("tobacco")
 ctable(tobacco$gender, tobacco$smoker)
+with(tobacco, ctable(smoker, diseased, style = "grid", totals = FALSE))
 
 }
 \seealso{

@@ -82,7 +82,7 @@ descr(exams)
 descr(exams, stats = "common")
 descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 data(tobacco)
-with(tobacco, view(by(BMI, gender, descr), method = "pander"))
+with(tobacco, stby(BMI, gender, descr, plain.ascii = TRUE))
 
 }
 \author{
