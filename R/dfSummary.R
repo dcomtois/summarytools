@@ -867,9 +867,11 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     
   } else if (graph_type == "barplot") {
     
-    png(png_loc <- tempfile(fileext = ".png"), width = 150 * graph.magnif,
-        height = 26 * length(data) * graph.magnif, units = "px",
-        bg = "transparent")
+    png(png_loc <- tempfile(fileext = ".png"), 
+        width = 150 * graph.magnif,
+        height = 26 * length(data) * graph.magnif, 
+        units = "px", bg = "transparent",
+        type = ifelse(Sys.info()[["sysname"]] == "Windows", "windows", "quartz"))
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
