@@ -496,3 +496,24 @@ count.empty <- function(x, count.nas = TRUE) {
   }
   n
 }
+
+# Redefine htmltools's includeCSS but use collapse = "\n"
+#' @importfrom htmltools tags HTML
+#' @keywords internal
+includeCss <- function(path, ...) {
+  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+  args <- list(...)
+  if (is.null(args$type)) 
+    args$type <- "text/css"
+  return(do.call(tags$style, c(list(HTML(paste8(lines, collapse = "\n"))), 
+                               args)))
+}
+
+# Clone of htmltools:::paste8
+#' @keywords internal
+paste8 <- function (..., sep = " ", collapse = NULL) {
+  args <- c(lapply(list(...), enc2utf8), 
+            list(sep = if (is.null(sep)) sep else enc2utf8(sep), 
+                 collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)))
+  do.call(paste, args)
+}
