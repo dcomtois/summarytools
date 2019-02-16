@@ -2,7 +2,8 @@
 #'
 #' To list all \code{summarytools} global options, call without arguments. To
 #' display the value of one or several options, enter the name(s) of the
-#' option(s) in a character vector as sole argument.
+#' option(s) in a character vector as sole argument. To \strong{reset} all 
+#' options, use single unnamed argument \sQuote{reset} or \code{0}.
 #'
 #' @param option option(s) name(s) to query (optional). Can be a single string
 #'   or a vector of strings to query multiple values.
@@ -153,10 +154,11 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
   }
   
   # Querying one or several
-  if (length(mc) == 2 && "option" %in% names(mc) && option != "reset") {
+  if (length(mc) == 2 && "option" %in% names(mc) && 
+      option != "reset" && option != 0) {
     # Check that option is among the existing ones
     for (o in option) {
-      if (!o %in% c(names(allOpts), "omit.headings")) {
+      if (!o %in% c(names(allOpts), 0, "omit.headings")) {
         stop("Option ", o, " not recognized / not available")
       }
     }
@@ -174,7 +176,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
     }
   }
 
-  if (isTRUE(option == "reset")) {
+  if (isTRUE(option == "reset" || option == 0)) {
     if (length(mc) > 2) {
       stop("Cannot reset options and set them at the same time")
     }
