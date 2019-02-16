@@ -18,20 +18,14 @@ opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 ```
 ```{r, echo=FALSE}
 library(summarytools)
-st_css(bootstrap = FALSE)
+st_css()
 ```
 
-This document uses theme `rmarkdown::html_vignette`.
-
-## Preliminary Note
-
-The information in this document is not 100% up-to-date, but the recommendations
-still hold. The information is accurate, but at times incomplete. An update will
-follow shortly.
 
 ## Configuration
 
-The **yaml** section of this document is as follows:
+This document uses theme `rmarkdown::html_vignette`. Its **yaml** section 
+looks like this:
 
 ```
 ---
@@ -49,15 +43,19 @@ vignette: >
 ---
 ```
 
-The following **summarytools global options** have been set:
+The following **summarytools global options** have been set. More of them can
+be useful, but this is a good starting point.
 ```{r}
-st_options(bootstrap.css = FALSE,     # Already part of the theme
-           footnote = NA,                 
-           subtitle.emphasis = FALSE) # For the vignette theme, this gives
-                                      # much better results. YMMV
+st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it
+           plain.ascii       = FALSE,       # One of the essential settings
+           style             = "rmarkdown", # Idem.
+           dfSummary.silent  = TRUE,        # Suppresses messages about temporary files
+           footnote          = NA,          # Keeping the results minimalistic
+           subtitle.emphasis = FALSE)       # For the vignette theme, this gives
+                                            # much better results. Your mileage may vary.
 ``` 
 
-Also, the following **knitr chunk options** were set as following:
+Also, the following **knitr chunk options** were set this way:
 ```{r, eval=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
@@ -66,8 +64,7 @@ opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 Finally, **summarytools' CSS** has been included in the following manner, with
 chunk option `echo = FALSE`:
 ```{r, eval=FALSE}
-library(summarytools)
-st_css(bootstrap = FALSE)
+st_css()
 ```
 
 ## Demo / Examples
@@ -174,15 +171,25 @@ images. Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
 
 ```{r dfs_grid, results='asis'}
-dfSummary(tobacco, style = 'grid', plain.ascii = FALSE, graph.magnif = 0.72)
+dfSummary(tobacco, style = 'grid', graph.magnif = 0.75, tmp.img.dir = "/tmp")
 ```
 
 ## HTML Rendering
 
-This method has also been much improved in v0.9:
+This method has also been much improved in version 0.9 of **summarytools**.
 
 ```{r}
-print(dfSummary(tobacco, graph.magnif = 0.72), method = 'render')
+print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ```
 
 <a href="#top">Back to top</a>
+
+## Final Notes
+
+This is by no way a definitive guide; depending on the themes you use, 
+you could find that other settings yield better results. Also, this document
+focuses on _HTML_ document rendering. If you are looking to create a _Word_ of a 
+_pdf_ document, you might want to try different combinations of options.
+
+One thing that seems clear though: the _rendering_ method is **not** well-suited
+for _Word_ documents.

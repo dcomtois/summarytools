@@ -1,14 +1,15 @@
 Version 0.9.1
 -------------  
-For users updating solely from CRAN, this is a major update. Many changes
+For users updating solely from CRAN, this is a **major** update. _Many_ changes
 were introduced since version 0.8.8 (which this version will replace, since
-versions 0.8.9 and 0.9.0 were released on GitHub only). Please refer to the
+versions 0.8.9 and 0.9.0 were released on _GitHub_ only). Please refer to the
 README file, the two vignettes and the information below for all the details.
 
 In this version:
 
  - `stby()`, a summarytools-specific version of `by()`, is introduced. It is 
-   highly recommended that you use it instead of `by()`; its syntax is identical
+   **highly recommended** that you use it instead of `by()`; its syntax is 
+   identical and it greatly simplifies the printing of the generated objects
  - In `dfSummary()`:  
    + 'max.tbl.height' allows printing summaries in scrollable windows  
    + setting 'tmp.img.dir' allows the inclusion of png graphs in Rmarkdown
@@ -21,29 +22,29 @@ In this version:
 
 Version 0.9.0
 -------------  
- - Translations are introduced for the outputs. For instance, setting
+ - **Translations** are introduced for the outputs. For instance, setting
    st_options(lang='fr') gives access to French translations. Two languages
    are still a work in progress: Spanish and Russian  
  - Function `useTranslations()` allows using custom translations; see the
    introductory vignette for details  
- - In `descr()`, the weighting variable (when used) is automatically removed from
-   the list of variables to analyze  
+ - In `descr()`, the weighting variable (when used) is automatically removed 
+   from the list of variables to analyze  
 
 
 Version 0.8.9
 -------------  
  - In `dfSummary()`:  
-   + Number of columns and number of duplicates added to the headings 
+   + Number of columns and number of duplicates added to the _headings_ 
      section  
-   + Integer sequences as well as UPC/EAN codes are detected and identified  
+   + Integer sequences as well as **UPC/EAN codes** are detected and identified  
    + Statistics for unary / binary data are simplified  
-   + Barplots now reflect frequencies across variables  
+   + Bar charts now reflect frequencies across variables  
  - In `descr()`, the 'stats' parameter accepts values "common" and "fivenum"  
  - With `st_options()`, setting multiple options at once is now possible; all
    options have their own parameter (the legacy way of setting options is still
    supported)  
- - More parameters can be overridden when calling `print()` or `view()` - refer to
-   the `print()` method's documentation to learn more  
+ - More parameters can be overridden when calling `print()` or `view()` - 
+   refer to the `print()` method's documentation to learn more  
    
 Two *somewhat* backward-compatibility breaking changes:  
  - The 'omit.headings' parameter is replaced by the more straightforward
@@ -54,14 +55,15 @@ Two *somewhat* backward-compatibility breaking changes:
    
 Special thanks to Paul Feitsma for his numerous suggestions.
 
+
 Version 0.8.8
 -------------   
- - Fixed caracter encoding issues  
+ - Fixed character encoding issues  
  - In `dfSummary()`:
    + Fixed an issue with `dfSummary()` where reported percentages could exceed
      100% under specific circumstances  
-   + Fixed issue with groups not being properly updated when used in Shiny apps  
- 
+   + Fixed issue with groups not being properly updated when used in _Shiny_
+     apps  
 
 
 Version 0.8.7
@@ -75,10 +77,10 @@ Version 0.8.7
 Version 0.8.6
 -------------  
  - In `dfSummary()`:  
-   + "Label" column now shows proper line breaks in the html versions  
+   + _"Label"_ column now shows proper line breaks in the html versions  
    + In lists of values / frequencies, digits are omitted for integer
      variables and for numerics containing whole numbers only  
-   + Fixed an error when using the pipe (%>%) operator  
+   + Fixed an error when using the pipe (`%>%`) operator  
  - In `descr()`, fixed a calculation error for coefficient of variation (cv)  
  - In `ctable()` html outputs, '<' and '>' are properly escaped when appearing
    in row or column names  
@@ -86,8 +88,8 @@ Version 0.8.6
 
 Version 0.8.5
 -------------  
- - Time intervals in `dfSummary()` now use `lubridate::as.period()`  
  - In `dfSummary()`:  
+   + Time intervals in `dfSummary()` now use `lubridate::as.period()`  
    + Line feeds in ASCII barplots now displayed correctly  
    + String trimming is applied consistently  
  - In `ctable()`, argument 'useNA' now correctly accepts value "no"  
@@ -95,11 +97,11 @@ Version 0.8.5
 
 Version 0.8.4
 -------------  
- - Method for calculating number of bins in `dfSummary()` histograms changed from
-   `nclass.FD()` to `nclass.Sturges()`  
+ - Method for calculating number of bins in `dfSummary()` histograms changed 
+   (from `nclass.FD()` to `nclass.Sturges()`)  
  - Removed extra space in `dfSummary()` with time objects  
  - Allowed one more value for frequency counts in `dfSummary()` when
-   "[1 other value]" was displayed; this actual value is now displayed instead  
+   _"[1 other value]"_ was displayed; this actual value is now displayed instead  
 
 
 Version 0.8.3
@@ -109,8 +111,8 @@ Version 0.8.3
    changes in the 'pander' package  
  - Argument 'omit.headings' added to all main functions  
  - New logical options for `freq()`: 'totals' and 'display.nas'  
- - In `descr()`, Q1 and Q3 were added; also, the order in the 'stats' argument 
-   is now reflected in the output table  
+ - In `descr()`, _Q1_ and _Q3_ were added; also, the order in the 'stats' 
+   argument is now reflected in the output table  
  - In `dfSummary()`:  
    + Number alignment improvements  
    + Fixed frequencies not appearing when value 0 was present
@@ -126,8 +128,8 @@ Version 0.8.3
 
 Version 0.8.2
 -------------  
- - Fixed performance issue with numerical data having a large range  
- - Fixed missing linefeeds in dfSummary text barcharts  
+ - Fixed performance issue with numerical data having a very large range  
+ - Fixed missing line feeds in `dfSummary()` bar charts  
  - Added support for Date / POSIXt objects in `dfSummary()`  
  - Improved support for `lapply()` when used with `freq()`  
 
@@ -143,11 +145,12 @@ Version 0.8.1
 
 Version 0.8.0
 -------------  
- - Introducing graphs in dfSummary results  
- - Improved alignment of numbers in both html and ascii tables  
+ - Introducing graphs in `dfSummary()`  
+ - Improved alignment of numbers in both html and ASCII tables  
  - Cleanup in css and upgrade to Bootstrap 4 beta  
  - Added rudimentary support for `lapply()` to be used with `freq()`  
- - Improved support for `by()` and `with()` with `descr()`, `freq()`, and `ctable()`  
+ - Improved support for `by()` and `with()` with `descr()`, `freq()`, 
+   and `ctable()`  
  
 Backward-compatibility notes: in `dfSummary()`, parameter name 'display.labels' 
 has been changed to 'labels.col', for consistency reasons. Also, see Notes 
@@ -156,24 +159,23 @@ for Version 0.6.9 about the 'file' parameter.
 
 Version 0.7.0
 -------------  
-Released on GitHub only  
+Another _GitHub-only_ release  
  - Improved alignment in cells having counts + proportions  
  - Updated vignette to reflect latest changes and added examples using the
    example datasets "exams" and "tobacco"  
- - `dfSummary()`'s last column now includes counts and percentages of both 
+ - `dfSummary()`'s last column now includes counts and percentages for both 
    valid and missing data   
- - Internal change: Roxygen2 is now used to generate documentation  
+ - Internal change: **Roxygen2** is now used to generate documentation  
 
 
 Version 0.6.9
 -------------  
-In this GitHub-only release:  
+In this _GitHub-only_ release:  
  - Introduced `ctable()` for cross-tabulations  
  - Extended support for printing objects created using `by()` and/or `with()`:
    variable names, labels and by-groups are now displayed correctly  
- - `view()` is now more than just a wrapper function build around 
-   the `print()` method; it is the function to use when printing an object 
-   created with `by()`  
+ - `view()` is now more than just a wrapper function for the `print()` method;
+   it is the function to use when printing an object created with `by()`  
  - Appending to summarytools-generated html files is now possible
  - Most pander options stored in summarytools objects can be overridden by
    `print()` or `view()`  
@@ -192,26 +194,26 @@ Version 0.6.5
    exceeded max.distinct.values  
  - Improved the way `dfSummary()` reports frequencies for character variables  
  - Fixed problems with outputs when using weights  
- - Added hash markup to table headings for better improve markdown integration  
+ - Added hash markup to table headings for better markdown integration  
  - Added an option to the `print()` method to suppress the footnote in HTML 
    outputs  
 
 
 Version 0.6
 -----------  
- - Added Introduction vignette
- - Fixed markdown output that would not render strings such as <NA>  
- - Improved multiline tables linefeeds  
+ - Added Introductory vignette
+ - Fixed _markdown_ output that would not render strings such as <NA>  
+ - Improved multiline tables line feeds  
  - Improved sample datasets  
- - Removed Bootstrap content not likely to be used  
- - Changed the way method="browser" sends file path to browser for better 
+ - Removed _Bootstrap_ content not likely to be used  
+ - Changed the way `method = "browser"` sends file path to browser for better 
    cross-platform compatibility  
  - Improved results when using `by()`  
 
 
 Version 0.5
 -----------  
-For this GitHub-only release:  
+For this _GitHub-only_ release:  
  - Function `descr()` now supports weights  
  - Output from `what.is()` has been simplified  
  - Other changes are transparent to the user, but make the internals
@@ -229,38 +231,43 @@ Version 0.3
 -----------  
 Another round of major changes  
 
-  - Bringing in HTML table built with htmltools and viewable in RStudio's Viewer  
-  - function desc is renamed descr (mainly to avoid conflict with plyr's desc)  
-  - argument "echo" is deprecated; either display with pander or use `as.table()`  
-  - Returned objects are now of class "summarytools" and have several attributes
-    that are used by print.summarytools  
-	  + st.type : one of "freq", "descr" and "dfSummary"  
-  	+ date : date at which the function was called  
-  	+ var.name & var.label : for 'freq', and also 'desc' when a single vector is
-      used  
-  	+ pander.args : 'style', 'justify', 'plain.ascii', 'split.table'  
-  - print.summarytools has argument "method" that can be one of "pander",
+  - Bringing in HTML table built with **htmltools** and viewable in RStudio's
+    Viewer  
+  - Function `desc()` is renamed `descr()` (mainly to avoid conflict with
+    `plyr::desc()`)  
+  - Argument 'echo' is deprecated; either display with **pander** or use
+    `as.table()`  
+  - Returned objects are now of class "summarytools" and have several 
+    attributes that are used by `print.summarytools()`  
+	  + _st.type_ : one of "freq", "descr" and "dfSummary"  
+  	+ _date_ : date at which the function was called  
+  	+ _var.name_ and _var.label_ : for `freq()`, and also `descr()` when a single
+  	   vector is used  
+  	+ _pander.args_ : "style", "justify", "plain.ascii", "split.table"  
+  - `print.summarytools()` has argument 'method' that can be one of "pander",
     "viewer", or "browser", the last two being used to display an HTML version
-    of the output, using bootstrap's css (getbootstrap.com)  
-  - rows indexing is "detected" and reported (function .parse.arg.x takes care
-    of this)  
-  - rounding now only occurs at the printing stage  
+    of the output, using Bootstrap's css (https://getbootstrap.com)  
+  - Row indexing is "detected" and reported (function `.parse.arg.x()` takes
+    care of this)  
+  - Rounding now only occurs at the printing stage  
 
 
 Version 0.2
 -----------  
 Several major changes since version 0.1  
 
-  - 'unistats' is now called 'desc'  
-  - 'frequencies' is now called 'freq'  
-  - 'properties' is now called 'prop'  
-  - shortcuts have been added to keep backward-compatibility  
-  - 'desc' now accepts dataframes as first argument; factors and character
+  - `unistats()` is now called `desc()`
+  - `frequencies()` is now called `freq()`   
+  - `properties()` is now called `prop()`  
+  - Shortcuts have been added to keep backward-compatibility  
+  - `desc()` now accepts data frames as first argument; factors and character
     columns will be ignored  
-  - 'desc' can be transposed to suit one's preferences  
-  - 'freq' just returns a matrix-table, not a list anymore  
-  - in 'desc' and 'freq', no more argument 'display.label'. Those are displayed
-    automatically when present  
-  - rapportools is used instead of Hmisc for variable labels  
-  - function 'properties' was removed for now. Maybe reintegrated in a future
-    update  
+  - `desc()` can be transposed to suit one's preferences  
+  - `freq()` just returns a matrix-table, not a list anymore  
+  - In `desc()` and `freq()`, no more argument 'display.label'. Those are
+    displayed automatically when present  
+  - **rapportools** is used instead of **Hmisc** for variable labels  
+  - Function `properties()` was removed for now. May be reintegrated in a future
+    version  
+
+Initial Release

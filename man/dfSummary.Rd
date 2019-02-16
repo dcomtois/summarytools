@@ -158,7 +158,7 @@ The default \code{plain.ascii = TRUE} option is there to make
   basis. On Windows however, there is no such convenient directory and the
   user will have to choose a directory and cleanup the temporary images
   manually after the document has been rendered. Providing a relative path
-  such as dQuote{img} is recommended. The maximum length for this parameter
+  such as \dQuote{img} is recommended. The maximum length for this parameter
   is set to 5 characters. It can be set globally using 
   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 }
