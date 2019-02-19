@@ -9,6 +9,8 @@ TODO.R
 tests/output
 tests/output/*
 tests/other
+tests/img
+tests/last_date_dir.Rdata
 img/ds*.png
 tests/ref - Copy/
 vignettes/img/
