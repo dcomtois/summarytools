@@ -124,13 +124,13 @@ The following additional arguments can be used to override
    }
 }
 \examples{
-  \dontrun{
-  data(tobacco)
-  view(dfSummary(tobacco), footnote = NA)
-  }
-  data(exams)
-  print(freq(exams$gender), style = 'rmarkdown')
-  print(descr(exams), headings = FALSE)
+\dontrun{
+data(tobacco)
+view(dfSummary(tobacco), footnote = NA)
+}
+data(exams)
+print(freq(exams$gender), style = 'rmarkdown')
+print(descr(exams), headings = FALSE)
 
 }
 \references{
