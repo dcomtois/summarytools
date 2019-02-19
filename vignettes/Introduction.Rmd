@@ -298,7 +298,7 @@ with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 
 As we have seen, **summarytools** can generate both text/_markdown_ and _html_
 results. Both types of outputs can be used in Rmarkdown documents. The vignette
-[Recommendations for Using summarytools With Rmarkdown](library/summarytools/doc/Recommendations-rmarkdown.html)
+[Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 provides good guidelines, but here are a few tips to get started:
 
  - Always set the `knitr` chunk option `results = 'asis'`. You can do
