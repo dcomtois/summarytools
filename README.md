@@ -6,10 +6,15 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 
-The following vignette complements this page:
+The following vignettes complement this page:
 
 [Recommendations for Using summarytools With
 Rmarkdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Recommendations-rmarkdown.htm)
+
+[Introduction to
+summarytools](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Introduction%20to%20summarytools.htm)
+(Content is almost the same as this page, but has different formatting
+and shows moe examples)
 
 # What is summarytools?
 
@@ -64,7 +69,7 @@ changes can be found [near the end of this page](#latest-changes).
 This is the recommended method, as some minor fixes are made available
 between CRAN releases.
 
-**[Magick++](https://imagemagick.org/Magick++/) Dependancy on Linux and
+**[Magick++](https://imagemagick.org/Magick++/) Dependency on Linux and
 Mac OS**
 
     Before proceeding, you must install Magick++
@@ -681,7 +686,7 @@ that you:
     layout  
   - omit headings by setting the global option `headings = FALSE`
   - adjust the size of the graphs in `dfSummary()` using the
-    `dfSummary.graph.magnif` gobal option
+    `dfSummary.graph.magnif` global option
   - if `dfSummary()` outputs are too wide, try omitting a column or two
     (`valid.col` and `varnumbers`, for instance)
   - if needed, set the column widths manually with the `col.widths`

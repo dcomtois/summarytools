@@ -498,7 +498,7 @@ count.empty <- function(x, count.nas = TRUE) {
 }
 
 # Redefine htmltools's includeCSS but use collapse = "\n"
-#' @importfrom htmltools tags HTML
+#' @importFrom htmltools tags HTML
 #' @keywords internal
 includeCss <- function(path, ...) {
   lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
