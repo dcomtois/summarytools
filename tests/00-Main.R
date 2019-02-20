@@ -140,5 +140,6 @@ eval_with_feedback(testfiles[6],  lang = "fr", compare = FALSE) # overrides
 eval_with_feedback(testfiles[7],  lang = "fr", compare = FALSE) # lapply
 eval_with_feedback(testfiles[8],  lang = "fr", compare = FALSE) # with/by
 eval_with_feedback(testfiles[9],  lang = "fr", compare = FALSE) # st_options
+
 compare_dirs('fr')
 
