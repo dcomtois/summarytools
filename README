@@ -1,39 +1,38 @@
-Tips for a smooth transition from summarytools 0.8 to 0.9
----------------------------------------------------------
+Transitioning from summarytools version 0.8 to 0.9
+--------------------------------------------------
 
 Although many changes were implemented since the last CRAN version of
-summarytools, all legacy code is still supported. However, some messages
-will appear, signaling ongoing changes and setting the table for one
-minor backward-compatibility break:
+summarytools (0.8.8), all legacy code is still supported. However, some messages
+will appear from time to time, signaling changes ongoing and upcoming.
 
-    'headings' will replace 'omit.headings': the 'omit.headings' parameter, 
-    common to most summarytools functions, has been replaced by the more 
-    straighforward 'headings', which is still boolean and serves the exact same
-    purpose. Simply put, headings == !omit.headings. For now, 'omit.headings' 
-    is still supported, but a message will be displayed in the console whenever
-    it is used, encouraging users to make the transition.
-    
-Also, to simplify printing summarytools object in the console and in Rmarkdown
-documents, there are three important recommendations to follow:
+The 'omit.headings' parameter common to most functions has been replaced by
+the more straightforward 'headings'. It is still boolean and serves the exact
+same purpose. Simply put, headings == !omit.headings. For now, 'omit.headings' 
+is still supported, but a message will be displayed in the console whenever
+it is used, encouraging users to make the transition, as it will disappear in
+a future release.
 
-1. Use stby() -- or byst() -- instead of by() with summarytools. This makes
-   obsolete the use of the following idiom:
+To simplify printing summarytools object in the console and in Rmarkdown
+documents, here are three important recommendations:
+
+1. Use stby() -- or byst() -- instead of by(). This, among other advantages,
+makes obsolete the following idiom:
    
     > by_object <- by(data, indices, summarytools_function)
     > view(by_object, method = "pander")
     
-   Rather, this single operation will accomplish the same thing:
+   This single operation will accomplish the same thing:
    
     > stby(data, indices, summarytools_function)
     
 2. Do not use lapply() with freq(); simply pass your dataframe - subsetted if
-   needed - to freq(). That way, the printing of the output won't rely
+   needed - directly to freq(). That way, the printing of the output won't rely
    on view() anymore and will be totally seemless.
-   
+
 3. Read the two vignettes. They will show you how to use summarytools in the
    most effective way.
    
 Thank you for your interest in this package, and feel free to visit its
 GitHub page, to provide feedback and to make suggestions.
 
-Dominic C.
+Dominic Comtois, 2019-02
