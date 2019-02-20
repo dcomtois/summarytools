@@ -37,14 +37,15 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                        caller = "") {
   
   upd_output <- function(item, value, force = FALSE) {
+    output <- get("output", envir = fn.env)
     if (isTRUE(force) || 
         ((length(output[[item]]) == 0 || is.na(output[[item]])) &&
           length(value) == 1 && class(value) == class(output[[item]]))) {
       names(value) <- NULL
-      output[[item]] <<- value
+      output[[item]] <- value
       
       # Check if output is ready to be returned
-      if (count.empty(output, count.nas = FALSE) == 0) {
+      if (count_empty(output, count.nas = FALSE) == 0) {
         # Cleanup
         for (item in intersect(c("var_name", "by_var", "by_group"),
                                  names(output))) {
@@ -55,9 +56,9 @@ parse_args <- function(sys_calls, sys_frames, match_call,
                          "([\\w_.]+)",        # var_name (group 1)
                          "['\"]?\\]{0,2}",    # closing subsetting char(s)
                          "(.*)$")             # remainder of expression (gr. 2)
-            output[[item]] <<- sub(pattern = re,
-                                   replacement = "\\1\\2", 
-                                   x = output[[item]], perl = TRUE)
+            output[[item]] <- sub(pattern = re,
+                                  replacement = "\\1\\2", 
+                                  x = output[[item]], perl = TRUE)
             
             if (item == "by_group") {
               output$by_group <- gsub(paste0(output$df_name, "\\$"), "", output$by_group)
@@ -68,17 +69,18 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       
         empty_elements <- as.numeric(
-          which(vapply(output, function(x) {identical(x, NA) || length(x) == 0}, 
-                       TRUE))
+          which(vapply(output, function(x) {identical(x, NA_character_) || 
+              length(x) == 0}, TRUE))
           )
         
         if (length(empty_elements) > 0) {
-          output <<- output[-empty_elements]
+          output <- output[-empty_elements]
         }
         
         assign("do_return", envir = fn.env, value = TRUE)        
       }
     }
+    assign("output", output, envir = fn.env)
   }
 
   populate_by_info <- function() {
