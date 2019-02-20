@@ -1426,7 +1426,7 @@ print_dfs <- function(x, method) {
     
     table_head <- list()
     for(cn in colnames(x)) {
-      table_head %+=% list(tags$th(tags$strong(cn), 
+      table_head %+=% list(tags$th(tags$strong(HTML(conv_non_ascii(cn))), 
                                    class = inv_trs(cn),
                                    align = "center",
                                    class = "st-protect-top-border"))
