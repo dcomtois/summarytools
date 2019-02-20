@@ -55,43 +55,43 @@ outputs produced by **summarytools** can be:
   - Displayed in plain text in the *R* console (default behaviour)
   - Used in *Rmarkdown* documents and *knitted* along with other text and
     *R* output
-  - Written to _html_ files that fire up in
-    [*RStudio*](https://www.rstudio.com/)’s Viewer pane or in the default
+  - Written to _html_ files that open up in
+    [*RStudio*](https://www.rstudio.com/)’s Viewer or in the default
     browser
-  - Written to plain or *Rmarkdown* text files
+  - Written to plain or *markdown* text files
 
-It is also possible to include **summarytools**' functions in *Shiny apps*. 
-Notably, [radiant](https://CRAN.R-project.org/package=radiant),
+It is also possible to include **summarytools** functions in *Shiny apps*. 
+For instance, [radiant](https://CRAN.R-project.org/package=radiant),
 a Shiny-based package for business analytics, uses `dfSummary()` to describe
 imported data frames.
 
 ### Latest Improvements
 
-Version 0.9 brings **many** changes and improvements. A summary of those
-changes can be found [near the end of this vignette](#changes).
+Version 0.9 brings **many** changes and improvements to **summarytools**. 
+A summary of those changes can be found [near the end of this vignette](#changes).
 
 ### This Vignette's Setup
 
 Since this vignette was created using _Rmarkdown_, we've set some global options
 that are appropriate for this format and which avoid redundancy in the code. 
-Here's what the setup chunk looks like (further explanations will be given further
+Here's what the setup chunk looks like (further explanations will be given 
 below):
 
 ```
 # ```{r setup, include=FALSE}
 # library(knitr)
-# opts_chunk$set(results = 'asis',      # This one is essential
+# opts_chunk$set(results = 'asis',      # This is essential (can also be set at the chunk-level)
 #                comment = NA, 
 #                prompt = FALSE, 
 #                cache = FALSE)
 #
 # library(summarytools)
 # st_options(plain.ascii = FALSE,       # This is very handy in all Rmd documents
-#            style = "rmarkdown"        # idem
+#            style = "rmarkdown"        # This too
 #            footnote = NA,             # Avoids footnotes which would clutter the results
 #            subtitle.emphasis = FALSE  # This is a setting to experiment with - according to
-# )                                     # the theme used, it might produce better results one way
-#                                       # or another
+# )                                     # the theme used, it might improve the headings' 
+#                                       # layout
 # ```
 # 
 # ```{r, echo=FALSE}
@@ -595,9 +595,8 @@ or simply "."). Two things are to be kept in mind: it needs to be short
 ## Translations
 
 It is now possible to switch the language used in the outputs. So far, not too
-many languages are available (French, Spanish and Russian), but with the 
-community's involvement, I hope we can gather a good number of them in 
-reasonable time.
+many languages are available (French and Spanish, Russian underway), but with
+the community's involvement, I hope we can gather a good number.
 
 ### Switching Languages
 
@@ -637,6 +636,9 @@ Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
 
+Note that russian translations are not currently available, but should be in
+the next release.
+
 ### Defining and Using Custom Translations
 
 With the new function `useTranslations()`, you can add your own set of 
@@ -672,6 +674,7 @@ to **summarytools**. Here are the key elements:
      options is still supported
    + Several global options were added, with a focus on simplifying 
      *Rmarkdown* document creation
+ - **improved magrittr** operators support (`%>%`, `%$%`)
  - **Changes to `freq()`**
    + As mentioned earlier, the function now accepts data frames as its main 
      argument; this makes practically obsolete the use of `lapply()` with it
@@ -687,11 +690,11 @@ to **summarytools**. Here are the key elements:
    + The variable used for weights (if any) is removed automatically from the
      data so no stats are produced for it
  - **Changes to `dfSummary()`**
-   + Now fully compatible with _Rmarkdown_
-   + Number of columns is now included in the heading section
+   + Now fully compatible with _Rmarkdown_ with its _png_ graphs
+   + Number of columns is included in the heading section
    + Number of duplicated rows is also shown in the heading section
    + Bar plots now more accurately reflect counts, as they are not stretched
-     across table cells (this allows the comparison of frequencies across 
+     across table cells (this allows comparison of frequencies across 
      variables)
    + Columns with particular content (unary/binary, integer sequences, UPC/EAN
      codes) are treated differently; more relevant information is displayed,
@@ -700,7 +703,8 @@ to **summarytools**. Here are the key elements:
      width of the resulting table's columns; this addresses an issue
      with some graphs not being shown at the desired magnification level 
      (although much effort has been put into improving this as well)
-   + `max.tbl.height` parameter added
+   + `max.tbl.height` parameter is added, allowing lengthy summaries to
+     be shown in a scrollable window
 
 ### Other Notable Changes
 
@@ -717,18 +721,18 @@ to **summarytools**. Here are the key elements:
 
 ### Backward Compatibility
 
-No changes break backward compatibility, but at least one legacy feature will be
-abandoned in some further release. Namely, the boolean parameter `omit.headings`, 
+No changes break backward compatibility, but at least one legacy feature will
+disappear in some further release. Namely, the boolean parameter `omit.headings`, 
 which has been replaced by the more straightforward `headings`. For now, a 
 message is shown whenever the "old" parameter name is used, encouraging users
-to switch to the newer one.
+to transition to the newer one.
 
 ## Stay Up-to-date
 
 Check out the [GitHub project's page](https://github.com/dcomtois/summarytools) - 
 from there you can see the latest updates and also submit feature requests.
 
-For a preview of what's coming in the next release, see the 
+For a preview of what's coming in the next release, have a look at the 
 [development branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 
 ## Final notes

@@ -1,35 +1,39 @@
 Version 0.9.1
 -------------  
 For users updating solely from CRAN, this is a **major** update. _Many_ changes
-were introduced since version 0.8.8 (which this version will replace, since
-versions 0.8.9 and 0.9.0 were released on _GitHub_ only). Please refer to the
-README file, the two vignettes and the information below for all the details.
+were introduced since version 0.8.8 (versions 0.8.9 and 0.9.0 were released 
+solely on _GitHub_). Please refer to the README file, the two vignettes and the
+information below for all the details.
 
 In this version:
 
- - `stby()`, a summarytools-specific version of `by()`, is introduced. It is 
-   **highly recommended** that you use it instead of `by()`; its syntax is 
-   identical and it greatly simplifies the printing of the generated objects
+ - `stby()` (or `byst()`), a summarytools-specific version of `by()`, is 
+   introduced. It is **highly recommended** that you use it instead of `by()`; 
+   its syntax is identical and it greatly simplifies the printing of the 
+   generated objects
  - In `dfSummary()`:  
-   + 'max.tbl.height' allows printing summaries in scrollable windows  
-   + setting 'tmp.img.dir' allows the inclusion of png graphs in Rmarkdown
+   + 'max.tbl.height' allows printing summaries in scrollable windows (useful
+     in _.Rmd_ when a data frame contains numerous variables)  
+   + setting 'tmp.img.dir' allows the inclusion of _png_ graphs in Rmarkdown
      documents when using pander method in combination with arguments
      plain.ascii = FALSE and style = "grid"  
-   + Platform-specific png device types are used, improving image sharpness  
- - Several examples were added to all main functions; use the `example()`
+   + Platform-specific _png_ device types are used, improving image quality  
+ - Several examples are added to all main functions; use the `example()`
    function to access them  
 
 
 Version 0.9.0
 -------------  
- - **Translations** are introduced for the outputs. For instance, setting
-   st_options(lang='fr') gives access to French translations. Two languages
-   are still a work in progress: Spanish and Russian  
+ - **Output translations** are introduced. For instance, setting
+   st_options(lang='fr') gives access to French translations. Spanish ('es')
+   translations are also available. 
  - Function `useTranslations()` allows using custom translations; see the
    introductory vignette for details  
  - In `descr()`, the weighting variable (when used) is automatically removed 
    from the list of variables to analyze  
-
+ - In `dfSummary()`, images are processed using functions from the **magick**
+   package, improving the general layout of the output tables
+ - Improved support for **magrittr** operators
 
 Version 0.8.9
 -------------  
@@ -48,8 +52,8 @@ Version 0.8.9
    
 Two *somewhat* backward-compatibility breaking changes:  
  - The 'omit.headings' parameter is replaced by the more straightforward
-   (and still boolean) 'headings'. The former is still supported but will be 
-   deprecated in a future release (possibly 0.9.2)  
+   (and still boolean) 'headings'. The former is still supported but will 
+   disappear in a future release (possibly 0.9.2)  
  - Row subsetting is no longer displayed in the headings section, as it was
    error-prone  
    

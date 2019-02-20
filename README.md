@@ -14,7 +14,7 @@ Rmarkdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytoo
 [Introduction to
 summarytools](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Introduction%20to%20summarytools.htm)
 (Content is almost the same as this page, but has different formatting
-and shows moe examples)
+and shows more examples)
 
 # What is summarytools?
 
@@ -752,9 +752,9 @@ characters max) and we need to clean it up manually.
 ## Translations
 
 It is now possible to switch the language used in the outputs. So far,
-not too many languages are available (French, Spanish and Russian), but
-with the community’s involvement, I hope we can gather a good number of
-them in reasonable time.
+not too many languages are available (French and Spanish, Russian
+underway), but with the community’s involvement, I hope we can gather a
+good number.
 
 ### Switching Languages
 
@@ -795,6 +795,9 @@ Then, to go back to default settings:
 Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
+
+Note that russian translations are not currently available, but should
+be in the next release.
 
 ### Defining and Using Custom Translations
 
