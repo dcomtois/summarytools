@@ -7,7 +7,7 @@ title.ctable.col     ,main heading                    ,пропорции по �
 title.ctable.tot     ,main heading                    ,суммарные пропорции
 title.descr          ,main heading                    ,кол-венный показатель распределения
 title.descr.weighted ,main heading                    ,взвешенный кол-венный показатель распределения
-title.dfSummary      ,main heading                    ,[TODO: data frame is something in R]
+title.dfSummary      ,main heading                    ,Data Frame Summary
 n                    ,heading label                   ,кол-во
 dimensions           ,heading label                   ,измерения
 duplicates           ,heading label                   ,дупликаты

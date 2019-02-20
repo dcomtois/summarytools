@@ -56,9 +56,9 @@ graph                ,column name (dfSummary)         ,Gráfico
 missing              ,column name (dfSummary)         ,Perdidos
 distinct.value       ,cell content (dfSummary)        ,valor distinto
 distinct.values      ,cell content (dfSummary)        ,valores distintos
-all.nas              ,cell content (dfSummary)        ,Todos NA's
-all.empty.str        ,cell content (dfSummary)        ,Todos [empty strings]
-all.empty.str.nas    ,cell content (dfSummary)        ,Todos [empty strings / NA's]
+all.nas              ,cell content (dfSummary)        ,100% NA's
+all.empty.str        ,cell content (dfSummary)        ,100% cadenas vacías
+all.empty.str.nas    ,cell content (dfSummary)        ,100% NA's o cadenas vacías
 int.sequence         ,cell content (dfSummary)        ,Secuencia de enteros
 rounded              ,cell content (dfSummary)        ,redondeo
 others               ,cell content (dfSummary)        ,otros
