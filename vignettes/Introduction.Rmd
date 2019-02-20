@@ -674,6 +674,7 @@ to **summarytools**. Here are the key elements:
      options is still supported
    + Several global options were added, with a focus on simplifying 
      *Rmarkdown* document creation
+ - **improved magrittr** operators support (`%>%`, `%$%`)
  - **Changes to `freq()`**
    + As mentioned earlier, the function now accepts data frames as its main 
      argument; this makes practically obsolete the use of `lapply()` with it

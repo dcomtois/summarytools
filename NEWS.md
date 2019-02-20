@@ -33,6 +33,7 @@ Version 0.9.0
    from the list of variables to analyze  
  - In `dfSummary()`, images are processed using functions from the **magick**
    package, improving the general layout of the output tables
+ - Improved support for **magrittr** operators
 
 Version 0.8.9
 -------------  
