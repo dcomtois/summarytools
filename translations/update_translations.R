@@ -11,7 +11,7 @@ rownames(tr) <- "en"
 translations <- tr
 
 for (f in list.files("translations")) {
-  if (f == "en.csv" || !grepl("^\\w{2}\\.csv$", f)) {
+  if (f == "en.csv" || f == "ru.csv" || !grepl("^\\w{2}\\.csv$", f)) {
     next
   }
   tr <- read.csv(paste("translations", f, sep = "/"), strip.white = TRUE, 
