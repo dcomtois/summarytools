@@ -68,7 +68,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         }
       
         empty_elements <- as.numeric(
-          which(vapply(output, function(x) {is.na(x) || !length(x)}, 
+          which(vapply(output, function(x) {identical(x, NA) || length(x) == 0}, 
                        TRUE))
           )
         
