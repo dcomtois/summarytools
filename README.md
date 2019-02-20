@@ -14,7 +14,7 @@ Rmarkdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytoo
 [Introduction to
 summarytools](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Introduction%20to%20summarytools.htm)
 (Content is almost the same as this page, but has different formatting
-and shows moe examples)
+and shows more examples)
 
 # What is summarytools?
 
