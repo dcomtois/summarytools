@@ -111,9 +111,10 @@ compare_dirs <- function(lang) {
     return(paste("No ref files exist in", ref_dir))
   }
   if (Sys.info()[['sysname']] == "Linux") {
-    system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
+    system(paste0('kdiff3 "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
   } else {
-    system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
+    #system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
+    system(paste0('"compare"', 
                  ' "', ref_dir, '" "', out_dir, '"'))
   }
 }
