@@ -34,6 +34,10 @@ tobacco["smoker"] %>% freq()
 tobacco[["smoker"]] %>% freq()
 tobacco[,5] %>% freq()        
 tobacco[[5]] %>% freq()       
+dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
+
+tobacco %$% ctable(smoker, diseased)
+
 
 # by
 stby(tobacco$smoker, tobacco$gender, freq)          
