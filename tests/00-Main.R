@@ -113,7 +113,8 @@ compare_dirs <- function(lang) {
   if (Sys.info()[['sysname']] == "Linux") {
     system(paste0('kdiff3 "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
   } else {
-    system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
+    #system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
+    system(paste0('"compare"', 
                  ' "', ref_dir, '" "', out_dir, '"'))
   }
 }
