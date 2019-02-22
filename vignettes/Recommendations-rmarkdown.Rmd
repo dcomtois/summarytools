@@ -28,19 +28,19 @@ This document uses theme `rmarkdown::html_vignette`. Its **yaml** section
 looks like this:
 
 ```
----
-title: "Recommendations for Using summarytools With Rmarkdown"
-author: "Dominic Comtois"
-date: "'r Sys.Date()'"     <--- using backticks, not single quotes
-output: 
-  rmarkdown::html_vignette: 
-    css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
-vignette: >
-  %\VignetteIndexEntry{Recommendations for Rmarkdown}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+# ---
+# title: "Recommendations for Using summarytools With Rmarkdown"
+# author: "Dominic Comtois"
+# date: "`r Sys.Date()`"
+# output: 
+#   rmarkdown::html_vignette: 
+#     css: 
+#     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+# vignette: >
+#   %\VignetteIndexEntry{Recommendations for Rmarkdown}
+#   %\VignetteEngine{knitr::rmarkdown}
+#   %\VignetteEncoding{UTF-8}
+# ---
 ```
 
 The following **summarytools global options** have been set. More of them can
@@ -170,9 +170,11 @@ This style gives good results, and since v0.9, the graphs are shown as true
 images. Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
 
-```{r dfs_grid, results='asis'}
+```{r dfs_grid, eval=FALSE}
 dfSummary(tobacco, style = 'grid', graph.magnif = 0.75, tmp.img.dir = "/tmp")
 ```
+
+<img src="dfSummary_md.png" width=100%/>
 
 ## HTML Rendering
 
