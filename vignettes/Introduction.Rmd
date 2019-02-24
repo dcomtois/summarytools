@@ -214,10 +214,12 @@ is usually a good idea to exclude a column or two, otherwise the table might be 
 bit too wide. For instance, since the _Valid_ and _NA_ columns are redundant, 
 we can drop one of them.
 
-```{r}
+```{r, eval=FALSE}
 dfSummary(tobacco, plain.ascii = FALSE, style = "grid", 
           graph.magnif = 0.75, valid.col = FALSE, tmp.img.dir = "/tmp")
 ```
+
+<img src="dfSummary_md.png" width=100%/>
 
 While rendering _html_ tables with `view()` doesn't require it, here it is
 essential to specify `tmp.img.dir`. We'll explain why [further below](#tmp-img-dir).
@@ -738,7 +740,7 @@ For a preview of what's coming in the next release, have a look at the
 ## Final notes
 
 The package comes with no guarantees. It is a work in progress and
-feedback / feature requests are welcome. Just send me an email
-(dominic.comtois@gmail.com), or open an
+feedback / feature requests are welcome. Just send an email to
+dominic.comtois@gmail.com, or open an
 [Issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
