@@ -9,12 +9,11 @@
 The following vignettes complement this page:
 
 [Recommendations for Using summarytools With
-Rmarkdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Recommendations-rmarkdown.htm)
-
+Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 [Introduction to
-summarytools](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/doc/Introduction%20to%20summarytools.htm)
-(Content is almost the same as this page, but has different formatting
-and shows more examples)
+summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)
+– Contents similar to this page (minus installation instructions), with
+fancier table stylings.
 
 # What is summarytools?
 
