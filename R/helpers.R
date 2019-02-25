@@ -95,23 +95,29 @@ check_arguments <- function(mc, dotArgs) {
     }
     
     if ("order" %in% names(mc)) {
-      
-      order <- switch(tolower(substring(pf$order, 1, 1)),
-                      d = "default",
-                      l = "levels",
-                      f = "freq",
-                      n = "names")
-      
-      if (!isTRUE(test_choice(order, 
-                              c("default", "levels", "freq", "names")))) {
-        errmsg %+=% paste("'order' must be one of 'default', 'levels',",
-                          "'freq', or 'names'")
-      } else if (order == "levels" && !is.factor(pf$x)) {
-        errmsg %+=% paste("'order' can be set to 'factor' only for factors.",
-                          "Use 'names' or 'freq', or convert object to factor",
-                          "prior to calling freq()")
+      if (length(pf$order == 1)) {
+        order <- switch(tolower(substring(pf$order, 1, 1)),
+                        d = "default",
+                        l = "levels",
+                        f = "freq",
+                        n = "names")
+        
+        if (!isTRUE(test_choice(order, 
+                                c("default", "levels", "freq", "names")))) {
+          errmsg %+=% paste("'order' must be one of 'default', 'levels',",
+                            "'freq', or 'names'")
+        } else if (order == "levels" && !is.factor(pf$x)) {
+          errmsg %+=% paste("'order' can be set to 'factor' only for factors.",
+                            "Use 'names' or 'freq', or convert object to factor",
+                            "prior to calling freq()")
+        }
+        assign("order", order, envir = parent.frame())
+      } else {
+        if (!all(pf$order %in% unique(pf$x))) {
+          errmsg %+=% paste("some elements of the 'order' argument were not",
+                            "found in the data")
+        }
       }
-      assign("order", order, envir = parent.frame())
     }
     
     if (!identical(pf$weights, NA)) {
@@ -517,3 +523,9 @@ paste8 <- function (..., sep = " ", collapse = NULL) {
                  collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)))
   do.call(paste, args)
 }
+
+# apply_attr <- function(x, model, exclude = c("dim", "dimnames")) {
+#   for (a in names(attributes(model))) {
+#     attr(x, )
+#   }
+# }

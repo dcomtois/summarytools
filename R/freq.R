@@ -8,7 +8,8 @@
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent).
+#'   most frequent to less frequent). Can also be a numeric or character vector
+#'   specifying the desired order for several or all frequency table rows.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown} This option can be set globally; see
@@ -229,17 +230,32 @@ freq <- function(x,
     freq_table <- table(x, useNA = "always")
     
     # Order by frequency if needed
-    if (order == "freq") {
+    if (length(order) == 1 && order == "freq") {
       freq_table <- sort(freq_table, decreasing = TRUE)
       na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
     # order by names if needed
-    if (is.factor(x) && order == "names") {
+    if (is.factor(x) && length(order) == 1 && order == "names") {
       freq_table <- freq_table[order(names(freq_table))]
       na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+    }
+
+    if (length(order) > 1) {
+      if (isTRUE(report.nas)) {
+        if (!NA %in% order) {
+          na_count <- tail(freq_table, 1)
+          length(freq_table) <- length(freq_table) - 1
+          freq_table <- freq_table[order]
+          freq_table <- append(freq_table, NA = na_count)
+        } else {
+          freq_table <- freq_table[order]
+        }
+      } else {
+        freq_table <- freq_table[order]
+      }
     }
     
     # Change the name of the NA item (last) to avoid potential
