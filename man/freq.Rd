@@ -20,7 +20,8 @@ freq(x, round.digits = st_options("round.digits"), order = "default",
 
 \item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
 non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent).}
+most frequent to less frequent). Can also be a numeric or character vector
+specifying the desired order for several or all frequency table rows.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or

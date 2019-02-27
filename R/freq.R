@@ -244,23 +244,21 @@ freq <- function(x,
     }
 
     if (length(order) > 1) {
-      if (isTRUE(report.nas)) {
-        if (!NA %in% order) {
-          na_count <- tail(freq_table, 1)
-          length(freq_table) <- length(freq_table) - 1
-          freq_table <- freq_table[order]
-          freq_table <- append(freq_table, NA = na_count)
-        } else {
-          freq_table <- freq_table[order]
-        }
-      } else {
-        freq_table <- freq_table[order]
+      na_count <- tail(freq_table, 1)
+      length(freq_table) <- length(freq_table) - 1
+      if (length(order) < length(freq_table)) {
+        message(paste("Some values are omitted since 'order' is not",
+                      "exhaustive"))
       }
+      freq_table <- freq_table[order]
+      freq_table <- append(freq_table, na_count)
     }
     
     # Change the name of the NA item (last) to avoid potential
     # problems when echoing to console
-    names(freq_table)[length(freq_table)] <- "<NA>"
+    if (NA %in% names(freq_table)) {
+      names(freq_table)[which(is.na(names(freq_table)))] <- "<NA>"
+    }
     
     # calculate proportions (valid, i.e excluding NA's)
     P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
@@ -293,25 +291,39 @@ freq <- function(x,
       weights <- weights / sum(weights) * length(x)
     }
     
-    freq_table <- xtabs(formula = weights ~ x)
+    freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
     
     # Order by frequency if needed
-    if (order == "freq") {
+    if (length(order) == 1 && order == "freq") {
       freq_table <- sort(freq_table, decreasing = TRUE)
       na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
     # order by names if needed
-    if (is.factor(x) && order == "names") {
+    if (is.factor(x) && length(order) == 1 && order == "names") {
       freq_table <- freq_table[sort(names(freq_table))]
       na_pos <- which(is.na(names(freq_table)))
       freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
     }
     
+    if (length(order) > 1) {
+      na_count <- tail(freq_table, 1)
+      length(freq_table) <- length(freq_table) - 1
+      if (length(order) < length(freq_table)) {
+        message(paste("Some values are omitted since 'order' is not",
+                      "exhaustive"))
+      }
+      freq_table <- freq_table[order]
+      freq_table <- append(freq_table, na_count)
+    }
+    
+    names(freq_table)[length(freq_table)] <- "<NA>"
+    
     P_valid <- prop.table(freq_table) * 100
-    P_valid["<NA>"] <- NA
-    freq_table["<NA>"] <- sum(weights) - sum(xtabs(formula = weights ~ x))
+    names(P_valid)[length(P_valid)] <- "<NA>"
+    # P_valid["<NA>"] <- NA
+    # freq_table["<NA>"] <- sum(weights) - sum(xtabs(formula = weights ~ x))
     P_tot <- prop.table(freq_table) * 100
   }
   

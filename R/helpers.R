@@ -95,7 +95,7 @@ check_arguments <- function(mc, dotArgs) {
     }
     
     if ("order" %in% names(mc)) {
-      if (length(pf$order == 1)) {
+      if (length(pf$order) == 1) {
         order <- switch(tolower(substring(pf$order, 1, 1)),
                         d = "default",
                         l = "levels",
@@ -113,6 +113,10 @@ check_arguments <- function(mc, dotArgs) {
         }
         assign("order", order, envir = parent.frame())
       } else {
+        if (NA %in% pf$order) {
+          errmsg %+=% "'order' cannot contain NA; NA's are always displayed last"
+        }
+          
         if (!all(pf$order %in% unique(pf$x))) {
           errmsg %+=% paste("some elements of the 'order' argument were not",
                             "found in the data")
@@ -524,7 +528,7 @@ paste8 <- function (..., sep = " ", collapse = NULL) {
   do.call(paste, args)
 }
 
-# apply_attr <- function(x, model, exclude = c("dim", "dimnames")) {
+# apply_attr <- function(src, dest, exclude = c("dim", "dimnames")) {
 #   for (a in names(attributes(model))) {
 #     attr(x, )
 #   }
