@@ -223,44 +223,11 @@ freq <- function(x,
     parse_info$var_label <- label(x)
   }
   
-  # No weights are used --------------------------------------------------------
-  # create a basic frequency table, always including NA
+  # create a basic frequency table, always including NA ------------------------
   if (identical(NA, weights)) {
     freq_table <- table(x, useNA = "always")
-    
-    # Order by frequency if needed
-    if (order == "freq") {
-      freq_table <- sort(freq_table, decreasing = TRUE)
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # order by names if needed
-    if (is.factor(x) && order == "names") {
-      freq_table <- freq_table[order(names(freq_table))]
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # Change the name of the NA item (last) to avoid potential
-    # problems when echoing to console
-    names(freq_table)[length(freq_table)] <- "<NA>"
-    
-    # calculate proportions (valid, i.e excluding NA's)
-    P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
-    
-    # Add "<NA>" item to the proportions; this assures
-    # proper length when cbind'ing later on
-    P_valid["<NA>"] <- NA
-    
-    # calculate proportions (total, i.e. including NA's)
-    P_tot <- prop.table(freq_table) * 100
-  }
-  
-  # Weights are used -----------------------------------------------------------
-  else {
-    
-    # Check that weights vector is of the right length
+  } else {
+    # Weights are used
     if (length(weights) != length(x)) {
       stop("weights vector must be of same length as x")
     }
@@ -268,8 +235,8 @@ freq <- function(x,
     weights_string <- deparse(substitute(weights))
     
     if (sum(is.na(weights)) > 0) {
-      warning("Missing values on weight variable have been detected and were ",
-              "treated as zeroes.")
+      warning("missing values on weight variable have been detected and were ",
+              "treated as zeroes")
       weights[is.na(weights)] <- 0
     }
     
@@ -277,28 +244,37 @@ freq <- function(x,
       weights <- weights / sum(weights) * length(x)
     }
     
-    freq_table <- xtabs(formula = weights ~ x)
-    
-    # Order by frequency if needed
-    if (order == "freq") {
-      freq_table <- sort(freq_table, decreasing = TRUE)
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # order by names if needed
-    if (is.factor(x) && order == "names") {
-      freq_table <- freq_table[sort(names(freq_table))]
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    P_valid <- prop.table(freq_table) * 100
-    P_valid["<NA>"] <- NA
-    freq_table["<NA>"] <- sum(weights) - sum(xtabs(formula = weights ~ x))
-    P_tot <- prop.table(freq_table) * 100
+    freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
   }
   
+  # Order by frequency if needed
+  if (order == "freq") {
+    freq_table <- sort(freq_table, decreasing = TRUE)
+    na_pos <- which(is.na(names(freq_table)))
+    freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+  }
+  
+  # order by names if needed
+  if (is.factor(x) && order == "names") {
+    freq_table <- freq_table[order(names(freq_table))]
+    na_pos <- which(is.na(names(freq_table)))
+    freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+  }
+  
+  # Change the name of the NA item (last) to avoid potential
+  # problems when echoing to console
+  names(freq_table)[length(freq_table)] <- "<NA>"
+  
+  # calculate proportions (valid, i.e excluding NA's)
+  P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
+  
+  # Add "<NA>" item to the proportions; this assures
+  # proper length when cbind'ing later on
+  P_valid["<NA>"] <- NA
+  
+  # calculate proportions (total, i.e. including NA's)
+  P_tot <- prop.table(freq_table) * 100
+
   # Calculate cumulative proportions ------------------------------------------
   
   P_valid_cum <- cumsum(P_valid)
