@@ -465,7 +465,7 @@ Weights: ponderation
 Weighted Frequencies  
 mala.f  
 Type: Factor  
-Weights: tabagismeponderation  
+Weights: tabagisme$ponderation  
 
                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 -------------------------- --------- --------- -------------- --------- --------------
@@ -490,7 +490,7 @@ Weights: tabagismeponderation
 Weighted Frequencies  
 mala.f  
 Type: Factor  
-Weights: tabagismeponderation  
+Weights: tabagisme$ponderation  
 
                               Freq       %   % Cum.
 -------------------------- ------- ------- --------
@@ -1086,3 +1086,4 @@ Type: Character
 |              Vision |    9 |  4.05 | 100.00 |
 +---------------------+------+-------+--------+
 
+> st_options(freq.totals = TRUE, freq.report.nas = TRUE) 
