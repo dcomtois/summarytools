@@ -49,6 +49,11 @@ print(wbc, headings = T, file = "04.html")
 view(wbc, headings = T, caption = "with head", file = "05.md")
 view(wbc, headings = T, footnote = "with head", file = "05.html")
 
+# Weights
+(wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
+print(wc1, totals = FALSE)
+print(wc1, round.digits = 2)
+
 # Global Options
 st_options(ctable.prop = "t", ctable.totals = FALSE)
 with(tobacco, ctable(smoker, diseased))

@@ -113,14 +113,6 @@ check_arguments <- function(mc, dotArgs) {
       }
       assign("order", order, envir = parent.frame())
     }
-    
-    if (!identical(pf$weights, NA)) {
-      if (is.null(pf$weights)) {
-        errmsg %+=% "weights vector not found"
-      } else if (length(pf$weights) != nrow(as.data.frame(pf$x))) {
-        errmsg %+=% "weights vector must have same length as 'x'"      
-      }
-    }
   }
   
   # freq & ctable arguments ----------------------------------------------------
@@ -129,6 +121,14 @@ check_arguments <- function(mc, dotArgs) {
         !isTRUE(test_logical(pf$totals, 
                              len = 1, any.missing = FALSE))) {
       errmsg %+=% "'totals' must be either TRUE or FALSE"
+    }
+    
+    if (!identical(pf$weights, NA)) {
+      if (is.null(pf$weights)) {
+        errmsg %+=% "weights vector not found"
+      } else if (length(pf$weights) != nrow(as.data.frame(pf$x))) {
+        errmsg %+=% "weights vector must have same length as 'x'"      
+      }
     }
   }
   

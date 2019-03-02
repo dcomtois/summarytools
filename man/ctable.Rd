@@ -10,7 +10,8 @@ ctable(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
   plain.ascii = st_options("plain.ascii"),
   headings = st_options("headings"),
   display.labels = st_options("display.labels"), split.tables = Inf,
-  dnn = c(substitute(x), substitute(y)), ...)
+  dnn = c(substitute(x), substitute(y)), weights = NA,
+  rescale.weights = FALSE, ...)
 }
 \arguments{
 \item{x}{First categorical variable - values will appear as row names.}
@@ -59,6 +60,11 @@ table can be. \code{Inf} by default.}
 
 \item{dnn}{Names to be used in output table. Vector of two strings; By 
 default, the character values for arguments x and y are used.}
+
+\item{weights}{Vector of weights; must be of the same length as \code{x}.}
+
+\item{rescale.weights}{Logical parameter. When set to \code{TRUE}, the total
+count will be the same as the unweighted \code{x}. \code{FALSE} by default.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
 }
