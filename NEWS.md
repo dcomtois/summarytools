@@ -1,5 +1,18 @@
+Version 0.9.3
+-------------
+ - In `freq()`:
+   + new parameter `cumul` allows turning on or off cumulative proportions
+ - In `ctable()` 
+   + Added support for weights
+
+
+Version 0.9.2
+-------------
+No changes.
+
+
 Version 0.9.1
--------------  
+-------------
 For users updating solely from CRAN, this is a **major** update. _Many_ changes
 were introduced since version 0.8.8 (versions 0.8.9 and 0.9.0 were released 
 solely on _GitHub_). Please refer to the README file, the two vignettes and the
@@ -34,6 +47,7 @@ Version 0.9.0
  - In `dfSummary()`, images are processed using functions from the **magick**
    package, improving the general layout of the output tables
  - Improved support for **magrittr** operators
+
 
 Version 0.8.9
 -------------  
