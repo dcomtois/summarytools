@@ -134,14 +134,19 @@
 #' @importFrom checkmate test_logical test_path_for_output test_choice
 #'             test_string check_file_exists
 #' @export
-print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
-                               report.title = NA, table.classes = NA, 
-                               bootstrap.css = st_options("bootstrap.css"),
-                               custom.css = st_options("custom.css"), 
-                               silent = FALSE, 
-                               footnote = st_options("footnote"),
+print.summarytools <- function(x,
+                               method         = "pander", 
+                               file           = "", 
+                               append         = FALSE,
+                               report.title   = NA, 
+                               table.classes  = NA, 
+                               bootstrap.css  = st_options("bootstrap.css"),
+                               custom.css     = st_options("custom.css"), 
+                               silent         = FALSE, 
+                               footnote       = st_options("footnote"),
                                max.tbl.height = Inf,
-                               escape.pipe = st_options("escape.pipe"), ...) {
+                               escape.pipe    = st_options("escape.pipe"), 
+                               ...) {
 
   # object is a list, either created
   # - using lapply() 
@@ -326,11 +331,11 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   overrided_args <- character()
   # Todo: remove "omit.headings" in next release
   for (format_element in c("style", "plain.ascii", "round.digits",
-                           "justify", "headings", "display.labels",
+                           "justify", "cumul", "totals", "report.nas",
+                           "missing", "headings", "display.labels",
                            "display.type", "varnumbers", "labels.col", 
                            "graph.col", "col.widths", "na.col", "valid.col", 
-                           "split.tables", "totals", "report.nas", "missing",
-                           "totals", "omit.headings")) {
+                           "split.tables", "omit.headings")) {
     if (format_element %in% names(dotArgs)) {
       if (format_element == "omit.headings") {
         message("'omit.headings' will disappear in future releases; ",
@@ -389,7 +394,6 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
             "'Data.frame.label'; please use the latter in the future")
   }
 
-
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
                           "Row.variable", "Col.variable")
@@ -408,7 +412,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
   }
 
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
-  # explicitly specified
+  # explicitly specified otherwise
   if (method == "pander" && attr(x, "format_info")$style == "rmarkdown" &&
       isTRUE(attr(x, "format_info")$plain.ascii) &&
       (!"plain.ascii" %in% (names(dotArgs)))) {
@@ -469,7 +473,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
         report.title <- trs("title.descr.weighted")
       }
     }
-  } else if(attr(x, "st_type") == "dfSummary") {
+  } else if (attr(x, "st_type") == "dfSummary") {
     res <- print_dfs(x, method)
     if (is.na(report.title)) {
       report.title <- trs("title.dfSummary")
@@ -560,7 +564,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
 
     if (method == "viewer") {
       if (file == "" || isTRUE(open.doc)) {
-        if(.Platform$GUI == "RStudio") {
+        if (.Platform$GUI == "RStudio") {
           viewer <- getOption("viewer")
           if (!is.null(viewer)) {
             viewer(outfile_path)
@@ -591,7 +595,7 @@ print.summarytools <- function(x, method = "pander", file = "", append = FALSE,
     }
 
     # return file path and update tmpfiles vector when method = browser / viewer
-    if(file == "" && method %in% c("browser", "viewer")) {
+    if (file == "" && method %in% c("browser", "viewer")) {
       .st_env$tmpfiles <- c(.st_env$tmpfiles, outfile_path)
       if (!silent) {
         message("Output file written: ", outfile_path)
@@ -618,25 +622,38 @@ print_freq <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if(!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
+  if (!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
       isTRUE(as.logical(data_info$by_first))) &&
      "ignored" %in% names(attributes(x))) {
     message("Non-categorical variable(s) ignored: ",
             paste(attr(x, "ignored"), collapse = ", "))
   }
-  
-  if (!isTRUE(format_info$report.nas)) {
+
+  if (!isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
+    # Subtract NA counts from total
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
-    x <- x[-(nrow(x)-1),1:3]
+    # Remove NA row and keep only desired columns
+    x <- x[-(nrow(x)-1), 1:2]
+    colnames(x) <- c(trs("freq"), "%")
+    
+  } else if (!isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
+    # Substract NA counts from total
+    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
+    # Remove NA row and keep only desired columns
+    x <- x[-(nrow(x)-1), 1:3]
     colnames(x) <- c(trs("freq"), "%", trs("pct.cum"))
+    
+  } else if (isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
+    x <- x[ ,-c(3,5)]
+    colnames(x) <- c(trs("freq"), trs("pct.valid"), trs("pct.total"))
   }
-  
+
   if (!isTRUE(format_info$totals)) {
     x <- x[-nrow(x),]
   }
   
-  if(method=="pander") {
+  if (method=="pander") {
     
     # print_freq -- pander method ---------------------------------------------
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
@@ -652,7 +669,7 @@ print_freq <- function(x, method) {
     
     if (isTRUE(format_info$report.nas)) {
       # Put NA in relevant cells so that pander recognizes them as such
-      freq_table[nrow(freq_table) - 
+      freq_table[nrow(freq_table) -
                    as.numeric(isTRUE(format_info$totals)), 2] <- NA
       freq_table[nrow(freq_table) -
                    as.numeric(isTRUE(format_info$totals)), 3] <- NA
@@ -715,8 +732,9 @@ print_freq <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
         if (co == 1) {
-          table_row %+=% list(tags$th(row.names(x)[ro], align = "center",
-                              class = "st-protect-top-border"))
+          table_row %+=% list(tags$th(row.names(x)[ro],
+                                      align = "center",
+                                      class = "st-protect-top-border"))
           if (!"Weights" %in% names(data_info)) {
             cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
                         perl = TRUE)
@@ -738,19 +756,28 @@ print_freq <- function(x, method) {
       }
     }
     
-    if (isTRUE(format_info$report.nas)) {
+    if (isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
       table_head[[1]] <- list(tags$th("", colspan = 2),
-                              tags$th(trs("valid"), colspan=2, align="center",
+                              tags$th(HTML(conv_non_ascii(trs("valid"))),
+                                      colspan=2, align="center",
                                       class = "st-protect-top-border"),
-                              tags$th(trs("total"), colspan=2, align="center",
+                              tags$th(HTML(conv_non_ascii(trs("total"))),
+                                      colspan=2, align="center",
                                       class = "st-protect-top-border"))
-      table_head[[2]] <- list(tags$th(sub("^.*\\$(.+)$", "\\1", 
-                                          data_info$Variable), align="center"),
-                              tags$th(HTML(trs("freq")), align="center"),
-                              tags$th("%", align="center"),
-                              tags$th(HTML(trs("pct.cum")), align="center"),
-                              tags$th("%", align="center"),
-                              tags$th(HTML(trs("pct.cum")), align="center"))
+      table_head[[2]] <- list(tags$th(HTML(conv_non_ascii(
+                                            sub("^.*\\$(.+)$", "\\1", 
+                                            data_info$Variable))),
+                                      align="center"),
+                              tags$th(HTML(conv_non_ascii(trs("freq"))),
+                                      align="center"),
+                              tags$th(HTML(conv_non_ascii("%")),
+                                      align="center"),
+                              tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
+                                      align="center"),
+                              tags$th(HTML(conv_non_ascii("%")),
+                                      align="center"),
+                              tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
+                                      align="center"))
       
       freq_table_html <-
         tags$table(
@@ -766,17 +793,55 @@ print_freq <- function(x, method) {
         )
       
     } else {
+      if (isTRUE(format_info$cumul) && !isTRUE(format_info$report.nas)) {
+        
+        # No NA reporting
+        table_head <- 
+          list(tags$th(HTML(conv_non_ascii(sub("^.*\\$(.+)$", "\\1", 
+                                               data_info$Variable))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("freq"))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii("%")),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
+                       align = "center",
+                       class = "st-protect-top-border"))
+      } else if (isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
       
-      # no reporting of missing values (NA)
-      table_head <- list(tags$th(data_info$Variable, align = "center",
-                                 class = "st-protect-top-border"),
-                         tags$th(trs("freq"), align = "center",
-                                 class = "st-protect-top-border"),
-                         tags$th("%", align = "center",
-                                 class = "st-protect-top-border"),
-                         tags$th(HTML(trs("pct.cum")), align = "center",
-                                 class = "st-protect-top-border"))
-                         
+        # No cumulative proportions
+        table_head <- 
+          list(tags$th(HTML(conv_non_ascii(sub("^.*\\$(.+)$", "\\1", 
+                                               data_info$Variable))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("freq"))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("pct.valid"))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("pct.total"))),
+                       align = "center",
+                       class = "st-protect-top-border"))
+        
+      } else {
+        
+        # No cumulative proportions, no NA reporting
+        table_head <- 
+          list(tags$th(HTML(conv_non_ascii(sub("^.*\\$(.+)$", "\\1", 
+                                               data_info$Variable))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii(trs("freq"))),
+                       align = "center",
+                       class = "st-protect-top-border"),
+               tags$th(HTML(conv_non_ascii("%"))))
+      }
+      
       freq_table_html <-
         tags$table(
           tags$thead(tags$tr(table_head)),
@@ -887,7 +952,7 @@ print_ctable <- function(x, method) {
                     r = "right")
   
   # print_ctable -- pander method ----------------------------------------------
-  if(method == "pander") {
+  if (method == "pander") {
     
     # Escape "<" and ">" when used in pairs in rownames or colnames
     if (!isTRUE(format_info$plain.ascii)) {
@@ -1076,7 +1141,7 @@ print_descr <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
-  if(!isTRUE(parent.frame()$silent) &&
+  if (!isTRUE(parent.frame()$silent) &&
      "ignored" %in% names(attributes(x)) &&
      !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
@@ -1090,7 +1155,7 @@ print_descr <- function(x, method) {
                     c = "center",
                     r = "right")
   
-  if(method == "pander") {
+  if (method == "pander") {
     
     # print_descr -- pander method ---------------------------------------------
     # Format numbers (avoids inconsistencies with pander rounding digits)
@@ -1118,7 +1183,7 @@ print_descr <- function(x, method) {
         ),
         collapse = "\n")
     
-    if(isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
+    if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
     }
@@ -1354,7 +1419,7 @@ print_dfs <- function(x, method) {
     if (!isTRUE(format_info$plain.ascii)) {
       # Escape symbols for words between <>'s to allow <NA> or factor
       # levels such as <ABC> to be rendered correctly
-      if(trs("label") %in% names(x)) {
+      if (trs("label") %in% names(x)) {
         x[[trs("label")]] <-
           gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
                x = x[[trs("label")]], perl=TRUE)
@@ -1626,7 +1691,7 @@ build_heading_pander <- function(format_info, data_info) {
     )
     head2 <- paste0("\n", enc2native(head2))
     
-    if(isTRUE(format_info$headings)) {
+    if (isTRUE(format_info$headings)) {
       head3 <- append_items(list(c(Variable.label = trs("label")),
                                  c(Data.type      = trs("type")),
                                  c(N.obs          = trs("n"))))
