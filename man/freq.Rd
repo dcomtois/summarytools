@@ -6,7 +6,8 @@
 \usage{
 freq(x, round.digits = st_options("round.digits"), order = "default",
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),
-  justify = "default", totals = st_options("freq.totals"),
+  justify = "default", cumul = st_options("freq.cumul"),
+  totals = st_options("freq.totals"),
   report.nas = st_options("freq.report.nas"), missing = "",
   display.type = TRUE, display.labels = st_options("display.labels"),
   headings = st_options("headings"), weights = NA,
@@ -39,8 +40,13 @@ default value globally, see \code{\link{st_options}}.}
 \dQuote{center} is used for \emph{html} tables. You can force it to one of
 \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
-\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. To
-change this value globally, see \code{\link{st_options}}.}
+\item{cumul}{Logical. Set to \code{FALSE} to hide cumulative proportions
+from results. \code{TRUE} by default. To change this value globally, see 
+ \code{\link{st_options}}.}
+
+\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. 
+\code{TRUE} by default. To change this value globally, see 
+\code{\link{st_options}}.}
 
 \item{report.nas}{Logical. Set to \code{FALSE} to turn off reporting of
 missing values. To change this default value globally, see

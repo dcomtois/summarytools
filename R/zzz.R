@@ -26,6 +26,7 @@ utils::globalVariables(c("."))
                  "bootstrap.css"          = TRUE,
                  "custom.css"             = NA,
                  "escape.pipe"            = FALSE,
+                 "freq.cumul"             = TRUE,
                  "freq.totals"            = TRUE,
                  "freq.report.nas"        = TRUE,
                  "ctable.prop"            = "r",
