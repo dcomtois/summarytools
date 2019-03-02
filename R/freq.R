@@ -22,8 +22,12 @@
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one of
 #'   \dQuote{left}, \dQuote{center}, or \dQuote{right}.
-#' @param totals Logical. Set to \code{FALSE} to hide totals from results. To
-#'   change this value globally, see \code{\link{st_options}}.
+#' @param cumul Logical. Set to \code{FALSE} to hide cumulative proportions
+#'  from results. \code{TRUE} by default. To change this value globally, see 
+#'   \code{\link{st_options}}.
+#' @param totals Logical. Set to \code{FALSE} to hide totals from results. 
+#'   \code{TRUE} by default. To change this value globally, see 
+#'   \code{\link{st_options}}.
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of
 #'   missing values. To change this default value globally, see
 #'   \code{\link{st_options}}.
@@ -95,7 +99,8 @@ freq <- function(x,
                  order           = "default", 
                  style           = st_options("style"), 
                  plain.ascii     = st_options("plain.ascii"), 
-                 justify         = "default", 
+                 justify         = "default",
+                 cumul           = st_options("freq.cumul"),
                  totals          = st_options("freq.totals"), 
                  report.nas      = st_options("freq.report.nas"), 
                  missing         = "", 
@@ -228,10 +233,6 @@ freq <- function(x,
     freq_table <- table(x, useNA = "always")
   } else {
     # Weights are used
-    if (length(weights) != length(x)) {
-      stop("weights vector must be of same length as x")
-    }
-    
     weights_string <- deparse(substitute(weights))
     
     if (sum(is.na(weights)) > 0) {
@@ -350,6 +351,7 @@ freq <- function(x,
                                       round.digits   = round.digits,
                                       plain.ascii    = plain.ascii,
                                       justify        = justify,
+                                      cumul          = cumul,
                                       totals         = totals,
                                       report.nas     = report.nas,
                                       missing        = missing,
