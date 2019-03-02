@@ -40,6 +40,8 @@
 #' @param escape.pipe Logical. Set to \code{TRUE} if Pandoc conversion is your
 #'   goal and you have unsatisfying results with grid or multiline tables.
 #'   \code{FALSE} by default.
+#' @param freq.totals Logical. Corresponds to the \code{cumul} parameter of
+#'   \code{\link{freq}}. \code{TRUE} by default.
 #' @param freq.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{freq}}. \code{TRUE} by default.
 #' @param freq.report.nas Logical. Corresponds to the \code{display.nas}
@@ -117,21 +119,37 @@
 #' st_options(0)
 #' }
 #' @export
-st_options <- function(option = NULL, value = NULL, style = "simple", 
-                       plain.ascii = TRUE, round.digits = 2,
-                       headings = TRUE, footnote = "default", 
-                       display.labels = TRUE, bootstrap.css = TRUE, 
-                       custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
-                       freq.report.nas = TRUE, ctable.prop = "r",
-                       ctable.totals = TRUE, descr.stats = "all",
-                       descr.transpose = FALSE, descr.silent = FALSE,
-                       dfSummary.style = "multiline",
-                       dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE, 
-                       dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE, 
-                       dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-                       dfSummary.silent = FALSE, tmp.img.dir = NA,
-                       subtitle.emphasis = TRUE, lang = "en", 
-                       omit.headings = !headings) {
+st_options <- function(option                 = NULL, 
+                       value                  = NULL, 
+                       style                  = "simple", 
+                       plain.ascii            = TRUE, 
+                       round.digits           = 2,
+                       headings               = TRUE, 
+                       footnote               = "default", 
+                       display.labels         = TRUE, 
+                       bootstrap.css          = TRUE, 
+                       custom.css             = NA, 
+                       escape.pipe            = FALSE, 
+                       freq.cumul             = TRUE,
+                       freq.totals            = TRUE,
+                       freq.report.nas        = TRUE, 
+                       ctable.prop            = "r",
+                       ctable.totals          = TRUE, 
+                       descr.stats            = "all",
+                       descr.transpose        = FALSE, 
+                       descr.silent           = FALSE,
+                       dfSummary.style        = "multiline",
+                       dfSummary.varnumbers   = TRUE, 
+                       dfSummary.labels.col   = TRUE, 
+                       dfSummary.valid.col    = TRUE, 
+                       dfSummary.na.col       = TRUE, 
+                       dfSummary.graph.col    = TRUE, 
+                       dfSummary.graph.magnif = 1,
+                       dfSummary.silent       = FALSE, 
+                       tmp.img.dir            = NA,
+                       subtitle.emphasis      = TRUE, 
+                       lang                   = "en", 
+                       omit.headings          = !headings) {
   
   allOpts <- getOption("summarytools")
   
@@ -191,6 +209,7 @@ st_options <- function(option = NULL, value = NULL, style = "simple",
                    "bootstrap.css"          = TRUE,
                    "custom.css"             = NA,
                    "escape.pipe"            = FALSE,
+                   "freq.cumul"             = TRUE,
                    "freq.totals"            = TRUE,
                    "freq.report.nas"        = TRUE,
                    "ctable.prop"            = "r",
