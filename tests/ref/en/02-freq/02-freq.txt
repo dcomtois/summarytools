@@ -1087,3 +1087,18 @@ Type: Character
 +---------------------+------+-------+--------+
 
 > st_options(freq.totals = TRUE, freq.report.nas = TRUE) 
+
+# HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
+
+> view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions") 
+-- Output file written
+
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
+-- Output file appended
+
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE") 
+-- Output file appended
+
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
+-- Output file appended
+

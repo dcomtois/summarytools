@@ -111,3 +111,9 @@ st_options(freq.totals = FALSE, freq.report.nas = FALSE)
 freq(tobacco)
 
 st_options(freq.totals = TRUE, freq.report.nas = TRUE)
+
+# HTML - omitting NA reporting and/or Cumulative proportions
+view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions")
+view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE")
+view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE")
+view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
