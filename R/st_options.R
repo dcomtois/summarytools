@@ -40,7 +40,7 @@
 #' @param escape.pipe Logical. Set to \code{TRUE} if Pandoc conversion is your
 #'   goal and you have unsatisfying results with grid or multiline tables.
 #'   \code{FALSE} by default.
-#' @param freq.totals Logical. Corresponds to the \code{cumul} parameter of
+#' @param freq.cumul Logical. Corresponds to the \code{cumul} parameter of
 #'   \code{\link{freq}}. \code{TRUE} by default.
 #' @param freq.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{freq}}. \code{TRUE} by default.

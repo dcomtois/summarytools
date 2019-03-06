@@ -64,7 +64,10 @@ layout.}
 goal and you have unsatisfying results with grid or multiline tables.
 \code{FALSE} by default.}
 
-\item{freq.totals}{Logical. Corresponds to the \code{cumul} parameter of
+\item{freq.cumul}{Logical. Corresponds to the \code{cumul} parameter of
+\code{\link{freq}}. \code{TRUE} by default.}
+
+\item{freq.totals}{Logical. Corresponds to the \code{totals} parameter of
 \code{\link{freq}}. \code{TRUE} by default.}
 
 \item{freq.report.nas}{Logical. Corresponds to the \code{display.nas}
@@ -126,9 +129,6 @@ produced outputs. Currently available languages are: \sQuote{en},
 \sQuote{fr}.}
 
 \item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
-
-\item{freq.totals}{Logical. Corresponds to the \code{totals} parameter of
-\code{\link{freq}}. \code{TRUE} by default.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To
