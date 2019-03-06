@@ -1,57 +1,58 @@
-item                 ,context                                                       ,custom
-title.freq           ,main heading                                                  ,Frequências
-title.freq.weighted  ,main heading                                                  ,Frequências ponderadas
-title.ctable         ,main heading                                                  ,Tabulação cruzada
-title.ctable.row     ,main heading                                                  ,Proporções por linhas
-title.ctable.col     ,main heading                                                  ,Proporções por colunas
-title.ctable.tot     ,main heading                                                  ,Proporções totais
-title.descr          ,main heading                                                  ,Estatística descritiva
-title.descr.weighted ,main heading                                                  ,Estatística descritiva ponderada
+item                 ,context                                                       ,pt
+title.freq           ,main heading                                                  ,FrequÍncias
+title.freq.weighted  ,main heading                                                  ,FrequÍncias ponderadas
+title.ctable         ,main heading                                                  ,TabulaÁ„o cruzada
+title.ctable.weighted ,main heading                                                 ,TabulaÁ„o cruzada ponderada
+title.ctable.row     ,main heading                                                  ,ProporÁıes por linhas
+title.ctable.col     ,main heading                                                  ,ProporÁıes por colunas
+title.ctable.tot     ,main heading                                                  ,ProporÁıes totais
+title.descr          ,main heading                                                  ,EstatÌstica descritiva
+title.descr.weighted ,main heading                                                  ,EstatÌstica descritiva ponderada
 title.dfSummary      ,main heading                                                  ,Resumo dos dados
 n                    ,heading label                                                 ,N
-dimensions           ,heading label (dfSummary)                                     ,Dimensões
+dimensions           ,heading label (dfSummary)                                     ,Dimensıes
 duplicates           ,heading label (dfSummary)                                     ,Duplicatas
 data.frame           ,heading label (all functions)                                 ,Data Frame
-label                ,heading label (all functions) & column name (dfSummary)       ,Rótulo
-variable             ,heading label (all functions) & column name (dfSummary)       ,Variável
+label                ,heading label (all functions) & column name (dfSummary)       ,RÛtulo
+variable             ,heading label (all functions) & column name (dfSummary)       ,Vari·vel
 group                ,heading label (all functions when used with byst() / by()     ,Grupo
 by                   ,heading label (descr when used with byst() / by()             ,por
 weights              ,heading label (descr & freq)                                  ,Pesos
 type                 ,heading label (freq)                                          ,Tipo
-logical              ,heading value for type (freq)                                 ,Lógico
+logical              ,heading value for type (freq)                                 ,LÛgico
 character            ,heading value for type (freq)                                 ,Caractere
-numeric              ,heading value for type (freq)                                 ,Numérico
+numeric              ,heading value for type (freq)                                 ,NumÈrico
 factor               ,heading value for type (freq)                                 ,Fator
 factor.ordered       ,heading value for type (freq)                                 ,Fator ordenado
 date                 ,heading value for type (freq)                                 ,Data
 datetime             ,heading value for type (freq)                                 ,Data e hora
 freq                 ,column name (freq)                                            ,Freq
-pct.valid            ,column name (freq)                                            ,% Válido
-pct.valid.cum        ,column name (freq)                                            ,% Válido  Acum.
+pct.valid            ,column name (freq)                                            ,% V·lido
+pct.valid.cum        ,column name (freq)                                            ,% V·lido  Acum.
 pct.total            ,column name (freq)                                            ,% Total
 pct.total.cum        ,column name (freq)                                            ,% Total Acum.
 pct.cum              ,column name (freq)                                            ,% Acum.
-valid                ,column name (freq & dfSummary)                                ,Válido
+valid                ,column name (freq & dfSummary)                                ,V·lido
 total                ,column grouping in html (freq)                                ,Total
-mean                 ,row name (descr)                                              ,Média
-sd.long              ,row name (descr)                                              ,Desvio padrão
+mean                 ,row name (descr)                                              ,MÈdia
+sd.long              ,row name (descr)                                              ,Desv.padr„o
 sd                   ,cell content (dfSummary)                                      ,dp
-min                  ,row name (descr)                                              ,Mínimo
+min                  ,row name (descr)                                              ,MÌn
 q1                   ,row name (descr) - 1st quartile                               ,Q1
-med                  ,row name (descr)                                              ,Mediana
+med                  ,row name (descr)                                              ,Med
 q3                   ,row name (descr) - 3rd quartile                               ,Q3
-max                  ,row name (descr)                                              ,Máximo
+max                  ,row name (descr)                                              ,M·x
 mad                  ,row name (descr) - Median Absolute Deviation                  ,MDA
 iqr                  ,row name (descr) - Inter-Quartile Range                       ,IQE
 cv                   ,row name (descr) - Coefficient of Variation                   ,CV
 skewness             ,row name (descr)                                              ,Assimetria
 se.skewness          ,row name (descr) - Std. Error for Skewness                    ,EP.Assimetria
 kurtosis             ,row name (descr)                                              ,Curtose
-n.valid              ,row name (descr) - Count of non-missing values                ,N.Válidos
-pct.valid            ,row name (descr) - % of non-missing values                    ,Pct.Válidos
+n.valid              ,row name (descr) - Count of non-missing values                ,N.V·lidos
+pct.valid            ,row name (descr) - % of non-missing values                    ,Pct.V·lidos
 no                   ,column name (dfSummary) - position of column in the d.f.      ,No
-stats.values         ,column name (dfSummary)                                       ,Estatísticas / Valores
-freqs.pct.valid      ,column name (dfSummary)                                       ,Freqs (% de Válidos)
+stats.values         ,column name (dfSummary)                                       ,EstatÌsticas / Valores
+freqs.pct.valid      ,column name (dfSummary)                                       ,Freqs (% de V·lidos)
 graph                ,column name (dfSummary)                                       ,Grafo
 missing              ,column name (dfSummary)                                       ,Faltante
 distinct.value       ,cell content (dfSummary) - singular form                      ,valor distinto
@@ -59,15 +60,14 @@ distinct.values      ,cell content (dfSummary) - plural form                    
 all.nas              ,cell content (dfSummary) - column has only NA's               ,Todos os NA's
 all.empty.str        ,cell content (dfSummary) - column has only empty str's        ,Strings vazias
 all.empty.str.nas    ,cell content (dfSummary) - col. has only NA's and empty str's ,Todas as strings vazias/ NA's
-int.sequence         ,cell content (dfSummary)                                      ,Sequência de inteiros
+int.sequence         ,cell content (dfSummary)                                      ,SequÍncia de inteiros
 rounded              ,cell content (dfSummary) - note appearing in Stats/Values     ,arredondado
 others               ,cell content (dfSummary) - nbr of values not displayed        ,outros
-codes                ,"cell content (dfSummary) - When ""UPC codes"" are detected      ",códigos
+codes                ,cell content (dfSummary) - When UPC codes are detected        ,cÛdigos
 mode                 ,cell content (dfSummary) - mode = most frequent value         ,moda
-med.short            ,cell content (dfSummary) - median,mediana encurtada
-start                ,cell content (dfSummary) - earliest date for date-type cols.  ,Começo
+med.short            ,cell content (dfSummary) - median                             ,mediana
+start                ,cell content (dfSummary) - earliest date for date-type cols.  ,ComeÁo
 end                  ,cell content (dfSummary) - latest date for data-type cols.    ,Fim
 generated.by         ,footnote content                                              ,Gerado por
-version              ,footnote content                                              ,versão
-date.fmt             ,footnote - date format (see ?strptime)                        ,%A-%m-%d
-                                                                     ,,
+version              ,footnote content                                              ,vers„o
+date.fmt             ,footnote - date format (see ?strptime)                        ,%Y-%m-%d
