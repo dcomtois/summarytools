@@ -1,5 +1,7 @@
 
-# [summarytools: An *R* Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
+# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="139" /></a>
+
+<!-- badges -->
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
@@ -223,7 +225,7 @@ descr(iris, style = "rmarkdown")
 |                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
 |        **Mean** |         3.76 |        1.20 |         5.84 |        3.06 |
-|    **Std.Dev.** |         1.77 |        0.76 |         0.83 |        0.44 |
+|     **Std.Dev** |         1.77 |        0.76 |         0.83 |        0.44 |
 |         **Min** |         1.00 |        0.10 |         4.30 |        2.00 |
 |          **Q1** |         1.60 |        0.30 |         5.10 |        2.80 |
 |      **Median** |         4.35 |        1.30 |         5.80 |        3.00 |
@@ -254,12 +256,12 @@ statistics.
 descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmarkdown")
 ```
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max | N.Valid | % Valid |
-| ---------------: | ---: | -------: | ---: | -----: | ---: | ------: | ------: |
-| **Petal.Length** | 3.76 |     1.77 | 1.00 |   4.35 | 6.90 |  150.00 |  100.00 |
-|  **Petal.Width** | 1.20 |     0.76 | 0.10 |   1.30 | 2.50 |  150.00 |  100.00 |
-| **Sepal.Length** | 5.84 |     0.83 | 4.30 |   5.80 | 7.90 |  150.00 |  100.00 |
-|  **Sepal.Width** | 3.06 |     0.44 | 2.00 |   3.00 | 4.40 |  150.00 |  100.00 |
+|                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | % Valid |
+| ---------------: | ---: | ------: | ---: | -----: | ---: | ------: | ------: |
+| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |  150.00 |  100.00 |
+|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |  150.00 |  100.00 |
+| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |  150.00 |  100.00 |
+|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |  150.00 |  100.00 |
 
 ## 4 - dfSummary() : Data Frame Summaries
 
@@ -337,32 +339,32 @@ by Species.
 **Group:** Species = setosa  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 1.46 |     0.17 | 1.00 |   1.50 | 1.90 |
-|  **Petal.Width** | 0.25 |     0.11 | 0.10 |   0.20 | 0.60 |
-| **Sepal.Length** | 5.01 |     0.35 | 4.30 |   5.00 | 5.80 |
-|  **Sepal.Width** | 3.43 |     0.38 | 2.30 |   3.40 | 4.40 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 1.46 |    0.17 | 1.00 |   1.50 | 1.90 |
+|  **Petal.Width** | 0.25 |    0.11 | 0.10 |   0.20 | 0.60 |
+| **Sepal.Length** | 5.01 |    0.35 | 4.30 |   5.00 | 5.80 |
+|  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |
 
 **Group:** Species = versicolor  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 4.26 |     0.47 | 3.00 |   4.35 | 5.10 |
-|  **Petal.Width** | 1.33 |     0.20 | 1.00 |   1.30 | 1.80 |
-| **Sepal.Length** | 5.94 |     0.52 | 4.90 |   5.90 | 7.00 |
-|  **Sepal.Width** | 2.77 |     0.31 | 2.00 |   2.80 | 3.40 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 4.26 |    0.47 | 3.00 |   4.35 | 5.10 |
+|  **Petal.Width** | 1.33 |    0.20 | 1.00 |   1.30 | 1.80 |
+| **Sepal.Length** | 5.94 |    0.52 | 4.90 |   5.90 | 7.00 |
+|  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |
 
 **Group:** Species = virginica  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 5.55 |     0.55 | 4.50 |   5.55 | 6.90 |
-|  **Petal.Width** | 2.03 |     0.27 | 1.40 |   2.00 | 2.50 |
-| **Sepal.Length** | 6.59 |     0.64 | 4.90 |   6.50 | 7.90 |
-|  **Sepal.Width** | 2.97 |     0.32 | 2.20 |   3.00 | 3.80 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 5.55 |    0.55 | 4.50 |   5.55 | 6.90 |
+|  **Petal.Width** | 2.03 |    0.27 | 1.40 |   2.00 | 2.50 |
+| **Sepal.Length** | 6.59 |    0.64 | 4.90 |   6.50 | 7.90 |
+|  **Sepal.Width** | 2.97 |    0.32 | 2.20 |   3.00 | 3.80 |
 
 To see an *html* version of these results, we simply use `view()` (also
 possible is to use `print()` with `method = "viewer"`): (results not
@@ -390,22 +392,22 @@ with(tobacco, stby(BMI, age.gr, descr,
 **Data Frame:** tobacco  
 **N:** 258
 
-|              | 18-34 | 35-50 | 51-70 |  71 + |
-| -----------: | ----: | ----: | ----: | ----: |
-|     **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
-| **Std.Dev.** |  4.23 |  4.34 |  4.26 |  4.37 |
-|      **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
-|   **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
-|      **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
+|             | 18-34 | 35-50 | 51-70 |  71 + |
+| ----------: | ----: | ----: | ----: | ----: |
+|    **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
+| **Std.Dev** |  4.23 |  4.34 |  4.26 |  4.37 |
+|     **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
+|  **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
+|     **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
 The transposed version looks like this:
 
-|           |  Mean | Std.Dev. |   Min | Median |   Max |
-| --------: | ----: | -------: | ----: | -----: | ----: |
-| **18-34** | 23.84 |     4.23 |  8.83 |  24.04 | 34.84 |
-| **35-50** | 25.11 |     4.34 | 10.35 |  25.11 | 39.44 |
-| **51-70** | 26.91 |     4.26 |  9.01 |  26.77 | 39.21 |
-|  **71 +** | 27.45 |     4.37 | 16.36 |  27.52 | 38.37 |
+|           |  Mean | Std.Dev |   Min | Median |   Max |
+| --------: | ----: | ------: | ----: | -----: | ----: |
+| **18-34** | 23.84 |    4.23 |  8.83 |  24.04 | 34.84 |
+| **35-50** | 25.11 |    4.34 | 10.35 |  25.11 | 39.44 |
+| **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
+|  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
 
 ### Using stby() With ctable()
 
