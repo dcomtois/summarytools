@@ -1,5 +1,7 @@
 
-# [summarytools: An *R* Package For Descriptive Statistics](https://github.com/dcomtois/summarytools)
+# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="139" /></a>
+
+<!-- badges -->
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
