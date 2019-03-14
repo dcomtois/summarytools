@@ -280,17 +280,19 @@ parse_args <- function(sys_calls, sys_frames, match_call,
   #  Make a list of all data items contained in the environments
   ls_sys_frames <- lapply(sys_frames, ls)
   funs_stack    <- lapply(sys_calls, head, 1)
-  names(ls_sys_frames) = as.character(unlist(funs_stack))
+  names(ls_sys_frames) <- sub("summarytools::", "",
+                              as.character(unlist(funs_stack)),
+                              fixed = TRUE)
   
   # Look for position of by() + tapply(), with() lapply() and %>% in sys.calls()
-  pos <- list()
+  pos         <- list()
   pos$by      <- which(funs_stack %in% c("by()", "stby()"))
   pos$with    <- which(funs_stack == "with()")
   pos$pipe    <- which(funs_stack == "`%>%`()")
   pos$dollar  <- which(funs_stack == "`%$%`()")
   pos$lapply  <- which(funs_stack == "lapply()")
   pos$tapply  <- which(funs_stack == "tapply()")
-  pos$fun     <- which(funs_stack == paste0(caller, "()"))
+  pos$fun     <- which(grepl(paste0(caller, "()"), funs_stack))
   
   pos <- pos[-which(unlist(lapply(pos, length)) == 0)]
   
