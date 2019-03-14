@@ -1,5 +1,5 @@
 
-# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="139" /></a>
+# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="145" /></a>
 
 <!-- badges -->
 
@@ -753,9 +753,9 @@ characters max) and we need to clean it up manually.
 ## Translations
 
 It is now possible to switch the language used in the outputs. So far,
-not too many languages are available (French and Spanish, Russian
-underway), but with the community’s involvement, I hope we can gather a
-good number.
+the following languages are available: French (fr), Spanish (es),
+Portuguese (pt), and Turkish (tr). With the community’s involvement, I
+hope we can gather a lot more.
 
 ### Switching Languages
 

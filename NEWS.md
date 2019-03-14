@@ -4,7 +4,9 @@ Version 0.9.3
    + new parameter `cumul` allows turning on or off cumulative proportions
  - In `ctable()` 
    + Added support for weights
-
+ - New translations for 
+   + Portuguese ("pt")
+   + Turkish ("tr")
 
 Version 0.9.2
 -------------

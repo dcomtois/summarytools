@@ -3,7 +3,7 @@ output:
   github_document
 ---
 
-# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="139" /></a>
+# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="145" /></a>
 
 <!-- badges -->
 
@@ -619,9 +619,8 @@ or simply "."). Two things are to be kept in mind: it needs to be short
 
 ## Translations
 
-It is now possible to switch the language used in the outputs. So far, not too
-many languages are available (French and Spanish, Russian underway), but with 
-the community's involvement, I hope we can gather a good number.
+It is now possible to switch the language used in the outputs. So far, the following languages are available: French (fr), Spanish (es), Portuguese (pt), and Turkish (tr). With 
+the community's involvement, I hope we can gather a lot more.
 
 ### Switching Languages
 
