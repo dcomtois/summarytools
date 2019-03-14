@@ -527,7 +527,7 @@ apps
 | ---------------------: | ------: | :-------------------------------------------------- |
 |            freq.totals |    TRUE | Display totals row in freq()                        |
 |        freq.report.nas |    TRUE | Display <NA> row and “valid” columns                |
-|            ctable.prop |     “r” | Display **r**ow proportions by default              |
+|            ctable.prop |     “r” | Display **r**ow proportions                         |
 |          ctable.totals |    TRUE | Show marginal totals                                |
 |            descr.stats |   “all” | “fivenum”, “common” or vector of stats              |
 |        descr.transpose |   FALSE |                                                     |
