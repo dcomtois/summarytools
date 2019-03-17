@@ -309,13 +309,18 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
       output[i,4:7] <- crunch_character(column_data)
     }
     
+    # Logical data -------------------------------------------------------------
+    else if (is.logical(column_data)) {
+      output[i,4:7] <- crunch_logical(column_data)
+    }
+    
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
       output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
     
     # Time/date data -----------------------------------------------------------
-    else if (inherits(column_data, c("Date", "POSIXct"))) {
+    else if (inherits(column_data, c("Date", "POSIXct", "difftime"))) {
       output[i,4:7] <- crunch_time_date(column_data)
     }
     
@@ -590,6 +595,49 @@ crunch_character <- function(column_data) {
   Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
+
+#' @keywords internal
+crunch_logical <- function(column_data) {
+  
+  outlist <- list()
+  outlist[[1]] <- ""
+  outlist[[2]] <- ""
+  outlist[[3]] <- ""
+  outlist[[4]] <- ""
+  
+  graph.magnif        <- parent.frame()$graph.magnif
+  round.digits        <- parent.frame()$round.digits
+  
+  if (parent.frame()$n_miss == parent.frame()$n_tot) {
+    outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
+  } else {
+    
+    counts <- table(column_data, useNA = "no")
+    props <- prop.table(counts)
+    
+    outlist[[1]] <- paste0(seq_along(counts), "\\. ", names(counts),
+                           collapse = "\\\n")
+    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+    if (isTRUE(parent.frame()$graph.col) &&
+        any(!is.na(column_data))) {
+      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
+      } else {
+        outlist[[4]] <- txtbarplot(prop.table(counts))
+      }
+    }
+  }
+  
+  Encoding(outlist[[1]]) <- "UTF-8"
+  Encoding(outlist[[2]]) <- "UTF-8"
+  Encoding(outlist[[3]]) <- "UTF-8"
+  return(outlist)
+}
+
+
 #' @importFrom stats IQR median ftable sd
 #' @keywords internal
 crunch_numeric <- function(column_data, is_barcode) {
@@ -743,7 +791,7 @@ crunch_numeric <- function(column_data, is_barcode) {
   return(outlist)
 }
 
-#' @importFrom lubridate as.period interval
+#' @importFrom lubridate as.period interval make_difftime
 #' @keywords internal
 crunch_time_date <- function(column_data) {
   
@@ -780,13 +828,23 @@ crunch_time_date <- function(column_data) {
       }
     } else {
       
-      outlist[[1]] <- paste0(
-        "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
-        "med : ", median(column_data, na.rm = TRUE), "\\\n",
-        "max : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
-        "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
-                        x = round(as.period(interval(tmin, tmax)),round.digits))
-      )
+      if (inherits(column_data, what = "difftime")) {
+        column_data <- make_difftime(column_data)
+        outlist[[1]] <- paste0(
+          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
+          "units : ", attr(column_data, "units")
+        )
+      } else {
+        outlist[[1]] <- paste0(
+          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
+          "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
+                          x = round(as.period(interval(tmin, tmax)),round.digits))
+        )
+      }
       
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
       
