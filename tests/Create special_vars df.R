@@ -12,7 +12,10 @@ bin      <- sample(c(2,248,NA), size = 1000, prob = c(.04, .9, .06), replace = T
 tri      <- sample(c(15, 20, 25, NA), size = 1000, prob = c(.03, .7, .24, .03), replace = TRUE)
 ean_num  <- sample(ean_values, size = 1000, prob = probs, replace = TRUE)
 empty_na <- sample(c("", NA), size = 1000, prob = c(.65, .35), replace = TRUE)
-
+date1    <- seq(from = as.Date("2015-01-01"), to = as.Date("2029-12-31"),
+                length.out = 1000)
+date2    <- sample(c(as.Date("2019-01-18"), as.Date("2019-01-19"), as.Date("2019-01-20"), NA), 
+                   replace = TRUE, size = 1000, prob = c(.4, .4, .16, .04))
 special_vars <- data.frame(bin         = bin, 
                            bin_char    = as.character(bin),
                            bin_fact    = as.factor(bin),
@@ -32,6 +35,11 @@ special_vars <- data.frame(bin         = bin,
                            ean_num     = ean_num,
                            ean_char    = as.character(ean_num),
                            ean_fact    = as.factor(ean_num),
+                           date        = date1,
+                           date_posxct = as.POSIXct(date1),
+                           date_diff   = date1 - as.Date("2019-01-01"),
+                           date_2      = date2,
+                           date_2_posxct = as.POSIXct(date2),
                            stringsAsFactors = FALSE
 )
 

@@ -791,7 +791,7 @@ crunch_numeric <- function(column_data, is_barcode) {
   return(outlist)
 }
 
-#' @importFrom lubridate as.period interval make_difftime
+#' @importFrom lubridate as.period interval
 #' @keywords internal
 crunch_time_date <- function(column_data) {
   
@@ -829,13 +829,17 @@ crunch_time_date <- function(column_data) {
     } else {
       
       if (inherits(column_data, what = "difftime")) {
-        column_data <- make_difftime(column_data)
+        
         outlist[[1]] <- paste0(
-          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
-          "units : ", attr(column_data, "units")
+          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(as.numeric(column_data), na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), na.rm = TRUE)
         )
+        
+        if ("units" %in% names(attributes(column_data))) {        
+          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", units(column_data))
+        }
+        
       } else {
         outlist[[1]] <- paste0(
           tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
