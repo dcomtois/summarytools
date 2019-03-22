@@ -119,27 +119,16 @@ compare_dirs <- function(lang) {
   }
 }
 
-eval_with_feedback(testfiles[1],  lang = "en", compare = FALSE) # parse-args
-eval_with_feedback(testfiles[2],  lang = "en", compare = FALSE) # freq
-eval_with_feedback(testfiles[3],  lang = "en", compare = FALSE) # ctable
-eval_with_feedback(testfiles[4],  lang = "en", compare = FALSE) # descr
-eval_with_feedback(testfiles[5],  lang = "en", compare = FALSE) # dfSummary
-eval_with_feedback(testfiles[6],  lang = "en", compare = FALSE) # overrides
-eval_with_feedback(testfiles[7],  lang = "en", compare = FALSE) # lapply
-eval_with_feedback(testfiles[8],  lang = "en", compare = FALSE) # with/by
-eval_with_feedback(testfiles[9],  lang = "en", compare = FALSE) # st_options
+lang <- c("en", "fr", "es", "tr")[1]
 
-compare_dirs('en')
+eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
+eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
+eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
+eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
+eval_with_feedback(testfiles[5],  lang = lang, compare = FALSE) # dfSummary
+eval_with_feedback(testfiles[6],  lang = lang, compare = FALSE) # overrides
+eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
+eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
+eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
 
-eval_with_feedback(testfiles[1],  lang = "fr", compare = FALSE) # parse-args
-eval_with_feedback(testfiles[2],  lang = "fr", compare = FALSE) # freq
-eval_with_feedback(testfiles[3],  lang = "fr", compare = FALSE) # ctable
-eval_with_feedback(testfiles[4],  lang = "fr", compare = FALSE) # descr
-eval_with_feedback(testfiles[5],  lang = "fr", compare = FALSE) # dfSummary
-eval_with_feedback(testfiles[6],  lang = "fr", compare = FALSE) # overrides
-eval_with_feedback(testfiles[7],  lang = "fr", compare = FALSE) # lapply
-eval_with_feedback(testfiles[8],  lang = "fr", compare = FALSE) # with/by
-eval_with_feedback(testfiles[9],  lang = "fr", compare = FALSE) # st_options
-
-compare_dirs('fr')
-
+compare_dirs(lang)
