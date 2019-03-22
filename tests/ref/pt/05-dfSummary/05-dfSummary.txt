@@ -1,0 +1,14 @@
+
+# ----------------------------- dfSummary.R  -----------------------------------  
+
+> st_options(tmp.img.dir = "/tmp") 
+> data(tobacco) 
+> tobacco <- tibble::as_tibble(tobacco) 
+> label(tobacco) <- "A Study on Tobacco Use and Health" 
+> label(tobacco$gender) <- "Subject's Gender" 
+> label(tobacco$BMI) <- "Body Mass Index" 
+> label(tobacco$smoker) <- "Smoking Status" 
+> label(tobacco$samp.wgts) <- "Sampling Weights" 
+
+# Bare-bones ------------------------------------------------------------------- 
+

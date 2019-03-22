@@ -1,0 +1,33 @@
+
+#-------------------------------- with-by.R ------------------------------------  
+
+
+# with ------------------------------------------------------------------------- 
+
+> w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)) 
+> view(w1, file = "01 - with.md") 
+-- Switching method to 'pander'
+-- Changing style to 'rmarkdown' for improved markdown compatibility
+-- Output file written
+
+> view(w1, file = "01 - with.html") 
+-- Output file written
+
+> (w2 <- with(tobacco, descr(BMI, transpose = TRUE))) 
+
+Estat<ed>stica descritiva  
+tobacco$BMI  
+N: 1000  
+
+            M<e9>dia   Desv.padr<e3>o   M<ed>n      Q1     Med      Q3   M<e1>x    MDA    IQE     CV
+--------- ---------- ---------------- -------- ------- ------- ------- -------- ------ ------ ------
+      BMI      25.73             4.49     8.83   22.93   25.62   28.65    39.44   4.18   5.72   0.17
+
+Table: Table continues below
+
+ 
+
+            Assimetria   EP.Assimetria   Curtose   N.V<e1>lidos   % V<e1>lido
+--------- ------------ --------------- --------- -------------- -------------
+      BMI         0.02            0.08      0.26         974.00         97.40
+

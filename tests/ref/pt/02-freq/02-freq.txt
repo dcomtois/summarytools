@@ -1,0 +1,23 @@
+
+# ---------------------------- freq.R ------------------------------------------  
+
+> data(tobacco) 
+> tobacco <- tibble::as_tibble(tobacco) 
+> label(tobacco$gender) <- "Subject's Gender" 
+
+# Basic tables + general formatting (style / plain.ascii) ---------------------- 
+
+> (freq1 <- freq(tobacco$gender)) 
+
+Frequ<ea>ncias  
+tobacco$gender  
+R<f3>tulo: Subject's Gender  
+Tipo: Fator  
+
+              Freq   % V<e1>lido   % V<e1>lido  Acum.   % Total   % Total Acum.
+----------- ------ ------------- -------------------- --------- ---------------
+          F    489         50.00                50.00     48.90           48.90
+          M    489         50.00               100.00     48.90           97.80
+       <NA>     22                                         2.20          100.00
+      Total   1000        100.00               100.00    100.00          100.00
+

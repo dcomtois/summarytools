@@ -10,7 +10,6 @@ tests/output
 tests/output/*
 tests/other
 tests/img
-tests/ref
 tests/last_date_dir.Rdata
 img/ds*.png
 tests/ref - Copy/
