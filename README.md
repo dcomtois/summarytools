@@ -1,5 +1,5 @@
 
-# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="139" /></a>
+# summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="145" /></a>
 
 <!-- badges -->
 
