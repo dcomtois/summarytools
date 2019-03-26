@@ -1,12 +1,17 @@
 Version 0.9.3
 -------------
- - In `freq()`:
+ - In `freq()`: 
    + new parameter `cumul` allows turning on or off cumulative proportions
- - In `ctable()` 
+ - In `ctable()`: 
    + Added support for weights
+ - In `dfSummary()`: 
+   + Content-specific stats for email addresses -- valid, invalid, duplicates
+   
  - New translations for 
    + Portuguese ("pt")
    + Turkish ("tr")
+   + Russian ("ru")
+   
 
 Version 0.9.2
 -------------
