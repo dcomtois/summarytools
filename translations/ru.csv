@@ -1,73 +1,76 @@
-item                  ,context                         ,ru
-title.freq            ,main heading                    ,частота
-title.freq.weighted   ,main heading                    ,взвешенная частота
-title.ctable          ,main heading                    ,кросс-табуляция
-title.ctable.weighted ,main heading                    ,взвешенная кросс-табуляция
-title.ctable.row      ,main heading                    ,пропорции по рядам
-title.ctable.col      ,main heading                    ,пропорции по столбцам
-title.ctable.tot      ,main heading                    ,суммарные пропорции
-title.descr           ,main heading                    ,кол-венный показатель распределения
-title.descr.weighted  ,main heading                    ,взвешенный кол-венный показатель распределения
-title.dfSummary       ,main heading                    ,Data Frame Summary
-n                     ,heading label                   ,кол-во
-dimensions            ,heading label                   ,измерения
-duplicates            ,heading label                   ,дупликаты
-data.frame            ,heading label                   ,[верт. таблица]
-label                 ,heading label & column name     ,ярлык
-variable              ,heading label & column name     ,переменная
-group                 ,heading label                   ,переменные
-by                    ,heading label                   ,группа
-weights               ,heading label                   ,вес
-type                  ,heading label                   ,тип
-logical               ,heading value for type          ,булева переменная
-character             ,heading value for type          ,символ
-numeric               ,heading value for type          ,число
-factor                ,heading value for type          ,склейка
-factor.ordered        ,heading value for type          ,упорядоченная склейка
-date                  ,heading value for type          ,дата
-datetime              ,heading value for type          ,Datetime
-freq                  ,column name (freq)              ,Част.
-pct.valid             ,column name (freq)              ,% корр.
-pct.valid.cum         ,column name (freq)              ,% корр. сумм.
-pct.total             ,column name (freq)              ,% сумма
-pct.total.cum         ,column name (freq)              ,% совокупной суммы
-pct.cum               ,column name (freq)              ,% суммы
-valid                 ,column name (freq & dfSummary)  ,корректное
-total                 ,column grouping (freq)          ,сумма
-mean                  ,row name (descr)                ,среднее значение
-sd.long               ,row name (descr)                ,ст. откл.
-sd                    ,cell content (dfSummary)        ,ст. откл.
-min                   ,row name (descr)                ,мин
-q1                    ,row name (descr)                ,Q1
-med                   ,row name (descr)                ,медиана
-q3                    ,row name (descr)                ,Q3
-max                   ,row name (descr)                ,макс
-mad                   ,row name (descr)                ,MAD
-iqr                   ,row name (descr)                ,IQR
-cv                    ,row name (descr)                ,CV
-skewness              ,row name (descr)                ,асимметрия
-se.skewness           ,row name (descr)                ,SE.асимметрия
-kurtosis              ,row name (descr)                ,эксцесс
-n.valid               ,row name (descr)                ,Цифр. корр
-pct.valid             ,row name (descr)                ,Проц. корр
-no                    ,column name (dfSummary)         ,№
-stats.values          ,column name (dfSummary)         ,[Stats / Values]
-freqs.pct.valid       ,column name (dfSummary)         ,[Freqs (% of Valid)]
-graph                 ,column name (dfSummary)         ,диаграмма
-missing               ,column name (dfSummary)         ,отсутствующее
-distinct.value        ,cell content (dfSummary)        ,[уникальные значения]
-distinct.values       ,cell content (dfSummary)        ,уникальные значения
-all.nas               ,cell content (dfSummary)        ,[All NA's]
-all.empty.str         ,cell content (dfSummary)        ,[All empty strings]
-all.empty.str.nas     ,cell content (dfSummary)        ,[All empty strings / NA's]
-int.sequence          ,cell content (dfSummary)        ,целочисленная последовательность
-rounded               ,cell content (dfSummary)        ,округлённое
-others                ,cell content (dfSummary)        ,остальные
-codes                 ,cell content (dfSummary)        ,[коды]
-mode                  ,cell content (dfSummary)        ,[mode]
-med.short             ,cell content (dfSummary)        ,[med]
-start                 ,cell content (dfSummary)        ,начало
-end                   ,cell content (dfSummary)        ,конец
-generated.by          ,footnote                        ,Сгенерировано
-version               ,footnote                        ,версия
-date.fmt              ,footnote                        ,%Y-%m-%d
+item                  ,context                                                       ,ru
+title.freq            ,main heading                                                  ,частота
+title.freq.weighted   ,main heading                                                  ,взвешенная частота
+title.ctable          ,main heading                                                  ,кросс-табуляция
+title.ctable.weighted ,main heading                                                  ,взвешенная кросс-табуляция
+title.ctable.row      ,main heading                                                  ,пропорции по рядам
+title.ctable.col      ,main heading                                                  ,пропорции по столбцам
+title.ctable.tot      ,main heading                                                  ,суммарные пропорции
+title.descr           ,main heading                                                  ,кол-венный показатель распределения
+title.descr.weighted  ,main heading                                                  ,взвешенный кол-венный показатель распределения
+title.dfSummary       ,main heading                                                  ,Data Frame Summary
+n                     ,heading label                                                 ,кол-во
+dimensions            ,heading label (dfSummary)                                     ,измерения
+duplicates            ,heading label (dfSummary)                                     ,дупликаты
+data.frame            ,heading label (all functions)                                 ,[верт. таблица]
+label                 ,heading label (all functions) & column name (dfSummary)       ,ярлык
+variable              ,heading label (all functions) & column name (dfSummary)       ,переменная
+group                 ,heading label (all functions when used with byst() / by()     ,переменные
+by                    ,heading label (descr when used with byst() / by()             ,группа
+weights               ,heading label (descr & freq)                                  ,вес
+type                  ,heading label (freq)                                          ,тип
+logical               ,heading value for type (freq)                                 ,булева переменная
+character             ,heading value for type (freq)                                 ,символ
+numeric               ,heading value for type (freq)                                 ,число
+factor                ,heading value for type (freq)                                 ,склейка
+factor.ordered        ,heading value for type (freq)                                 ,упорядоченная склейка
+date                  ,heading value for type (freq)                                 ,дата
+datetime              ,heading value for type (freq)                                 ,Datetime
+freq                  ,column name (freq)                                            ,Част.
+pct.valid             ,column name (freq)                                            ,% корр.
+pct.valid.cum         ,column name (freq)                                            ,% корр. сумм.
+pct.total             ,column name (freq)                                            ,% сумма
+pct.total.cum         ,column name (freq)                                            ,% совокупной суммы
+pct.cum               ,column name (freq)                                            ,% суммы
+valid                 ,column name (freq & dfSummary) & column content (dfSummary)   ,корректное
+invalid               ,column content (dfSummary for emails)                         ,
+total                 ,column grouping in html (freq)                                ,сумма
+mean                  ,row name (descr)                                              ,среднее значение
+sd.long               ,row name (descr)                                              ,ст. откл.
+sd                    ,cell content (dfSummary)                                      ,ст. откл.
+min                   ,row name (descr)                                              ,мин
+q1                    ,row name (descr) - 1st quartile                               ,Q1
+med                   ,row name (descr)                                              ,медиана
+q3                    ,row name (descr) - 3rd quartile                               ,Q3
+max                   ,row name (descr)                                              ,макс
+mad                   ,row name (descr) - Median Absolute Deviation                  ,MAD
+iqr                   ,row name (descr) - Inter-Quartile Range                       ,IQR
+cv                    ,row name (descr) - Coefficient of Variation                   ,CV
+skewness              ,row name (descr)                                              ,асимметрия
+se.skewness           ,row name (descr) - Std. Error for Skewness                    ,SE.асимметрия
+kurtosis              ,row name (descr)                                              ,эксцесс
+n.valid               ,row name (descr) - Count of non-missing values                ,Цифр. корр
+pct.valid             ,row name (descr) - % of non-missing values                    ,Проц. корр
+no                    ,column name (dfSummary) - position of column in the d.f.      ,№
+stats.values          ,column name (dfSummary)                                       ,[Stats / Values]
+freqs.pct.valid       ,column name (dfSummary)                                       ,[Freqs (% of Valid)]
+graph                 ,column name (dfSummary)                                       ,диаграмма
+missing               ,column name (dfSummary)                                       ,отсутствующее
+distinct.value        ,cell content (dfSummary) - singular form                      ,[уникальные значения]
+distinct.values       ,cell content (dfSummary) - plural form                        ,уникальные значения
+all.nas               ,cell content (dfSummary) - column has only NA's               ,[All NA's]
+all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,[All empty strings]
+all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,[All empty strings / NA's]
+no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,No levels defined
+int.sequence          ,cell content (dfSummary)                                      ,целочисленная последовательность
+rounded               ,cell content (dfSummary) - note appearing in Stats/Values     ,округлённое
+others                ,cell content (dfSummary) - nbr of values not displayed        ,остальные
+codes                 ,cell content (dfSummary) - When UPC codes are detected        ,[коды]
+mode                  ,cell content (dfSummary) - mode = most frequent value         ,[mode]
+med.short             ,cell content (dfSummary) - median (shortened)                 ,[med]
+start                 ,cell content (dfSummary) - earliest date for date-type cols.  ,начало
+end                   ,cell content (dfSummary) - latest date for data-type cols.    ,конец
+emails                ,cell content (dfSummary)                                      ,Emails
+generated.by          ,footnote content                                              ,Сгенерировано
+version               ,footnote content                                              ,версия
+date.fmt              ,footnote - date format (see ?strptime)                        ,%Y-%m-%d
