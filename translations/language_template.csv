@@ -61,6 +61,7 @@ distinct.values       ,cell content (dfSummary) - plural form                   
 all.nas               ,cell content (dfSummary) - column has only NA's               ,All NA's
 all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,All empty strings
 all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,All empty strings / NA's
+no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,No levels defined
 int.sequence          ,cell content (dfSummary)                                      ,Integer sequence
 rounded               ,cell content (dfSummary) - note appearing in Stats/Values     ,rounded
 others                ,cell content (dfSummary) - nbr of values not displayed        ,others

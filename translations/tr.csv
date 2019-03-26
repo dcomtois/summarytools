@@ -61,6 +61,7 @@ distinct.values      ,cell content (dfSummary) - plural form                    
 all.nas              ,cell content (dfSummary) - column has only NA's               ,Tüm NA'lar
 all.empty.str        ,cell content (dfSummary) - column has only empty str's        ,Tüm boş diziler
 all.empty.str.nas    ,cell content (dfSummary) - col. has only NA's and empty str's ,Tüm boş diziler / NA'lar
+no.levels.defined    ,cell content (dfSummary) - factor has no levels defined       ,No levels defined
 int.sequence         ,cell content (dfSummary)                                      ,Tamsayı dizisi
 rounded              ,cell content (dfSummary) - note appearing in Stats/Values     ,yuvarlanmış
 others               ,cell content (dfSummary) - nbr of values not displayed        ,diğerleri
