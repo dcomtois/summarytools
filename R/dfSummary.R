@@ -266,15 +266,34 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     
     # Add column number
     output[i,1] <- i
+
+    # Calculate valid vs missing data info
+    n_miss <- sum(is.na(column_data))
+    n_valid <- n_tot - n_miss
     
     # Add column name and class
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
     
+    # Check if column contains emails
+    if (is.character(column_data)) {
+      email_val <- detect_email(column_data)
+    } else if (is.factor(column_data)) {
+      email_val <- detect_email(as.character(column_data))
+    } else {
+      email_val <- FALSE
+    }
+
+    if (!identical(email_val, FALSE)) {
+      output[i,2] <- paste(output[i,2], 
+                           trs("emails"),
+                           sep = "\\\n")
+    }
+    
     # Add UPC/EAN info if applicable
-    if(is.factor(column_data)) {
-      barcode_type <- detect_barcode(levels(column_data))
+    if (is.factor(column_data)) {
+      barcode_type <- detect_barcode(as.character(column_data))
     } else {
       barcode_type <- detect_barcode(column_data)
     }
@@ -295,18 +314,14 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
         output[i,3] <- ""
     }
     
-    # Calculate valid vs missing data info
-    n_miss <- sum(is.na(column_data))
-    n_valid <- n_tot - n_miss
-    
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
-      output[i,4:7] <- crunch_factor(column_data)
+      output[i,4:7] <- crunch_factor(column_data, email_val)
     }
     
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
-      output[i,4:7] <- crunch_character(column_data)
+      output[i,4:7] <- crunch_character(column_data, email_val)
     }
     
     # Logical data -------------------------------------------------------------
@@ -406,7 +421,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
 }
 
 #' @keywords internal
-crunch_factor <- function(column_data) {
+crunch_factor <- function(column_data, email_val) {
   
   outlist <- list()
   outlist[[1]] <- ""
@@ -421,21 +436,37 @@ crunch_factor <- function(column_data) {
   
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
+  lvls     <- names(counts)
   props    <- prop.table(counts)
   
   if (n_levels == 0 && parent.frame()$n_valid == 0) {
-    outlist[[1]] <- "No levels defined"
-    outlist[[2]] <- "All NA's"
+    outlist[[1]] <- "No levels defined" # TODO: Add translation
+    outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
   } else if (parent.frame()$n_valid == 0) {
     outlist[[1]] <- paste0(1:n_levels,"\\. ", levels(column_data),
                            collapse = "\\\n")
-    outlist[[2]] <- "All NA's"
+    outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
+  } else if (!identical(email_val, FALSE)) {
+    outlist[[1]] <- paste(trs("valid"), trs("invalid"), sep = "\\\n")
+    outlist[[2]] <- 
+      align_numbers_dfs(email_val, round(prop.table(email_val, 
+                                                    round.digits + 2)))
+    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
+      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
+      } else {
+        outlist[[4]] <- txtbarplot(prop.table(counts))
+      }
+    }
+
   } else if (n_levels <= max.distinct.values + 1) {
     outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
@@ -451,6 +482,7 @@ crunch_factor <- function(column_data) {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     }
+    
   } else {
     
     # more levels than allowed by max.distinct.values
@@ -502,7 +534,7 @@ crunch_factor <- function(column_data) {
 }
 
 #' @keywords internal
-crunch_character <- function(column_data) {
+crunch_character <- function(column_data, email_val) {
   
   outlist <- list()
   outlist[[1]] <- ""
@@ -527,6 +559,22 @@ crunch_character <- function(column_data) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
   } else if (n_empty + parent.frame()$n_miss == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
+  } else if (!identical(email_val, FALSE)) {
+    
+    outlist[[1]] <- paste(trs("valid"), trs("invalid"), sep = "\\\n")
+    outlist[[2]] <- 
+      align_numbers_dfs(email_val, round(prop.table(email_val, 
+                                                    round.digits + 2)))
+    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
+      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
+      } else {
+        outlist[[4]] <- txtbarplot(prop.table(counts))
+      }
+    }
+     
   } else {
     
     counts <- table(column_data, useNA = "no")
@@ -1065,6 +1113,29 @@ txthist <- function(data) {
     graphlines[ro] <-  trimws(paste(graph[ro,], collapse = ""), "right")
   }
   return(paste(graphlines, collapse = "\\\n"))
+}
+
+
+detect_email <- function(x) {
+
+  email_regex <- "\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>"
+  
+  if (length(x) > 200) {
+    x_sample <- na.omit(sample(x, size = 200, replace = FALSE))
+  } else {
+    x_sample <- na.omit(x)
+  }
+  
+  pct_email <- sum(grepl(email_regex, x_sample, ignore.case = TRUE)) /
+    length(x_sample)
+  
+  if (pct_email >= .8) {
+    valid <- sum(grepl(email_regex, x, ignore.case = TRUE), na.rm = TRUE)
+    invalid <- n_valid - valid
+    return(c(valid = valid, invalid = invalid))
+  } else {
+    return(FALSE)
+  }
 }
 
 #' @importFrom utils head
