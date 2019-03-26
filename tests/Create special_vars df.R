@@ -28,9 +28,11 @@ special_vars <- data.frame(bin         = bin,
                            nas_int     = NA_integer_,
                            nas_compl   = NA_complex_,
                            nas_char    = NA_character_,
+                           nas_fact    = as.factor(NA_character_),
+                           nas_fact_2  = factor(NA_character_, levels = c("a", "b")),
                            empty_char  = "",
                            empty_fact  = as.factor(""),
-                           empty_na    = empty_na,
+                           empty_na_chr = empty_na,
                            empty_na_f  = as.factor(empty_na),
                            ean_num     = ean_num,
                            ean_char    = as.character(ean_num),
@@ -42,5 +44,5 @@ special_vars <- data.frame(bin         = bin,
                            date_2_posxct = as.POSIXct(date2),
                            stringsAsFactors = FALSE
 )
-
+rm(bin, date1, date2, ean_num, ean_values, empty_na, i, probs, tri)
 save(special_vars, file = "tests/data/special_vars.RData")
