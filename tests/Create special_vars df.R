@@ -20,10 +20,11 @@ date1        <- seq(from = as.Date("2015-01-01"), to = as.Date("2029-12-31"),
 date2        <- sample(c(as.Date("2019-01-18"), as.Date("2019-01-19"), as.Date("2019-01-20"), NA), 
                        replace = TRUE, size = 1000, prob = c(.4, .4, .16, .04))
 miss         <- unique(floor(runif(100, 1,1000)))
-inval        <- unique(floor(runif(100, 1,1000)))
 emails[miss] <- NA
+inval         <- unique(floor(runif(150, 1,1000)))
 emails[inval] <- sub("@", " ", emails[inval])
-
+dups              <- unique(floor(runif(100, 1,1000)))
+emails[dups + 1]  <- emails[dups]
 
 special_vars <- data.frame(bin         = bin, 
                            bin_char    = as.character(bin),
