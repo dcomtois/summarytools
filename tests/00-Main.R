@@ -119,7 +119,7 @@ compare_dirs <- function(lang) {
   }
 }
 
-lang <- c("en", "fr", "es", "pt", "tr")[4]
+lang <- c("en", "fr", "es", "pt", "tr")[1]
 
 eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
 eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq

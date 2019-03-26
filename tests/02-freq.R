@@ -57,6 +57,14 @@ print(freq1, file = "01.md")
 print(freq1, file = "01.html")
 print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap")
 
+# Omit cumulative and na reporting
+(f1 <- freq(tobacco$age.gr))
+print(f1, cumul = FALSE)
+print(f1, cumul = FALSE, report.nas = FALSE)
+
+(f2 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE))
+print(f2, cumul = TRUE, report.nas = TRUE)
+
 # Weights
 (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
 print(wf1, file = "03 - weights.html")
