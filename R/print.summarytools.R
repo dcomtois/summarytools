@@ -1287,6 +1287,11 @@ print_dfs <- function(x, method) {
   # Function to align the freqs / proportions in html outputs
   # A table is built to fit in a single cell of the final table
   make_tbl_cell <- function(cell) {
+    
+    if (identical(cell, trs("all.nas"))) {
+      return(HTML(paste0('<td align="left">', cell, '</td>')))
+    }
+    
     rows <- strsplit(cell, "\\\n")[[1]]
     rows <- gsub("\\", "", rows, fixed = TRUE)
     rows <- gsub(" " , "", rows, fixed = TRUE)
