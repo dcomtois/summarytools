@@ -279,16 +279,12 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     # Check if column contains emails
     if (is.character(column_data)) {
       email_val <- detect_email(column_data)
-    } else if (is.factor(column_data)) {
-      email_val <- detect_email(as.character(column_data))
     } else {
       email_val <- FALSE
     }
 
     if (!identical(email_val, FALSE)) {
-      output[i,2] <- paste(output[i,2], 
-                           trs("emails"),
-                           sep = "\\\n")
+      output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
     }
     
     # Add UPC/EAN info if applicable
@@ -316,7 +312,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
-      output[i,4:7] <- crunch_factor(column_data, email_val)
+      output[i,4:7] <- crunch_factor(column_data)
     }
     
     # Character data: display frequencies whenever possible --------------------
@@ -433,40 +429,25 @@ crunch_factor <- function(column_data, email_val) {
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
-  
+  n_valid             <- parent.frame()$n_valid
+    
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
-  lvls     <- names(counts)
   props    <- prop.table(counts)
   
-  if (n_levels == 0 && parent.frame()$n_valid == 0) {
+  if (n_levels == 0 && n_valid == 0) {
     outlist[[1]] <- "No levels defined" # TODO: Add translation
     outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
-  } else if (parent.frame()$n_valid == 0) {
+  } else if (n_valid == 0) {
     outlist[[1]] <- paste0(1:n_levels,"\\. ", levels(column_data),
                            collapse = "\\\n")
     outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
-  } else if (!identical(email_val, FALSE)) {
-    outlist[[1]] <- paste(trs("valid"), trs("invalid"), sep = "\\\n")
-    outlist[[2]] <- 
-      align_numbers_dfs(email_val, round(prop.table(email_val, 
-                                                    round.digits + 2)))
-    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
-      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-      if (isTRUE(parent.frame()$store_imgs)) {
-        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
-        outlist[[4]] <- paste0("![](", png_loc, ")")
-      } else {
-        outlist[[4]] <- txtbarplot(prop.table(counts))
-      }
-    }
-
   } else if (n_levels <= max.distinct.values + 1) {
     outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
@@ -534,6 +515,7 @@ crunch_factor <- function(column_data, email_val) {
 }
 
 #' @keywords internal
+#' @importFrom dplyr n_distinct
 crunch_character <- function(column_data, email_val) {
   
   outlist <- list()
@@ -546,6 +528,7 @@ crunch_character <- function(column_data, email_val) {
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
+  n_valid             <- parent.frame()$n_valid
   
   if (isTRUE(parent.frame()$trim.strings)) {
     column_data <- trimws(column_data)
@@ -561,20 +544,31 @@ crunch_character <- function(column_data, email_val) {
     outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
   } else if (!identical(email_val, FALSE)) {
     
-    outlist[[1]] <- paste(trs("valid"), trs("invalid"), sep = "\\\n")
-    outlist[[2]] <- 
-      align_numbers_dfs(email_val, round(prop.table(email_val, 
-                                                    round.digits + 2)))
+    outlist[[1]] <- 
+      paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
+    
+    dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
+    prop.dups <- round(dups / n_valid, round.digits + 2)
+    counts_props <- align_numbers_dfs(
+      c(email_val, dups), 
+      c(round(prop.table(email_val), round.digits + 2), prop.dups)
+    )
+    
+    outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+    
     if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
-      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      outlist[[3]] <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+                                   emails = TRUE)
       if (isTRUE(parent.frame()$store_imgs)) {
-        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        png_loc <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+                                pandoc = TRUE, emails = TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
-        outlist[[4]] <- txtbarplot(prop.table(counts))
+        outlist[[4]] <- txtbarplot(c(prop.table(email_val), prop.dups), 
+                                   emails = TRUE)
       }
     }
-     
+
   } else {
     
     counts <- table(column_data, useNA = "no")
@@ -964,7 +958,8 @@ align_numbers_dfs <- function(counts, props) {
 #' @importFrom magick image_read image_trim image_border image_write 
 #'             image_transparent
 #' @keywords internal
-encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
+encode_graph <- function(data, graph_type, graph.magnif = 1, 
+                         pandoc = FALSE, emails = FALSE) {
   #bg <- par('bg'=NA)
   #on.exit(par(bg))
   
@@ -1028,9 +1023,16 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
-    barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
-            col = "grey97", border = "grey65", horiz = TRUE,
-            xlim = c(0, sum(data)))
+    
+    if (isTRUE(emails)) {
+      barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
+              col = c("grey30", "grey97", "grey97"), border = "grey65",
+              horiz = TRUE, xlim = c(0, sum(data[2:3])))
+    } else {
+      barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
+              col = "grey97", border = "grey65", horiz = TRUE,
+              xlim = c(0, sum(data)))
+    }
     
     dev.off()
     ii <- image_read(png_loc)
@@ -1065,13 +1067,15 @@ generate_png_path <- function(d) {
 }
 
 #' @keywords internal
-txtbarplot <- function(props, maxwidth = 20) {
+txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
   #widths <- props / max(props) * maxwidth
   widths <- props * maxwidth
   outstr <- character(0)
   for (i in seq_along(widths)) {
-    outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]),
-                                   collapse = ""),
+    outstr <- paste(outstr, 
+                    paste0(rep(x = ifelse(isTRUE(emails) && i == length(widths), 
+                                          "D", "I"), times = widths[i]),
+                           collapse = ""),
                     sep = " \\ \n")
   }
   outstr <- sub("^ \\\\ \\n", "", outstr)
@@ -1126,12 +1130,16 @@ detect_email <- function(x) {
     x_sample <- na.omit(x)
   }
   
+  if (length(x_sample) == 0) {
+    return(FALSE)
+  }
+  
   pct_email <- sum(grepl(email_regex, x_sample, ignore.case = TRUE)) /
     length(x_sample)
   
   if (pct_email >= .8) {
     valid <- sum(grepl(email_regex, x, ignore.case = TRUE), na.rm = TRUE)
-    invalid <- n_valid - valid
+    invalid <- parent.frame()$n_valid - valid
     return(c(valid = valid, invalid = invalid))
   } else {
     return(FALSE)
