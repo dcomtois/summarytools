@@ -69,6 +69,7 @@ mode                  ,cell content (dfSummary) - mode = most frequent value    
 med.short             ,cell content (dfSummary) - median (shortened)                 ,mediana
 start                 ,cell content (dfSummary) - earliest date for date-type cols.  ,principio
 end                   ,cell content (dfSummary) - latest date for data-type cols.    ,fin
+emails                ,cell content (dfSummary)                                      ,Correos
 generated.by          ,footnote content                                              ,Generado por
 version               ,footnote content                                              ,versión
 date.fmt              ,footnote - date format (see ?strptime)                        ,%Y-%m-%d
