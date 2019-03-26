@@ -1,73 +1,74 @@
-item                  ,context                         ,es
-title.freq            ,main heading                    ,Frecuencias
-title.freq.weighted   ,main heading                    ,Frecuencías ponderadas
-title.ctable          ,main heading                    ,Tabulación cruzada
-title.ctable.weighted ,main heading                    ,Tabulación cruzada ponderada
-title.ctable.row      ,main heading                    ,proporciones por líneas
-title.ctable.col      ,main heading                    ,proporciones por columnas
-title.ctable.tot      ,main heading                    ,proporcíón del total
-title.descr           ,main heading                    ,Estadísticas descriptivas
-title.descr.weighted  ,main heading                    ,Estadísticas descriptivas ponderadas
-title.dfSummary       ,main heading                    ,Tabla resumen
-n                     ,heading label                   ,N
-dimensions            ,heading label                   ,Dimensiones
-duplicates            ,heading label                   ,Duplicados
-data.frame            ,heading label                   ,Data frame
-label                 ,heading label & column name     ,Etiqueta
-variable              ,heading label & column name     ,Variable
-group                 ,heading label                   ,Subgrupo
-by                    ,heading label                   ,por
-weights               ,heading label                   ,Pesos
-type                  ,heading label                   ,Tipo
-logical               ,heading value for type          ,Booleana
-character             ,heading value for type          ,Alfahnumérico
-numeric               ,heading value for type          ,Numérico
-factor                ,heading value for type          ,Factor
-factor.ordered        ,heading value for type          ,Factor ordenado
-date                  ,heading value for type          ,Fecha
-datetime              ,heading value for type          ,Fecha y hora
-freq                  ,column name (freq)              ,Frec.
-pct.valid             ,column name (freq)              ,% Válido
-pct.valid.cum         ,column name (freq)              ,% Válido acu.
-pct.total             ,column name (freq)              ,% Total
-pct.total.cum         ,column name (freq)              ,% Total acu.
-pct.cum               ,column name (freq)              ,% Acu.
-valid                 ,column name (freq & dfSummary)  ,Válido
-total                 ,column grouping (freq)          ,Total
-mean                  ,row name (descr)                ,Media
-sd.long               ,row name (descr)                ,Dev.std.
-sd                    ,cell content (dfSummary)        ,d-s
-min                   ,row name (descr)                ,Min
-q1                    ,row name (descr)                ,Q1
-med                   ,row name (descr)                ,Mediana
-q3                    ,row name (descr)                ,Q3
-max                   ,row name (descr)                ,Max
-mad                   ,row name (descr)                ,DAP
-iqr                   ,row name (descr)                ,RI
-cv                    ,row name (descr)                ,CV
-skewness              ,row name (descr)                ,Asimetría
-se.skewness           ,row name (descr)                ,ES-Asimetría
-kurtosis              ,row name (descr)                ,Curtosis
-n.valid               ,row name (descr)                ,Num.Válido
-pct.valid             ,row name (descr)                ,Pct.Válido
-no                    ,column name (dfSummary)         ,No
-stats.values          ,column name (dfSummary)         ,Estadísticas / Valores
-freqs.pct.valid       ,column name (dfSummary)         ,Frec. (% sobre válidos)
-graph                 ,column name (dfSummary)         ,Gráfico
-missing               ,column name (dfSummary)         ,Perdidos
-distinct.value        ,cell content (dfSummary)        ,valor distinto
-distinct.values       ,cell content (dfSummary)        ,valores distintos
-all.nas               ,cell content (dfSummary)        ,100% NA's
-all.empty.str         ,cell content (dfSummary)        ,100% cadenas vacías
-all.empty.str.nas     ,cell content (dfSummary)        ,100% NA's o cadenas vacías
-int.sequence          ,cell content (dfSummary)        ,Secuencia de enteros
-rounded               ,cell content (dfSummary)        ,redondeo
-others                ,cell content (dfSummary)        ,otros
-codes                 ,cell content (dfSummary)        ,códigos
-mode                  ,cell content (dfSummary)        ,modo
-med.short             ,cell content (dfSummary)        ,mediana
-start                 ,cell content (dfSummary)        ,principio
-end                   ,cell content (dfSummary)        ,fin
-generated.by          ,footnote                        ,Generado por
-version               ,footnote                        ,versión
-date.fmt              ,footnote                        ,%Y-%m-%d
+item                  ,context                                                       ,es
+title.freq            ,main heading                                                  ,Frecuencias
+title.freq.weighted   ,main heading                                                  ,Frecuencías ponderadas
+title.ctable          ,main heading                                                  ,Tabulación cruzada
+title.ctable.weighted ,main heading                                                  ,Tabulación cruzada ponderada
+title.ctable.row      ,main heading                                                  ,proporciones por líneas
+title.ctable.col      ,main heading                                                  ,proporciones por columnas
+title.ctable.tot      ,main heading                                                  ,proporcíón del total
+title.descr           ,main heading                                                  ,Estadísticas descriptivas
+title.descr.weighted  ,main heading                                                  ,Estadísticas descriptivas ponderadas
+title.dfSummary       ,main heading                                                  ,Tabla resumen
+n                     ,heading label                                                 ,N
+dimensions            ,heading label (dfSummary)                                     ,Dimensiones
+duplicates            ,heading label (dfSummary)                                     ,Duplicados
+data.frame            ,heading label (all functions)                                 ,Data frame
+label                 ,heading label (all functions) & column name (dfSummary)       ,Etiqueta
+variable              ,heading label (all functions) & column name (dfSummary)       ,Variable
+group                 ,heading label (all functions when used with byst() / by()     ,Subgrupo
+by                    ,heading label (descr when used with byst() / by()             ,por
+weights               ,heading label (descr & freq)                                  ,Pesos
+type                  ,heading label (freq)                                          ,Tipo
+logical               ,heading value for type (freq)                                 ,Booleana
+character             ,heading value for type (freq)                                 ,Alfahnumérico
+numeric               ,heading value for type (freq)                                 ,Numérico
+factor                ,heading value for type (freq)                                 ,Factor
+factor.ordered        ,heading value for type (freq)                                 ,Factor ordenado
+date                  ,heading value for type (freq)                                 ,Fecha
+datetime              ,heading value for type (freq)                                 ,Fecha y hora
+freq                  ,column name (freq)                                            ,Frec.
+pct.valid             ,column name (freq)                                            ,% Válido
+pct.valid.cum         ,column name (freq)                                            ,% Válido acu.
+pct.total             ,column name (freq)                                            ,% Total
+pct.total.cum         ,column name (freq)                                            ,% Total acu.
+pct.cum               ,column name (freq)                                            ,% Acu.
+valid                 ,column name (freq & dfSummary) & column content (dfSummary)   ,Válido
+invalid               ,column content (dfSummary for emails)                         ,Inválido
+total                 ,column grouping in html (freq)                                ,Total
+mean                  ,row name (descr)                                              ,Media
+sd.long               ,row name (descr)                                              ,Dev.std.
+sd                    ,cell content (dfSummary)                                      ,d-s
+min                   ,row name (descr)                                              ,Min
+q1                    ,row name (descr) - 1st quartile                               ,Q1
+med                   ,row name (descr)                                              ,Mediana
+q3                    ,row name (descr) - 3rd quartile                               ,Q3
+max                   ,row name (descr)                                              ,Max
+mad                   ,row name (descr) - Median Absolute Deviation                  ,DAP
+iqr                   ,row name (descr) - Inter-Quartile Range                       ,RI
+cv                    ,row name (descr) - Coefficient of Variation                   ,CV
+skewness              ,row name (descr)                                              ,Asimetría
+se.skewness           ,row name (descr) - Std. Error for Skewness                    ,ES-Asimetría
+kurtosis              ,row name (descr)                                              ,Curtosis
+n.valid               ,row name (descr) - Count of non-missing values                ,Num.Válido
+pct.valid             ,row name (descr) - % of non-missing values                    ,Pct.Válido
+no                    ,column name (dfSummary) - position of column in the d.f.      ,No
+stats.values          ,column name (dfSummary)                                       ,Estadísticas / Valores
+freqs.pct.valid       ,column name (dfSummary)                                       ,Frec. (% sobre válidos)
+graph                 ,column name (dfSummary)                                       ,Gráfico
+missing               ,column name (dfSummary)                                       ,Perdidos
+distinct.value        ,cell content (dfSummary) - singular form                      ,valor distinto
+distinct.values       ,cell content (dfSummary) - plural form                        ,valores distintos
+all.nas               ,cell content (dfSummary) - column has only NA's               ,100% NA's
+all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,100% cadenas vacías
+all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,100% NA's o cadenas vacías
+int.sequence          ,cell content (dfSummary)                                      ,Secuencia de enteros
+rounded               ,cell content (dfSummary) - note appearing in Stats/Values     ,redondeo
+others                ,cell content (dfSummary) - nbr of values not displayed        ,otros
+codes                 ,cell content (dfSummary) - When UPC codes are detected        ,códigos
+mode                  ,cell content (dfSummary) - mode = most frequent value         ,modo
+med.short             ,cell content (dfSummary) - median (shortened)                 ,mediana
+start                 ,cell content (dfSummary) - earliest date for date-type cols.  ,principio
+end                   ,cell content (dfSummary) - latest date for data-type cols.    ,fin
+generated.by          ,footnote content                                              ,Generado por
+version               ,footnote content                                              ,versión
+date.fmt              ,footnote - date format (see ?strptime)                        ,%Y-%m-%d
