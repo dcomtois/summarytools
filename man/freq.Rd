@@ -8,8 +8,9 @@ freq(x, round.digits = st_options("round.digits"), order = "default",
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),
   justify = "default", cumul = st_options("freq.cumul"),
   totals = st_options("freq.totals"),
-  report.nas = st_options("freq.report.nas"), missing = "",
-  display.type = TRUE, display.labels = st_options("display.labels"),
+  report.nas = st_options("freq.report.nas"), rows = numeric(),
+  missing = "", display.type = TRUE,
+  display.labels = st_options("display.labels"),
   headings = st_options("headings"), weights = NA,
   rescale.weights = FALSE, ...)
 }
@@ -21,8 +22,9 @@ freq(x, round.digits = st_options("round.digits"), order = "default",
 
 \item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
 non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent). Can also be a numeric or character vector
-specifying the desired order for several or all frequency table rows.}
+most frequent to less frequent). To invert the order, place a minus sign
+before or after the word. \dQuote{-freq} will thus display the items
+starting from the lowest in frequency to the highest, and so forth.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or
@@ -103,6 +105,15 @@ with(tobacco, stby(diseased, smoker, freq))
 
 # Print html Source
 print(fr_smoker_by_gender, method = "render", footnote = NA)
+
+# Order by frequency (+ to -)
+freq(tobacco$age.gr, order = "freq")
+
+# Order by frequency (- to +)
+freq(tobacco$age.gr, order = "-freq")
+
+# Use the 'rows' argument to display only the 10 most common items
+freq(tobacco$age.gr, order = "freq", rows = 1:10)
 
 \dontrun{
 # Display rendered html results in RStudio's Viewer

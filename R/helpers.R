@@ -1,6 +1,7 @@
 # Arguments validation for freq, ctable, descr and dfSummary functions.
 # Another function for validating st_options arguments follows.
 #' @importFrom checkmate test_int test_logical test_choice test_string
+#' @importFrom dplyr n_distinct
 #' @keywords internal
 check_arguments <- function(mc, dotArgs) {
   
@@ -94,37 +95,64 @@ check_arguments <- function(mc, dotArgs) {
       errmsg %+=% "'display.type' must be either TRUE or FALSE"
     }
     
+    if ("cumul" %in% names(mc) && 
+        !isTRUE(test_logical(pf$cumul, len = 1, any.missing = FALSE))) {
+      errmsg %+=% "'cumul' must be either TRUE or FALSE"
+    }
+    
     if ("order" %in% names(mc)) {
-      if (length(pf$order) == 1) {
-        order <- switch(tolower(substring(pf$order, 1, 1)),
-                        d = "default",
-                        l = "levels",
-                        f = "freq",
-                        n = "names")
-        
-        if (!isTRUE(test_choice(order, 
-                                c("default", "levels", "freq", "names")))) {
-          errmsg %+=% paste("'order' must be one of 'default', 'levels',",
-                            "'freq', or 'names'")
-        } else if (order == "levels" && !is.factor(pf$x)) {
-          errmsg %+=% paste("'order' can be set to 'factor' only for factors.",
-                            "Use 'names' or 'freq', or convert object to factor",
-                            "prior to calling freq()")
-        }
-        assign("order", order, envir = parent.frame())
-      } else {
-        if (NA %in% pf$order) {
-          errmsg %+=% "'order' cannot contain NA; NA's are always displayed last"
-        }
-          
-        if (!all(pf$order %in% unique(pf$x))) {
-          errmsg %+=% paste("some elements of the 'order' argument were not",
-                            "found in the data")
+      order <- switch(tolower(substring(sub("[+-]", "", pf$order), 1, 1)),
+                      d = "default",
+                      l = "levels",
+                      f = "freq",
+                      n = "names")
+      
+      if (!isTRUE(test_choice(order, 
+                              c("default", "levels", "freq", "names")))) {
+        errmsg %+=% paste("'order' must be one of 'default', 'levels',",
+                          "'freq', or 'names'")
+      } else if (order == "levels" && !is.factor(pf$x)) {
+        errmsg %+=% paste("'order' can be set to 'factor' only for factors.",
+                          "Use 'names' or 'freq', or convert object to factor",
+                          "prior to calling freq()")
+      }
+      
+      order_sign <- sub("^.*([-+]).*$", "\\1", pf$order)
+      order_sign <- ifelse(order_sign %in% c("+", "-"), order_sign, "+")
+      
+      assign("order", order, envir = parent.frame())
+      assign("order_sign", order_sign, envir = parent.frame())
+    } else {
+      assign("order_sign", "+", envir = parent.frame())
+    }
+    
+    if ("rows" %in% names(mc)) {
+      
+      if (NA %in% pf$rows) {
+        errmsg %+=% paste("'rows' cannot contain NA; NA's are always displayed",
+                          "last; use report.nas to turn off na reporting")
+      }
+      
+      if (is.character(pf$rows) && !all(pf$rows %in% unique(pf$x))) {
+        errmsg %+=% paste("the following items used in the 'rows' argument",
+                          "are not found in the data:", 
+                          paste(setdiff(pf$rows, unique(pf$x)), sep = ","))
+      }
+      
+      if (is.numeric(pf$rows) && max(pf$rows) >= n_distinct(pf$x)) {
+        nmax <- n_distinct(pf$x) - 1
+        message("the maximum number allowed in the 'rows' argument is ",
+                nmax, "; higher numbers will be ignored")
+        rows <- pf$rows[-which(pf$rows > nmax)]
+        if (length(rows) > 0) {
+          assign("rows", rows, envir = parent.frame())
+        } else {
+          errmsg %+=% "Invalid 'rows' argument"
         }
       }
     }
   }
-  
+
   # freq & ctable arguments ----------------------------------------------------
   if (caller %in% c("freq", "ctable")) {
     if ("totals" %in% names(mc) && 
@@ -265,16 +293,17 @@ check_arguments <- function(mc, dotArgs) {
   }
   
   # Order the messages according to arguments order
-  ord <- numeric()
-  for(a in names(mc)[-1]) {
-    ord %+=% grep(pattern = a, 
-                  x = sub(pattern = "^'(.+?)'.+$", 
-                          replacement = "\\1", x = errmsg, 
-                          perl = TRUE), 
-                  fixed = TRUE)
-  }
-  
-  return(errmsg[ord])
+  # ord <- numeric()
+  # for(a in names(mc)[-1]) {
+  #   ord %+=% grep(pattern = a,
+  #                 x = sub(pattern = "^'(.+?)'.+$", 
+  #                         replacement = "\\1", x = errmsg, 
+  #                         perl = TRUE), 
+  #                 fixed = TRUE)
+  # }
+  #
+  # return(errmsg[ord])
+  return(errmsg)
 }
 
 # check_arguments_st_options ---------------------------------------------------

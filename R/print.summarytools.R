@@ -671,8 +671,12 @@ print_freq <- function(x, method) {
       # Put NA in relevant cells so that pander recognizes them as such
       freq_table[nrow(freq_table) -
                    as.numeric(isTRUE(format_info$totals)), 2] <- NA
-      freq_table[nrow(freq_table) -
-                   as.numeric(isTRUE(format_info$totals)), 3] <- NA
+      
+      # This not good for case with cumul = FALSE
+      if (isTRUE(format_info$cumul)) {
+        freq_table[nrow(freq_table) -
+                     as.numeric(isTRUE(format_info$totals)), 3] <- NA
+      }
     }
     
     # Remove .00 digits in Freq column when weights are not used

@@ -8,8 +8,9 @@
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent). Can also be a numeric or character vector
-#'   specifying the desired order for several or all frequency table rows.
+#'   most frequent to less frequent). To invert the order, place a minus sign
+#'   before or after the word. \dQuote{-freq} will thus display the items
+#'   starting from the lowest in frequency to the highest, and so forth.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown} This option can be set globally; see
@@ -32,6 +33,10 @@
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of
 #'   missing values. To change this default value globally, see
 #'   \code{\link{st_options}}.
+#' @param rows Character or numeric vector allowing subsetting of the results.
+#'   The order given here will be reflected in the resulting table. Note that 
+#'   \code{NA} cannot be used here, as missing data will always be shown last.
+#'   \code{numeric()} by default}.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
@@ -72,6 +77,15 @@
 #' # Print html Source
 #' print(fr_smoker_by_gender, method = "render", footnote = NA)
 #' 
+#' # Order by frequency (+ to -)
+#' freq(tobacco$age.gr, order = "freq")
+#' 
+#' # Order by frequency (- to +)
+#' freq(tobacco$age.gr, order = "-freq")
+#' 
+#' # Use the 'rows' argument to display only the 10 most common items
+#' freq(tobacco$age.gr, order = "freq", rows = 1:10)
+#' 
 #' \dontrun{
 #' # Display rendered html results in RStudio's Viewer
 #' # notice 'view()' is NOT written with capital V
@@ -96,19 +110,20 @@
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct
 freq <- function(x, 
-                 round.digits    = st_options("round.digits"), 
-                 order           = "default", 
-                 style           = st_options("style"), 
-                 plain.ascii     = st_options("plain.ascii"), 
-                 justify         = "default", 
+                 round.digits    = st_options("round.digits"),
+                 order           = "default",
+                 style           = st_options("style"),
+                 plain.ascii     = st_options("plain.ascii"),
+                 justify         = "default",
                  cumul           = st_options("freq.cumul"),
-                 totals          = st_options("freq.totals"), 
-                 report.nas      = st_options("freq.report.nas"), 
-                 missing         = "", 
-                 display.type    = TRUE, 
-                 display.labels  = st_options("display.labels"), 
-                 headings        = st_options("headings"), 
-                 weights         = NA, 
+                 totals          = st_options("freq.totals"),
+                 report.nas      = st_options("freq.report.nas"),
+                 rows            = numeric(),
+                 missing         = "",
+                 display.type    = TRUE,
+                 display.labels  = st_options("display.labels"),
+                 headings        = st_options("headings"),
+                 weights         = NA,
                  rescale.weights = FALSE, ...) {
 
   # When x is a dataframe, we make recursive calls to freq() with each variable
@@ -139,19 +154,20 @@ freq <- function(x,
       
       out[[length(out) + 1]] <- 
         freq(x[[i]],
-             round.digits = round.digits, 
-             order = order,
-             style = style, 
-             plain.ascii = plain.ascii, 
-             justify = justify, 
-             totals = totals, 
-             report.nas = report.nas, 
-             missing = missing, 
-             display.type = display.type, 
-             display.labels = display.labels, 
-             headings = headings, 
-             weights = weights, 
-             rescale.weights = rescale.weights, 
+             round.digits     = round.digits, 
+             order            = order,
+             style            = style, 
+             plain.ascii      = plain.ascii, 
+             justify          = justify, 
+             totals           = totals, 
+             report.nas       = report.nas, 
+             rows             = rows,
+             missing          = missing, 
+             display.type     = display.type, 
+             display.labels   = display.labels, 
+             headings         = headings, 
+             weights          = weights, 
+             rescale.weights  = rescale.weights, 
              ...)
       
       attr(out[[length(out)]], "data_info")$Data.frame <- df_name
@@ -233,6 +249,7 @@ freq <- function(x,
   if (identical(NA, weights)) {
     freq_table <- table(x, useNA = "always")
   } else {
+    
     # Weights are used
     weights_string <- deparse(substitute(weights))
     
@@ -250,29 +267,31 @@ freq <- function(x,
   }
   
   # Order by frequency if needed
-  if (length(order) == 1 && order == "freq") {
-    freq_table <- sort(freq_table, decreasing = TRUE)
-    na_pos <- which(is.na(names(freq_table)))
-    freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+  if (order == "freq") {
+    nas_freq <- tail(freq_table, 1)
+    freq_table <- freq_table[-length(freq_table)]
+    freq_table <- sort(freq_table, decreasing = (order_sign == "+"))
+    freq_table <- append(freq_table, nas_freq)
   }
   
   # order by names if needed
-  if (is.factor(x) && length(order) == 1 && order == "names") {
-    freq_table <- freq_table[order(names(freq_table))]
-    na_pos <- which(is.na(names(freq_table)))
-    freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
+  if (order == "names") {
+    freq_table <- freq_table[order(names(freq_table), 
+                                   decreasing = (order_sign == "-"), 
+                                   na.last = TRUE)]
+  }
+
+  # order by (-)levels if needed
+  if (is.factor(x) && order == "levels" && order_sign == "-") {
+    freq_table <- c(freq_table[rev(levels(x))], tail(freq_table, 1))
   }
   
-  if (length(order) > 1) {
-    na_count <- tail(freq_table, 1)
-    length(freq_table) <- length(freq_table) - 1
-    if (length(order) < length(freq_table)) {
-      message(paste("Some values are omitted since 'order' is not",
-                    "exhaustive"))
+  if (length(rows) > 1) {
+    if (length(rows) < (length(freq_table) - 1)) {
+      message("some values will be omitted since 'order' is not exhaustive")
     }
     
-    freq_table <- freq_table[order]
-    freq_table <- append(freq_table, na_count)
+    freq_table <- c(freq_table[rows], tail(freq_table, 1))
   }
     
   # Change the name of the NA item (last) to avoid potential
@@ -287,7 +306,7 @@ freq <- function(x,
   # Add "<NA>" item to the proportions; this assures
   # proper length when cbind'ing later on
   P_valid["<NA>"] <- NA
-    
+  
   # calculate proportions (total, i.e. including NA's)
   P_tot <- prop.table(freq_table) * 100
   
