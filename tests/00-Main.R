@@ -122,7 +122,6 @@ compare_dirs <- function(lang) {
 for (i in 1:5) {
 lang <- c("en", "fr", "es", "pt", "tr")[i]
 eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
-}
 eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
 eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
 eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
@@ -131,12 +130,11 @@ eval_with_feedback(testfiles[6],  lang = lang, compare = FALSE) # overrides
 eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
 eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
 eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
-
 }
 
 compare_dirs("en")
 compare_dirs("fr")
-compare_dirs("en")
-compare_dirs("en")
-compare_dirs("en")
+compare_dirs("es")
+compare_dirs("pt")
+compare_dirs("tr")
 
