@@ -5,7 +5,7 @@
 > tobacco <- tibble::as_tibble(tobacco) 
 > ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï") 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -25,10 +25,10 @@ Table: test encod: éêàáûï
 
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always')) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
-R<f3>tulo: A Study on Tobacco Use and Health  
+Rótulo: A Study on Tobacco Use and Health  
 
 -------- ---------- ------------- ------------- ---------- ---------------
            diseased           Yes            No       <NA>           Total
@@ -85,7 +85,7 @@ R<f3>tulo: A Study on Tobacco Use and Health
 
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c') 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por colunas  
+Tabulação cruzada, Proporções por colunas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -99,7 +99,7 @@ Data Frame: tobacco
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n') 
 
-Tabula<e7><e3>o cruzada  
+Tabulação cruzada  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -113,7 +113,7 @@ Data Frame: tobacco
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't') 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es totais  
+Tabulação cruzada, Proporções totais  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -131,7 +131,7 @@ Data Frame: tobacco
 > data(exams) 
 > ctable(exams$gender, exams$french < 60) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 gender * french < 60  
 Data Frame: exams  
 
@@ -145,7 +145,7 @@ Data Frame: exams
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use") 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 Gender * Failed French Class  
 Data Frame: exams  
 
@@ -175,7 +175,7 @@ Table: dnn in use
 
 > ctable(tobacco[[1]], tobacco[,3]) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 gender * age.gr  
 Data Frame: tobacco  
 
@@ -193,7 +193,7 @@ Data Frame: tobacco
 
 > with(tobacco, ctable(smoker,  diseased)) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -210,7 +210,7 @@ Data Frame: tobacco
 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -238,7 +238,7 @@ Grupo: gender = M
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique! 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -264,7 +264,7 @@ Grupo: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F)) 
 > print(wbc, headings = T) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -314,7 +314,7 @@ Grupo: gender = M
 
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts))) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -329,7 +329,7 @@ Data Frame: tobacco
 
 > print(wc1, totals = FALSE) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -343,7 +343,7 @@ Data Frame: tobacco
 
 > print(wc1, round.digits = 2) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es por linhas  
+Tabulação cruzada, Proporções por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -362,7 +362,7 @@ Data Frame: tobacco
 > st_options(ctable.prop = "t", ctable.totals = FALSE) 
 > with(tobacco, ctable(smoker, diseased)) 
 
-Tabula<e7><e3>o cruzada, Propor<e7><f5>es totais  
+Tabulação cruzada, Proporções totais  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -376,7 +376,7 @@ Data Frame: tobacco
 > st_options(ctable.prop = "n") 
 > with(tobacco, ctable(smoker, diseased)) 
 
-Tabula<e7><e3>o cruzada  
+Tabulação cruzada  
 smoker * diseased  
 Data Frame: tobacco  
 

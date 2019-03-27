@@ -7,7 +7,7 @@
 
 # Basic tables + general formatting (style / plain.ascii) ---------------------- 
 
-> (freq1 <- freq(tobacco$gender)) 
+> (f1 <- freq(tobacco$gender)) 
 
 Frequencies  
 tobacco$gender  
@@ -21,7 +21,7 @@ Type: Factor
        <NA>     22                               2.20         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> print(freq1, plain.ascii = F) 
+> print(f1, plain.ascii = F) 
 
 ### Frequencies  
 #### tobacco$gender  
@@ -35,7 +35,7 @@ Type: Factor
   **\<NA\>**     22                               2.20         100.00
    **Total**   1000    100.00         100.00    100.00         100.00
 
-> print(freq1, plain.ascii = F, style = "rmarkdown") 
+> print(f1, plain.ascii = F, style = "rmarkdown") 
 
 ### Frequencies  
 #### tobacco$gender  
@@ -49,7 +49,7 @@ Type: Factor
 | **\<NA\>** |   22 |         |              |    2.20 |       100.00 |
 |  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-> print(freq1, plain.ascii = F, style = "grid", headings = FALSE) 
+> print(f1, plain.ascii = F, style = "grid", headings = FALSE) 
 
 
 +------------+------+---------+--------------+---------+--------------+
@@ -72,7 +72,7 @@ Type: Factor
 
 # Round to 1 decimal ----------------------------------------------------------- 
 
-> (freq2 <- freq(tabagisme$age.gr, round.digits = 1)) 
+> (f2 <- freq(tabagisme$age.gr, round.digits = 1)) 
 
 Frequencies  
 tabagisme$age.gr  
@@ -91,7 +91,7 @@ Type: Factor
 
 # Mask label, then type -------------------------------------------------------- 
 
-> print(freq2, display.labels = FALSE) 
+> print(f2, display.labels = FALSE) 
 
 Frequencies  
 tabagisme$age.gr  
@@ -106,7 +106,7 @@ Type: Factor
        <NA>     25                                2.5          100.0
       Total   1000     100.0          100.0     100.0          100.0
 
-> print(freq2, display.type = F) 
+> print(f2, display.type = F) 
 
 Frequencies  
 tabagisme$age.gr  
@@ -122,9 +122,9 @@ Label: Groupe d'âge
       Total   1000     100.0          100.0     100.0          100.0
 
 
-# Mask total and/or NAs -------------------------------------------------------- 
+# Mask total / NAs / cumul ----------------------------------------------------- 
 
-> print(freq2, totals = FALSE) 
+> print(f2, totals = FALSE)          # OK 
 
 Frequencies  
 tabagisme$age.gr  
@@ -139,7 +139,7 @@ Type: Factor
        71 +    159      16.3          100.0      15.9           97.5
        <NA>     25                                2.5          100.0
 
-> print(freq2, report.nas = FALSE) 
+> print(f2, report.nas = FALSE)      # OK 
 
 Frequencies  
 tabagisme$age.gr  
@@ -154,7 +154,38 @@ Type: Factor
        71 +    159    16.3    100.0
       Total    975   100.0    100.0
 
-> print(freq2, report.nas = FALSE, totals = FALSE) 
+> print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL % 
+
+Frequencies  
+tabagisme$age.gr  
+Label: Groupe d'âge  
+Type: Factor  
+
+              Freq   % Valid   % Total
+----------- ------ --------- ---------
+      18-34    258      26.5      25.8
+      35-50    241      24.7      24.1
+      51-70    317      32.5      31.7
+       71 +    159      16.3      15.9
+       <NA>     25                 2.5
+      Total   1000     100.0     100.0
+
+> print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL % 
+
+Frequencies  
+tabagisme$age.gr  
+Label: Groupe d'âge  
+Type: Factor  
+
+              Freq   % Valid   % Total
+----------- ------ --------- ---------
+      18-34    258      26.5      25.8
+      35-50    241      24.7      24.1
+      51-70    317      32.5      31.7
+       71 +    159      16.3      15.9
+       <NA>     25                 2.5
+
+> print(f2, report.nas = FALSE, totals = FALSE)  # OK 
 
 Frequencies  
 tabagisme$age.gr  
@@ -168,10 +199,39 @@ Type: Factor
       51-70    317   32.5     83.7
        71 +    159   16.3    100.0
 
+> print(f2, report.nas = FALSE, cumul = FALSE)   # OK 
+
+Frequencies  
+tabagisme$age.gr  
+Label: Groupe d'âge  
+Type: Factor  
+
+              Freq       %
+----------- ------ -------
+      18-34    258    26.5
+      35-50    241    24.7
+      51-70    317    32.5
+       71 +    159    16.3
+      Total    975   100.0
+
+> print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE) 
+
+Frequencies  
+tabagisme$age.gr  
+Label: Groupe d'âge  
+Type: Factor  
+
+              Freq      %
+----------- ------ ------
+      18-34    258   26.5
+      35-50    241   24.7
+      51-70    317   32.5
+       71 +    159   16.3
+
 
 # Replace the missing symbol --------------------------------------------------- 
 
-> print(freq2, missing = "---") 
+> print(f2, missing = "---") 
 
 Frequencies  
 tabagisme$age.gr  
@@ -188,7 +248,7 @@ Type: Factor
       Total   1000     100.0          100.0     100.0          100.0
 
 
-# Row order - levels by default for factors ------------------------------------ 
+# 1) Original order - factor --------------------------------------------------- 
 
 > freq(tobacco$diseased) 
 
@@ -204,7 +264,7 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
 
 
-# 2) modified order ------------------------------------------------------------ 
+# 2) Modified order ------------------------------------------------------------ 
 
 > freq(tobacco$diseased, order = "freq") 
 
@@ -219,6 +279,43 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
+> freq(tobacco$diseased, order = "freq", report.nas = FALSE) 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+         No    776    77.60    77.60
+        Yes    224    22.40   100.00
+      Total   1000   100.00   100.00
+
+> freq(tobacco$diseased, order = "freq-") 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    224     22.40          22.40     22.40          22.40
+         No    776     77.60         100.00     77.60         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$diseased, order = "freq-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes    224    22.40    22.40
+         No    776    77.60   100.00
+      Total   1000   100.00   100.00
+
 > freq(tobacco$diseased, order = "names") 
 
 Frequencies  
@@ -232,14 +329,100 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-
-# Override the rounding -------------------------------------------------------- 
-
-> print(freq2, round.digits = 2) 
+> freq(tobacco$diseased, order = "names", report.nas = FALSE) 
 
 Frequencies  
-tabagisme$age.gr  
-Label: Groupe d'âge  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+         No    776    77.60    77.60
+        Yes    224    22.40   100.00
+      Total   1000   100.00   100.00
+
+> freq(tobacco$diseased, order = "names-") 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    224     22.40          22.40     22.40          22.40
+         No    776     77.60         100.00     77.60         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$diseased, order = "names-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes    224    22.40    22.40
+         No    776    77.60   100.00
+      Total   1000   100.00   100.00
+
+> freq(tobacco$diseased, order = "levels") 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    224     22.40          22.40     22.40          22.40
+         No    776     77.60         100.00     77.60         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$diseased, order = "levels", report.nas = FALSE) 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes    224    22.40    22.40
+         No    776    77.60   100.00
+      Total   1000   100.00   100.00
+
+> freq(tobacco$diseased, order = "levels-") 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+         No    776     77.60          77.60     77.60          77.60
+        Yes    224     22.40         100.00     22.40         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$diseased, order = "levels-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$diseased  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+         No    776    77.60    77.60
+        Yes    224    22.40   100.00
+      Total   1000   100.00   100.00
+
+
+# 1) Original order - factor --------------------------------------------------- 
+
+> freq(tobacco$age.gr) 
+
+Frequencies  
+tobacco$age.gr  
 Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -250,6 +433,568 @@ Type: Factor
        71 +    159     16.31         100.00     15.90          97.50
        <NA>     25                               2.50         100.00
       Total   1000    100.00         100.00    100.00         100.00
+
+
+# 2) Modified order ------------------------------------------------------------ 
+
+> freq(tobacco$age.gr, order = "freq") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+      51-70    317     32.51          32.51     31.70          31.70
+      18-34    258     26.46          58.97     25.80          57.50
+      35-50    241     24.72          83.69     24.10          81.60
+       71 +    159     16.31         100.00     15.90          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "freq", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+      51-70    317    32.51    32.51
+      18-34    258    26.46    58.97
+      35-50    241    24.72    83.69
+       71 +    159    16.31   100.00
+      Total    975   100.00   100.00
+
+> freq(tobacco$age.gr, order = "freq-") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+       71 +    159     16.31          16.31     15.90          15.90
+      35-50    241     24.72          41.03     24.10          40.00
+      18-34    258     26.46          67.49     25.80          65.80
+      51-70    317     32.51         100.00     31.70          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "freq-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+       71 +    159    16.31    16.31
+      35-50    241    24.72    41.03
+      18-34    258    26.46    67.49
+      51-70    317    32.51   100.00
+      Total    975   100.00   100.00
+
+> freq(tobacco$age.gr, order = "names") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+      18-34    258     26.46          26.46     25.80          25.80
+      35-50    241     24.72          51.18     24.10          49.90
+      51-70    317     32.51          83.69     31.70          81.60
+       71 +    159     16.31         100.00     15.90          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "names", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+      18-34    258    26.46    26.46
+      35-50    241    24.72    51.18
+      51-70    317    32.51    83.69
+       71 +    159    16.31   100.00
+      Total    975   100.00   100.00
+
+> freq(tobacco$age.gr, order = "names-") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+       71 +    159     16.31          16.31     15.90          15.90
+      51-70    317     32.51          48.82     31.70          47.60
+      35-50    241     24.72          73.54     24.10          71.70
+      18-34    258     26.46         100.00     25.80          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "names-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+       71 +    159    16.31    16.31
+      51-70    317    32.51    48.82
+      35-50    241    24.72    73.54
+      18-34    258    26.46   100.00
+      Total    975   100.00   100.00
+
+> freq(tobacco$age.gr, order = "levels") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+      18-34    258     26.46          26.46     25.80          25.80
+      35-50    241     24.72          51.18     24.10          49.90
+      51-70    317     32.51          83.69     31.70          81.60
+       71 +    159     16.31         100.00     15.90          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "levels", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+      18-34    258    26.46    26.46
+      35-50    241    24.72    51.18
+      51-70    317    32.51    83.69
+       71 +    159    16.31   100.00
+      Total    975   100.00   100.00
+
+> freq(tobacco$age.gr, order = "levels-") 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+       71 +    159     16.31          16.31     15.90          15.90
+      51-70    317     32.51          48.82     31.70          47.60
+      35-50    241     24.72          73.54     24.10          71.70
+      18-34    258     26.46         100.00     25.80          97.50
+       <NA>     25                               2.50         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$age.gr, order = "levels-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$age.gr  
+Type: Factor  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+       71 +    159    16.31    16.31
+      51-70    317    32.51    48.82
+      35-50    241    24.72    73.54
+      18-34    258    26.46   100.00
+      Total    975   100.00   100.00
+
+
+# 1) Original order - character ------------------------------------------------ 
+
+> freq(tobacco$disease) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+                Other      2      0.90          86.94      0.20          19.30
+            Pulmonary     20      9.01          95.95      2.00          21.30
+               Vision      9      4.05         100.00      0.90          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+
+# 2) Modified order ------------------------------------------------------------ 
+
+> freq(tobacco$disease, order = "freq") 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+         Hypertension     36     16.22          16.22      3.60           3.60
+               Cancer     34     15.32          31.53      3.40           7.00
+          Cholesterol     21      9.46          40.99      2.10           9.10
+                Heart     20      9.01          50.00      2.00          11.10
+            Pulmonary     20      9.01          59.01      2.00          13.10
+      Musculoskeletal     19      8.56          67.57      1.90          15.00
+             Diabetes     14      6.31          73.87      1.40          16.40
+              Hearing     14      6.31          80.18      1.40          17.80
+            Digestive     12      5.41          85.59      1.20          19.00
+          Hypotension     11      4.95          90.54      1.10          20.10
+         Neurological     10      4.50          95.05      1.00          21.10
+               Vision      9      4.05          99.10      0.90          22.00
+                Other      2      0.90         100.00      0.20          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$disease, order = "freq", report.nas = FALSE) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq        %   % Cum.
+--------------------- ------ -------- --------
+         Hypertension     36    16.22    16.22
+               Cancer     34    15.32    31.53
+          Cholesterol     21     9.46    40.99
+                Heart     20     9.01    50.00
+            Pulmonary     20     9.01    59.01
+      Musculoskeletal     19     8.56    67.57
+             Diabetes     14     6.31    73.87
+              Hearing     14     6.31    80.18
+            Digestive     12     5.41    85.59
+          Hypotension     11     4.95    90.54
+         Neurological     10     4.50    95.05
+               Vision      9     4.05    99.10
+                Other      2     0.90   100.00
+                Total    222   100.00   100.00
+
+> freq(tobacco$disease, order = "freq-") 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+                Other      2      0.90           0.90      0.20           0.20
+               Vision      9      4.05           4.95      0.90           1.10
+         Neurological     10      4.50           9.46      1.00           2.10
+          Hypotension     11      4.95          14.41      1.10           3.20
+            Digestive     12      5.41          19.82      1.20           4.40
+             Diabetes     14      6.31          26.13      1.40           5.80
+              Hearing     14      6.31          32.43      1.40           7.20
+      Musculoskeletal     19      8.56          40.99      1.90           9.10
+                Heart     20      9.01          50.00      2.00          11.10
+            Pulmonary     20      9.01          59.01      2.00          13.10
+          Cholesterol     21      9.46          68.47      2.10          15.20
+               Cancer     34     15.32          83.78      3.40          18.60
+         Hypertension     36     16.22         100.00      3.60          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$disease, order = "freq-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq        %   % Cum.
+--------------------- ------ -------- --------
+                Other      2     0.90     0.90
+               Vision      9     4.05     4.95
+         Neurological     10     4.50     9.46
+          Hypotension     11     4.95    14.41
+            Digestive     12     5.41    19.82
+             Diabetes     14     6.31    26.13
+              Hearing     14     6.31    32.43
+      Musculoskeletal     19     8.56    40.99
+                Heart     20     9.01    50.00
+            Pulmonary     20     9.01    59.01
+          Cholesterol     21     9.46    68.47
+               Cancer     34    15.32    83.78
+         Hypertension     36    16.22   100.00
+                Total    222   100.00   100.00
+
+> freq(tobacco$disease, order = "names") 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+                Other      2      0.90          86.94      0.20          19.30
+            Pulmonary     20      9.01          95.95      2.00          21.30
+               Vision      9      4.05         100.00      0.90          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$disease, order = "names", report.nas = FALSE) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq        %   % Cum.
+--------------------- ------ -------- --------
+               Cancer     34    15.32    15.32
+          Cholesterol     21     9.46    24.77
+             Diabetes     14     6.31    31.08
+            Digestive     12     5.41    36.49
+              Hearing     14     6.31    42.79
+                Heart     20     9.01    51.80
+         Hypertension     36    16.22    68.02
+          Hypotension     11     4.95    72.97
+      Musculoskeletal     19     8.56    81.53
+         Neurological     10     4.50    86.04
+                Other      2     0.90    86.94
+            Pulmonary     20     9.01    95.95
+               Vision      9     4.05   100.00
+                Total    222   100.00   100.00
+
+> freq(tobacco$disease, order = "names-") 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Vision      9      4.05           4.05      0.90           0.90
+            Pulmonary     20      9.01          13.06      2.00           2.90
+                Other      2      0.90          13.96      0.20           3.10
+         Neurological     10      4.50          18.47      1.00           4.10
+      Musculoskeletal     19      8.56          27.03      1.90           6.00
+          Hypotension     11      4.95          31.98      1.10           7.10
+         Hypertension     36     16.22          48.20      3.60          10.70
+                Heart     20      9.01          57.21      2.00          12.70
+              Hearing     14      6.31          63.51      1.40          14.10
+            Digestive     12      5.41          68.92      1.20          15.30
+             Diabetes     14      6.31          75.23      1.40          16.70
+          Cholesterol     21      9.46          84.68      2.10          18.80
+               Cancer     34     15.32         100.00      3.40          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+> freq(tobacco$disease, order = "names-", report.nas = FALSE) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq        %   % Cum.
+--------------------- ------ -------- --------
+               Vision      9     4.05     4.05
+            Pulmonary     20     9.01    13.06
+                Other      2     0.90    13.96
+         Neurological     10     4.50    18.47
+      Musculoskeletal     19     8.56    27.03
+          Hypotension     11     4.95    31.98
+         Hypertension     36    16.22    48.20
+                Heart     20     9.01    57.21
+              Hearing     14     6.31    63.51
+            Digestive     12     5.41    68.92
+             Diabetes     14     6.31    75.23
+          Cholesterol     21     9.46    84.68
+               Cancer     34    15.32   100.00
+                Total    222   100.00   100.00
+
+
+# Order and subset ------------------------------------------------------------- 
+
+> freq(tobacco$disease) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+                Other      2      0.90          86.94      0.20          19.30
+            Pulmonary     20      9.01          95.95      2.00          21.30
+               Vision      9      4.05         100.00      0.90          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+> (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5)) 
+-- some values will be omitted since 'order' is not exhaustive
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+------------------ ------ --------- -------------- --------- --------------
+      Hypertension     36     27.48          27.48      3.96           3.96
+            Cancer     34     25.95          53.44      3.74           7.70
+       Cholesterol     21     16.03          69.47      2.31          10.01
+             Heart     20     15.27          84.73      2.20          12.21
+         Pulmonary     20     15.27         100.00      2.20          14.41
+              <NA>    778                              85.59         100.00
+             Total    909    100.00         100.00    100.00         100.00
+
+> print(f3, cumul = FALSE)        # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq   % Valid   % Total
+------------------ ------ --------- ---------
+      Hypertension     36     27.48      3.96
+            Cancer     34     25.95      3.74
+       Cholesterol     21     16.03      2.31
+             Heart     20     15.27      2.20
+         Pulmonary     20     15.27      2.20
+              <NA>    778               85.59
+             Total    909    100.00    100.00
+
+> print(f3, report.nas = FALSE)   # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq        %   % Cum.
+------------------ ------ -------- --------
+      Hypertension     36    27.48    27.48
+            Cancer     34    25.95    53.44
+       Cholesterol     21    16.03    69.47
+             Heart     20    15.27    84.73
+         Pulmonary     20    15.27   100.00
+             Total    131   100.00   100.00
+
+> print(f3, totals = FALSE)       # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+------------------ ------ --------- -------------- --------- --------------
+      Hypertension     36     27.48          27.48      3.96           3.96
+            Cancer     34     25.95          53.44      3.74           7.70
+       Cholesterol     21     16.03          69.47      2.31          10.01
+             Heart     20     15.27          84.73      2.20          12.21
+         Pulmonary     20     15.27         100.00      2.20          14.41
+              <NA>    778                              85.59         100.00
+
+> print(f3, cumul = FALSE, report.nas = FALSE)  # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq        %
+------------------ ------ --------
+      Hypertension     36    27.48
+            Cancer     34    25.95
+       Cholesterol     21    16.03
+             Heart     20    15.27
+         Pulmonary     20    15.27
+             Total    131   100.00
+
+> print(f3, cumul = FALSE, totals = FALSE)      # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq   % Valid   % Total
+------------------ ------ --------- ---------
+      Hypertension     36     27.48      3.96
+            Cancer     34     25.95      3.74
+       Cholesterol     21     16.03      2.31
+             Heart     20     15.27      2.20
+         Pulmonary     20     15.27      2.20
+              <NA>    778               85.59
+
+> print(f3, report.nas = FALSE, totals = FALSE) # OK 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq       %   % Cum.
+------------------ ------ ------- --------
+      Hypertension     36   27.48    27.48
+            Cancer     34   25.95    53.44
+       Cholesterol     21   16.03    69.47
+             Heart     20   15.27    84.73
+         Pulmonary     20   15.27   100.00
+
+> print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK  
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq       %
+------------------ ------ -------
+      Hypertension     36   27.48
+            Cancer     34   25.95
+       Cholesterol     21   16.03
+             Heart     20   15.27
+         Pulmonary     20   15.27
+
+
+# Override the rounding -------------------------------------------------------- 
+
+> print(f3, round.digits = 2) 
+
+Frequencies  
+tobacco$disease  
+Type: Character  
+
+                     Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+------------------ ------ --------- -------------- --------- --------------
+      Hypertension     36     27.48          27.48      3.96           3.96
+            Cancer     34     25.95          53.44      3.74           7.70
+       Cholesterol     21     16.03          69.47      2.31          10.01
+             Heart     20     15.27          84.73      2.20          12.21
+         Pulmonary     20     15.27         100.00      2.20          14.41
+              <NA>    778                              85.59         100.00
+             Total    909    100.00         100.00    100.00         100.00
 
 
 # "Free" (not in a df) variables ----------------------------------------------- 
@@ -342,22 +1087,22 @@ Type: Factor
 
 # Print to files (Style and/or method should be modified with message) --------- 
 
-> print(freq1, file = "01.md") 
+> print(f1, file = "01.md") 
 -- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
 -- Output file written
 
-> print(freq1, file = "01.html") 
+> print(f1, file = "01.html") 
 -- Switching method to 'browser'
 -- Output file written
 
-> print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap") 
+> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap") 
 -- Switching method to 'browser'
 -- Output file written
 
 
 # Omit cumulative and na reporting --------------------------------------------- 
 
-> (f1 <- freq(tobacco$age.gr)) 
+> (f4 <- freq(tobacco$age.gr)) 
 
 Frequencies  
 tobacco$age.gr  
@@ -372,7 +1117,7 @@ Type: Factor
        <NA>     25                               2.50         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> print(f1, cumul = FALSE) 
+> print(f4, cumul = FALSE) 
 
 Frequencies  
 tobacco$age.gr  
@@ -384,10 +1129,10 @@ Type: Factor
       35-50    241     24.72     24.10
       51-70    317     32.51     31.70
        71 +    159     16.31     15.90
-       <NA>     25                    
+       <NA>     25                2.50
       Total   1000    100.00    100.00
 
-> print(f1, cumul = FALSE, report.nas = FALSE) 
+> print(f4, cumul = FALSE, report.nas = FALSE) 
 
 Frequencies  
 tobacco$age.gr  
@@ -401,7 +1146,7 @@ Type: Factor
        71 +    159    16.31
       Total    975   100.00
 
-> (f2 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE)) 
+> (f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE)) 
 
 Frequencies  
 tobacco$age.gr  
@@ -415,7 +1160,7 @@ Type: Factor
        71 +    159    16.31
       Total    975   100.00
 
-> print(f2, cumul = TRUE, report.nas = TRUE) 
+> print(f5, cumul = TRUE, report.nas = TRUE) 
 
 Frequencies  
 tobacco$age.gr  

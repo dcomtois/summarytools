@@ -4,38 +4,103 @@ tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
 
 # Basic tables + general formatting (style / plain.ascii)
-(freq1 <- freq(tobacco$gender))
-print(freq1, plain.ascii = F)
-print(freq1, plain.ascii = F, style = "rmarkdown")
-print(freq1, plain.ascii = F, style = "grid", headings = FALSE)
+(f1 <- freq(tobacco$gender))
+print(f1, plain.ascii = F)
+print(f1, plain.ascii = F, style = "rmarkdown")
+print(f1, plain.ascii = F, style = "grid", headings = FALSE)
 
 # Variable label
 data(tabagisme)
 label(tabagisme$age.gr) <- "Groupe d'âge"
 
 # Round to 1 decimal
-(freq2 <- freq(tabagisme$age.gr, round.digits = 1))
+(f2 <- freq(tabagisme$age.gr, round.digits = 1))
 
 # Mask label, then type
-print(freq2, display.labels = FALSE)
-print(freq2, display.type = F)
+print(f2, display.labels = FALSE)
+print(f2, display.type = F)
 
-# Mask total and/or NAs
-print(freq2, totals = FALSE)
-print(freq2, report.nas = FALSE)
-print(freq2, report.nas = FALSE, totals = FALSE)
+# Mask total / NAs / cumul
+print(f2, totals = FALSE)          # OK
+print(f2, report.nas = FALSE)      # OK
+print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
+print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
+print(f2, report.nas = FALSE, totals = FALSE)  # OK
+print(f2, report.nas = FALSE, cumul = FALSE)   # OK
+print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE)
 
 # Replace the missing symbol
-print(freq2, missing = "---")
+print(f2, missing = "---")
 
-# Row order - levels by default for factors
+# 1) Original order - factor
 freq(tobacco$diseased)
-# 2) modified order
+
+# 2) Modified order
 freq(tobacco$diseased, order = "freq")
+freq(tobacco$diseased, order = "freq", report.nas = FALSE)
+freq(tobacco$diseased, order = "freq-")
+freq(tobacco$diseased, order = "freq-", report.nas = FALSE)
+
 freq(tobacco$diseased, order = "names")
+freq(tobacco$diseased, order = "names", report.nas = FALSE)
+freq(tobacco$diseased, order = "names-")
+freq(tobacco$diseased, order = "names-", report.nas = FALSE)
+
+freq(tobacco$diseased, order = "levels")
+freq(tobacco$diseased, order = "levels", report.nas = FALSE)
+freq(tobacco$diseased, order = "levels-")
+freq(tobacco$diseased, order = "levels-", report.nas = FALSE)
+
+# 1) Original order - factor
+freq(tobacco$age.gr)
+
+# 2) Modified order
+freq(tobacco$age.gr, order = "freq")
+freq(tobacco$age.gr, order = "freq", report.nas = FALSE)
+freq(tobacco$age.gr, order = "freq-")
+freq(tobacco$age.gr, order = "freq-", report.nas = FALSE)
+
+freq(tobacco$age.gr, order = "names")
+freq(tobacco$age.gr, order = "names", report.nas = FALSE)
+freq(tobacco$age.gr, order = "names-")
+freq(tobacco$age.gr, order = "names-", report.nas = FALSE)
+
+freq(tobacco$age.gr, order = "levels")
+freq(tobacco$age.gr, order = "levels", report.nas = FALSE)
+freq(tobacco$age.gr, order = "levels-")
+freq(tobacco$age.gr, order = "levels-", report.nas = FALSE)
+
+
+
+# 1) Original order - character
+freq(tobacco$disease)
+
+# 2) Modified order
+freq(tobacco$disease, order = "freq")
+freq(tobacco$disease, order = "freq", report.nas = FALSE)
+freq(tobacco$disease, order = "freq-")
+freq(tobacco$disease, order = "freq-", report.nas = FALSE)
+
+freq(tobacco$disease, order = "names")
+freq(tobacco$disease, order = "names", report.nas = FALSE)
+freq(tobacco$disease, order = "names-")
+freq(tobacco$disease, order = "names-", report.nas = FALSE)
+
+
+# Order and subset
+freq(tobacco$disease)
+(f3 <- freq(tobacco$disease, order = "freq", rows = 1:5))
+print(f3, cumul = FALSE)        # OK
+print(f3, report.nas = FALSE)   # OK
+print(f3, totals = FALSE)       # OK
+print(f3, cumul = FALSE, report.nas = FALSE)  # OK
+print(f3, cumul = FALSE, totals = FALSE)      # OK
+print(f3, report.nas = FALSE, totals = FALSE) # OK
+print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
+
 
 # Override the rounding
-print(freq2, round.digits = 2)
+print(f3, round.digits = 2)
 
 # "Free" (not in a df) variables
 Gender <- tobacco$gender
@@ -53,17 +118,17 @@ freq(tobacco[,1]) # label doesn't show (ok)
 freq(tobacco[[3]])
 
 # Print to files (Style and/or method should be modified with message)
-print(freq1, file = "01.md")
-print(freq1, file = "01.html")
-print(freq1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap")
+print(f1, file = "01.md")
+print(f1, file = "01.html")
+print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap")
 
 # Omit cumulative and na reporting
-(f1 <- freq(tobacco$age.gr))
-print(f1, cumul = FALSE)
-print(f1, cumul = FALSE, report.nas = FALSE)
+(f4 <- freq(tobacco$age.gr))
+print(f4, cumul = FALSE)
+print(f4, cumul = FALSE, report.nas = FALSE)
 
-(f2 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE))
-print(f2, cumul = TRUE, report.nas = TRUE)
+(f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE))
+print(f5, cumul = TRUE, report.nas = TRUE)
 
 # Weights
 (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))

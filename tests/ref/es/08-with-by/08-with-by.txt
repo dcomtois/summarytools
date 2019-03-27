@@ -36,7 +36,7 @@ Table: Table continues below
 
 > view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander") 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 gender * diseased  
 Data frame: tobacco  
 

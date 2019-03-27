@@ -213,7 +213,7 @@ N: 1000
 
 > with(tobacco, ctable(smoker, diseased)) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -366,7 +366,7 @@ Tipo: Factor
 
 > tobacco %$% ctable(smoker, diseased) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -534,7 +534,7 @@ Subgrupo: gender = M
 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -587,7 +587,7 @@ Subgrupo: gender = M
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))      
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -613,7 +613,7 @@ Subgrupo: gender = M
 
 > with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable)) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
