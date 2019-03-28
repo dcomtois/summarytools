@@ -126,7 +126,7 @@ freq <- function(x,
     ignored <- character()
     for (i in seq_along(x)) {
       if (!class(x[[i]]) %in% c("character", "factor") &&
-          n_distinct(x[[i]] > 25)) {
+          n_distinct(x[[i]]) > 25) {
         ignored %+=% names(x)[i] 
         next 
       }
