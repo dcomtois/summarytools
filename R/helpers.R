@@ -130,29 +130,34 @@ check_arguments <- function(mc, dotArgs) {
       
       if (NA %in% pf$rows) {
         errmsg %+=% paste("'rows' cannot contain NA; NA's are always displayed",
-                          "last; use report.nas to turn off na reporting")
+                          "last; use 'report.nas' to turn off na reporting")
       }
       
-      if (is.character(pf$rows) && !all(pf$rows %in% unique(pf$x))) {
+      if (is.character(pf$rows) && length(pf$rows) > 1 &&
+          !all(pf$rows %in% unique(pf$x))) {
         errmsg %+=% paste("the following items used in the 'rows' argument",
                           "are not found in the data:", 
                           paste(setdiff(pf$rows, unique(pf$x)), sep = ","))
       }
       
-      if (is.numeric(pf$rows) && max(pf$rows) >= n_distinct(pf$x)) {
-        nmax <- n_distinct(pf$x) - 1
-        message("the maximum number allowed in the 'rows' argument is ",
-                nmax, "; higher numbers will be ignored")
-        rows <- pf$rows[-which(pf$rows > nmax)]
-        if (length(rows) > 0) {
-          assign("rows", rows, envir = parent.frame())
-        } else {
-          errmsg %+=% "Invalid 'rows' argument"
+      if (is.numeric(pf$rows) && length(pf$rows) > 0) {
+        if (0 %in% pf$rows || length(unique(sign(pf$rows))) > 1) {
+            errmsg %+=% "Invalid 'rows' argument"
+        } else if (abs(max(pf$rows)) >= n_distinct(pf$x)) {
+          nmax <- n_distinct(pf$x) - 1
+          rows <- pf$rows[-which(abs(pf$rows) > nmax)]
+          if (length(rows) > 0) {
+            message("There are only ", nmax, " rows to show; higher ",
+                    "numbers will be ignored")
+            assign("rows", rows, envir = parent.frame())
+          } else {
+            errmsg %+=% "Invalid 'rows' argument"
+          }
         }
       }
     }
   }
-
+  
   # freq & ctable arguments ----------------------------------------------------
   if (caller %in% c("freq", "ctable")) {
     if ("totals" %in% names(mc) && 

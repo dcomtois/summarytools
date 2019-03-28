@@ -34,9 +34,9 @@
 #'   missing values. To change this default value globally, see
 #'   \code{\link{st_options}}.
 #' @param rows Character or numeric vector allowing subsetting of the results.
-#'   The order given here will be reflected in the resulting table. Note that 
-#'   \code{NA} cannot be used here, as missing data will always be shown last.
-#'   \code{numeric()} by default}.
+#'   The order given here will be reflected in the resulting table. If a single
+#'   string is used, it will be used as a regular expression to filter row 
+#'   names.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
@@ -147,7 +147,7 @@ freq <- function(x,
     ignored <- character()
     for (i in seq_along(x)) {
       if (!class(x[[i]]) %in% c("character", "factor") &&
-          n_distinct(x[[i]] > 25)) {
+          n_distinct(x[[i]]) > 25) {
         ignored %+=% names(x)[i] 
         next 
       }
@@ -266,7 +266,7 @@ freq <- function(x,
     freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
   }
   
-  # Order by frequency if needed
+  # Order by [-]freq if needed
   if (order == "freq") {
     nas_freq <- tail(freq_table, 1)
     freq_table <- freq_table[-length(freq_table)]
@@ -274,31 +274,42 @@ freq <- function(x,
     freq_table <- append(freq_table, nas_freq)
   }
   
-  # order by names if needed
+  # order by [-]names if needed
   if (order == "names") {
     freq_table <- freq_table[order(names(freq_table), 
                                    decreasing = (order_sign == "-"), 
                                    na.last = TRUE)]
   }
 
-  # order by (-)levels if needed
+  # order by [-]levels if needed
   if (is.factor(x) && order == "levels" && order_sign == "-") {
     freq_table <- c(freq_table[rev(levels(x))], tail(freq_table, 1))
   }
   
-  if (length(rows) > 1) {
-    if (length(rows) < (length(freq_table) - 1)) {
-      message("some values will be omitted since 'order' is not exhaustive")
+  if (is.character(rows) && length(rows) == 1) {
+    # Use string as regular expression to filter rows
+    rr <- grep(rows, names(freq_table))
+    if (length(rr) == 0) {
+      stop("'rows' argument doesn't match any data")
     }
     
-    freq_table <- c(freq_table[rows], tail(freq_table, 1))
-  }
+    freq_table <- c(freq_table[rr], tail(freq_table, 1))
+    
+  } else if (length(rows) > 0) {
+    if (is.character(rows)) { 
+      freq_table <- c(freq_table[rows], tail(freq_table, 1))
+    } else if (is.numeric(rows)) {
+      if (sign(rows[1]) == 1) {
+        freq_table <- c(freq_table[rows], tail(freq_table, 1))
+      } else {
+        freq_table <- c(freq_table[rows])
+      }
+    }
+  } 
     
   # Change the name of the NA item (last) to avoid potential
   # problems when echoing to console
-  if (NA %in% names(freq_table)) {
-    names(freq_table)[which(is.na(names(freq_table)))] <- "<NA>"
-  }
+  names(freq_table)[length(freq_table)] <- "<NA>"
   
   # calculate proportions (valid, i.e excluding NA's)
   P_valid <- prop.table(freq_table[-length(freq_table)]) * 100

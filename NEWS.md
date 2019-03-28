@@ -4,13 +4,14 @@ Version 0.9.3
    + new parameter `cumul` allows turning on or off cumulative proportions
    + `order` parameter: "names", "freq", and "levels" values now have their
      counterparts "-names" (or "names-"), "-freq" and "-levels"
-   + a new parameter `rows` has been added; it allows subsetting and 
-     ordering the output table as one wishes
+   + a new parameter `rows` has been added; it allows subsetting the output 
+     table either with a numeric vector, a character vector, or a single
+     search string (regex)
  - In `ctable()`: 
    + Added weights support
  - In `dfSummary()`: 
-   + Content-specific stats for email addresses -- valid, invalid, duplicates
- - New translations for 
+   + Added content specific to email addresses -- valid, invalid, duplicates
+ - Added translations : 
    + Portuguese ("pt")
    + Turkish ("tr")
    + Russian ("ru")

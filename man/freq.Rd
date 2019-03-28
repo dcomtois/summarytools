@@ -54,6 +54,11 @@ from results. \code{TRUE} by default. To change this value globally, see
 missing values. To change this default value globally, see
 \code{\link{st_options}}.}
 
+\item{rows}{Character or numeric vector allowing subsetting of the results.
+The order given here will be reflected in the resulting table. If a single
+string is used, it will be used as a regular expression to filter row 
+names.}
+
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is
