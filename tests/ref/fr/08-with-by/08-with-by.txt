@@ -27,9 +27,9 @@ Table: Table continues below
 
  
 
-            Asymétrie   ET-Asymétrie   Aplatissement   Nb.Valide   % Valide
---------- ----------- -------------- --------------- ----------- ----------
-      BMI        0.02           0.08            0.26      974.00      97.40
+            Asymétrie   ET-Asymétrie   Aplatissement   Nb.Valide   Pct.Valide
+--------- ----------- -------------- --------------- ----------- ------------
+      BMI        0.02           0.08            0.26      974.00        97.40
 
 > view(w2, footnote = "with, transpose", file = "02 - with-transposed.html") 
 -- Output file written
@@ -223,7 +223,7 @@ N: 489
        ET-Asymétrie     0.11     0.11
       Aplatissement     0.09     0.17
           Nb.Valide   475.00   477.00
-           % Valide    97.14    97.55
+         Pct.Valide    97.14    97.55
 
 > bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr) 
 > view(bd2, method = "browser", file = "09 - by descr.html") 
@@ -295,7 +295,7 @@ N: 150
        ET-Asymétrie           0.20          0.20           0.20          0.20
       Aplatissement          -1.42         -1.36          -0.61          0.14
           Nb.Valide         150.00        150.00         150.00        150.00
-           % Valide         100.00        100.00         100.00        100.00
+         Pct.Valide         100.00        100.00         100.00        100.00
 
 > view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html") 
 -- Output file written
@@ -331,7 +331,7 @@ N: 150
 |  **ET-Asymétrie** |   0.11 |   0.11 |
 | **Aplatissement** |   0.09 |   0.17 |
 |     **Nb.Valide** | 475.00 | 477.00 |
-|      **% Valide** |  97.14 |  97.55 |
+|    **Pct.Valide** |  97.14 |  97.55 |
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render")  
 
@@ -435,7 +435,7 @@ N: 150
     </tr>
     <tr>
       <td>
-        <strong>% Valide</strong></td>
+        <strong>Pct.Valide</strong></td>
       <td><span>97.14</span></td>
       <td><span>97.55</span></td>
     </tr>
@@ -529,7 +529,7 @@ N: 489
        ET-Asymétrie     0.11     0.11
       Aplatissement     0.09     0.17
           Nb.Valide   475.00   477.00
-           % Valide    97.14    97.55
+         Pct.Valide    97.14    97.55
 
 > view(wb2, method = "browser", footnote = "with + by", file = "16.html") 
 -- Output file written
@@ -618,7 +618,7 @@ N: 489
        ET-Asymétrie     0.11     0.11
       Aplatissement     0.09     0.17
           Nb.Valide   475.00   477.00
-           % Valide    97.14    97.55
+         Pct.Valide    97.14    97.55
 
 
 # Ouverture dans viewer -------------------------------------------------------- 

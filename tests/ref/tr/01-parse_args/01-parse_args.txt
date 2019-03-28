@@ -209,7 +209,7 @@ N: 1000
       Çarpiklik.SH     0.08
           Basiklik    -1.26
          Geçerli.N   975.00
-         Geçerli %    97.50
+       Geçerli.Yzd    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 

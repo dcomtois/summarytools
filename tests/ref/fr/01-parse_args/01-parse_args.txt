@@ -209,7 +209,7 @@ N: 1000
        ET-Asymétrie     0.08
       Aplatissement    -1.26
           Nb.Valide   975.00
-           % Valide    97.50
+         Pct.Valide    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 

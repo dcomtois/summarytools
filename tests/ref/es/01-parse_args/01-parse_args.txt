@@ -209,7 +209,7 @@ N: 1000
       ES-Asimetría     0.08
           Curtosis    -1.26
         Num.Válido   975.00
-          % Válido    97.50
+        Pct.Válido    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 

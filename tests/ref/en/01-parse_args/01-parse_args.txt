@@ -209,7 +209,7 @@ N: 1000
       SE.Skewness     0.08
          Kurtosis    -1.26
           N.Valid   975.00
-          % Valid    97.50
+        Pct.Valid    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 
