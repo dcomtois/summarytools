@@ -190,3 +190,11 @@ view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omission
 view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE")
 view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE")
 view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
+
+# tb()
+
+iris %$% freq(Species) %>% tb()
+iris %$% freq(Species, report.nas = FALSE) %>% tb()
+iris %$% freq(Species, cumul = FALSE) %>% tb()
+iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
+
