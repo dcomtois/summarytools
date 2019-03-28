@@ -27,7 +27,8 @@ factor.ordered        ,heading value for type (freq)                            
 date                  ,heading value for type (freq)                                 ,Data
 datetime              ,heading value for type (freq)                                 ,Data e hora
 freq                  ,column name (freq)                                            ,Freq
-pct.valid             ,column name (freq)                                            ,% Válido
+pct                   ,column name (freq - when report.nas=FALSE)                    ,%
+pct.valid.f           ,column name (freq)                                            ,% Válido
 pct.valid.cum         ,column name (freq)                                            ,% Válido  Acum.
 pct.total             ,column name (freq)                                            ,% Total
 pct.total.cum         ,column name (freq)                                            ,% Total Acum.

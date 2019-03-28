@@ -27,7 +27,8 @@ factor.ordered       ,heading value for type (freq)                             
 date                 ,heading value for type (freq)                                 ,Tarih
 datetime             ,heading value for type (freq)                                 ,Tarihzaman
 freq                 ,column name (freq)                                            ,Sıklık
-pct.valid            ,column name (freq)                                            ,Geçerli %
+pct                  ,column name (freq - when report.nas=FALSE)                    ,%
+pct.valid.f          ,column name (freq)                                            ,Geçerli %
 pct.valid.cum        ,column name (freq)                                            ,Küm. Geçerli %
 pct.total            ,column name (freq)                                            ,Toplam %
 pct.total.cum        ,column name (freq)                                            ,Küm. Toplam %

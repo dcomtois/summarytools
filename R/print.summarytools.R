@@ -635,18 +635,18 @@ print_freq <- function(x, method) {
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     # Remove NA row and keep only desired columns
     x <- x[-(nrow(x)-1), 1:2]
-    colnames(x) <- c(trs("freq"), "%")
+    colnames(x) <- c(trs("freq"), trs("pct"))
     
   } else if (!isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
     # Substract NA counts from total
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     # Remove NA row and keep only desired columns
     x <- x[-(nrow(x)-1), 1:3]
-    colnames(x) <- c(trs("freq"), "%", trs("pct.cum"))
+    colnames(x) <- c(trs("freq"), trs("pct"), trs("pct.cum"))
     
   } else if (isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
     x <- x[ ,-c(3,5)]
-    colnames(x) <- c(trs("freq"), trs("pct.valid"), trs("pct.total"))
+    colnames(x) <- c(trs("freq"), trs("pct.valid.f"), trs("pct.total"))
   }
 
   if (!isTRUE(format_info$totals)) {
@@ -774,11 +774,11 @@ print_freq <- function(x, method) {
                                       align="center"),
                               tags$th(HTML(conv_non_ascii(trs("freq"))),
                                       align="center"),
-                              tags$th(HTML(conv_non_ascii("%")),
+                              tags$th(HTML(conv_non_ascii(trs("pct"))),
                                       align="center"),
                               tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
                                       align="center"),
-                              tags$th(HTML(conv_non_ascii("%")),
+                              tags$th(HTML(conv_non_ascii(trs("pct"))),
                                       align="center"),
                               tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
                                       align="center"))
@@ -808,7 +808,7 @@ print_freq <- function(x, method) {
                tags$th(HTML(conv_non_ascii(trs("freq"))),
                        align = "center",
                        class = "st-protect-top-border"),
-               tags$th(HTML(conv_non_ascii("%")),
+               tags$th(HTML(conv_non_ascii(trs("pct"))),
                        align = "center",
                        class = "st-protect-top-border"),
                tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
@@ -825,7 +825,7 @@ print_freq <- function(x, method) {
                tags$th(HTML(conv_non_ascii(trs("freq"))),
                        align = "center",
                        class = "st-protect-top-border"),
-               tags$th(HTML(conv_non_ascii(trs("pct.valid"))),
+               tags$th(HTML(conv_non_ascii(trs("pct.valid.f"))),
                        align = "center",
                        class = "st-protect-top-border"),
                tags$th(HTML(conv_non_ascii(trs("pct.total"))),
@@ -843,7 +843,7 @@ print_freq <- function(x, method) {
                tags$th(HTML(conv_non_ascii(trs("freq"))),
                        align = "center",
                        class = "st-protect-top-border"),
-               tags$th(HTML(conv_non_ascii("%"))))
+               tags$th(HTML(conv_non_ascii(trs("pct")))))
       }
       
       freq_table_html <-

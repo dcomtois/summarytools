@@ -320,7 +320,7 @@ freq <- function(x,
   
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c(trs("freq"), trs("pct.valid"), trs("pct.valid.cum"), 
+  colnames(output) <- c(trs("freq"), trs("pct.valid.f"), trs("pct.valid.cum"), 
                         trs("pct.total"), trs("pct.total.cum"))
   rownames(output) <- c(names(freq_table), trs("total"))
   
