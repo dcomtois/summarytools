@@ -1,3 +1,12 @@
+#' Convert Summarytools Ojects to Tibbles
+#'
+#' Make a tidy dataset out of freq() or descr() outputs
+#'
+#' @param x a freq() or descr() output object
+#' 
+#' @return A \code{\link[tibble]{tibble} which is constructed following the 
+#' \emph{tidy} principles.
+#' 
 #' @importFrom tibble as_tibble
 #' @export
 tb <- function(x) {
@@ -24,6 +33,8 @@ tb <- function(x) {
       output <- output[ , -grep("_cum", names(output))]
     }
 
+    return(output)
+    
   } else if (attr(x, "st_type") == "descr") {
     
     if (!isTRUE(attr(x, "data_info")$transposed)) {
@@ -33,36 +44,10 @@ tb <- function(x) {
       output <- as_tibble(cbind(statistic = rownames(x), as.data.frame(x)))
       output$statistic <- attr(x, "stats")
     }
-  }
     
-  else if (attr(x, "st_type") == "ctable") {
+    return(output)
     
-    output <- data.frame(v1 = names(x[[1]][,1]))
-    names(output) <- as.character(attr(x, "fn_call"))[2]
-    class(x$cross_table) <- "matrix"
-    output <- cbind(output, x$cross_table)
-    names(output) <- sub("<(.+)>", "\\1", names(output))
-    names(output)[2:(ncol(output) - 1)] <- 
-      paste(as.character(attr(x, "fn_call"))[3], 
-            names(output)[2:(ncol(output) - 1)], sep = "_")
-  
-    if (!is.null(x$proportions)) {
-      class(x$proportions) <- "matrix"
-      output <- cbind(output, x$proportions)
-      names(output) <- sub("<(.+)>", "\\1", names(output))
-      names(output)[(ncol(x$cross_table) + 2):(ncol(output) - 1)] <-
-        paste(as.character(attr(x, "fn_call"))[3], 
-              names(output)[(ncol(x$cross_table) + 2):(ncol(output) - 1)],
-              paste0(tolower(substr(attr(x, "data_info")$Proportions, 1, 3)),
-                     "pct"), 
-              sep = "_")
-      names(output)[ncol(output)] <-
-        paste0("Total_", 
-               tolower(substr(attr(x, "data_info")$Proportions, 1, 3)),
-               "pct")
-    }
-    rownames(output) <- NULL
-    output <- as_tibble(output)[1:(nrow(output) - 1),]
+  } else {
+    stop("tb() supports summarytools freq() and descr() objects only")
   }
-  output
 }

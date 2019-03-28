@@ -79,7 +79,7 @@ freq(tobacco$disease)
 freq(tobacco$disease, order = "freq")
 freq(tobacco$disease, order = "freq", report.nas = FALSE)
 freq(tobacco$disease, order = "freq-")
-freq(tobacco$disease, order = "freq-", report.nas = FALSE)
+freq(tobacco$disease, order = "-freq", report.nas = FALSE)
 
 freq(tobacco$disease, order = "names")
 freq(tobacco$disease, order = "names", report.nas = FALSE)
@@ -98,9 +98,15 @@ print(f3, cumul = FALSE, totals = FALSE)      # OK
 print(f3, report.nas = FALSE, totals = FALSE) # OK
 print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
 
+freq(tobacco$disease, rows = -1)
+freq(tobacco$disease, rows = "H")
+freq(tobacco$disease, rows = -1:-10)
+freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE)
+
 
 # Override the rounding
 print(f3, round.digits = 2)
+
 
 # "Free" (not in a df) variables
 Gender <- tobacco$gender
@@ -192,6 +198,7 @@ view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append =
 view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
 
 # tb()
+library(magrittr)
 
 iris %$% freq(Species) %>% tb()
 iris %$% freq(Species, report.nas = FALSE) %>% tb()

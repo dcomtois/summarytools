@@ -119,10 +119,11 @@ compare_dirs <- function(lang) {
   }
 }
 
+i <- 1
 for (i in 1:5) {
 lang <- c("en", "fr", "es", "pt", "tr")[i]
-eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
 eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
+eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
 eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
 eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
 eval_with_feedback(testfiles[5],  lang = lang, compare = FALSE) # dfSummary

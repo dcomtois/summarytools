@@ -206,6 +206,7 @@ freq <- function(x,
     }
   }
 
+  order_sign <- numeric() # to avoid warning on check
   errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
 
   if (length(errmsg) > 0) {
