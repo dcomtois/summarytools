@@ -102,9 +102,3 @@ paste8 <- function (..., sep = " ", collapse = NULL) {
                  collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)))
   do.call(paste, args)
 }
-
-# apply_attr <- function(src, dest, exclude = c("dim", "dimnames")) {
-#   for (a in names(attributes(model))) {
-#     attr(x, )
-#   }
-# }

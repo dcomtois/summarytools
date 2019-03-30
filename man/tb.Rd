@@ -9,6 +9,10 @@ tb(x)
 \arguments{
 \item{x}{a freq() or descr() output object}
 }
+\value{
+A \code{\link[tibble]{tibble}} which is constructed following the 
+\emph{tidy} principles.
+}
 \description{
 Make a tidy dataset out of freq() or descr() outputs
 }

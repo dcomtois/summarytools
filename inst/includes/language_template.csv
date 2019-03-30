@@ -1,0 +1,77 @@
+item                  ,context                                                       ,custom
+title.freq            ,main heading                                                  ,Frequencies
+title.freq.weighted   ,main heading                                                  ,Weighted Frequencies
+title.ctable          ,main heading                                                  ,Cross-Tabulation
+title.ctable.weighted ,main heading                                                  ,Weighted Cross-Tabulation
+title.ctable.row      ,main heading                                                  ,Row Proportions
+title.ctable.col      ,main heading                                                  ,Column Proportions
+title.ctable.tot      ,main heading                                                  ,Total Proportions
+title.descr           ,main heading                                                  ,Descriptive Statistics
+title.descr.weighted  ,main heading                                                  ,Weighted Descriptive Statistics
+title.dfSummary       ,main heading                                                  ,Data Frame Summary
+n                     ,heading label                                                 ,N
+dimensions            ,heading label (dfSummary)                                     ,Dimensions
+duplicates            ,heading label (dfSummary)                                     ,Duplicates
+data.frame            ,heading label (all functions)                                 ,Data Frame
+label                 ,heading label (all functions) & column name (dfSummary)       ,Label
+variable              ,heading label (all functions) & column name (dfSummary)       ,Variable
+group                 ,heading label (all functions when used with byst() / by()     ,Group
+by                    ,heading label (descr when used with byst() / by()             ,by
+weights               ,heading label (descr & freq)                                  ,Weights
+type                  ,heading label (freq)                                          ,Type
+logical               ,heading value for type (freq)                                 ,Logical
+character             ,heading value for type (freq)                                 ,Character
+numeric               ,heading value for type (freq)                                 ,Numeric
+factor                ,heading value for type (freq)                                 ,Factor
+factor.ordered        ,heading value for type (freq)                                 ,Ordered Factor
+date                  ,heading value for type (freq)                                 ,Date
+datetime              ,heading value for type (freq)                                 ,Datetime
+freq                  ,column name (freq)                                            ,Freq
+pct                   ,column name (freq - when report.nas=FALSE)                    ,%
+pct.valid.f           ,column name (freq)                                            ,% Valid
+pct.valid.cum         ,column name (freq)                                            ,% Valid Cum.
+pct.total             ,column name (freq)                                            ,% Total
+pct.total.cum         ,column name (freq)                                            ,% Total Cum.
+pct.cum               ,column name (freq)                                            ,% Cum.
+valid                 ,column name (freq & dfSummary) & column content (dfSummary)   ,Valid
+invalid               ,column content (dfSummary for emails)                         ,Invalid
+total                 ,column grouping in html (freq)                                ,Total
+mean                  ,row name (descr)                                              ,Mean
+sd.long               ,row name (descr)                                              ,Std.Dev
+sd                    ,cell content (dfSummary)                                      ,sd
+min                   ,row name (descr)                                              ,Min
+q1                    ,row name (descr) - 1st quartile                               ,Q1
+med                   ,row name (descr)                                              ,Median
+q3                    ,row name (descr) - 3rd quartile                               ,Q3
+max                   ,row name (descr)                                              ,Max
+mad                   ,row name (descr) - Median Absolute Deviation                  ,MAD
+iqr                   ,row name (descr) - Inter-Quartile Range                       ,IQR
+cv                    ,row name (descr) - Coefficient of Variation                   ,CV
+skewness              ,row name (descr)                                              ,Skewness
+se.skewness           ,row name (descr) - Std. Error for Skewness                    ,SE.Skewness
+kurtosis              ,row name (descr)                                              ,Kurtosis
+n.valid               ,row name (descr) - Count of non-missing values                ,N.Valid
+pct.valid             ,row name (descr) - % of non-missing values                    ,Pct.Valid
+no                    ,column name (dfSummary) - position of column in the d.f.      ,No
+stats.values          ,column name (dfSummary)                                       ,Stats / Values
+freqs.pct.valid       ,column name (dfSummary)                                       ,Freqs (% of Valid)
+graph                 ,column name (dfSummary)                                       ,Graph
+missing               ,column name (dfSummary)                                       ,Missing
+distinct.value        ,cell content (dfSummary) - singular form                      ,distinct value
+distinct.values       ,cell content (dfSummary) - plural form                        ,distinct values
+all.nas               ,cell content (dfSummary) - column has only NA's               ,All NA's
+all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,All empty strings
+all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,All empty strings / NA's
+no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,No levels defined
+int.sequence          ,cell content (dfSummary)                                      ,Integer sequence
+rounded               ,cell content (dfSummary) - note appearing in Stats/Values     ,rounded
+others                ,cell content (dfSummary) - nbr of values not displayed        ,others
+codes                 ,cell content (dfSummary) - When UPC codes are detected        ,codes
+mode                  ,cell content (dfSummary) - mode = most frequent value         ,mode
+med.short             ,cell content (dfSummary) - median (shortened)                 ,med
+start                 ,cell content (dfSummary) - earliest date for date-type cols.  ,Start
+end                   ,cell content (dfSummary) - latest date for data-type cols.    ,End
+emails                ,cell content (dfSummary)                                      ,Emails
+generated.by          ,footnote content                                              ,Generated by
+version               ,footnote content                                              ,version
+date.fmt              ,footnote - date format (see ?strptime)                        ,%Y-%m-%d

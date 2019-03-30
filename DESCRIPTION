@@ -24,6 +24,7 @@ Imports:
   rapportools,
   RCurl,
   stats,
+  tcltk,
   tibble,
   tidyr,
   utils

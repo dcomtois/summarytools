@@ -4,7 +4,7 @@
 #'
 #' @param x a freq() or descr() output object
 #' 
-#' @return A \code{\link[tibble]{tibble} which is constructed following the 
+#' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
 #' @importFrom tibble as_tibble
