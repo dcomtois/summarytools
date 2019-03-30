@@ -18,20 +18,28 @@
 #' @importFrom tcltk tclvalue tkgetOpenFile
 #' @export
 use_custom_lang <- function(file) {
-  if (!"file" %in% names(match.call())) {
+  
+  if (!"file" %in% names(match.call()) && interactive() &&
+      .st_env$session == "Windows") {
+     
     file <- character()
     file <- tclvalue(tkgetOpenFile(initialdir = "~",
                                    filetypes = "{{csv files} {*.csv}}"))
     if (file == "") {
       stop("operation cancelled")
     }
+  } else {
+    stop("'file' argument must be specified")
   } 
   
   if (is.character(file)) {
-    tr <- read.csv(file, strip.white = TRUE, stringsAsFactors = FALSE,
+    tr <- read.csv(file = file, strip.white = TRUE, stringsAsFactors = FALSE,
                    encoding = "UTF-8")
-  } else {
+  } else if (is.data.frame(file)) {
+    # useful when called from define_keywords()
     tr <- file
+  } else {
+    stop("invalid 'file' argument class: ", class(file))
   }
   
   items <- tr$item

@@ -1,5 +1,12 @@
 Version 0.9.3
 -------------
+ - New functions:
+   + tb() turns freq() and descr() outputs into "tidy" tibbles
+   + use_custom_lang() replaces useTranslations() and triggers _Open File..._
+     dialog on _Windows_ when no argument is supplied   
+   + define_keywords() allows defining translatable terms in GUI and
+     save the results in a _csv_ file (through _Save File..._ dialog on 
+     _Windows_)
  - In `freq()`: 
    + new parameter `cumul` allows turning on or off cumulative proportions
    + `order` parameter: "names", "freq", and "levels" values now have their

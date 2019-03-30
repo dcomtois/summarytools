@@ -2,6 +2,10 @@
 # viewing in browser or in RStudio visualization pane. Will be updated whenever
 # print.summarytools() / cleartmp() are called.
 .st_env <- new.env(parent = emptyenv())
+
+# Determine OS : Windows | Linux | Darwin
+.st_env$system <- Sys.info()[["sysname"]]
+
 .st_env$tmpfiles <- c()
 
 # Initialize list used by view() when printing an object of class "by"

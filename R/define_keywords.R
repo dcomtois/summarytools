@@ -9,8 +9,12 @@
 #' @keywords utilities
 #' @importFrom utils read.delim edit write.csv
 #' @importFrom tcltk tclvalue tkgetSaveFile
+#' @importFrom checkmate check_path_for_output
 #' @export
 define_keywords <- function() {
+  if (!isTRUE(interactive())) {
+    stop("R session not interactive; see ?use_custom_lang")
+  }
   message("please modify entries in the second column only and leave the column",
           " names unchanged; third column gives context information; close the",
           " window when finished")
@@ -27,13 +31,31 @@ define_keywords <- function() {
       )
   }
   if (resp == "Y") {
-    fn <- character()
-    fn <- tclvalue(tkgetSaveFile(initialfile = "custom_lang.csv", 
-                                 initialdir = "~",
-                                 filetypes = "{{csv files} {*.csv}}"))
-    if (fn != "") {
-      fn <- sub(".csv.csv", ".csv", paste0(fn, ".csv"), fixed = TRUE)
-      write.csv(x = tr, file = fn, row.names = FALSE, fileEncoding = "utf-8")
+    filename <- character()
+    if (.st_env$system == "Windows") {
+      filename <- tclvalue(tkgetSaveFile(initialfile = "custom_lang.csv", 
+                                         initialdir = "~",
+                                         filetypes = "{{csv files} {*.csv}}"))
+      filename <- normalizePath(filename, mustWork = FALSE)
+    } else {
+      filename_ok <- FALSE
+      while (!path_ok) {
+        filename <- readline(prompt = "Path to csv file (ESC to cancel): ")
+        filename <- sub('^"(.+)"$', "\\1", filename)
+        if (filename != "" && 
+            (!isTRUE(check_path_for_output(filename, overwrite = TRUE)) || 
+             !grepl("\\.csv$", filename))) {
+          message("Invalid file location or extension (must be .csv)")
+        } else {
+          filename_ok <- TRUE
+        }
+      }
+    }
+    
+    if (filename != "") {
+      filename <- sub("(.csv)+$", "\\1", paste0(filename2, ".csv"))
+      write.csv(x = tr, file = filename, row.names = FALSE, 
+                fileEncoding = "utf-8")
     }
   }
 }
