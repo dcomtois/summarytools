@@ -205,3 +205,6 @@ iris %$% freq(Species, report.nas = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
 
+library(dplyr)
+tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
+

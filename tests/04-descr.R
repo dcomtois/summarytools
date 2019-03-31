@@ -76,3 +76,10 @@ view(d9, file = "09.html")
 # by with weights
 (d10 <- stby(tobacco, tobacco$smoker, descr, weights = tobacco$samp.wgts))
 view(d10)
+
+# tb()
+descr(tobacco) %>% tb()
+descr(tobacco, stats = "common", transpose = TRUE) %>% tb()
+
+library(dplyr)
+tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")

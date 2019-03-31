@@ -538,3 +538,20 @@ Table: Table continues below
 -- Output file written
 -- Output file appended
 
+> library(dplyr) 
+> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common") 
+
+### Descriptive Statistics  
+#### tobacco$age  
+**N:** 1000  
+
+|        &nbsp; |    age |
+|--------------:|-------:|
+|      **Mean** |  49.60 |
+|   **Std.Dev** |  18.29 |
+|       **Min** |  18.00 |
+|    **Median** |  50.00 |
+|       **Max** |  80.00 |
+|   **N.Valid** | 975.00 |
+| **Pct.Valid** |  97.50 |
+

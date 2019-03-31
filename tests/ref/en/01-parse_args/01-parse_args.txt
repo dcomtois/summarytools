@@ -303,7 +303,7 @@ Type: Factor
 > dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE) 
 
 ### Data Frame Summary  
-#### dfSummary  
+#### tobacco  
 **Dimensions:** 1000 x 9  
 **Duplicates:** 2  
 
