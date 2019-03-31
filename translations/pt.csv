@@ -2,7 +2,7 @@ item                  ,context                                                  
 title.freq            ,main heading                                                  ,Frequências
 title.freq.weighted   ,main heading                                                  ,Frequências ponderadas
 title.ctable          ,main heading                                                  ,Tabulação cruzada
-title.ctable.weighted ,main heading                                                  Tabulação cruzada ponderada
+title.ctable.weighted ,main heading                                                  ,Tabulação cruzada ponderada
 title.ctable.row      ,main heading                                                  ,Proporções por linhas
 title.ctable.col      ,main heading                                                  ,Proporções por colunas
 title.ctable.tot      ,main heading                                                  ,Proporções totais
