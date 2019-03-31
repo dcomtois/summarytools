@@ -144,3 +144,9 @@ compare_dirs("es")
 compare_dirs("pt")
 compare_dirs("tr")
 compare_dirs("ru")
+
+
+Sys.setlocale("LC_CTYPE", "russian")
+library(summarytools)
+view(dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE))
+Sys.setlocale("LC_CTYPE", "")

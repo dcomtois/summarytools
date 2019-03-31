@@ -9,7 +9,7 @@
 
 > (f1 <- freq(tobacco$gender)) 
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -23,7 +23,7 @@ tobacco$gender
 
 > print(f1, plain.ascii = F) 
 
-### частота  
+### Частота  
 #### tobacco$gender  
 **Ярлык:** Subject's Gender  
 **Тип:** склейка  
@@ -37,7 +37,7 @@ tobacco$gender
 
 > print(f1, plain.ascii = F, style = "rmarkdown") 
 
-### частота  
+### Частота  
 #### tobacco$gender  
 **Ярлык:** Subject's Gender  
 **Тип:** склейка  
@@ -74,7 +74,7 @@ tobacco$gender
 
 > (f2 <- freq(tabagisme$age.gr, round.digits = 1)) 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -93,7 +93,7 @@ tabagisme$age.gr
 
 > print(f2, display.labels = FALSE) 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Тип: склейка  
 
@@ -108,7 +108,7 @@ tabagisme$age.gr
 
 > print(f2, display.type = F) 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 
@@ -126,7 +126,7 @@ tabagisme$age.gr
 
 > print(f2, totals = FALSE)          # OK 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -141,7 +141,7 @@ tabagisme$age.gr
 
 > print(f2, report.nas = FALSE)      # OK 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -156,7 +156,7 @@ tabagisme$age.gr
 
 > print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL % 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -172,7 +172,7 @@ tabagisme$age.gr
 
 > print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL % 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -187,7 +187,7 @@ tabagisme$age.gr
 
 > print(f2, report.nas = FALSE, totals = FALSE)  # OK 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -201,7 +201,7 @@ tabagisme$age.gr
 
 > print(f2, report.nas = FALSE, cumul = FALSE)   # OK 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -216,7 +216,7 @@ tabagisme$age.gr
 
 > print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE) 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -233,7 +233,7 @@ tabagisme$age.gr
 
 > print(f2, missing = "---") 
 
-частота  
+Частота  
 tabagisme$age.gr  
 Ярлык: Groupe d'age  
 Тип: склейка  
@@ -252,7 +252,7 @@ tabagisme$age.gr
 
 > freq(tobacco$diseased) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -268,7 +268,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "freq") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -281,7 +281,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "freq", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -293,7 +293,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "freq-") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -306,7 +306,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "freq-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -318,7 +318,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "names") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -331,7 +331,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "names", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -343,7 +343,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "names-") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -356,7 +356,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "names-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -368,7 +368,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "levels") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -381,7 +381,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "levels", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -393,7 +393,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "levels-") 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -406,7 +406,7 @@ tobacco$diseased
 
 > freq(tobacco$diseased, order = "levels-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$diseased  
 Тип: склейка  
 
@@ -421,7 +421,7 @@ tobacco$diseased
 
 > freq(tobacco$age.gr) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -439,7 +439,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "freq") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -454,7 +454,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "freq", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -468,7 +468,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "freq-") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -483,7 +483,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "freq-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -497,7 +497,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "names") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -512,7 +512,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "names", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -526,7 +526,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "names-") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -541,7 +541,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "names-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -555,7 +555,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "levels") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -570,7 +570,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "levels", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -584,7 +584,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "levels-") 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -599,7 +599,7 @@ tobacco$age.gr
 
 > freq(tobacco$age.gr, order = "levels-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -616,7 +616,7 @@ tobacco$age.gr
 
 > freq(tobacco$disease) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -643,7 +643,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "freq") 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -667,7 +667,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "freq", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -690,7 +690,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "freq-") 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -714,7 +714,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "-freq", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -737,7 +737,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "names") 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -761,7 +761,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "names", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -784,7 +784,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "names-") 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -808,7 +808,7 @@ tobacco$disease
 
 > freq(tobacco$disease, order = "names-", report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -834,7 +834,7 @@ tobacco$disease
 
 > freq(tobacco$disease) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -858,7 +858,7 @@ tobacco$disease
 
 > (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5)) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -874,7 +874,7 @@ tobacco$disease
 
 > print(f3, cumul = FALSE)        # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -890,7 +890,7 @@ tobacco$disease
 
 > print(f3, report.nas = FALSE)   # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -905,7 +905,7 @@ tobacco$disease
 
 > print(f3, totals = FALSE)       # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -920,7 +920,7 @@ tobacco$disease
 
 > print(f3, cumul = FALSE, report.nas = FALSE)  # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -935,7 +935,7 @@ tobacco$disease
 
 > print(f3, cumul = FALSE, totals = FALSE)      # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -950,7 +950,7 @@ tobacco$disease
 
 > print(f3, report.nas = FALSE, totals = FALSE) # OK 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -964,7 +964,7 @@ tobacco$disease
 
 > print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK  
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -978,7 +978,7 @@ tobacco$disease
 
 > freq(tobacco$disease, rows = -1) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -1001,7 +1001,7 @@ tobacco$disease
 
 > freq(tobacco$disease, rows = "H") 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -1016,7 +1016,7 @@ tobacco$disease
 
 > freq(tobacco$disease, rows = -1:-10) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -1030,7 +1030,7 @@ tobacco$disease
 
 > freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -1055,7 +1055,7 @@ tobacco$disease
 
 > print(f3, round.digits = 2) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 
@@ -1076,7 +1076,7 @@ tobacco$disease
 > Gender[1] <- "F" 
 > freq(Gender) 
 
-частота  
+Частота  
 Gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -1099,7 +1099,7 @@ Gender
 
 > freq(tobacco$gender[tobacco$smoker=="Yes"]) 
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -1113,7 +1113,7 @@ tobacco$gender
 
 > freq(tobacco$gender[1:500]) 
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -1130,7 +1130,7 @@ tobacco$gender
 
 > freq(tobacco[,1]) # label doesn't show (ok) 
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -1144,7 +1144,7 @@ tobacco$gender
 
 > freq(tobacco[[3]]) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1177,7 +1177,7 @@ tobacco$age.gr
 
 > (f4 <- freq(tobacco$age.gr)) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1192,7 +1192,7 @@ tobacco$age.gr
 
 > print(f4, cumul = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1207,7 +1207,7 @@ tobacco$age.gr
 
 > print(f4, cumul = FALSE, report.nas = FALSE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1221,7 +1221,7 @@ tobacco$age.gr
 
 > (f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE)) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1235,7 +1235,7 @@ tobacco$age.gr
 
 > print(f5, cumul = TRUE, report.nas = TRUE) 
 
-частота  
+Частота  
 tobacco$age.gr  
 Тип: склейка  
 
@@ -1428,7 +1428,7 @@ mala.f
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
-частота  
+Частота  
 tobacco$diseased  
 Ярлык: Subject has an illness  
 Тип: склейка  
@@ -1452,7 +1452,7 @@ tobacco$diseased
 
 > view(bf1, 'pander') 
 
-частота  
+Частота  
 tobacco$diseased  
 Ярлык: Subject has an illness  
 Тип: склейка  
@@ -1505,7 +1505,7 @@ tobacco$diseased
 
 > (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
-частота  
+Частота  
 tobacco$diseased  
 Ярлык: Subject has an illness  
 Тип: склейка  
@@ -1534,7 +1534,7 @@ tobacco$diseased
 
 > (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
 
-частота  
+Частота  
 iris$Species  
 Тип: склейка  
 Переменные: Sepal.Length > mean(Sepal.Length) = FALSE  
@@ -1568,7 +1568,7 @@ iris$Species
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))) 
 
-частота  
+Частота  
 tobacco$diseased  
 Ярлык: Subject has an illness  
 Тип: склейка  
@@ -1605,7 +1605,7 @@ tobacco$diseased
 > (ft <- freq(tobacco)) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -1733,7 +1733,7 @@ tobacco$samp.wgts
 > print(ft, display.labels = F, display.type = F) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-частота  
+Частота  
 tobacco$gender  
 
 +-----------+-------+---------+---------------+---------+--------------------+
@@ -1854,7 +1854,7 @@ tobacco$samp.wgts
 > tobacco_subset <- tobacco[,c(3,5,6)] 
 > lapply(tobacco_subset, freq, style = "rmarkdown") 
 
-### частота  
+### Частота  
 #### tobacco_subset$age.gr  
 **Ярлык:** Age Group  
 **Тип:** склейка  
@@ -1931,7 +1931,7 @@ tobacco$samp.wgts
 > freq(tobacco) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-частота  
+Частота  
 tobacco$gender  
 Ярлык: Subject's Gender  
 Тип: склейка  
@@ -2093,7 +2093,7 @@ tobacco$samp.wgts
 > library(dplyr) 
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10) 
 
-частота  
+Частота  
 tobacco$disease  
 Тип: символ  
 

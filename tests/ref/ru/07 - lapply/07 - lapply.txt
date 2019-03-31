@@ -10,7 +10,7 @@
 > l1 <- lapply(tobacco_subset, freq)  
 > print(l1) 
 
-частота  
+Частота  
 tobacco_subset$gender  
 Ярлык: The Gender  
 Тип: склейка  
@@ -56,7 +56,7 @@ tobacco_subset$smoker
 > l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq)  
 > print(l1) 
 
-частота  
+Частота  
 tabagisme$sexe  
 Ярлык: Le sexe  
 Тип: склейка  
@@ -184,7 +184,7 @@ tabagisme$maladie
 > l3 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq, totals = FALSE) 
 > print(l3, style = "rmarkdown", caption = "2 columns with row indexing, no totals") 
 
-### частота  
+### Частота  
 #### tabagisme$sexe  
 **Ярлык:** Le sexe  
 **Тип:** склейка  
@@ -213,7 +213,7 @@ Table: 2 columns with row indexing, no totals
 
 > view(l3, method = "pander", style = "rmarkdown", display.type = FALSE, caption = "display.type = FALSE") 
 
-### частота  
+### Частота  
 #### tabagisme$sexe  
 **Ярлык:** Le sexe  
 

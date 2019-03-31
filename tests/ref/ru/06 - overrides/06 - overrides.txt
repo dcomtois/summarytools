@@ -6,7 +6,7 @@
 > f1 <- freq(tobacco$age.gr) 
 > print(f1, plain.ascii = F, round.digits = 3, display.labels = FALSE, display.type = F, missing = '------', report.nas = T, totals = F, Variable = "fake var name") # 6-1 
 
-### частота  
+### Частота  
 #### fake var name  
 
       &nbsp;   Част.   % корр.   % корр. сумм.   % сумма   % совокупной суммы
@@ -23,7 +23,7 @@
 > print(f1, method = 'render', footnote = 'f1') 
 
 <div class="container st-container">
-  <h3>&#01095;&#01072;&#01089;&#01090;&#01086;&#01090;&#01072;</h3>
+  <h3>&#01063;&#01072;&#01089;&#01090;&#01086;&#01090;&#01072;</h3>
   <h4>tobacco$age.gr</h4>
   <strong>&#01071;&#01088;&#01083;&#01099;&#01082;</strong>: Groupe d'age
   <br/><strong>&#01058;&#01080;&#01087;</strong>: &#01089;&#01082;&#01083;&#01077;&#01081;&#01082;&#01072;
@@ -100,7 +100,7 @@
 
 > (f2 <- freq(tabagisme$maladie, order = "freq")) 
 
-частота  
+Частота  
 tabagisme$maladie  
 Тип: символ  
 

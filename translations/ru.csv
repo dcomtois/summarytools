@@ -1,5 +1,5 @@
 item                  ,context                                                       ,ru
-title.freq            ,main heading                                                  ,частота
+title.freq            ,main heading                                                  ,Частота
 title.freq.weighted   ,main heading                                                  ,Взвешенная частота
 title.ctable          ,main heading                                                  ,Кросс-табуляция
 title.ctable.weighted ,main heading                                                  ,Взвешенная кросс-табуляция
@@ -34,10 +34,10 @@ pct.total             ,column name (freq)                                       
 pct.total.cum         ,column name (freq)                                            ,% совокупной суммы
 pct.cum               ,column name (freq)                                            ,% суммы
 valid                 ,column name (freq & dfSummary) & column content (dfSummary)   ,Kорректное
-invalid               ,column content (dfSummary for emails)                         ,некорректное
+invalid               ,column content (dfSummary for emails)                         ,Некорректное
 total                 ,column grouping in html (freq)                                ,сумма
-mean                  ,row name (descr)                                              ,сред.знач.
-sd.long               ,row name (descr)                                              ,ст.откл.
+mean                  ,row name (descr)                                              ,сред. знач.
+sd.long               ,row name (descr)                                              ,ст. откл.
 sd                    ,cell content (dfSummary)                                      ,с.о.
 min                   ,row name (descr)                                              ,Mин
 q1                    ,row name (descr) - 1st quartile                               ,Q1
@@ -55,8 +55,8 @@ pct.valid             ,row name (descr) - % of non-missing values               
 no                    ,column name (dfSummary) - position of column in the d.f.      ,№
 stats.values          ,column name (dfSummary)                                       ,Статистика / Значения
 freqs.pct.valid       ,column name (dfSummary)                                       ,Частота (% действительных)
-graph                 ,column name (dfSummary)                                       ,диаграмма
-missing               ,column name (dfSummary)                                       ,отсутствующее
+graph                 ,column name (dfSummary)                                       ,Диаграмма
+missing               ,column name (dfSummary)                                       ,Отсутствующее
 distinct.value        ,cell content (dfSummary) - singular form                      ,уникальные значения
 distinct.values       ,cell content (dfSummary) - plural form                        ,уникальные значения
 all.nas               ,cell content (dfSummary) - column has only NA's               ,Все неопределенные

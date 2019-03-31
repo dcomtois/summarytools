@@ -11,7 +11,7 @@
 
 > freq(tobacco$smoker) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -25,7 +25,7 @@ tobacco$smoker
 
 > freq(tobacco["smoker"]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -39,7 +39,7 @@ tobacco$smoker
 
 > freq(tobacco[["smoker"]]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -53,7 +53,7 @@ tobacco$smoker
 
 > freq(tobacco[,5]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -67,7 +67,7 @@ tobacco$smoker
 
 > freq(tobacco[[5]]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -84,7 +84,7 @@ tobacco$smoker
 
 > freq(tobacco$smoker[1:100]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -98,7 +98,7 @@ tobacco$smoker
 
 > freq(tobacco[1:100, "smoker"]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -112,7 +112,7 @@ tobacco$smoker
 
 > freq(tobacco[1:100, 5]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -126,7 +126,7 @@ tobacco$smoker
 
 > freq(tobacco[[5]][1:100]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -140,7 +140,7 @@ tobacco$smoker
 
 > freq(tobacco$smoker[tobacco$smoker=="Yes"]) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -158,7 +158,7 @@ tobacco$smoker
 > smoker <- tobacco$smoker 
 > freq(smoker) 
 
-частота  
+Частота  
 smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -175,7 +175,7 @@ smoker
 
 > with(tobacco, freq(smoker))            
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -194,23 +194,23 @@ tobacco$age
 Ярлык: Age of the Subject  
 Кол-во: 1000  
 
-                            age
----------------------- --------
-      среднее значение    49.60
-             ст. откл.    18.29
-                   Mин    18.00
-                    Q1    34.00
-               Mедиана    50.00
-                    Q3    66.00
-                  Mакс    80.00
-                   MAD    23.72
-                   IQR    32.00
-                    CV     0.37
-            асимметрия    -0.04
-         SE.асимметрия     0.08
-               эксцесс    -1.26
-            Цифр. корр   975.00
-            Проц. корр    97.50
+                         age
+------------------- --------
+         сред.знач.    49.60
+           ст.откл.    18.29
+                Mин    18.00
+                 Q1    34.00
+            Mедиана    50.00
+                 Q3    66.00
+               Mакс    80.00
+                MAD    23.72
+                IQR    32.00
+                 CV     0.37
+         асимметрия    -0.04
+      SE.асимметрия     0.08
+            эксцесс    -1.26
+         Цифр. корр   975.00
+         Проц. корр    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 
@@ -233,7 +233,7 @@ smoker * diseased
 > library(magrittr) 
 > tobacco$smoker %>% freq()      
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -247,7 +247,7 @@ tobacco$smoker
 
 > tobacco["smoker"] %>% freq()   
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -261,7 +261,7 @@ tobacco$smoker
 
 > tobacco[["smoker"]] %>% freq() 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -275,7 +275,7 @@ tobacco$smoker
 
 > tobacco[,5] %>% freq()         
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -289,7 +289,7 @@ tobacco$smoker
 
 > tobacco[[5]] %>% freq() 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -324,22 +324,22 @@ tobacco$age
 Ярлык: Age of the Subject  
 Кол-во: 1000  
 
-                            age
----------------------- --------
-      среднее значение    49.60
-             ст. откл.    18.29
-                   Mин    18.00
-               Mедиана    50.00
-                  Mакс    80.00
-            Цифр. корр   975.00
-            Проц. корр    97.50
+                      age
+---------------- --------
+      сред.знач.    49.60
+        ст.откл.    18.29
+             Mин    18.00
+         Mедиана    50.00
+            Mакс    80.00
+      Цифр. корр   975.00
+      Проц. корр    97.50
 
 
 # by --------------------------------------------------------------------------- 
 
 > stby(tobacco$smoker, tobacco$gender, freq)           
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -363,7 +363,7 @@ tobacco$smoker
 
 > stby(tobacco["smoker"], tobacco["gender"], freq)     
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -387,7 +387,7 @@ tobacco$smoker
 
 > stby(tobacco[,"smoker"], tobacco[,"gender"], freq)   
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -411,7 +411,7 @@ tobacco$smoker
 
 > stby(tobacco[["smoker"]], tobacco[["gender"]], freq) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -438,7 +438,7 @@ tobacco$smoker
 
 > stby(tobacco[[5]], tobacco[[1]], freq) 
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -462,7 +462,7 @@ tobacco$smoker
 
 > stby(tobacco[,5], tobacco[,1], freq)   
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -518,7 +518,7 @@ smoker * diseased
 
 > with(tobacco, stby(smoker, gender, freq))                                
 
-частота  
+Частота  
 tobacco$smoker  
 Ярлык: Smoking Status  
 Тип: склейка  
@@ -596,7 +596,7 @@ smoker * diseased
 
 > print(lapply(tobacco[c(1,3,5)], freq)) 
 
-частота  
+Частота  
 tobacco$gender  
 Тип: склейка  
 
@@ -633,7 +633,7 @@ tobacco$smoker
 > lap <- lapply(tobacco[c(1,3,5)], freq) 
 > print(lap) 
 
-частота  
+Частота  
 tobacco$gender  
 Тип: склейка  
 
