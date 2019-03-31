@@ -1,4 +1,5 @@
 # ------------------------------ parse_args.R ----------------------------------
+library(dplyr)
 data(tobacco)
 label(tobacco) <- "Tobacco Study"
 label(tobacco$smoker) <- "Smoking Status"
@@ -33,10 +34,10 @@ tobacco$smoker %>% freq()
 tobacco["smoker"] %>% freq()  
 tobacco[["smoker"]] %>% freq()
 tobacco[,5] %>% freq()        
-tobacco[[5]] %>% freq()       
-dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
-
+tobacco[[5]] %>% freq()
+if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
 tobacco %$% ctable(smoker, diseased)
+tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
 
 
 # by

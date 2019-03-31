@@ -23,6 +23,10 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   
   try(detach("package:summarytools", unload = TRUE), silent = TRUE)
   library(summarytools)
+  if (lang == "ru") {
+    Sys.setlocale("LC_CTYPE", "russian")
+    on.exit(Sys.setlocale("LC_CTYPE", ""), add = TRUE)
+  }
   st_options(lang = lang, footnote = "Placeholder footnote")
   
   cat("reading ", filename, "...\n")
@@ -119,18 +123,19 @@ compare_dirs <- function(lang) {
   }
 }
 
-i <- 1
-for (i in 1:5) {
-lang <- c("en", "fr", "es", "pt", "tr")[i]
-eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
-eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
-eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
-eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
-eval_with_feedback(testfiles[5],  lang = lang, compare = FALSE) # dfSummary
-eval_with_feedback(testfiles[6],  lang = lang, compare = FALSE) # overrides
-eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
-eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
-eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
+#i <- 1
+#lang = "ru"
+for (i in 1:6) {
+  lang <- c("en", "fr", "es", "pt", "tr", "ru")[i]
+  eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
+  eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
+  eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
+  eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
+  eval_with_feedback(testfiles[5],  lang = lang, compare = FALSE) # dfSummary
+  eval_with_feedback(testfiles[6],  lang = lang, compare = FALSE) # overrides
+  eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
+  eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
+  eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
 }
 
 compare_dirs("en")
@@ -138,4 +143,4 @@ compare_dirs("fr")
 compare_dirs("es")
 compare_dirs("pt")
 compare_dirs("tr")
-
+compare_dirs("ru")
