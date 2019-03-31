@@ -13,8 +13,9 @@ tb <- function(x) {
   if (attr(x, "st_type") == "freq") {
     
     output <- as_tibble(cbind(rownames(x), as.data.frame(x)))
+    #varname <- na.omit(c(attr(x, "fn_call")$x, "value"))[1]
     names(output) <- 
-      c("values", "freq", "pct_valid", "pct_valid_cum", "pct_tot", "pct_cum")
+      c("value", "freq", "pct_valid", "pct_valid_cum", "pct_tot", "pct_tot_cum")
 
     # remove totals row
     output <- output[1:(nrow(output) - 1), ]
@@ -22,10 +23,8 @@ tb <- function(x) {
     # remove na info when appropriate     
     if (!isTRUE(attr(x, "format_info")[["report.nas"]])) {
       output <- output[1:(nrow(output) - 1), 
-                       -grep("^pct_(tot|cum)$", names(output))]
-      
+                       -grep("^pct_(tot|tot_cum)$", names(output))]
       names(output)[3:4] <- c("pct", "pct_cum")
-      
     }
     
     # remove cumulative columns when appropriate
@@ -41,7 +40,7 @@ tb <- function(x) {
       output <- as_tibble(cbind(variable = colnames(x), t(as.data.frame(x))))
       names(output) <- c("variable", attr(x, "stats"))
     } else {
-      output <- as_tibble(cbind(statistic = rownames(x), as.data.frame(x)))
+      output <- as_tibble(cbind(statistic = colnames(x), t(as.data.frame(x))))
       output$statistic <- attr(x, "stats")
     }
     
