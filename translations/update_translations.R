@@ -11,7 +11,7 @@ rownames(tr) <- "en"
 translations <- tr
 
 for (f in list.files("translations")) {
-  if (f == "en.csv" || f == "ru.csv" || !grepl("^\\w{2}\\.csv$", f)) {
+  if (f == "en.csv" || !grepl("^\\w{2}\\.csv$", f)) {
     next
   }
   tr <- read.csv(paste("translations", f, sep = "/"), strip.white = TRUE, 
@@ -26,7 +26,8 @@ for (f in list.files("translations")) {
 
 usethis::use_data(translations, internal = TRUE, overwrite = TRUE)
 
+rm(tr)
+
 # Check that translations is in the package's environment (after build)
 # ls(loadNamespace("summarytools")) 
 # View(translations)
-#ru <- read.csv("translations/russian.csv",  encoding = "UTF-8")
