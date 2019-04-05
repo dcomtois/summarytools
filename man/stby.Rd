@@ -2,7 +2,6 @@
 % Please edit documentation in R/stby.R
 \name{stby}
 \alias{stby}
-\alias{byst}
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
 stby(data, INDICES, FUN, ..., simplify = TRUE)
@@ -30,7 +29,6 @@ class of the returned object.
 }
 \examples{
 data("tobacco")
-stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
 }
 \seealso{

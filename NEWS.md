@@ -7,6 +7,8 @@ Version 0.9.3
    + define_keywords() allows defining translatable terms in GUI and
      save the results in a _csv_ file (through _Save File..._ dialog on 
      _Windows_)
+ - Deprecated function:
+   + `byst()` -- use `stby()` 
  - In `freq()`: 
    + new parameter `cumul` allows turning on or off cumulative proportions
    + `order` parameter: "names", "freq", and "levels" values now have their
