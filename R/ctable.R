@@ -37,6 +37,7 @@
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By 
 #'   default, the character values for arguments x and y are used.
+#' @param chisq Logical. Display chisq statistic along with p-value in a message.
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -96,6 +97,7 @@ ctable <- function(x, y,
                    display.labels  = st_options("display.labels"),
                    split.tables    = Inf, 
                    dnn             = c(substitute(x), substitute(y)),
+                   chisq           = FALSE,
                    weights         = NA, 
                    rescale.weights = FALSE, 
                    ...) {
@@ -238,6 +240,12 @@ ctable <- function(x, y,
     freq_table <- xtabs(weights ~ x + y, addNA = TRUE)
   }
   
+  if (isTRUE(chisq)) {
+    tmp <- chisq.test(freq_table)
+    tmp.chisq <- c(Chi.squared = round(tmp$statistic[[1]], 4), 
+                   tmp$parameter, p.value = round(tmp$p.value, 4))
+  }
+  
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
@@ -288,13 +296,17 @@ ctable <- function(x, y,
   
   output <- list(cross_table = freq_table, 
                  proportions = prop_table)
-
+  
   # Set output object's attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
   #attr(output, "proportions") <- prop
   attr(output, "date") <- Sys.Date()
+
+  if (isTRUE(chisq)) {
+    attr(output, "chisq") <- tmp.chisq
+  }
 
   dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
   data_info <-

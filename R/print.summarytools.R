@@ -989,6 +989,13 @@ print_ctable <- function(x, method) {
                                             main_sect[[length(main_sect)]])
     }
     
+    if ("chisq" %in% names(attributes(x))) {
+      main_sect %+=% paste(
+        capture.output(pander::pander(attr(x, "chisq"))),
+        collapse = "\n"
+      )
+    }
+    
     if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
@@ -1126,6 +1133,16 @@ print_ctable <- function(x, method) {
     }
     
     div_list %+=% list(cross_table_html)
+    
+    if ("chisq" %in% names(attributes(x))) {
+      chisq <- attr(x, "chisq")
+      div_list %+=% list(HTML(text = paste0(
+        "<p><strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
+        sprintf("%.4f", chisq[[1]]),
+        "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
+        "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ", 
+        sprintf("%.4f", chisq[[3]]), "</em></p>")))
+    }
     
     if (parent.frame()$footnote != "") {
       fn <- conv_non_ascii(parent.frame()[["footnote"]])
