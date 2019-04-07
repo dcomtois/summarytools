@@ -6,6 +6,10 @@
 # Determine OS : Windows | Linux | Darwin
 .st_env$system <- Sys.info()[["sysname"]]
 
+# Check if system has X11 capability on Linux
+.st_env$noX11 <- Sys.info()[["sysname"]] == "Linux" && 
+  !isTRUE(capabilities("X11"))
+
 .st_env$tmpfiles <- c()
 
 # Initialize list used by view() when printing an object of class "by"
@@ -60,7 +64,11 @@ utils::globalVariables(c("."))
   pander_built_dt <- sub(".+?(\\d+\\-\\d+\\-\\d+).+", "\\1", pander_built_dt)
   should_update <- try(pander_built_dt <= "2018-11-06", silent = TRUE)
   if(isTRUE(should_update))
-    packageStartupMessage("For best results, consider updating pander to its ",
+    packageStartupMessage("for best results, consider updating pander to its ",
                           "most recent version. You can do so by using \n",
                           "devtools::install_github('rapporter/pander')")
+  if (Sys.info()[["sysname"]] == "Linux" && !isTRUE(capabilities("X11"))) {
+    packageStartupMessage("system has no X11 capabilities, therefore only ",
+                          "ascii graphs will be produced by dfSummary()")
+  }
 }
