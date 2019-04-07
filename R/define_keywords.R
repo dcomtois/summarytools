@@ -39,7 +39,7 @@ define_keywords <- function() {
       filename <- normalizePath(filename, mustWork = FALSE)
     } else {
       filename_ok <- FALSE
-      while (!path_ok) {
+      while (!filename_ok) {
         filename <- readline(prompt = "Path to csv file (ESC to cancel): ")
         filename <- sub('^"(.+)"$', "\\1", filename)
         if (filename != "" && 
@@ -53,7 +53,7 @@ define_keywords <- function() {
     }
     
     if (filename != "") {
-      filename <- sub("(.csv)+$", "\\1", paste0(filename2, ".csv"))
+      filename <- sub("(.csv)+$", "\\1", paste0(filename, ".csv"))
       write.csv(x = tr, file = filename, row.names = FALSE, 
                 fileEncoding = "utf-8")
     }

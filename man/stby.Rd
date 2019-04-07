@@ -5,7 +5,7 @@
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
 stby(data, INDICES, FUN, ..., simplify = TRUE)
-byst(data, INDICES, FUN, ..., simplify = TRUE)
+stby(data, INDICES, FUN, ..., simplify = TRUE)
 }
 \arguments{
 \item{data}{an R object, normally a data frame, possibly a matrix.}

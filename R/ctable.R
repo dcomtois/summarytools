@@ -84,7 +84,7 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-#' @importFrom stats addmargins na.omit
+#' @importFrom stats addmargins na.omit chisq.test
 ctable <- function(x, y,
                    prop            = st_options("ctable.prop"),
                    useNA           = "ifany", 

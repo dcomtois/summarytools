@@ -4,7 +4,7 @@
 #' class of the returned object.
 #'
 #' @usage stby(data, INDICES, FUN, ..., simplify = TRUE)
-#' byst(data, INDICES, FUN, ..., simplify = TRUE)
+#' stby(data, INDICES, FUN, ..., simplify = TRUE)
 #' 
 #' @param data an R object, normally a data frame, possibly a matrix.
 #' @param INDICES a factor or a list of factors, each of length nrow(data).
