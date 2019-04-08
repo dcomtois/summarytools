@@ -1138,10 +1138,10 @@ print_ctable <- function(x, method) {
       chisq <- attr(x, "chisq")
       div_list %+=% list(HTML(text = paste0(
         "<p><strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
-        sprintf("%.4f", chisq[[1]]),
+        sub("^0\\.", ".", sprintf("%.4f", chisq[[1]])),
         "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
         "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ", 
-        sprintf("%.4f", chisq[[3]]), "</em></p>")))
+        sub("^0\\.", ".", sprintf("%.4f", chisq[[3]])), "</em></p>")))
     }
     
     if (parent.frame()$footnote != "") {
