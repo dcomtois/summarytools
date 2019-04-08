@@ -3,7 +3,8 @@
 #' If your language is not available or if you wish to customize the outputs'
 #' language to suit your preference, you can set up a translations file (see
 #' details) and import it with this function.
-#' @aliases use_custom_lang useTranslations
+#' @aliases use_custom_lang
+#' 
 #' @param file Character. The path to the translations file.
 #'
 #' @details To build the translations file, download
@@ -19,24 +20,24 @@
 #' @export
 use_custom_lang <- function(file) {
   
-  if (!"file" %in% names(match.call()) && interactive() &&
-      .st_env$session == "Windows") {
-     
-    file <- character()
-    file <- tclvalue(tkgetOpenFile(initialdir = "~",
-                                   filetypes = "{{csv files} {*.csv}}"))
-    if (file == "") {
-      stop("operation cancelled")
+  if (!"file" %in% names(match.call())) {
+    if (interactive() && .st_env$session == "Windows") {
+      file <- character()
+      file <- tclvalue(tkgetOpenFile(initialdir = "~",
+                                     filetypes = "{{csv files} {*.csv}}"))
+      if (file == "") {
+        stop("operation cancelled")
+      }
+    } else {
+      stop("'file' argument must be specified")
     }
-  } else {
-    stop("'file' argument must be specified")
-  } 
+  }
   
   if (is.character(file)) {
     tr <- read.csv(file = file, strip.white = TRUE, stringsAsFactors = FALSE,
                    encoding = "UTF-8")
   } else if (is.data.frame(file)) {
-    # useful when called from define_keywords()
+    # used when called from define_keywords()
     tr <- file
   } else {
     stop("invalid 'file' argument class: ", class(file))
