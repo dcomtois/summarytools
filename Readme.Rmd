@@ -71,7 +71,8 @@ imported data frames.
 ### Latest Improvements
 
 Version 0.9 brings **many** changes and improvements. A summary of those
-changes can be found [near the end of this page](#latest-changes).
+changes can be found [near the end of this page](#latest-changes). Changes
+specific to the latest release can be found in the _NEWS_ file.
 
 ## How to install
 
@@ -140,11 +141,31 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 ```
 
 We can simplify the results further and omit the _Totals_ row by specifying 
-`totals = FALSE`.
+`totals = FALSE`, as well as `cumul = FALSE`:
+
+```{r}
+freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
+```
 
 To get familiar with the various output styles, try different values for 
 `style` -- “simple”, “rmarkdown” or “grid”, and see how this affects the
 results in the console.
+
+#### Subsetting Rows in Frequency Table
+The "rows" argument allows subsetting the resulting frequency table; it can 
+work in 3 distinct ways: 
+
+  - To select rows by position, use a numerical vector; `rows = 1:10` will 
+    show the frequencies for the first 10 values only
+  - To select rows by name either use
+    + a character vector specifying all desired values
+    + a single character string to be used as a regular expression; only the
+      matching values will be displayed
+    
+Used in combination with the "order" argument, this can be quite practical. 
+Say we have a character variable containing many distinct values and wish to
+see frequencies only for the 5 most common values; to obtain the desired table,
+we would simply use `order = "freq"` along with `rows = 1:5`.
 
 #### Generating Several Frequency Tables at Once
 
@@ -155,9 +176,8 @@ the data frame object (subsetted if needed) to `freq()`: (results not shown)
 freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
-We can without fear pass a whole data frame to `freq()`; it will figure out
-which variables to ignore (continuous numerical variables, or variables having
-many, many distinct values).
+We can without fear pass a whole data frame to `freq()`; the function will
+ignore numerical variables having many distinct values.
 
 ## 2 - ctable() : Cross-Tabulations
 
@@ -176,9 +196,9 @@ print(ctable(tobacco$smoker, tobacco$diseased, prop = "r"), method = "render")
 Note that we have to set the **knitr** chunk option `results` to “asis”
 for the results to appear as they should.
 
-By default, `ctable()` shows row proportions.
-To show column or total proportions, use `prop = "c"` or `prop = "t"`,
-respectively. To omit proportions, use `prop = "n"`.
+By default, `ctable()` shows row proportions. To show column or total 
+proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit 
+proportions, use `prop = "n"`.
 
 In the next example, we'll create a simple “2 x 2” table:
 
@@ -188,6 +208,37 @@ with(tobacco,
      headings = FALSE, method = "render"))
 ```
 <img src="img/ctable-barebones-2.png" style="border:0"/>
+
+#### Chi-square results
+To display chi-square results below the table, set the "chisq" parameter to
+`TRUE`:
+
+```
+tobacco %$% ctable(gender, smoker, chisq = TRUE)
+
+## Cross-Tabulation, Row Proportions  
+## gender * smoker  
+## Data Frame: tobacco  
+## 
+## 
+## -------- -------- ------------- ------------- ---------------
+##            smoker           Yes            No           Total
+##   gender                                                     
+##        F            147 (30.1%)   342 (69.9%)    489 (100.0%)
+##        M            143 (29.2%)   346 (70.8%)    489 (100.0%)
+##     <NA>              8 (36.4%)    14 (63.6%)     22 (100.0%)
+##    Total            298 (29.8%)   702 (70.2%)   1000 (100.0%)
+## -------- -------- ------------- ------------- ---------------
+## 
+## ----------------------------
+##  Chi.squared   df   p.value 
+## ------------- ---- ---------
+##    0.5415      2    0.7628  
+## ----------------------------
+```
+
+Note that a warning will be issued when at least one _expected_ cell counts 
+is lower than 5.
 
 ## 3 - descr() : Descriptive Univariate Stats
 
@@ -619,8 +670,10 @@ or simply "."). Two things are to be kept in mind: it needs to be short
 
 ## Translations
 
-It is now possible to switch the language used in the outputs. So far, the following languages are available: French (fr), Spanish (es), Portuguese (pt), and Turkish (tr). With 
-the community's involvement, I hope we can gather a lot more.
+It is now possible to select the language used in the outputs. The following 
+languages are available: English (*en* - default), French (*fr*), Spanish (*es*),
+Portuguese (*pt*), Turkish (*tr*), and Russian (*ru*). With the R community's
+involvement, I believe we can add several more as time goes.
 
 ### Switching Languages
 
@@ -668,15 +721,14 @@ the next release.
 
 ### Defining and Using Custom Translations
 
-With the new function `useTranslations()`, you can add your own set of 
-translations. For this, download the template _csv_ file from
-[this page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv).
+Using the function `use_custom_lang()`, it is possible to add your own set of 
+translations. To achieve this, simply download the template _csv_ file from
+[this page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv), customize the +/- 70 items, and call `use_custom_lang()`,
+giving it as sole argument the path to the _csv_ file you've created. Note that
+such custom translations will not persist across R sessions. This means that you
+should always have this _csv_ file handy. 
 
-After you're done translating the +/- 70 items, simply call the 
-`useTranslations()` function, giving it as sole argument the path to the _csv_
-file you've just created. Note that such custom translations will not persist 
-across R sessions. This means that we should always have handy this _csv_ file 
-if we're to print objects created with it. 
+**To quickly modify specific keywords**, use the `define_keywords()` function.
 
 
 ## <a id="latest-changes"></a>Latest Changes and Improvements
@@ -708,6 +760,7 @@ to **summarytools**. Here are the key elements:
  - Changes to `ctable()`
    + Fully supports `stby()`
    + Improved number alignment
+   + Added "chisq.test" logical parameter (v0.9.3)
  - Changes to `descr()`
    + For the `stats` argument, Values “fivenum” and “common” are now allowed,
      the latter representing the collection of _mean_, _sd_, _min_, _med_,

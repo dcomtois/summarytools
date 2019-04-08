@@ -1,14 +1,16 @@
 Version 0.9.3
 -------------
  - New functions:
-   + tb() turns freq() and descr() outputs into "tidy" tibbles
-   + use_custom_lang() replaces useTranslations() and triggers _Open File..._
-     dialog on _Windows_ when no argument is supplied   
-   + define_keywords() allows defining translatable terms in GUI and
-     save the results in a _csv_ file (through _Save File..._ dialog on 
-     _Windows_)
+   + `tb()` turns `freq()` and `descr()` outputs into "tidy" tibbles
+   + `use_custom_lang()` replaces `useTranslations()` and triggers an
+     _Open File..._ dialog on _Windows_ when no argument is supplied   
+   + `define_keywords()` allows defining translatable terms in GUI and
+     optionnaly save the results in a _csv_ file (through _Save File..._ dialog
+     on _Windows_)
  - Deprecated function:
-   + `byst()` -- use `stby()` 
+   + `byst()` had to be dropped because of issues related to objects names;
+     so only `stby()` is accepted from now on
+   + `useTranslations()` has been replaced by `use_custom_lang()`
  - In `freq()`: 
    + new parameter `cumul` allows turning on or off cumulative proportions
    + `order` parameter: "names", "freq", and "levels" values now have their
@@ -18,6 +20,8 @@ Version 0.9.3
      search string (regex)
  - In `ctable()`: 
    + Added weights support
+   + Added logical argument "chisq.test" to display chi-square results below
+     the cross-tabulation table
  - In `dfSummary()`: 
    + Added content specific to email addresses -- valid, invalid, duplicates
  - Added translations : 
@@ -58,7 +62,7 @@ In this version:
 Version 0.9.0
 -------------  
  - **Output translations** are introduced. For instance, setting
-   st_options(lang='fr') gives access to French translations. Spanish ('es')
+   `st_options(lang='fr')` gives access to French translations. Spanish ('es')
    translations are also available. 
  - Function `useTranslations()` allows using custom translations; see the
    introductory vignette for details  
