@@ -231,7 +231,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     } else {
       store_imgs <- TRUE
       dir.create(tmp.img.dir, showWarnings = FALSE)
-      if (.st_env$system == "Windows" || tmp.img.dir != "/tmp") {
+      if (.st_env$sysname == "Windows" || tmp.img.dir != "/tmp") {
         if(!isTRUE(silent)) {
           message("temporary images written to '", 
                   normalizePath(tmp.img.dir), "'")
@@ -985,7 +985,7 @@ align_numbers_dfs <- function(counts, props) {
 encode_graph <- function(data, graph_type, graph.magnif = 1, 
                          pandoc = FALSE, emails = FALSE) {
   
-  devtype <- switch(.st_env$system,
+  devtype <- switch(.st_env$sysname,
                     Windows = "windows",
                     Linux   = "Xlib",
                     Darwin  = "quartz")

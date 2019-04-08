@@ -21,7 +21,7 @@
 use_custom_lang <- function(file) {
   
   if (!"file" %in% names(match.call())) {
-    if (interactive() && .st_env$session == "Windows") {
+    if (interactive() && .st_env$sysname == "Windows") {
       file <- character()
       file <- tclvalue(tkgetOpenFile(initialdir = "~",
                                      filetypes = "{{csv files} {*.csv}}"))

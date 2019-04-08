@@ -24,7 +24,15 @@ for (f in list.files("translations")) {
   translations[nrow(translations) + 1, ] <- tr
 }
 
-usethis::use_data(translations, internal = TRUE, overwrite = TRUE)
+
+keywords_context <- read.csv("translations/language_template.csv", 
+                             encoding = "UTF-8", strip.white = TRUE, 
+                             stringsAsFactors = FALSE)[,-3]
+rownames(keywords_context) <- keywords_context$item
+keywords_context$item <- NULL
+
+usethis::use_data(translations, keywords_context, 
+                  internal = TRUE, overwrite = TRUE)
 
 rm(tr)
 

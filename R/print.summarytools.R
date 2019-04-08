@@ -585,7 +585,7 @@ print.summarytools <- function(x,
     # compatibility issues with RStudio
     if (method == "browser") {
       if (file == "" || isTRUE(open.doc)) {
-        switch(.st_env$system,
+        switch(.st_env$sysname,
                Windows = {shell.exec(file = paste0("file:///", outfile_path))},
                Linux   = {system(paste("/usr/bin/xdg-open", outfile_path), 
                                  wait = FALSE, ignore.stdout = TRUE)},
