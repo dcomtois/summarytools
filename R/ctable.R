@@ -237,14 +237,20 @@ ctable <- function(x, y,
       weights <- weights / sum(weights) * length(x)
     }
     
-    freq_table <- xtabs(weights ~ x + y, addNA = TRUE)
+    if (useNA == "no") {
+      freq_table <- xtabs(weights ~ x + y, addNA = FALSE)
+    } else {
+      freq_table <- xtabs(weights ~ x + y, addNA = TRUE)
+    }
   }
   
   if (isTRUE(chisq)) {
-    tmp <- chisq.test(freq_table)
-    tmp.chisq <- c(Chi.squared = round(tmp$statistic[[1]], 4), 
-                   tmp$parameter, p.value = round(tmp$p.value, 4))
+    tmp.chisq <- chisq.test(freq_table)
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
+                   tmp.chisq$parameter, 
+                   p.value = round(tmp.chisq$p.value, 4))
   }
+
   
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
@@ -301,7 +307,6 @@ ctable <- function(x, y,
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
-  #attr(output, "proportions") <- prop
   attr(output, "date") <- Sys.Date()
 
   if (isTRUE(chisq)) {
