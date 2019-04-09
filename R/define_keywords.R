@@ -112,10 +112,11 @@ define_keywords <- function(...) {
          "keywords at once")
   }
   if (length(mc) == 1 && isTRUE(.st_env$noX11)) {
-    stop("This R session does not support X11 devices; use arguments to ",
-         "redefine specific keywords (see ?define_keywords), or turn to the ",
-         "use_custom_lang() function which allows redefining all keywords at ",
-         "once using a csv file")
+    message("This R session does not support X11 devices; use arguments to ",
+            "redefine specific keywords (see ?define_keywords), or turn to the ",
+            "use_custom_lang() function which allows redefining all keywords at ",
+            "once using a csv file")
+    return(invisible())
   }
   
   if (st_options("lang") == "custom") {
@@ -140,8 +141,9 @@ define_keywords <- function(...) {
             "  - Close the editing window when finished")
     tr.copy <- tr
     tr <- edit(tr)
-    if (identical(tr, tr.copy)) {
-      stop("No changes were registered")
+    if (identical(tr[[2]], tr.copy[[2]])) {
+      message("No changes were registered")
+      return(invisible())
     }
   } else {
     for (it in names(mc[-1])) {
