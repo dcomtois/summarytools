@@ -27,7 +27,7 @@
 #'   \item{title.descr}{main heading for \code{descr()}}
 #'   \item{title.descr.weighted}{main heading for \code{descr()} (weighted)}
 #'   \item{title.dfSummary}{main heading for \code{dfSummary()}}
-#'   \item{n}{heading item used in \code{descr}}
+#'   \item{n}{heading item used in \code{descr()}}
 #'   \item{dimensions}{heading item used in \code{dfSummary()}}
 #'   \item{duplicates}{heading item used in \code{dfSummary()}}
 #'   \item{data.frame}{heading item (all functions)}
