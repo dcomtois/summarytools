@@ -51,7 +51,7 @@ conv_non_ascii <- function(...) {
 trs <- function(item, l = st_options("lang")) {
   l <- force(l)
   if (l != "custom") {
-    translations[l,item]
+    .translations[l,item]
   } else {
     .st_env$custom_lang["custom", item]
   }
@@ -62,7 +62,7 @@ trs <- function(item, l = st_options("lang")) {
 inv_trs <- function(name, l = st_options("lang")) {
   l <- force(l)
   if(l != "custom") {
-    colnames(translations)[which(translations["en",] == name)]
+    colnames(.translations)[which(.translations["en",] == name)]
   } else {
     colnames(.st_env$custom_lang)[which(.st_env$custom_lang["custom",] == name)]
   }

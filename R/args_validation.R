@@ -452,6 +452,12 @@ check_arguments_st_options <- function(mc) {
     errmsg %+=% "'dfSummary.graph.magnif' must be > 0"
   }
   
+  if ("lang" %in% names(mc) && !pf$lang %in% 
+      c(rownames(.translations), "custom")) {
+    errmsg %+=% paste0("'lang' can take the following values only: ",
+                       paste(rownames(.translations), collapse = ", "))
+  }
+  
   if ("tmp.img.dir" %in% names(mc) &&
       (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
        nchar(pf$tmp.img.dir) > 5)) {

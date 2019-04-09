@@ -18,7 +18,7 @@ details) and import it with this function.
 To build the translations file, download
 \href{https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv}{this template},
 or copy the \emph{language_template.csv} file located in the installed 
-package's \emph{includes} directory and fill out the \sQuote{custom} column
+package’s \emph{includes} directory and fill out the \sQuote{custom} column
 using a text editor, leaving column titles unchanged. The file must also
 retain its \emph{UTF-8} encoding.
 }

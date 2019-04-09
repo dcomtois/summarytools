@@ -10,7 +10,7 @@
 #' @details To build the translations file, download
 #' \href{https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv}{this template},
 #' or copy the \emph{language_template.csv} file located in the installed 
-#' package's \emph{includes} directory and fill out the \sQuote{custom} column
+#' package’s \emph{includes} directory and fill out the \sQuote{custom} column
 #' using a text editor, leaving column titles unchanged. The file must also
 #' retain its \emph{UTF-8} encoding.
 #'
@@ -21,7 +21,7 @@
 use_custom_lang <- function(file) {
   
   if (!"file" %in% names(match.call())) {
-    if (interactive() && .st_env$sysname == "Windows") {
+    if (interactive() && !isTRUE(.st_env$noX11)) {
       file <- character()
       file <- tclvalue(tkgetOpenFile(initialdir = "~",
                                      filetypes = "{{csv files} {*.csv}}"))
@@ -50,6 +50,7 @@ use_custom_lang <- function(file) {
   
   .st_env$custom_lang <- tr
   st_options(lang = "custom")
+  message("Operation successful")
 }
 
 #' @export
