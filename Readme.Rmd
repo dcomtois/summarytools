@@ -368,6 +368,21 @@ stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ```
 
+## Tidy Tables With tb()
+When generating `freq()` or `descr()` tables, it is possible to turn the
+results into "tidy" tables with the use of the `tb()` function (think of
+_tb_ as a diminutive for _tibble_). For example:
+
+```{r, results='markup'}
+library(magrittr)
+iris %>% descr(stats = "common") %>% tb()
+iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
+```
+
+By definition, no total rows are part of _tidy_ tables, and row.names are
+converted to regular columns. For now, `tb()` doesn't handle split-group
+tables, but it is certainly in store for a future release of **summarytools**.
+
 ## Using summarytools in Rmarkdown Documents
 
 As we have seen, **summarytools** can generate both text/_markdown_ and _html_
@@ -728,8 +743,25 @@ giving it as sole argument the path to the _csv_ file you've created. Note that
 such custom translations will not persist across R sessions. This means that you
 should always have this _csv_ file handy. 
 
-**To quickly modify specific keywords**, use the `define_keywords()` function.
+### Defining Specific Keywords
 
+Sometimes, all you might want to do is change just a few keywords -- say you
+would rather have "N" instead of "Freq" in the title row of `freq()` tables. No
+need to create a full custom language for that. Rather, use `define_keywords()`.
+Calling this function without any arguments will bring up, on systems that
+support graphical devices (the vast majority, that is), an editable window
+allowing the modify only the desired items. 
+
+![define_keywords](img/define_keywords.png)
+
+After doing so, it even allows 
+exporting the resulting "custom language" into a _csv_ file that can be 
+imported later on with `use_custom_lang()`. It is also possible to define 
+one or several keywords using arguments. For instance:
+
+```{r, eval=FALSE}
+define_keywords(freq = "N")
+```
 
 ## <a id="latest-changes"></a>Latest Changes and Improvements
 
