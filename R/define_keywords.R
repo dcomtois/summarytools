@@ -112,9 +112,10 @@ define_keywords <- function(...) {
          "keywords at once")
   }
   if (length(mc) == 1 && isTRUE(.st_env$noX11)) {
-    stop("R session does not support GUI's; use arguments to define keywords, ",
-         "or see ?use_custom_lang to use an external file to define all ",
-         "keywords at once")
+    stop("This R session does not support X11 devices; use arguments to ",
+         "redefine specific keywords (see ?define_keywords), or turn to the ",
+         "use_custom_lang() function which allows redefining all keywords at ",
+         "once using a csv file")
   }
   
   if (st_options("lang") == "custom") {
