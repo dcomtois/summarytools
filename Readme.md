@@ -479,6 +479,41 @@ stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ```
 
+## Tidy Tables With tb()
+
+When generating `freq()` or `descr()` tables, it is possible to turn the
+results into “tidy” tables with the use of the `tb()` function (think of
+*tb* as a diminutive for *tibble*). For example:
+
+``` r
+library(magrittr)
+iris %>% descr(stats = "common") %>% tb()
+```
+
+    ## # A tibble: 4 x 8
+    ##   variable    mean         sd           min   med   max   n.valid pct.valid
+    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
+    ## 1 Petal.Leng… 3.758        1.765298233… 1     4.35  6.9   150     100      
+    ## 2 Petal.Width 1.199333333… 0.762237668… 0.1   1.3   2.5   150     100      
+    ## 3 Sepal.Leng… 5.843333333… 0.828066127… 4.3   5.8   7.9   150     100      
+    ## 4 Sepal.Width 3.057333333… 0.435866284… 2     3     4.4   150     100
+
+``` r
+iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
+```
+
+    ## # A tibble: 3 x 3
+    ##   value       freq   pct
+    ##   <fct>      <dbl> <dbl>
+    ## 1 setosa        50  33.3
+    ## 2 versicolor    50  33.3
+    ## 3 virginica     50  33.3
+
+By definition, no total rows are part of *tidy* tables, and row.names
+are converted to regular columns. For now, `tb()` doesn’t handle
+split-group tables, but it is certainly in store for a future release of
+**summarytools**.
+
 ## Using summarytools in Rmarkdown Documents
 
 As we have seen, **summarytools** can generate both text/*markdown* and
@@ -537,25 +572,6 @@ print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75),
 ```
 
 ![dfSummary-scroll-window](img/dfSummary-scroll-window.png)
-
-## Tidy Tables With tb()
-
-When generating `freq()` or `descr()` tables, it is possible to turn the
-results into “tidy” tables with the use of the `tb()` function (think of
-*tb* as a diminutive for *tibble*). For example:
-
-``` r
-library(magrittr)
-iris %>% descr(stats = "common") %>% tb()
-```
-
-    ## # A tibble: 4 x 8
-    ##   variable    mean         sd           min   med   max   n.valid pct.valid
-    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
-    ## 1 Petal.Leng… 3.758        1.765298233… 1     4.35  6.9   150     100      
-    ## 2 Petal.Width 1.199333333… 0.762237668… 0.1   1.3   2.5   150     100      
-    ## 3 Sepal.Leng… 5.843333333… 0.828066127… 4.3   5.8   7.9   150     100      
-    ## 4 Sepal.Width 3.057333333… 0.435866284… 2     3     4.4   150     100
 
 ## Writing Output to Files
 
