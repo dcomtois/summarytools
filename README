@@ -15,7 +15,7 @@ a future release.
 To simplify printing summarytools object in the console and in Rmarkdown
 documents, here are three important recommendations:
 
-1. Use stby() -- or byst() -- instead of by(). This, among other advantages,
+1. Use stby() instead of by(). This, among other advantages,
 makes obsolete the following idiom:
    
     > by_object <- by(data, indices, summarytools_function)
