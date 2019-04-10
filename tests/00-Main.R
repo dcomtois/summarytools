@@ -1,10 +1,10 @@
-setwd("~/github/summarytools")
+setwd("~/R/summarytools")
 rm(list=ls())
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
 
 (date_dir <- paste(orig_dir, "tests/output", 
-                   format(Sys.time(), format = "%Y-%m-%d (%Hh%M)"),
+                   format(Sys.time(), format = "%Y-%m-%d-%Hh%M"),
                    sep = "/"))
 
 save(date_dir, file = paste0(orig_dir, "/tests/last_date_dir.Rdata"))
@@ -23,7 +23,7 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   
   try(detach("package:summarytools", unload = TRUE), silent = TRUE)
   library(summarytools)
-  if (lang == "ru") {
+  if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
     Sys.setlocale("LC_CTYPE", "russian")
     on.exit(Sys.setlocale("LC_CTYPE", ""), add = TRUE)
   }
@@ -115,7 +115,7 @@ compare_dirs <- function(lang) {
     return(paste("No ref files exist in", ref_dir))
   }
   if (Sys.info()[['sysname']] == "Linux") {
-    system(paste0('kdiff3 "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
+    system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
   } else {
     #system(paste0('"C:\\Program Files\\Araxis\\Araxis Merge\\compare"', 
     system(paste0('"compare"', 
@@ -123,8 +123,8 @@ compare_dirs <- function(lang) {
   }
 }
 
-#i <- 1
-for (i in 1:6) {
+i <- 1
+for (i in 2:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[i]
   eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
   eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
