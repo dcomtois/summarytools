@@ -42,7 +42,10 @@ parse_args <- function(sys_calls, sys_frames, match_call,
         ((length(output[[item]]) == 0 || is.na(output[[item]])) &&
           length(value) == 1 && class(value) == class(output[[item]]))) {
       names(value) <- NULL
-      if (!is.na(value) && value == ".") value <- NA_character_
+      
+      if (sum(value %in% c(".", NA)) == length(value))
+        value <- NA_character_
+      
       output[[item]] <- value
       
       # Check if output is ready to be returned

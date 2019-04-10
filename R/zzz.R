@@ -67,7 +67,7 @@ utils::globalVariables(c("."))
     packageStartupMessage("for best results, consider updating pander to its ",
                           "most recent version. You can do so by using \n",
                           "devtools::install_github('rapporter/pander')")
-  if (Sys.info()[["sysname"]] == "Linux" && !isTRUE(capabilities("X11"))) {
+  if (Sys.info()[["sysname"]] != "Windows" && !isTRUE(capabilities("X11"))) {
     packageStartupMessage("system has no X11 capabilities, therefore only ",
                           "ascii graphs will be produced by dfSummary()")
   }
