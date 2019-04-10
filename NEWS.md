@@ -1,10 +1,42 @@
+Version 0.9.3
+-------------
+ - New functions:
+   + `tb()` turns `freq()` and `descr()` outputs into "tidy" tibbles
+   + `use_custom_lang()` replaces `useTranslations()` and triggers an
+     _Open File..._ dialog on _Windows_ when no argument is supplied   
+   + `define_keywords()` allows defining translatable terms in GUI and
+     optionnaly save the results in a _csv_ file (through _Save File..._ dialog
+     on _Windows_)
+ - Deprecated function:
+   + `byst()` had to be dropped because of issues related to objects names;
+     so only `stby()` is accepted from now on
+   + `useTranslations()` has been replaced by `use_custom_lang()`
+ - In `freq()`: 
+   + new parameter `cumul` allows turning on or off cumulative proportions
+   + `order` parameter: "names", "freq", and "levels" values now have their
+     counterparts "-names" (or "names-"), "-freq" and "-levels"
+   + a new parameter `rows` has been added; it allows subsetting the output 
+     table either with a numeric vector, a character vector, or a single
+     search string (regex)
+ - In `ctable()`: 
+   + Added weights support
+   + Added logical argument "chisq.test" to display chi-square results below
+     the cross-tabulation table
+ - In `dfSummary()`: 
+   + Added content specific to email addresses -- valid, invalid, duplicates
+ - Added translations : 
+   + Portuguese ("pt")
+   + Turkish ("tr")
+   + Russian ("ru")
+   
+
 Version 0.9.2
 -------------
 No changes.
 
 
 Version 0.9.1
--------------  
+-------------
 For users updating solely from CRAN, this is a **major** update. _Many_ changes
 were introduced since version 0.8.8 (versions 0.8.9 and 0.9.0 were released 
 solely on _GitHub_). Please refer to the README file, the two vignettes and the
@@ -30,7 +62,7 @@ In this version:
 Version 0.9.0
 -------------  
  - **Output translations** are introduced. For instance, setting
-   st_options(lang='fr') gives access to French translations. Spanish ('es')
+   `st_options(lang='fr')` gives access to French translations. Spanish ('es')
    translations are also available. 
  - Function `useTranslations()` allows using custom translations; see the
    introductory vignette for details  
@@ -39,6 +71,7 @@ Version 0.9.0
  - In `dfSummary()`, images are processed using functions from the **magick**
    package, improving the general layout of the output tables
  - Improved support for **magrittr** operators
+
 
 Version 0.8.9
 -------------  

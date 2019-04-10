@@ -3,7 +3,7 @@
 #' If your language is not available or if you wish to customize the outputs'
 #' language to suit your preference, you can set up a translations file (see
 #' details) and import it with this function.
-#' @aliases use_custom_lang
+#' @aliases use_custom_lang useTranslations
 #' 
 #' @param file Character. The path to the translations file.
 #'
