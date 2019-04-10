@@ -10,6 +10,7 @@ vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{magrittr}
 ---
 
 ```{r setup, include=FALSE}
@@ -695,7 +696,8 @@ st_options(lang = "en")
 
 With the new function `use_custom_lang()`, you can add your own set of 
 translations. For this, create a copy of the _language_template.csv_ file 
-located in your system library, or download it from [this page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv).
+located in the _summarytools/includes_ of your package library, or download it
+from [this location](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv).
 
 After you're done translating the +/- 70 items, simply call the 
 `use_custom_lang()` function, giving it as sole argument the path to the _csv_
