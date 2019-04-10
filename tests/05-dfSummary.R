@@ -67,7 +67,7 @@ view(dfSummary(AirPassengers), file = "07-AirPassengers.html")
 
 # subsetting
 dfSummary(tobacco[1:100,])
-print(dfSummary(tobacco[1:100,1:4]), footnote = "subset = [1:100, 1:4]", file = "08-tobacco subset.html")
+print(dfSummary(tobacco[1:100,1:4]), footnote = "subset = [1:100, 1:4]", file = "08-tobacco-subset.html")
 
 
 # round.digits and frequencies

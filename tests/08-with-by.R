@@ -18,7 +18,7 @@ view(bf1, 'pander')
 view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 print(bf1)
 
-view(bf1, file = "04-by freq.html", missing = "xxxx")
+view(bf1, file = "04-by-freq.html", missing = "xxxx")
 
 # with + by
 label(tobacco$BMI) <- "Body Mass Index"
@@ -42,12 +42,12 @@ label(tobacco) <- "Blabla"
 bd3 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 st_options(display.labels = FALSE)
 view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10-by-descr.html")
-print(bd3, file = "10-by descr.md")
+print(bd3, file = "10-by-descr.md")
 
 attach(tobacco)
 bd4 <- stby(data = BMI, INDICES = gender, FUN = descr)
 view(bd4, method = "browser", footnote = "stand-alone variable", file = "11-by-descr-standalone-var.html")
-print(bd4, file = "11-by descr standalone var.md")
+print(bd4, file = "11-by-descr-standalone-var.md")
 detach(tobacco)
 
 # cas particulier - by, 1 groupe seul.

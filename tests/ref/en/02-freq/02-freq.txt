@@ -1168,7 +1168,7 @@ Type: Factor
 -- Switching method to 'browser'
 -- Output file written
 
-> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap") 
+> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap") 
 -- Switching method to 'browser'
 -- Output file written
 
