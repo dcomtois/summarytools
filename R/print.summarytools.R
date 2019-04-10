@@ -1137,7 +1137,7 @@ print_ctable <- function(x, method) {
     if ("chisq" %in% names(attributes(x))) {
       chisq <- attr(x, "chisq")
       div_list %+=% list(HTML(text = paste0(
-        "<p><strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
+        "<p style='text-align:center'><strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
         sub("^0\\.", ".", sprintf("%.4f", chisq[[1]])),
         "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
         "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ", 

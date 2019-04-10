@@ -7,7 +7,7 @@
 .st_env$sysname <- Sys.info()[["sysname"]]
 
 # Check if system has X11 capability on Linux
-.st_env$noX11 <- Sys.info()[["sysname"]] == "Linux" && 
+.st_env$noX11 <- Sys.info()[["sysname"]] != "Window" && 
   !isTRUE(capabilities("X11"))
 
 .st_env$tmpfiles <- c()
