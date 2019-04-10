@@ -64,15 +64,12 @@ outputs produced by **summarytools** can be:
   - Written to plain or *Rmarkdown* text files
 
 It is also possible to include **summarytools**' functions in *Shiny apps*. 
-Notably, [radiant](https://CRAN.R-project.org/package=radiant),
-a Shiny-based package for business analytics, uses `dfSummary()` to describe
-imported data frames.
 
 ### Latest Improvements
 
 Version 0.9 brings **many** changes and improvements. A summary of those
 changes can be found [near the end of this page](#latest-changes). Changes
-specific to the latest release can be found in the _NEWS_ file.
+specific to the latest release can be found in the [NEWS](https://github.com/dcomtois/summarytools/blob/master/NEWS.md) file.
 
 ## How to install
 
@@ -141,7 +138,8 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 ```
 
 We can simplify the results further and omit the _Totals_ row by specifying 
-`totals = FALSE`, as well as `cumul = FALSE`:
+`totals = FALSE`, as well as omit the _cumulative_ rows by setting
+`cumul = FALSE`.
 
 ```{r}
 freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
@@ -151,21 +149,20 @@ To get familiar with the various output styles, try different values for
 `style` -- “simple”, “rmarkdown” or “grid”, and see how this affects the
 results in the console.
 
-#### Subsetting Rows in Frequency Table
-The "rows" argument allows subsetting the resulting frequency table; it can 
-work in 3 distinct ways: 
+#### Subsetting Rows in Frequency Tables
+The "rows" argument allows subsetting the resulting frequency table; we can use it in 3 different ways: 
 
-  - To select rows by position, use a numerical vector; `rows = 1:10` will 
+  - To select rows by position, we use a numerical vector; `rows = 1:10` will 
     show the frequencies for the first 10 values only
-  - To select rows by name either use
-    + a character vector specifying all desired values
+  - To select rows by name, we either use
+    + a character vector specifying all desired values (row names)
     + a single character string to be used as a regular expression; only the
       matching values will be displayed
     
 Used in combination with the "order" argument, this can be quite practical. 
 Say we have a character variable containing many distinct values and wish to
-see frequencies only for the 5 most common values; to obtain the desired table,
-we would simply use `order = "freq"` along with `rows = 1:5`.
+know which ones are the 10 most frequent. To achieve this, we would simply 
+use `order = "freq"` along with `rows = 1:5`.
 
 #### Generating Several Frequency Tables at Once
 
@@ -176,8 +173,9 @@ the data frame object (subsetted if needed) to `freq()`: (results not shown)
 freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
-We can without fear pass a whole data frame to `freq()`; the function will
-ignore numerical variables having many distinct values.
+We can without fear pass a whole data frame to `freq()`; it will figure out
+which variables to ignore (numerical variables having many distinct
+values).
 
 ## 2 - ctable() : Cross-Tabulations
 
@@ -200,7 +198,8 @@ By default, `ctable()` shows row proportions. To show column or total
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit 
 proportions, use `prop = "n"`.
 
-In the next example, we'll create a simple “2 x 2” table:
+In the next example, we'll create a simple “2 x 2” table 
+(no proportions, no totals):
 
 ```{r, eval = FALSE}
 with(tobacco, 
@@ -211,8 +210,8 @@ with(tobacco,
 
 #### Chi-square results
 To display chi-square results below the table, set the "chisq" parameter to
-`TRUE`. This time, instead of `with()`, we'll use the `%$%` operator for
-**magrittr**.
+`TRUE`. This time, instead of `with()`, we'll use the `%$%` operator from the
+**magrittr** package, which works in a very similar fashion.
 
 ```{r, eval=FALSE}
 library(magrittr)
@@ -252,7 +251,7 @@ descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmark
 ## 4 - dfSummary() : Data Frame Summaries
 
 `dfSummary()` collects information about all variables in a data frame and
-displays it in a singe, legible table.
+displays it in a single legible table.
 
 To generate a summary report and have it displayed in RStudio’s 
 Viewer pane (or in the default Web browser if working outside RStudio),
@@ -307,7 +306,7 @@ system’s default browser.
 ## Using stby() to Ventilate Results
 
 We can use `stby()` the same way as *R*’s base function `by()` with the four
-core summarytools functions. It returns a list-type object
+core **summarytools** functions. This returns a list-type object
 containing as many elements as there are categories in the grouping variable.
 
 **Why not just use `by()`?** The reason is that `by()` creates objects of
@@ -410,6 +409,9 @@ more _knitr_'s options.
 # st_css()
 # ```
 ````
+
+Since `results = 'asis'` can conflict with other packages' way of generating
+results, it is sometimes best to use it for individual chunks only.
 
 ### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
 
@@ -713,9 +715,6 @@ Then, to go back to default settings:
 Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
-
-Note that russian translations are not currently available, but should be in
-the next release.
 
 ### Defining and Using Custom Translations
 

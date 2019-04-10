@@ -712,7 +712,7 @@ Calling this function without any arguments will bring up, on systems that
 support graphical devices (the vast majority, that is), an editable window
 allowing the modify only the desired items. 
 
-<img src="define_keywords.png" width=100% style="border:0" />
+<img src="define_keywords.png" width=95% style="border:1" />
 
 After closing the edit window, you will be offered to export the resulting
 "custom language" into a _.csv_ file that can be imported later on with
