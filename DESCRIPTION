@@ -29,10 +29,10 @@ Imports:
   tidyr,
   utils
 Suggests:
-  magrittr,
-  rstudioapi,
   knitr,
-  rmarkdown
+  magrittr,
+  rmarkdown,
+  rstudioapi
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true

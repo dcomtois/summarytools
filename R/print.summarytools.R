@@ -1510,8 +1510,8 @@ print_dfs <- function(x, method) {
     
     # Remove graph if specified in call to print/view 
     # or if X11 not supported on Linux
-    if ((trs("graph") %in% names(x) && 
-        "graph.col" %in% names(format_info) &&
+    if (trs("graph") %in% names(x) && 
+        ("graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) || 
         isTRUE(.st_env$noX11)) {
       x <- x[ ,-which(names(x) == trs("graph"))]
