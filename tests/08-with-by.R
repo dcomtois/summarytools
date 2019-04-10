@@ -1,16 +1,16 @@
 #-------------------------------- with-by.R ------------------------------------
 # with
 w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))
-view(w1, file = "01 - with.md")
-view(w1, file = "01 - with.html")
+view(w1, file = "01-with.md")
+view(w1, file = "01-with.html")
 
 (w2 <- with(tobacco, descr(BMI, transpose = TRUE)))
-view(w2, footnote = "with, transpose", file = "02 - with-transposed.html")
+view(w2, footnote = "with, transpose", file = "02-with-transposed.html")
 
 view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander")
 
 (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C")))
-view(w3, method = "browser", footnote = "with, prop = c", file = "03 - with-col props.html")
+view(w3, method = "browser", footnote = "with, prop = c", file = "03-with-col-props.html")
 
 # by
 bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)
@@ -18,36 +18,36 @@ view(bf1, 'pander')
 view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 print(bf1)
 
-view(bf1, file = "04 - by freq.html", missing = "xxxx")
+view(bf1, file = "04-by freq.html", missing = "xxxx")
 
 # with + by
 label(tobacco$BMI) <- "Body Mass Index"
 label(tobacco$diseased) <- "Subject has illness"
-view(stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "05 - with and by freq.html")
-view(stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "06 - with and by descr.md")
+view(stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "05-with-and-by-freq.html")
+view(stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "06-with-and-by-descr.md")
 
 bf2 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)
 view(bf2, 'pander')
-view(bf2, method = "browser", footnote = "condition for by", file = "07 - by calculated freq.html")
+view(bf2, method = "browser", footnote = "condition for by", file = "07-by-calculated-freq.html")
 
 bd1 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid")
-view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "08 - by descr no head.html")
+view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "08-by-descr-no-head.html")
 view(bd1, method = 'pander')
 
 bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
-view(bd2, method = "browser", file = "09 - by descr.html")
-view(bd2, method = "pander", file = "09 - by descr view.md")
+view(bd2, method = "browser", file = "09-by-descr.html")
+view(bd2, method = "pander", file = "09-by-descr-view.md")
 
 label(tobacco) <- "Blabla"
 bd3 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 st_options(display.labels = FALSE)
-view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10 - by descr.html")
-print(bd3, file = "10 - by descr.md")
+view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10-by-descr.html")
+print(bd3, file = "10-by descr.md")
 
 attach(tobacco)
 bd4 <- stby(data = BMI, INDICES = gender, FUN = descr)
-view(bd4, method = "browser", footnote = "stand-alone variable", file = "11 - by descr standalone var.html")
-print(bd4, file = "11 - by descr standalone var.md")
+view(bd4, method = "browser", footnote = "stand-alone variable", file = "11-by-descr-standalone-var.html")
+print(bd4, file = "11-by descr standalone var.md")
 detach(tobacco)
 
 # cas particulier - by, 1 groupe seul.
@@ -85,7 +85,7 @@ view(b6, "pander")
 view(b6, method = "browser", footnote = "4 stats", file = "18.html")
 with(tobacco, view(stby(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html"))
 view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html")
-with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 
+with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander"))
 
 # Ouverture dans viewer
 view(b8, method = "viewer")

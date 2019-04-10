@@ -8,5 +8,5 @@ view(f1, round.digits = 1, display.labels = F, display.type = F, missing = '---'
 print(f1, method = 'render', footnote = 'f1')
 
 (f2 <- freq(tabagisme$maladie, order = "freq"))
-print(f2, justify = "left", file = "02 - justify left.md")
-view(f2, justify = "right", footnote = 'justify right', file = '03 - justify right.html')
+print(f2, justify = "left", file = "02-justify-left.md")
+view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html')

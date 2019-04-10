@@ -126,7 +126,7 @@ freq(tobacco[[3]])
 # Print to files (Style and/or method should be modified with message)
 print(f1, file = "01.md")
 print(f1, file = "01.html")
-print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap")
+print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap")
 
 # Omit cumulative and na reporting
 (f4 <- freq(tobacco$age.gr))
@@ -138,7 +138,7 @@ print(f5, cumul = TRUE, report.nas = TRUE)
 
 # Weights
 (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
-print(wf1, file = "03 - weights.html")
+print(wf1, file = "03-weights.html")
 print(wf1, report.nas = FALSE)
 
 (wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq"))
@@ -158,14 +158,14 @@ label(tobacco$diseased) <- "Subject has an illness"
 (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 view(bf1, 'pander')
 print(bf1, headings = FALSE, plain.ascii = FALSE)
-print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx")
-view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html")
+print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx")
+view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html")
 
 (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
-print(bf2, file = "06 - by.html")
+print(bf2, file = "06-by.html")
 
 (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
-print(bf3, file = "07 - by.html")
+print(bf3, file = "07-by.html")
 
 # Using stby() + with() --- retrieving labels works only when executed "not in batch"
 label(tobacco$diseased) <- "Subject has an illness"
@@ -192,10 +192,10 @@ freq(tobacco)
 st_options(freq.totals = TRUE, freq.report.nas = TRUE)
 
 # HTML - omitting NA reporting and/or Cumulative proportions
-view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions")
-view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE")
-view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE")
-view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
+view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions")
+view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE")
+view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE")
+view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
 
 # tb()
 library(magrittr)
