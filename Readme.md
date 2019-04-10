@@ -237,29 +237,15 @@ with(tobacco,
 #### Chi-square results
 
 To display chi-square results below the table, set the “chisq” parameter
-to `TRUE`:
+to `TRUE`. This time, instead of `with()`, we’ll use the `%$%` operator
+for **magrittr**.
 
-    tobacco %$% ctable(gender, smoker, chisq = TRUE)
-    
-    ## Cross-Tabulation, Row Proportions  
-    ## gender * smoker  
-    ## Data Frame: tobacco  
-    ## 
-    ## 
-    ## -------- -------- ------------- ------------- ---------------
-    ##            smoker           Yes            No           Total
-    ##   gender                                                     
-    ##        F            147 (30.1%)   342 (69.9%)    489 (100.0%)
-    ##        M            143 (29.2%)   346 (70.8%)    489 (100.0%)
-    ##     <NA>              8 (36.4%)    14 (63.6%)     22 (100.0%)
-    ##    Total            298 (29.8%)   702 (70.2%)   1000 (100.0%)
-    ## -------- -------- ------------- ------------- ---------------
-    ## 
-    ## ----------------------------
-    ##  Chi.squared   df   p.value 
-    ## ------------- ---- ---------
-    ##    0.5415      2    0.7628  
-    ## ----------------------------
+``` r
+library(magrittr)
+tobacco %$% ctable(gender, smoker, chisq = TRUE, headings = FALSE)
+```
+
+<img src="img/ctable-chisq.png" style="border:0"  width=500px/>
 
 Note that a warning will be issued when at least one *expected* cell
 counts is lower than 5.
@@ -354,6 +340,41 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid",
 While rendering *html* tables with `view()` doesn’t require it, here it
 is essential to specify `tmp.img.dir`. We’ll explain why [further
 below](#tmp-img-dir).
+
+## Tidy Tables With tb()
+
+When generating `freq()` or `descr()` tables, it is possible to turn the
+results into “tidy” tables with the use of the `tb()` function (think of
+*tb* as a diminutive for *tibble*). For example:
+
+``` r
+library(magrittr)
+iris %>% descr(stats = "common") %>% tb()
+```
+
+    ## # A tibble: 4 x 8
+    ##   variable    mean         sd           min   med   max   n.valid pct.valid
+    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
+    ## 1 Petal.Leng~ 3.758        1.765298233~ 1     4.35  6.9   150     100      
+    ## 2 Petal.Width 1.199333333~ 0.762237668~ 0.1   1.3   2.5   150     100      
+    ## 3 Sepal.Leng~ 5.843333333~ 0.828066127~ 4.3   5.8   7.9   150     100      
+    ## 4 Sepal.Width 3.057333333~ 0.435866284~ 2     3     4.4   150     100
+
+``` r
+iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
+```
+
+    ## # A tibble: 3 x 3
+    ##   value       freq   pct
+    ##   <fct>      <dbl> <dbl>
+    ## 1 setosa        50  33.3
+    ## 2 versicolor    50  33.3
+    ## 3 virginica     50  33.3
+
+By definition, no total rows are part of *tidy* tables, and row.names
+are converted to regular columns. For now, `tb()` doesn’t handle
+split-group tables, but it is certainly in store for a future release of
+**summarytools**.
 
 ## The print() and view() Functions
 
@@ -478,41 +499,6 @@ stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 # or equivalently
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ```
-
-## Tidy Tables With tb()
-
-When generating `freq()` or `descr()` tables, it is possible to turn the
-results into “tidy” tables with the use of the `tb()` function (think of
-*tb* as a diminutive for *tibble*). For example:
-
-``` r
-library(magrittr)
-iris %>% descr(stats = "common") %>% tb()
-```
-
-    ## # A tibble: 4 x 8
-    ##   variable    mean         sd           min   med   max   n.valid pct.valid
-    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
-    ## 1 Petal.Leng… 3.758        1.765298233… 1     4.35  6.9   150     100      
-    ## 2 Petal.Width 1.199333333… 0.762237668… 0.1   1.3   2.5   150     100      
-    ## 3 Sepal.Leng… 5.843333333… 0.828066127… 4.3   5.8   7.9   150     100      
-    ## 4 Sepal.Width 3.057333333… 0.435866284… 2     3     4.4   150     100
-
-``` r
-iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
-```
-
-    ## # A tibble: 3 x 3
-    ##   value       freq   pct
-    ##   <fct>      <dbl> <dbl>
-    ## 1 setosa        50  33.3
-    ## 2 versicolor    50  33.3
-    ## 3 virginica     50  33.3
-
-By definition, no total rows are part of *tidy* tables, and row.names
-are converted to regular columns. For now, `tb()` doesn’t handle
-split-group tables, but it is certainly in store for a future release of
-**summarytools**.
 
 ## Using summarytools in Rmarkdown Documents
 
@@ -917,10 +903,13 @@ that is), an editable window allowing the modify only the desired items.
 
 ![define\_keywords](img/define_keywords.png)
 
-After doing so, it even allows exporting the resulting “custom language”
-into a *csv* file that can be imported later on with
-`use_custom_lang()`. It is also possible to define one or several
-keywords using arguments. For instance:
+After closing the edit window, you will be offered to export the
+resulting “custom language” into a *.csv* file that can be imported
+later on with `use_custom_lang()`.
+
+Note that it is also possible to define one or several keywords using
+arguments. For the list of all possible keywords to define, see
+`?define_keywords`. For instance:
 
 ``` r
 define_keywords(freq = "N")
@@ -928,7 +917,7 @@ define_keywords(freq = "N")
 
 ## <a id="latest-changes"></a>Latest Changes and Improvements
 
-As stated earlier, version 0.9 brings **many** improvements to
+As stated earlier, version 0.9 brought **many** improvements to
 **summarytools**. Here are the key elements:
 
   - Translations
@@ -956,7 +945,7 @@ As stated earlier, version 0.9 brings **many** improvements to
   - Changes to `ctable()`
       - Fully supports `stby()`
       - Improved number alignment
-      - Added “chisq.test” logical parameter (v0.9.3)
+      - Added “chisq” parameter
   - Changes to `descr()`
       - For the `stats` argument, Values “fivenum” and “common” are now
         allowed, the latter representing the collection of *mean*, *sd*,
@@ -994,6 +983,8 @@ As stated earlier, version 0.9 brings **many** improvements to
     been split into more manageable parts, and several normalizing
     operations were performed, facilitating maintenance and improving
     code readability
+  - The `tb()` function turns results from `freq()` and `descr()` into
+    *tidy tibbles*
 
 ### Backward Compatibility
 
