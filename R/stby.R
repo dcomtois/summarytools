@@ -3,11 +3,8 @@
 #' This is essentially the base \code{\link{by}} function, except for the 
 #' class of the returned object.
 #'
-#' @name stby
-#' @aliases byst
-#' 
 #' @usage stby(data, INDICES, FUN, ..., simplify = TRUE)
-#' byst(data, INDICES, FUN, ..., simplify = TRUE)
+#' stby(data, INDICES, FUN, ..., simplify = TRUE)
 #' 
 #' @param data an R object, normally a data frame, possibly a matrix.
 #' @param INDICES a factor or a list of factors, each of length nrow(data).
@@ -21,7 +18,6 @@
 #'
 #' @examples
 #' data("tobacco")
-#' stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 #'
 #' @seealso \code{\link[base]{by}}, \code{\link[base]{tapply}}
 #' @keywords utilities
@@ -67,7 +63,3 @@ stby.default <- function (data, INDICES, FUN, ..., simplify = TRUE) {
       class = "stby")
   }
 }
-
-# Alias
-#' @export
-byst <- stby

@@ -37,6 +37,10 @@
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By 
 #'   default, the character values for arguments x and y are used.
+#' @param chisq Logical. Display chisq statistic along with p-value in a message.
+#' @param weights Vector of weights; must be of the same length as \code{x}.
+#' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
+#'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
 #' @return A frequency table of classes \code{matrix} and \code{summarytools} 
@@ -80,18 +84,22 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-#' @importFrom stats addmargins na.omit
+#' @importFrom stats addmargins na.omit chisq.test
 ctable <- function(x, y,
-                   prop = st_options("ctable.prop"),
-                   useNA = "ifany", 
-                   totals = st_options("ctable.totals"), 
-                   style = st_options("style"), 
-                   round.digits = 1, justify = "right", 
-                   plain.ascii = st_options("plain.ascii"),
-                   headings = st_options("headings"),
-                   display.labels = st_options("display.labels"),
-                   split.tables = Inf, 
-                   dnn=c(substitute(x), substitute(y)),
+                   prop            = st_options("ctable.prop"),
+                   useNA           = "ifany", 
+                   totals          = st_options("ctable.totals"), 
+                   style           = st_options("style"), 
+                   round.digits    = 1,
+                   justify         = "right", 
+                   plain.ascii     = st_options("plain.ascii"),
+                   headings        = st_options("headings"),
+                   display.labels  = st_options("display.labels"),
+                   split.tables    = Inf, 
+                   dnn             = c(substitute(x), substitute(y)),
+                   chisq           = FALSE,
+                   weights         = NA, 
+                   rescale.weights = FALSE, 
                    ...) {
 
   # Support for by()
@@ -153,7 +161,7 @@ ctable <- function(x, y,
     y[is.nan(y)] <- NA
   }
 
-  # Get into about x & y from parsing function
+  # Get info about x & y from parsing function
   if (isTRUE(flag_by)) {
     parse_info_x <- try(
       parse_args(sys.calls(), sys.frames(), match.call(), 
@@ -213,8 +221,37 @@ ctable <- function(x, y,
   }
 
   # Create xfreq table ---------------------------------------------------------
-  freq_table <- table(x, y, useNA = useNA)
+  if (identical(NA, weights)) {
+    freq_table <- table(x, y, useNA = useNA)
+  } else {
+    # Weights are used
+    weights_string <- deparse(substitute(weights))
+    
+    if (sum(is.na(weights)) > 0) {
+      warning("missing values on weight variable have been detected and were ",
+              "treated as zeroes")
+      weights[is.na(weights)] <- 0
+    }
+    
+    if (isTRUE(rescale.weights)) {
+      weights <- weights / sum(weights) * length(x)
+    }
+    
+    if (useNA == "no") {
+      freq_table <- xtabs(weights ~ x + y, addNA = FALSE)
+    } else {
+      freq_table <- xtabs(weights ~ x + y, addNA = TRUE)
+    }
+  }
+  
+  if (isTRUE(chisq)) {
+    tmp.chisq <- chisq.test(freq_table)
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
+                   tmp.chisq$parameter, 
+                   p.value = round(tmp.chisq$p.value, 4))
+  }
 
+  
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
@@ -228,21 +265,20 @@ ctable <- function(x, y,
   rownames(freq_table)[nrow(freq_table)] <- trs("total")
   colnames(freq_table)[ncol(freq_table)] <- trs("total")
   if (!is.null(prop_table)) {
-    prop_table[is.nan(prop_table)] <- 0 # NaN's can occur
+    prop_table[is.nan(prop_table)] <- 0
     if (prop == "t") {
       prop_table <- addmargins(prop_table)
     } else if (prop == "r") {
       prop_table <- addmargins(prop_table, 2)
-      sum_props <- c(prop.table(freq_table[nrow(freq_table), 
-                                           -ncol(freq_table)]), Total=1)
+      sum_props <- 
+        c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
       prop_table <- rbind(prop_table, sum_props)
     } else if (prop == "c") {
       prop_table <- addmargins(prop_table, 1)
-      sum_props <- c(prop.table(freq_table[-nrow(freq_table), 
-                                           ncol(freq_table)]), Total=1)
+      sum_props <- 
+        c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
       prop_table <- cbind(prop_table, sum_props)
     }
-
     rownames(prop_table)[nrow(prop_table)] <- trs("total")
     colnames(prop_table)[ncol(prop_table)] <- trs("total")
   }
@@ -266,17 +302,20 @@ ctable <- function(x, y,
   
   output <- list(cross_table = freq_table, 
                  proportions = prop_table)
-
+  
   # Set output object's attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "ctable"
   attr(output, "fn_call") <- match.call()
-  #attr(output, "proportions") <- prop
   attr(output, "date") <- Sys.Date()
 
+  if (isTRUE(chisq)) {
+    attr(output, "chisq") <- tmp.chisq
+  }
+
+  dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
   data_info <-
-    list(Data.frame          = ifelse(exists("df_name", inherits = FALSE), 
-                                      df_name, NA),
+    list(Data.frame          = dfn,
          Data.frame.label    = ifelse(exists("df_label", inherits = FALSE),
                                       df_label, NA),
          Row.variable        = x_name,
@@ -289,6 +328,13 @@ ctable <- function(x, y,
                                       c = "Column",
                                       t = "Total",
                                       n = "None"),
+         Weights             = ifelse(identical(weights, NA), NA,
+                                      ifelse(is.na(dfn), 
+                                             weights_string,
+                                             sub(pattern = paste0(dfn, "$"), 
+                                                 replacement = "",
+                                                 x = weights_string,
+                                                 fixed = TRUE))),
          Group            = ifelse("by_group" %in% names(parse_info_x),
                                    parse_info_x$by_group, NA),
          by_first         = ifelse("by_group" %in% names(parse_info_x), 

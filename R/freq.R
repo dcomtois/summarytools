@@ -8,7 +8,9 @@
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
 #'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent).
+#'   most frequent to less frequent). To invert the order, place a minus sign
+#'   before or after the word. \dQuote{-freq} will thus display the items
+#'   starting from the lowest in frequency to the highest, and so forth.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
 #'   \dQuote{rmarkdown} This option can be set globally; see
@@ -22,11 +24,19 @@
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one of
 #'   \dQuote{left}, \dQuote{center}, or \dQuote{right}.
-#' @param totals Logical. Set to \code{FALSE} to hide totals from results. To
-#'   change this value globally, see \code{\link{st_options}}.
+#' @param cumul Logical. Set to \code{FALSE} to hide cumulative proportions
+#'  from results. \code{TRUE} by default. To change this value globally, see 
+#'   \code{\link{st_options}}.
+#' @param totals Logical. Set to \code{FALSE} to hide totals from results. 
+#'   \code{TRUE} by default. To change this value globally, see 
+#'   \code{\link{st_options}}.
 #' @param report.nas Logical. Set to \code{FALSE} to turn off reporting of
 #'   missing values. To change this default value globally, see
 #'   \code{\link{st_options}}.
+#' @param rows Character or numeric vector allowing subsetting of the results.
+#'   The order given here will be reflected in the resulting table. If a single
+#'   string is used, it will be used as a regular expression to filter row 
+#'   names.
 #' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
@@ -67,6 +77,15 @@
 #' # Print html Source
 #' print(fr_smoker_by_gender, method = "render", footnote = NA)
 #' 
+#' # Order by frequency (+ to -)
+#' freq(tobacco$age.gr, order = "freq")
+#' 
+#' # Order by frequency (- to +)
+#' freq(tobacco$age.gr, order = "-freq")
+#' 
+#' # Use the 'rows' argument to display only the 10 most common items
+#' freq(tobacco$age.gr, order = "freq", rows = 1:10)
+#' 
 #' \dontrun{
 #' # Display rendered html results in RStudio's Viewer
 #' # notice 'view()' is NOT written with capital V
@@ -91,18 +110,20 @@
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct
 freq <- function(x, 
-                 round.digits    = st_options("round.digits"), 
-                 order           = "default", 
-                 style           = st_options("style"), 
-                 plain.ascii     = st_options("plain.ascii"), 
-                 justify         = "default", 
-                 totals          = st_options("freq.totals"), 
-                 report.nas      = st_options("freq.report.nas"), 
-                 missing         = "", 
-                 display.type    = TRUE, 
-                 display.labels  = st_options("display.labels"), 
-                 headings        = st_options("headings"), 
-                 weights         = NA, 
+                 round.digits    = st_options("round.digits"),
+                 order           = "default",
+                 style           = st_options("style"),
+                 plain.ascii     = st_options("plain.ascii"),
+                 justify         = "default",
+                 cumul           = st_options("freq.cumul"),
+                 totals          = st_options("freq.totals"),
+                 report.nas      = st_options("freq.report.nas"),
+                 rows            = numeric(),
+                 missing         = "",
+                 display.type    = TRUE,
+                 display.labels  = st_options("display.labels"),
+                 headings        = st_options("headings"),
+                 weights         = NA,
                  rescale.weights = FALSE, ...) {
 
   # When x is a dataframe, we make recursive calls to freq() with each variable
@@ -133,19 +154,20 @@ freq <- function(x,
       
       out[[length(out) + 1]] <- 
         freq(x[[i]],
-             round.digits = round.digits, 
-             order = order,
-             style = style, 
-             plain.ascii = plain.ascii, 
-             justify = justify, 
-             totals = totals, 
-             report.nas = report.nas, 
-             missing = missing, 
-             display.type = display.type, 
-             display.labels = display.labels, 
-             headings = headings, 
-             weights = weights, 
-             rescale.weights = rescale.weights, 
+             round.digits     = round.digits, 
+             order            = order,
+             style            = style, 
+             plain.ascii      = plain.ascii, 
+             justify          = justify, 
+             totals           = totals, 
+             report.nas       = report.nas, 
+             rows             = rows,
+             missing          = missing, 
+             display.type     = display.type, 
+             display.labels   = display.labels, 
+             headings         = headings, 
+             weights          = weights, 
+             rescale.weights  = rescale.weights, 
              ...)
       
       attr(out[[length(out)]], "data_info")$Data.frame <- df_name
@@ -184,6 +206,7 @@ freq <- function(x,
     }
   }
 
+  order_sign <- numeric() # to avoid warning on check
   errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
 
   if (length(errmsg) > 0) {
@@ -223,53 +246,17 @@ freq <- function(x,
     parse_info$var_label <- label(x)
   }
   
-  # No weights are used --------------------------------------------------------
-  # create a basic frequency table, always including NA
+  # create a basic frequency table, always including NA ------------------------
   if (identical(NA, weights)) {
     freq_table <- table(x, useNA = "always")
+  } else {
     
-    # Order by frequency if needed
-    if (order == "freq") {
-      freq_table <- sort(freq_table, decreasing = TRUE)
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # order by names if needed
-    if (is.factor(x) && order == "names") {
-      freq_table <- freq_table[order(names(freq_table))]
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # Change the name of the NA item (last) to avoid potential
-    # problems when echoing to console
-    names(freq_table)[length(freq_table)] <- "<NA>"
-    
-    # calculate proportions (valid, i.e excluding NA's)
-    P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
-    
-    # Add "<NA>" item to the proportions; this assures
-    # proper length when cbind'ing later on
-    P_valid["<NA>"] <- NA
-    
-    # calculate proportions (total, i.e. including NA's)
-    P_tot <- prop.table(freq_table) * 100
-  }
-  
-  # Weights are used -----------------------------------------------------------
-  else {
-    
-    # Check that weights vector is of the right length
-    if (length(weights) != length(x)) {
-      stop("weights vector must be of same length as x")
-    }
-    
+    # Weights are used
     weights_string <- deparse(substitute(weights))
     
     if (sum(is.na(weights)) > 0) {
-      warning("Missing values on weight variable have been detected and were ",
-              "treated as zeroes.")
+      warning("missing values on weight variable have been detected and were ",
+              "treated as zeroes")
       weights[is.na(weights)] <- 0
     }
     
@@ -277,27 +264,63 @@ freq <- function(x,
       weights <- weights / sum(weights) * length(x)
     }
     
-    freq_table <- xtabs(formula = weights ~ x)
-    
-    # Order by frequency if needed
-    if (order == "freq") {
-      freq_table <- sort(freq_table, decreasing = TRUE)
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    # order by names if needed
-    if (is.factor(x) && order == "names") {
-      freq_table <- freq_table[sort(names(freq_table))]
-      na_pos <- which(is.na(names(freq_table)))
-      freq_table <- c(freq_table[-na_pos], freq_table[na_pos])
-    }
-    
-    P_valid <- prop.table(freq_table) * 100
-    P_valid["<NA>"] <- NA
-    freq_table["<NA>"] <- sum(weights) - sum(xtabs(formula = weights ~ x))
-    P_tot <- prop.table(freq_table) * 100
+    freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
   }
+  
+  # Order by [-]freq if needed
+  if (order == "freq") {
+    nas_freq <- tail(freq_table, 1)
+    freq_table <- freq_table[-length(freq_table)]
+    freq_table <- sort(freq_table, decreasing = (order_sign == "+"))
+    freq_table <- append(freq_table, nas_freq)
+  }
+  
+  # order by [-]names if needed
+  if (order == "names") {
+    freq_table <- freq_table[order(names(freq_table), 
+                                   decreasing = (order_sign == "-"), 
+                                   na.last = TRUE)]
+  }
+
+  # order by [-]levels if needed
+  if (is.factor(x) && order == "levels" && order_sign == "-") {
+    freq_table <- c(freq_table[rev(levels(x))], tail(freq_table, 1))
+  }
+  
+  if (is.character(rows) && length(rows) == 1) {
+    # Use string as regular expression to filter rows
+    rr <- grep(rows, names(freq_table))
+    if (length(rr) == 0) {
+      stop("'rows' argument doesn't match any data")
+    }
+    
+    freq_table <- c(freq_table[rr], tail(freq_table, 1))
+    
+  } else if (length(rows) > 0) {
+    if (is.character(rows)) { 
+      freq_table <- c(freq_table[rows], tail(freq_table, 1))
+    } else if (is.numeric(rows)) {
+      if (sign(rows[1]) == 1) {
+        freq_table <- c(freq_table[rows], tail(freq_table, 1))
+      } else {
+        freq_table <- c(freq_table[rows])
+      }
+    }
+  } 
+    
+  # Change the name of the NA item (last) to avoid potential
+  # problems when echoing to console
+  names(freq_table)[length(freq_table)] <- "<NA>"
+  
+  # calculate proportions (valid, i.e excluding NA's)
+  P_valid <- prop.table(freq_table[-length(freq_table)]) * 100
+  
+  # Add "<NA>" item to the proportions; this assures
+  # proper length when cbind'ing later on
+  P_valid["<NA>"] <- NA
+  
+  # calculate proportions (total, i.e. including NA's)
+  P_tot <- prop.table(freq_table) * 100
   
   # Calculate cumulative proportions ------------------------------------------
   
@@ -309,7 +332,7 @@ freq <- function(x,
   
   output <- cbind(freq_table, P_valid, P_valid_cum, P_tot, P_tot_cum)
   output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
-  colnames(output) <- c(trs("freq"), trs("pct.valid"), trs("pct.valid.cum"), 
+  colnames(output) <- c(trs("freq"), trs("pct.valid.f"), trs("pct.valid.cum"), 
                         trs("pct.total"), trs("pct.total.cum"))
   rownames(output) <- c(names(freq_table), trs("total"))
   
@@ -351,10 +374,16 @@ freq <- function(x,
       Variable.label   = ifelse("var_label" %in% names(parse_info), 
                                 parse_info$var_label, NA),
       Data.type        = Data.type,
-      Weights          = ifelse(identical(weights, NA), NA,
-                                sub(pattern = paste0(parse_info$df_name, "$"), 
+      Weights          = ifelse(
+                           identical(weights, NA), NA,
+                           ifelse(is.null(parse_info$df_name), 
+                                          yes = weights_string,
+                                          no = sub(
+                                            pattern = paste0(parse_info$df_name,
+                                                             "$"), 
                                     replacement = "",
-                                    x = weights_string, fixed = TRUE)),
+                                          x = weights_string, 
+                                          fixed = TRUE))),
       Group            = ifelse("by_group" %in% names(parse_info),
                                 parse_info$by_group, NA),
       by_first         = ifelse("by_group" %in% names(parse_info), 
@@ -368,6 +397,7 @@ freq <- function(x,
                                       round.digits   = round.digits,
                                       plain.ascii    = plain.ascii,
                                       justify        = justify,
+                                      cumul          = cumul,
                                       totals         = totals,
                                       report.nas     = report.nas,
                                       missing        = missing,

@@ -7,15 +7,15 @@
 st_options(option = NULL, value = NULL, style = "simple",
   plain.ascii = TRUE, round.digits = 2, headings = TRUE,
   footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
-  custom.css = NA, escape.pipe = FALSE, freq.totals = TRUE,
-  freq.report.nas = TRUE, ctable.prop = "r", ctable.totals = TRUE,
-  descr.stats = "all", descr.transpose = FALSE, descr.silent = FALSE,
-  dfSummary.style = "multiline", dfSummary.varnumbers = TRUE,
-  dfSummary.labels.col = TRUE, dfSummary.valid.col = TRUE,
-  dfSummary.na.col = TRUE, dfSummary.graph.col = TRUE,
-  dfSummary.graph.magnif = 1, dfSummary.silent = FALSE,
-  tmp.img.dir = NA, subtitle.emphasis = TRUE, lang = "en",
-  omit.headings = !headings)
+  custom.css = NA, escape.pipe = FALSE, freq.cumul = TRUE,
+  freq.totals = TRUE, freq.report.nas = TRUE, ctable.prop = "r",
+  ctable.totals = TRUE, descr.stats = "all", descr.transpose = FALSE,
+  descr.silent = FALSE, dfSummary.style = "multiline",
+  dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
+  dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
+  dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
+  dfSummary.silent = FALSE, tmp.img.dir = NA,
+  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -63,6 +63,9 @@ layout.}
 \item{escape.pipe}{Logical. Set to \code{TRUE} if Pandoc conversion is your
 goal and you have unsatisfying results with grid or multiline tables.
 \code{FALSE} by default.}
+
+\item{freq.cumul}{Logical. Corresponds to the \code{cumul} parameter of
+\code{\link{freq}}. \code{TRUE} by default.}
 
 \item{freq.totals}{Logical. Corresponds to the \code{totals} parameter of
 \code{\link{freq}}. \code{TRUE} by default.}

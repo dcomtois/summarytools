@@ -366,7 +366,7 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
   attr(output, "st_type")    <- "descr"
   attr(output, "date")       <- Sys.Date()
   attr(output, "fn_call")    <- match.call()
-  
+  attr(output, "stats")      <- stats
   data_info <-
     list(
       Data.frame       = ifelse("df_name" %in% names(parse_info), 

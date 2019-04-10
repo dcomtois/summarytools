@@ -6,9 +6,11 @@
 \usage{
 freq(x, round.digits = st_options("round.digits"), order = "default",
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),
-  justify = "default", totals = st_options("freq.totals"),
-  report.nas = st_options("freq.report.nas"), missing = "",
-  display.type = TRUE, display.labels = st_options("display.labels"),
+  justify = "default", cumul = st_options("freq.cumul"),
+  totals = st_options("freq.totals"),
+  report.nas = st_options("freq.report.nas"), rows = numeric(),
+  missing = "", display.type = TRUE,
+  display.labels = st_options("display.labels"),
   headings = st_options("headings"), weights = NA,
   rescale.weights = FALSE, ...)
 }
@@ -20,7 +22,9 @@ freq(x, round.digits = st_options("round.digits"), order = "default",
 
 \item{order}{Ordering of rows in frequency table; \dQuote{names} (default for
 non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent).}
+most frequent to less frequent). To invert the order, place a minus sign
+before or after the word. \dQuote{-freq} will thus display the items
+starting from the lowest in frequency to the highest, and so forth.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or
@@ -38,12 +42,22 @@ default value globally, see \code{\link{st_options}}.}
 \dQuote{center} is used for \emph{html} tables. You can force it to one of
 \dQuote{left}, \dQuote{center}, or \dQuote{right}.}
 
-\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. To
-change this value globally, see \code{\link{st_options}}.}
+\item{cumul}{Logical. Set to \code{FALSE} to hide cumulative proportions
+from results. \code{TRUE} by default. To change this value globally, see 
+ \code{\link{st_options}}.}
+
+\item{totals}{Logical. Set to \code{FALSE} to hide totals from results. 
+\code{TRUE} by default. To change this value globally, see 
+\code{\link{st_options}}.}
 
 \item{report.nas}{Logical. Set to \code{FALSE} to turn off reporting of
 missing values. To change this default value globally, see
 \code{\link{st_options}}.}
+
+\item{rows}{Character or numeric vector allowing subsetting of the results.
+The order given here will be reflected in the resulting table. If a single
+string is used, it will be used as a regular expression to filter row 
+names.}
 
 \item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
 
@@ -96,6 +110,15 @@ with(tobacco, stby(diseased, smoker, freq))
 
 # Print html Source
 print(fr_smoker_by_gender, method = "render", footnote = NA)
+
+# Order by frequency (+ to -)
+freq(tobacco$age.gr, order = "freq")
+
+# Order by frequency (- to +)
+freq(tobacco$age.gr, order = "-freq")
+
+# Use the 'rows' argument to display only the 10 most common items
+freq(tobacco$age.gr, order = "freq", rows = 1:10)
 
 \dontrun{
 # Display rendered html results in RStudio's Viewer

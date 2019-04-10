@@ -62,6 +62,7 @@ describe imported data frames.
 
 Version 0.9 brings **many** changes and improvements. A summary of those
 changes can be found [near the end of this page](#latest-changes).
+Changes specific to the latest release can be found in the *NEWS* file.
 
 ## How to install
 
@@ -152,11 +153,40 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 |      **Total** |  150 | 100.00 | 100.00 |
 
 We can simplify the results further and omit the *Totals* row by
-specifying `totals = FALSE`.
+specifying `totals = FALSE`, as well as `cumul =
+FALSE`:
+
+``` r
+freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
+```
+
+|                | Freq |     % |
+| -------------: | ---: | ----: |
+|     **setosa** |   50 | 33.33 |
+| **versicolor** |   50 | 33.33 |
+|  **virginica** |   50 | 33.33 |
 
 To get familiar with the various output styles, try different values for
 `style` – “simple”, “rmarkdown” or “grid”, and see how this affects the
 results in the console.
+
+#### Subsetting Rows in Frequency Table
+
+The “rows” argument allows subsetting the resulting frequency table; it
+can work in 3 distinct ways:
+
+  - To select rows by position, use a numerical vector; `rows = 1:10`
+    will show the frequencies for the first 10 values only
+  - To select rows by name either use
+      - a character vector specifying all desired values
+      - a single character string to be used as a regular expression;
+        only the matching values will be displayed
+
+Used in combination with the “order” argument, this can be quite
+practical. Say we have a character variable containing many distinct
+values and wish to see frequencies only for the 5 most common values; to
+obtain the desired table, we would simply use `order = "freq"` along
+with `rows = 1:5`.
 
 #### Generating Several Frequency Tables at Once
 
@@ -168,9 +198,8 @@ simply pass the data frame object (subsetted if needed) to `freq()`:
 freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
-We can without fear pass a whole data frame to `freq()`; it will figure
-out which variables to ignore (continuous numerical variables, or
-variables having many, many distinct values).
+We can without fear pass a whole data frame to `freq()`; the function
+will ignore numerical variables having many distinct values.
 
 ## 2 - ctable() : Cross-Tabulations
 
@@ -205,6 +234,22 @@ with(tobacco,
 
 <img src="img/ctable-barebones-2.png" style="border:0"/>
 
+#### Chi-square results
+
+To display chi-square results below the table, set the “chisq” parameter
+to `TRUE`. This time, instead of `with()`, we’ll use the `%$%` operator
+for **magrittr**.
+
+``` r
+library(magrittr)
+tobacco %$% ctable(gender, smoker, chisq = TRUE, headings = FALSE)
+```
+
+<img src="img/ctable-chisq.png" style="border:0"  width=500px/>
+
+Note that a warning will be issued when at least one *expected* cell
+counts is lower than 5.
+
 ## 3 - descr() : Descriptive Univariate Stats
 
 The `descr()` function generates common central tendency statistics and
@@ -225,7 +270,7 @@ descr(iris, style = "rmarkdown")
 |                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
 |        **Mean** |         3.76 |        1.20 |         5.84 |        3.06 |
-|    **Std.Dev.** |         1.77 |        0.76 |         0.83 |        0.44 |
+|     **Std.Dev** |         1.77 |        0.76 |         0.83 |        0.44 |
 |         **Min** |         1.00 |        0.10 |         4.30 |        2.00 |
 |          **Q1** |         1.60 |        0.30 |         5.10 |        2.80 |
 |      **Median** |         4.35 |        1.30 |         5.80 |        3.00 |
@@ -238,7 +283,7 @@ descr(iris, style = "rmarkdown")
 | **SE.Skewness** |         0.20 |        0.20 |         0.20 |        0.20 |
 |    **Kurtosis** |       \-1.42 |      \-1.36 |       \-0.61 |        0.14 |
 |     **N.Valid** |       150.00 |      150.00 |       150.00 |      150.00 |
-|     **% Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
+|   **Pct.Valid** |       100.00 |      100.00 |       100.00 |      100.00 |
 
 ### Transposing, Selecting Statistics
 
@@ -256,12 +301,12 @@ statistics.
 descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmarkdown")
 ```
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max | N.Valid | % Valid |
-| ---------------: | ---: | -------: | ---: | -----: | ---: | ------: | ------: |
-| **Petal.Length** | 3.76 |     1.77 | 1.00 |   4.35 | 6.90 |  150.00 |  100.00 |
-|  **Petal.Width** | 1.20 |     0.76 | 0.10 |   1.30 | 2.50 |  150.00 |  100.00 |
-| **Sepal.Length** | 5.84 |     0.83 | 4.30 |   5.80 | 7.90 |  150.00 |  100.00 |
-|  **Sepal.Width** | 3.06 |     0.44 | 2.00 |   3.00 | 4.40 |  150.00 |  100.00 |
+|                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | Pct.Valid |
+| ---------------: | ---: | ------: | ---: | -----: | ---: | ------: | --------: |
+| **Petal.Length** | 3.76 |    1.77 | 1.00 |   4.35 | 6.90 |  150.00 |    100.00 |
+|  **Petal.Width** | 1.20 |    0.76 | 0.10 |   1.30 | 2.50 |  150.00 |    100.00 |
+| **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |  150.00 |    100.00 |
+|  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |  150.00 |    100.00 |
 
 ## 4 - dfSummary() : Data Frame Summaries
 
@@ -295,6 +340,41 @@ dfSummary(tobacco, plain.ascii = FALSE, style = "grid",
 While rendering *html* tables with `view()` doesn’t require it, here it
 is essential to specify `tmp.img.dir`. We’ll explain why [further
 below](#tmp-img-dir).
+
+## Tidy Tables With tb()
+
+When generating `freq()` or `descr()` tables, it is possible to turn the
+results into “tidy” tables with the use of the `tb()` function (think of
+*tb* as a diminutive for *tibble*). For example:
+
+``` r
+library(magrittr)
+iris %>% descr(stats = "common") %>% tb()
+```
+
+    ## # A tibble: 4 x 8
+    ##   variable    mean         sd           min   med   max   n.valid pct.valid
+    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
+    ## 1 Petal.Leng~ 3.758        1.765298233~ 1     4.35  6.9   150     100      
+    ## 2 Petal.Width 1.199333333~ 0.762237668~ 0.1   1.3   2.5   150     100      
+    ## 3 Sepal.Leng~ 5.843333333~ 0.828066127~ 4.3   5.8   7.9   150     100      
+    ## 4 Sepal.Width 3.057333333~ 0.435866284~ 2     3     4.4   150     100
+
+``` r
+iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
+```
+
+    ## # A tibble: 3 x 3
+    ##   value       freq   pct
+    ##   <fct>      <dbl> <dbl>
+    ## 1 setosa        50  33.3
+    ## 2 versicolor    50  33.3
+    ## 3 virginica     50  33.3
+
+By definition, no total rows are part of *tidy* tables, and row.names
+are converted to regular columns. For now, `tb()` doesn’t handle
+split-group tables, but it is certainly in store for a future release of
+**summarytools**.
 
 ## The print() and view() Functions
 
@@ -339,32 +419,32 @@ by Species.
 **Group:** Species = setosa  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 1.46 |     0.17 | 1.00 |   1.50 | 1.90 |
-|  **Petal.Width** | 0.25 |     0.11 | 0.10 |   0.20 | 0.60 |
-| **Sepal.Length** | 5.01 |     0.35 | 4.30 |   5.00 | 5.80 |
-|  **Sepal.Width** | 3.43 |     0.38 | 2.30 |   3.40 | 4.40 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 1.46 |    0.17 | 1.00 |   1.50 | 1.90 |
+|  **Petal.Width** | 0.25 |    0.11 | 0.10 |   0.20 | 0.60 |
+| **Sepal.Length** | 5.01 |    0.35 | 4.30 |   5.00 | 5.80 |
+|  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |
 
 **Group:** Species = versicolor  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 4.26 |     0.47 | 3.00 |   4.35 | 5.10 |
-|  **Petal.Width** | 1.33 |     0.20 | 1.00 |   1.30 | 1.80 |
-| **Sepal.Length** | 5.94 |     0.52 | 4.90 |   5.90 | 7.00 |
-|  **Sepal.Width** | 2.77 |     0.31 | 2.00 |   2.80 | 3.40 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 4.26 |    0.47 | 3.00 |   4.35 | 5.10 |
+|  **Petal.Width** | 1.33 |    0.20 | 1.00 |   1.30 | 1.80 |
+| **Sepal.Length** | 5.94 |    0.52 | 4.90 |   5.90 | 7.00 |
+|  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |
 
 **Group:** Species = virginica  
 **N:** 50
 
-|                  | Mean | Std.Dev. |  Min | Median |  Max |
-| ---------------: | ---: | -------: | ---: | -----: | ---: |
-| **Petal.Length** | 5.55 |     0.55 | 4.50 |   5.55 | 6.90 |
-|  **Petal.Width** | 2.03 |     0.27 | 1.40 |   2.00 | 2.50 |
-| **Sepal.Length** | 6.59 |     0.64 | 4.90 |   6.50 | 7.90 |
-|  **Sepal.Width** | 2.97 |     0.32 | 2.20 |   3.00 | 3.80 |
+|                  | Mean | Std.Dev |  Min | Median |  Max |
+| ---------------: | ---: | ------: | ---: | -----: | ---: |
+| **Petal.Length** | 5.55 |    0.55 | 4.50 |   5.55 | 6.90 |
+|  **Petal.Width** | 2.03 |    0.27 | 1.40 |   2.00 | 2.50 |
+| **Sepal.Length** | 6.59 |    0.64 | 4.90 |   6.50 | 7.90 |
+|  **Sepal.Width** | 2.97 |    0.32 | 2.20 |   3.00 | 3.80 |
 
 To see an *html* version of these results, we simply use `view()` (also
 possible is to use `print()` with `method = "viewer"`): (results not
@@ -392,22 +472,22 @@ with(tobacco, stby(BMI, age.gr, descr,
 **Data Frame:** tobacco  
 **N:** 258
 
-|              | 18-34 | 35-50 | 51-70 |  71 + |
-| -----------: | ----: | ----: | ----: | ----: |
-|     **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
-| **Std.Dev.** |  4.23 |  4.34 |  4.26 |  4.37 |
-|      **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
-|   **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
-|      **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
+|             | 18-34 | 35-50 | 51-70 |  71 + |
+| ----------: | ----: | ----: | ----: | ----: |
+|    **Mean** | 23.84 | 25.11 | 26.91 | 27.45 |
+| **Std.Dev** |  4.23 |  4.34 |  4.26 |  4.37 |
+|     **Min** |  8.83 | 10.35 |  9.01 | 16.36 |
+|  **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
+|     **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
 The transposed version looks like this:
 
-|           |  Mean | Std.Dev. |   Min | Median |   Max |
-| --------: | ----: | -------: | ----: | -----: | ----: |
-| **18-34** | 23.84 |     4.23 |  8.83 |  24.04 | 34.84 |
-| **35-50** | 25.11 |     4.34 | 10.35 |  25.11 | 39.44 |
-| **51-70** | 26.91 |     4.26 |  9.01 |  26.77 | 39.21 |
-|  **71 +** | 27.45 |     4.37 | 16.36 |  27.52 | 38.37 |
+|           |  Mean | Std.Dev |   Min | Median |   Max |
+| --------: | ----: | ------: | ----: | -----: | ----: |
+| **18-34** | 23.84 |    4.23 |  8.83 |  24.04 | 34.84 |
+| **35-50** | 25.11 |    4.34 | 10.35 |  25.11 | 39.44 |
+| **51-70** | 26.91 |    4.26 |  9.01 |  26.77 | 39.21 |
+|  **71 +** | 27.45 |    4.37 | 16.36 |  27.52 | 38.37 |
 
 ### Using stby() With ctable()
 
@@ -527,7 +607,7 @@ apps
 | ---------------------: | ------: | :-------------------------------------------------- |
 |            freq.totals |    TRUE | Display totals row in freq()                        |
 |        freq.report.nas |    TRUE | Display <NA> row and “valid” columns                |
-|            ctable.prop |     “r” | Display **r**ow proportions by default              |
+|            ctable.prop |     “r” | Display **r**ow proportions                         |
 |          ctable.totals |    TRUE | Show marginal totals                                |
 |            descr.stats |   “all” | “fivenum”, “common” or vector of stats              |
 |        descr.transpose |   FALSE |                                                     |
@@ -752,10 +832,11 @@ characters max) and we need to clean it up manually.
 
 ## Translations
 
-It is now possible to switch the language used in the outputs. So far,
-not too many languages are available (French and Spanish, Russian
-underway), but with the community’s involvement, I hope we can gather a
-good number.
+It is now possible to select the language used in the outputs. The
+following languages are available: English (*en* - default), French
+(*fr*), Spanish (*es*), Portuguese (*pt*), Turkish (*tr*), and Russian
+(*ru*). With the R community’s involvement, I believe we can add several
+more as time goes.
 
 ### Switching Languages
 
@@ -802,19 +883,41 @@ be in the next release.
 
 ### Defining and Using Custom Translations
 
-With the new function `useTranslations()`, you can add your own set of
-translations. For this, download the template *csv* file from [this
-page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv).
+Using the function `use_custom_lang()`, it is possible to add your own
+set of translations. To achieve this, simply download the template *csv*
+file from [this
+page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
+customize the +/- 70 items, and call `use_custom_lang()`, giving it as
+sole argument the path to the *csv* file you’ve created. Note that such
+custom translations will not persist across R sessions. This means that
+you should always have this *csv* file handy.
 
-After you’re done translating the +/- 70 items, simply call the
-`useTranslations()` function, giving it as sole argument the path to the
-*csv* file you’ve just created. Note that such custom translations will
-not persist across R sessions. This means that we should always have
-handy this *csv* file if we’re to print objects created with it.
+### Defining Specific Keywords
+
+Sometimes, all you might want to do is change just a few keywords – say
+you would rather have “N” instead of “Freq” in the title row of `freq()`
+tables. No need to create a full custom language for that. Rather, use
+`define_keywords()`. Calling this function without any arguments will
+bring up, on systems that support graphical devices (the vast majority,
+that is), an editable window allowing the modify only the desired items.
+
+![define\_keywords](img/define_keywords.png)
+
+After closing the edit window, you will be offered to export the
+resulting “custom language” into a *.csv* file that can be imported
+later on with `use_custom_lang()`.
+
+Note that it is also possible to define one or several keywords using
+arguments. For the list of all possible keywords to define, see
+`?define_keywords`. For instance:
+
+``` r
+define_keywords(freq = "N")
+```
 
 ## <a id="latest-changes"></a>Latest Changes and Improvements
 
-As stated earlier, version 0.9 brings **many** improvements to
+As stated earlier, version 0.9 brought **many** improvements to
 **summarytools**. Here are the key elements:
 
   - Translations
@@ -842,6 +945,7 @@ As stated earlier, version 0.9 brings **many** improvements to
   - Changes to `ctable()`
       - Fully supports `stby()`
       - Improved number alignment
+      - Added “chisq” parameter
   - Changes to `descr()`
       - For the `stats` argument, Values “fivenum” and “common” are now
         allowed, the latter representing the collection of *mean*, *sd*,
@@ -879,6 +983,8 @@ As stated earlier, version 0.9 brings **many** improvements to
     been split into more manageable parts, and several normalizing
     operations were performed, facilitating maintenance and improving
     code readability
+  - The `tb()` function turns results from `freq()` and `descr()` into
+    *tidy tibbles*
 
 ### Backward Compatibility
 

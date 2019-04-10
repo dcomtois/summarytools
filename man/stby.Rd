@@ -2,11 +2,10 @@
 % Please edit documentation in R/stby.R
 \name{stby}
 \alias{stby}
-\alias{byst}
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
 stby(data, INDICES, FUN, ..., simplify = TRUE)
-byst(data, INDICES, FUN, ..., simplify = TRUE)
+stby(data, INDICES, FUN, ..., simplify = TRUE)
 }
 \arguments{
 \item{data}{an R object, normally a data frame, possibly a matrix.}
@@ -30,7 +29,6 @@ class of the returned object.
 }
 \examples{
 data("tobacco")
-stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
 }
 \seealso{

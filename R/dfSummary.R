@@ -219,17 +219,19 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     }
   }
   
-  if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
+  if (isTRUE(.st_env$noX11)) {
+    store_imgs <- FALSE
+  } else if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
     if (is.na(tmp.img.dir)) {
       store_imgs <- FALSE
       if(!isTRUE(silent)) {
         message("text graphs are displayed; set 'tmp.img.dir' parameter to ",
                 "activate png graphs")
       }
-    } else {    
+    } else {
       store_imgs <- TRUE
       dir.create(tmp.img.dir, showWarnings = FALSE)
-      if (Sys.info()[["sysname"]] == "Windows" || tmp.img.dir != "/tmp") {
+      if (.st_env$sysname == "Windows" || tmp.img.dir != "/tmp") {
         if(!isTRUE(silent)) {
           message("temporary images written to '", 
                   normalizePath(tmp.img.dir), "'")
@@ -266,15 +268,30 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     
     # Add column number
     output[i,1] <- i
+
+    # Calculate valid vs missing data info
+    n_miss <- sum(is.na(column_data))
+    n_valid <- n_tot - n_miss
     
     # Add column name and class
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
     
+    # Check if column contains emails
+    if (is.character(column_data)) {
+      email_val <- detect_email(column_data)
+    } else {
+      email_val <- FALSE
+    }
+
+    if (!identical(email_val, FALSE)) {
+      output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
+    }
+    
     # Add UPC/EAN info if applicable
-    if(is.factor(column_data)) {
-      barcode_type <- detect_barcode(levels(column_data))
+    if (is.factor(column_data)) {
+      barcode_type <- detect_barcode(as.character(column_data))
     } else {
       barcode_type <- detect_barcode(column_data)
     }
@@ -295,10 +312,6 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
         output[i,3] <- ""
     }
     
-    # Calculate valid vs missing data info
-    n_miss <- sum(is.na(column_data))
-    n_valid <- n_tot - n_miss
-    
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
       output[i,4:7] <- crunch_factor(column_data)
@@ -306,7 +319,12 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
-      output[i,4:7] <- crunch_character(column_data)
+      output[i,4:7] <- crunch_character(column_data, email_val)
+    }
+    
+    # Logical data -------------------------------------------------------------
+    else if (is.logical(column_data)) {
+      output[i,4:7] <- crunch_logical(column_data)
     }
     
     # Numeric data, display a column of descriptive stats + column of freqs ----
@@ -315,7 +333,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     }
     
     # Time/date data -----------------------------------------------------------
-    else if (inherits(column_data, c("Date", "POSIXct"))) {
+    else if (inherits(column_data, c("Date", "POSIXct", "difftime"))) {
       output[i,4:7] <- crunch_time_date(column_data)
     }
     
@@ -401,7 +419,7 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
 }
 
 #' @keywords internal
-crunch_factor <- function(column_data) {
+crunch_factor <- function(column_data, email_val) {
   
   outlist <- list()
   outlist[[1]] <- ""
@@ -413,21 +431,22 @@ crunch_factor <- function(column_data) {
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
-  
+  n_valid             <- parent.frame()$n_valid
+    
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
   props    <- prop.table(counts)
   
-  if (n_levels == 0 && parent.frame()$n_valid == 0) {
-    outlist[[1]] <- "No levels defined"
-    outlist[[2]] <- "All NA's"
+  if (n_levels == 0 && n_valid == 0) {
+    outlist[[1]] <- "No levels defined" # TODO: Add translation
+    outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
-  } else if (parent.frame()$n_valid == 0) {
+  } else if (n_valid == 0) {
     outlist[[1]] <- paste0(1:n_levels,"\\. ", levels(column_data),
                            collapse = "\\\n")
-    outlist[[2]] <- "All NA's"
+    outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
     
@@ -438,7 +457,9 @@ crunch_factor <- function(column_data) {
     counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
     if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
-      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      if (!isTRUE(.st_env$noX11)) {
+        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      }
       if (isTRUE(parent.frame()$store_imgs)) {
         png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -446,6 +467,7 @@ crunch_factor <- function(column_data) {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     }
+    
   } else {
     
     # more levels than allowed by max.distinct.values
@@ -480,7 +502,9 @@ crunch_factor <- function(column_data) {
       tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
         paste("[", n_extra_levels, trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
-      outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
+      if (!isTRUE(.st_env$noX11)) {
+        outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
+      }
       if (isTRUE(parent.frame()$store_imgs)) {
         png_loc <- encode_graph(table(tmp_data), "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -497,7 +521,8 @@ crunch_factor <- function(column_data) {
 }
 
 #' @keywords internal
-crunch_character <- function(column_data) {
+#' @importFrom dplyr n_distinct
+crunch_character <- function(column_data, email_val) {
   
   outlist <- list()
   outlist[[1]] <- ""
@@ -509,6 +534,7 @@ crunch_character <- function(column_data) {
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
   round.digits        <- parent.frame()$round.digits
+  n_valid             <- parent.frame()$n_valid
   
   if (isTRUE(parent.frame()$trim.strings)) {
     column_data <- trimws(column_data)
@@ -522,6 +548,35 @@ crunch_character <- function(column_data) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
   } else if (n_empty + parent.frame()$n_miss == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
+  } else if (!identical(email_val, FALSE)) {
+    
+    outlist[[1]] <- 
+      paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
+    
+    dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
+    prop.dups <- round(dups / n_valid, round.digits + 2)
+    counts_props <- align_numbers_dfs(
+      c(email_val, dups), 
+      c(round(prop.table(email_val), round.digits + 2), prop.dups)
+    )
+    
+    outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+    
+    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
+      if (!isTRUE(.st_env$noX11)) {
+        outlist[[3]] <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+                                     emails = TRUE)
+      }
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+                                pandoc = TRUE, emails = TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
+      } else {
+        outlist[[4]] <- txtbarplot(c(prop.table(email_val), prop.dups), 
+                                   emails = TRUE)
+      }
+    }
+
   } else {
     
     counts <- table(column_data, useNA = "no")
@@ -536,7 +591,9 @@ crunch_character <- function(column_data) {
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
       if (isTRUE(parent.frame()$graph.col) &&
           any(!is.na(column_data))) {
-        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        if (!isTRUE(.st_env$noX11)) {
+          outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        }
         if (isTRUE(parent.frame()$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -574,7 +631,9 @@ crunch_character <- function(column_data) {
         names(counts)[max.distinct.values + 1] <-
           paste("[", n_extra_values, trs("others"),"]")
         counts <- counts[1:(max.distinct.values + 1)]
-        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        if (!isTRUE(.st_env$noX11)) {
+          outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        }        
         if (isTRUE(parent.frame()$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -590,6 +649,51 @@ crunch_character <- function(column_data) {
   Encoding(outlist[[3]]) <- "UTF-8"
   return(outlist)
 }
+
+#' @keywords internal
+crunch_logical <- function(column_data) {
+  
+  outlist <- list()
+  outlist[[1]] <- ""
+  outlist[[2]] <- ""
+  outlist[[3]] <- ""
+  outlist[[4]] <- ""
+  
+  graph.magnif        <- parent.frame()$graph.magnif
+  round.digits        <- parent.frame()$round.digits
+  
+  if (parent.frame()$n_miss == parent.frame()$n_tot) {
+    outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
+  } else {
+    
+    counts <- table(column_data, useNA = "no")
+    props <- prop.table(counts)
+    
+    outlist[[1]] <- paste0(seq_along(counts), "\\. ", names(counts),
+                           collapse = "\\\n")
+    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
+    if (isTRUE(parent.frame()$graph.col) &&
+        any(!is.na(column_data))) {
+      if (!isTRUE(.st_env$noX11)) {
+        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      }
+      if (isTRUE(parent.frame()$store_imgs)) {
+        png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
+        outlist[[4]] <- paste0("![](", png_loc, ")")
+      } else {
+        outlist[[4]] <- txtbarplot(prop.table(counts))
+      }
+    }
+  }
+  
+  Encoding(outlist[[1]]) <- "UTF-8"
+  Encoding(outlist[[2]]) <- "UTF-8"
+  Encoding(outlist[[3]]) <- "UTF-8"
+  return(outlist)
+}
+
+
 #' @importFrom stats IQR median ftable sd
 #' @keywords internal
 crunch_numeric <- function(column_data, is_barcode) {
@@ -714,7 +818,9 @@ crunch_numeric <- function(column_data, is_barcode) {
     
     if (isTRUE(parent.frame()$graph.col)) {
       if (length(counts) <= max.distinct.values) {
-        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        if (!isTRUE(.st_env$noX11)) {
+          outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+        }
         if (isTRUE(parent.frame()$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -723,11 +829,15 @@ crunch_numeric <- function(column_data, is_barcode) {
         }
         
         if (isTRUE(extra_space)) {
-          outlist[[3]] <- paste0(outlist[[3]], "\n\n")
+          if (!isTRUE(.st_env$noX11)) {
+            outlist[[3]] <- paste0(outlist[[3]], "\n\n")
+          }
           outlist[[4]] <- paste0(outlist[[4]], " \\ \n \\")
         }
       } else {
-        outlist[[3]] <- encode_graph(column_data, "histogram", graph.magnif)
+        if (!isTRUE(.st_env$noX11)) {
+          outlist[[3]] <- encode_graph(column_data, "histogram", graph.magnif)
+        }
         if (isTRUE(parent.frame()$store_imgs)) {
           png_loc <- encode_graph(column_data, "histogram", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -771,7 +881,9 @@ crunch_time_date <- function(column_data) {
       props <- round(prop.table(counts), round.digits + 2)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
-      outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      if (!isTRUE(.st_env$noX11)) {
+        outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
+      }
       if (isTRUE(parent.frame()$store_imgs)) {
         png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -780,19 +892,35 @@ crunch_time_date <- function(column_data) {
       }
     } else {
       
-      outlist[[1]] <- paste0(
-        "min : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
-        "med : ", median(column_data, na.rm = TRUE), "\\\n",
-        "max : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
-        "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
-                        x = round(as.period(interval(tmin, tmax)),round.digits))
-      )
+      if (inherits(column_data, what = "difftime")) {
+        
+        outlist[[1]] <- paste0(
+          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(as.numeric(column_data), na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), na.rm = TRUE)
+        )
+        
+        if ("units" %in% names(attributes(column_data))) {        
+          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", units(column_data))
+        }
+        
+      } else {
+        outlist[[1]] <- paste0(
+          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
+          "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
+                          x = round(as.period(interval(tmin, tmax)),round.digits))
+        )
+      }
       
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
       
       if (isTRUE(parent.frame()$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
-        outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
+        if (!isTRUE(.st_env$noX11)) {
+          outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
+        }
         if (isTRUE(parent.frame()$store_imgs)) {
           png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
@@ -854,11 +982,10 @@ align_numbers_dfs <- function(counts, props) {
 #' @importFrom magick image_read image_trim image_border image_write 
 #'             image_transparent
 #' @keywords internal
-encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
-  #bg <- par('bg'=NA)
-  #on.exit(par(bg))
+encode_graph <- function(data, graph_type, graph.magnif = 1, 
+                         pandoc = FALSE, emails = FALSE) {
   
-  devtype <- switch(Sys.info()[["sysname"]],
+  devtype <- switch(.st_env$sysname,
                     Windows = "windows",
                     Linux   = "Xlib",
                     Darwin  = "quartz")
@@ -918,9 +1045,16 @@ encode_graph <- function(data, graph_type, graph.magnif = 1, pandoc = FALSE) {
     mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
-    barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
-            col = "grey97", border = "grey65", horiz = TRUE,
-            xlim = c(0, sum(data)))
+    
+    if (isTRUE(emails)) {
+      barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
+              col = c("grey30", "grey97", "grey97"), border = "grey65",
+              horiz = TRUE, xlim = c(0, sum(data[2:3])))
+    } else {
+      barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
+              col = "grey97", border = "grey65", horiz = TRUE,
+              xlim = c(0, sum(data)))
+    }
     
     dev.off()
     ii <- image_read(png_loc)
@@ -955,13 +1089,15 @@ generate_png_path <- function(d) {
 }
 
 #' @keywords internal
-txtbarplot <- function(props, maxwidth = 20) {
+txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
   #widths <- props / max(props) * maxwidth
   widths <- props * maxwidth
   outstr <- character(0)
   for (i in seq_along(widths)) {
-    outstr <- paste(outstr, paste0(rep(x = "I", times = widths[i]),
-                                   collapse = ""),
+    outstr <- paste(outstr, 
+                    paste0(rep(x = ifelse(isTRUE(emails) && i == length(widths), 
+                                          "D", "I"), times = widths[i]),
+                           collapse = ""),
                     sep = " \\ \n")
   }
   outstr <- sub("^ \\\\ \\n", "", outstr)
@@ -1003,6 +1139,33 @@ txthist <- function(data) {
     graphlines[ro] <-  trimws(paste(graph[ro,], collapse = ""), "right")
   }
   return(paste(graphlines, collapse = "\\\n"))
+}
+
+
+detect_email <- function(x) {
+
+  email_regex <- "\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>"
+  
+  if (length(x) > 200) {
+    x_sample <- na.omit(sample(x, size = 200, replace = FALSE))
+  } else {
+    x_sample <- na.omit(x)
+  }
+  
+  if (length(x_sample) == 0) {
+    return(FALSE)
+  }
+  
+  pct_email <- sum(grepl(email_regex, x_sample, ignore.case = TRUE)) /
+    length(x_sample)
+  
+  if (pct_email >= .8) {
+    valid <- sum(grepl(email_regex, x, ignore.case = TRUE), na.rm = TRUE)
+    invalid <- parent.frame()$n_valid - valid
+    return(c(valid = valid, invalid = invalid))
+  } else {
+    return(FALSE)
+  }
 }
 
 #' @importFrom utils head
