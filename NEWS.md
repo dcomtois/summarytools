@@ -3,11 +3,10 @@ Version 0.9.3
  - New functions:
    + `tb()` turns `freq()` and `descr()` outputs into "tidy" tibbles
    + `use_custom_lang()` replaces `useTranslations()` and triggers an
-     _Open File..._ dialog on _Windows_ when no argument is supplied   
+     _Open File..._ dialog when no argument is supplied   
    + `define_keywords()` allows defining translatable terms in GUI and
-     optionally save the results in a _csv_ file (through _Save File..._ dialog
-     on _Windows_)
- - Deprecated function:
+     optionally save the results in a _csv_ file (through _Save File..._ dialog)
+ - Deprecated functions:
    + `byst()` had to be dropped because of issues related to objects names;
      so only `stby()` is accepted from now on
    + `useTranslations()` has been replaced by `use_custom_lang()`
@@ -32,7 +31,7 @@ Version 0.9.3
 
 Version 0.9.2
 -------------
-No changes.
+No changes (re-submission of 0.9.1 to CRAN)
 
 
 Version 0.9.1
@@ -44,7 +43,7 @@ information below for all the details.
 
 In this version:
 
- - `stby()` (or `byst()`), a summarytools-specific version of `by()`, is 
+ - `stby()`, a summarytools-specific version of `by()`, is 
    introduced. It is **highly recommended** that you use it instead of `by()`; 
    its syntax is identical and it greatly simplifies the printing of the 
    generated objects

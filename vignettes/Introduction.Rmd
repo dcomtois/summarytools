@@ -64,7 +64,9 @@ It is also possible to include **summarytools** functions in *Shiny apps*.
 
 Version 0.9 brought **many** changes and improvements to **summarytools**. 
 A summary of those changes can be found [near the end of this vignette](#changes).
-Changes specific to the latest release can be found in the package's _NEWS_ file.
+Changes specific to the latest release can be found in the package's _NEWS_ file
+located in the _summarytools_ directory inside your R library's, and also 
+available using `news(package = "summarytools")` in R versions 3.6.0 and above.
 
 ### This Vignette's Setup
 
