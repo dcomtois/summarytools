@@ -210,7 +210,7 @@ N: 1000
        ET-Asymétrie     0.08
       Aplatissement    -1.26
           Nb.Valide   975.00
-           % Valide    97.50
+         Pct.Valide    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 
@@ -379,6 +379,23 @@ Data frame: tobacco
       No               99 (14.1%)   603 (85.9%)    702 (100.0%)
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
+
+> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common") 
+
+Statistiques descriptives  
+tobacco$age  
+Étiquette: Age of the Subject  
+N: 1000  
+
+                      age
+---------------- --------
+             Moy    49.60
+      Écart-type    18.29
+             Min    18.00
+         Médiane    50.00
+             Max    80.00
+       Nb.Valide   975.00
+      Pct.Valide    97.50
 
 
 # by --------------------------------------------------------------------------- 

@@ -1,6 +1,7 @@
 
 # ------------------------------ parse_args.R ----------------------------------  
 
+> library(dplyr) 
 > data(tobacco) 
 > label(tobacco) <- "Tobacco Study" 
 > label(tobacco$smoker) <- "Smoking Status" 
@@ -209,11 +210,11 @@ N: 1000
       ES-Asimetría     0.08
           Curtosis    -1.26
         Num.Válido   975.00
-          % Válido    97.50
+        Pct.Válido    97.50
 
 > with(tobacco, ctable(smoker, diseased)) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -286,7 +287,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[[5]] %>% freq()        
+> tobacco[[5]] %>% freq() 
 
 Frecuencias  
 tobacco$smoker  
@@ -300,10 +301,10 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE) 
+> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE) 
 
 ### Tabla resumen  
-#### dfSummary  
+#### tobacco  
 **Dimensiones:** 1000 x 9  
 **Duplicados:** 2  
 
@@ -366,7 +367,7 @@ Tipo: Factor
 
 > tobacco %$% ctable(smoker, diseased) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -378,6 +379,23 @@ Etiqueta: Tobacco Study
       No               99 (14.1%)   603 (85.9%)    702 (100.0%)
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
+
+> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common") 
+
+Estadísticas descriptivas  
+tobacco$age  
+Etiqueta: Age of the Subject  
+N: 1000  
+
+                      age
+---------------- --------
+           Media    49.60
+        Dev.std.    18.29
+             Min    18.00
+         Mediana    50.00
+             Max    80.00
+      Num.Válido   975.00
+      Pct.Válido    97.50
 
 
 # by --------------------------------------------------------------------------- 
@@ -534,7 +552,7 @@ Subgrupo: gender = M
 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -587,7 +605,7 @@ Subgrupo: gender = M
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))      
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -613,7 +631,7 @@ Subgrupo: gender = M
 
 > with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable)) 
 
-Tabulación cruzada, proporciones por líneas?  
+Tabulación cruzada, proporciones por líneas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
