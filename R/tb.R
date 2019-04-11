@@ -3,19 +3,50 @@
 #' Make a tidy dataset out of freq() or descr() outputs
 #'
 #' @param x a freq() or descr() output object
-#' 
+#' @param order Integer. When \code{1} (default), the levels of the grouping
+#'   variable are used to sort the resulting table, followed by the value of
+#'   the second column. When \code{2}, the second column (the \strong(categories)
+#'   for \code{freq} tables, or the \strong{variable names} in \code{descr()}
+#'   tables) is used first, followed by the grouping variable, to determine 
+#'   row order. Using a \emph{vector of integer} allows full control on the 
+#'   row ordering. \code{NA}'s always appear last.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
-#' @importFrom tibble as_tibble
+#' @importFrom tibble tibble as_tibble
+#' @importFrom dplyr bind_rows bind_cols
 #' @export
-tb <- function(x) {
+tb <- function(x, order = 1) {
+  if (inherits(x, "stby")) {
+    grp_values <- attr(x, "dimnames")[[1]]
+    grp_stats  <- lapply(x, tb)
+    grp_size   <- nrow(grp_stats[[1]])
+    out_c1     <- tibble(grp = factor(rep(grp_values, each = grp_size),
+                                      levels = grp_values))
+    output     <- dplyr::bind_cols(out_c1, dplyr::bind_rows(grp_stats))
+    
+    if (attr(x[[1]], "st_type") == "freq") {
+      output$pct_valid <- output$pct_valid / length(grp_values)
+      output$pct_tot   <- output$pct_tot / length(grp_values)
+      output           <- output[ , -grep("_cum", names(output))]
+    }
+    
+    colnames(output)[1] <- sub("(.+)\\$(.+)", "\\2", names(attr(x, "dimnames")))
+    if (identical(order, 2)) {
+      # change <NA> for true NA's for sorting, then put "<NA>" back
+      output[[2]][output[[2]] == "<NA>"] <- NA
+      output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
+      output[[2]][is.na(output[[2]])] <- "<NA>"
+    }
+    return(output)
+  }      
+  
   if (attr(x, "st_type") == "freq") {
     
     output <- as_tibble(cbind(rownames(x), as.data.frame(x)))
-    #varname <- na.omit(c(attr(x, "fn_call")$x, "value"))[1]
+    varname <- na.omit(c(attr(x, "data_info")$Variable, "value"))[1]
     names(output) <- 
-      c("value", "freq", "pct_valid", "pct_valid_cum", "pct_tot", "pct_tot_cum")
+      c(varname, "freq", "pct_valid", "pct_valid_cum", "pct_tot", "pct_tot_cum")
 
     # remove totals row
     output <- output[1:(nrow(output) - 1), ]
@@ -40,8 +71,8 @@ tb <- function(x) {
       output <- as_tibble(cbind(variable = colnames(x), t(as.data.frame(x))))
       names(output) <- c("variable", attr(x, "stats"))
     } else {
-      output <- as_tibble(cbind(statistic = colnames(x), t(as.data.frame(x))))
-      output$statistic <- attr(x, "stats")
+      output <- as_tibble(cbind(variable = rownames(x), as.matrix(x)))
+      names(output) <- c("variable", attr(x, "stats"))
     }
     
     return(output)
@@ -50,3 +81,8 @@ tb <- function(x) {
     stop("tb() supports summarytools freq() and descr() objects only")
   }
 }
+
+  # paste("output[order(",
+  #       paste0("output[[", order, "]]", collapse = ", "),
+  #       "),]")
+  
