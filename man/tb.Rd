@@ -4,10 +4,17 @@
 \alias{tb}
 \title{Convert Summarytools Ojects to Tibbles}
 \usage{
-tb(x)
+tb(x, order = 1)
 }
 \arguments{
 \item{x}{a freq() or descr() output object}
+
+\item{order}{Integer. When \code{1} (default), the levels of the grouping
+variable are used to sort the resulting table, followed by the value of
+the second column. When \code{2}, the second column (the \strong(categories)
+for \code{freq} tables, or the \strong{variable names} in \code{descr()}
+tables) is used first, followed by the grouping variable. \code{NA}'s 
+always appear last.}
 }
 \value{
 A \code{\link[tibble]{tibble}} which is constructed following the 

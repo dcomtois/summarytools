@@ -7,9 +7,8 @@
 #'   variable are used to sort the resulting table, followed by the value of
 #'   the second column. When \code{2}, the second column (the \strong(categories)
 #'   for \code{freq} tables, or the \strong{variable names} in \code{descr()}
-#'   tables) is used first, followed by the grouping variable, to determine 
-#'   row order. Using a \emph{vector of integer} allows full control on the 
-#'   row ordering. \code{NA}'s always appear last.
+#'   tables) is used first, followed by the grouping variable. \code{NA}'s 
+#'   always appear last.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
@@ -23,7 +22,7 @@ tb <- function(x, order = 1) {
     grp_size   <- nrow(grp_stats[[1]])
     out_c1     <- tibble(grp = factor(rep(grp_values, each = grp_size),
                                       levels = grp_values))
-    output     <- dplyr::bind_cols(out_c1, dplyr::bind_rows(grp_stats))
+    output     <- bind_cols(out_c1, bind_rows(grp_stats))
     
     if (attr(x[[1]], "st_type") == "freq") {
       output$pct_valid <- output$pct_valid / length(grp_values)
@@ -63,15 +62,16 @@ tb <- function(x, order = 1) {
       output <- output[ , -grep("_cum", names(output))]
     }
 
+    output[[varname]] <- factor(output[[varname]], levels = output[[varname]])
     return(output)
     
   } else if (attr(x, "st_type") == "descr") {
     
     if (!isTRUE(attr(x, "data_info")$transposed)) {
-      output <- as_tibble(cbind(variable = colnames(x), t(as.data.frame(x))))
+      output <- as_tibble(t(as.data.frame(x)), rownames = "variable")
       names(output) <- c("variable", attr(x, "stats"))
     } else {
-      output <- as_tibble(cbind(variable = rownames(x), as.matrix(x)))
+      output <- as_tibble(as.data.frame(x), rownames = "variable")
       names(output) <- c("variable", attr(x, "stats"))
     }
     
@@ -81,8 +81,3 @@ tb <- function(x, order = 1) {
     stop("tb() supports summarytools freq() and descr() objects only")
   }
 }
-
-  # paste("output[order(",
-  #       paste0("output[[", order, "]]", collapse = ", "),
-  #       "),]")
-  
