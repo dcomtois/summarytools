@@ -1,4 +1,4 @@
-#' Convert Summarytools Ojects to Tibbles
+#' Convert Summarytools Objects to Tibbles
 #'
 #' Make a tidy dataset out of freq() or descr() outputs
 #'

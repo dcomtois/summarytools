@@ -2,7 +2,7 @@
 % Please edit documentation in R/tb.R
 \name{tb}
 \alias{tb}
-\title{Convert Summarytools Ojects to Tibbles}
+\title{Convert Summarytools Objects to Tibbles}
 \usage{
 tb(x)
 }

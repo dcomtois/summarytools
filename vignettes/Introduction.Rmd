@@ -730,7 +730,7 @@ define_keywords(freq = "N")
 
 ## Changes and Improvements Since Version 0.9 {#changes}
 
-As stated earlier, version 0.9 brough **many** improvements
+As stated earlier, version 0.9 brought **many** improvements
 to **summarytools**. Here are the key elements:
 
  - **Translations**

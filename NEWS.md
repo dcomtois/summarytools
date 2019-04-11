@@ -5,7 +5,7 @@ Version 0.9.3
    + `use_custom_lang()` replaces `useTranslations()` and triggers an
      _Open File..._ dialog on _Windows_ when no argument is supplied   
    + `define_keywords()` allows defining translatable terms in GUI and
-     optionnaly save the results in a _csv_ file (through _Save File..._ dialog
+     optionally save the results in a _csv_ file (through _Save File..._ dialog
      on _Windows_)
  - Deprecated function:
    + `byst()` had to be dropped because of issues related to objects names;

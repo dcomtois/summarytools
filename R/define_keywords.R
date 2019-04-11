@@ -13,7 +13,7 @@
 #' the user to save the modified set of keywords in a custom csv language file.
 #' 
 #' Here is the full list of modifiable keywords. Check out the 
-#' \emph{language_templace.csv} file in the package’s \emph{includes} 
+#' \emph{language_template.csv} file in the package’s \emph{includes} 
 #'   directory.
 #'   
 #' \describe{
@@ -79,7 +79,7 @@
 #'   \item{distinct.values}{cell content in \code{dfSummary()} - plural form}
 #'   \item{all.nas}{cell content in \code{dfSummary()} - column has only NAs}
 #'   \item{all.empty.str}{cell content in \code{dfSummary()} - column has only empty strings}
-#'   \item{all.empty.str.nas}{cell content in \code{dfSummary()} - col. has only NAs and empty strs}
+#'   \item{all.empty.str.nas}{cell content in \code{dfSummary()} - col. has only NAs and empty strings}
 #'   \item{no.levels.defined}{cell content in \code{dfSummary()} - factor has no levels defined}
 #'   \item{int.sequence}{cell content in \code{dfSummary()}}
 #'   \item{rounded}{cell content in \code{dfSummary()} - note appearing in Stats/Values}
