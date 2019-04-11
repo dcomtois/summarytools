@@ -4,11 +4,11 @@
 #'
 #' @param x a freq() or descr() output object
 #' @param order Integer. When \code{1} (default), the levels of the grouping
-#'   variable are used to sort the resulting table, followed by the value of
-#'   the second column. When \code{2}, the second column (the \strong(categories)
-#'   for \code{freq} tables, or the \strong{variable names} in \code{descr()}
-#'   tables) is used first, followed by the grouping variable. \code{NA}'s 
-#'   always appear last.
+#'   variable are first used to sort the resulting table, followed by the values
+#'   of the second column. When set to \code{2}, the second column (the
+#'   \strong(rownames} of the \code{freq} tables or the \strong{variable names} 
+#'   of the \code{descr()} tables) is used first, followed by the grouping
+#'   variable's values. \code{NA}'s always appear last.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
