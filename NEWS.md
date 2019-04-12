@@ -299,7 +299,6 @@ Several major changes since version 0.1
 
   - `unistats()` is now called `desc()`
   - `frequencies()` is now called `freq()`   
-  - `properties()` is now called `prop()`  
   - Shortcuts have been added to keep backward-compatibility  
   - `desc()` now accepts data frames as first argument; factors and character
     columns will be ignored  
