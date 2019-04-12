@@ -1,6 +1,10 @@
 rm(list=ls())
 (orig_dir <- getwd())
-(ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
+if (Sys.info()[["sysname"]] == "Windows") {
+  (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
+} else {
+  (ref_dir <- paste(orig_dir, "tests/ref-utf8", sep = "/"))
+}
 
 (date_dir <- paste(orig_dir, "tests/output", 
                    format(Sys.time(), format = "%Y-%m-%d-%Hh%M"),
