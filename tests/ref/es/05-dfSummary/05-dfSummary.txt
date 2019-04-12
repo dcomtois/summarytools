@@ -508,7 +508,7 @@ samp.wgts      Media (d-s) : 1 (0.1)       0.86!: 267 (26.7%)
 > st_options(lang = lang) 
 > st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.valid.col = F) 
 > st_options(tmp.img.dir = "/tmp") 
-> print(dfSummary(tobacco), file = "02-basic.html") 
+> print(dfSummary(tobacco), file = "02 - basic.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -673,7 +673,7 @@ No   Variable    Estadísticas / Valores     Frec. (% sobre válidos)   Gráfico   
                                                                       : : : : : .                      
 -------------------------------------------------------------------------------------------------------
 
-> view(dfs4, method="browser", footnote = "cars", file = "05-cars.html") 
+> view(dfs4, method="browser", footnote = "cars", file = "05 - cars.html") 
 -- Output file written
 
 
@@ -689,47 +689,47 @@ Duplicados: 0
 
 ------------------------------------------------------------------------------------------------------------------------------
 No   Variable            Estadísticas / Valores          Frec. (% sobre válidos)   Gráfico                Válido    Perdidos  
----- ------------------- ------------------------------- ------------------------- ---------------------- --------- ----------
-1    bin                 Min   : 2                       2   :  31 ( 3.3%)                                937       63        
-     [numeric]           Media : 239.9                   248 : 906 (96.7%)         IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
-                         Max   : 248                                                                                          
+------------------------------------------------------------------------------------------------------------------------
+1    bin              Min   : 2                    2   :  31 ( 3.3%)                                937       63        
+     [numeric]        Media : 239.9                248 : 906 (96.7%)         IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
+                      Max   : 248                                                                                       
 
-2    bin_char            1. 2                             31 ( 3.3%)                                      937       63        
-     [character]         2. 248                          906 (96.7%)               IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
+2    bin_char         1. 2                          31 ( 3.3%)                                      937       63        
+     [character]      2. 248                       906 (96.7%)               IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
 
-3    bin_fact            1. 2                             31 ( 3.3%)                                      937       63        
-     [factor]            2. 248                          906 (96.7%)               IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
+3    bin_fact         1. 2                          31 ( 3.3%)                                      937       63        
+     [factor]         2. 248                       906 (96.7%)               IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
 
-4    tri                 Media (d-s) : 21.2 (2.4)        15 :  29 ( 3.0%)                                 972       28        
-     [numeric]           min < mediana < max:            20 : 686 (70.6%)          IIIIIIIIIIIIII         (97.2%)   (2.8%)    
-                         15 < 20 < 25                    25 : 257 (26.4%)          IIIII                                      
-                         RI (CV) : 5 (0.1)                                                                                    
+4    tri              Media (d-s) : 21.2 (2.4)     15 :  29 ( 3.0%)                                 972       28        
+     [numeric]        min < mediana < max:         20 : 686 (70.6%)          IIIIIIIIIIIIII         (97.2%)   (2.8%)    
+                      15 < 20 < 25                 25 : 257 (26.4%)          IIIII                                      
+                      RI (CV) : 5 (0.1)                                                                                 
 
-5    tri_char            1. 15                            29 ( 3.0%)                                      972       28        
-     [character]         2. 20                           686 (70.6%)               IIIIIIIIIIIIII         (97.2%)   (2.8%)    
-                         3. 25                           257 (26.4%)               IIIII                                      
+5    tri_char         1. 15                         29 ( 3.0%)                                      972       28        
+     [character]      2. 20                        686 (70.6%)               IIIIIIIIIIIIII         (97.2%)   (2.8%)    
+                      3. 25                        257 (26.4%)               IIIII                                      
 
-6    tri_fact            1. 15                            29 ( 3.0%)                                      972       28        
-     [factor]            2. 20                           686 (70.6%)               IIIIIIIIIIIIII         (97.2%)   (2.8%)    
-                         3. 25                           257 (26.4%)               IIIII                                      
+6    tri_fact         1. 15                         29 ( 3.0%)                                      972       28        
+     [factor]         2. 20                        686 (70.6%)               IIIIIIIIIIIIII         (97.2%)   (2.8%)    
+                      3. 25                        257 (26.4%)               IIIII                                      
 
-7    nans                100% NA's                                                                        0         1000      
-     [numeric]                                                                                            (0%)      (100%)    
+7    nans             100% NA's                                                                     0         1000      
+     [numeric]                                                                                      (0%)      (100%)    
 
-8    nas_logi            100% NA's                                                                        0         1000      
-     [logical]                                                                                            (0%)      (100%)    
+8    nas_logi         100% NA's                                                                     0         1000      
+     [logical]                                                                                      (0%)      (100%)    
 
-9    nas_real            100% NA's                                                                        0         1000      
-     [numeric]                                                                                            (0%)      (100%)    
+9    nas_real         100% NA's                                                                     0         1000      
+     [numeric]                                                                                      (0%)      (100%)    
 
-10   nas_int             100% NA's                                                                        0         1000      
-     [integer]                                                                                            (0%)      (100%)    
+10   nas_int          100% NA's                                                                     0         1000      
+     [integer]                                                                                      (0%)      (100%)    
 
-11   nas_compl           100% NA's                                                                        0         1000      
-     [complex]                                                                                            (0%)      (100%)    
+11   nas_compl        100% NA's                                                                     0         1000      
+     [complex]                                                                                      (0%)      (100%)    
 
-12   nas_char            100% NA's                                                                        0         1000      
-     [character]                                                                                          (0%)      (100%)    
+12   nas_char         100% NA's                                                                     0         1000      
+     [character]                                                                                    (0%)      (100%)    
 
 13   nas_fact            No levels defined               100% NA's                                        0         1000      
      [factor]                                                                                             (0%)      (100%)    
@@ -738,52 +738,52 @@ No   Variable            Estadísticas / Valores          Frec. (% sobre válidos)
      [factor]            2. b                                                                             (0%)      (100%)    
 
 15   empty_char          100% cadenas vacías                                                              1000      0         
-     [character]                                                                                          (100%)    (0%)      
+     [character]                                                                                    (100%)    (0%)      
 
 16   empty_fact          1.                              1000 (100.0%)             IIIIIIIIIIIIIIIIIIII   1000      0         
-     [factor]                                                                                             (100%)    (0%)      
+     [factor]                                                                                       (100%)    (0%)      
 
 17   empty_na_chr        100% NA's o cadenas vacías                                                       631       369       
-     [character]                                                                                          (63.1%)   (36.9%)   
+     [character]                                                                                    (63.1%)   (36.9%)   
 
 18   empty_na_f          1.                              631 (100.0%)              IIIIIIIIIIIIIIIIIIII   631       369       
-     [factor]                                                                                             (63.1%)   (36.9%)   
+     [factor]                                                                                       (63.1%)   (36.9%)   
 
 19   ean_num             1. 8716892700004                312 (31.2%)               IIIIII                 1000      0         
-     [numeric]           2. 8716892720002                188 (18.8%)               III                    (100%)    (0%)      
-     EAN-13 códigos      3. 8716892750009                106 (10.6%)               II                                         
-                         4. 8716892000005                 82 ( 8.2%)               I                                          
-                         5. 8716874000009                 74 ( 7.4%)               I                                          
-                         6. 8716892710003                 50 ( 5.0%)               I                                          
-                         7. 8716886000004                 40 ( 4.0%)                                                          
-                         8. 8716946000005                 34 ( 3.4%)                                                          
-                         9. 8716921000006                 31 ( 3.1%)                                                          
-                         10. 8716924000003                30 ( 3.0%)                                                          
-                         [ 2 otros ]                      53 ( 5.3%)               I                                          
+     [numeric]        2. 8716892720002             188 (18.8%)               III                    (100%)    (0%)      
+     EAN-13 códigos   3. 8716892750009             106 (10.6%)               II                                         
+                      4. 8716892000005              82 ( 8.2%)               I                                          
+                      5. 8716874000009              74 ( 7.4%)               I                                          
+                      6. 8716892710003              50 ( 5.0%)               I                                          
+                      7. 8716886000004              40 ( 4.0%)                                                          
+                      8. 8716946000005              34 ( 3.4%)                                                          
+                      9. 8716921000006              31 ( 3.1%)                                                          
+                      10. 8716924000003             30 ( 3.0%)                                                          
+                      [ 2 otros ]                   53 ( 5.3%)               I                                          
 
 20   ean_char            1. 8716892700004                312 (31.2%)               IIIIII                 1000      0         
-     [character]         2. 8716892720002                188 (18.8%)               III                    (100%)    (0%)      
-     EAN-13 códigos      3. 8716892750009                106 (10.6%)               II                                         
-                         4. 8716892000005                 82 ( 8.2%)               I                                          
-                         5. 8716874000009                 74 ( 7.4%)               I                                          
-                         6. 8716892710003                 50 ( 5.0%)               I                                          
-                         7. 8716886000004                 40 ( 4.0%)                                                          
-                         8. 8716946000005                 34 ( 3.4%)                                                          
-                         9. 8716921000006                 31 ( 3.1%)                                                          
-                         10. 8716924000003                30 ( 3.0%)                                                          
-                         [ 2 otros ]                      53 ( 5.3%)               I                                          
+     [character]      2. 8716892720002             188 (18.8%)               III                    (100%)    (0%)      
+     EAN-13 códigos   3. 8716892750009             106 (10.6%)               II                                         
+                      4. 8716892000005              82 ( 8.2%)               I                                          
+                      5. 8716874000009              74 ( 7.4%)               I                                          
+                      6. 8716892710003              50 ( 5.0%)               I                                          
+                      7. 8716886000004              40 ( 4.0%)                                                          
+                      8. 8716946000005              34 ( 3.4%)                                                          
+                      9. 8716921000006              31 ( 3.1%)                                                          
+                      10. 8716924000003             30 ( 3.0%)                                                          
+                      [ 2 otros ]                   53 ( 5.3%)               I                                          
 
 21   ean_fact            1. 8716874000009                 74 ( 7.4%)               I                      1000      0         
-     [factor]            2. 8716886000004                 40 ( 4.0%)                                      (100%)    (0%)      
+     [factor]         2. 8716886000004              40 ( 4.0%)                                      (100%)    (0%)      
      EAN-13 códigos      3. 8716892000005                 82 ( 8.2%)               I                                          
-                         4. 8716892700004                312 (31.2%)               IIIIII                                     
-                         5. 8716892710003                 50 ( 5.0%)               I                                          
-                         6. 8716892720002                188 (18.8%)               III                                        
-                         7. 8716892740000                 23 ( 2.3%)                                                          
-                         8. 8716892750009                106 (10.6%)               II                                         
-                         9. 8716921000006                 31 ( 3.1%)                                                          
-                         10. 8716924000003                30 ( 3.0%)                                                          
-                         [ 2 otros ]                      64 ( 6.4%)               I                                          
+                      4. 8716892700004             312 (31.2%)               IIIIII                                     
+                      5. 8716892710003              50 ( 5.0%)               I                                          
+                      6. 8716892720002             188 (18.8%)               III                                        
+                      7. 8716892740000              23 ( 2.3%)                                                          
+                      8. 8716892750009             106 (10.6%)               II                                         
+                      9. 8716921000006              31 ( 3.1%)                                                          
+                      10. 8716924000003             30 ( 3.0%)                                                          
+                      [ 2 otros ]                   64 ( 6.4%)               I                                          
 
 22   date                min : 2015-01-01                1000 valores distintos    : : : : : : : : : :    1000      0         
      [Date]              mediana : 2022-07-02                                      : : : : : : : : : :    (100%)    (0%)      
@@ -907,7 +907,7 @@ No   Variable       Estadísticas / Valores    Frec. (% sobre válidos)   Gráfico 
 -------------------------------------------------------------------------------------------------------------
 
 > data("AirPassengers") 
-> view(dfSummary(AirPassengers), file = "07-AirPassengers.html") 
+> view(dfSummary(AirPassengers), file = "07 - AirPassengers.html") 
 -- AirPassengers was converted to a data frame
 -- Output file written
 
@@ -1251,7 +1251,7 @@ No   Variable       Etiqueta           Estadísticas / Valores          Frec. (% 
 
 # st-small --------------------------------------------------------------------- 
 
-> print(dfSummary(tobacco, graph.magnif = 0.8), table.classes = 'st-small', footnote = "st_small", file = "09-st_small.html") 
+> print(dfSummary(tobacco, graph.magnif = 0.8), table.classes = 'st-small', footnote = "st_small", file = "09 - st_small.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -1288,7 +1288,7 @@ No   Variable       Etiqueta           Estadísticas / Valores          Frec. (% 
       <td align="left">1. F
 2. M</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA4BAMAAAB6RHnQAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQKDS/FoiTSqeFTxEFJMUoYdagAAvkZHpEhk7T0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA4BAMAAAB6RHnQAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExIK+iKaFQAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQKDS/FoiTSqeFTxEFJMUoYdagAAvkZHpEhk7T0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTAtMDQ6MDAWfNlzAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjEwLTA0OjAwZyFhzwAAAABJRU5ErkJggg=="></td>
       <td align="center">978
 (97.8%)</td>
       <td align="center">22
@@ -1304,7 +1304,7 @@ min < mediana < max:
 18 < 50 < 80
 RI (CV) : 32 (0.4)</td>
       <td align="left" style="vertical-align:middle">63 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAKlJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjTGkPv9g7RHTOrDOVKToSaj3xNtNGHLlvklJleejLC9eAHrGJN5kTxjOlzX2LEZDucZC6dQgMlJY0zuoBTTpjnBtK4Ai9Zg/8R0wg0wLbbFsnd3GxbS4xlg/vyqGWCyBusJ02fMAMubwcDAwMDAwDrGfPYb0YTdN4OBgYGBgYGBgYGBgX2NeZM4UpMVkV3DxF7FGkIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAKlJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjTGkPv9g7RHTOrDOVKToSaj3xNtNGHLlvklJleejLC9eAHrGJN5kTxjOlzX2LEZDucZC6dQgMlJY0zuoBTTpjnBtK4Ai9Zg/8R0wg0wLbbFsnd3GxbS4xlg/vyqGWCyBusJ02fMAMubwcDAwMDAwDrGfPYb0YTdN4OBgYGBgYGBgYGBgX2NeZM4UpMVkV3DxF7FGkIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDCwC9LHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjExLTA0OjAwwVZqewAAAABJRU5ErkJggg=="></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1320,7 +1320,7 @@ RI (CV) : 32 (0.4)</td>
 3. 51-70
 4. 71 +</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">258</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">241</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">24.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">317</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">32.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">159</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAF1JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAeglj8N5ePxnNCo/Kk81eULpbxDmDzBQwJ3/wWBUflSeGvKE0t9gyh+KWOSR/TcqPypPbXlC6W8gAQA2jWQCF4FeyQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAF1JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAeglj8N5ePxnNCo/Kk81eULpbxDmDzBQwJ3/wWBUflSeGvKE0t9gyh+KWOSR/TcqPypPbXlC6W8gAQA2jWQCF4FeyQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1336,7 +1336,7 @@ min < mediana < max:
 8.8 < 25.6 < 39.4
 RI (CV) : 5.7 (0.2)</td>
       <td align="left" style="vertical-align:middle">974 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAALhJREFUaN7t2MsNgCAQRVFa0A6EDrT/3gSixg8ogTEq3pe4IBlO2IAMSpGcNJdptU13XpOODTZgYGDvxNxm11KYsV9fLeYPRjHMGWBgYGBgYH/B4veNDCy+OrAbMD3dgESwZT5YIRZu2DOxcIcBBgYGBvYo5k56Mczs538EOz5ZFWB+AAZWJ9bOJ4YINpeDDftOthTbrA7shZheP/8nYEtXFsLMujwBcwO/ACnMDyZs80MVwYqjSE5GN6UAKgRLbAsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAALhJREFUaN7t2MsNgCAQRVFa0A6EDrT/3gSixg8ogTEq3pe4IBlO2IAMSpGcNJdptU13XpOODTZgYGDvxNxm11KYsV9fLeYPRjHMGWBgYGBgYH/B4veNDCy+OrAbMD3dgESwZT5YIRZu2DOxcIcBBgYGBvYo5k56Mczs538EOz5ZFWB+AAZWJ9bOJ4YINpeDDftOthTbrA7shZheP/8nYEtXFsLMujwBcwO/ACnMDyZs80MVwYqjSE5GN6UAKgRLbAsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDCwC9LHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjExLTA0OjAwwVZqewAAAABJRU5ErkJggg=="></td>
       <td align="center">974
 (97.4%)</td>
       <td align="center">26
@@ -1350,7 +1350,7 @@ RI (CV) : 5.7 (0.2)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">298</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">29.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">702</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">70.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA4BAMAAADa2xE+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBQ1ivEjkAbxzhB0ajekf1juod1TsAeikp60YSAACKOHj6LKKsXgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA4BAMAAADa2xE+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBQ1ivEjkAbxzhB0ajekf1juod1TsAeikp60YSAACKOHj6LKKsXgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1366,7 +1366,7 @@ min < mediana < max:
 0 < 0 < 40
 RI (CV) : 11 (1.8)</td>
       <td align="left" style="vertical-align:middle">37 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAHJJREFUaN7t2bsNgCAAQEFW0A3EDXD/3WwAEw2GoImF9yrC56AnBI0US8v0oIytWw4Gg8FgMBgMBoPBYDAYDAaDwWAwGAwGg32LzSM/gU2s/6n13tiNHUcuWNmazlg90pxI8VwTK4PUnLhZ+RcWXylopB3DS4Fk2lzWLAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAHJJREFUaN7t2bsNgCAAQEFW0A3EDXD/3WwAEw2GoImF9yrC56AnBI0US8v0oIytWw4Gg8FgMBgMBoPBYDAYDAaDwWAwGAwGg32LzSM/gU2s/6n13tiNHUcuWNmazlg90pxI8VwTK4PUnLhZ+RcWXylopB3DS4Fk2lzWLAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">965
 (96.5%)</td>
       <td align="center">35
@@ -1380,7 +1380,7 @@ RI (CV) : 11 (1.8)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">224</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">22.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">776</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">77.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA4BAMAAAAoS4beAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYZiboEQ2UMARm8SDURNGTRg1YdSEkWEC5SXtKGBgAADVO4vq39aKKAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA4BAMAAAAoS4beAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYZiboEQ2UMARm8SDURNGTRg1YdSEkWEC5SXtKGBgAADVO4vq39aKKAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1403,7 +1403,7 @@ RI (CV) : 11 (1.8)</td>
 10. Hypotension
 [ 3 otros ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAESBAMAAACIuAGRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAIpJREFUWMPt17ENwCAMRFFGgA1C2AD23y0NSqxwVBgckXP5Glv6osA5/TnFHNVSeYa21lCPIMYrmNzh21syba2hHgp9o7S6l2ZgqMekNx3aWzLNwFAP9t3H2Pd/NqX5y9K9lbbaUA/23ce0+/aaR3ALzcZQj9G+od2baTaGeoz07TXnf/o7hnpozgXJxam4cA3BrAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAESBAMAAACIuAGRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAIpJREFUWMPt17ENwCAMRFFGgA1C2AD23y0NSqxwVBgckXP5Glv6osA5/TnFHNVSeYa21lCPIMYrmNzh21syba2hHgp9o7S6l2ZgqMekNx3aWzLNwFAP9t3H2Pd/NqX5y9K9lbbaUA/23ce0+/aaR3ALzcZQj9G+od2baTaGeoz07TXnf/o7hnpozgXJxam4cA3BrAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1419,7 +1419,7 @@ min < mediana < max:
 0.9 < 1 < 1.1
 RI (CV) : 0.2 (0.1)</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.86!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! redondeo</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAF5JREFUSMft0zsOABAQRVFLMDvw2QH735sQBTFMM0HxbnsakjfGvC8weSKy3WNeg8O1XNofbbrlzPMmX/+X4HA1l/b34X203OH+a3C4hkv7++k+POPj/+BwbZf297ICr/llZbbaJC4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg==">
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAF5JREFUSMft0zsOABAQRVFLMDvw2QH735sQBTFMM0HxbnsakjfGvC8weSKy3WNeg8O1XNofbbrlzPMmX/+X4HA1l/b34X203OH+a3C4hkv7++k+POPj/+BwbZf297ICr/llZbbaJC4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDCwC9LHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjExLTA0OjAwwVZqewAAAABJRU5ErkJggg==">
 
 </td>
       <td align="center">1000
@@ -1444,7 +1444,7 @@ RI (CV) : 0.2 (0.1)</td>
 10. Neurological
 [ 3 otros ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">31</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAESBAMAAACIuAGRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAJ1JREFUWMPtlcERgCAMBClBOxDpAPvvzRFQAW/8EAKPu+c+PGY2icbIZ8+yJOaOJ55MlyEfaxYJlj5vc5beQjaAIR/Nfit29XqyIQz56LHTFryFbAxDPlr9cqfnYdI7nf4Bn967mWw8Q44EnIdsRW8MmS5DPlr91sy9p4RMmSEfLX5/dnqKe0XW52bPMs9kqjsdqspZi/NGpsuQD8mcVeyq/YujEK0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAESBAMAAACIuAGRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAJ1JREFUWMPtlcERgCAMBClBOxDpAPvvzRFQAW/8EAKPu+c+PGY2icbIZ8+yJOaOJ55MlyEfaxYJlj5vc5beQjaAIR/Nfit29XqyIQz56LHTFryFbAxDPlr9cqfnYdI7nf4Bn967mWw8Q44EnIdsRW8MmS5DPlr91sy9p4RMmSEfLX5/dnqKe0XW52bPMs9kqjsdqspZi/NGpsuQD8mcVeyq/YujEK0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDCwC9LHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjExLTA0OjAwwVZqewAAAABJRU5ErkJggg=="></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1460,7 +1460,7 @@ min < mediana < max:
 0 < 1 < 1.1
 RI (CV) : 1 (0.6)</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! redondeo</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAF5JREFUSMft0zsOABAQRVFLMDvw2QH735sQBTFMM0HxbnsakjfGvC8weSKy3WNeg8O1XNofbbrlzPMmX/+X4HA1l/b34X203OH+a3C4hkv7++k+POPj/+BwbZf297ICr/llZbbaJC4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDD+rrBFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTExVDE0OjAwOjUxLTA0OjAwj/MI+QAAAABJRU5ErkJggg==">
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABoBAMAAACwD+WeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAF5JREFUSMft0zsOABAQRVFLMDvw2QH735sQBTFMM0HxbnsakjfGvC8weSKy3WNeg8O1XNofbbrlzPMmX/+X4HA1l/b34X203OH+a3C4hkv7++k+POPj/+BwbZf297ICr/llZbbaJC4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDCwC9LHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAzLTIxVDIzOjE4OjExLTA0OjAwwVZqewAAAABJRU5ErkJggg==">
 
 </td>
       <td align="center">1000
@@ -1478,7 +1478,7 @@ min < mediana < max:
 0.9 < 1 < 1.1
 RI (CV) : 0.1 (0.1)</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.90</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">573</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">57.3%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.10</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABQBAMAAAAQOb2bAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQLCgAzzMIGjQAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJNonc9a8J5Kf0T1WoZLEl2jhDIBCehf3Psz7Xouq7XFeuIxCIoMK+DD4X7m0Ti0rs10UgEBGE/c9/aAKFh5mC8tDTzQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xMVQxNDowMDo1MS0wNDowMP6usEUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTFUMTQ6MDA6NTEtMDQ6MDCP8wj5AAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABQBAMAAAAQOb2bAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wMVExILjSWqgwAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJNonc9a8J5Kf0T1WoZLEl2jhDIBCehf3Psz7Xouq7XFeuIxCIoMK+DD4X7m0Ti0rs10UgEBGE/c9/aAKFh5mC8tDTzQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0yMVQyMzoxODoxMS0wNDowMLAL0scAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMjFUMjM6MTg6MTEtMDQ6MDDBVmp7AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0

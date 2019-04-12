@@ -2055,7 +2055,7 @@ Type: Numérique
 > iris %$% freq(Species) %>% tb() 
 
 # A tibble: 4 x 6
-  value       freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>      <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 setosa        50      33.3          33.3    33.3        33.3
 2 versicolor    50      33.3          66.7    33.3        66.7
@@ -2065,7 +2065,7 @@ Type: Numérique
 > iris %$% freq(Species, report.nas = FALSE) %>% tb() 
 
 # A tibble: 3 x 4
-  value       freq   pct pct_cum
+  Species     freq   pct pct_cum
   <fct>      <dbl> <dbl>   <dbl>
 1 setosa        50  33.3    33.3
 2 versicolor    50  33.3    66.7
@@ -2074,7 +2074,7 @@ Type: Numérique
 > iris %$% freq(Species, cumul = FALSE) %>% tb() 
 
 # A tibble: 4 x 4
-  value       freq pct_valid pct_tot
+  Species     freq pct_valid pct_tot
   <fct>      <dbl>     <dbl>   <dbl>
 1 setosa        50      33.3    33.3
 2 versicolor    50      33.3    33.3
@@ -2084,7 +2084,7 @@ Type: Numérique
 > iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb() 
 
 # A tibble: 3 x 3
-  value       freq   pct
+  Species     freq   pct
   <fct>      <dbl> <dbl>
 1 setosa        50  33.3
 2 versicolor    50  33.3

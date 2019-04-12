@@ -290,8 +290,27 @@ iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
 ```
 
 By definition, no total rows are part of _tidy_ tables, and row.names are
-converted to regular columns. For now, `tb()` doesn't handle split-group
-tables, but it is certainly in store for a future release of **summarytools**.
+converted to regular columns. 
+
+#### Tidy Split-Group Statistics
+
+Here are two examples of how lists created using `stby()` are transformed into
+_tibbles_. Notice how the _order_ parameter affects the table's row ordering:
+```{r, results='markup'}
+grouped_freqs <- stby(data = tobacco$smoker, INDICES = tobacco$gender, 
+                      FUN = freq, cumul = FALSE, report.nas = FALSE)
+grouped_freqs %>% tb()
+grouped_freqs %>% tb(order = 2)
+
+grouped_descr <- stby(data = exams, INDICES = exams$gender, 
+                      FUN = descr, stats = "common")
+grouped_descr %>% tb()
+grouped_descr %>% tb(order = 2)
+```
+
+For now, `tb()` only handles split-group objects created with `stby()`, but in
+the future we aim at making it fully compatible with **dplyr**'s very handy 
+`group_by()`.
 
 ## The print() and view() Functions
 
