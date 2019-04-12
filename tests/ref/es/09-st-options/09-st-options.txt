@@ -34,6 +34,9 @@ $custom.css
 $escape.pipe
 [1] FALSE
 
+$freq.cumul
+[1] TRUE
+
 $freq.totals
 [1] TRUE
 
@@ -121,6 +124,9 @@ $custom.css
 
 $escape.pipe
 [1] FALSE
+
+$freq.cumul
+[1] TRUE
 
 $freq.totals
 [1] TRUE

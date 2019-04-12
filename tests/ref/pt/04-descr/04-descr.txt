@@ -544,25 +544,22 @@ Table: Table continues below
 > descr(tobacco) %>% tb() 
 
 # A tibble: 4 x 8
-  variable    mean         sd            min          med         max        n.valid pct.valid
-  <chr>       <chr>        <chr>         <chr>        <chr>       <chr>      <chr>   <chr>    
-1 age         49.60205128~ 18.289189474~ 18           50          80         975     97.5     
-2 BMI         25.73081854~ 4.4880677337~ 8.825776688~ 25.6196196~ 39.439011~ 974     97.4     
-3 cigs.per.d~ 6.782383419~ 11.876539014~ 0            0           40         965     96.5     
-4 samp.wgts   1            0.0838775506~ 0.861423220~ 1.04417670~ 1.0625     1000    100      
+  variable      mean      sd    min   med   max n.valid pct.valid
+  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 age          49.6  18.3    18     50    80        975      97.5
+2 BMI          25.7   4.49    8.83  25.6  39.4      974      97.4
+3 cigs.per.day  6.78 11.9     0      0    40        965      96.5
+4 samp.wgts     1     0.0839  0.861  1.04  1.06    1000     100  
 
 > descr(tobacco, stats = "common", transpose = TRUE) %>% tb() 
 
-# A tibble: 7 x 5
-  statistic age              BMI              cigs.per.day     samp.wgts         
-  <chr>     <chr>            <chr>            <chr>            <chr>             
-1 mean      49.6020512820513 25.7308185402254 6.78238341968912 1                 
-2 sd        18.2891894746618 4.48806773370252 11.8765390144066 0.0838775506280429
-3 min       18               8.82577668887166 0                0.861423220973783 
-4 med       50               25.6196196793287 0                1.04417670682731  
-5 max       80               39.439011582963  40               1.0625            
-6 n.valid   975              974              965              1000              
-7 pct.valid 97.5             97.4             96.5             100               
+# A tibble: 4 x 8
+  variable      mean      sd    min   med   max n.valid pct.valid
+  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 age          49.6  18.3    18     50    80        975      97.5
+2 BMI          25.7   4.49    8.83  25.6  39.4      974      97.4
+3 cigs.per.day  6.78 11.9     0      0    40        965      96.5
+4 samp.wgts     1     0.0839  0.861  1.04  1.06    1000     100  
 
 > library(dplyr) 
 > tobacco %>% select(age) %>% arrange() %>% descr(stats = "common") 

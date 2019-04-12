@@ -12,8 +12,8 @@ load(file = paste0(orig_dir, "/tests/last_date_dir.Rdata"))
 
 (dir.create(date_dir, recursive = TRUE))
 
-(testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "\\d(?!0)\\d",
-                   perl = TRUE, value = TRUE))
+(testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "^\\d{2}\\-",
+                   perl = TRUE, value = TRUE)[-1])
 
 eval_with_feedback <- function(filename, lang, compare = FALSE) {
   on.exit(setwd(orig_dir))
@@ -135,6 +135,7 @@ for (i in 2:6) {
   eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
   eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
   eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
+  eval_with_feedback(testfiles[10], lang = lang, compare = FALSE) # tb()
 }
 
 compare_dirs("en")

@@ -122,10 +122,10 @@ Type: Alphanumérique
                       <NA>     778                                77.80         100.00
                      Total    1000     100.00          100.00    100.00         100.00
 
-> print(f2, justify = "left", file = "02 - justify left.md") 
+> print(f2, justify = "left", file = "02-justify-left.md") 
 -- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
 -- Output file written
 
-> view(f2, justify = "right", footnote = 'justify right', file = '03 - justify right.html') 
+> view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html') 
 -- Output file written
 

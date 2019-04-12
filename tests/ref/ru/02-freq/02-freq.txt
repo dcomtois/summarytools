@@ -1168,7 +1168,7 @@ tobacco$age.gr
 -- Switching method to 'browser'
 -- Output file written
 
-> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02 - no bootstrap.html", report.title = "Freq without bootstrap") 
+> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -1276,7 +1276,7 @@ tabagisme$maladie
                       <NA>    776.07                               77.61               100.00
                      сумма   1000.00    100.00          100.00    100.00               100.00
 
-> print(wf1, file = "03 - weights.html") 
+> print(wf1, file = "03-weights.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -1494,12 +1494,12 @@ tobacco$diseased
   **\<NA\>**       0                                0.00               100.00
    **сумма**     702    100.00          100.00    100.00               100.00
 
-> print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx") 
+> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
-> view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html") 
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html") 
 -- Output file written
 -- Output file appended
 
@@ -1527,7 +1527,7 @@ tobacco$diseased
        <NA>       0                                0.00               100.00
       сумма     702    100.00          100.00    100.00               100.00
 
-> print(bf2, file = "06 - by.html") 
+> print(bf2, file = "06-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -1557,7 +1557,7 @@ iris$Species
             <NA>       0                                0.00               100.00
            сумма      70    100.00          100.00    100.00               100.00
 
-> print(bf3, file = "07 - by.html") 
+> print(bf3, file = "07-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -2036,16 +2036,16 @@ tobacco$samp.wgts
 
 # HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
 
-> view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions") 
+> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions") 
 -- Output file written
 
-> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE") 
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
 -- Output file appended
 
 
@@ -2055,7 +2055,7 @@ tobacco$samp.wgts
 > iris %$% freq(Species) %>% tb() 
 
 # A tibble: 4 x 6
-  value       freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>      <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 setosa        50      33.3          33.3    33.3        33.3
 2 versicolor    50      33.3          66.7    33.3        66.7
@@ -2065,7 +2065,7 @@ tobacco$samp.wgts
 > iris %$% freq(Species, report.nas = FALSE) %>% tb() 
 
 # A tibble: 3 x 4
-  value       freq   pct pct_cum
+  Species     freq   pct pct_cum
   <fct>      <dbl> <dbl>   <dbl>
 1 setosa        50  33.3    33.3
 2 versicolor    50  33.3    66.7
@@ -2074,7 +2074,7 @@ tobacco$samp.wgts
 > iris %$% freq(Species, cumul = FALSE) %>% tb() 
 
 # A tibble: 4 x 4
-  value       freq pct_valid pct_tot
+  Species     freq pct_valid pct_tot
   <fct>      <dbl>     <dbl>   <dbl>
 1 setosa        50      33.3    33.3
 2 versicolor    50      33.3    33.3
@@ -2084,7 +2084,7 @@ tobacco$samp.wgts
 > iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb() 
 
 # A tibble: 3 x 3
-  value       freq   pct
+  Species     freq   pct
   <fct>      <dbl> <dbl>
 1 setosa        50  33.3
 2 versicolor    50  33.3

@@ -987,7 +987,7 @@ No   Variable       Stats / Values            Freqs (% of Valid)    Graph       
                     [ 3 others ]              4 (16.7%)             III                                     
 ------------------------------------------------------------------------------------------------------------
 
-> print(dfSummary(tobacco[1:100,1:4]), footnote = "subset = [1:100, 1:4]", file = "08-tobacco subset.html") 
+> print(dfSummary(tobacco[1:100,1:4]), footnote = "subset = [1:100, 1:4]", file = "08-tobacco-subset.html") 
 -- Switching method to 'browser'
 -- Output file written
 
