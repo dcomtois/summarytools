@@ -2017,3 +2017,111 @@ Tipo: Alfahnumérico
 |              Vision |     9 |  4.05 | 100.00 |
 +---------------------+-------+-------+--------+
 
+tobacco$samp.wgts  
+Tipo: Numérico  
+
++-----------------------+-------+-------+--------+
+|                       | Frec. |     % | % Acu. |
++=======================+=======+=======+========+
+|     0.861423220973783 |   267 | 26.70 |  26.70 |
++-----------------------+-------+-------+--------+
+|      1.04417670682731 |   249 | 24.90 |  51.60 |
++-----------------------+-------+-------+--------+
+|      1.04938271604938 |   324 | 32.40 |  84.00 |
++-----------------------+-------+-------+--------+
+|                1.0625 |   160 | 16.00 | 100.00 |
++-----------------------+-------+-------+--------+
+
+> st_options(freq.totals = TRUE, freq.report.nas = TRUE) 
+
+# HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
+
+> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions") 
+-- Output file written
+
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
+-- Output file appended
+
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE") 
+-- Output file appended
+
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
+-- Output file appended
+
+
+# tb() ------------------------------------------------------------------------- 
+
+> library(magrittr) 
+> iris %$% freq(Species) %>% tb() 
+
+# A tibble: 4 x 6
+  Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  <fct>      <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+1 setosa        50      33.3          33.3    33.3        33.3
+2 versicolor    50      33.3          66.7    33.3        66.7
+3 virginica     50      33.3         100.     33.3       100. 
+4 <NA>           0      NA            NA       0         100. 
+
+> iris %$% freq(Species, report.nas = FALSE) %>% tb() 
+
+# A tibble: 3 x 4
+  Species     freq   pct pct_cum
+  <fct>      <dbl> <dbl>   <dbl>
+1 setosa        50  33.3    33.3
+2 versicolor    50  33.3    66.7
+3 virginica     50  33.3   100. 
+
+> iris %$% freq(Species, cumul = FALSE) %>% tb() 
+
+# A tibble: 4 x 4
+  Species     freq pct_valid pct_tot
+  <fct>      <dbl>     <dbl>   <dbl>
+1 setosa        50      33.3    33.3
+2 versicolor    50      33.3    33.3
+3 virginica     50      33.3    33.3
+4 <NA>           0      NA       0  
+
+> iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb() 
+
+# A tibble: 3 x 3
+  Species     freq   pct
+  <fct>      <dbl> <dbl>
+1 setosa        50  33.3
+2 versicolor    50  33.3
+3 virginica     50  33.3
+
+> library(dplyr) 
+> tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10) 
+
+Frecuencias  
+tobacco$disease  
+Tipo: Alfahnumérico  
+
++---------------------+-------+----------+---------------+---------+--------------+
+|                     | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
++=====================+=======+==========+===============+=========+==============+
+|              Cancer |    34 |    17.80 |         17.80 |    3.51 |         3.51 |
++---------------------+-------+----------+---------------+---------+--------------+
+|         Cholesterol |    21 |    10.99 |         28.80 |    2.17 |         5.68 |
++---------------------+-------+----------+---------------+---------+--------------+
+|            Diabetes |    14 |     7.33 |         36.13 |    1.44 |         7.12 |
++---------------------+-------+----------+---------------+---------+--------------+
+|           Digestive |    12 |     6.28 |         42.41 |    1.24 |         8.36 |
++---------------------+-------+----------+---------------+---------+--------------+
+|             Hearing |    14 |     7.33 |         49.74 |    1.44 |         9.80 |
++---------------------+-------+----------+---------------+---------+--------------+
+|               Heart |    20 |    10.47 |         60.21 |    2.06 |        11.87 |
++---------------------+-------+----------+---------------+---------+--------------+
+|        Hypertension |    36 |    18.85 |         79.06 |    3.72 |        15.58 |
++---------------------+-------+----------+---------------+---------+--------------+
+|         Hypotension |    11 |     5.76 |         84.82 |    1.14 |        16.72 |
++---------------------+-------+----------+---------------+---------+--------------+
+|     Musculoskeletal |    19 |     9.95 |         94.76 |    1.96 |        18.68 |
++---------------------+-------+----------+---------------+---------+--------------+
+|        Neurological |    10 |     5.24 |        100.00 |    1.03 |        19.71 |
++---------------------+-------+----------+---------------+---------+--------------+
+|                <NA> |   778 |          |               |   80.29 |       100.00 |
++---------------------+-------+----------+---------------+---------+--------------+
+|               Total |   969 |   100.00 |        100.00 |  100.00 |       100.00 |
++---------------------+-------+----------+---------------+---------+--------------+
+

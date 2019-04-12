@@ -256,8 +256,7 @@ BMI группа gender
 > attach(tobacco) 
 -- The following objects are masked from tobacco (pos = 3):
 -- 
---     age, age.gr, BMI, cigs.per.day, disease, diseased,
---     gender, samp.wgts, smoker
+--     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
 -- 
 
 > bd4 <- stby(data = BMI, INDICES = gender, FUN = descr) 
@@ -304,8 +303,7 @@ iris
 > attach(tobacco) 
 -- The following objects are masked from tobacco (pos = 3):
 -- 
---     age, age.gr, BMI, cigs.per.day, disease, diseased,
---     gender, samp.wgts, smoker
+--     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
 -- 
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "13.html")  

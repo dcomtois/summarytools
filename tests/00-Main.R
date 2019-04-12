@@ -1,4 +1,3 @@
-setwd("~/R/summarytools")
 rm(list=ls())
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
@@ -124,7 +123,7 @@ compare_dirs <- function(lang) {
 }
 
 i <- 1
-for (i in 2:6) {
+for (i in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[i]
   eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
   eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
