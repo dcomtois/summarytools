@@ -15,7 +15,7 @@
 
 > (w2 <- with(tobacco, descr(BMI, transpose = TRUE))) 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 tobacco$BMI  
 N: 1000  
 
@@ -27,7 +27,7 @@ Table: Table continues below
 
  
 
-            Çarpiklik   Çarpiklik.SH   Basiklik   Geçerli.N   Geçerli.Yzd
+            Çarpıklık   Çarpıklık.SH   Basıklık   Geçerli.N   Geçerli.Yzd
 --------- ----------- -------------- ---------- ----------- -------------
       BMI        0.02           0.08       0.26      974.00         97.40
 
@@ -36,7 +36,7 @@ Table: Table continues below
 
 > view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander") 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * diseased  
 Veri Çerçevesi: tobacco  
 
@@ -56,7 +56,7 @@ Veri Çerçevesi: tobacco
 
 > (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C"))) 
 
-Çapraz Tablo, Sütun Oranlari  
+Çapraz Tablo, Sütun Oranları  
 gender * diseased  
 Veri Çerçevesi: tobacco  
 
@@ -83,12 +83,12 @@ Veri Çerçevesi: tobacco
 > bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq) 
 > view(bf1, 'pander') 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -97,7 +97,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -108,7 +108,7 @@ Grup: smoker = No
 
 **Grup:** smoker = Yes  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
      **Yes**      125       41.95            41.95      41.95           41.95
       **No**      173       58.05           100.00      58.05          100.00
@@ -117,7 +117,7 @@ Grup: smoker = No
 
 **Grup:** smoker = No  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
      **Yes**       99       14.10            14.10      14.10           14.10
       **No**      603       85.90           100.00      85.90          100.00
@@ -126,12 +126,12 @@ Grup: smoker = No
 
 > print(bf1) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -140,7 +140,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -168,12 +168,12 @@ Grup: smoker = No
 > bf2 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq) 
 > view(bf2, 'pander') 
 
-Siklik  
+Sıklık  
 iris$Species  
 Tür: Faktör  
 Grup: Sepal.Length > mean(Sepal.Length) = FALSE  
 
-                   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa       50       62.50            62.50      62.50           62.50
       versicolor       24       30.00            92.50      30.00           92.50
@@ -183,7 +183,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = FALSE
 
 Grup: Sepal.Length > mean(Sepal.Length) = TRUE  
 
-                   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa        0        0.00             0.00       0.00            0.00
       versicolor       26       37.14            37.14      37.14           37.14
@@ -201,7 +201,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = TRUE
 
 > view(bd1, method = 'pander') 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 BMI göre gender  
 Veri Çerçevesi: tobacco  
 Etiket: Body Mass Index  
@@ -219,9 +219,9 @@ N: 489
                OMS     4.75     4.02
                 ÇA     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
-          Basiklik     0.09     0.17
+         Çarpıklık    -0.02    -0.04
+      Çarpıklık.SH     0.11     0.11
+          Basıklık     0.09     0.17
          Geçerli.N   475.00   477.00
        Geçerli.Yzd    97.14    97.55
 
@@ -274,7 +274,7 @@ N: 489
 > (b8 <- stby(iris, !is.na(iris$Species), descr)) 
 -- Non-numerical variable(s) ignored: Species
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 iris  
 Grup: !is.na(Species) = TRUE  
 N: 150  
@@ -291,9 +291,9 @@ N: 150
                OMS           1.85          1.04           1.04          0.44
                 ÇA           3.50          1.50           1.30          0.50
                 CV           0.47          0.64           0.14          0.14
-         Çarpiklik          -0.27         -0.10           0.31          0.31
-      Çarpiklik.SH           0.20          0.20           0.20          0.20
-          Basiklik          -1.42         -1.36          -0.61          0.14
+         Çarpıklık          -0.27         -0.10           0.31          0.31
+      Çarpıklık.SH           0.20          0.20           0.20          0.20
+          Basıklık          -1.42         -1.36          -0.61          0.14
          Geçerli.N         150.00        150.00         150.00        150.00
        Geçerli.Yzd         100.00        100.00         100.00        100.00
 
@@ -311,7 +311,7 @@ N: 150
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown")  
 
-### Tanimlayici Istatistikler  
+### Tanımlayıcı İstatistikler  
 #### BMI göre gender  
 **N:** 489  
 
@@ -327,16 +327,16 @@ N: 150
 |          **OMS** |   4.75 |   4.02 |
 |           **ÇA** |   6.49 |   5.44 |
 |           **CV** |   0.19 |   0.16 |
-|    **Çarpiklik** |  -0.02 |  -0.04 |
-| **Çarpiklik.SH** |   0.11 |   0.11 |
-|     **Basiklik** |   0.09 |   0.17 |
+|    **Çarpıklık** |  -0.02 |  -0.04 |
+| **Çarpıklık.SH** |   0.11 |   0.11 |
+|     **Basıklık** |   0.09 |   0.17 |
 |    **Geçerli.N** | 475.00 | 477.00 |
 |  **Geçerli.Yzd** |  97.14 |  97.55 |
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render")  
 
 <div class="container st-container">
-  <h3>Tanimlayici Istatistikler</h3>
+  <h3>Tanımlayıcı İstatistikler</h3>
   <h4>BMIg&#0246;regender</h4>
   <strong>N</strong>: 489
   <br/>
@@ -411,19 +411,19 @@ N: 150
     </tr>
     <tr>
       <td>
-        <strong>&#0199;arpiklik</strong></td>
+        <strong>&#0199;arpıklık</strong></td>
       <td><span>-0.02</span></td>
       <td><span>-0.04</span></td>
     </tr>
     <tr>
       <td>
-        <strong>&#0199;arpiklik.SH</strong></td>
+        <strong>&#0199;arpıklık.SH</strong></td>
       <td><span>0.11</span></td>
       <td><span>0.11</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Basiklik</strong></td>
+        <strong>Basıklık</strong></td>
       <td><span>0.09</span></td>
       <td><span>0.17</span></td>
     </tr>
@@ -452,12 +452,12 @@ N: 150
 > wb1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))  
 > view(wb1, method = "pander", caption = "with + by") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -468,7 +468,7 @@ Table: with + by
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -489,7 +489,7 @@ Table: with + by
 
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -498,7 +498,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -508,7 +508,7 @@ Grup: smoker = No
 > wb2 <- with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr))  
 > view(wb2, method = "pander") 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 BMI göre gender  
 Veri Çerçevesi: tobacco  
 N: 489  
@@ -525,9 +525,9 @@ N: 489
                OMS     4.75     4.02
                 ÇA     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
-          Basiklik     0.09     0.17
+         Çarpıklık    -0.02    -0.04
+      Çarpıklık.SH     0.11     0.11
+          Basıklık     0.09     0.17
          Geçerli.N   475.00   477.00
        Geçerli.Yzd    97.14    97.55
 
@@ -539,7 +539,7 @@ N: 489
 
 > (b5 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max")))) 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 BMI göre age.gr  
 Veri Çerçevesi: tobacco  
 N: 258  
@@ -554,7 +554,7 @@ N: 258
 
 > print(b5, "pander", style = "rmarkdown")  
 
-### Tanimlayici Istatistikler  
+### Tanımlayıcı İstatistikler  
 #### BMI göre age.gr  
 **Veri Çerçevesi:** tobacco  
 **N:** 258  
@@ -570,7 +570,7 @@ N: 258
 > b6 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE)) 
 > view(b6, "pander")  
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 BMI göre age.gr  
 Veri Çerçevesi: tobacco  
 N: 258  
@@ -597,7 +597,7 @@ N: 258
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 BMI göre gender  
 Veri Çerçevesi: tobacco  
 N: 489  
@@ -614,9 +614,9 @@ N: 489
                OMS     4.75     4.02
                 ÇA     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
-          Basiklik     0.09     0.17
+         Çarpıklık    -0.02    -0.04
+      Çarpıklık.SH     0.11     0.11
+          Basıklık     0.09     0.17
          Geçerli.N   475.00   477.00
        Geçerli.Yzd    97.14    97.55
 

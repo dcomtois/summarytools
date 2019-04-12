@@ -1,4 +1,4 @@
-### Frequęncias ponderadas  
+### Frequências ponderadas  
 #### tobacco$gender  
 **Tipo:** Fator  
 **Pesos:** samp.wgts  

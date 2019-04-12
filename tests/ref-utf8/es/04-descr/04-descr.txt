@@ -230,10 +230,10 @@ N: 1000
 -- Switching method to 'browser'
 -- Output file written
 
-> view(d2, footnote = "test: ŕéďôů", file = "02.html") 
+> view(d2, footnote = "test: àéïôù", file = "02.html") 
 -- Output file written
 
-> print(d2, caption = "test: ŕéďôů", file = "02.md") 
+> print(d2, caption = "test: àéïôù", file = "02.md") 
 -- Output file written
 
 
@@ -544,7 +544,7 @@ Table: Table continues below
 > descr(tobacco) %>% tb() 
 
 # A tibble: 4 x 8
-  variable    mean         sd            min          med         max        n.valid pct.valid
+  variable      mean      sd    min   med   max n.valid pct.valid
   <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
 1 age          49.6  18.3    18     50    80        975      97.5
 2 BMI          25.7   4.49    8.83  25.6  39.4      974      97.4

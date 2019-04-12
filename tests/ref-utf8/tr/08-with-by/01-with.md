@@ -1,9 +1,9 @@
-### Agirliklandirilmis Siklik  
+### Ağırlıklandırılmış Sıklık  
 #### tobacco$gender  
 **Tür:** Faktör  
-**Agirliklar:** samp.wgts  
+**Ağırlıklar:** samp.wgts  
 
-|     &nbsp; |  Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; |  Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|--------:|----------:|---------------:|---------:|--------------:|
 |      **F** |  488.92 |     50.00 |          50.00 |    48.89 |         48.89 |
 |      **M** |  488.92 |     50.00 |         100.00 |    48.89 |         97.78 |

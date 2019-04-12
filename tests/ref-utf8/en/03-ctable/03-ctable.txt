@@ -3,7 +3,7 @@
 
 > data(tobacco) 
 > tobacco <- tibble::as_tibble(tobacco) 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: ÈÍ‡·˚Ô") 
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: √©√™√†√°√ª√Ø") 
 
 Cross-Tabulation, Row Proportions  
 smoker * diseased  
@@ -17,7 +17,7 @@ Data Frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: ÈÍ‡·˚Ô
+Table: test encod: √©√™√†√°√ª√Ø
 
 > label(tobacco) <- "A Study on Tobacco Use and Health" 
 
@@ -236,7 +236,7 @@ Group: gender = M
 
 # with() + stby() -------------------------------------------------------------- 
 
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problÈmatique! 
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # probl√©matique! 
 
 Cross-Tabulation, Row Proportions  
 smoker * diseased  

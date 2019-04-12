@@ -3,7 +3,7 @@
 
 > data(tobacco) 
 > tobacco <- tibble::as_tibble(tobacco) 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: eeaaui") 
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï") 
 
 Кросс-табуляция, пропорции по рядам  
 smoker * diseased  
@@ -17,7 +17,7 @@ smoker * diseased
    сумма              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: eeaaui
+Table: test encod: éêàáûï
 
 > label(tobacco) <- "A Study on Tobacco Use and Health" 
 
@@ -236,7 +236,7 @@ smoker * diseased
 
 # with() + stby() -------------------------------------------------------------- 
 
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problematique! 
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique! 
 
 Кросс-табуляция, пропорции по рядам  
 smoker * diseased  

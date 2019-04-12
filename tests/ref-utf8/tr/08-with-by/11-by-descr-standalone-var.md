@@ -1,4 +1,4 @@
-### Tanimlayici Istatistikler  
+### Tanımlayıcı İstatistikler  
 #### BMI göre gender  
 **N:** 489  
 
@@ -14,8 +14,8 @@
 |          **OMS** |   4.75 |   4.02 |
 |           **ÇA** |   6.49 |   5.44 |
 |           **CV** |   0.19 |   0.16 |
-|    **Çarpiklik** |  -0.02 |  -0.04 |
-| **Çarpiklik.SH** |   0.11 |   0.11 |
-|     **Basiklik** |   0.09 |   0.17 |
+|    **Çarpıklık** |  -0.02 |  -0.04 |
+| **Çarpıklık.SH** |   0.11 |   0.11 |
+|     **Basıklık** |   0.09 |   0.17 |
 |    **Geçerli.N** | 475.00 | 477.00 |
 |  **Geçerli.Yzd** |  97.14 |  97.55 |

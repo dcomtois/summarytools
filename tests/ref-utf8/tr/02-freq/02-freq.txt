@@ -9,12 +9,12 @@
 
 > (f1 <- freq(tobacco$gender)) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -23,12 +23,12 @@ Tür: Faktör
 
 > print(f1, plain.ascii = F) 
 
-### Siklik  
+### Sıklık  
 #### tobacco$gender  
 **Etiket:** Subject's Gender  
 **Tür:** Faktör  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        **F**      489       50.00            50.00      48.90           48.90
        **M**      489       50.00           100.00      48.90           97.80
@@ -37,12 +37,12 @@ Tür: Faktör
 
 > print(f1, plain.ascii = F, style = "rmarkdown") 
 
-### Siklik  
+### Sıklık  
 #### tobacco$gender  
 **Etiket:** Subject's Gender  
 **Tür:** Faktör  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **F** |    489 |     50.00 |          50.00 |    48.90 |         48.90 |
 |      **M** |    489 |     50.00 |         100.00 |    48.90 |         97.80 |
@@ -53,7 +53,7 @@ Tür: Faktör
 
 
 +------------+--------+-----------+----------------+----------+---------------+
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |      **F** |    489 |     50.00 |          50.00 |    48.90 |         48.90 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -74,12 +74,12 @@ Tür: Faktör
 
 > (f2 <- freq(tabagisme$age.gr, round.digits = 1)) 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258        26.5             26.5       25.8            25.8
        35-50      241        24.7             51.2       24.1            49.9
@@ -93,11 +93,11 @@ Tür: Faktör
 
 > print(f2, display.labels = FALSE) 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258        26.5             26.5       25.8            25.8
        35-50      241        24.7             51.2       24.1            49.9
@@ -108,11 +108,11 @@ Tür: Faktör
 
 > print(f2, display.type = F) 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258        26.5             26.5       25.8            25.8
        35-50      241        24.7             51.2       24.1            49.9
@@ -126,12 +126,12 @@ Etiket: Groupe d'âge
 
 > print(f2, totals = FALSE)          # OK 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-              Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+              Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ----------- -------- ----------- ---------------- ---------- ---------------
       18-34      258        26.5             26.5       25.8            25.8
       35-50      241        24.7             51.2       24.1            49.9
@@ -141,12 +141,12 @@ Tür: Faktör
 
 > print(f2, report.nas = FALSE)      # OK 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-               Siklik       %   Küm. %
+               Sıklık       %   Küm. %
 ------------ -------- ------- --------
        18-34      258    26.5     26.5
        35-50      241    24.7     51.2
@@ -156,12 +156,12 @@ Tür: Faktör
 
 > print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL % 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Toplam %
+               Sıklık   Geçerli %   Toplam %
 ------------ -------- ----------- ----------
        18-34      258        26.5       25.8
        35-50      241        24.7       24.1
@@ -172,12 +172,12 @@ Tür: Faktör
 
 > print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL % 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-              Siklik   Geçerli %   Toplam %
+              Sıklık   Geçerli %   Toplam %
 ----------- -------- ----------- ----------
       18-34      258        26.5       25.8
       35-50      241        24.7       24.1
@@ -187,12 +187,12 @@ Tür: Faktör
 
 > print(f2, report.nas = FALSE, totals = FALSE)  # OK 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-              Siklik      %   Küm. %
+              Sıklık      %   Küm. %
 ----------- -------- ------ --------
       18-34      258   26.5     26.5
       35-50      241   24.7     51.2
@@ -201,12 +201,12 @@ Tür: Faktör
 
 > print(f2, report.nas = FALSE, cumul = FALSE)   # OK 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-               Siklik       %
+               Sıklık       %
 ------------ -------- -------
        18-34      258    26.5
        35-50      241    24.7
@@ -216,12 +216,12 @@ Tür: Faktör
 
 > print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE) 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-              Siklik      %
+              Sıklık      %
 ----------- -------- ------
       18-34      258   26.5
       35-50      241   24.7
@@ -233,12 +233,12 @@ Tür: Faktör
 
 > print(f2, missing = "---") 
 
-Siklik  
+Sıklık  
 tabagisme$age.gr  
 Etiket: Groupe d'âge  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258        26.5             26.5       25.8            25.8
        35-50      241        24.7             51.2       24.1            49.9
@@ -252,11 +252,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      224       22.40            22.40      22.40           22.40
           No      776       77.60           100.00      77.60          100.00
@@ -268,11 +268,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "freq") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
           No      776       77.60            77.60      77.60           77.60
          Yes      224       22.40           100.00      22.40          100.00
@@ -281,11 +281,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "freq", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
           No      776    77.60    77.60
          Yes      224    22.40   100.00
@@ -293,11 +293,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "freq-") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      224       22.40            22.40      22.40           22.40
           No      776       77.60           100.00      77.60          100.00
@@ -306,11 +306,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "freq-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
          Yes      224    22.40    22.40
           No      776    77.60   100.00
@@ -318,11 +318,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "names") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
           No      776       77.60            77.60      77.60           77.60
          Yes      224       22.40           100.00      22.40          100.00
@@ -331,11 +331,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "names", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
           No      776    77.60    77.60
          Yes      224    22.40   100.00
@@ -343,11 +343,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "names-") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      224       22.40            22.40      22.40           22.40
           No      776       77.60           100.00      77.60          100.00
@@ -356,11 +356,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "names-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
          Yes      224    22.40    22.40
           No      776    77.60   100.00
@@ -368,11 +368,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "levels") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      224       22.40            22.40      22.40           22.40
           No      776       77.60           100.00      77.60          100.00
@@ -381,11 +381,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "levels", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
          Yes      224    22.40    22.40
           No      776    77.60   100.00
@@ -393,11 +393,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "levels-") 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
           No      776       77.60            77.60      77.60           77.60
          Yes      224       22.40           100.00      22.40          100.00
@@ -406,11 +406,11 @@ Tür: Faktör
 
 > freq(tobacco$diseased, order = "levels-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
           No      776    77.60    77.60
          Yes      224    22.40   100.00
@@ -421,11 +421,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -439,11 +439,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "freq") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        51-70      317       32.51            32.51      31.70           31.70
        18-34      258       26.46            58.97      25.80           57.50
@@ -454,11 +454,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "freq", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
        51-70      317    32.51    32.51
        18-34      258    26.46    58.97
@@ -468,11 +468,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "freq-") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
         71 +      159       16.31            16.31      15.90           15.90
        35-50      241       24.72            41.03      24.10           40.00
@@ -483,11 +483,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "freq-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
         71 +      159    16.31    16.31
        35-50      241    24.72    41.03
@@ -497,11 +497,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "names") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -512,11 +512,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "names", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
        18-34      258    26.46    26.46
        35-50      241    24.72    51.18
@@ -526,11 +526,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "names-") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
         71 +      159       16.31            16.31      15.90           15.90
        51-70      317       32.51            48.82      31.70           47.60
@@ -541,11 +541,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "names-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
         71 +      159    16.31    16.31
        51-70      317    32.51    48.82
@@ -555,11 +555,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "levels") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -570,11 +570,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "levels", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
        18-34      258    26.46    26.46
        35-50      241    24.72    51.18
@@ -584,11 +584,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "levels-") 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
         71 +      159       16.31            16.31      15.90           15.90
        51-70      317       32.51            48.82      31.70           47.60
@@ -599,11 +599,11 @@ Tür: Faktör
 
 > freq(tobacco$age.gr, order = "levels-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
         71 +      159    16.31    16.31
        51-70      317    32.51    48.82
@@ -616,11 +616,11 @@ Tür: Faktör
 
 > freq(tobacco$disease) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer       34       15.32            15.32       3.40            3.40
           Cholesterol       21        9.46            24.77       2.10            5.50
@@ -643,11 +643,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "freq") 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
          Hypertension       36       16.22            16.22       3.60            3.60
                Cancer       34       15.32            31.53       3.40            7.00
@@ -667,11 +667,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "freq", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik        %   Küm. %
+                        Sıklık        %   Küm. %
 --------------------- -------- -------- --------
          Hypertension       36    16.22    16.22
                Cancer       34    15.32    31.53
@@ -690,11 +690,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "freq-") 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                 Other        2        0.90             0.90       0.20            0.20
                Vision        9        4.05             4.95       0.90            1.10
@@ -714,11 +714,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "-freq", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik        %   Küm. %
+                        Sıklık        %   Küm. %
 --------------------- -------- -------- --------
                 Other        2     0.90     0.90
                Vision        9     4.05     4.95
@@ -737,11 +737,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "names") 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer       34       15.32            15.32       3.40            3.40
           Cholesterol       21        9.46            24.77       2.10            5.50
@@ -761,11 +761,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "names", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik        %   Küm. %
+                        Sıklık        %   Küm. %
 --------------------- -------- -------- --------
                Cancer       34    15.32    15.32
           Cholesterol       21     9.46    24.77
@@ -780,11 +780,16 @@ Tür: Karakter
                 Other        2     0.90    86.94
             Pulmonary       20     9.01    95.95
                Vision        9     4.05   100.00
-               Toplam      222   100.00   100.0    10     4.50    86.04
-                Other        2     0.90    86.94
-            Pulmonary       20     9.01    95.95
-               Vision        9     4.05   100.00
-               Toplam      222   100.00   100.0------ ---------------- ---------- ---------------
+               Toplam      222   100.00   100.00
+
+> freq(tobacco$disease, order = "names-") 
+
+Sıklık  
+tobacco$disease  
+Tür: Karakter  
+
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+--------------------- -------- ----------- ---------------- ---------- ---------------
                Vision        9        4.05             4.05       0.90            0.90
             Pulmonary       20        9.01            13.06       2.00            2.90
                 Other        2        0.90            13.96       0.20            3.10
@@ -803,11 +808,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, order = "names-", report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik        %   Küm. %
+                        Sıklık        %   Küm. %
 --------------------- -------- -------- --------
                Vision        9     4.05     4.05
             Pulmonary       20     9.01    13.06
@@ -829,11 +834,11 @@ Tür: Karakter
 
 > freq(tobacco$disease) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer       34       15.32            15.32       3.40            3.40
           Cholesterol       21        9.46            24.77       2.10            5.50
@@ -853,11 +858,11 @@ Tür: Karakter
 
 > (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5)) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                     Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
       Hypertension       36       27.48            27.48       3.96            3.96
             Cancer       34       25.95            53.44       3.74            7.70
@@ -869,11 +874,11 @@ Tür: Karakter
 
 > print(f3, cumul = FALSE)        # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Toplam %
+                     Sıklık   Geçerli %   Toplam %
 ------------------ -------- ----------- ----------
       Hypertension       36       27.48       3.96
             Cancer       34       25.95       3.74
@@ -885,11 +890,11 @@ Tür: Karakter
 
 > print(f3, report.nas = FALSE)   # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik        %   Küm. %
+                     Sıklık        %   Küm. %
 ------------------ -------- -------- --------
       Hypertension       36    27.48    27.48
             Cancer       34    25.95    53.44
@@ -900,11 +905,11 @@ Tür: Karakter
 
 > print(f3, totals = FALSE)       # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                     Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
       Hypertension       36       27.48            27.48       3.96            3.96
             Cancer       34       25.95            53.44       3.74            7.70
@@ -915,11 +920,11 @@ Tür: Karakter
 
 > print(f3, cumul = FALSE, report.nas = FALSE)  # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik        %
+                     Sıklık        %
 ------------------ -------- --------
       Hypertension       36    27.48
             Cancer       34    25.95
@@ -930,11 +935,11 @@ Tür: Karakter
 
 > print(f3, cumul = FALSE, totals = FALSE)      # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Toplam %
+                     Sıklık   Geçerli %   Toplam %
 ------------------ -------- ----------- ----------
       Hypertension       36       27.48       3.96
             Cancer       34       25.95       3.74
@@ -945,11 +950,11 @@ Tür: Karakter
 
 > print(f3, report.nas = FALSE, totals = FALSE) # OK 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik       %   Küm. %
+                     Sıklık       %   Küm. %
 ------------------ -------- ------- --------
       Hypertension       36   27.48    27.48
             Cancer       34   25.95    53.44
@@ -959,11 +964,11 @@ Tür: Karakter
 
 > print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK  
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik       %
+                     Sıklık       %
 ------------------ -------- -------
       Hypertension       36   27.48
             Cancer       34   25.95
@@ -973,11 +978,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, rows = -1) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
           Cholesterol       21       11.17            11.17       2.17            2.17
              Diabetes       14        7.45            18.62       1.45            3.62
@@ -996,11 +1001,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, rows = "H") 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                     Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
            Hearing       14       17.28            17.28       1.63            1.63
              Heart       20       24.69            41.98       2.33            3.96
@@ -1011,11 +1016,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, rows = -1:-10) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                  Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                  Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------- -------- ----------- ---------------- ---------- ---------------
           Other        2        6.45             6.45       0.25            0.25
       Pulmonary       20       64.52            70.97       2.47            2.72
@@ -1025,11 +1030,11 @@ Tür: Karakter
 
 > freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                        Siklik       %   Küm. %
+                        Sıklık       %   Küm. %
 --------------------- -------- ------- --------
                Cancer       34   15.32    15.32
           Cholesterol       21    9.46    24.77
@@ -1050,11 +1055,11 @@ Tür: Karakter
 
 > print(f3, round.digits = 2) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
 Tür: Karakter  
 
-                     Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                     Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
       Hypertension       36       27.48            27.48       3.96            3.96
             Cancer       34       25.95            53.44       3.74            7.70
@@ -1071,12 +1076,12 @@ Tür: Karakter
 > Gender[1] <- "F" 
 > freq(Gender) 
 
-Siklik  
+Sıklık  
 Gender  
 Etiket: Subject's Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      490       50.10            50.10      49.00           49.00
            M      488       49.90           100.00      48.80           97.80
@@ -1094,12 +1099,12 @@ Tür: Faktör
 
 > freq(tobacco$gender[tobacco$smoker=="Yes"]) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      147       50.69            50.69      49.33           49.33
            M      143       49.31           100.00      47.99           97.32
@@ -1108,12 +1113,12 @@ Tür: Faktör
 
 > freq(tobacco$gender[1:500]) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      248       50.51            50.51      49.60           49.60
            M      243       49.49           100.00      48.60           98.20
@@ -1125,12 +1130,12 @@ Tür: Faktör
 
 > freq(tobacco[,1]) # label doesn't show (ok) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -1139,11 +1144,11 @@ Tür: Faktör
 
 > freq(tobacco[[3]]) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -1172,11 +1177,11 @@ Tür: Faktör
 
 > (f4 <- freq(tobacco$age.gr)) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -1187,11 +1192,11 @@ Tür: Faktör
 
 > print(f4, cumul = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Toplam %
+               Sıklık   Geçerli %   Toplam %
 ------------ -------- ----------- ----------
        18-34      258       26.46      25.80
        35-50      241       24.72      24.10
@@ -1202,11 +1207,11 @@ Tür: Faktör
 
 > print(f4, cumul = FALSE, report.nas = FALSE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %
+               Sıklık        %
 ------------ -------- --------
        18-34      258    26.46
        35-50      241    24.72
@@ -1216,11 +1221,11 @@ Tür: Faktör
 
 > (f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE)) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik        %
+               Sıklık        %
 ------------ -------- --------
        18-34      258    26.46
        35-50      241    24.72
@@ -1230,11 +1235,11 @@ Tür: Faktör
 
 > print(f5, cumul = TRUE, report.nas = TRUE) 
 
-Siklik  
+Sıklık  
 tobacco$age.gr  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -1248,12 +1253,12 @@ Tür: Faktör
 
 > (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation)) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tabagisme$maladie  
 Tür: Karakter  
-Agirliklar: ponderation  
+Ağırlıklar: ponderation  
 
-                              Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                              Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 -------------------------- --------- ----------- ---------------- ---------- ---------------
                      Autre      2.09        0.93             0.93       0.21            0.21
                     Cancer     33.66       15.03            15.96       3.37            3.57
@@ -1277,12 +1282,12 @@ Agirliklar: ponderation
 
 > print(wf1, report.nas = FALSE) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tabagisme$maladie  
 Tür: Karakter  
-Agirliklar: ponderation  
+Ağırlıklar: ponderation  
 
-                             Siklik        %   Küm. %
+                             Sıklık        %   Küm. %
 -------------------------- -------- -------- --------
                      Autre     2.09     0.93     0.93
                     Cancer    33.66    15.03    15.96
@@ -1301,12 +1306,12 @@ Agirliklar: ponderation
 
 > (wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq")) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tabagisme$maladie  
 Tür: Karakter  
-Agirliklar: ponderation  
+Ağırlıklar: ponderation  
 
-                             Siklik        %   Küm. %
+                             Sıklık        %   Küm. %
 -------------------------- -------- -------- --------
               Hypertension    36.52    16.31    16.31
                     Cancer    33.66    15.03    31.34
@@ -1325,12 +1330,12 @@ Agirliklar: ponderation
 
 > print(wf2, report.nas = TRUE) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tabagisme$maladie  
 Tür: Karakter  
-Agirliklar: ponderation  
+Ağırlıklar: ponderation  
 
-                              Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                              Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 -------------------------- --------- ----------- ---------------- ---------- ---------------
               Hypertension     36.52       16.31            16.31       3.65            3.65
                     Cancer     33.66       15.03            31.34       3.37            7.02
@@ -1351,12 +1356,12 @@ Agirliklar: ponderation
 > mala.f <- factor(tabagisme$maladie, levels = sort(names(table(tabagisme$maladie)), decreasing = TRUE)) 
 > (wf3 <- freq(mala.f, weights = tabagisme$ponderation)) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 mala.f  
 Tür: Faktör  
-Agirliklar: tabagisme$ponderation  
+Ağırlıklar: tabagisme$ponderation  
 
-                              Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                              Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 -------------------------- --------- ----------- ---------------- ---------- ---------------
                        Vue      9.29        4.15             4.15       0.93            0.93
           Système digestif     11.49        5.13             9.28       1.15            2.08
@@ -1376,12 +1381,12 @@ Agirliklar: tabagisme$ponderation
 
 > print(wf3, report.nas = FALSE, totals = FALSE) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 mala.f  
 Tür: Faktör  
-Agirliklar: tabagisme$ponderation  
+Ağırlıklar: tabagisme$ponderation  
 
-                             Siklik       %   Küm. %
+                             Sıklık       %   Küm. %
 -------------------------- -------- ------- --------
                        Vue     9.29    4.15     4.15
           Système digestif    11.49    5.13     9.28
@@ -1404,13 +1409,13 @@ Agirliklar: tabagisme$ponderation
 > label(tobacco$gender) <- "Subject's Gender" 
 > (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))) 
 
-### Agirliklandirilmis Siklik  
+### Ağırlıklandırılmış Sıklık  
 #### tobacco$gender  
 **Etiket:** Subject's Gender  
 **Tür:** Faktör  
-**Agirliklar:** samp.wgts  
+**Ağırlıklar:** samp.wgts  
 
-      &nbsp;    Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;    Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ --------- ----------- ---------------- ---------- ---------------
        **F**    488.92       50.00            50.00      48.89           48.89
        **M**    488.92       50.00           100.00      48.89           97.78
@@ -1423,13 +1428,13 @@ Agirliklar: tabagisme$ponderation
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Etiket: Subject has an illness  
 Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -1438,7 +1443,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -1447,13 +1452,13 @@ Grup: smoker = No
 
 > view(bf1, 'pander') 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Etiket: Subject has an illness  
 Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -1462,7 +1467,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -1473,7 +1478,7 @@ Grup: smoker = No
 
 **Grup:** smoker = Yes  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
      **Yes**      125       41.95            41.95      41.95           41.95
       **No**      173       58.05           100.00      58.05          100.00
@@ -1482,23 +1487,31 @@ Grup: smoker = No
 
 **Grup:** smoker = No  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
------------- ----- 41.95      41.95           41.95
-      **No**      173       58.05           100.00      58.05          100.00
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+------------ -------- ----------- ---------------- ---------- ---------------
+     **Yes**       99       14.10            14.10      14.10           14.10
+      **No**      603       85.90           100.00      85.90          100.00
   **\<NA\>**        0                                    0.00          100.00
-  **Toplam**      298      100.00           100.00     100.00          100.00
+  **Toplam**      702      100.00           100.00     100.00          100.00
 
-**Grup:** smoker = No  
+> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx") 
+-- Switching method to 'browser'
+-- Output file written
+-- Output file appended
 
-      &nbsp;   Siklik   Geoker, FUN = freq)) 
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html") 
+-- Output file written
+-- Output file appended
 
-Siklik  
+> (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
+
+Sıklık  
 tobacco$diseased  
 Etiket: Subject has an illness  
-T�r: Fakt�r  
+Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -1507,26 +1520,26 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
         <NA>        0                                    0.00          100.00
       Toplam      702      100.00           100.00     100.00          100.00
 
-> print(bf2, file = "06 - by.html") 
+> print(bf2, file = "06-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
 > (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
 
-Siklik  
+Sıklık  
 iris$Species  
-T�r: Fakt�r  
+Tür: Faktör  
 Grup: Sepal.Length > mean(Sepal.Length) = FALSE  
 
-                   Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+                   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa       50       62.50            62.50      62.50           62.50
       versicolor       24       30.00            92.50      30.00           92.50
@@ -1536,7 +1549,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = FALSE
 
 Grup: Sepal.Length > mean(Sepal.Length) = TRUE  
 
-                   Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+                   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa        0        0.00             0.00       0.00            0.00
       versicolor       26       37.14            37.14      37.14           37.14
@@ -1544,7 +1557,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = TRUE
             <NA>        0                                    0.00          100.00
           Toplam       70      100.00           100.00     100.00          100.00
 
-> print(bf3, file = "07 - by.html") 
+> print(bf3, file = "07-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -1555,13 +1568,13 @@ Grup: Sepal.Length > mean(Sepal.Length) = TRUE
 > label(tobacco$diseased) <- "Subject has an illness" 
 > (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))) 
 
-Siklik  
+Sıklık  
 tobacco$diseased  
 Etiket: Subject has an illness  
-T�r: Fakt�r  
+Tür: Faktör  
 Grup: smoker = Yes  
 
-               Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -1570,7 +1583,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Ge�erli %   K�m. Ge�erli %   Toplam %   K�m. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -1592,13 +1605,13 @@ Grup: smoker = No
 > (ft <- freq(tobacco)) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |          F |    489 |     50.00 |          50.00 |    48.90 |         48.90 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1611,10 +1624,10 @@ T�r: Fakt�r
 
 tobacco$age.gr  
 Etiket: Age Group  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |      18-34 |    258 |     26.46 |          26.46 |    25.80 |         25.80 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1631,10 +1644,10 @@ T�r: Fakt�r
 
 tobacco$smoker  
 Etiket: Subject Smokes  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |        Yes |    298 |     29.80 |          29.80 |    29.80 |         29.80 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1647,10 +1660,10 @@ T�r: Fakt�r
 
 tobacco$diseased  
 Etiket: Subject has an illness  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |        Yes |    224 |     22.40 |          22.40 |    22.40 |         22.40 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1662,10 +1675,10 @@ T�r: Fakt�r
 +------------+--------+-----------+----------------+----------+---------------+
 
 tobacco$disease  
-T�r: Karakter  
+Tür: Karakter  
 
 +---------------------+--------+-----------+----------------+----------+---------------+
-|                     | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|                     | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=====================+========+===========+================+==========+===============+
 |              Cancer |     34 |     15.32 |          15.32 |     3.40 |          3.40 |
 +---------------------+--------+-----------+----------------+----------+---------------+
@@ -1699,10 +1712,10 @@ T�r: Karakter
 +---------------------+--------+-----------+----------------+----------+---------------+
 
 tobacco$samp.wgts  
-T�r: Sayisal  
+Tür: Sayısal  
 
 +-----------------------+--------+-----------+----------------+----------+---------------+
-|                       | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|                       | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=======================+========+===========+================+==========+===============+
 |     0.861423220973783 |    267 |     26.70 |          26.70 |    26.70 |         26.70 |
 +-----------------------+--------+-----------+----------------+----------+---------------+
@@ -1720,11 +1733,11 @@ T�r: Sayisal
 > print(ft, display.labels = F, display.type = F) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-Siklik  
+Sıklık  
 tobacco$gender  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |          F |    489 |     50.00 |          50.00 |    48.90 |         48.90 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1738,7 +1751,7 @@ tobacco$gender
 tobacco$age.gr  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |      18-34 |    258 |     26.46 |          26.46 |    25.80 |         25.80 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1756,7 +1769,7 @@ tobacco$age.gr
 tobacco$smoker  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |        Yes |    298 |     29.80 |          29.80 |    29.80 |         29.80 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1770,7 +1783,7 @@ tobacco$smoker
 tobacco$diseased  
 
 +------------+--------+-----------+----------------+----------+---------------+
-|            | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|            | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +============+========+===========+================+==========+===============+
 |        Yes |    224 |     22.40 |          22.40 |    22.40 |         22.40 |
 +------------+--------+-----------+----------------+----------+---------------+
@@ -1784,7 +1797,7 @@ tobacco$diseased
 tobacco$disease  
 
 +---------------------+--------+-----------+----------------+----------+---------------+
-|                     | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|                     | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=====================+========+===========+================+==========+===============+
 |              Cancer |     34 |     15.32 |          15.32 |     3.40 |          3.40 |
 +---------------------+--------+-----------+----------------+----------+---------------+
@@ -1820,7 +1833,7 @@ tobacco$disease
 tobacco$samp.wgts  
 
 +-----------------------+--------+-----------+----------------+----------+---------------+
-|                       | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|                       | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=======================+========+===========+================+==========+===============+
 |     0.861423220973783 |    267 |     26.70 |          26.70 |    26.70 |         26.70 |
 +-----------------------+--------+-----------+----------------+----------+---------------+
@@ -1841,12 +1854,12 @@ tobacco$samp.wgts
 > tobacco_subset <- tobacco[,c(3,5,6)] 
 > lapply(tobacco_subset, freq, style = "rmarkdown") 
 
-### Siklik  
+### Sıklık  
 #### tobacco_subset$age.gr  
 **Etiket:** Age Group  
-**T�r:** Fakt�r  
+**Tür:** Faktör  
 
-|     &nbsp; | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |  **18-34** |    258 |     26.46 |          26.46 |    25.80 |         25.80 |
 |  **35-50** |    241 |     24.72 |          51.18 |    24.10 |         49.90 |
@@ -1857,9 +1870,9 @@ tobacco$samp.wgts
 
 #### tobacco_subset$smoker  
 **Etiket:** Subject Smokes  
-**T�r:** Fakt�r  
+**Tür:** Faktör  
 
-|     &nbsp; | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |    **Yes** |    298 |     29.80 |          29.80 |    29.80 |         29.80 |
 |     **No** |    702 |     70.20 |         100.00 |    70.20 |        100.00 |
@@ -1867,9 +1880,9 @@ tobacco$samp.wgts
 | **Toplam** |   1000 |    100.00 |         100.00 |   100.00 |        100.00 |
 
 #### tobacco_subset$cigs.per.day  
-**T�r:** Sayisal  
+**Tür:** Sayısal  
 
-|     &nbsp; | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **0** |    674 |     69.84 |          69.84 |    67.40 |         67.40 |
 |      **5** |     11 |      1.14 |          70.98 |     1.10 |         68.50 |
@@ -1918,13 +1931,13 @@ tobacco$samp.wgts
 > freq(tobacco) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Etiket: Subject's Gender  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +--------+--------+-------+--------+
-|        | Siklik |     % | K�m. % |
+|        | Sıklık |     % | Küm. % |
 +========+========+=======+========+
 |      F |    489 | 50.00 |  50.00 |
 +--------+--------+-------+--------+
@@ -1933,10 +1946,10 @@ T�r: Fakt�r
 
 tobacco$age.gr  
 Etiket: Age Group  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +-----------+--------+-------+--------+
-|           | Siklik |     % | K�m. % |
+|           | Sıklık |     % | Küm. % |
 +===========+========+=======+========+
 |     18-34 |    258 | 26.46 |  26.46 |
 +-----------+--------+-------+--------+
@@ -1949,10 +1962,10 @@ T�r: Fakt�r
 
 tobacco$smoker  
 Etiket: Subject Smokes  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +---------+--------+-------+--------+
-|         | Siklik |     % | K�m. % |
+|         | Sıklık |     % | Küm. % |
 +=========+========+=======+========+
 |     Yes |    298 | 29.80 |  29.80 |
 +---------+--------+-------+--------+
@@ -1961,10 +1974,10 @@ T�r: Fakt�r
 
 tobacco$diseased  
 Etiket: Subject has an illness  
-T�r: Fakt�r  
+Tür: Faktör  
 
 +---------+--------+-------+--------+
-|         | Siklik |     % | K�m. % |
+|         | Sıklık |     % | Küm. % |
 +=========+========+=======+========+
 |     Yes |    224 | 22.40 |  22.40 |
 +---------+--------+-------+--------+
@@ -1972,10 +1985,10 @@ T�r: Fakt�r
 +---------+--------+-------+--------+
 
 tobacco$disease  
-T�r: Karakter  
+Tür: Karakter  
 
 +---------------------+--------+-------+--------+
-|                     | Siklik |     % | K�m. % |
+|                     | Sıklık |     % | Küm. % |
 +=====================+========+=======+========+
 |              Cancer |     34 | 15.32 |  15.32 |
 +---------------------+--------+-------+--------+
@@ -2005,10 +2018,10 @@ T�r: Karakter
 +---------------------+--------+-------+--------+
 
 tobacco$samp.wgts  
-T�r: Sayisal  
+Tür: Sayısal  
 
 +-----------------------+--------+-------+--------+
-|                       | Siklik |     % | K�m. % |
+|                       | Sıklık |     % | Küm. % |
 +=======================+========+=======+========+
 |     0.861423220973783 |    267 | 26.70 |  26.70 |
 +-----------------------+--------+-------+--------+
@@ -2023,16 +2036,16 @@ T�r: Sayisal
 
 # HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
 
-> view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions") 
+> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions") 
 -- Output file written
 
-> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE") 
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
 -- Output file appended
 
 
@@ -2080,12 +2093,12 @@ T�r: Sayisal
 > library(dplyr) 
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10) 
 
-Siklik  
+Sıklık  
 tobacco$disease  
-T�r: Karakter  
+Tür: Karakter  
 
 +---------------------+--------+-----------+----------------+----------+---------------+
-|                     | Siklik | Ge�erli % | K�m. Ge�erli % | Toplam % | K�m. Toplam % |
+|                     | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=====================+========+===========+================+==========+===============+
 |              Cancer |     34 |     17.80 |          17.80 |     3.51 |          3.51 |
 +---------------------+--------+-----------+----------------+----------+---------------+

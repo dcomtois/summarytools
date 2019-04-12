@@ -6,10 +6,10 @@
 > f1 <- freq(tobacco$age.gr) 
 > print(f1, plain.ascii = F, round.digits = 3, display.labels = FALSE, display.type = F, missing = '------', report.nas = T, totals = F, Variable = "fake var name") # 6-1 
 
-### Siklik  
+### Sıklık  
 #### fake var name  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
    **18-34**      258      26.462           26.462     25.800          25.800
    **35-50**      241      24.718           51.179     24.100          49.900
@@ -23,7 +23,7 @@
 > print(f1, method = 'render', footnote = 'f1') 
 
 <div class="container st-container">
-  <h3>Siklik</h3>
+  <h3>Sıklık</h3>
   <h4>tobacco$age.gr</h4>
   <strong>Etiket</strong>: Groupe d'&#0226;ge
   <br/><strong>T&#0252;r</strong>: Fakt&#0246;r
@@ -37,7 +37,7 @@
     </tr>
     <tr>
       <th align="center">age.gr</th>
-      <th align="center">Siklik</th>
+      <th align="center">Sıklık</th>
       <th align="center">%</th>
       <th align="center">K&#0252;m. %</th>
       <th align="center">%</th>
@@ -100,11 +100,11 @@
 
 > (f2 <- freq(tabagisme$maladie, order = "freq")) 
 
-Siklik  
+Sıklık  
 tabagisme$maladie  
 Tür: Karakter  
 
-                             Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                             Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 -------------------------- -------- ----------- ---------------- ---------- ---------------
               Hypertension       36       16.22            16.22       3.60            3.60
                     Cancer       34       15.32            31.53       3.40            7.00

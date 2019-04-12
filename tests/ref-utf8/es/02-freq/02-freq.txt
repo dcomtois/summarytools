@@ -803,8 +803,8 @@ Tipo: Alfahnumérico
              Diabetes      14       6.31           75.23      1.40          16.70
           Cholesterol      21       9.46           84.68      2.10          18.80
                Cancer      34      15.32          100.00      3.40          22.20
-                 <NA>     778               100.00      3.40          22.20
-                 <NA>     778           100.00          100.00    100.00         100.00
+                 <NA>     778                                77.80         100.00
+                Total    1000     100.00          100.00    100.00         100.00
 
 > freq(tobacco$disease, order = "names-", report.nas = FALSE) 
 
@@ -1264,14 +1264,14 @@ Pesos: ponderation
                     Cancer     33.66      15.03           15.96      3.37           3.57
                  Cardiaque     19.89       8.88           24.85      1.99           5.56
                Cholestérol     21.11       9.42           34.27      2.11           7.67
-                   Diabčte     14.36       6.41           40.68      1.44           9.11
+                   Diabète     14.36       6.41           40.68      1.44           9.11
               Hypertension     36.52      16.31           56.99      3.65          12.76
                Hypotension     11.37       5.08           62.07      1.14          13.90
       Musculo-squelettique     19.59       8.75           70.82      1.96          15.86
               Neurologique     10.14       4.53           75.35      1.01          16.87
-                      Ouďe     14.15       6.32           81.66      1.41          18.29
+                      Ouïe     14.15       6.32           81.66      1.41          18.29
                 Pulmonaire     20.29       9.06           90.72      2.03          20.32
-          Systčme digestif     11.49       5.13           95.85      1.15          21.46
+          Système digestif     11.49       5.13           95.85      1.15          21.46
                        Vue      9.29       4.15          100.00      0.93          22.39
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
@@ -1293,14 +1293,14 @@ Pesos: ponderation
                     Cancer    33.66    15.03    15.96
                  Cardiaque    19.89     8.88    24.85
                Cholestérol    21.11     9.42    34.27
-                   Diabčte    14.36     6.41    40.68
+                   Diabète    14.36     6.41    40.68
               Hypertension    36.52    16.31    56.99
                Hypotension    11.37     5.08    62.07
       Musculo-squelettique    19.59     8.75    70.82
               Neurologique    10.14     4.53    75.35
-                      Ouďe    14.15     6.32    81.66
+                      Ouïe    14.15     6.32    81.66
                 Pulmonaire    20.29     9.06    90.72
-          Systčme digestif    11.49     5.13    95.85
+          Système digestif    11.49     5.13    95.85
                        Vue     9.29     4.15   100.00
                      Total   223.93   100.00   100.00
 
@@ -1319,9 +1319,9 @@ Pesos: ponderation
                 Pulmonaire    20.29     9.06    49.82
                  Cardiaque    19.89     8.88    58.70
       Musculo-squelettique    19.59     8.75    67.45
-                   Diabčte    14.36     6.41    73.86
-                      Ouďe    14.15     6.32    80.18
-          Systčme digestif    11.49     5.13    85.31
+                   Diabète    14.36     6.41    73.86
+                      Ouïe    14.15     6.32    80.18
+          Système digestif    11.49     5.13    85.31
                Hypotension    11.37     5.08    90.39
               Neurologique    10.14     4.53    94.92
                        Vue     9.29     4.15    99.07
@@ -1343,9 +1343,9 @@ Pesos: ponderation
                 Pulmonaire     20.29       9.06           49.82      2.03          11.16
                  Cardiaque     19.89       8.88           58.70      1.99          13.15
       Musculo-squelettique     19.59       8.75           67.45      1.96          15.10
-                   Diabčte     14.36       6.41           73.86      1.44          16.54
-                      Ouďe     14.15       6.32           80.18      1.41          17.96
-          Systčme digestif     11.49       5.13           85.31      1.15          19.10
+                   Diabète     14.36       6.41           73.86      1.44          16.54
+                      Ouïe     14.15       6.32           80.18      1.41          17.96
+          Système digestif     11.49       5.13           85.31      1.15          19.10
                Hypotension     11.37       5.08           90.39      1.14          20.24
               Neurologique     10.14       4.53           94.92      1.01          21.26
                        Vue      9.29       4.15           99.07      0.93          22.18
@@ -1364,14 +1364,14 @@ Pesos: tabagisme$ponderation
                                Frec.   % Válido   % Válido acu.   % Total   % Total acu.
 -------------------------- --------- ---------- --------------- --------- --------------
                        Vue      9.29       4.15            4.15      0.93           0.93
-          Systčme digestif     11.49       5.13            9.28      1.15           2.08
+          Système digestif     11.49       5.13            9.28      1.15           2.08
                 Pulmonaire     20.29       9.06           18.34      2.03           4.11
-                      Ouďe     14.15       6.32           24.65      1.41           5.52
+                      Ouïe     14.15       6.32           24.65      1.41           5.52
               Neurologique     10.14       4.53           29.18      1.01           6.53
       Musculo-squelettique     19.59       8.75           37.93      1.96           8.49
                Hypotension     11.37       5.08           43.01      1.14           9.63
               Hypertension     36.52      16.31           59.32      3.65          13.28
-                   Diabčte     14.36       6.41           65.73      1.44          14.72
+                   Diabète     14.36       6.41           65.73      1.44          14.72
                Cholestérol     21.11       9.42           75.15      2.11          16.83
                  Cardiaque     19.89       8.88           84.04      1.99          18.82
                     Cancer     33.66      15.03           99.07      3.37          22.18
@@ -1389,14 +1389,14 @@ Pesos: tabagisme$ponderation
                              Frec.       %   % Acu.
 -------------------------- ------- ------- --------
                        Vue    9.29    4.15     4.15
-          Systčme digestif   11.49    5.13     9.28
+          Système digestif   11.49    5.13     9.28
                 Pulmonaire   20.29    9.06    18.34
-                      Ouďe   14.15    6.32    24.65
+                      Ouïe   14.15    6.32    24.65
               Neurologique   10.14    4.53    29.18
       Musculo-squelettique   19.59    8.75    37.93
                Hypotension   11.37    5.08    43.01
               Hypertension   36.52   16.31    59.32
-                   Diabčte   14.36    6.41    65.73
+                   Diabète   14.36    6.41    65.73
                Cholestérol   21.11    9.42    75.15
                  Cardiaque   19.89    8.88    84.04
                     Cancer   33.66   15.03    99.07
@@ -1494,12 +1494,12 @@ Subgrupo: smoker = No
   **\<NA\>**       0                                 0.00         100.00
    **Total**     702     100.00          100.00    100.00         100.00
 
-> print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx") 
+> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
-> view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html") 
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html") 
 -- Output file written
 -- Output file appended
 
@@ -1527,7 +1527,7 @@ Subgrupo: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> print(bf2, file = "06 - by.html") 
+> print(bf2, file = "06-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -1545,10 +1545,11 @@ Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE
       versicolor      24      30.00           92.50     30.00          92.50
        virginica       6       7.50          100.00      7.50         100.00
             <NA>       0                                 0.00         100.00
-           Total     92.50
-       virginica       6       7.50          100.00      7.50         100.00
-            <NA>       0                                 0.00         100.00
-           Total  Total acu.
+           Total      80     100.00          100.00    100.00         100.00
+
+Subgrupo: Sepal.Length > mean(Sepal.Length) = TRUE  
+
+                   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
 ---------------- ------- ---------- --------------- --------- --------------
           setosa       0       0.00            0.00      0.00           0.00
       versicolor      26      37.14           37.14     37.14          37.14
@@ -1556,7 +1557,7 @@ Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE
             <NA>       0                                 0.00         100.00
            Total      70     100.00          100.00    100.00         100.00
 
-> print(bf3, file = "07 - by.html") 
+> print(bf3, file = "07-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended

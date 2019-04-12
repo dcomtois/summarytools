@@ -1,8 +1,8 @@
-### Siklik  
+### Sıklık  
 #### tabagisme$maladie  
 **Tür:** Karakter  
 
-| &nbsp;                   | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+| &nbsp;                   | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |:-------------------------|:-------|:----------|:---------------|:---------|:--------------|
 | **Hypertension**         | 36     | 16.22     | 16.22          | 3.60     | 3.60          |
 | **Cancer**               | 34     | 15.32     | 31.53          | 3.40     | 7.00          |

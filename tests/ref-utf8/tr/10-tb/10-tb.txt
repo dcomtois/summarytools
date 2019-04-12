@@ -11,11 +11,11 @@
 
 > (fr1 <-  tobacco %$% freq(gender)) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -50,11 +50,11 @@ Tür: Faktör
 
 > (fr2 <- tobacco %$% freq(gender, report.nas = FALSE)) 
 
-Siklik  
+Sıklık  
 tobacco$gender  
 Tür: Faktör  
 
-               Siklik        %   Küm. %
+               Sıklık        %   Küm. %
 ------------ -------- -------- --------
            F      489    50.00    50.00
            M      489    50.00   100.00
@@ -78,12 +78,12 @@ freq  pct
 
 > (fr3 <- tobacco %$% freq(gender, weights = samp.wgts)) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tobacco$gender  
 Tür: Faktör  
-Agirliklar: samp.wgts  
+Ağırlıklar: samp.wgts  
 
-                Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ --------- ----------- ---------------- ---------- ---------------
            F    488.92       50.00            50.00      48.89           48.89
            M    488.92       50.00           100.00      48.89           97.78
@@ -109,12 +109,12 @@ Agirliklar: samp.wgts
 
 > (fr4 <- tobacco %$% freq(gender, weights = samp.wgts, cumul = FALSE)) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tobacco$gender  
 Tür: Faktör  
-Agirliklar: samp.wgts  
+Ağırlıklar: samp.wgts  
 
-                Siklik   Geçerli %   Toplam %
+                Sıklık   Geçerli %   Toplam %
 ------------ --------- ----------- ----------
            F    488.92       50.00      48.89
            M    488.92       50.00      48.89
@@ -140,12 +140,12 @@ Agirliklar: samp.wgts
 
 > (fr5 <- tobacco %$% freq(gender, weights = samp.wgts, cumul = FALSE, report.nas = FALSE)) 
 
-Agirliklandirilmis Siklik  
+Ağırlıklandırılmış Sıklık  
 tobacco$gender  
 Tür: Faktör  
-Agirliklar: samp.wgts  
+Ağırlıklar: samp.wgts  
 
-               Siklik        %
+               Sıklık        %
 ------------ -------- --------
            F   488.92    50.00
            M   488.92    50.00
@@ -169,12 +169,12 @@ Agirliklar: samp.wgts
 
 > (fgr1 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq)) 
 
-Siklik  
+Sıklık  
 tobacco$smoker  
 Tür: Faktör  
 Grup: gender = F  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      141       30.32            30.32      28.83           28.83
           No      324       69.68           100.00      66.26           95.09
@@ -183,7 +183,7 @@ Grup: gender = F
 
 Grup: gender = M  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      135       29.16            29.16      27.61           27.61
           No      328       70.84           100.00      67.08           94.68
@@ -229,12 +229,12 @@ Grup: gender = M
 
 > (fgr2 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq, cumul = FALSE)) 
 
-Siklik  
+Sıklık  
 tobacco$smoker  
 Tür: Faktör  
 Grup: gender = F  
 
-               Siklik   Geçerli %   Toplam %
+               Sıklık   Geçerli %   Toplam %
 ------------ -------- ----------- ----------
          Yes      141       30.32      28.83
           No      324       69.68      66.26
@@ -243,7 +243,7 @@ Grup: gender = F
 
 Grup: gender = M  
 
-               Siklik   Geçerli %   Toplam %
+               Sıklık   Geçerli %   Toplam %
 ------------ -------- ----------- ----------
          Yes      135       29.16      27.61
           No      328       70.84      67.08
@@ -289,12 +289,12 @@ Grup: gender = M
 
 > (fgr3 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq, cumul = FALSE, report.nas = FALSE)) 
 
-Siklik  
+Sıklık  
 tobacco$smoker  
 Tür: Faktör  
 Grup: gender = F  
 
-               Siklik        %
+               Sıklık        %
 ------------ -------- --------
          Yes      141    30.32
           No      324    69.68
@@ -302,7 +302,7 @@ Grup: gender = F
 
 Grup: gender = M  
 
-               Siklik        %
+               Sıklık        %
 ------------ -------- --------
          Yes      135    29.16
           No      328    70.84
@@ -343,12 +343,12 @@ freq  pct
 
 > (fgr4 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq)) 
 
-Siklik  
+Sıklık  
 tobacco$smoker  
 Tür: Faktör  
 Grup: age.gr = 18-34  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       69       28.51            28.51      26.74           26.74
           No      173       71.49           100.00      67.05           93.80
@@ -357,7 +357,7 @@ Grup: age.gr = 18-34
 
 Grup: age.gr = 35-50  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       66       28.82            28.82      27.39           27.39
           No      163       71.18           100.00      67.63           95.02
@@ -366,7 +366,7 @@ Grup: age.gr = 35-50
 
 Grup: age.gr = 51-70  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       32.25            32.25      31.23           31.23
           No      208       67.75           100.00      65.62           96.85
@@ -375,7 +375,7 @@ Grup: age.gr = 51-70
 
 Grup: age.gr = 71 +  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       43       28.86            28.86      27.04           27.04
           No      106       71.14           100.00      66.67           93.71
@@ -434,7 +434,7 @@ Grup: age.gr = 71 +
 > (de1 <- descr(examens)) 
 -- Non-numerical variable(s) ignored: eleve, sexe
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 examens  
 N: 30  
 
@@ -450,41 +450,39 @@ N: 30
                OMS      6.52       5.49       7.56        12.31       6.45    9.93
                 ÇA      9.70       8.20       8.50        11.90       8.15   13.35
                 CV      0.10       0.12       0.15         0.15       0.14    0.12
-         Çarpiklik      0.28       0.75       0.03         0.10       0.01    0.12
-      Çarpiklik.SH      0.43       0.43       0.43         0.43       0.43    0.44
-          Basiklik     -0.25      -0.42       0.45        -0.03      -0.60   -0.58
+         Çarpıklık      0.28       0.75       0.03         0.10       0.01    0.12
+      Çarpıklık.SH      0.43       0.43       0.43         0.43       0.43    0.44
+          Basıklık     -0.25      -0.42       0.45        -0.03      -0.60   -0.58
          Geçerli.N     29.00      29.00      29.00        29.00      30.00   28.00
        Geçerli.Yzd     96.67      96.67      96.67        96.67     100.00   93.33
 
 > de1 %>% tb() 
 
 # A tibble: 6 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 anglais   76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251 
-2 economie  73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422 
-3 francais  73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445 
-4 geograp~  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290
-5 histoire  72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596 
-6 maths     73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579 
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable    mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 anglais     76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251       29      96.7
+2 economie    73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422       29      96.7
+3 francais    73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445       29      96.7
+4 geographie  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290      29      96.7
+5 histoire    72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596       30     100  
+6 maths       73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579       28      93.3
 
 > de1 %>% tb(2) # no difference expected 
 
 # A tibble: 6 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 anglais   76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251 
-2 economie  73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422 
-3 francais  73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445 
-4 geograp~  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290
-5 histoire  72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596 
-6 maths     73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579 
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable    mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 anglais     76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251       29      96.7
+2 economie    73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422       29      96.7
+3 francais    73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445       29      96.7
+4 geographie  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290      29      96.7
+5 histoire    72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596       30     100  
+6 maths       73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579       28      93.3
 
 > (de2 <- examens$francais %>% descr()) 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 examens$francais  
 N: 30  
 
@@ -500,26 +498,25 @@ N: 30
                OMS       7.56
                 ÇA       8.50
                 CV       0.15
-         Çarpiklik       0.03
-      Çarpiklik.SH       0.43
-          Basiklik       0.45
+         Çarpıklık       0.03
+      Çarpıklık.SH       0.43
+          Basıklık       0.45
          Geçerli.N      29.00
        Geçerli.Yzd      96.67
 
 > de2 %>% tb() 
 
 # A tibble: 1 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 francais  73.9  10.8  44.8  68.2  73.6  76.7  94.7  7.56   8.5 0.146   0.0289       0.434    0.445
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 francais  73.9  10.8  44.8  68.2  73.6  76.7  94.7  7.56   8.5 0.146   0.0289       0.434    0.445      29      96.7
 
 
 # Descr with grouped results, one variable only -------------------------------- 
 
 > (dgr1 <- examens %$% stby(maths, sexe, descr, stats = "common")) 
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 maths göre sexe  
 Veri Çerçevesi: examens  
 N: 15  
@@ -552,7 +549,7 @@ N: 15
 > (dgr2 <- stby(examens, examens$sexe, descr)) 
 -- Non-numerical variable(s) ignored: eleve, sexe
 
-Tanimlayici Istatistikler  
+Tanımlayıcı İstatistikler  
 examens  
 Grup: sexe = Fille  
 N: 15  
@@ -569,9 +566,9 @@ N: 15
                OMS      6.15       3.34       7.26         9.34       5.34    8.75
                 ÇA      9.12       3.85       9.23        10.20       8.55   11.05
                 CV      0.13       0.11       0.17         0.12       0.13    0.12
-         Çarpiklik      0.51       0.91       0.08        -0.34      -0.36   -0.50
-      Çarpiklik.SH      0.60       0.60       0.60         0.58       0.58    0.60
-          Basiklik     -0.66      -0.32      -0.15        -0.90      -0.68   -0.80
+         Çarpıklık      0.51       0.91       0.08        -0.34      -0.36   -0.50
+      Çarpıklık.SH      0.60       0.60       0.60         0.58       0.58    0.60
+          Basıklık     -0.66      -0.32      -0.15        -0.90      -0.68   -0.80
          Geçerli.N     14.00      14.00      14.00        15.00      15.00   14.00
        Geçerli.Yzd     93.33      93.33      93.33       100.00     100.00   93.33
 
@@ -590,47 +587,47 @@ N: 15
                OMS      5.19       7.56       3.41        11.34      10.97    7.86
                 ÇA      6.35      10.40       5.30        15.48      14.30   10.30
                 CV      0.08       0.12       0.11         0.17       0.15    0.13
-         Çarpiklik      0.73       0.51       0.78        -0.13       0.09    0.62
-      Çarpiklik.SH      0.58       0.58       0.58         0.60       0.58    0.60
-          Basiklik     -0.42      -0.84      -0.42        -0.48      -1.11   -0.64
+         Çarpıklık      0.73       0.51       0.78        -0.13       0.09    0.62
+      Çarpıklık.SH      0.58       0.58       0.58         0.60       0.58    0.60
+          Basıklık     -0.42      -0.84      -0.42        -0.48      -1.11   -0.64
          Geçerli.N     15.00      15.00      15.00        14.00      15.00   14.00
        Geçerli.Yzd    100.00     100.00     100.00        93.33     100.00   93.33
 
 > dgr2 %>% tb() 
 
 # A tibble: 12 x 17
-   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness
-   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>
- 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597
- 2 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597
- 3 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597
- 4 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580
- 5 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580
- 6 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597
- 7 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580
- 8 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580
- 9 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580
-10 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597
-11 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid
+   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>
+ 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14
+ 2 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14
+ 3 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14
+ 4 Fille geograp…  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15
+ 5 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15
+ 6 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14
+ 7 Garç… anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15
+ 8 Garç… economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15
+ 9 Garç… francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15
+10 Garç… geograp…  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14
+11 Garç… histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15
+12 Garç… maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14
+# … with 1 more variable: pct.valid <dbl>
 
 > dgr2 %>% tb(2) 
 
 # A tibble: 12 x 17
-   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness
-   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>
- 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597
- 2 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580
- 3 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597
- 4 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580
- 5 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597
- 6 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580
- 7 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580
- 8 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597
- 9 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580
-10 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580
-11 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid
+   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>
+ 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14
+ 2 Garç… anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15
+ 3 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14
+ 4 Garç… economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15
+ 5 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14
+ 6 Garç… francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15
+ 7 Fille geograp…  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15
+ 8 Garç… geograp…  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14
+ 9 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15
+10 Garç… histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15
+11 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14
+12 Garç… maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14
+# … with 1 more variable: pct.valid <dbl>
 

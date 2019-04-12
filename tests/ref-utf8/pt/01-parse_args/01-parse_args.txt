@@ -11,7 +11,7 @@
 
 > freq(tobacco$smoker) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -25,7 +25,7 @@ Tipo: Fator
 
 > freq(tobacco["smoker"]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -39,7 +39,7 @@ Tipo: Fator
 
 > freq(tobacco[["smoker"]]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -53,7 +53,7 @@ Tipo: Fator
 
 > freq(tobacco[,5]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -67,7 +67,7 @@ Tipo: Fator
 
 > freq(tobacco[[5]]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -84,7 +84,7 @@ Tipo: Fator
 
 > freq(tobacco$smoker[1:100]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -98,7 +98,7 @@ Tipo: Fator
 
 > freq(tobacco[1:100, "smoker"]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -112,7 +112,7 @@ Tipo: Fator
 
 > freq(tobacco[1:100, 5]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -126,7 +126,7 @@ Tipo: Fator
 
 > freq(tobacco[[5]][1:100]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -140,7 +140,7 @@ Tipo: Fator
 
 > freq(tobacco$smoker[tobacco$smoker=="Yes"]) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -158,7 +158,7 @@ Tipo: Fator
 > smoker <- tobacco$smoker 
 > freq(smoker) 
 
-Frequęncias  
+Frequências  
 smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -175,7 +175,7 @@ Tipo: Fator
 
 > with(tobacco, freq(smoker))            
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -197,7 +197,7 @@ N: 1000
                          age
 ------------------- --------
               Média    49.60
-        Desv.padrăo    18.29
+        Desv.padrão    18.29
                 Mín    18.00
                  Q1    34.00
                 Med    50.00
@@ -214,7 +214,7 @@ N: 1000
 
 > with(tobacco, ctable(smoker, diseased)) 
 
-Tabulaçăo cruzada, Proporçőes por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Rótulo: Tobacco Study  
@@ -233,7 +233,7 @@ Rótulo: Tobacco Study
 > library(magrittr) 
 > tobacco$smoker %>% freq()      
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -247,7 +247,7 @@ Tipo: Fator
 
 > tobacco["smoker"] %>% freq()   
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -261,7 +261,7 @@ Tipo: Fator
 
 > tobacco[["smoker"]] %>% freq() 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -275,7 +275,7 @@ Tipo: Fator
 
 > tobacco[,5] %>% freq()         
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -289,7 +289,7 @@ Tipo: Fator
 
 > tobacco[[5]] %>% freq() 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -305,7 +305,7 @@ Tipo: Fator
 
 ### Resumo dos dados  
 #### tobacco  
-**Dimensőes:** 1000 x 9  
+**Dimensões:** 1000 x 9  
 **Duplicatas:** 2  
 
 +----+---------------+--------------------+---------------------------+-----------------------+------------------------------+---------+----------+
@@ -367,7 +367,7 @@ Tipo: Fator
 
 > tobacco %$% ctable(smoker, diseased) 
 
-Tabulaçăo cruzada, Proporçőes por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Rótulo: Tobacco Study  
@@ -390,7 +390,7 @@ N: 1000
                        age
 ----------------- --------
             Média    49.60
-      Desv.padrăo    18.29
+      Desv.padrão    18.29
               Mín    18.00
               Med    50.00
               Máx    80.00
@@ -402,7 +402,7 @@ N: 1000
 
 > stby(tobacco$smoker, tobacco$gender, freq)           
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -426,7 +426,7 @@ Grupo: gender = M
 
 > stby(tobacco["smoker"], tobacco["gender"], freq)     
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -450,7 +450,7 @@ Grupo: gender = M
 
 > stby(tobacco[,"smoker"], tobacco[,"gender"], freq)   
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -474,7 +474,7 @@ Grupo: gender = M
 
 > stby(tobacco[["smoker"]], tobacco[["gender"]], freq) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -501,7 +501,7 @@ Grupo: gender = M
 
 > stby(tobacco[[5]], tobacco[[1]], freq) 
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -525,7 +525,7 @@ Grupo: gender = M
 
 > stby(tobacco[,5], tobacco[,1], freq)   
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -552,7 +552,7 @@ Grupo: gender = M
 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
 
-Tabulaçăo cruzada, Proporçőes por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Rótulo: Tobacco Study  
@@ -581,7 +581,7 @@ Grupo: gender = M
 
 > with(tobacco, stby(smoker, gender, freq))                                
 
-Frequęncias  
+Frequências  
 tobacco$smoker  
 Rótulo: Smoking Status  
 Tipo: Fator  
@@ -605,7 +605,7 @@ Grupo: gender = M
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))      
 
-Tabulaçăo cruzada, Proporçőes por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Rótulo: Tobacco Study  
@@ -631,7 +631,7 @@ Grupo: gender = M
 
 > with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable)) 
 
-Tabulaçăo cruzada, Proporçőes por linhas  
+Tabulação cruzada, Proporções por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -659,19 +659,13 @@ Grupo: gender = M
 
 > print(lapply(tobacco[c(1,3,5)], freq)) 
 
-Frequęncias  
+Frequências  
 tobacco$gender  
 Tipo: Fator  
 
-              F----------------------------------------------------- 
-
-> print(lapply(tobacco[c(1,3,5)], freq)) 
-
-FrequÄncias  
-tobacco$gender  
-Tipo: Fator  
-
-              F        50.00     48.90           48.90
+              Freq   % Válido   % Válido  Acum.   % Total   % Total Acum.
+----------- ------ ---------- ----------------- --------- ---------------
+          F    489      50.00             50.00     48.90           48.90
           M    489      50.00            100.00     48.90           97.80
        <NA>     22                                   2.20          100.00
       Total   1000     100.00            100.00    100.00          100.00
@@ -702,7 +696,7 @@ Tipo: Fator
 > lap <- lapply(tobacco[c(1,3,5)], freq) 
 > print(lap) 
 
-Frequęncias  
+Frequências  
 tobacco$gender  
 Tipo: Fator  
 

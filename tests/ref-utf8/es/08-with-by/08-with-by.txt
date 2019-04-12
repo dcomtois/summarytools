@@ -583,7 +583,7 @@ N: 258
        71 +   27.45       4.37   16.36   38.37
 
 
-# TODO: Mettre nom de variable de groupe dans la cellule en haut ŕ gauche (age.gr)  
+# TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)  
 
 > view(b6, method = "browser", footnote = "4 stats", file = "18.html") 
 -- Output file written

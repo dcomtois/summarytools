@@ -5,7 +5,7 @@
 > tobacco <- tibble::as_tibble(tobacco) 
 > ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï") 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 
@@ -25,7 +25,7 @@ Table: test encod: éêàáûï
 
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always')) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 Etiket: A Study on Tobacco Use and Health  
@@ -85,7 +85,7 @@ Etiket: A Study on Tobacco Use and Health
 
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c') 
 
-Çapraz Tablo, Sütun Oranlari  
+Çapraz Tablo, Sütun Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 
@@ -131,7 +131,7 @@ Veri Çerçevesi: tobacco
 > data(exams) 
 > ctable(exams$gender, exams$french < 60) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * french < 60  
 Veri Çerçevesi: exams  
 
@@ -145,7 +145,7 @@ Veri Çerçevesi: exams
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use") 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 Gender * Failed French Class  
 Veri Çerçevesi: exams  
 
@@ -175,7 +175,7 @@ Table: dnn in use
 
 > ctable(tobacco[[1]], tobacco[,3]) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * age.gr  
 Veri Çerçevesi: tobacco  
 
@@ -193,7 +193,7 @@ Veri Çerçevesi: tobacco
 
 > with(tobacco, ctable(smoker,  diseased)) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 
@@ -210,7 +210,7 @@ Veri Çerçevesi: tobacco
 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 Grup: gender = F  
@@ -238,7 +238,7 @@ Grup: gender = M
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique! 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 Grup: gender = F  
@@ -264,7 +264,7 @@ Grup: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F)) 
 > print(wbc, headings = T) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
 Grup: gender = F  
@@ -314,7 +314,7 @@ Grup: gender = M
 
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts))) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * smoker  
 Veri Çerçevesi: tobacco  
 
@@ -329,7 +329,7 @@ Veri Çerçevesi: tobacco
 
 > print(wc1, totals = FALSE) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * smoker  
 Veri Çerçevesi: tobacco  
 
@@ -343,7 +343,7 @@ Veri Çerçevesi: tobacco
 
 > print(wc1, round.digits = 2) 
 
-Çapraz Tablo, Satir Oranlari  
+Çapraz Tablo, Satır Oranları  
 gender * smoker  
 Veri Çerçevesi: tobacco  
 

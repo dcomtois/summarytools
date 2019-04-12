@@ -10,12 +10,12 @@
 > l1 <- lapply(tobacco_subset, freq)  
 > print(l1) 
 
-Siklik  
+Sıklık  
 tobacco_subset$gender  
 Etiket: The Gender  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -26,7 +26,7 @@ tobacco_subset$age.gr
 Etiket: The Age Group  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -39,7 +39,7 @@ tobacco_subset$smoker
 Etiket: Subject smokes  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      298       29.80            29.80      29.80           29.80
           No      702       70.20           100.00      70.20          100.00
@@ -56,12 +56,12 @@ Tür: Faktör
 > l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq)  
 > print(l1) 
 
-Siklik  
+Sıklık  
 tabagisme$sexe  
 Etiket: Le sexe  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -72,7 +72,7 @@ tabagisme$age.gr
 Etiket: Groupe d'age  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -84,7 +84,7 @@ Tür: Faktör
 tabagisme$fumeur  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Oui      298       29.80            29.80      29.80           29.80
          Non      702       70.20           100.00      70.20          100.00
@@ -92,9 +92,9 @@ Tür: Faktör
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$cigs.par.jour  
-Tür: Sayisal  
+Tür: Sayısal  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            0      674       69.84            69.84      67.40           67.40
            5       11        1.14            70.98       1.10           68.50
@@ -139,7 +139,7 @@ Tür: Sayisal
 tabagisme$malade  
 Tür: Faktör  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Oui      224       22.40            22.40      22.40           22.40
          Non      776       77.60           100.00      77.60          100.00
@@ -149,7 +149,7 @@ Tür: Faktör
 tabagisme$maladie  
 Tür: Karakter  
 
-                             Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                             Sıklık   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 -------------------------- -------- ----------- ---------------- ---------- ---------------
                      Autre        2        0.90             0.90       0.20            0.20
                     Cancer       34       15.32            16.22       3.40            3.60
@@ -184,12 +184,12 @@ Tür: Karakter
 > l3 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq, totals = FALSE) 
 > print(l3, style = "rmarkdown", caption = "2 columns with row indexing, no totals") 
 
-### Siklik  
+### Sıklık  
 #### tabagisme$sexe  
 **Etiket:** Le sexe  
 **Tür:** Faktör  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **F** |      9 |     47.37 |          47.37 |    45.00 |         45.00 |
 |      **M** |     10 |     52.63 |         100.00 |    50.00 |         95.00 |
@@ -201,7 +201,7 @@ Table: 2 columns with row indexing, no totals
 **Etiket:** Groupe d'age  
 **Tür:** Faktör  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |  **18-34** |      3 |     15.00 |          15.00 |    15.00 |         15.00 |
 |  **35-50** |      8 |     40.00 |          55.00 |    40.00 |         55.00 |
@@ -213,11 +213,11 @@ Table: 2 columns with row indexing, no totals
 
 > view(l3, method = "pander", style = "rmarkdown", display.type = FALSE, caption = "display.type = FALSE") 
 
-### Siklik  
+### Sıklık  
 #### tabagisme$sexe  
 **Etiket:** Le sexe  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **F** |      9 |     47.37 |          47.37 |    45.00 |         45.00 |
 |      **M** |     10 |     52.63 |         100.00 |    50.00 |         95.00 |
@@ -228,7 +228,7 @@ Table: display.type = FALSE
 #### tabagisme$age.gr  
 **Etiket:** Groupe d'age  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Sıklık | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |  **18-34** |      3 |     15.00 |          15.00 |    15.00 |         15.00 |
 |  **35-50** |      8 |     40.00 |          55.00 |    40.00 |         55.00 |
