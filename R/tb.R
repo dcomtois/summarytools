@@ -3,12 +3,12 @@
 #' Make a tidy dataset out of freq() or descr() outputs
 #'
 #' @param x a freq() or descr() output object
-#' @param order Integer. When \code{1} (default), the levels of the grouping
-#'   variable are first used to sort the resulting table, followed by the values
-#'   of the second column. When set to \code{2}, the second column (the
-#'   \strong(rownames} of the \code{freq} tables or the \strong{variable names} 
-#'   of the \code{descr()} tables) is used first, followed by the grouping
-#'   variable's values. \code{NA}'s always appear last.
+#' @param order Integer. Useful for grouped results (produced with `stby()`)
+#'  only. When \code{1} (default), the levels of the grouping variable are used 
+#'  to sort the table, followed by the values of the second column (data values
+#'  for `freq()`, variable names for `descr()`. When \code{2}, the order is 
+#'  based on the second column first. In `freq()` tables, the row for \code{NA} 
+#'  counts will always appear last.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
@@ -16,6 +16,7 @@
 #' @importFrom dplyr bind_rows bind_cols
 #' @export
 tb <- function(x, order = 1) {
+  
   if (inherits(x, "stby")) {
     grp_values <- attr(x, "dimnames")[[1]]
     grp_stats  <- lapply(x, tb)
@@ -25,18 +26,36 @@ tb <- function(x, order = 1) {
     output     <- bind_cols(out_c1, bind_rows(grp_stats))
     
     if (attr(x[[1]], "st_type") == "freq") {
-      output$pct_valid <- output$pct_valid / length(grp_values)
-      output$pct_tot   <- output$pct_tot / length(grp_values)
-      output           <- output[ , -grep("_cum", names(output))]
+      if ("pct_valid" %in% colnames(output)) {
+        output$pct_valid <- output$pct_valid / length(grp_values)
+        output$pct_tot   <- output$pct_tot / length(grp_values)
+      } else {
+        output$pct <- output$pct / length(grp_values)
+      }
+      
+      if (identical(order, 2)) {
+        if ("<NA>" %in% output[[2]]) {
+          # change <NA> for true NA's for sorting, then put "<NA>" back
+          output[[2]][output[[2]] == "<NA>"] <- NA
+          output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
+          output[[2]][is.na(output[[2]])] <- "<NA>"
+        } else {
+          output <- output[order(output[[2]], output[[1]]),]
+        }
+      }
+      
+      if ("pct_valid_cum" %in% colnames(output)) {
+        tmp_nomiss <- output$pct_valid
+        tmp_nomiss[is.na(tmp_nomiss)] <- 0
+        output$pct_valid_cum <- cumsum(tmp_nomiss)
+        output$pct_tot_cum <- cumsum(output$pct_tot)
+      }
+    } else if (identical(order, 2)) {
+      # st_type == "descr"
+      output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
     }
     
     colnames(output)[1] <- sub("(.+)\\$(.+)", "\\2", names(attr(x, "dimnames")))
-    if (identical(order, 2)) {
-      # change <NA> for true NA's for sorting, then put "<NA>" back
-      output[[2]][output[[2]] == "<NA>"] <- NA
-      output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
-      output[[2]][is.na(output[[2]])] <- "<NA>"
-    }
     return(output)
   }      
   

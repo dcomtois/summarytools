@@ -54,15 +54,15 @@ produced by **summarytools** can be:
   - Written to plain or *Rmarkdown* text files
 
 It is also possible to include **summarytools**’ functions in *Shiny
-apps*. Notably, [radiant](https://CRAN.R-project.org/package=radiant), a
-Shiny-based package for business analytics, uses `dfSummary()` to
-describe imported data frames.
+apps*.
 
 ### Latest Improvements
 
 Version 0.9 brings **many** changes and improvements. A summary of those
 changes can be found [near the end of this page](#latest-changes).
-Changes specific to the latest release can be found in the *NEWS* file.
+Changes specific to the latest release can be found in the
+[NEWS](https://github.com/dcomtois/summarytools/blob/master/NEWS.md)
+file.
 
 ## How to install
 
@@ -153,8 +153,9 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 |      **Total** |  150 | 100.00 | 100.00 |
 
 We can simplify the results further and omit the *Totals* row by
-specifying `totals = FALSE`, as well as `cumul =
-FALSE`:
+specifying `totals = FALSE`, as well as omit the *cumulative* rows by
+setting `cumul =
+FALSE`.
 
 ``` r
 freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
@@ -170,23 +171,22 @@ To get familiar with the various output styles, try different values for
 `style` – “simple”, “rmarkdown” or “grid”, and see how this affects the
 results in the console.
 
-#### Subsetting Rows in Frequency Table
+#### Subsetting Rows in Frequency Tables
 
-The “rows” argument allows subsetting the resulting frequency table; it
-can work in 3 distinct ways:
+The “rows” argument allows subsetting the resulting frequency table; we
+can use it in 3 different ways:
 
-  - To select rows by position, use a numerical vector; `rows = 1:10`
+  - To select rows by position, we use a numerical vector; `rows = 1:10`
     will show the frequencies for the first 10 values only
-  - To select rows by name either use
-      - a character vector specifying all desired values
+  - To select rows by name, we either use
+      - a character vector specifying all desired values (row names)
       - a single character string to be used as a regular expression;
         only the matching values will be displayed
 
 Used in combination with the “order” argument, this can be quite
 practical. Say we have a character variable containing many distinct
-values and wish to see frequencies only for the 5 most common values; to
-obtain the desired table, we would simply use `order = "freq"` along
-with `rows = 1:5`.
+values and wish to know which ones are the 10 most frequent. To achieve
+this, we would simply use `order = "freq"` along with `rows = 1:5`.
 
 #### Generating Several Frequency Tables at Once
 
@@ -198,8 +198,9 @@ simply pass the data frame object (subsetted if needed) to `freq()`:
 freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
-We can without fear pass a whole data frame to `freq()`; the function
-will ignore numerical variables having many distinct values.
+We can without fear pass a whole data frame to `freq()`; it will figure
+out which variables to ignore (numerical variables having many distinct
+values).
 
 ## 2 - ctable() : Cross-Tabulations
 
@@ -224,7 +225,8 @@ By default, `ctable()` shows row proportions. To show column or total
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit
 proportions, use `prop = "n"`.
 
-In the next example, we’ll create a simple “2 x 2” table:
+In the next example, we’ll create a simple “2 x 2” table (no
+proportions, no totals):
 
 ``` r
 with(tobacco, 
@@ -238,7 +240,7 @@ with(tobacco,
 
 To display chi-square results below the table, set the “chisq” parameter
 to `TRUE`. This time, instead of `with()`, we’ll use the `%$%` operator
-for **magrittr**.
+from the **magrittr** package, which works in a very similar fashion.
 
 ``` r
 library(magrittr)
@@ -311,7 +313,7 @@ descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmark
 ## 4 - dfSummary() : Data Frame Summaries
 
 `dfSummary()` collects information about all variables in a data frame
-and displays it in a singe, legible table.
+and displays it in a single legible table.
 
 To generate a summary report and have it displayed in RStudio’s Viewer
 pane (or in the default Web browser if working outside RStudio), we
@@ -353,12 +355,12 @@ iris %>% descr(stats = "common") %>% tb()
 ```
 
     ## # A tibble: 4 x 8
-    ##   variable    mean         sd           min   med   max   n.valid pct.valid
-    ##   <chr>       <chr>        <chr>        <chr> <chr> <chr> <chr>   <chr>    
-    ## 1 Petal.Leng~ 3.758        1.765298233~ 1     4.35  6.9   150     100      
-    ## 2 Petal.Width 1.199333333~ 0.762237668~ 0.1   1.3   2.5   150     100      
-    ## 3 Sepal.Leng~ 5.843333333~ 0.828066127~ 4.3   5.8   7.9   150     100      
-    ## 4 Sepal.Width 3.057333333~ 0.435866284~ 2     3     4.4   150     100
+    ##   variable      mean    sd   min   med   max n.valid pct.valid
+    ##   <chr>        <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
+    ## 1 Petal.Length  3.76 1.77    1    4.35   6.9     150       100
+    ## 2 Petal.Width   1.20 0.762   0.1  1.3    2.5     150       100
+    ## 3 Sepal.Length  5.84 0.828   4.3  5.8    7.9     150       100
+    ## 4 Sepal.Width   3.06 0.436   2    3      4.4     150       100
 
 ``` r
 iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
@@ -372,9 +374,85 @@ iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
     ## 3 virginica     50  33.3
 
 By definition, no total rows are part of *tidy* tables, and row.names
-are converted to regular columns. For now, `tb()` doesn’t handle
-split-group tables, but it is certainly in store for a future release of
-**summarytools**.
+are converted to regular columns.
+
+#### Tidy Split-Group Statistics
+
+Here are two examples of how lists created using `stby()` are
+transformed into *tibbles*. Notice how the *order* parameter affects the
+table’s row ordering:
+
+``` r
+grouped_freqs <- stby(data = tobacco$smoker, INDICES = tobacco$gender, 
+                      FUN = freq, cumul = FALSE, report.nas = FALSE)
+grouped_freqs %>% tb()
+```
+
+    ## # A tibble: 4 x 4
+    ##   gender smoker  freq   pct
+    ##   <fct>  <fct>  <dbl> <dbl>
+    ## 1 F      Yes      147  15.0
+    ## 2 F      No       342  35.0
+    ## 3 M      Yes      143  14.6
+    ## 4 M      No       346  35.4
+
+``` r
+grouped_freqs %>% tb(order = 2)
+```
+
+    ## # A tibble: 4 x 4
+    ##   gender smoker  freq   pct
+    ##   <fct>  <fct>  <dbl> <dbl>
+    ## 1 F      Yes      147  15.0
+    ## 2 M      Yes      143  14.6
+    ## 3 F      No       342  35.0
+    ## 4 M      No       346  35.4
+
+``` r
+grouped_descr <- stby(data = exams, INDICES = exams$gender, 
+                      FUN = descr, stats = "common")
+grouped_descr %>% tb()
+```
+
+    ## # A tibble: 12 x 9
+    ##    gender variable   mean    sd   min   med   max n.valid pct.valid
+    ##    <fct>  <chr>     <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
+    ##  1 Girl   economics  72.5  7.79  62.3  70.2  89.6      14      93.3
+    ##  2 Girl   english    73.9  9.41  58.3  71.8  93.1      14      93.3
+    ##  3 Girl   french     71.1 12.4   44.8  68.4  93.7      14      93.3
+    ##  4 Girl   geography  67.3  8.26  50.4  67.3  78.9      15     100  
+    ##  5 Girl   history    71.2  9.17  53.9  72.9  86.4      15     100  
+    ##  6 Girl   math       73.8  9.03  55.6  74.8  86.3      14      93.3
+    ##  7 Boy    economics  75.2  9.40  60.5  71.7  94.2      15     100  
+    ##  8 Boy    english    77.8  5.94  69.6  77.6  90.2      15     100  
+    ##  9 Boy    french     76.6  8.63  63.2  74.8  94.7      15     100  
+    ## 10 Boy    geography  73   12.4   47.2  71.2  96.3      14      93.3
+    ## 11 Boy    history    74.4 11.2   54.4  72.6  93.5      15     100  
+    ## 12 Boy    math       73.3  9.68  60.5  72.2  93.2      14      93.3
+
+``` r
+grouped_descr %>% tb(order = 2)
+```
+
+    ## # A tibble: 12 x 9
+    ##    gender variable   mean    sd   min   med   max n.valid pct.valid
+    ##    <fct>  <chr>     <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
+    ##  1 Girl   economics  72.5  7.79  62.3  70.2  89.6      14      93.3
+    ##  2 Boy    economics  75.2  9.40  60.5  71.7  94.2      15     100  
+    ##  3 Girl   english    73.9  9.41  58.3  71.8  93.1      14      93.3
+    ##  4 Boy    english    77.8  5.94  69.6  77.6  90.2      15     100  
+    ##  5 Girl   french     71.1 12.4   44.8  68.4  93.7      14      93.3
+    ##  6 Boy    french     76.6  8.63  63.2  74.8  94.7      15     100  
+    ##  7 Girl   geography  67.3  8.26  50.4  67.3  78.9      15     100  
+    ##  8 Boy    geography  73   12.4   47.2  71.2  96.3      14      93.3
+    ##  9 Girl   history    71.2  9.17  53.9  72.9  86.4      15     100  
+    ## 10 Boy    history    74.4 11.2   54.4  72.6  93.5      15     100  
+    ## 11 Girl   math       73.8  9.03  55.6  74.8  86.3      14      93.3
+    ## 12 Boy    math       73.3  9.68  60.5  72.2  93.2      14      93.3
+
+For now, `tb()` only handles split-group objects created with `stby()`,
+but in the future we aim at making it fully compatible with **dplyr**’s
+very handy `group_by()`.
 
 ## The print() and view() Functions
 
@@ -389,7 +467,7 @@ report is shown in the system’s default browser.
 ## Using stby() to Ventilate Results
 
 We can use `stby()` the same way as *R*’s base function `by()` with the
-four core summarytools functions. It returns a list-type object
+four core **summarytools** functions. This returns a list-type object
 containing as many elements as there are categories in the grouping
 variable.
 
@@ -545,6 +623,10 @@ provides good guidelines, but here are a few tips to get started:
     # ```{r, echo=FALSE}
     # st_css()
     # ```
+
+Since `results = 'asis'` can conflict with other packages’ way of
+generating results, it is sometimes best to use it for individual chunks
+only.
 
 ### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
 
@@ -877,9 +959,6 @@ Then, to go back to default settings:
 Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
-
-Note that russian translations are not currently available, but should
-be in the next release.
 
 ### Defining and Using Custom Translations
 
