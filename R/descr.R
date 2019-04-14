@@ -339,11 +339,22 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
     
   }
   
-  
   # Prepare output data -------------------------------------------------------
   # Keep and order required stats from output
   output <- output[ ,stats]
   
+  # Corrections for special case where nrow = 0
+  if (nrow(x.df) == 0) {
+    for (cn in colnames(output)) {
+      if (cn == "n.valid") {
+        next
+      } else if (cn == "pct.valid") {
+        output[[cn]] <- NaN
+      } else {
+        output[[cn]] <- NA
+      }
+    }
+  }  
   
   # Apply translations to colnames
   for (i in seq_along(output)) {
