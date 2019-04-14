@@ -1,1 +1,2 @@
 tests/ref/* linguist-detectable=false
+tests/ref-utf8/* linguist-detectable=false
