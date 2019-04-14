@@ -32,8 +32,8 @@ tb <- function(x, order = 1) {
     
     if (attr(x[[1]], "st_type") == "freq") {
       if ("pct_valid" %in% colnames(output)) {
-        output$pct_valid <- output$pct_valid / length(grp_values)
-        output$pct_tot   <- output$pct_tot / length(grp_values)
+        output$pct_valid <- output$pct_valid / nrow(grp_values)
+        output$pct_tot   <- output$pct_tot   / nrow(grp_values)
       } else {
         output$pct <- output$pct / length(grp_values)
       }
@@ -55,13 +55,13 @@ tb <- function(x, order = 1) {
         output$pct_valid_cum <- cumsum(tmp_nomiss)
         output$pct_tot_cum <- cumsum(output$pct_tot)
       }
-    } else if (identical(order, 2)) {
-      # st_type == "descr"
-      output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
-    }
-    browser()
+    } # else if (identical(order, 2)) {
+      # output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
+    # }
+    
     colnames(output)[1:ncol(left_part)] <- 
       sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
+
     return(output)
   }      
   

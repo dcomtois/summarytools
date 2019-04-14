@@ -4,10 +4,10 @@
 \alias{freq}
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
-freq(x, round.digits = st_options("round.digits"), order = "default",
-  style = st_options("style"), plain.ascii = st_options("plain.ascii"),
-  justify = "default", cumul = st_options("freq.cumul"),
-  totals = st_options("freq.totals"),
+freq(x, var = NULL, round.digits = st_options("round.digits"),
+  order = "default", style = st_options("style"),
+  plain.ascii = st_options("plain.ascii"), justify = "default",
+  cumul = st_options("freq.cumul"), totals = st_options("freq.totals"),
   report.nas = st_options("freq.report.nas"), rows = numeric(),
   missing = "", display.type = TRUE,
   display.labels = st_options("display.labels"),
@@ -15,7 +15,11 @@ freq(x, round.digits = st_options("round.digits"), order = "default",
   rescale.weights = FALSE, ...)
 }
 \arguments{
-\item{x}{Factor or vector}
+\item{x}{Factor or vector, or data frame if var argument is also supplied}
+
+\item{var}{Character. Name of variable to analyse. Can also be a 
+\emph{promise} as in \code{iris \%>\% freq(Species)}. \code{NULL} by 
+default.}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
 \code{2} and can be set globally; see \code{\link{st_options}}.}

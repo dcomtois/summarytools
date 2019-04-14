@@ -112,7 +112,8 @@
 #' @export
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct
-freq <- function(x, 
+freq <- function(x,
+                 var             = NULL,
                  round.digits    = st_options("round.digits"),
                  order           = "default",
                  style           = st_options("style"),
@@ -127,10 +128,97 @@ freq <- function(x,
                  display.labels  = st_options("display.labels"),
                  headings        = st_options("headings"),
                  weights         = NA,
-                 rescale.weights = FALSE, ...) {
+                 rescale.weights = FALSE,
+                 ...) {
 
+  # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
-    stop("freq() doesn't accept split-tibbles; use stby() instead")
+    parse_info <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(), caller = "freq"),
+      silent = TRUE)
+
+    outlist <- list()
+    g_ks    <- map_groups(group_keys(x))
+    g_inds  <- attr(x, "groups")$.rows
+    for (g in seq_along(g_ks)) {
+      if ("var" %in% names(match.call())) {
+        outlist[[g]] <- freq(x               = as_tibble(x[g_inds[[g]], ]),
+                             var             = var,
+                             round.digits    = round.digits,
+                             order           = order,
+                             style           = style,
+                             plain.ascii     = plain.ascii,
+                             justify         = justify,
+                             cumul           = cumul,
+                             totals          = totals,
+                             report.nas      = report.nas,
+                             rows            = rows,
+                             missing         = missing,
+                             display.type    = display.type,
+                             display.labels  = display.labels,
+                             headings        = headings,
+                             weights         = weights,
+                             rescale.weights = rescale.weights,
+                             ...             = ... )
+      } else {
+        outlist[[g]] <- freq(x               = as_tibble(x[g_inds[[g]], ]),
+                             round.digits    = round.digits,
+                             order           = order,
+                             style           = style,
+                             plain.ascii     = plain.ascii,
+                             justify         = justify,
+                             cumul           = cumul,
+                             totals          = totals,
+                             report.nas      = report.nas,
+                             rows            = rows,
+                             missing         = missing,
+                             display.type    = display.type,
+                             display.labels  = display.labels,
+                             headings        = headings,
+                             weights         = weights,
+                             rescale.weights = rescale.weights,
+                             ...             = ... )
+      }
+    
+      if (!inherits(parse_info, "try-error")) {
+        if (!is.null(parse_info$df_name))
+          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
+        if (!is.null(parse_info$df_label))
+          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
+        if (!is.null(parse_info$var_name))
+          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
+        if (!is.null(parse_info$var_label))
+          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
+      }
+
+      attr(outlist[[g]], "data_info")$by_var <- 
+        setdiff(colnames(attr(x, "groups")), ".rows")
+      attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
+      attr(outlist[[g]], "data_info")$by_first <- g == 1
+      attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+    }
+    
+    class(outlist) <- "stby"
+    return(outlist)
+  }
+  
+  if ("var" %in% names(match.call())) {
+    vv <- deparse(substitute(var))
+    if (grepl('^".+"$', vv)) {
+      vars <- var
+    } else {
+      vars <- vv
+    }
+    
+    # Check if all vars are in x
+    all_vars_present <- all(vars %in% colnames(x))
+    
+    if (!isTRUE(all_vars_present)) {
+      ind <- which(!vars %in% colnames(x))
+      stop("Variable ", var[ind], " not found")
+    } else {
+      x <- x[ ,vars]
+    }
   }
   
   # When x is a dataframe, we make recursive calls to freq() with each variable
