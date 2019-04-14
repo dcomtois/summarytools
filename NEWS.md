@@ -7,8 +7,8 @@ Version 0.9.3
  - In `define_keywords()` and `use_custom_lang()` graphical interfaces are 
    no longer used, as it caused installation issues for many users, especially
    on Mac OS
- - Improvements in `tb()`
-
+ - `tb()` now supports objects having several grouping variables
+ - improved how `descr()` deals with empty vectors and invalid weights
 
 
 Version 0.9.3

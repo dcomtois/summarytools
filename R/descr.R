@@ -320,6 +320,13 @@ descr <- function(x,
       weights[is.na(weights)] <- 0
     }
 
+    # If some weights are 0 or negative, delete rows
+    zero_wgts <- which(weights <= 0)
+    if (length(zero_wgts)) {
+      x.df <- x.df[-zero_wgts, ]
+      message(length(zero_wgts), " rows with weight <= 0 were deleted")
+    }
+
     # If weights are in x.df, remove them
     if(length(parse_info$df_name) == 1 && 
        grepl(parse_info$df_name, weights_string)) {
@@ -331,13 +338,6 @@ descr <- function(x,
       }
     }
     
-    # If some weights are 0, delete rows
-    zero_wgts <- which(weights == 0)
-    if (length(zero_wgts)) {
-      x.df <- x.df[-zero_wgts, ]
-      message(length(zero_wgts), " rows with weight = 0 were deleted")
-    }
-        
     # Build skeleton for output dataframe
     output <- data.frame(mean      = numeric(),
                          sd        = numeric(),
