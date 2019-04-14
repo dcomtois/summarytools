@@ -330,6 +330,13 @@ descr <- function(x,
         parse_info$var_name <- setdiff(parse_info$var_name, wgts_vname)  
       }
     }
+    
+    # If some weights are 0, delete rows
+    zero_wgts <- which(weights == 0)
+    if (length(zero_wgts)) {
+      x.df <- x.df[-zero_wgts, ]
+      message(length(zero_wgts), " rows with weight = 0 were deleted")
+    }
         
     # Build skeleton for output dataframe
     output <- data.frame(mean      = numeric(),
@@ -396,11 +403,9 @@ descr <- function(x,
     
     rownames(output) <- parse_info$var_name
     
-    browser()
     # Apply corrections where n.valid = 0
     zerows <- which(output$n.valid == 0)
-    output[zerows, setdiff(stats, c("n.valid", "pct.valid"))] <- NA
-    
+    output[zerows, setdiff(stats, "n.valid")] <- NA
   }
   
   # Prepare output data -------------------------------------------------------
