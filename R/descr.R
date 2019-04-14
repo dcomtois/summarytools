@@ -106,6 +106,39 @@ descr <- function(x,
                   rescale.weights = FALSE,
                   ...) {
   
+  # handle objects of class "grouped_df" (dplyr::group_by)
+  if (inherits(x, "grouped_df")) {
+    parse_info <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(),
+                 var_name  = (ncol(x) == 1),
+                 var_label = (ncol(x) == 1), caller = "descr"),
+      silent = TRUE)
+
+    outlist <- list()
+    g_ks    <- map_groups(group_keys(x))
+    g_inds  <- attr(x, "groups")$.rows
+    for (g in seq_along(g_ks)) {
+      outlist[[g]] <- descr(as_tibble(x[g_inds[[g]], ]))
+      if (!inherits(parse_info, "try-error")) {
+        if (!is.null(parse_info$df_name))
+          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
+        if (!is.null(parse_info$df_label))
+          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
+        if (!is.null(parse_info$var_name))
+          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
+        if (!is.null(parse_info$var_label))
+          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
+      }
+      attr(outlist[[g]], "data_info")$by_var <- 
+        setdiff(colnames(attr(x, "groups")), ".rows")
+      attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
+      attr(outlist[[g]], "data_info")$by_first <- g == 1
+      attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+    }
+    class(outlist) <- "stby"
+    return(outlist)
+  }
+  
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
@@ -113,8 +146,12 @@ descr <- function(x,
     errmsg %+=% "'x' must be numeric"
   }
   
-  # make x a data.frame
-  x.df <- as_tibble(x)
+  # make x a tibble
+  if (!inherits(x, "tbl")) {
+    x.df <- as_tibble(x)
+  } else {
+    x.df <- x
+  }
   
   # Get variable label
   var_label <- label(x.df[[1]])

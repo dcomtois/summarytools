@@ -161,6 +161,38 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
                       tmp.img.dir = st_options('tmp.img.dir'),
                       silent = st_options('dfSummary.silent'), ...) {
   
+  # handle objects of class "grouped_df" (dplyr::group_by)
+  if (inherits(x, "grouped_df")) {
+    parse_info <- try(
+      parse_args(sys.calls(), sys.frames(), match.call(),
+                 var_name  = FALSE, var_label = FALSE,
+                 caller = "dfSummary"),
+      silent = TRUE)
+
+    outlist <- list()
+    g_ks    <- map_groups(group_keys(x))
+    g_inds  <- attr(x, "groups")$.rows
+    for (g in seq_along(g_ks)) {
+      outlist[[g]] <- dfSummary(as_tibble(x[g_inds[[g]], ]))
+      if (!inherits(parse_info, "try-error")) {
+        if (!is.null(parse_info$df_name))
+          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
+        if (!is.null(parse_info$df_label))
+          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
+        if (!is.null(parse_info$var_name))
+          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
+        if (!is.null(parse_info$var_label))
+          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
+      }
+      attr(outlist[[g]], "data_info")$by_var <- 
+        setdiff(colnames(attr(x, "groups")), ".rows")
+      attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
+      attr(outlist[[g]], "data_info")$by_first <- g == 1
+      attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+    }
+    class(outlist) <- "stby"
+    return(outlist)
+  }
 
   # Validate arguments ---------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
@@ -195,7 +227,6 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
   }
   
   # Get info on x from parsing function ----------------------------------------
-  #max.varnames <- as.numeric(converted_to_df)
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
                                #max.varnames = max.varnames,
                                var_name = converted_to_df, 

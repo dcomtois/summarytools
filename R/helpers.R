@@ -102,3 +102,15 @@ paste8 <- function (..., sep = " ", collapse = NULL) {
                  collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)))
   do.call(paste, args)
 }
+
+# Map columns / values of dplyr's group_by objects based on group_keys
+#' @keywords internal
+map_groups <- function(gk) {
+  grs <- c()
+  for (i in seq_len(nrow(gk))) {
+    gr <- paste(colnames(gk), as.character(unlist(gk[i,])), 
+                sep = " = ", collapse = ", ")
+    grs <- c(grs, gr)
+  }
+  grs
+}
