@@ -39,7 +39,7 @@ view <- function(x,
                  max.tbl.height = Inf,
                  escape.pipe = st_options("escape.pipe"),
                  ...) {
-
+  
   # Check that the appropriate method is chosen when a file name is given
   if (grepl("\\.r?md$", file, ignore.case = TRUE, perl = TRUE) &&
       method != "pander") {
@@ -129,7 +129,23 @@ view <- function(x,
       method <- "browser"
       message("Switching method to 'browser'")
     }
-
+    
+    # Remove NULL objects from list
+    null_ind <- which(vapply(x, is.null, TRUE))
+    if (length(null_ind) > 0) {
+      by_levels <- expand.grid(attr(x, "dimnames"))
+      by_vars   <- names(attr(x, "dimnames"))
+      msg <- "Following group(s) had 0 observations:\n"
+      for (i in seq_along(null_ind)) {
+        by_values <- as.character(unlist(by_levels[null_ind[i],]))
+        msg <- paste0(msg, "  ", null_ind[i], ". ",
+                      paste(by_vars, by_values, collapse = ", ", sep = " = "),
+                      "\n")
+      }
+      message(msg)
+      x <- x[-null_ind]
+    }
+    
     if (method %in% c("viewer", "browser")) {
 
       # by object, viewer / browser --------------------------------------------
