@@ -26,10 +26,15 @@
 #' \code{\link{print.summarytools}} can only manage one object at a time. 
 #'  
 #' @export
-view <- function(x, method = "viewer", file = "", append = FALSE, 
-                 report.title = NA, table.classes = NA, 
+view <- function(x, 
+                 method = "viewer",
+                 file = "",
+                 append = FALSE, 
+                 report.title = NA, 
+                 table.classes = NA, 
                  bootstrap.css = st_options("bootstrap.css"), 
-                 custom.css = st_options("custom.css"), silent = FALSE, 
+                 custom.css = st_options("custom.css"), 
+                 silent = FALSE, 
                  footnote = st_options("footnote"), 
                  max.tbl.height = Inf,
                  escape.pipe = st_options("escape.pipe"),
@@ -46,7 +51,7 @@ view <- function(x, method = "viewer", file = "", append = FALSE,
     method <- "browser"
   }
   
-  # Objects not created via by() or lapply() -----------------------------------
+  # Objects not created via by() / stby() / lapply() (not a list) --------------
   if (inherits(x, "summarytools") && 
       (isTRUE(attr(x, "st_type") %in% 
               c("freq", "ctable", "descr", "dfSummary")))) {
