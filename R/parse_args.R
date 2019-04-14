@@ -89,44 +89,54 @@ parse_args <- function(sys_calls, sys_frames, match_call,
 
   populate_by_info <- function() {
     
-    by_var  <- deparse(calls$by$INDICES)
+    if ("list" %in% all.names(calls$by$INDICES)) {
+      by_var <- character()
+      for(i in seq_len(length(calls$by$INDICES) - 1)) {
+        by_var[i]  <- sub("\\(\\)", "", deparse(calls$by$INDICES[i + 1]))
+      }
+    } else {
+      by_var <- deparse(calls$by$INDICES)
+    }
 
-    # Normalize variable name
-    if (grepl(re4, by_var, perl = TRUE)) {
-      df_nm   <- sub(re1, "\\1", by_var, perl = TRUE)
-      df_       <- get_object(df_nm, "data.frame")
-      if (!identical(df_, NA)) {
-        v_name <- sub(re1, "\\4", by_var, perl = TRUE)
-        if (v_name %in% colnames(df_)) {
-          by_var <- paste(df_nm, v_name, sep = "$")
+    for(i in seq_along(by_var)) {
+      # Normalize variable name
+      if (grepl(re4, by_var[i], perl = TRUE)) {
+        df_nm   <- sub(re1, "\\1", by_var[i], perl = TRUE)
+        df_       <- get_object(df_nm, "data.frame")
+        if (!identical(df_, NA)) {
+          v_name <- sub(re1, "\\4", by_var[i], perl = TRUE)
+          if (v_name %in% colnames(df_)) {
+            by_var[i] <- paste(df_nm, v_name, sep = "$")
+          }
+        }
+      }
+      
+      if (grepl(re2, by_var[i], perl = TRUE)) {
+        df_nm <- sub(re2, "\\1", by_var[i], perl = TRUE)
+        df_   <- get_object(df_nm, "data.frame")
+        if (!identical(df_, NA)) {
+          var_number <- as.numeric(sub(re2, "\\4", by_var[i], perl = TRUE))
+          v_name <- colnames(df_)[var_number]
+          by_var[i] <- paste(df_nm, v_name, sep = "$")
         }
       }
     }
-      
-    if (grepl(re2, by_var, perl = TRUE)) {
-      df_nm <- sub(re2, "\\1", by_var, perl = TRUE)
-      df_   <- get_object(df_nm, "data.frame")
-      if (!identical(df_, NA)) {
-        var_number <- as.numeric(sub(re2, "\\4", by_var, perl = TRUE))
-        v_name <- colnames(df_)[var_number]
-        by_var <- paste(df_nm, v_name, sep = "$")
-      }
-    }
-    
+  
     # On first iteration, generate levels based on IND variables, and store
     if (length(.st_env$byInfo) == 0) {
       if (is.null(names(sys_frames[[pos$tapply]]$namelist)) ||
           is.na(names(sys_frames[[pos$tapply]]$namelist)[1])) {
         names(sys_frames[[pos$tapply]]$namelist) <- 
-          as.character(calls$by$INDICES)[-1]
+          by_var #as.character(calls$by$INDICES)[-1]
       }
       by_levels <- sys_frames[[pos$tapply]]$namelist
       .st_env$byInfo$by_levels <- 
         expand.grid(by_levels, stringsAsFactors = FALSE)
+      # TODO: Check if the following line is redundant
       colnames(.st_env$byInfo$by_levels) <- by_var
       .st_env$byInfo$iter <- 1
     }
-    
+   
     # Populate by_group item
     by_group <- 
       paste(colnames(.st_env$byInfo$by_levels),
@@ -153,7 +163,7 @@ parse_args <- function(sys_calls, sys_frames, match_call,
       .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
     }
     
-    upd_output("by_var",   by_var)
+    upd_output("by_var",   by_var, force = (length(by_var) > 1))
     upd_output("by_group", by_group)
     upd_output("by_first", by_first)
     upd_output("by_last",  by_last)
