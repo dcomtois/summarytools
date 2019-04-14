@@ -102,6 +102,10 @@ ctable <- function(x, y,
                    rescale.weights = FALSE, 
                    ...) {
 
+  if (inherits(x, "grouped_df")) {
+    stop("ctable() doesn't accept split-tibbles; use stby() instead")
+  }
+
   # Support for by()
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]

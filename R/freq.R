@@ -126,6 +126,10 @@ freq <- function(x,
                  weights         = NA,
                  rescale.weights = FALSE, ...) {
 
+  if (inherits(x, "grouped_df")) {
+    stop("freq() doesn't accept split-tibbles; use stby() instead")
+  }
+  
   # When x is a dataframe, we make recursive calls to freq() with each variable
   if (is.data.frame(x) && ncol(x) > 1) {
     
