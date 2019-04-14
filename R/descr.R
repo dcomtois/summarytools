@@ -118,7 +118,21 @@ descr <- function(x,
     g_ks    <- map_groups(group_keys(x))
     g_inds  <- attr(x, "groups")$.rows
     for (g in seq_along(g_ks)) {
-      outlist[[g]] <- descr(as_tibble(x[g_inds[[g]], ]))
+      outlist[[g]] <- descr(x               = as_tibble(x[g_inds[[g]], ]),
+                            stats           = stats,
+                            na.rm           = na.rm,
+                            round.digits    = round.digits,
+                            transpose       = transpose,
+                            style           = style,
+                            plain.ascii     = plain.ascii,
+                            justify         = justify,
+                            headings        = headings,
+                            display.labels  = display.labels,
+                            split.tables    = split.tables,
+                            weights         = weights,
+                            rescale.weights = rescale.weights,
+                            ...             = ...)
+      
       if (!inherits(parse_info, "try-error")) {
         if (!is.null(parse_info$df_name))
           attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name

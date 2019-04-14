@@ -141,25 +141,28 @@
 #' @importFrom dplyr n_distinct
 #' @importFrom stats start end
 #' @export
-dfSummary <- function(x, round.digits = st_options("round.digits"),
-                      varnumbers = st_options("dfSummary.varnumbers"),
-                      labels.col = st_options("dfSummary.labels.col"),
-                      valid.col = st_options("dfSummary.valid.col"),
-                      na.col = st_options("dfSummary.na.col"),
-                      graph.col = st_options("dfSummary.graph.col"),
+dfSummary <- function(x,
+                      round.digits = st_options("round.digits"),
+                      varnumbers   = st_options("dfSummary.varnumbers"),
+                      labels.col   = st_options("dfSummary.labels.col"),
+                      valid.col    = st_options("dfSummary.valid.col"),
+                      na.col       = st_options("dfSummary.na.col"),
+                      graph.col    = st_options("dfSummary.graph.col"),
                       graph.magnif = st_options("dfSummary.graph.magnif"),
-                      style = st_options("dfSummary.style"),
-                      plain.ascii = st_options("plain.ascii"),
-                      justify = "left", col.widths = NA, 
-                      headings = st_options("headings"),
+                      style        = st_options("dfSummary.style"),
+                      plain.ascii  = st_options("plain.ascii"),
+                      justify      = "left",
+                      col.widths   = NA, 
+                      headings       = st_options("headings"),
                       display.labels = st_options("display.labels"),
                       max.distinct.values = 10, 
-                      trim.strings = FALSE,
-                      max.string.width = 25, 
-                      split.cells = 40,
-                      split.tables = Inf,
-                      tmp.img.dir = st_options('tmp.img.dir'),
-                      silent = st_options('dfSummary.silent'), ...) {
+                      trim.strings   = FALSE,
+                      max.string.width    = 25, 
+                      split.cells    = 40,
+                      split.tables   = Inf,
+                      tmp.img.dir    = st_options('tmp.img.dir'),
+                      silent         = st_options('dfSummary.silent'),
+                      ...) {
   
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
@@ -173,7 +176,29 @@ dfSummary <- function(x, round.digits = st_options("round.digits"),
     g_ks    <- map_groups(group_keys(x))
     g_inds  <- attr(x, "groups")$.rows
     for (g in seq_along(g_ks)) {
-      outlist[[g]] <- dfSummary(as_tibble(x[g_inds[[g]], ]))
+      outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]], ]),
+                                round.digits        = round.digits,
+                                varnumbers          = varnumbers,
+                                labels.col          = labels.col,
+                                valid.col           = valid.col,
+                                na.col              = na.col,
+                                graph.col           = graph.col,
+                                graph.magnif        = graph.magnif,
+                                style               = style,
+                                plain.ascii         = plain.ascii,
+                                justify             = justify,
+                                col.widths          = col.widths,
+                                headings            = headings,
+                                display.labels      = display.labels,
+                                max.distinct.values = max.distinct.values,
+                                trim.strings        = trim.strings,
+                                max.string.width    = max.string.width,
+                                split.cells         = split.cells,
+                                split.tables        = split.tables,
+                                tmp.img.dir         = tmp.img.dir,
+                                silent              = silent,
+                                ...                 = ...)
+      
       if (!inherits(parse_info, "try-error")) {
         if (!is.null(parse_info$df_name))
           attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
