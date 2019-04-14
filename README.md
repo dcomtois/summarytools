@@ -450,10 +450,6 @@ grouped_descr %>% tb(order = 2)
     ## 11 Girl   math       73.8  9.03  55.6  74.8  86.3      14      93.3
     ## 12 Boy    math       73.3  9.68  60.5  72.2  93.2      14      93.3
 
-For now, `tb()` only handles split-group objects created with `stby()`,
-but in the future we aim at making it fully compatible with **dplyr**’s
-very handy `group_by()`.
-
 ## The print() and view() Functions
 
 **summarytools** has a generic `print` method, `print.summarytools()`.
@@ -577,6 +573,74 @@ stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 # or equivalently
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ```
+
+## Using dplyr::group\_by() to Ventilate Results
+
+To create grouped statistics with `descr()` or `dfSummary()`, it is
+possible to use **dplyr**’s `group_by()` as an alternative to `stby()`.
+Aside from the syntaxic differences, one key distinction is that
+`dplyr::group_by()` considers `NA` values on the grouping variables as
+valid categories, albeit with a warning message suggesting to use
+`forcats::fct_explicit_na` to make `NA`’s explicit. The best way to go
+is to actually follow that advice:
+
+``` r
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
+```
+
+    ## Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+### Descriptive Statistics
+
+**tobacco**  
+**Group:** gender = F  
+**N:** 489
+
+|            |   age |   BMI | cigs.per.day | samp.wgts |
+| ---------: | ----: | ----: | -----------: | --------: |
+|    **Min** | 18.00 |  9.01 |         0.00 |      0.86 |
+|     **Q1** | 34.00 | 22.98 |         0.00 |      0.86 |
+| **Median** | 50.00 | 25.87 |         0.00 |      1.04 |
+|     **Q3** | 66.00 | 29.48 |        10.50 |      1.05 |
+|    **Max** | 80.00 | 39.44 |        40.00 |      1.06 |
+
+**Group:** gender = M  
+**N:** 489
+
+|            |   age |   BMI | cigs.per.day | samp.wgts |
+| ---------: | ----: | ----: | -----------: | --------: |
+|    **Min** | 18.00 |  8.83 |         0.00 |      0.86 |
+|     **Q1** | 34.00 | 22.52 |         0.00 |      0.86 |
+| **Median** | 49.50 | 25.14 |         0.00 |      1.04 |
+|     **Q3** | 66.00 | 27.96 |        11.00 |      1.05 |
+|    **Max** | 80.00 | 36.76 |        40.00 |      1.06 |
+
+**Group:** gender = (Missing)  
+**N:** 22
+
+|            |   age |   BMI | cigs.per.day | samp.wgts |
+| ---------: | ----: | ----: | -----------: | --------: |
+|    **Min** | 19.00 | 20.24 |         0.00 |      0.86 |
+|     **Q1** | 36.00 | 24.97 |         0.00 |      1.04 |
+| **Median** | 55.50 | 27.16 |         0.00 |      1.05 |
+|     **Q3** | 64.00 | 30.23 |        10.00 |      1.05 |
+|    **Max** | 80.00 | 32.43 |        28.00 |      1.06 |
 
 ## Using summarytools in Rmarkdown Documents
 

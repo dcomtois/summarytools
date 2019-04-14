@@ -308,10 +308,6 @@ grouped_descr %>% tb()
 grouped_descr %>% tb(order = 2)
 ```
 
-For now, `tb()` only handles split-group objects created with `stby()`, but in
-the future we aim at making it fully compatible with **dplyr**'s very handy 
-`group_by()`.
-
 ## The print() and view() Functions
 
 **summarytools** has a generic `print` method, `print.summarytools()`. By
@@ -382,6 +378,20 @@ This is a little trickier -- the working syntax is as follows:
 stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 # or equivalently
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
+```
+
+## Using dplyr::group_by() to Ventilate Results
+To create grouped statistics with `descr()` or `dfSummary()`, it is possible
+to use **dplyr**'s `group_by()` as an alternative to `stby()`. Aside from the 
+syntaxic differences, one key distinction is that `dplyr::group_by()` considers
+`NA` values on the grouping variables as valid categories, albeit with a warning 
+message suggesting to use `forcats::fct_explicit_na` to make `NA`'s explicit. 
+The best way to go is to actually follow that advice:
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
 
 ## Using summarytools in Rmarkdown Documents

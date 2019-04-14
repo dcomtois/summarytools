@@ -1,5 +1,18 @@
 Version 0.9.3
 -------------
+ - Added support for **dplyr**'s `group_by()` function (as an alternative
+   to `stby()`
+ - Improved output when grouping by more than one variable, either with
+   `stby()` or `dplyr::group_by()`
+ - In `define_keywords()` and `use_custom_lang()` graphical interfaces are 
+   no longer used, as it caused installation issues for many users, especially
+   on Mac OS
+ - Improvements in `tb()`
+
+
+
+Version 0.9.3
+-------------
  - New functions:
    + `tb()` turns `freq()` and `descr()` outputs into "tidy" tibbles
    + `use_custom_lang()` replaces `useTranslations()` and triggers an

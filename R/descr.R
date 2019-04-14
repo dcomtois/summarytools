@@ -98,7 +98,7 @@ descr <- function(x,
                   transpose = st_options("descr.transpose"), 
                   style = st_options("style"), 
                   plain.ascii = st_options("plain.ascii"),
-                  justify = "right",
+                  justify = "r",
                   headings = st_options("headings"), 
                   display.labels = st_options("display.labels"),  
                   split.tables = 100,
@@ -304,6 +304,10 @@ descr <- function(x,
       output$pct.valid <- output$n.valid *100 / nrow(x.df)
     }
     
+    # Apply corrections where n.valid = 0
+    zerows <- which(output$n.valid == 0)
+    output[zerows, setdiff(stats, "n.valid")] <- NA
+    
   } else {
     
     # Weights being used -------------------------------------------------------
@@ -343,8 +347,6 @@ descr <- function(x,
       weights <- weights / sum(weights) * nrow(x.df)
     }
     
-    #n_tot <- sum(weights)
-    
     for(i in seq_along(x.df)) {
       variable <- as.numeric(x.df[[i]])
       
@@ -353,7 +355,8 @@ descr <- function(x,
         n_valid <- sum(weights[which(!is.na(variable))])
         p_valid <- n_valid / sum(weights)
       } else {
-        n_valid <- NA
+        # calculate n_valid for validation // all missing
+        n_valid <- sum(!is.na(variable))
         p_valid <- NA
       }
       
@@ -392,6 +395,11 @@ descr <- function(x,
     }
     
     rownames(output) <- parse_info$var_name
+    
+    browser()
+    # Apply corrections where n.valid = 0
+    zerows <- which(output$n.valid == 0)
+    output[zerows, setdiff(stats, c("n.valid", "pct.valid"))] <- NA
     
   }
   

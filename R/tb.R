@@ -1,14 +1,15 @@
-#' Convert Summarytools Objects to Tibbles
+#' Convert Summarytools Objects into Tibbles
 #'
 #' Make a tidy dataset out of freq() or descr() outputs
 #'
 #' @param x a freq() or descr() output object
 #' @param order Integer. Useful for grouped results (produced with `stby()`)
 #'  only. When \code{1} (default), the levels of the grouping variable are used 
-#'  to sort the table, followed by the values of the second column (data values
-#'  for `freq()`, variable names for `descr()`. When \code{2}, the order is 
-#'  based on the second column first. In `freq()` tables, the row for \code{NA} 
-#'  counts will always appear last.
+#'  to sort the table, followed by the values of the remaining categorical
+#'  columns (additional grouping variables as well as data values for `freq()`,
+#'  and variable names for `descr()`). When \code{2}, the order of the columns
+#'  is reversed. In `freq()` tables, the row for \code{NA} counts will always
+#'  appear last.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
@@ -18,12 +19,16 @@
 tb <- function(x, order = 1) {
   
   if (inherits(x, "stby")) {
-    grp_values <- attr(x, "dimnames")[[1]]
     grp_stats  <- lapply(x, tb)
     grp_size   <- nrow(grp_stats[[1]])
-    out_c1     <- tibble(grp = factor(rep(grp_values, each = grp_size),
-                                      levels = grp_values))
-    output     <- bind_cols(out_c1, bind_rows(grp_stats))
+    grp_values <- as_tibble(expand.grid(attr(x, "dimnames")))
+    left_part  <- grp_values[numeric(),]
+    for (i in seq_len(nrow(grp_values))) {
+      for (j in seq_len(grp_size)) {
+        left_part[nrow(left_part) + 1, ] <- grp_values[i, ]
+      } 
+    }
+    output     <- bind_cols(left_part, bind_rows(grp_stats))
     
     if (attr(x[[1]], "st_type") == "freq") {
       if ("pct_valid" %in% colnames(output)) {
@@ -54,8 +59,9 @@ tb <- function(x, order = 1) {
       # st_type == "descr"
       output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
     }
-    
-    colnames(output)[1] <- sub("(.+)\\$(.+)", "\\2", names(attr(x, "dimnames")))
+    browser()
+    colnames(output)[1:ncol(left_part)] <- 
+      sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
     return(output)
   }      
   

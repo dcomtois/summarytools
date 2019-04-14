@@ -29,6 +29,7 @@ Imports:
   tidyr,
   utils
 Suggests:
+  forcats,
   knitr,
   magrittr,
   rmarkdown,
