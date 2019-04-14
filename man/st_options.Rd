@@ -8,7 +8,8 @@ st_options(option = NULL, value = NULL, style = "simple",
   plain.ascii = TRUE, round.digits = 2, headings = TRUE,
   footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
   custom.css = NA, escape.pipe = FALSE, freq.cumul = TRUE,
-  freq.totals = TRUE, freq.report.nas = TRUE, ctable.prop = "r",
+  freq.totals = TRUE, freq.report.nas = TRUE,
+  freq.ignore.threshold = 25, ctable.prop = "r",
   ctable.totals = TRUE, descr.stats = "all", descr.transpose = FALSE,
   descr.silent = FALSE, dfSummary.style = "multiline",
   dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
@@ -71,7 +72,11 @@ goal and you have unsatisfying results with grid or multiline tables.
 \code{\link{freq}}. \code{TRUE} by default.}
 
 \item{freq.report.nas}{Logical. Corresponds to the \code{display.nas}
-parameter of \code{freq()}. \code{TRUE} by default.}
+parameter of \code{\link{freq}}. \code{TRUE} by default.}
+
+\item{freq.ignore.threshold}{Numeric. Number of distinct values above which
+numerical variables are ignored when calling \code{\link{freq}} with a
+whole data frame as main argument. Defaults to \code{25}.}
 
 \item{ctable.prop}{Character. Corresponds to the \code{prop} parameter of
 \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).}

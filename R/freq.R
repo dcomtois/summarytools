@@ -3,7 +3,10 @@
 #' Displays weighted or unweighted frequencies, including <NA> counts and
 #' proportions.
 #'
-#' @param x Factor or vector
+#' @param x Factor or vector, or data frame if var argument is also supplied
+#' @param var Character. Name of variable to analyse. Can also be a 
+#'  \emph{promise} as in \code{iris \%>\% freq(Species)}. \code{NULL} by 
+#'  default.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
@@ -140,7 +143,7 @@ freq <- function(x,
                                  caller = "freq"),
                       silent = TRUE)
     
-    if (inherits(parse_info, "try-error")) {
+    if (inherits(parse_info, "try-error") || !length(parse_info)) {
       parse_info <- list()
       df_name <- deparse(substitute(x))
     } else {
@@ -151,7 +154,7 @@ freq <- function(x,
     ignored <- character()
     for (i in seq_along(x)) {
       if (!class(x[[i]]) %in% c("character", "factor") &&
-          n_distinct(x[[i]]) > 25) {
+          n_distinct(x[[i]]) > st_options("freq.ignore.threshold")) {
         ignored %+=% names(x)[i] 
         next 
       }

@@ -381,7 +381,12 @@ check_arguments_st_options <- function(mc) {
       !isTRUE(test_logical(pf$freq.report.nas, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'freq.report.nas' must be either TRUE or FALSE"
   }
-  
+
+  if ("freq.ignore.threshold" %in% names(mc) &&
+      !isTRUE(test_int(pf$freq.ignore.threshold, lower = 0))) {
+    errmsg %+=% "'freq.ignore.threshold' must be an integer greater than 0"
+  }
+
   if ("ctable.prop" %in% names(mc) &&
       !isTRUE(test_choice(pf$ctable.prop, c("r", "c", "t", "n")))) {
     errmsg %+=% "'ctable.prop' must be one of \"r\", \"c\", \"t\", or \"n\""

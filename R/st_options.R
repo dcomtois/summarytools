@@ -45,7 +45,10 @@
 #' @param freq.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{freq}}. \code{TRUE} by default.
 #' @param freq.report.nas Logical. Corresponds to the \code{display.nas}
-#'   parameter of \code{freq()}. \code{TRUE} by default.
+#'   parameter of \code{\link{freq}}. \code{TRUE} by default.
+#' @param freq.ignore.threshold Numeric. Number of distinct values above which
+#'   numerical variables are ignored when calling \code{\link{freq}} with a
+#'   whole data frame as main argument. Defaults to \code{25}.
 #' @param ctable.prop Character. Corresponds to the \code{prop} parameter of
 #'   \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
@@ -132,7 +135,8 @@ st_options <- function(option                 = NULL,
                        escape.pipe            = FALSE, 
                        freq.cumul             = TRUE,
                        freq.totals            = TRUE,
-                       freq.report.nas        = TRUE, 
+                       freq.report.nas        = TRUE,
+                       freq.ignore.threshold  = 25,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE, 
                        descr.stats            = "all",
@@ -212,6 +216,7 @@ st_options <- function(option                 = NULL,
                    "freq.cumul"             = TRUE,
                    "freq.totals"            = TRUE,
                    "freq.report.nas"        = TRUE,
+                   "freq.ignore.threshold"  = 25,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
                    "descr.stats"            = "all",
