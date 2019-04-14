@@ -91,14 +91,19 @@
 #' @importFrom utils head
 #' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all
 #' @importFrom tidyr separate gather spread
-descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE, 
+descr <- function(x,
+                  stats = st_options("descr.stats"),
+                  na.rm = TRUE, 
                   round.digits = st_options("round.digits"),
                   transpose = st_options("descr.transpose"), 
                   style = st_options("style"), 
                   plain.ascii = st_options("plain.ascii"),
-                  justify = "right", headings = st_options("headings"), 
+                  justify = "right",
+                  headings = st_options("headings"), 
                   display.labels = st_options("display.labels"),  
-                  split.tables = 100, weights = NA, rescale.weights = FALSE,
+                  split.tables = 100,
+                  weights = NA,
+                  rescale.weights = FALSE,
                   ...) {
   
   # Validate arguments ---------------------------------------------------------
@@ -415,6 +420,10 @@ descr <- function(x, stats = st_options("descr.stats"), na.rm = TRUE,
                                       headings       = headings,
                                       display.labels = display.labels,
                                       split.tables   = split.tables)
+  
+  if (nrow(x.df) == 0) {
+    attr(output, "format_info") %+=% list(missing = "N/A")
+  }
   
   attr(output, "user_fmt") <- list(... = ...)
   
