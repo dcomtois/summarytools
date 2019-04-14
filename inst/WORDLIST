@@ -16,6 +16,7 @@ categorielle
 centrees
 chacun
 chaque
+chisq
 cigs
 colonnes
 comtois
@@ -43,6 +44,7 @@ dir
 dominic
 donnees
 Donnees
+dplyr
 du
 EAN
 ecart
@@ -89,8 +91,10 @@ labelled
 lang
 le
 les
+magick
 Magick
 magnif
+magrittr
 malade
 maladie
 masse
@@ -108,6 +112,8 @@ nrow
 numerique
 Numerique
 Oui
+packages’
+ru
 pandoc
 Pandoc
 personnelle
