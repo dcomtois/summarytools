@@ -465,16 +465,16 @@ parse_args <- function(sys_calls,
     obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
     obj <- eval(sys_frames[[pos$pipe]][[obj_name]], 
                 envir = sys_frames[[pos$pipe]]$parent)
-    if (is.null(obj)) {
-      # df may be an example data frame, in which case we get it this way:
-      obj <- try(get(x = obj_name), silent = TRUE)
-      if (inherits(obj, "try-error")) {
-        obj_name <- try(get_lhs(calls$pipe), silent = TRUE)
-        if (!inherits(obj_name, "try-error")) {
-          obj <- get(deparse(obj_name))
-        }
-      }
-    }
+    #if (is.null(obj)) {
+    #  # df may be an example data frame, in which case we get it this way:
+    #  obj <- try(get(x = obj_name), silent = TRUE)
+    #  if (inherits(obj, "try-error")) {
+    #    obj_name <- try(get_lhs(calls$pipe), silent = TRUE)
+    #    if (!inherits(obj_name, "try-error")) {
+    #      obj <- get(deparse(obj_name))
+    #    }
+    #  }
+    #}
     if (is.data.frame(obj)) {
       if (length(calls$pipe$lhs) == 1) {
         upd_output("df_name", obj_name)
@@ -501,7 +501,7 @@ parse_args <- function(sys_calls,
           upd_output("var_label", NA_character_)
         }
       }
-    } else if (!identical(NA, obj) && is.atomic(obj)) {
+     } else if (is.atomic(obj)) { #} else if (!identical(NA, obj) && is.atomic(obj)) {
       if(length(calls$pipe$lhs) == 1) {
         upd_output("var_name", obj_name)
         upd_output("var_label", label(obj))
