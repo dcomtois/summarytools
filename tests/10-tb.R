@@ -59,6 +59,35 @@ fgr4 %>% tb(2)
 fgr4 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
 fgr4 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 
+# Freq with grouped results
+(fgr4d <- tobacco stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq))
+fgr4 %>% tb()
+fgr4 %>% tb(2)
+fgr4 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
+fgr4 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
+
+
+# Freq with grouped results, freq sorting (+)
+(fgr5 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq"))
+fgr5 %>% tb()
+fgr5 %>% tb(2)
+fgr5 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
+fgr5 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
+
+# Freq with grouped results, freq sorting (-)
+(fgr6 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq-"))
+fgr6 %>% tb()
+fgr6 %>% tb(2)
+fgr6 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
+fgr6 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
+
+
+# Freq with grouped results, 2 grouping vars
+(fgr7 <- stby(tobacco$smoker, INDICES = list(tobacco$gender, tobacco$age.gr), FUN = freq))
+fgr7 %>% tb()
+fgr7 %>% tb(2)
+fgr7 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
+fgr7 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 
 
 

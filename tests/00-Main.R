@@ -138,7 +138,7 @@ for (i in 1:6) {
   eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
   eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
   eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
-  eval_with_feedback(testfiles[10], lang = lang, compare = FALSE) # tb()
+  eval_with_feedback(testfiles[10], lang = lang, compare = T) # tb()
 }
 
 compare_dirs("en")
