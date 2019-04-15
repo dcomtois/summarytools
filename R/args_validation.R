@@ -289,13 +289,14 @@ check_arguments <- function(mc, dotArgs) {
       errmsg %+=% "'silent' must be either TRUE or FALSE"
     }
     
-    if ("tmp.img.dir" %in% names(mc) &&
-        (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
+    if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
+        (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1, )) ||
          nchar(pf$tmp.img.dir) > 5)) {
       errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
     }
     
-    if ("tmp.img.dir" %in% names(mc) && isTRUE(.st_env$noX11)) {
+    if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
+        isTRUE(.st_env$noX11)) {
       message("'tmp.img.dir' will be ignored since system has no X11 ",
               "capabilities")
     }

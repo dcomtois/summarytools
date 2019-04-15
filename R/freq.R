@@ -301,7 +301,7 @@ freq <- function(x,
     }
   }
 
-  order_sign <- numeric() # to avoid warning on check
+  order_sign <- "+"
   errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
 
   if (length(errmsg) > 0) {
@@ -337,7 +337,7 @@ freq <- function(x,
     parse_info$var_name <- varname
   }
   
-  if (!("var_label" %in% names(parse_info)) && !is.na(label(x))) {
+  if (!"var_label" %in% names(parse_info) && !is.na(label(x))) {
     parse_info$var_label <- label(x)
   }
   
@@ -364,7 +364,7 @@ freq <- function(x,
   
   # Order by [-]freq if needed
   if (order == "freq") {
-    nas_freq <- tail(freq_table, 1)
+    nas_freq   <- tail(freq_table, 1)
     freq_table <- freq_table[-length(freq_table)]
     freq_table <- sort(freq_table, decreasing = (order_sign == "+"))
     freq_table <- append(freq_table, nas_freq)
