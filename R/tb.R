@@ -5,11 +5,10 @@
 #' @param x a freq() or descr() output object
 #' @param order Integer. Useful for grouped results (produced with `stby()`)
 #'  only. When \code{1} (default), the levels of the grouping variable are used 
-#'  to sort the table, followed by the values of the remaining categorical
-#'  columns (additional grouping variables as well as data values for `freq()`,
-#'  and variable names for `descr()`). When \code{2}, the order of the columns
-#'  is reversed. In `freq()` tables, the row for \code{NA} counts will always
-#'  appear last.
+#'  to sort the table, followed by the values of the other grouping variables if
+#'  any, and variable names for `descr()`). When \code{2}, the order of the
+#'  columns is reversed. In `freq()` tables, the row for \code{NA} counts will 
+#'  always appear last for each group.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
@@ -22,6 +21,7 @@ tb <- function(x, order = 1) {
     grp_stats  <- lapply(x, tb)
     grp_size   <- nrow(grp_stats[[1]])
     grp_values <- as_tibble(expand.grid(attr(x, "dimnames")))
+    nb_gr_var  <- ncol(grp_values)
     left_part  <- grp_values[numeric(),]
     for (i in seq_len(nrow(grp_values))) {
       for (j in seq_len(grp_size)) {
@@ -35,18 +35,11 @@ tb <- function(x, order = 1) {
         output$pct_valid <- output$pct_valid / nrow(grp_values)
         output$pct_tot   <- output$pct_tot   / nrow(grp_values)
       } else {
-        output$pct <- output$pct / length(grp_values)
+        output$pct <- output$pct / nrow(grp_values)
       }
       
       if (identical(order, 2)) {
-        if ("<NA>" %in% output[[2]]) {
-          # change <NA> for true NA's for sorting, then put "<NA>" back
-          output[[2]][output[[2]] == "<NA>"] <- NA
-          output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
-          output[[2]][is.na(output[[2]])] <- "<NA>"
-        } else {
-          output <- output[order(output[[2]], output[[1]]),]
-        }
+        output <- output[do.call(what = "order", args = output[ ,1:nb_gr_var]), ]
       }
       
       if ("pct_valid_cum" %in% colnames(output)) {
@@ -55,9 +48,12 @@ tb <- function(x, order = 1) {
         output$pct_valid_cum <- cumsum(tmp_nomiss)
         output$pct_tot_cum <- cumsum(output$pct_tot)
       }
-    } # else if (identical(order, 2)) {
-      # output <- output[order(output[[2]], output[[1]], na.last = TRUE),]
-    # }
+    } else {
+      # grouped descr objects
+      if (identical(order, 2)) {
+        output <- output[do.call(what = "order", args = output[ ,1:nb_gr_var]), ]
+      }
+    }
     
     colnames(output)[1:ncol(left_part)] <- 
       sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
