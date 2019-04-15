@@ -11,11 +11,10 @@ tb(x, order = 1)
 
 \item{order}{Integer. Useful for grouped results (produced with `stby()`)
 only. When \code{1} (default), the levels of the grouping variable are used 
-to sort the table, followed by the values of the remaining categorical
-columns (additional grouping variables as well as data values for `freq()`,
-and variable names for `descr()`). When \code{2}, the order of the columns
-is reversed. In `freq()` tables, the row for \code{NA} counts will always
-appear last.}
+to sort the table, followed by the values of the other grouping variables if
+any, and variable names for `descr()`). When \code{2}, the order of the
+columns is reversed. In `freq()` tables, the row for \code{NA} counts will 
+always appear last for each group.}
 }
 \value{
 A \code{\link[tibble]{tibble}} which is constructed following the 
