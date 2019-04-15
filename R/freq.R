@@ -111,7 +111,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-#' @importFrom dplyr n_distinct
+#' @importFrom dplyr n_distinct group_keys
 freq <- function(x,
                  var             = NULL,
                  round.digits    = st_options("round.digits"),

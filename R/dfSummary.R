@@ -138,7 +138,7 @@
 #'
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
-#' @importFrom dplyr n_distinct
+#' @importFrom dplyr n_distinct group_keys
 #' @importFrom stats start end
 #' @export
 dfSummary <- function(x,

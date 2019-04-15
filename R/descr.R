@@ -89,7 +89,7 @@
 #' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all
+#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all group_keys
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
                   stats = st_options("descr.stats"),
