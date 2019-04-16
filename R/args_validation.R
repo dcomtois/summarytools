@@ -230,10 +230,18 @@ check_arguments <- function(mc, dotArgs) {
       }
     }
   }
-
     
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
+
+    justify <- switch(substring(pf$justify, 1, 1),
+                      l = "left",
+                      c = "center",
+                      m = "center",
+                      d = "default",
+                      r = "right")
+    
+    assign("justify", justify, parent.frame())
     
     if (!isTRUE(test_choice(pf$style, c("grid", "multiline")))) {
       errmsg %+=% "'style' must be either 'grid' or 'multiline'"
@@ -300,6 +308,7 @@ check_arguments <- function(mc, dotArgs) {
       message("'tmp.img.dir' will be ignored since system has no X11 ",
               "capabilities")
     }
+    
   }
   
   # Order the messages according to arguments order

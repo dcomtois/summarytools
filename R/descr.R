@@ -114,11 +114,12 @@ descr <- function(x,
                  var_label = (ncol(x) == 1), caller = "descr"),
       silent = TRUE)
 
-    outlist <- list()
-    g_ks    <- map_groups(group_keys(x))
-    g_inds  <- attr(x, "groups")$.rows
-    for (g in seq_along(g_ks)) {
-      outlist[[g]] <- descr(x               = as_tibble(x[g_inds[[g]], ]),
+    outlist  <- list()
+    gr_ks    <- map_groups(group_keys(x))
+    gr_inds  <- attr(x, "groups")$.rows
+    
+    for (g in seq_along(gr_ks)) {
+      outlist[[g]] <- descr(x               = as_tibble(x[gr_inds[[g]], ]),
                             stats           = stats,
                             na.rm           = na.rm,
                             round.digits    = round.digits,
@@ -145,11 +146,14 @@ descr <- function(x,
       }
       attr(outlist[[g]], "data_info")$by_var <- 
         setdiff(colnames(attr(x, "groups")), ".rows")
-      attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
+      attr(outlist[[g]], "data_info")$Group    <- gr_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
-      attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+      attr(outlist[[g]], "data_info")$by_last  <- g == length(gr_ks)
     }
-    class(outlist) <- "stby"
+    
+    names(outlist) <- gr_ks
+    class(outlist) <- c("stby")
+    attr(outlist, "groups") <- group_keys(x)
     return(outlist)
   }
   
@@ -215,7 +219,7 @@ descr <- function(x,
   # End of arguments validation ------------------------------------------------
   
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && isTRUE(plain.ascii) && 
+  if (style == "rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }

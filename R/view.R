@@ -73,9 +73,8 @@ view <- function(x,
     
   } else if (inherits(x = x, what = c("stby","by")) &&
              attr(x[[1]], "st_type") == "descr" &&
-             ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) || 
-              ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
-    
+             identical(attr(x[[1]], "dim"), 2)) {
+
     # Special case: descr by() objects with 1 variable -------------------------
     
     if (attr(x[[1]], "data_info")$transposed) {
@@ -119,7 +118,7 @@ view <- function(x,
                        escape.pipe   = escape.pipe,
                        ...)
     
-  } else if (inherits(x, what = c("stby", "by")) &&
+  } else if (inherits(x = x, what = c("stby", "by")) &&
              attr(x[[1]], "st_type") %in% c("freq", "ctable",
                                             "descr", "dfSummary")) {
     
@@ -133,16 +132,16 @@ view <- function(x,
     # Remove NULL objects from list
     null_ind <- which(vapply(x, is.null, TRUE))
     if (length(null_ind) > 0) {
-      by_levels <- expand.grid(attr(x, "dimnames"))
-      by_vars   <- names(attr(x, "dimnames"))
-      msg <- "Following group(s) had 0 observations:\n"
-      for (i in seq_along(null_ind)) {
-        by_values <- as.character(unlist(by_levels[null_ind[i],]))
-        msg <- paste0(msg, "  ", null_ind[i], ". ",
-                      paste(by_vars, by_values, collapse = ", ", sep = " = "),
-                      "\n")
-      }
-      message(msg)
+      # by_levels <- expand.grid(attr(x, "dimnames"))
+      # by_vars   <- names(attr(x, "dimnames"))
+      # msg <- "Following group(s) had 0 observations:\n"
+      # for (i in seq_along(null_ind)) {
+      #   by_values <- as.character(unlist(by_levels[null_ind[i],]))
+      #   msg <- paste0(msg, "  ", null_ind[i], ". ",
+      #                 paste(by_vars, by_values, collapse = ", ", sep = " = "),
+      #                 "\n")
+      # }
+      # message(msg)
       x <- x[-null_ind]
     }
     

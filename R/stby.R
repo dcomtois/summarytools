@@ -23,6 +23,13 @@
 #' @keywords utilities
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
+  # Check if variables are both in data and in INDICES
+  gr_vars <- setdiff(as.character(substitute(INDICES)), "list")
+  birole_var <- intersect(gr_vars, deparse(substitute(data)))
+  if (length(birole_var) && (is.vector(data) || is.factor(data))) {
+    warning(birole_var[1], " appears to be both a grouping as well as a data ",
+            "variable; this could cause problems when generating results")
+  }
   UseMethod("stby", data)
 }
 
@@ -30,6 +37,11 @@ stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
 #' @keywords utilities
 #' @export
 stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
+  if (identical(FUN, summarytools::freq)) {
+    stop("when using stby() with freq(), only one variable may be analysed; ",
+         "the number of grouping variables however is not limited by any ",
+         "technical constraints")
+  }
   if (!is.list(INDICES)) {
     IND <- vector("list", 1L)
     IND[[1L]] <- INDICES

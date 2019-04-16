@@ -3,10 +3,7 @@
 #' Displays weighted or unweighted frequencies, including <NA> counts and
 #' proportions.
 #'
-#' @param x Factor or vector, or data frame if var argument is also supplied
-#' @param var Character. Name of variable to analyse. Can also be a 
-#'  \emph{promise} as in \code{iris \%>\% freq(Species)}. \code{NULL} by 
-#'  default.
+#' @param x Factor or vector
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
@@ -111,9 +108,8 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats xtabs
-#' @importFrom dplyr n_distinct group_keys
+#' @importFrom dplyr n_distinct group_keys group_vars
 freq <- function(x,
-                 var             = NULL,
                  round.digits    = st_options("round.digits"),
                  order           = "default",
                  style           = st_options("style"),
@@ -133,92 +129,71 @@ freq <- function(x,
 
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
+    
+    if (ncol(x) > ncol(group_keys(x)) + 1) {
+      stop("when using group_by() with freq(), only one categorical variable ",
+           "may be analyzed; the number of grouping variables however is not ",
+           "limited by any technical constraints")
+    } else if (ncol(x) < ncol(group_keys(x)) + 1) {
+        stop("the number of variables passed to freq() must equal the number ",
+             "of grouping variables + 1")
+    } 
+    
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), caller = "freq"),
+      parse_args(sys.calls(), sys.frames(), match.call(), 
+                 df_name = TRUE, df_label = FALSE, var_name = FALSE,
+                 var_label = FALSE, caller = "freq"),
       silent = TRUE)
-
-    outlist <- list()
-    g_ks    <- map_groups(group_keys(x))
-    g_inds  <- attr(x, "groups")$.rows
-    for (g in seq_along(g_ks)) {
-      if ("var" %in% names(match.call())) {
-        outlist[[g]] <- freq(x               = as_tibble(x[g_inds[[g]], ]),
-                             var             = var,
-                             round.digits    = round.digits,
-                             order           = order,
-                             style           = style,
-                             plain.ascii     = plain.ascii,
-                             justify         = justify,
-                             cumul           = cumul,
-                             totals          = totals,
-                             report.nas      = report.nas,
-                             rows            = rows,
-                             missing         = missing,
-                             display.type    = display.type,
-                             display.labels  = display.labels,
-                             headings        = headings,
-                             weights         = weights,
-                             rescale.weights = rescale.weights,
-                             ...             = ... )
-      } else {
-        outlist[[g]] <- freq(x               = as_tibble(x[g_inds[[g]], ]),
-                             round.digits    = round.digits,
-                             order           = order,
-                             style           = style,
-                             plain.ascii     = plain.ascii,
-                             justify         = justify,
-                             cumul           = cumul,
-                             totals          = totals,
-                             report.nas      = report.nas,
-                             rows            = rows,
-                             missing         = missing,
-                             display.type    = display.type,
-                             display.labels  = display.labels,
-                             headings        = headings,
-                             weights         = weights,
-                             rescale.weights = rescale.weights,
-                             ...             = ... )
-      }
     
-      if (!inherits(parse_info, "try-error")) {
-        if (!is.null(parse_info$df_name))
-          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
-        if (!is.null(parse_info$df_label))
-          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
-        if (!is.null(parse_info$var_name))
-          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
-        if (!is.null(parse_info$var_label))
-          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
+    outlist  <- list()
+    gr_ks    <- map_groups(group_keys(x))
+    gr_inds  <- attr(x, "groups")$.rows
+    ana_var  <- setdiff(colnames(x), group_vars(x))
+    for (g in seq_along(gr_ks)) {
+      outlist[[g]] <- freq(x               = as_tibble(x[gr_inds[[g]], ana_var]),
+                           round.digits    = round.digits,
+                           order           = order,
+                           style           = style,
+                           plain.ascii     = plain.ascii,
+                           justify         = justify,
+                           cumul           = cumul,
+                           totals          = totals,
+                           report.nas      = report.nas,
+                           rows            = rows,
+                           missing         = missing,
+                           display.type    = display.type,
+                           display.labels  = display.labels,
+                           headings        = headings,
+                           weights         = weights,
+                           rescale.weights = rescale.weights,
+                           ...             = ... )
+      
+      if (!inherits(parse_info, "try-error") && !is.null(parse_info$df_name)) {
+        attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
       }
-
-      attr(outlist[[g]], "data_info")$by_var <- 
-        setdiff(colnames(attr(x, "groups")), ".rows")
-      attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
+      
+      if (!is.na(label(x))) {
+        attr(outlist[[g]], "data_info")$Data.frame.label <- label(x)
+      }
+      
+      attr(outlist[[g]], "data_info")$Variable <- ana_var
+      
+      if (!is.na(label(x[[ana_var]]))) {
+        attr(outlist[[g]], "data_info")$Variable.label <- label(x[[ana_var]])
+      }
+      
+      attr(outlist[[g]], "data_info")$by_var   <- group_vars(x)
+      attr(outlist[[g]], "data_info")$Group    <- gr_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
-      attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+      attr(outlist[[g]], "data_info")$by_last  <- g == length(gr_ks)
+      
+      attr(outlist[[g]], "st_type") <- "freq"
     }
     
-    class(outlist) <- "stby"
+    names(outlist) <- gr_ks
+    class(outlist) <- c("stby")
+    attr(outlist, "groups") <- group_keys(x)
     return(outlist)
-  }
-  
-  if ("var" %in% names(match.call())) {
-    vv <- deparse(substitute(var))
-    if (grepl('^".+"$', vv)) {
-      vars <- var
-    } else {
-      vars <- vv
-    }
-    
-    # Check if all vars are in x
-    all_vars_present <- all(vars %in% colnames(x))
-    
-    if (!isTRUE(all_vars_present)) {
-      ind <- which(!vars %in% colnames(x))
-      stop("Variable ", var[ind], " not found")
-    } else {
-      x <- x[ ,vars]
-    }
   }
   
   # When x is a dataframe, we make recursive calls to freq() with each variable
