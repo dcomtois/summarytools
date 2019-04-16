@@ -127,18 +127,21 @@ compare_dirs <- function(lang) {
 }
 
 i <- 1
+#compare <- TRUE
+compare <- FALSE
 for (i in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[i]
-  eval_with_feedback(testfiles[1],  lang = lang, compare = FALSE) # parse-args
-  eval_with_feedback(testfiles[2],  lang = lang, compare = FALSE) # freq
-  eval_with_feedback(testfiles[3],  lang = lang, compare = FALSE) # ctable
-  eval_with_feedback(testfiles[4],  lang = lang, compare = FALSE) # descr
-  eval_with_feedback(testfiles[5],  lang = lang, compare = FALSE) # dfSummary
-  eval_with_feedback(testfiles[6],  lang = lang, compare = FALSE) # overrides
-  eval_with_feedback(testfiles[7],  lang = lang, compare = FALSE) # lapply
-  eval_with_feedback(testfiles[8],  lang = lang, compare = FALSE) # with/by
-  eval_with_feedback(testfiles[9],  lang = lang, compare = FALSE) # st_options
-  eval_with_feedback(testfiles[10], lang = lang, compare = T) # tb()
+  eval_with_feedback(testfiles[1],  lang, compare) # parse-args
+  eval_with_feedback(testfiles[2],  lang, compare) # freq
+  eval_with_feedback(testfiles[3],  lang, compare) # ctable
+  eval_with_feedback(testfiles[4],  lang, compare) # descr
+  eval_with_feedback(testfiles[5],  lang, compare) # dfSummary
+  eval_with_feedback(testfiles[6],  lang, compare) # overrides
+  eval_with_feedback(testfiles[7],  lang, compare) # lapply
+  eval_with_feedback(testfiles[8],  lang, compare) # with/by
+  eval_with_feedback(testfiles[9],  lang, compare) # st_options
+  eval_with_feedback(testfiles[10], lang, compare) # tb()
+  eval_with_feedback(testfiles[11], lang, compare) # dplyr
 }
 
 compare_dirs("en")

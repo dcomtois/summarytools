@@ -1,4 +1,5 @@
 # ---------------------------- freq.R ------------------------------------------
+library(magrittr)
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
@@ -208,3 +209,6 @@ iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
 library(dplyr)
 tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 
+# Deal with explicited NA's
+tobacco$age.gr %<>% forcats::fct_explicit_na()
+freq(tobacco$age.gr)

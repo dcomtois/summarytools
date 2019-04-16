@@ -508,7 +508,7 @@ samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)
 > st_options(lang = lang) 
 > st_options(dfSummary.varnumbers = F, dfSummary.labels.col = F, dfSummary.valid.col = F) 
 > st_options(tmp.img.dir = "/tmp") 
-> print(dfSummary(tobacco), file = "02 - basic.html") 
+> print(dfSummary(tobacco), file = "02-basic.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -673,7 +673,7 @@ No   Variable    Stats / Values           Freqs (% of Valid)   Graph         Val
                                                                : : : : : .                     
 -----------------------------------------------------------------------------------------------
 
-> view(dfs4, method="browser", footnote = "cars", file = "05 - cars.html") 
+> view(dfs4, method="browser", footnote = "cars", file = "05-cars.html") 
 -- Output file written
 
 
@@ -907,7 +907,7 @@ No   Variable       Stats / Values          Freqs (% of Valid)   Graph          
 -----------------------------------------------------------------------------------------------------
 
 > data("AirPassengers") 
-> view(dfSummary(AirPassengers), file = "07 - AirPassengers.html") 
+> view(dfSummary(AirPassengers), file = "07-AirPassengers.html") 
 -- AirPassengers was converted to a data frame
 -- Output file written
 
@@ -1251,7 +1251,7 @@ No   Variable       Label              Stats / Values                Freqs (% of
 
 # st-small --------------------------------------------------------------------- 
 
-> print(dfSummary(tobacco, graph.magnif = 0.8), table.classes = 'st-small', footnote = "st_small", file = "09 - st_small.html") 
+> print(dfSummary(tobacco, graph.magnif = 0.8), table.classes = 'st-small', footnote = "st_small", file = "09-st_small.html") 
 -- Switching method to 'browser'
 -- Output file written
 

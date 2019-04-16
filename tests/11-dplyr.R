@@ -15,7 +15,7 @@ tobacco %>% descr()
 tobacco %>% select(age, BMI, smoker) %>% descr(stats = "fivenum")
 tobacco %>% filter(smoker == "Yes") %>% descr(stats = "common")
 tobacco %>% group_by(smoker) %>% descr(stats = "common") %>% view()
-tobacco %>% descr(gender)
+tobacco %$% descr(age)
 
 tobacco %>% dfSummary() %>% view()
 tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary()

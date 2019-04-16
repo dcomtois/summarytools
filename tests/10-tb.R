@@ -59,14 +59,6 @@ fgr4 %>% tb(2)
 fgr4 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
 fgr4 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 
-# Freq with grouped results
-(fgr4d <- tobacco stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq))
-fgr4 %>% tb()
-fgr4 %>% tb(2)
-fgr4 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
-fgr4 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
-
-
 # Freq with grouped results, freq sorting (+)
 (fgr5 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq"))
 fgr5 %>% tb()
@@ -86,10 +78,7 @@ fgr6 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 (fgr7 <- stby(tobacco$smoker, INDICES = list(tobacco$gender, tobacco$age.gr), FUN = freq))
 fgr7 %>% tb()
 fgr7 %>% tb(2)
-fgr7 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
-fgr7 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
-
-
+fgr7 %>% tb() %>% select(4,5,7) %>% colSums(na.rm = T)
 
 # Normal descr() results
 (de1 <- descr(examens))
@@ -108,4 +97,57 @@ identical(dgr1 %>% tb(2), dgr1 %>% tb())
 (dgr2 <- stby(examens, examens$sexe, descr))
 dgr2 %>% tb()
 dgr2 %>% tb(2)
+
+library(dplyr)
+library(magrittr)
+(dd1 <- stby(tobacco, tobacco$gender, descr))
+dd1 %>% tb()
+dd1 %>% tb(2)
+view(dd1)
+
+tobacco$gender %<>% forcats::fct_explicit_na()
+(dd2 <- tobacco %>% group_by(gender) %>% descr(stats = "common"))
+dd2 %>% tb()
+dd2 %>% tb(2)
+view(dd2)
+
+(dd3 <- with(tobacco, stby(tobacco, list(gender, age.gr), descr, stats = "common")))
+dd3 %>% tb()
+dd3 %>% tb(2)
+view(dd3, file = "01-descr-2-grp-vars.html")
+
+tobacco$age.gr %<>% forcats::fct_explicit_na()
+(dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common"))
+dd4 %>% tb()
+dd4 %>% tb(2)
+view(dd4)
+
+
+# freq
+data(tobacco)
+(ff1 <- stby(tobacco$smoker, tobacco$gender, freq))
+ff1 %>% tb()
+ff1 %>% tb(2)
+view(ff1)
+
+(ff2 <- stby(tobacco$smoker, tobacco$gender, freq, report.nas = F))
+ff2 %>% tb()
+ff2 %>% tb(2)
+
+tobacco$gender %<>% forcats::fct_explicit_na()
+(ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq())
+ff3 %>% tb()
+ff3 %>% tb(2)
+view(ff3)
+
+(ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq)))
+ff4 %>% tb()
+ff4 %>% tb(2)
+
+tobacco$age.gr %<>% forcats::fct_explicit_na()
+(ff5 <- tobacco %>% group_by(gender, age.gr) %>% select(gender, age.gr, smoker) %>% freq())
+view(ff5)
+ff5 %>% tb()
+ff5 %>% tb(2)
+
 
