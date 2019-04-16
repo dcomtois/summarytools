@@ -37,7 +37,7 @@ stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
 #' @keywords utilities
 #' @export
 stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
-  if (identical(FUN, summarytools::freq)) {
+  if (identical(FUN, summarytools::freq) && ncol(data) > 1) {
     stop("when using stby() with freq(), only one variable may be analysed; ",
          "the number of grouping variables however is not limited by any ",
          "technical constraints")
