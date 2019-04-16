@@ -406,13 +406,27 @@ freq <- function(x,
                         trs("pct.total"), trs("pct.total.cum"))
   rownames(output) <- c(names(freq_table), trs("total"))
   
+  # NA's explicited with forcats::fct_explicit_na(): set report.nas to FALSE
+  # unless report.nas was explicit in the function call
+  fn_call <- match.call()
+  
+  if (is.factor(x) && "(Missing)" %in% levels(x) && sum(is.na(x)) == 0 &&
+      !"report.nas" %in% names(fn_call)) {
+    message("explicit NA's detected - setting 'report.nas' to FALSE")
+    report.nas <- FALSE
+    # hack the fn_call attribute to prevent print method from overriding it 
+    tmp_args <- append(as.list(fn_call)[-1], list(report.nas = FALSE))
+    tmp_args <- append(list(name = "freq"), tmp_args)
+    fn_call  <- do.call(what = "call", args = tmp_args, quote = TRUE)
+  }
+  
   # Update the output class and attributes ------------------------------------
   
   class(output) <- c("summarytools", class(output))
   
-  attr(output, "st_type")    <- "freq"
-  attr(output, "fn_call")    <- match.call()
-  attr(output, "date")       <- Sys.Date()
+  attr(output, "st_type") <- "freq"
+  attr(output, "fn_call") <- fn_call
+  attr(output, "date")    <- Sys.Date()
   
   # Determine data "type", in a non-strict way
   if (all(c("ordered", "factor") %in% class(x))) {
