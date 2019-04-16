@@ -36,8 +36,10 @@ tb <- function(x, order = 1) {
              "variable and an analysis variable; tidy table impossible to ",
              "generate")
       }
-      left_part    <- as_tibble(merge(grp_stats[[non_null_grs[1]]][,1],
-                                      grp_values, all = TRUE)[,-1])
+      
+      left_part <- as_tibble(merge(grp_stats[[non_null_grs[1]]][,1],
+                                   grp_values, all = TRUE))[,-1]
+      # colnames(left_part) <- sub("(.+)\\$(.+)", "\\2", colnames(grp_values))
     }
     
     nb_gr_var <- ncol(left_part)
@@ -119,12 +121,3 @@ tb <- function(x, order = 1) {
     stop("tb() supports summarytools freq() and descr() objects only")
   }
 }
-
-      #by_levels <- expand.grid(attr(x, "dimnames"))
-      #by_vars   <- names(attr(x, "dimnames"))
-      #msg <- "Following group(s) had 0 observations:\n"
-      #for (i in seq_along(null_ind)) {
-      #  by_values <- as.character(unlist(by_levels[null_ind[i],]))
-      #  msg <- paste0(msg, "  ", null_ind[i], ". ",
-      #                paste(by_vars, by_values, collapse = ", ", sep = " = "),
-      #                "\n")
