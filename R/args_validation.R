@@ -141,10 +141,12 @@ check_arguments <- function(mc, dotArgs) {
       }
       
       if (is.numeric(pf$rows) && length(pf$rows) > 0) {
-        if (0 %in% pf$rows || length(unique(sign(pf$rows))) > 1) {
+        if (0 %in% pf$rows || length(unique(sign(pf$rows))) > 1 ||
+            (sign(pf$rows[1]) == -1 && 
+             length(pf$rows) >= n_distinct(pf$x, na.rm = TRUE))) {
             errmsg %+=% "Invalid 'rows' argument"
-        } else if (abs(max(pf$rows)) >= n_distinct(pf$x)) {
-          nmax <- n_distinct(pf$x) - 1
+        } else if (max(abs(pf$rows)) >= n_distinct(pf$x, na.rm = TRUE)) {
+          nmax <- n_distinct(pf$x, na.rm = TRUE)
           rows <- pf$rows[-which(abs(pf$rows) > nmax)]
           if (length(rows) > 0) {
             message("There are only ", nmax, " rows to show; higher ",

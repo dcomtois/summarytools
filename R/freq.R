@@ -410,8 +410,7 @@ freq <- function(x,
   # unless report.nas was explicit in the function call
   fn_call <- match.call()
   
-  if (is.factor(x) && "(Missing)" %in% levels(x) && sum(is.na(x)) == 0 &&
-      !"report.nas" %in% names(fn_call)) {
+  if (is.factor(x) && "(Missing)" %in% levels(x) && sum(is.na(x)) == 0) {
     message("explicit NA's detected - setting 'report.nas' to FALSE")
     report.nas <- FALSE
     # hack the fn_call attribute to prevent print method from overriding it 
