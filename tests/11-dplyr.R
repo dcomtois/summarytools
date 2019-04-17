@@ -17,7 +17,10 @@ tobacco %>% filter(smoker == "Yes") %>% descr(stats = "common")
 tobacco %>% group_by(smoker) %>% descr(stats = "common") %>% view()
 tobacco %$% descr(age)
 
+
 tobacco %>% dfSummary() %>% view()
 tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary()
+
+tobacco$gender %<>% forcats::fct_explicit_na()
 tobacco %>% group_by(gender) %>% dfSummary() %>% view()
 

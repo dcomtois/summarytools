@@ -69,26 +69,23 @@ Group: age.gr = (Missing)
 > tmp %>% tb() 
 
 # A tibble: 15 x 7
-   value smoker  freq pct_valid
-   <fct> <fct>  <dbl>     <dbl>
- 1 18-34 Yes       74      5.74
- 2 18-34 No       184     14.3 
- 3 18-34 <NA>       0     NA   
- 4 35-50 Yes       72      5.98
- 5 35-50 No       169     14.0 
- 6 35-50 <NA>       0     NA   
- 7 51-70 Yes       99      6.25
- 8 51-70 No       218     13.8 
- 9 51-70 <NA>       0     NA   
-10 71 +  Yes       45      5.66
-11 71 +  No       114     14.3 
-12 71 +  <NA>       0     NA   
-13 (Mis~ Yes        8      6.4 
-14 (Mis~ No        17     13.6 
-15 (Mis~ <NA>       0     NA   
-# ... with 3 more variables:
-#   pct_valid_cum <dbl>, pct_tot <dbl>,
-#   pct_tot_cum <dbl>
+   value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34     Yes       74      5.74          5.74    5.74        5.74
+ 2 18-34     No       184     14.3          20      14.3        20   
+ 3 18-34     <NA>       0     NA            20       0          20   
+ 4 35-50     Yes       72      5.98         26.0     5.98       26.0 
+ 5 35-50     No       169     14.0          40      14.0        40   
+ 6 35-50     <NA>       0     NA            40       0          40   
+ 7 51-70     Yes       99      6.25         46.2     6.25       46.2 
+ 8 51-70     No       218     13.8          60      13.8        60   
+ 9 51-70     <NA>       0     NA            60       0          60   
+10 71 +      Yes       45      5.66         65.7     5.66       65.7 
+11 71 +      No       114     14.3          80      14.3        80   
+12 71 +      <NA>       0     NA            80       0          80   
+13 (Missing) Yes        8      6.4          86.4     6.4        86.4 
+14 (Missing) No        17     13.6         100      13.6       100   
+15 (Missing) <NA>       0     NA           100       0         100   
 
 > tobacco %>% descr() 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
