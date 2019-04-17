@@ -149,6 +149,7 @@ freq <- function(x,
     gr_ks    <- map_groups(group_keys(x))
     gr_inds  <- attr(x, "groups")$.rows
     ana_var  <- setdiff(colnames(x), group_vars(x))
+    
     for (g in seq_along(gr_ks)) {
       outlist[[g]] <- freq(x               = as_tibble(x[gr_inds[[g]], ana_var]),
                            round.digits    = round.digits,
@@ -368,15 +369,33 @@ freq <- function(x,
     
   } else if (length(rows) > 0) {
     if (is.character(rows)) { 
-      freq_table <- c(freq_table[rows], tail(freq_table, 1))
+      if (length(rows) < n_distinct(x)) {
+        freq_table <- 
+          c(freq_table[rows], 
+            "(Other)" = sum(freq_table[setdiff(names(freq_table), rows)]),
+            tail(freq_table, 1))
+      } else {
+        freq_table <- c(freq_table[rows], tail(freq_table, 1))
+      }
     } else if (is.numeric(rows)) {
       if (sign(rows[1]) == 1) {
-        freq_table <- c(freq_table[rows], tail(freq_table, 1))
+        if (length(rows) < n_distinct(x)) {
+          freq_table <- 
+            c(freq_table[rows], 
+              "(Other)" = sum(freq_table[setdiff(seq_along(freq_table[-1]), 
+                                                 rows)]),
+              tail(freq_table, 1))
+        } else {
+          freq_table <- c(freq_table[rows], tail(freq_table, 1))
+        }
       } else {
-        freq_table <- c(freq_table[rows])
+        ind_other <- intersect(seq_along(freq_table[-1]), abs(rows))
+        freq_table <- c(freq_table[c(rows, -length(freq_table))],
+                        "(Other)" = sum(freq_table[ind_other]),
+                        tail(freq_table, 1))
       }
     }
-  } 
+  }
     
   # Change the name of the NA item (last) to avoid potential
   # problems when echoing to console
