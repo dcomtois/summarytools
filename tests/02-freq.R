@@ -182,7 +182,9 @@ label(tobacco$smoker) <- "Subject Smokes"
 (ft <- freq(tobacco))
 print(ft, display.labels = F, display.type = F)
 
+
 # lapply()
+st_options(style = "rmarkdown")
 tobacco_subset <- tobacco[,c(3,5,6)]
 lapply(tobacco_subset, freq, style = "rmarkdown")
 

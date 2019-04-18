@@ -1,0 +1,388 @@
+
+# -------------------------------- dplyr.R -------------------------------------  
+
+> library(dplyr) 
+> library(summarytools) 
+> library(magrittr) 
+> library(dplyr) 
+> data(tobacco) 
+> tobacco %>% select(age.gr, smoker) %>% freq() %>% view() 
+-- Output file written
+-- Output file appended
+
+> tobacco$age.gr %<>% forcats::fct_explicit_na() 
+> (tmp <- tobacco %>% group_by(age.gr) %>% select(age.gr, smoker) %>% freq()) 
+
+Tableau de fréquences  
+tobacco$smoker  
+Type: Facteur  
+Groupe: age.gr = 18-34  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      74      28.68           28.68     28.68          28.68
+         No     184      71.32          100.00     71.32         100.00
+       <NA>       0                                 0.00         100.00
+      Total     258     100.00          100.00    100.00         100.00
+
+Groupe: age.gr = 35-50  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      72      29.88           29.88     29.88          29.88
+         No     169      70.12          100.00     70.12         100.00
+       <NA>       0                                 0.00         100.00
+      Total     241     100.00          100.00    100.00         100.00
+
+Groupe: age.gr = 51-70  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      99      31.23           31.23     31.23          31.23
+         No     218      68.77          100.00     68.77         100.00
+       <NA>       0                                 0.00         100.00
+      Total     317     100.00          100.00    100.00         100.00
+
+Groupe: age.gr = 71 +  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      45      28.30           28.30     28.30          28.30
+         No     114      71.70          100.00     71.70         100.00
+       <NA>       0                                 0.00         100.00
+      Total     159     100.00          100.00    100.00         100.00
+
+Groupe: age.gr = (Missing)  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes       8      32.00           32.00     32.00          32.00
+         No      17      68.00          100.00     68.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total      25     100.00          100.00    100.00         100.00
+
+> print(tmp, file = "01-group_by_freq.html") 
+-- Switching method to 'browser'
+-- Output file written
+-- Output file appended
+
+> tmp %>% tb() 
+
+# A tibble: 15 x 7
+   value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34     Yes       74      5.74          5.74    5.74        5.74
+ 2 18-34     No       184     14.3          20      14.3        20   
+ 3 18-34     <NA>       0     NA            20       0          20   
+ 4 35-50     Yes       72      5.98         26.0     5.98       26.0 
+ 5 35-50     No       169     14.0          40      14.0        40   
+ 6 35-50     <NA>       0     NA            40       0          40   
+ 7 51-70     Yes       99      6.25         46.2     6.25       46.2 
+ 8 51-70     No       218     13.8          60      13.8        60   
+ 9 51-70     <NA>       0     NA            60       0          60   
+10 71 +      Yes       45      5.66         65.7     5.66       65.7 
+11 71 +      No       114     14.3          80      14.3        80   
+12 71 +      <NA>       0     NA            80       0          80   
+13 (Missing) Yes        8      6.4          86.4     6.4        86.4 
+14 (Missing) No        17     13.6         100      13.6       100   
+15 (Missing) <NA>       0     NA           100       0         100   
+
+> tobacco %>% descr() 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Statistiques descriptives  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    49.60    25.73           6.78        1.00
+         Écart-type    18.29     4.49          11.88        0.08
+                Min    18.00     8.83           0.00        0.86
+                 Q1    34.00    22.93           0.00        0.86
+            Médiane    50.00    25.62           0.00        1.04
+                 Q3    66.00    28.65          11.00        1.05
+                Max    80.00    39.44          40.00        1.06
+                ÉMA    23.72     4.18           0.00        0.01
+                ÉIQ    32.00     5.72          11.00        0.19
+                 CV     0.37     0.17           1.75        0.08
+          Asymétrie    -0.04     0.02           1.54       -1.04
+       ET-Asymétrie     0.08     0.08           0.08        0.08
+      Aplatissement    -1.26     0.26           0.90       -0.90
+          Nb.Valide   975.00   974.00         965.00     1000.00
+         Pct.Valide    97.50    97.40          96.50      100.00
+
+> tobacco %>% select(age, BMI, smoker) %>% descr(stats = "fivenum") 
+-- Non-numerical variable(s) ignored: smoker
+
+Statistiques descriptives  
+tobacco  
+N: 1000  
+
+                  age     BMI
+------------- ------- -------
+          Min   18.00    8.83
+           Q1   34.00   22.93
+      Médiane   50.00   25.62
+           Q3   66.00   28.65
+          Max   80.00   39.44
+
+> tobacco %>% filter(smoker == "Yes") %>% descr(stats = "common") 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Statistiques descriptives  
+tobacco  
+N: 298  
+
+                      age      BMI   cigs.per.day   samp.wgts
+---------------- -------- -------- -------------- -----------
+             Moy    49.76    25.64          22.49        1.00
+      Écart-type    18.75     4.25          10.69        0.08
+             Min    19.00     9.01           5.00        0.86
+         Médiane    50.00    25.70          22.00        1.04
+             Max    80.00    36.36          40.00        1.06
+       Nb.Valide   290.00   291.00         291.00      298.00
+      Pct.Valide    97.32    97.65          97.65      100.00
+
+> tobacco %>% group_by(smoker) %>% descr(stats = "common") %>% view() 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> tobacco %$% descr(age) 
+
+Statistiques descriptives  
+tobacco$age  
+N: 1000  
+
+                         age
+------------------- --------
+                Moy    49.60
+         Écart-type    18.29
+                Min    18.00
+                 Q1    34.00
+            Médiane    50.00
+                 Q3    66.00
+                Max    80.00
+                ÉMA    23.72
+                ÉIQ    32.00
+                 CV     0.37
+          Asymétrie    -0.04
+       ET-Asymétrie     0.08
+      Aplatissement    -1.26
+          Nb.Valide   975.00
+         Pct.Valide    97.50
+
+> tobacco %>% dfSummary() %>% view() 
+-- Output file written
+
+> tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary() 
+
+Tableau-synthèse  
+tobacco  
+Dimensions: 1000 x 4  
+Doublons: 2  
+
+-----------------------------------------------------------------------------------------------------------
+No   Variable    Stats / valeurs           Fréq. (% de valide)   Diagramme             Valide    Manquant  
+---- ----------- ------------------------- --------------------- --------------------- --------- ----------
+1    gender      1. F                      489 (50.0%)           IIIIIIIIII            978       22        
+     [factor]    2. M                      489 (50.0%)           IIIIIIIIII            (97.8%)   (2.2%)    
+
+2    age         Moy (é-t) : 49.6 (18.3)   63 valeurs uniques    .     .     . . . :   975       25        
+     [numeric]   min < med < max:                                : : : : : . : : : :   (97.5%)   (2.5%)    
+                 18 < 50 < 80                                    : : : : : : : : : :                       
+                 ÉIQ (CV) : 32 (0.4)                             : : : : : : : : : :                       
+                                                                 : : : : : : : : : :                       
+
+3    BMI         Moy (é-t) : 25.7 (4.5)    974 valeurs uniques             :           974       26        
+     [numeric]   min < med < max:                                        : : :         (97.4%)   (2.6%)    
+                 8.8 < 25.6 < 39.4                                       : : :                             
+                 ÉIQ (CV) : 5.7 (0.2)                                  : : : : :                           
+                                                                     . : : : : : .                         
+
+4    smoker      1. Yes                    298 (29.8%)           IIIII                 1000      0         
+     [factor]    2. No                     702 (70.2%)           IIIIIIIIIIIIII        (100%)    (0%)      
+-----------------------------------------------------------------------------------------------------------
+
+> tobacco$gender %<>% forcats::fct_explicit_na() 
+> (dfgr <- tobacco %>% group_by(gender) %>% dfSummary()) 
+
+Tableau-synthèse  
+tobacco  
+Groupe: gender = F  
+Dimensions: 489 x 9  
+Doublons: 0  
+
+----------------------------------------------------------------------------------------------------------------
+No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme              Valide     Manquant  
+---- -------------- ------------------------- --------------------- ---------------------- ---------- ----------
+1    gender         1. F                      489 (100.0%)          IIIIIIIIIIIIIIIIIIII   489        0         
+     [factor]       2. M                        0 (  0.0%)                                 (100%)     (0%)      
+                    3. (Missing)                0 (  0.0%)                                                      
+
+2    age            Moy (é-t) : 49.6 (18.3)   63 valeurs uniques    :     . . .   : . :    475        14        
+     [numeric]      min < med < max:                                : : : : : : : : : :    (97.14%)   (2.86%)   
+                    18 < 50 < 80                                    : : : : : : : : : :                         
+                    ÉIQ (CV) : 32 (0.4)                             : : : : : : : : : :                         
+                                                                    : : : : : : : : : :                         
+
+3    age.gr         1. 18-34                  123 (25.1%)           IIIII                  489        0         
+     [factor]       2. 35-50                  118 (24.1%)           IIII                   (100%)     (0%)      
+                    3. 51-70                  157 (32.1%)           IIIIII                                      
+                    4. 71 +                    77 (15.8%)           III                                         
+                    5. (Missing)               14 ( 2.9%)                                                       
+
+4    BMI            Moy (é-t) : 26.1 (4.9)    475 valeurs uniques           :              475        14        
+     [numeric]      min < med < max:                                      : :              (97.14%)   (2.86%)   
+                    9 < 25.9 < 39.4                                       : : .                                 
+                    ÉIQ (CV) : 6.5 (0.2)                                . : : :                                 
+                                                                        : : : : .                               
+
+5    smoker         1. Yes                    147 (30.1%)           IIIIII                 489        0         
+     [factor]       2. No                     342 (69.9%)           IIIIIIIIIIIII          (100%)     (0%)      
+
+6    cigs.per.day   Moy (é-t) : 6.9 (12)      37 valeurs uniques    :                      468        21        
+     [numeric]      min < med < max:                                :                      (95.71%)   (4.29%)   
+                    0 < 0 < 40                                      :                                           
+                    ÉIQ (CV) : 10.2 (1.8)                           :                                           
+                                                                    : . . .   . . .                             
+
+7    diseased       1. Yes                    111 (22.7%)           IIII                   489        0         
+     [factor]       2. No                     378 (77.3%)           IIIIIIIIIIIIIII        (100%)     (0%)      
+
+8    disease        1. Hypertension           18 (16.5%)            III                    109        380       
+     [character]    2. Cancer                 16 (14.7%)            II                     (22.29%)   (77.71%)  
+                    3. Cholesterol            10 ( 9.2%)            I                                           
+                    4. Heart                   9 ( 8.3%)            I                                           
+                    5. Pulmonary               9 ( 8.3%)            I                                           
+                    6. Diabetes                8 ( 7.3%)            I                                           
+                    7. Musculoskeletal         8 ( 7.3%)            I                                           
+                    8. Hypotension             7 ( 6.4%)            I                                           
+                    9. Neurological            7 ( 6.4%)            I                                           
+                    10. Vision                 6 ( 5.5%)            I                                           
+                    [ 3 autres ]              11 (10.1%)            II                                          
+
+9    samp.wgts      Moy (é-t) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  489        0         
+     [numeric]      min < med < max:          1.04!: 120 (24.5%)    IIII                   (100%)     (0%)      
+                    0.9 < 1 < 1.1             1.05!: 160 (32.7%)    IIIIII                                      
+                    ÉIQ (CV) : 0.2 (0.1)      1.06!:  78 (16.0%)    III                                         
+                                              ! arrondi                                                         
+----------------------------------------------------------------------------------------------------------------
+
+Groupe: gender = M  
+Dimensions: 489 x 9  
+Doublons: 2  
+
+----------------------------------------------------------------------------------------------------------------
+No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme              Valide     Manquant  
+---- -------------- ------------------------- --------------------- ---------------------- ---------- ----------
+1    gender         1. F                        0 (  0.0%)                                 489        0         
+     [factor]       2. M                      489 (100.0%)          IIIIIIIIIIIIIIIIIIII   (100%)     (0%)      
+                    3. (Missing)                0 (  0.0%)                                                      
+
+2    age            Moy (é-t) : 49.6 (18.3)   63 valeurs uniques          .     .   . :    478        11        
+     [numeric]      min < med < max:                                : : : : :   : : : :    (97.75%)   (2.25%)   
+                    18 < 49.5 < 80                                  : : : : : : : : : :                         
+                    ÉIQ (CV) : 32 (0.4)                             : : : : : : : : : :                         
+                                                                    : : : : : : : : : :                         
+
+3    age.gr         1. 18-34                  130 (26.6%)           IIIII                  489        0         
+     [factor]       2. 35-50                  118 (24.1%)           IIII                   (100%)     (0%)      
+                    3. 51-70                  151 (30.9%)           IIIIII                                      
+                    4. 71 +                    79 (16.2%)           III                                         
+                    5. (Missing)               11 ( 2.2%)                                                       
+
+4    BMI            Moy (é-t) : 25.3 (4)      477 valeurs uniques             : .          477        12        
+     [numeric]      min < med < max:                                          : :          (97.55%)   (2.45%)   
+                    8.8 < 25.1 < 36.8                                       : : : .                             
+                    ÉIQ (CV) : 5.4 (0.2)                                    : : : : .                           
+                                                                          : : : : : :                           
+
+5    smoker         1. Yes                    143 (29.2%)           IIIII                  489        0         
+     [factor]       2. No                     346 (70.8%)           IIIIIIIIIIIIII         (100%)     (0%)      
+
+6    cigs.per.day   Moy (é-t) : 6.7 (11.8)    36 valeurs uniques    :                      475        14        
+     [numeric]      min < med < max:                                :                      (97.14%)   (2.86%)   
+                    0 < 0 < 40                                      :                                           
+                    ÉIQ (CV) : 11 (1.8)                             :                                           
+                                                                    :   .   . . . .                             
+
+7    diseased       1. Yes                    110 (22.5%)           IIII                   489        0         
+     [factor]       2. No                     379 (77.5%)           IIIIIIIIIIIIIII        (100%)     (0%)      
+
+8    disease        1. Cancer                 18 (16.4%)            III                    110        379       
+     [character]    2. Hypertension           17 (15.5%)            III                    (22.49%)   (77.51%)  
+                    3. Cholesterol            11 (10.0%)            II                                          
+                    4. Heart                  11 (10.0%)            II                                          
+                    5. Pulmonary              11 (10.0%)            II                                          
+                    6. Musculoskeletal        10 ( 9.1%)            I                                           
+                    7. Hearing                 9 ( 8.2%)            I                                           
+                    8. Digestive               7 ( 6.4%)            I                                           
+                    9. Diabetes                5 ( 4.5%)                                                        
+                    10. Hypotension            4 ( 3.6%)                                                        
+                    [ 3 autres ]               7 ( 6.4%)            I                                           
+
+9    samp.wgts      Moy (é-t) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  489        0         
+     [numeric]      min < med < max:          1.04!: 124 (25.4%)    IIIII                  (100%)     (0%)      
+                    0.9 < 1 < 1.1             1.05!: 155 (31.7%)    IIIIII                                      
+                    ÉIQ (CV) : 0.2 (0.1)      1.06!:  79 (16.2%)    III                                         
+                                              ! arrondi                                                         
+----------------------------------------------------------------------------------------------------------------
+
+Groupe: gender = (Missing)  
+Dimensions: 22 x 9  
+Doublons: 0  
+
+----------------------------------------------------------------------------------------------------------------
+No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme              Valide     Manquant  
+---- -------------- ------------------------- --------------------- ---------------------- ---------- ----------
+1    gender         1. F                       0 (  0.0%)                                  22         0         
+     [factor]       2. M                       0 (  0.0%)                                  (100%)     (0%)      
+                    3. (Missing)              22 (100.0%)           IIIIIIIIIIIIIIIIIIII                        
+
+2    age            Moy (é-t) : 50.9 (18.2)   18 valeurs uniques            :              22         0         
+     [numeric]      min < med < max:                                  :     : :            (100%)     (0%)      
+                    19 < 55.5 < 80                                    : :   : : :                               
+                    ÉIQ (CV) : 27.2 (0.4)                             : : : : : :                               
+                                                                    : : : : : : :                               
+
+3    age.gr         1. 18-34                  5 (22.7%)             IIII                   22         0         
+     [factor]       2. 35-50                  5 (22.7%)             IIII                   (100%)     (0%)      
+                    3. 51-70                  9 (40.9%)             IIIIIIII                                    
+                    4. 71 +                   3 (13.6%)             II                                          
+                    5. (Missing)              0 ( 0.0%)                                                         
+
+4    BMI            Moy (é-t) : 26.9 (3.5)    22 valeurs uniques        :     :            22         0         
+     [numeric]      min < med < max:                                    : :   :            (100%)     (0%)      
+                    20.2 < 27.2 < 32.4                              :   : : : :                                 
+                    ÉIQ (CV) : 5.1 (0.1)                            :   : : : :                                 
+                                                                    : : : : : : :                               
+
+5    smoker         1. Yes                     8 (36.4%)            IIIIIII                22         0         
+     [factor]       2. No                     14 (63.6%)            IIIIIIIIIIII           (100%)     (0%)      
+
+6    cigs.per.day   Moy (é-t) : 6.1 (9.7)     0  : 14 (63.6%)       IIIIIIIIIIII           22         0         
+     [numeric]      min < med < max:          5  :  2 ( 9.1%)       I                      (100%)     (0%)      
+                    0 < 0 < 28                10 :  1 ( 4.5%)                                                   
+                    ÉIQ (CV) : 8.8 (1.6)      19 :  1 ( 4.5%)                                                   
+                                              21 :  2 ( 9.1%)       I                                           
+                                              25 :  1 ( 4.5%)                                                   
+                                              28 :  1 ( 4.5%)                                                   
+
+7    diseased       1. Yes                     3 (13.6%)            II                     22         0         
+     [factor]       2. No                     19 (86.4%)            IIIIIIIIIIIIIIIII      (100%)     (0%)      
+
+8    disease        1. Diabetes               1 (33.3%)             IIIIII                 3          19        
+     [character]    2. Hypertension           1 (33.3%)             IIIIII                 (13.64%)   (86.36%)  
+                    3. Musculoskeletal        1 (33.3%)             IIIIII                                      
+
+9    samp.wgts      Moy (é-t) : 1 (0.1)       0.86!: 5 (22.7%)      IIII                   22         0         
+     [numeric]      min < med < max:          1.04!: 5 (22.7%)      IIII                   (100%)     (0%)      
+                    0.9 < 1 < 1.1             1.05!: 9 (40.9%)      IIIIIIII                                    
+                    ÉIQ (CV) : 0 (0.1)        1.06!: 3 (13.6%)      II                                          
+                                              ! arrondi                                                         
+----------------------------------------------------------------------------------------------------------------
+
+> dfgr %>% view(file = "02-group_by_dfs.html") 
+-- Output file written
+-- Output file appended
+

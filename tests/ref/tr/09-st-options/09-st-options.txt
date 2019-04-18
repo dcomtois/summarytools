@@ -43,6 +43,9 @@ $freq.totals
 $freq.report.nas
 [1] TRUE
 
+$freq.ignore.threshold
+[1] 25
+
 $ctable.prop
 [1] "r"
 
@@ -133,6 +136,9 @@ $freq.totals
 
 $freq.report.nas
 [1] TRUE
+
+$freq.ignore.threshold
+[1] 25
 
 $ctable.prop
 [1] "r"
