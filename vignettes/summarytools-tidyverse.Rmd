@@ -82,7 +82,9 @@ freq(tobacco$smoker)
 
 The pipes way:
 ```{r}
-tobacco %$% freq(smoker)
+tobacco %>% freq(smoker)
+# Also possible:
+# tobaaco %$% freq(smoker)
 ```
 
 To obtain grouped statisitics the traditionnal way, we use the `stby()`
@@ -91,34 +93,51 @@ function, which works exactly like base R's `by()`:
 stby(data = tobacco$smoker, INDICES = tobacco$gender, FUN = freq)
 ```
 
-The same can be achieved using `dplyr::group_by`, but to avoid a 
-warning about implicit `NA`'s, we them explicit with
-`forcats::fct_explicit_na()`. Here, we cannot use the `%$%` operator;
-to preserve the grouping information, we need to feed `freq()` two 
-variables: the grouping variable and the analysis variable. We do so
-by using `dplyr::select()`, making the syntax a bit cumbersome; some
-better solution might come in the future. 
+The same can be achieved using `dplyr::group_by`. To avoid a warning about
+implicit `NA`'s on the grouping variable, we use `forcats::fct_explicit_na()`
+to make them explicit.
 ```{r}
 library(dplyr)
 library(forcats)
 tobacco %>% 
   group_by(gender = fct_explicit_na(gender)) %>%
-  select(gender, smoker) %>%
   freq(totals = FALSE)
 ```
 
-The `totals = FALSE` argument was added to stay in the spirit of "tidy
-data". 
+The `totals = FALSE` argument was added since it is in the spirit of tidy
+data.
 
 #### Using parameters to refine results
-Here is an example that illustrates the use of parameters:
-```{r}
+Here is an example that illustrates the use of parameters; we want the simplest
+table showing the 5 most common values for the "disease" variable:
+```{r, eval=FALSE}
 freq(tobacco$disease, order = "freq", rows = 1:5, 
      report.nas = FALSE, cumul = FALSE)
 ```
 
+... the same using pipes:
+```{r}
+tobacco %>% freq(disease, order = "freq", rows = 1:5, 
+                 report.nas = FALSE, cumul = FALSE)
+```
 
+### Get Really Tidy
+The recently introduced function `tb()` takes summarytools objects and turns
+them into _real_ tidy tables. The letters "tb" refer to the word / function
+_tibble_. It works with `freq()` and `descr()` only, because the structure of
+`ctable()` and `dfSummary()` is not compatible with the concept of tidy data.
 
+Here is what a tidied `freq()` table looks like:
+```{r}
+tobacco %>% freq(smoker) %>% tbl()
+```
+
+When one or more grouping variables are added, we have the following results:
+```{r}
+tobacco$gender %<>% forcats::fct_explicit_na()
+tobacco$age.gr %<>% forcats::fct_explicit_na()
+tobacco %>% group_by(gender, age.gr) %>% freq(smoker) %>% tbl()
+```
 
 
 Following the same logic as in previous documents I've written about 
