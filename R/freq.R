@@ -136,7 +136,7 @@ freq <- function(x,
 
     if ("var" %in% names(match.call())) {
       var <- x[[as.list(match.call()[-1])$var]]
-      varname <- deparse(substitute(.var))
+      varname <- deparse(substitute(var))
     } else {
       if (ncol(x) > ncol(group_keys(x)) + 1) {
         stop("when using group_by() with freq(), only one categorical variable ",
@@ -209,10 +209,10 @@ freq <- function(x,
     return(outlist)
   }
   
-  # When x is a dataframe and .var is not provided, we make recursive calls
+  # When x is a dataframe and var is not provided, we make recursive calls
   # to freq() with each variable
   else if (is.data.frame(x) && ncol(x) > 1 && 
-           !".var" %in% names(match.call())) {
+           !"var" %in% names(match.call())) {
     
     # Get information about x from parsing function
     parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),

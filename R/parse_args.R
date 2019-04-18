@@ -472,8 +472,8 @@ parse_args <- function(sys_calls,
         if (grepl(tmp_df_name, obj_name)) {
           upd_output("df_name", tmp_df_name)
         }
-        if (".var" %in% names(calls$fun)) {
-          upd_output("var_name", deparse(calls$fun$.var))
+        if ("var" %in% names(calls$fun)) {
+          upd_output("var_name", deparse(calls$fun$var))
         }
       }
     }
@@ -578,11 +578,11 @@ parse_args <- function(sys_calls,
       }
     } else if (is.atomic(obj)) {
       if (length(calls$fun[[var]]) == 1) {
-        if (all(c("x", ".var") %in% names(calls[["fun"]]))) {
+        if (all(c("x", "var") %in% names(calls[["fun"]]))) {
           upd_output("df_name", deparse(calls[["fun"]]$x))
           try(upd_output("df_label", label(eval(calls[["fun"]]$x))),
               silent = TRUE)
-          upd_output("var_name", deparse(calls[["fun"]]$.var))
+          upd_output("var_name", deparse(calls[["fun"]]$var))
           upd_output("var_label", label(obj))
         } else {
           upd_output("var_name",  deparse(calls$fun[[var]]))
