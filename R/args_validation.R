@@ -145,17 +145,16 @@ check_arguments <- function(mc, dotArgs) {
             (sign(pf$rows[1]) == -1 && 
              length(pf$rows) >= n_distinct(pf$x, na.rm = TRUE))) {
             errmsg %+=% "Invalid 'rows' argument"
-        } else if (max(abs(pf$rows)) >= n_distinct(pf$x, na.rm = TRUE)) {
+        } else if (max(abs(pf$rows)) > n_distinct(pf$x, na.rm = TRUE)) {
           nmax <- n_distinct(pf$x, na.rm = TRUE)
-          rows <- pf$rows[-which(abs(pf$rows) > nmax)]
-          if (length(rows) > 0) {
+          wrong_ind <- which(abs(pf$rows) > nmax)
+          if (length(wrong_ind)) {
             message("There are only ", nmax, " rows to show; higher ",
                     "numbers will be ignored")
-            assign("rows", rows, envir = parent.frame())
-          } else {
-            errmsg %+=% "Invalid 'rows' argument"
+            rows <- pf$rows[-wrong_ind]
           }
-        }
+          assign("rows", rows, envir = parent.frame())
+        } 
       }
     }
   }

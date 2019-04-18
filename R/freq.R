@@ -368,7 +368,7 @@ freq <- function(x,
     freq_table <- c(freq_table[rr], tail(freq_table, 1))
     
   } else if (length(rows) > 0) {
-    if (is.character(rows)) { 
+    if (is.character(rows)) {
       if (length(rows) < n_distinct(x)) {
         freq_table <- 
           c(freq_table[rows], 
@@ -379,7 +379,7 @@ freq <- function(x,
       }
     } else if (is.numeric(rows)) {
       if (sign(rows[1]) == 1) {
-        if (length(rows) < n_distinct(x)) {
+        if (length(rows) < n_distinct(x, na.rm = TRUE)) {
           freq_table <- 
             c(freq_table[rows], 
               "(Other)" = sum(freq_table[setdiff(seq_along(freq_table[-1]), 
