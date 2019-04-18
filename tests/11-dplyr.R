@@ -5,6 +5,16 @@ library(magrittr)
 library(dplyr)
 data(tobacco)
 tobacco %>% select(age.gr, smoker) %>% freq() %>% view()
+tobacco %>% group_by(age.gr = fct_explicit_na(age.gr), gender = fct_explicit_na(gender)) %>% freq(smoker) %>% view()
+tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(smoker) %>% tb()
+tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(.fct_explicit_na(smoker)) %>% tb()
+
+tobacco %>% freq(smoker, plain.ascii = FALSE)
+tobacco %$% freq(smoker, plain.ascii = FALSE)
+
+freq(tobacco$smoker)
+
+
 
 tobacco$age.gr %<>% forcats::fct_explicit_na()
 (tmp <- tobacco %>% group_by(age.gr) %>% select(age.gr, smoker) %>% freq())
