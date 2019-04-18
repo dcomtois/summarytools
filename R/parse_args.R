@@ -465,6 +465,18 @@ parse_args <- function(sys_calls,
     obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
     obj <- eval(sys_frames[[pos$pipe]][[obj_name]], 
                 envir = sys_frames[[pos$pipe]]$parent)
+    if (is.null(obj) && "fun" %in% names(calls)) {
+      calls$fun <- standardise_call(calls$fun)
+      if (deparse(calls$fun$x) == ".") {
+        tmp_df_name <- deparse(get_lhs(calls$pipe))
+        if (grepl(tmp_df_name, obj_name)) {
+          upd_output("df_name", tmp_df_name)
+        }
+        if (".var" %in% names(calls$fun)) {
+          upd_output("var_name", deparse(calls$fun$.var))
+        }
+      }
+    }
     #if (is.null(obj)) {
     #  # df may be an example data frame, in which case we get it this way:
     #  obj <- try(get(x = obj_name), silent = TRUE)
@@ -501,7 +513,7 @@ parse_args <- function(sys_calls,
           upd_output("var_label", NA_character_)
         }
       }
-     } else if (is.atomic(obj)) { #} else if (!identical(NA, obj) && is.atomic(obj)) {
+     } else if (is.atomic(obj) && !is.null(obj)) {
       if(length(calls$pipe$lhs) == 1) {
         upd_output("var_name", obj_name)
         upd_output("var_label", label(obj))
@@ -566,10 +578,18 @@ parse_args <- function(sys_calls,
       }
     } else if (is.atomic(obj)) {
       if (length(calls$fun[[var]]) == 1) {
-        upd_output("var_name",  deparse(calls$fun[[var]]))
-        upd_output("var_label", label(obj))
-        upd_output("df_name",   NA_character_)
-        upd_output("df_label",  NA_character_)
+        if (all(c("x", ".var") %in% names(calls[["fun"]]))) {
+          upd_output("df_name", deparse(calls[["fun"]]$x))
+          try(upd_output("df_label", label(eval(calls[["fun"]]$x))),
+              silent = TRUE)
+          upd_output("var_name", deparse(calls[["fun"]]$.var))
+          upd_output("var_label", label(obj))
+        } else {
+          upd_output("var_name",  deparse(calls$fun[[var]]))
+          upd_output("var_label", label(obj))
+          upd_output("df_name",   NA_character_)
+          upd_output("df_label",  NA_character_)
+        }
       } else {
         parse_data_str(deparse(calls$fun[[var]]))
       }
