@@ -2152,7 +2152,7 @@ Group: gender = M, age.gr = (Missing)
 > (ff5 <- tobacco %>% group_by(gender, age.gr) %>% select(gender, age.gr, smoker) %>% freq()) 
 
 Frequencies  
-smoker  
+tobacco$smoker  
 Type: Factor  
 Group: gender = F, age.gr = 18-34  
 

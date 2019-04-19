@@ -7,7 +7,8 @@ if (Sys.info()[["sysname"]] == "Windows") {
 }
 
 (date_dir <- paste(orig_dir, "tests/output", 
-                   format(Sys.time(), format = "%Y-%m-%d-%Hh%M"),
+                   paste(format(Sys.time(), format = "%Y-%m-%d-%Hh%M"),
+                         git2r::repository_head()$name, sep = "-"),
                    sep = "/"))
 
 save(date_dir, file = paste0(orig_dir, "/tests/last_date_dir.Rdata"))

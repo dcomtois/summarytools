@@ -2,6 +2,7 @@
 # ------------------------------ parse_args.R ----------------------------------  
 
 > library(dplyr) 
+> library(magrittr) 
 > data(tobacco) 
 > label(tobacco) <- "Tobacco Study" 
 > label(tobacco$smoker) <- "Smoking Status" 
@@ -230,7 +231,6 @@ Label: Tobacco Study
 
 # pipe ------------------------------------------------------------------------- 
 
-> library(magrittr) 
 > tobacco$smoker %>% freq()      
 
 Frequencies  
