@@ -135,7 +135,7 @@ freq <- function(x,
   if (inherits(x, "grouped_df")) {
     
     if ("var" %in% names(match.call())) {
-      var <- x[[as.list(match.call()[-1])$var]]
+      var_obj <- x[[as.list(match.call()[-1])$var]]
       varname <- deparse(substitute(var))
     } else {
     if (ncol(x) > ncol(group_keys(x)) + 1) {
@@ -146,7 +146,7 @@ freq <- function(x,
         stop("the number of variables passed to freq() must equal the number ",
              "of grouping variables + 1")
     } 
-      var <- NA
+      var_obj <- NA
       varname <- character()
     }
     
@@ -159,11 +159,11 @@ freq <- function(x,
     outlist  <- list()
     gr_ks    <- map_groups(group_keys(x))
     gr_inds  <- attr(x, "groups")$.rows
-    ana_var  <- ifelse(length(varname), varname, 
-                       setdiff(colnames(x), group_vars(x)))
+    #ana_var  <- ifelse("var" %in% names(match.call()), var, 
+    #                   setdiff(colnames(x), group_vars(x)))
     
     for (g in seq_along(gr_ks)) {
-      outlist[[g]] <- freq(x               = as_tibble(x[gr_inds[[g]], ana_var]),
+      outlist[[g]] <- freq(x               = var_obj[gr_inds[[g]]],
                            round.digits    = round.digits,
                            order           = order,
                            style           = style,
@@ -189,10 +189,10 @@ freq <- function(x,
         attr(outlist[[g]], "data_info")$Data.frame.label <- label(x)
       }
       
-      attr(outlist[[g]], "data_info")$Variable <- ana_var
+      attr(outlist[[g]], "data_info")$Variable <- varname
       
-      if (!is.na(label(x[[ana_var]]))) {
-        attr(outlist[[g]], "data_info")$Variable.label <- label(x[[ana_var]])
+      if (!is.na(label(x[[varname]]))) {
+        attr(outlist[[g]], "data_info")$Variable.label <- label(x[[varname]])
       }
       
       attr(outlist[[g]], "data_info")$by_var   <- group_vars(x)
