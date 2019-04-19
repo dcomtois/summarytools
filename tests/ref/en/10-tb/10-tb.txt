@@ -40,6 +40,14 @@ Type: Factor
 2 M        489        50           100   48.9         97.8
 3 <NA>      22        NA            NA    2.20       100  
 
+> fr1 %>% tb(na.rm = TRUE) 
+
+# A tibble: 2 x 4
+  gender  freq   pct pct_cum
+  <fct>  <dbl> <dbl>   <dbl>
+1 F        489    50      50
+2 M        489    50     100
+
 > fr1 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T) 
 
      freq pct_valid   pct_tot 
@@ -60,7 +68,7 @@ Type: Factor
           M    489    50.00   100.00
       Total    978   100.00   100.00
 
-> fr2 %>% tb() 
+> fr2 %>% tb(na.rm = TRUE) 
 
 # A tibble: 2 x 4
   gender  freq   pct pct_cum
@@ -98,6 +106,14 @@ Weights: samp.wgts
 1 F      489.       50.0          50.0   48.9         48.9
 2 M      489.       50.0         100     48.9         97.8
 3 <NA>    22.2      NA            NA      2.22       100  
+
+> fr3 %>% tb(na.rm = TRUE) 
+
+# A tibble: 2 x 4
+  gender  freq   pct pct_cum
+  <fct>  <dbl> <dbl>   <dbl>
+1 F       489.  50.0    50.0
+2 M       489.  50.0   100  
 
 > fr3 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T) 
 

@@ -1,5 +1,6 @@
 # ------------------------------ parse_args.R ----------------------------------
 library(dplyr)
+library(magrittr)
 data(tobacco)
 label(tobacco) <- "Tobacco Study"
 label(tobacco$smoker) <- "Smoking Status"
@@ -29,7 +30,6 @@ with(tobacco, descr(age))
 with(tobacco, ctable(smoker, diseased))
 
 # pipe
-library(magrittr)
 tobacco$smoker %>% freq()     
 tobacco["smoker"] %>% freq()  
 tobacco[["smoker"]] %>% freq()

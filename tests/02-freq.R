@@ -184,7 +184,7 @@ print(ft, display.labels = F, display.type = F)
 
 
 # lapply()
-st_options(style = "rmarkdown")
+st_options(style = "simple")
 tobacco_subset <- tobacco[,c(3,5,6)]
 lapply(tobacco_subset, freq, style = "rmarkdown")
 
