@@ -273,7 +273,7 @@ parse_args <- function(sys_calls,
   # When pipe is used, this recursive function gets the "deepest" lhs
   # that constitues something other than a function call
   get_lhs <- function(x) {
-    if ("lhs" %in% names(x) && is.call(x$lhs)) {
+    if (!is.null(names(x)) && "lhs" %in% names(x) && is.call(x$lhs)) {
       x$lhs <- pryr::standardise_call(x$lhs)
       return(get_lhs(x$lhs))
     } else {
