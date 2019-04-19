@@ -311,18 +311,7 @@ check_arguments <- function(mc, dotArgs) {
     }
     
   }
-  
-  # Order the messages according to arguments order
-  # ord <- numeric()
-  # for(a in names(mc)[-1]) {
-  #   ord %+=% grep(pattern = a,
-  #                 x = sub(pattern = "^'(.+?)'.+$", 
-  #                         replacement = "\\1", x = errmsg, 
-  #                         perl = TRUE), 
-  #                 fixed = TRUE)
-  # }
-  #
-  # return(errmsg[ord])
+
   return(errmsg)
 }
 
