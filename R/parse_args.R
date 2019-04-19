@@ -276,8 +276,10 @@ parse_args <- function(sys_calls,
     if (!is.null(names(x)) && "lhs" %in% names(x) && is.call(x$lhs)) {
       x$lhs <- pryr::standardise_call(x$lhs)
       return(get_lhs(x$lhs))
-    } else {
+    } else if (!is.null(names(x)) && "lhs" %in% names(x)) {
       return(x$lhs)
+    } else {
+      return(x)
     }
   }
   
@@ -461,65 +463,27 @@ parse_args <- function(sys_calls,
   # in the call stack: %>% -----------------------------------------------------
   if ("pipe" %in% names(calls)) {
     calls$pipe <- standardise_call(calls$pipe)
-    obj_name <- deparse(calls$pipe$lhs)
-    obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
-    obj <- eval(sys_frames[[pos$pipe]][[obj_name]], 
-                envir = sys_frames[[pos$pipe]]$parent)
-    if (is.null(obj) && "fun" %in% names(calls)) {
-      calls$fun <- standardise_call(calls$fun)
-      if (deparse(calls$fun$x) == ".") {
-        tmp_df_name <- deparse(get_lhs(calls$pipe))
-        if (grepl(tmp_df_name, obj_name)) {
-          upd_output("df_name", tmp_df_name)
-        }
-        if ("var" %in% names(calls$fun)) {
-          upd_output("var_name", deparse(calls$fun$var))
-        }
-      }
-    }
-    #if (is.null(obj)) {
-    #  # df may be an example data frame, in which case we get it this way:
-    #  obj <- try(get(x = obj_name), silent = TRUE)
-    #  if (inherits(obj, "try-error")) {
-    #    obj_name <- try(get_lhs(calls$pipe), silent = TRUE)
-    #    if (!inherits(obj_name, "try-error")) {
-    #      obj <- get(deparse(obj_name))
-    #    }
-    #  }
-    #}
+    # obj_name <- deparse(calls$pipe$lhs)
+    # obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
+    obj_expr <- get_lhs(calls$pipe)
+    obj_name <- deparse(obj_expr)
+    obj_str  <- as.character(obj_expr)
+    obj      <- eval(obj_expr, 
+                     envir = sys_frames[[pos$pipe]]$parent)
     if (is.data.frame(obj)) {
-      if (length(calls$pipe$lhs) == 1) {
-        upd_output("df_name", obj_name)
-      } else {
-        calls$pipe$lhs <- standardise_call(calls$pipe$lhs)
-        tmp_name <- get_lhs(calls$pipe$lhs)
-        if (length(tmp_name) == 1) {
-          upd_output("df_name", deparse(tmp_name))
-        } else if (is.null(tmp_name)) {
-          upd_output("df_name", setdiff(as.character(calls$pipe$lhs), oper)[1])
-        }
-      }
       upd_output("df_label", label(obj))
-      v_name <- setdiff(as.character(calls$pipe$rhs), c(caller, oper))
-      if (length(v_name) == 1 && v_name %in% colnames(obj)) {
-        upd_output("var_name", v_name)
-        upd_output("var_label", label(obj[[v_name]]))
-      } else {
-        if (ncol(obj) == 1) {
-          upd_output("var_name", names(obj))
-          upd_output("var_label", label(obj[[1]]))
-        } else {
-          upd_output("var_name", NA_character_)
-          upd_output("var_label", NA_character_)
-        }
+      if (ncol(obj) == 1) {
+        upd_output("var_name", names(obj))
+        upd_output("var_label", label(obj[[1]]))
       }
-     } else if (is.atomic(obj) && !is.null(obj)) {
-      if(length(calls$pipe$lhs) == 1) {
-        upd_output("var_name", obj_name)
-        upd_output("var_label", label(obj))
-      } else {
-        parse_data_str(obj_name)
+      if (length(setdiff(obj_str, c(caller, oper))) == 1) {
+        upd_output("df_name", setdiff(obj_str, c(caller, oper)))
+      } else if (length(setdiff(obj_str, c(caller, oper))) == 2) {
+        upd_output("df_name", setdiff(obj_str, oper)[1])
+        upd_output("var_name", setdiff(obj_str, oper)[2])
       }
+    } else {
+      parse_data_str(obj_name)
     }
     if (isTRUE(do_return)) {
       return(output)
