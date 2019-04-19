@@ -3,23 +3,28 @@
 #' Make a tidy dataset out of freq() or descr() outputs
 #'
 #' @param x a freq() or descr() output object
-#' @param order Integer. Useful for grouped results (produced with `stby()`)
-#'  only. When \code{1} (default), the levels of the grouping variable are used 
-#'  to sort the table, followed by the values of the other grouping variables if
-#'  any, and variable names for `descr()`). When \code{2}, the order of the
-#'  columns is reversed. In `freq()` tables, the row for \code{NA} counts will 
-#'  always appear last for each group.
+#' @param order Integer. Useful for grouped results (produced with 
+#'  \code{\link{stby}} only. When \code{1} (default), the levels of the 
+#'  grouping variable are used to sort the table, followed by the values of 
+#'  the other grouping variables (if any), and either variable names
+#'  (for \code{\link{descr}} objects). When \dQuote{order} = \code{2}, the same 
+#'  columns are used for sorting the output table, but starting from the last
+#'  grouping variable up to the first.
+#' @param na.rm Logical. For \code{\link{freq}} objects, remove \code{<NA>} rows
+#' (or \code{(Missing)} rows if \code{NA} values were made explicit with 
+#' \code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}} 
+#' objects.
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_rows bind_cols
 #' @export
-tb <- function(x, order = 1) {
+tb <- function(x, order = 1, na.rm = FALSE) {
   
   if (inherits(x, "stby")) {
     
-    grp_stats <- lapply(x, tb)
+    grp_stats <- lapply(x, tb, na.rm = na.rm)
     
     if ("groups" %in% names(attributes(x))) {
       left_part <- as_tibble(merge(grp_stats[[1]][,1],
@@ -89,7 +94,7 @@ tb <- function(x, order = 1) {
     output <- output[1:(nrow(output) - 1), ]
 
     # remove na info when appropriate     
-    if (!isTRUE(attr(x, "format_info")[["report.nas"]])) {
+    if (!isTRUE(attr(x, "format_info")[["report.nas"]]) || isTRUE(na.rm)) {
       output <- output[1:(nrow(output) - 1), 
                        -grep("^pct_(tot|tot_cum)$", names(output))]
       names(output)[3:4] <- c("pct", "pct_cum")
