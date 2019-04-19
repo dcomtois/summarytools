@@ -530,27 +530,46 @@ parse_args <- function(sys_calls,
       
   if ("fun" %in% names(calls)) {
     calls$fun <- standardise_call(calls$fun)
-    obj <- sys_frames[[pos$fun]][[var]]
-    if (is.data.frame(obj)) {
+    obj2 <- sys_frames[[pos$fun]][[var]]
+    if (is.data.frame(obj2)) {
       if (length(calls$fun[[var]]) == 1) {
         upd_output("df_name",   deparse(calls$fun[[var]]))
-        upd_output("df_label",  label(obj))
+        upd_output("df_label",  label(obj2))
         upd_output("var_name",  NA_character_)
         upd_output("var_label", NA_character_)
       } else {
         parse_data_str(deparse(calls$fun[[var]]))
       }
-    } else if (is.atomic(obj)) {
+    } else if (is.atomic(obj2)) {
       if (length(calls$fun[[var]]) == 1) {
         if (all(c("x", "var") %in% names(calls[["fun"]]))) {
-          upd_output("df_name", deparse(calls[["fun"]]$x))
+          if (deparse(calls[["fun"]]$x) != ".") {
+            upd_output("df_name", deparse(calls[["fun"]]$x))
+          }
           try(upd_output("df_label", label(eval(calls[["fun"]]$x))),
               silent = TRUE)
-          upd_output("var_name", deparse(calls[["fun"]]$var))
-          upd_output("var_label", label(obj))
+          if (length(calls[["fun"]]$var) == 1) {
+            upd_output("var_name", deparse(calls[["fun"]]$var))
+            upd_output("var_label", label(obj2))
+          } else {
+            if (exists("obj") && is.data.frame(obj)) {
+              v_ind <-
+                which(as.character(calls[["fun"]]$var) %in% colnames(obj))
+              if (length(v_ind) == 1) {
+                upd_output("var_name", as.character(calls[["fun"]]$var)[v_ind])
+              } else {
+                if (grepl(".+\\(.+\\)", deparse(calls[["fun"]]$var))) {
+                  upd_output("var_name", sub("^.+\\((.*?)\\)+$", "\\1", 
+                                             deparse(calls[["fun"]]$var)))
+                } else {
+                  upd_outut("var_name", NA_character_)
+                }
+              }
+            }
+          }
         } else {
           upd_output("var_name",  deparse(calls$fun[[var]]))
-          upd_output("var_label", label(obj))
+          upd_output("var_label", label(obj2))
           upd_output("df_name",   NA_character_)
           upd_output("df_label",  NA_character_)
         }
@@ -558,8 +577,15 @@ parse_args <- function(sys_calls,
         parse_data_str(deparse(calls$fun[[var]]))
       }
     }
-    if (isTRUE(do_return)) {
-      return(output)
-    }
   }
+  
+  empty_elements <- as.numeric(
+    which(vapply(output, function(x) {identical(x, NA_character_) || 
+        length(x) == 0}, TRUE))
+  )
+  
+  if (length(empty_elements) > 0) {
+    output <- output[-empty_elements]
+  }
+  return(output)
 }
