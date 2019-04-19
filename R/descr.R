@@ -124,9 +124,7 @@ descr <- function(x,
       }
     } else {
       var_obj  <- x[,setdiff(colnames(x), group_vars(x))]
-      varnames <- setdiff(colnames(x), group_vars(x))
     }
-
     
     parse_info <- try(
       parse_args(sys.calls(), sys.frames(), match.call(),
@@ -139,7 +137,7 @@ descr <- function(x,
     gr_inds  <- attr(x, "groups")$.rows
     
     for (g in seq_along(gr_ks)) {
-      outlist[[g]] <- descr(x               = as_tibble(var_obj[gr_inds[[g]], ]),
+      outlist[[g]] <- descr(x               = as_tibble(var_obj)[gr_inds[[g]], ],
                             stats           = stats,
                             na.rm           = na.rm,
                             round.digits    = round.digits,
@@ -159,36 +157,64 @@ descr <- function(x,
           attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
         if (!is.null(parse_info$df_label))
           attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
-        if (!is.null(parse_info$var_name))
+        if (!is.null(parse_info$var_name)) {
           attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
+        } else if (exists("varname")) {
+          attr(outlist[[g]], "data_info")$Variable <- varname
+        }
         if (!is.null(parse_info$var_label))
           attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
       }
+      
       attr(outlist[[g]], "data_info")$by_var <- 
         setdiff(colnames(attr(x, "groups")), ".rows")
+      
       attr(outlist[[g]], "data_info")$Group    <- gr_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
       attr(outlist[[g]], "data_info")$by_last  <- g == length(gr_ks)
     }
     
-    names(outlist) <- gr_ks
+    if (length(group_vars(x)) == 1 && is.null(dim(var_obj))) {
+      names(outlist) <- 
+        sub(paste(group_vars(x), "= "), "", gr_ks)
+    } else {
+      names(outlist) <- gr_ks
+    }
     class(outlist) <- c("stby")
     attr(outlist, "groups") <- group_keys(x)
     return(outlist)
   }
   
-  # Validate arguments ---------------------------------------------------------
+  # When var is provided, we all other variables
+  # variables in the analysis
+  if (is.data.frame(x) && ncol(x) > 1 && "var" %in% names(match.call())) {
+    
+    # var might contain a function call -- such as df %>% descr(na.omit(var1))
+    if (inherits(as.list(match.call()[-1])$var, "call")) {
+      x_obj   <- eval(as.list(match.call()[-1])$var, envir = x)
+      varname <- intersect(colnames(x),
+                           as.character(as.list(match.call()[-1])$var))
+    } else {
+      x_obj   <- x[[as.list(match.call()[-1])$var]]
+      varname <- deparse(substitute(var))
+    }
+  } else {
+    x_obj    <- x
+    varname  <- colnames(x)
+  }
+  
+  # Validate arguments -------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
   
-  if (is.atomic(x) && !is.numeric(x)) {
+  if (is.atomic(x_obj) && !is.numeric(x_obj)) {
     errmsg %+=% "'x' must be numeric"
   }
   
-  # make x a tibble
-  if (!inherits(x, "tbl")) {
-    x.df <- as_tibble(x)
+  # make x_obj a tibble
+  if (!inherits(x_obj, "tbl")) {
+    x.df <- as_tibble(x_obj)
   } else {
-    x.df <- x
+    x.df <- x_obj
   }
   
   # Get variable label
@@ -209,7 +235,7 @@ descr <- function(x,
              "n.valid", "pct.valid")
   )
   
-  if (identical(stats,"all")) {
+  if (identical(stats, "all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
   } else if (identical(stats, "fivenum")) {
     if (!identical(weights, NA)) {
@@ -256,7 +282,11 @@ descr <- function(x,
   }
 
   if (!"var_name" %in% names(parse_info)) {
-    parse_info$var_name <- colnames(x.df)
+    if (exists("varname")) {
+      parse_info$var_name <- varname
+    } else {
+      parse_info$var_name <- colnames(x.df)
+    }
   }
   
   # Identify and exclude non-numerical columns from x
@@ -293,7 +323,7 @@ descr <- function(x,
                         n.valid = rapportools::nvalid,
                         pct.valid = -999)
     
-    summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]  
+    summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]
 
     if (ncol(x.df) > 1) {
       results <- suppressWarnings(
@@ -466,7 +496,7 @@ descr <- function(x,
   }
   
   # Set class/attributes
-  class(output) <- c("summarytools", class(output))
+  class(output)              <- c("summarytools", class(output))
   attr(output, "st_type")    <- "descr"
   attr(output, "date")       <- Sys.Date()
   attr(output, "fn_call")    <- match.call()

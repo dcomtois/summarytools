@@ -31,6 +31,10 @@ tb <- function(x, order = 1, na.rm = FALSE) {
       left_part <- as_tibble(merge(grp_stats[[1]][,1],
                                    attr(x, "groups"),
                                    all = TRUE)[,-1])
+      if (identical(colnames(left_part), "value")) {
+        # for special case of descr
+        colnames(left_part) <- colnames(attr(x, "group"))
+      }
       grp_values <- attr(x, "groups")
     } else {
       null_grs     <- which(vapply(x, is.null, TRUE))
@@ -47,8 +51,12 @@ tb <- function(x, order = 1, na.rm = FALSE) {
                                    grp_values, all = TRUE))[,-1]
     }
     
-    nb_gr_var <- ncol(left_part)
-    output    <- bind_cols(left_part, bind_rows(grp_stats))
+    nb_gr_var  <- ncol(left_part)
+    right_part <- bind_rows(grp_stats)
+    if (all(right_part$variable == "value") && length(names(grp_values)) == 1) {
+      right_part$variable <- attr(x[[1]], "data_info")$Variable
+    }
+    output     <- bind_cols(left_part, right_part)
     
     if (identical(order, 2)) {
       output <- output[do.call(what = "order", 

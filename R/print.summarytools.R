@@ -2000,15 +2000,15 @@ build_heading_html <- function(format_info, data_info, method) {
     
     if ("by_var_special" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- HTML(paste0("<h4>", conv_non_ascii(data_info$Variable),
-                             conv_non_ascii(trs("by")),
-                             conv_non_ascii(data_info$by_var_special),
-                             "</h4>"))
+        head2 <- HTML(paste("<h4>", conv_non_ascii(data_info$Variable),
+                            conv_non_ascii(trs("by")),
+                            conv_non_ascii(data_info$by_var_special),
+                            "</h4>"))
       } else {
-        head2 <- HTML(paste0("<strong>", conv_non_ascii(data_info$Variable),
-                             "</strong> ", conv_non_ascii(trs("by")), " <strong>",
-                             conv_non_ascii(data_info$by_var_special),
-                             "</strong><br/>"))
+        head2 <- HTML(paste("<strong>", conv_non_ascii(data_info$Variable),
+                            "</strong>", conv_non_ascii(trs("by")), "<strong>",
+                            conv_non_ascii(data_info$by_var_special),
+                            "</strong><br/>"))
       } 
       
       head3 <- append_items(list(c(Data.frame     = trs("data.frame")),
