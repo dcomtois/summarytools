@@ -31,8 +31,11 @@
 #' @keywords utilities
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-st_css <- function(main = TRUE, global = FALSE, bootstrap = FALSE, 
-                   style.tag = TRUE, ...) {
+st_css <- function(main = TRUE,
+                   global = FALSE,
+                   bootstrap = FALSE, 
+                   style.tag = TRUE,
+                   ...) {
 
   output <- character()
   

@@ -429,6 +429,305 @@ Group: age.gr = 71 +
       975       100       100 
 
 
+# Freq with grouped results, freq sorting (+) ---------------------------------- 
+
+> (fgr5 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq")) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+         No    173     71.49          71.49     67.05          67.05
+        Yes     69     28.51         100.00     26.74          93.80
+       <NA>     16                               6.20         100.00
+      Total    258    100.00         100.00    100.00         100.00
+
+Group: age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+         No    163     71.18          71.18     67.63          67.63
+        Yes     66     28.82         100.00     27.39          95.02
+       <NA>     12                               4.98         100.00
+      Total    241    100.00         100.00    100.00         100.00
+
+Group: age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+         No    208     67.75          67.75     65.62          65.62
+        Yes     99     32.25         100.00     31.23          96.85
+       <NA>     10                               3.15         100.00
+      Total    317    100.00         100.00    100.00         100.00
+
+Group: age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+         No    106     71.14          71.14     66.67          66.67
+        Yes     43     28.86         100.00     27.04          93.71
+       <NA>     10                               6.29         100.00
+      Total    159    100.00         100.00    100.00         100.00
+
+> fgr5 %>% tb() 
+
+# A tibble: 12 x 7
+   age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34  No       173     17.9           17.9  16.8          16.8
+ 2 18-34  Yes       69      7.13          25.0   6.69         23.4
+ 3 18-34  <NA>      16     NA             25.0   1.55         25  
+ 4 35-50  No       163     17.8           42.8  16.9          41.9
+ 5 35-50  Yes       66      7.21          50     6.85         48.8
+ 6 35-50  <NA>      12     NA             50     1.24         50  
+ 7 51-70  No       208     16.9           66.9  16.4          66.4
+ 8 51-70  Yes       99      8.06          75     7.81         74.2
+ 9 51-70  <NA>      10     NA             75     0.789        75  
+10 71 +   No       106     17.8           92.8  16.7          91.7
+11 71 +   Yes       43      7.21         100     6.76         98.4
+12 71 +   <NA>      10     NA            100     1.57        100  
+
+> fgr5 %>% tb(2) 
+
+# A tibble: 12 x 7
+   age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34  No       173     17.9           17.9  16.8          16.8
+ 2 35-50  No       163     17.8           35.7  16.9          33.7
+ 3 51-70  No       208     16.9           52.6  16.4          50.1
+ 4 71 +   No       106     17.8           70.4  16.7          66.7
+ 5 18-34  Yes       69      7.13          77.5   6.69         73.4
+ 6 35-50  Yes       66      7.21          84.7   6.85         80.3
+ 7 51-70  Yes       99      8.06          92.8   7.81         88.1
+ 8 71 +   Yes       43      7.21         100     6.76         94.8
+ 9 18-34  <NA>      16     NA            100     1.55         96.4
+10 35-50  <NA>      12     NA            100     1.24         97.6
+11 51-70  <NA>      10     NA            100     0.789        98.4
+12 71 +   <NA>      10     NA            100     1.57        100  
+
+> fgr5 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T) 
+
+     freq pct_valid   pct_tot 
+      975       100       100 
+
+> fgr5 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T) 
+
+     freq pct_valid   pct_tot 
+      975       100       100 
+
+
+# Freq with grouped results, freq sorting (-) ---------------------------------- 
+
+> (fgr6 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq-")) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     69     28.51          28.51     26.74          26.74
+         No    173     71.49         100.00     67.05          93.80
+       <NA>     16                               6.20         100.00
+      Total    258    100.00         100.00    100.00         100.00
+
+Group: age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     66     28.82          28.82     27.39          27.39
+         No    163     71.18         100.00     67.63          95.02
+       <NA>     12                               4.98         100.00
+      Total    241    100.00         100.00    100.00         100.00
+
+Group: age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     99     32.25          32.25     31.23          31.23
+         No    208     67.75         100.00     65.62          96.85
+       <NA>     10                               3.15         100.00
+      Total    317    100.00         100.00    100.00         100.00
+
+Group: age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     43     28.86          28.86     27.04          27.04
+         No    106     71.14         100.00     66.67          93.71
+       <NA>     10                               6.29         100.00
+      Total    159    100.00         100.00    100.00         100.00
+
+> fgr6 %>% tb() 
+
+# A tibble: 12 x 7
+   age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34  Yes       69      7.13          7.13   6.69         6.69
+ 2 18-34  No       173     17.9          25.0   16.8         23.4 
+ 3 18-34  <NA>      16     NA            25.0    1.55        25   
+ 4 35-50  Yes       66      7.21         32.2    6.85        31.8 
+ 5 35-50  No       163     17.8          50     16.9         48.8 
+ 6 35-50  <NA>      12     NA            50      1.24        50   
+ 7 51-70  Yes       99      8.06         58.1    7.81        57.8 
+ 8 51-70  No       208     16.9          75     16.4         74.2 
+ 9 51-70  <NA>      10     NA            75      0.789       75   
+10 71 +   Yes       43      7.21         82.2    6.76        81.8 
+11 71 +   No       106     17.8         100     16.7         98.4 
+12 71 +   <NA>      10     NA           100      1.57       100   
+
+> fgr6 %>% tb(2) 
+
+# A tibble: 12 x 7
+   age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 18-34  Yes       69      7.13          7.13   6.69         6.69
+ 2 35-50  Yes       66      7.21         14.3    6.85        13.5 
+ 3 51-70  Yes       99      8.06         22.4    7.81        21.3 
+ 4 71 +   Yes       43      7.21         29.6    6.76        28.1 
+ 5 18-34  No       173     17.9          47.5   16.8         44.9 
+ 6 35-50  No       163     17.8          65.3   16.9         61.8 
+ 7 51-70  No       208     16.9          82.2   16.4         78.2 
+ 8 71 +   No       106     17.8         100     16.7         94.8 
+ 9 18-34  <NA>      16     NA           100      1.55        96.4 
+10 35-50  <NA>      12     NA           100      1.24        97.6 
+11 51-70  <NA>      10     NA           100      0.789       98.4 
+12 71 +   <NA>      10     NA           100      1.57       100   
+
+> fgr6 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T) 
+
+     freq pct_valid   pct_tot 
+      975       100       100 
+
+> fgr6 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T) 
+
+     freq pct_valid   pct_tot 
+      975       100       100 
+
+
+# Freq with grouped results, 2 grouping vars ----------------------------------- 
+
+> (fgr7 <- stby(tobacco$smoker, INDICES = list(tobacco$gender, tobacco$age.gr), FUN = freq)) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: gender = F, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     32     28.07          28.07     26.02          26.02
+         No     82     71.93         100.00     66.67          92.68
+       <NA>      9                               7.32         100.00
+      Total    123    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     35     28.46          28.46     26.92          26.92
+         No     88     71.54         100.00     67.69          94.62
+       <NA>      7                               5.38         100.00
+      Total    130    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     36     32.14          32.14     30.51          30.51
+         No     76     67.86         100.00     64.41          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     28     25.00          25.00     23.73          23.73
+         No     84     75.00         100.00     71.19          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     31.37          31.37     30.57          30.57
+         No    105     68.63         100.00     66.88          97.45
+       <NA>      4                               2.55         100.00
+      Total    157    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     33.10          33.10     31.79          31.79
+         No     97     66.90         100.00     64.24          96.03
+       <NA>      6                               3.97         100.00
+      Total    151    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     28.38          28.38     27.27          27.27
+         No     53     71.62         100.00     68.83          96.10
+       <NA>      3                               3.90         100.00
+      Total     77    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     29.17          29.17     26.58          26.58
+         No     51     70.83         100.00     64.56          91.14
+       <NA>      7                               8.86         100.00
+      Total     79    100.00         100.00    100.00         100.00
+
+> fgr7 %>% tb() 
+
+# A tibble: 24 x 8
+   gender age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F      18-34  Yes       32      3.51          3.51   3.25         3.25
+ 2 F      18-34  No        82      8.99         12.5    8.33        11.6 
+ 3 F      18-34  <NA>       9     NA            12.5    0.915       12.5 
+ 4 M      18-34  Yes       35      3.56         16.1    3.37        15.9 
+ 5 M      18-34  No        88      8.94         25      8.46        24.3 
+ 6 M      18-34  <NA>       7     NA            25      0.673       25   
+ 7 F      35-50  Yes       36      4.02         29.0    3.81        28.8 
+ 8 F      35-50  No        76      8.48         37.5    8.05        36.9 
+ 9 F      35-50  <NA>       6     NA            37.5    0.636       37.5 
+10 M      35-50  Yes       28      3.12         40.6    2.97        40.5 
+# … with 14 more rows
+
+> fgr7 %>% tb(2) 
+
+# A tibble: 24 x 8
+   gender age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F      18-34  Yes       32      3.51          3.51    3.25        3.25
+ 2 M      18-34  Yes       35      3.56          7.07    3.37        6.62
+ 3 F      35-50  Yes       36      4.02         11.1     3.81       10.4 
+ 4 M      35-50  Yes       28      3.12         14.2     2.97       13.4 
+ 5 F      51-70  Yes       48      3.92         18.1     3.82       17.2 
+ 6 M      51-70  Yes       48      4.14         22.3     3.97       21.2 
+ 7 F      71 +   Yes       21      3.55         25.8     3.41       24.6 
+ 8 M      71 +   Yes       21      3.65         29.5     3.32       27.9 
+ 9 F      18-34  No        82      8.99         38.5     8.33       36.3 
+10 M      18-34  No        88      8.94         47.4     8.46       44.7 
+# … with 14 more rows
+
+> fgr7 %>% tb() %>% select(4,5,7) %>% colSums(na.rm = T) 
+
+     freq pct_valid   pct_tot 
+      953       100       100 
+
+
 # Normal descr() results ------------------------------------------------------- 
 
 > (de1 <- descr(examens)) 
@@ -630,4 +929,1126 @@ N: 15
 11 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14
 12 Garç… maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14
 # … with 1 more variable: pct.valid <dbl>
+
+> library(dplyr) 
+> library(magrittr) 
+> (dd1 <- stby(tobacco, tobacco$gender, descr)) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics  
+tobacco  
+Group: gender = F  
+N: 489  
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.56    26.10           6.88        1.00
+          Std.Dev    18.28     4.95          12.04        0.08
+              Min    18.00     9.01           0.00        0.86
+               Q1    34.00    22.98           0.00        0.86
+           Median    50.00    25.87           0.00        1.04
+               Q3    66.00    29.48          10.50        1.05
+              Max    80.00    39.44          40.00        1.06
+              MAD    23.72     4.75           0.00        0.01
+              IQR    32.00     6.49          10.25        0.19
+               CV     0.37     0.19           1.75        0.08
+         Skewness    -0.04    -0.02           1.53       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.25     0.09           0.85       -0.92
+          N.Valid   475.00   475.00         468.00      489.00
+        Pct.Valid    97.14    97.14          95.71      100.00
+
+Group: gender = M  
+N: 489  
+
+                       age      BMI   cigs.per.day   samp.wgts
+----------------- -------- -------- -------------- -----------
+             Mean    49.58    25.31           6.72        1.00
+          Std.Dev    18.34     3.98          11.83        0.08
+              Min    18.00     8.83           0.00        0.86
+               Q1    34.00    22.52           0.00        0.86
+           Median    49.50    25.14           0.00        1.04
+               Q3    66.00    27.96          11.00        1.05
+              Max    80.00    36.76          40.00        1.06
+              MAD    24.46     4.02           0.00        0.01
+              IQR    32.00     5.44          11.00        0.19
+               CV     0.37     0.16           1.76        0.08
+         Skewness    -0.04    -0.04           1.54       -1.03
+      SE.Skewness     0.11     0.11           0.11        0.11
+         Kurtosis    -1.27     0.17           0.92       -0.92
+          N.Valid   478.00   477.00         475.00      489.00
+        Pct.Valid    97.75    97.55          97.14      100.00
+
+> dd1 %>% tb() 
+
+# A tibble: 8 x 17
+  gender variable   mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness se.skewness kurtosis
+  <fct>  <chr>     <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl>
+1 F      age      49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355       0.112  -1.25  
+2 F      BMI      26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226       0.112   0.0891
+3 F      cigs.pe…  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53         0.113   0.855 
+4 F      samp.wg…  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918 
+5 M      age      49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403       0.112  -1.27  
+6 M      BMI      25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372       0.112   0.175 
+7 M      cigs.pe…  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54         0.112   0.921 
+8 M      samp.wg…  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918 
+# … with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+
+> dd1 %>% tb(2) 
+
+# A tibble: 8 x 17
+  gender variable   mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness se.skewness kurtosis
+  <fct>  <chr>     <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl>
+1 F      age      49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355       0.112  -1.25  
+2 M      age      49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403       0.112  -1.27  
+3 F      BMI      26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226       0.112   0.0891
+4 M      BMI      25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372       0.112   0.175 
+5 F      cigs.pe…  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53         0.113   0.855 
+6 M      cigs.pe…  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54         0.112   0.921 
+7 F      samp.wg…  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918 
+8 M      samp.wg…  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918 
+# … with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+
+> view(dd1) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> tobacco$gender %<>% forcats::fct_explicit_na() 
+> (dd2 <- tobacco %>% group_by(gender) %>% descr(stats = "common")) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics  
+tobacco  
+Group: gender = F  
+N: 489  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    49.56    26.10           6.88        1.00
+        Std.Dev    18.28     4.95          12.04        0.08
+            Min    18.00     9.01           0.00        0.86
+         Median    50.00    25.87           0.00        1.04
+            Max    80.00    39.44          40.00        1.06
+        N.Valid   475.00   475.00         468.00      489.00
+      Pct.Valid    97.14    97.14          95.71      100.00
+
+Group: gender = M  
+N: 489  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    49.58    25.31           6.72        1.00
+        Std.Dev    18.34     3.98          11.83        0.08
+            Min    18.00     8.83           0.00        0.86
+         Median    49.50    25.14           0.00        1.04
+            Max    80.00    36.76          40.00        1.06
+        N.Valid   478.00   477.00         475.00      489.00
+      Pct.Valid    97.75    97.55          97.14      100.00
+
+Group: gender = (Missing)  
+N: 22  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    50.86    26.95           6.09        1.01
+        Std.Dev    18.23     3.51           9.72        0.08
+            Min    19.00    20.24           0.00        0.86
+         Median    55.50    27.16           0.00        1.05
+            Max    80.00    32.43          28.00        1.06
+        N.Valid    22.00    22.00          22.00       22.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+> dd2 %>% tb() 
+
+# A tibble: 12 x 9
+   value     variable       mean      sd    min   med   max n.valid pct.valid
+   <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+ 1 F         age          49.6   18.3    18     50    80        475      97.1
+ 2 F         BMI          26.1    4.95    9.01  25.9  39.4      475      97.1
+ 3 F         cigs.per.day  6.88  12.0     0      0    40        468      95.7
+ 4 F         samp.wgts     1.000  0.0840  0.861  1.04  1.06     489     100  
+ 5 M         age          49.6   18.3    18     49.5  80        478      97.8
+ 6 M         BMI          25.3    3.98    8.83  25.1  36.8      477      97.5
+ 7 M         cigs.per.day  6.72  11.8     0      0    40        475      97.1
+ 8 M         samp.wgts     1.000  0.0840  0.861  1.04  1.06     489     100  
+ 9 (Missing) age          50.9   18.2    19     55.5  80         22     100  
+10 (Missing) BMI          26.9    3.51   20.2   27.2  32.4       22     100  
+11 (Missing) cigs.per.day  6.09   9.72    0      0    28         22     100  
+12 (Missing) samp.wgts     1.01   0.0811  0.861  1.05  1.06      22     100  
+
+> dd2 %>% tb(2) 
+
+# A tibble: 12 x 9
+   value     variable       mean      sd    min   med   max n.valid pct.valid
+   <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+ 1 F         age          49.6   18.3    18     50    80        475      97.1
+ 2 M         age          49.6   18.3    18     49.5  80        478      97.8
+ 3 (Missing) age          50.9   18.2    19     55.5  80         22     100  
+ 4 F         BMI          26.1    4.95    9.01  25.9  39.4      475      97.1
+ 5 M         BMI          25.3    3.98    8.83  25.1  36.8      477      97.5
+ 6 (Missing) BMI          26.9    3.51   20.2   27.2  32.4       22     100  
+ 7 F         cigs.per.day  6.88  12.0     0      0    40        468      95.7
+ 8 M         cigs.per.day  6.72  11.8     0      0    40        475      97.1
+ 9 (Missing) cigs.per.day  6.09   9.72    0      0    28         22     100  
+10 F         samp.wgts     1.000  0.0840  0.861  1.04  1.06     489     100  
+11 M         samp.wgts     1.000  0.0840  0.861  1.04  1.06     489     100  
+12 (Missing) samp.wgts     1.01   0.0811  0.861  1.05  1.06      22     100  
+
+> view(dd2) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> (dd3 <- with(tobacco, stby(tobacco, list(gender, age.gr), descr, stats = "common"))) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics  
+tobacco  
+Group: gender = F, age.gr = 18-34  
+N: 123  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    25.98    24.25           5.87        0.86
+        Std.Dev     4.71     4.75          11.19        0.00
+            Min    18.00    12.98           0.00        0.86
+         Median    26.00    24.22           0.00        0.86
+            Max    34.00    34.84          38.00        0.86
+        N.Valid   123.00   121.00         119.00      123.00
+      Pct.Valid   100.00    98.37          96.75      100.00
+
+Group: gender = M, age.gr = 18-34  
+N: 130  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    26.38    23.36           7.36        0.86
+        Std.Dev     4.91     3.66          12.66        0.00
+            Min    18.00     8.83           0.00        0.86
+         Median    26.00    23.74           0.00        0.86
+            Max    34.00    32.73          40.00        0.86
+        N.Valid   130.00   126.00         127.00      130.00
+      Pct.Valid   100.00    96.92          97.69      100.00
+
+Group: gender = (Missing), age.gr = 18-34  
+N: 5  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    26.40    25.93           6.60        0.86
+        Std.Dev     4.83     3.32          12.16        0.00
+            Min    19.00    21.54           0.00        0.86
+         Median    29.00    25.89           0.00        0.86
+            Max    30.00    29.72          28.00        0.86
+        N.Valid     5.00     5.00           5.00        5.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = F, age.gr = 35-50  
+N: 118  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    41.99    25.55           6.68        1.04
+        Std.Dev     4.54     4.84          11.58        0.00
+            Min    35.00    10.35           0.00        1.04
+         Median    42.00    25.66           0.00        1.04
+            Max    50.00    39.44          40.00        1.04
+        N.Valid   118.00   112.00         115.00      118.00
+      Pct.Valid   100.00    94.92          97.46      100.00
+
+Group: gender = M, age.gr = 35-50  
+N: 118  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    42.64    24.74           5.44        1.04
+        Std.Dev     4.70     3.82          10.37        0.00
+            Min    35.00    15.15           0.00        1.04
+         Median    42.00    24.66           0.00        1.04
+            Max    50.00    34.76          40.00        1.04
+        N.Valid   118.00   115.00         114.00      118.00
+      Pct.Valid   100.00    97.46          96.61      100.00
+
+Group: gender = (Missing), age.gr = 35-50  
+N: 5  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    40.80    23.68           3.00        1.04
+        Std.Dev     5.59     3.26           4.47        0.00
+            Min    36.00    20.24           0.00        1.04
+         Median    38.00    24.22           0.00        1.04
+            Max    50.00    27.42          10.00        1.04
+        N.Valid     5.00     5.00           5.00        5.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = F, age.gr = 51-70  
+N: 157  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.00    27.08           7.20        1.05
+        Std.Dev     5.70     4.88          12.58        0.00
+            Min    51.00     9.01           0.00        1.05
+         Median    61.00    26.91           0.00        1.05
+            Max    70.00    39.21          40.00        1.05
+        N.Valid   157.00   154.00         153.00      157.00
+      Pct.Valid   100.00    98.09          97.45      100.00
+
+Group: gender = M, age.gr = 51-70  
+N: 151  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.51    26.62           6.89        1.05
+        Std.Dev     5.51     3.56          11.69        0.00
+            Min    51.00    17.79           0.00        1.05
+         Median    61.00    26.61           0.00        1.05
+            Max    70.00    34.97          39.00        1.05
+        N.Valid   151.00   149.00         146.00      151.00
+      Pct.Valid   100.00    98.68          96.69      100.00
+
+Group: gender = (Missing), age.gr = 51-70  
+N: 9  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.33    28.73           6.78        1.05
+        Std.Dev     5.12     3.00          10.18        0.00
+            Min    53.00    24.97           0.00        1.05
+         Median    59.00    30.38           0.00        1.05
+            Max    69.00    32.43          21.00        1.05
+        N.Valid     9.00     9.00           9.00        9.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = F, age.gr = 71 +  
+N: 77  
+
+                     age     BMI   cigs.per.day   samp.wgts
+--------------- -------- ------- -------------- -----------
+           Mean    75.52   28.01           7.65        1.06
+        Std.Dev     2.94    4.60          12.88        0.00
+            Min    71.00   18.36           0.00        1.06
+         Median    76.00   27.65           0.00        1.06
+            Max    80.00   38.37          40.00        1.06
+        N.Valid    77.00   75.00          69.00       77.00
+      Pct.Valid   100.00   97.40          89.61      100.00
+
+Group: gender = M, age.gr = 71 +  
+N: 79  
+
+                     age     BMI   cigs.per.day   samp.wgts
+--------------- -------- ------- -------------- -----------
+           Mean    75.33   26.85           7.06        1.06
+        Std.Dev     2.81    4.16          12.44        0.00
+            Min    71.00   16.36           0.00        1.06
+         Median    75.00   26.73           0.00        1.06
+            Max    80.00   36.76          37.00        1.06
+        N.Valid    79.00   77.00          77.00       79.00
+      Pct.Valid   100.00   97.47          97.47      100.00
+
+Group: gender = (Missing), age.gr = 71 +  
+N: 3  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    77.00    28.75           8.33        1.06
+        Std.Dev     2.65     1.30          14.43        0.00
+            Min    75.00    27.79           0.00        1.06
+         Median    76.00    28.23           0.00        1.06
+            Max    80.00    30.23          25.00        1.06
+        N.Valid     3.00     3.00           3.00        3.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+> dd3 %>% tb() 
+
+# A tibble: 48 x 10
+   gender    age.gr variable       mean    sd    min    med    max n.valid pct.valid
+   <fct>     <fct>  <chr>         <dbl> <dbl>  <dbl>  <dbl>  <dbl>   <dbl>     <dbl>
+ 1 F         18-34  age          26.0    4.71 18     26     34         123     100  
+ 2 F         18-34  BMI          24.2    4.75 13.0   24.2   34.8       121      98.4
+ 3 F         18-34  cigs.per.day  5.87  11.2   0      0     38         119      96.7
+ 4 F         18-34  samp.wgts     0.861  0     0.861  0.861  0.861     123     100  
+ 5 M         18-34  age          26.4    4.91 18     26     34         130     100  
+ 6 M         18-34  BMI          23.4    3.66  8.83  23.7   32.7       126      96.9
+ 7 M         18-34  cigs.per.day  7.36  12.7   0      0     40         127      97.7
+ 8 M         18-34  samp.wgts     0.861  0     0.861  0.861  0.861     130     100  
+ 9 (Missing) 18-34  age          26.4    4.83 19     29     30           5     100  
+10 (Missing) 18-34  BMI          25.9    3.32 21.5   25.9   29.7         5     100  
+# … with 38 more rows
+
+> dd3 %>% tb(2) 
+
+# A tibble: 48 x 10
+   gender    age.gr variable  mean    sd   min   med   max n.valid pct.valid
+   <fct>     <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
+ 1 F         18-34  age       26.0  4.71    18    26    34     123       100
+ 2 M         18-34  age       26.4  4.91    18    26    34     130       100
+ 3 (Missing) 18-34  age       26.4  4.83    19    29    30       5       100
+ 4 F         35-50  age       42.0  4.54    35    42    50     118       100
+ 5 M         35-50  age       42.6  4.70    35    42    50     118       100
+ 6 (Missing) 35-50  age       40.8  5.59    36    38    50       5       100
+ 7 F         51-70  age       61    5.70    51    61    70     157       100
+ 8 M         51-70  age       61.5  5.51    51    61    70     151       100
+ 9 (Missing) 51-70  age       61.3  5.12    53    59    69       9       100
+10 F         71 +   age       75.5  2.94    71    76    80      77       100
+# … with 38 more rows
+
+> view(dd3, file = "01-descr-2-grp-vars.html") 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+> tobacco$age.gr %<>% forcats::fct_explicit_na() 
+> (dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common")) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+
+Descriptive Statistics  
+tobacco  
+Group: gender = F, age.gr = 18-34  
+N: 123  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    25.98    24.25           5.87        0.86
+        Std.Dev     4.71     4.75          11.19        0.00
+            Min    18.00    12.98           0.00        0.86
+         Median    26.00    24.22           0.00        0.86
+            Max    34.00    34.84          38.00        0.86
+        N.Valid   123.00   121.00         119.00      123.00
+      Pct.Valid   100.00    98.37          96.75      100.00
+
+Group: gender = F, age.gr = 35-50  
+N: 118  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    41.99    25.55           6.68        1.04
+        Std.Dev     4.54     4.84          11.58        0.00
+            Min    35.00    10.35           0.00        1.04
+         Median    42.00    25.66           0.00        1.04
+            Max    50.00    39.44          40.00        1.04
+        N.Valid   118.00   112.00         115.00      118.00
+      Pct.Valid   100.00    94.92          97.46      100.00
+
+Group: gender = F, age.gr = 51-70  
+N: 157  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.00    27.08           7.20        1.05
+        Std.Dev     5.70     4.88          12.58        0.00
+            Min    51.00     9.01           0.00        1.05
+         Median    61.00    26.91           0.00        1.05
+            Max    70.00    39.21          40.00        1.05
+        N.Valid   157.00   154.00         153.00      157.00
+      Pct.Valid   100.00    98.09          97.45      100.00
+
+Group: gender = F, age.gr = 71 +  
+N: 77  
+
+                     age     BMI   cigs.per.day   samp.wgts
+--------------- -------- ------- -------------- -----------
+           Mean    75.52   28.01           7.65        1.06
+        Std.Dev     2.94    4.60          12.88        0.00
+            Min    71.00   18.36           0.00        1.06
+         Median    76.00   27.65           0.00        1.06
+            Max    80.00   38.37          40.00        1.06
+        N.Valid    77.00   75.00          69.00       77.00
+      Pct.Valid   100.00   97.40          89.61      100.00
+
+Group: gender = F, age.gr = (Missing)  
+N: 14  
+
+                   age     BMI   cigs.per.day   samp.wgts
+--------------- ------ ------- -------------- -----------
+           Mean     NA   25.37          10.17        0.94
+        Std.Dev     NA    4.35          13.39        0.10
+            Min     NA   18.84           0.00        0.86
+         Median     NA   25.92           0.00        0.86
+            Max     NA   31.83          31.00        1.06
+        N.Valid   0.00   13.00          12.00       14.00
+      Pct.Valid     NA   92.86          85.71      100.00
+
+Group: gender = M, age.gr = 18-34  
+N: 130  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    26.38    23.36           7.36        0.86
+        Std.Dev     4.91     3.66          12.66        0.00
+            Min    18.00     8.83           0.00        0.86
+         Median    26.00    23.74           0.00        0.86
+            Max    34.00    32.73          40.00        0.86
+        N.Valid   130.00   126.00         127.00      130.00
+      Pct.Valid   100.00    96.92          97.69      100.00
+
+Group: gender = M, age.gr = 35-50  
+N: 118  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    42.64    24.74           5.44        1.04
+        Std.Dev     4.70     3.82          10.37        0.00
+            Min    35.00    15.15           0.00        1.04
+         Median    42.00    24.66           0.00        1.04
+            Max    50.00    34.76          40.00        1.04
+        N.Valid   118.00   115.00         114.00      118.00
+      Pct.Valid   100.00    97.46          96.61      100.00
+
+Group: gender = M, age.gr = 51-70  
+N: 151  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.51    26.62           6.89        1.05
+        Std.Dev     5.51     3.56          11.69        0.00
+            Min    51.00    17.79           0.00        1.05
+         Median    61.00    26.61           0.00        1.05
+            Max    70.00    34.97          39.00        1.05
+        N.Valid   151.00   149.00         146.00      151.00
+      Pct.Valid   100.00    98.68          96.69      100.00
+
+Group: gender = M, age.gr = 71 +  
+N: 79  
+
+                     age     BMI   cigs.per.day   samp.wgts
+--------------- -------- ------- -------------- -----------
+           Mean    75.33   26.85           7.06        1.06
+        Std.Dev     2.81    4.16          12.44        0.00
+            Min    71.00   16.36           0.00        1.06
+         Median    75.00   26.73           0.00        1.06
+            Max    80.00   36.76          37.00        1.06
+        N.Valid    79.00   77.00          77.00       79.00
+      Pct.Valid   100.00   97.47          97.47      100.00
+
+Group: gender = M, age.gr = (Missing)  
+N: 11  
+
+                   age     BMI   cigs.per.day   samp.wgts
+--------------- ------ ------- -------------- -----------
+           Mean     NA   24.90           8.00        1.03
+        Std.Dev     NA    2.65          14.51        0.06
+            Min     NA   20.27           0.00        0.86
+         Median     NA   24.80           0.00        1.04
+            Max     NA   30.52          36.00        1.05
+        N.Valid   0.00   10.00          11.00       11.00
+      Pct.Valid     NA   90.91         100.00      100.00
+
+Group: gender = (Missing), age.gr = 18-34  
+N: 5  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    26.40    25.93           6.60        0.86
+        Std.Dev     4.83     3.32          12.16        0.00
+            Min    19.00    21.54           0.00        0.86
+         Median    29.00    25.89           0.00        0.86
+            Max    30.00    29.72          28.00        0.86
+        N.Valid     5.00     5.00           5.00        5.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = (Missing), age.gr = 35-50  
+N: 5  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    40.80    23.68           3.00        1.04
+        Std.Dev     5.59     3.26           4.47        0.00
+            Min    36.00    20.24           0.00        1.04
+         Median    38.00    24.22           0.00        1.04
+            Max    50.00    27.42          10.00        1.04
+        N.Valid     5.00     5.00           5.00        5.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = (Missing), age.gr = 51-70  
+N: 9  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    61.33    28.73           6.78        1.05
+        Std.Dev     5.12     3.00          10.18        0.00
+            Min    53.00    24.97           0.00        1.05
+         Median    59.00    30.38           0.00        1.05
+            Max    69.00    32.43          21.00        1.05
+        N.Valid     9.00     9.00           9.00        9.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+Group: gender = (Missing), age.gr = 71 +  
+N: 3  
+
+                     age      BMI   cigs.per.day   samp.wgts
+--------------- -------- -------- -------------- -----------
+           Mean    77.00    28.75           8.33        1.06
+        Std.Dev     2.65     1.30          14.43        0.00
+            Min    75.00    27.79           0.00        1.06
+         Median    76.00    28.23           0.00        1.06
+            Max    80.00    30.23          25.00        1.06
+        N.Valid     3.00     3.00           3.00        3.00
+      Pct.Valid   100.00   100.00         100.00      100.00
+
+> dd4 %>% tb() 
+
+# A tibble: 56 x 10
+   gender age.gr variable       mean    sd    min    med    max n.valid pct.valid
+   <fct>  <fct>  <chr>         <dbl> <dbl>  <dbl>  <dbl>  <dbl>   <dbl>     <dbl>
+ 1 F      18-34  age          26.0    4.71 18     26     34         123     100  
+ 2 F      18-34  BMI          24.2    4.75 13.0   24.2   34.8       121      98.4
+ 3 F      18-34  cigs.per.day  5.87  11.2   0      0     38         119      96.7
+ 4 F      18-34  samp.wgts     0.861  0     0.861  0.861  0.861     123     100  
+ 5 F      35-50  age          42.0    4.54 35     42     50         118     100  
+ 6 F      35-50  BMI          25.6    4.84 10.3   25.7   39.4       112      94.9
+ 7 F      35-50  cigs.per.day  6.68  11.6   0      0     40         115      97.5
+ 8 F      35-50  samp.wgts     1.04   0     1.04   1.04   1.04      118     100  
+ 9 F      51-70  age          61      5.70 51     61     70         157     100  
+10 F      51-70  BMI          27.1    4.88  9.01  26.9   39.2       154      98.1
+# … with 46 more rows
+
+> dd4 %>% tb(2) 
+
+# A tibble: 56 x 10
+   gender    age.gr variable  mean    sd   min   med   max n.valid pct.valid
+   <fct>     <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
+ 1 F         18-34  age       26.0  4.71    18    26    34     123       100
+ 2 M         18-34  age       26.4  4.91    18    26    34     130       100
+ 3 (Missing) 18-34  age       26.4  4.83    19    29    30       5       100
+ 4 F         35-50  age       42.0  4.54    35    42    50     118       100
+ 5 M         35-50  age       42.6  4.70    35    42    50     118       100
+ 6 (Missing) 35-50  age       40.8  5.59    36    38    50       5       100
+ 7 F         51-70  age       61    5.70    51    61    70     157       100
+ 8 M         51-70  age       61.5  5.51    51    61    70     151       100
+ 9 (Missing) 51-70  age       61.3  5.12    53    59    69       9       100
+10 F         71 +   age       75.5  2.94    71    76    80      77       100
+# … with 46 more rows
+
+> view(dd4) 
+-- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Output file written
+-- Output file appended
+
+
+# freq ------------------------------------------------------------------------- 
+
+> data(tobacco) 
+> (ff1 <- stby(tobacco$smoker, tobacco$gender, freq)) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: gender = F  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    141     30.32          30.32     28.83          28.83
+         No    324     69.68         100.00     66.26          95.09
+       <NA>     24                               4.91         100.00
+      Total    489    100.00         100.00    100.00         100.00
+
+Group: gender = M  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    135     29.16          29.16     27.61          27.61
+         No    328     70.84         100.00     67.08          94.68
+       <NA>     26                               5.32         100.00
+      Total    489    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      8     36.36          36.36     36.36          36.36
+         No     14     63.64         100.00     63.64         100.00
+       <NA>      0                               0.00         100.00
+      Total     22    100.00         100.00    100.00         100.00
+
+> ff1 %>% tb() 
+
+# A tibble: 9 x 7
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+1 F         Yes      141     10.1           10.1    9.61        9.61
+2 F         No       324     23.2           33.3   22.1        31.7 
+3 F         <NA>      24     NA             33.3    1.64       33.3 
+4 M         Yes      135      9.72          43.1    9.20       42.5 
+5 M         No       328     23.6           66.7   22.4        64.9 
+6 M         <NA>      26     NA             66.7    1.77       66.7 
+7 (Missing) Yes        8     12.1           78.8   12.1        78.8 
+8 (Missing) No        14     21.2          100     21.2       100   
+9 (Missing) <NA>       0     NA            100      0         100   
+
+> ff1 %>% tb(2) 
+
+# A tibble: 9 x 7
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+1 F         Yes      141     10.1           10.1    9.61        9.61
+2 M         Yes      135      9.72          19.8    9.20       18.8 
+3 (Missing) Yes        8     12.1           31.9   12.1        30.9 
+4 F         No       324     23.2           55.2   22.1        53.0 
+5 M         No       328     23.6           78.8   22.4        75.4 
+6 (Missing) No        14     21.2          100     21.2        96.6 
+7 F         <NA>      24     NA            100      1.64       98.2 
+8 M         <NA>      26     NA            100      1.77      100   
+9 (Missing) <NA>       0     NA            100      0         100   
+
+> view(ff1) 
+-- Output file written
+-- Output file appended
+
+> (ff2 <- stby(tobacco$smoker, tobacco$gender, freq, report.nas = F)) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: gender = F  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes    141    30.32    30.32
+         No    324    69.68   100.00
+      Total    465   100.00   100.00
+
+Group: gender = M  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes    135    29.16    29.16
+         No    328    70.84   100.00
+      Total    463   100.00   100.00
+
+Group: gender = (Missing)  
+
+              Freq        %   % Cum.
+----------- ------ -------- --------
+        Yes      8    36.36    36.36
+         No     14    63.64   100.00
+      Total     22   100.00   100.00
+
+> ff2 %>% tb() 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 F         No       324 23.2     33.3
+3 M         Yes      135  9.72    43.1
+4 M         No       328 23.6     66.7
+5 (Missing) Yes        8 12.1     78.8
+6 (Missing) No        14 21.2    100  
+
+> ff2 %>% tb(2) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
+> tobacco$gender %<>% forcats::fct_explicit_na() 
+> (ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq()) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: gender = F  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    141     30.32          30.32     28.83          28.83
+         No    324     69.68         100.00     66.26          95.09
+       <NA>     24                               4.91         100.00
+      Total    489    100.00         100.00    100.00         100.00
+
+Group: gender = M  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    135     29.16          29.16     27.61          27.61
+         No    328     70.84         100.00     67.08          94.68
+       <NA>     26                               5.32         100.00
+      Total    489    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      8     36.36          36.36     36.36          36.36
+         No     14     63.64         100.00     63.64         100.00
+       <NA>      0                               0.00         100.00
+      Total     22    100.00         100.00    100.00         100.00
+
+> ff3 %>% tb() 
+
+# A tibble: 9 x 7
+  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+1 F         Yes      141     10.1           10.1    9.61        9.61
+2 F         No       324     23.2           33.3   22.1        31.7 
+3 F         <NA>      24     NA             33.3    1.64       33.3 
+4 M         Yes      135      9.72          43.1    9.20       42.5 
+5 M         No       328     23.6           66.7   22.4        64.9 
+6 M         <NA>      26     NA             66.7    1.77       66.7 
+7 (Missing) Yes        8     12.1           78.8   12.1        78.8 
+8 (Missing) No        14     21.2          100     21.2       100   
+9 (Missing) <NA>       0     NA            100      0         100   
+
+> ff3 %>% tb(2) 
+
+# A tibble: 9 x 7
+  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+1 F         Yes      141     10.1           10.1    9.61        9.61
+2 M         Yes      135      9.72          19.8    9.20       18.8 
+3 (Missing) Yes        8     12.1           31.9   12.1        30.9 
+4 F         No       324     23.2           55.2   22.1        53.0 
+5 M         No       328     23.6           78.8   22.4        75.4 
+6 (Missing) No        14     21.2          100     21.2        96.6 
+7 F         <NA>      24     NA            100      1.64       98.2 
+8 M         <NA>      26     NA            100      1.77      100   
+9 (Missing) <NA>       0     NA            100      0         100   
+
+> view(ff3) 
+-- Output file written
+-- Output file appended
+
+> (ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq))) 
+
+Frequencies  
+tobacco$smoker  
+Type: Factor  
+Group: gender = F, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     32     28.07          28.07     26.02          26.02
+         No     82     71.93         100.00     66.67          92.68
+       <NA>      9                               7.32         100.00
+      Total    123    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     35     28.46          28.46     26.92          26.92
+         No     88     71.54         100.00     67.69          94.62
+       <NA>      7                               5.38         100.00
+      Total    130    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      2     40.00          40.00     40.00          40.00
+         No      3     60.00         100.00     60.00         100.00
+       <NA>      0                               0.00         100.00
+      Total      5    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     36     32.14          32.14     30.51          30.51
+         No     76     67.86         100.00     64.41          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     28     25.00          25.00     23.73          23.73
+         No     84     75.00         100.00     71.19          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      2     40.00          40.00     40.00          40.00
+         No      3     60.00         100.00     60.00         100.00
+       <NA>      0                               0.00         100.00
+      Total      5    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     31.37          31.37     30.57          30.57
+         No    105     68.63         100.00     66.88          97.45
+       <NA>      4                               2.55         100.00
+      Total    157    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     33.10          33.10     31.79          31.79
+         No     97     66.90         100.00     64.24          96.03
+       <NA>      6                               3.97         100.00
+      Total    151    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      3     33.33          33.33     33.33          33.33
+         No      6     66.67         100.00     66.67         100.00
+       <NA>      0                               0.00         100.00
+      Total      9    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     28.38          28.38     27.27          27.27
+         No     53     71.62         100.00     68.83          96.10
+       <NA>      3                               3.90         100.00
+      Total     77    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     29.17          29.17     26.58          26.58
+         No     51     70.83         100.00     64.56          91.14
+       <NA>      7                               8.86         100.00
+      Total     79    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      1     33.33          33.33     33.33          33.33
+         No      2     66.67         100.00     66.67         100.00
+       <NA>      0                               0.00         100.00
+      Total      3    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      4     33.33          33.33     28.57          28.57
+         No      8     66.67         100.00     57.14          85.71
+       <NA>      2                              14.29         100.00
+      Total     14    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      3     27.27          27.27     27.27          27.27
+         No      8     72.73         100.00     72.73         100.00
+       <NA>      0                               0.00         100.00
+      Total     11    100.00         100.00    100.00         100.00
+
+> ff4 %>% tb() 
+
+# A tibble: 42 x 8
+   gender    age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>     <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F         18-34  Yes       32      2.01          2.01   1.86         1.86
+ 2 F         18-34  No        82      5.14          7.14   4.76         6.62
+ 3 F         18-34  <NA>       9     NA             7.14   0.523        7.14
+ 4 M         18-34  Yes       35      2.03          9.18   1.92         9.07
+ 5 M         18-34  No        88      5.11         14.3    4.84        13.9 
+ 6 M         18-34  <NA>       7     NA            14.3    0.385       14.3 
+ 7 (Missing) 18-34  Yes        2      2.86         17.1    2.86        17.1 
+ 8 (Missing) 18-34  No         3      4.29         21.4    4.29        21.4 
+ 9 (Missing) 18-34  <NA>       0     NA            21.4    0           21.4 
+10 F         35-50  Yes       36      2.30         23.7    2.18        23.6 
+# … with 32 more rows
+
+> ff4 %>% tb(2) 
+
+# A tibble: 42 x 8
+   gender    age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>     <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F         18-34  Yes       32      2.01          2.01    1.86        1.86
+ 2 M         18-34  Yes       35      2.03          4.04    1.92        3.78
+ 3 (Missing) 18-34  Yes        2      2.86          6.89    2.86        6.64
+ 4 F         35-50  Yes       36      2.30          9.19    2.18        8.82
+ 5 M         35-50  Yes       28      1.79         11.0     1.69       10.5 
+ 6 (Missing) 35-50  Yes        2      2.86         13.8     2.86       13.4 
+ 7 F         51-70  Yes       48      2.24         16.1     2.18       15.6 
+ 8 M         51-70  Yes       48      2.36         18.4     2.27       17.8 
+ 9 (Missing) 51-70  Yes        3      2.38         20.8     2.38       20.2 
+10 F         71 +   Yes       21      2.03         22.8     1.95       22.2 
+# … with 32 more rows
+
+> tobacco$age.gr %<>% forcats::fct_explicit_na() 
+> (ff5 <- tobacco %>% group_by(gender, age.gr) %>% select(gender, age.gr, smoker) %>% freq()) 
+
+Frequencies  
+smoker  
+Type: Factor  
+Group: gender = F, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     32     28.07          28.07     26.02          26.02
+         No     82     71.93         100.00     66.67          92.68
+       <NA>      9                               7.32         100.00
+      Total    123    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     36     32.14          32.14     30.51          30.51
+         No     76     67.86         100.00     64.41          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     31.37          31.37     30.57          30.57
+         No    105     68.63         100.00     66.88          97.45
+       <NA>      4                               2.55         100.00
+      Total    157    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     28.38          28.38     27.27          27.27
+         No     53     71.62         100.00     68.83          96.10
+       <NA>      3                               3.90         100.00
+      Total     77    100.00         100.00    100.00         100.00
+
+Group: gender = F, age.gr = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      4     33.33          33.33     28.57          28.57
+         No      8     66.67         100.00     57.14          85.71
+       <NA>      2                              14.29         100.00
+      Total     14    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     35     28.46          28.46     26.92          26.92
+         No     88     71.54         100.00     67.69          94.62
+       <NA>      7                               5.38         100.00
+      Total    130    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     28     25.00          25.00     23.73          23.73
+         No     84     75.00         100.00     71.19          94.92
+       <NA>      6                               5.08         100.00
+      Total    118    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     48     33.10          33.10     31.79          31.79
+         No     97     66.90         100.00     64.24          96.03
+       <NA>      6                               3.97         100.00
+      Total    151    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes     21     29.17          29.17     26.58          26.58
+         No     51     70.83         100.00     64.56          91.14
+       <NA>      7                               8.86         100.00
+      Total     79    100.00         100.00    100.00         100.00
+
+Group: gender = M, age.gr = (Missing)  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      3     27.27          27.27     27.27          27.27
+         No      8     72.73         100.00     72.73         100.00
+       <NA>      0                               0.00         100.00
+      Total     11    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 18-34  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      2     40.00          40.00     40.00          40.00
+         No      3     60.00         100.00     60.00         100.00
+       <NA>      0                               0.00         100.00
+      Total      5    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 35-50  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      2     40.00          40.00     40.00          40.00
+         No      3     60.00         100.00     60.00         100.00
+       <NA>      0                               0.00         100.00
+      Total      5    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 51-70  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      3     33.33          33.33     33.33          33.33
+         No      6     66.67         100.00     66.67         100.00
+       <NA>      0                               0.00         100.00
+      Total      9    100.00         100.00    100.00         100.00
+
+Group: gender = (Missing), age.gr = 71 +  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes      1     33.33          33.33     33.33          33.33
+         No      2     66.67         100.00     66.67         100.00
+       <NA>      0                               0.00         100.00
+      Total      3    100.00         100.00    100.00         100.00
+
+> view(ff5) 
+-- Output file written
+-- Output file appended
+
+> ff5 %>% tb() 
+
+# A tibble: 42 x 8
+   gender age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>  <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F      18-34  Yes       32      2.01          2.01   1.86         1.86
+ 2 F      18-34  No        82      5.14          7.14   4.76         6.62
+ 3 F      18-34  <NA>       9     NA             7.14   0.523        7.14
+ 4 F      35-50  Yes       36      2.30          9.44   2.18         9.32
+ 5 F      35-50  No        76      4.85         14.3    4.60        13.9 
+ 6 F      35-50  <NA>       6     NA            14.3    0.363       14.3 
+ 7 F      51-70  Yes       48      2.24         16.5    2.18        16.5 
+ 8 F      51-70  No       105      4.90         21.4    4.78        21.2 
+ 9 F      51-70  <NA>       4     NA            21.4    0.182       21.4 
+10 F      71 +   Yes       21      2.03         23.5    1.95        23.4 
+# … with 32 more rows
+
+> ff5 %>% tb(2) 
+
+# A tibble: 42 x 8
+   gender    age.gr smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+   <fct>     <fct>  <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
+ 1 F         18-34  Yes       32      2.01          2.01    1.86        1.86
+ 2 M         18-34  Yes       35      2.03          4.04    1.92        3.78
+ 3 (Missing) 18-34  Yes        2      2.86          6.89    2.86        6.64
+ 4 F         35-50  Yes       36      2.30          9.19    2.18        8.82
+ 5 M         35-50  Yes       28      1.79         11.0     1.69       10.5 
+ 6 (Missing) 35-50  Yes        2      2.86         13.8     2.86       13.4 
+ 7 F         51-70  Yes       48      2.24         16.1     2.18       15.6 
+ 8 M         51-70  Yes       48      2.36         18.4     2.27       17.8 
+ 9 (Missing) 51-70  Yes        3      2.38         20.8     2.38       20.2 
+10 F         71 +   Yes       21      2.03         22.8     1.95       22.2 
+# … with 32 more rows
 

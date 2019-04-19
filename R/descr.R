@@ -92,17 +92,17 @@
 #' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all group_keys
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
-                  stats = st_options("descr.stats"),
-                  na.rm = TRUE, 
-                  round.digits = st_options("round.digits"),
-                  transpose = st_options("descr.transpose"), 
-                  style = st_options("style"), 
-                  plain.ascii = st_options("plain.ascii"),
-                  justify = "r",
-                  headings = st_options("headings"), 
-                  display.labels = st_options("display.labels"),  
-                  split.tables = 100,
-                  weights = NA,
+                  stats           = st_options("descr.stats"),
+                  na.rm           = TRUE,
+                  round.digits    = st_options("round.digits"),
+                  transpose       = st_options("descr.transpose"),
+                  style           = st_options("style"),
+                  plain.ascii     = st_options("plain.ascii"),
+                  justify         = "r",
+                  headings        = st_options("headings"),
+                  display.labels  = st_options("display.labels"),
+                  split.tables    = 100,
+                  weights         = NA,
                   rescale.weights = FALSE,
                   ...) {
   

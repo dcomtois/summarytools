@@ -1,6 +1,7 @@
 
 # ---------------------------- freq.R ------------------------------------------  
 
+> library(magrittr) 
 > data(tobacco) 
 > tobacco <- tibble::as_tibble(tobacco) 
 > label(tobacco$gender) <- "Subject's Gender" 
@@ -864,13 +865,14 @@ Tür: Karakter
 
                      Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
-      Hypertension       36       27.48            27.48       3.96            3.96
-            Cancer       34       25.95            53.44       3.74            7.70
-       Cholesterol       21       16.03            69.47       2.31           10.01
-             Heart       20       15.27            84.73       2.20           12.21
-         Pulmonary       20       15.27           100.00       2.20           14.41
-              <NA>      778                                   85.59          100.00
-            Toplam      909      100.00           100.00     100.00          100.00
+      Hypertension       36       16.22            16.22       3.60            3.60
+            Cancer       34       15.32            31.53       3.40            7.00
+       Cholesterol       21        9.46            40.99       2.10            9.10
+             Heart       20        9.01            50.00       2.00           11.10
+         Pulmonary       20        9.01            59.01       2.00           13.10
+           (Other)       91       40.99           100.00       9.10           22.20
+              <NA>      778                                   77.80          100.00
+            Toplam     1000      100.00           100.00     100.00          100.00
 
 > print(f3, cumul = FALSE)        # OK 
 
@@ -880,13 +882,14 @@ Tür: Karakter
 
                      Siklik   Geçerli %   Toplam %
 ------------------ -------- ----------- ----------
-      Hypertension       36       27.48       3.96
-            Cancer       34       25.95       3.74
-       Cholesterol       21       16.03       2.31
-             Heart       20       15.27       2.20
-         Pulmonary       20       15.27       2.20
-              <NA>      778                  85.59
-            Toplam      909      100.00     100.00
+      Hypertension       36       16.22       3.60
+            Cancer       34       15.32       3.40
+       Cholesterol       21        9.46       2.10
+             Heart       20        9.01       2.00
+         Pulmonary       20        9.01       2.00
+           (Other)       91       40.99       9.10
+              <NA>      778                  77.80
+            Toplam     1000      100.00     100.00
 
 > print(f3, report.nas = FALSE)   # OK 
 
@@ -896,12 +899,13 @@ Tür: Karakter
 
                      Siklik        %   Küm. %
 ------------------ -------- -------- --------
-      Hypertension       36    27.48    27.48
-            Cancer       34    25.95    53.44
-       Cholesterol       21    16.03    69.47
-             Heart       20    15.27    84.73
-         Pulmonary       20    15.27   100.00
-            Toplam      131   100.00   100.00
+      Hypertension       36    16.22    16.22
+            Cancer       34    15.32    31.53
+       Cholesterol       21     9.46    40.99
+             Heart       20     9.01    50.00
+         Pulmonary       20     9.01    59.01
+           (Other)       91    40.99   100.00
+            Toplam      222   100.00   100.00
 
 > print(f3, totals = FALSE)       # OK 
 
@@ -911,12 +915,13 @@ Tür: Karakter
 
                      Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
-      Hypertension       36       27.48            27.48       3.96            3.96
-            Cancer       34       25.95            53.44       3.74            7.70
-       Cholesterol       21       16.03            69.47       2.31           10.01
-             Heart       20       15.27            84.73       2.20           12.21
-         Pulmonary       20       15.27           100.00       2.20           14.41
-              <NA>      778                                   85.59          100.00
+      Hypertension       36       16.22            16.22       3.60            3.60
+            Cancer       34       15.32            31.53       3.40            7.00
+       Cholesterol       21        9.46            40.99       2.10            9.10
+             Heart       20        9.01            50.00       2.00           11.10
+         Pulmonary       20        9.01            59.01       2.00           13.10
+           (Other)       91       40.99           100.00       9.10           22.20
+              <NA>      778                                   77.80          100.00
 
 > print(f3, cumul = FALSE, report.nas = FALSE)  # OK 
 
@@ -926,12 +931,13 @@ Tür: Karakter
 
                      Siklik        %
 ------------------ -------- --------
-      Hypertension       36    27.48
-            Cancer       34    25.95
-       Cholesterol       21    16.03
-             Heart       20    15.27
-         Pulmonary       20    15.27
-            Toplam      131   100.00
+      Hypertension       36    16.22
+            Cancer       34    15.32
+       Cholesterol       21     9.46
+             Heart       20     9.01
+         Pulmonary       20     9.01
+           (Other)       91    40.99
+            Toplam      222   100.00
 
 > print(f3, cumul = FALSE, totals = FALSE)      # OK 
 
@@ -941,12 +947,13 @@ Tür: Karakter
 
                      Siklik   Geçerli %   Toplam %
 ------------------ -------- ----------- ----------
-      Hypertension       36       27.48       3.96
-            Cancer       34       25.95       3.74
-       Cholesterol       21       16.03       2.31
-             Heart       20       15.27       2.20
-         Pulmonary       20       15.27       2.20
-              <NA>      778                  85.59
+      Hypertension       36       16.22       3.60
+            Cancer       34       15.32       3.40
+       Cholesterol       21        9.46       2.10
+             Heart       20        9.01       2.00
+         Pulmonary       20        9.01       2.00
+           (Other)       91       40.99       9.10
+              <NA>      778                  77.80
 
 > print(f3, report.nas = FALSE, totals = FALSE) # OK 
 
@@ -956,11 +963,12 @@ Tür: Karakter
 
                      Siklik       %   Küm. %
 ------------------ -------- ------- --------
-      Hypertension       36   27.48    27.48
-            Cancer       34   25.95    53.44
-       Cholesterol       21   16.03    69.47
-             Heart       20   15.27    84.73
-         Pulmonary       20   15.27   100.00
+      Hypertension       36   16.22    16.22
+            Cancer       34   15.32    31.53
+       Cholesterol       21    9.46    40.99
+             Heart       20    9.01    50.00
+         Pulmonary       20    9.01    59.01
+           (Other)       91   40.99   100.00
 
 > print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK  
 
@@ -970,11 +978,12 @@ Tür: Karakter
 
                      Siklik       %
 ------------------ -------- -------
-      Hypertension       36   27.48
-            Cancer       34   25.95
-       Cholesterol       21   16.03
-             Heart       20   15.27
-         Pulmonary       20   15.27
+      Hypertension       36   16.22
+            Cancer       34   15.32
+       Cholesterol       21    9.46
+             Heart       20    9.01
+         Pulmonary       20    9.01
+           (Other)       91   40.99
 
 > freq(tobacco$disease, rows = -1) 
 
@@ -984,20 +993,21 @@ Tür: Karakter
 
                         Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
-          Cholesterol       21       11.17            11.17       2.17            2.17
-             Diabetes       14        7.45            18.62       1.45            3.62
-            Digestive       12        6.38            25.00       1.24            4.87
-              Hearing       14        7.45            32.45       1.45            6.31
-                Heart       20       10.64            43.09       2.07            8.39
-         Hypertension       36       19.15            62.23       3.73           12.11
-          Hypotension       11        5.85            68.09       1.14           13.25
-      Musculoskeletal       19       10.11            78.19       1.97           15.22
-         Neurological       10        5.32            83.51       1.04           16.25
-                Other        2        1.06            84.57       0.21           16.46
-            Pulmonary       20       10.64            95.21       2.07           18.53
-               Vision        9        4.79           100.00       0.93           19.46
-                 <NA>      778                                   80.54          100.00
-               Toplam      966      100.00           100.00     100.00          100.00
+          Cholesterol       21        9.46             9.46       2.10            2.10
+             Diabetes       14        6.31            15.77       1.40            3.50
+            Digestive       12        5.41            21.17       1.20            4.70
+              Hearing       14        6.31            27.48       1.40            6.10
+                Heart       20        9.01            36.49       2.00            8.10
+         Hypertension       36       16.22            52.70       3.60           11.70
+          Hypotension       11        4.95            57.66       1.10           12.80
+      Musculoskeletal       19        8.56            66.22       1.90           14.70
+         Neurological       10        4.50            70.72       1.00           15.70
+                Other        2        0.90            71.62       0.20           15.90
+            Pulmonary       20        9.01            80.63       2.00           17.90
+               Vision        9        4.05            84.68       0.90           18.80
+              (Other)       34       15.32           100.00       3.40           22.20
+                 <NA>      778                                   77.80          100.00
+               Toplam     1000      100.00           100.00     100.00          100.00
 
 > freq(tobacco$disease, rows = "H") 
 
@@ -1022,11 +1032,12 @@ Tür: Karakter
 
                   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 --------------- -------- ----------- ---------------- ---------- ---------------
-          Other        2        6.45             6.45       0.25            0.25
-      Pulmonary       20       64.52            70.97       2.47            2.72
-         Vision        9       29.03           100.00       1.11            3.83
-           <NA>      778                                   96.17          100.00
-         Toplam      809      100.00           100.00     100.00          100.00
+          Other        2        0.90             0.90       0.20            0.20
+      Pulmonary       20        9.01             9.91       2.00            2.20
+         Vision        9        4.05            13.96       0.90            3.10
+        (Other)      191       86.04           100.00      19.10           22.20
+           <NA>      778                                   77.80          100.00
+         Toplam     1000      100.00           100.00     100.00          100.00
 
 > freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE) 
 
@@ -1061,13 +1072,14 @@ Tür: Karakter
 
                      Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
 ------------------ -------- ----------- ---------------- ---------- ---------------
-      Hypertension       36       27.48            27.48       3.96            3.96
-            Cancer       34       25.95            53.44       3.74            7.70
-       Cholesterol       21       16.03            69.47       2.31           10.01
-             Heart       20       15.27            84.73       2.20           12.21
-         Pulmonary       20       15.27           100.00       2.20           14.41
-              <NA>      778                                   85.59          100.00
-            Toplam      909      100.00           100.00     100.00          100.00
+      Hypertension       36       16.22            16.22       3.60            3.60
+            Cancer       34       15.32            31.53       3.40            7.00
+       Cholesterol       21        9.46            40.99       2.10            9.10
+             Heart       20        9.01            50.00       2.00           11.10
+         Pulmonary       20        9.01            59.01       2.00           13.10
+           (Other)       91       40.99           100.00       9.10           22.20
+              <NA>      778                                   77.80          100.00
+            Toplam     1000      100.00           100.00     100.00          100.00
 
 
 # "Free" (not in a df) variables ----------------------------------------------- 
@@ -1494,12 +1506,12 @@ Grup: smoker = No
   **\<NA\>**        0                                    0.00          100.00
   **Toplam**      702      100.00           100.00     100.00          100.00
 
-> print(bf1, footnote = "by", file = "04 - by.html", missing = "xxxx") 
+> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
 
-> view(bf1, headings = FALSE, footnote = "no headings", file = "05 - by.html") 
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html") 
 -- Output file written
 -- Output file appended
 
@@ -1527,7 +1539,7 @@ Grup: smoker = No
         <NA>        0                                    0.00          100.00
       Toplam      702      100.00           100.00     100.00          100.00
 
-> print(bf2, file = "06 - by.html") 
+> print(bf2, file = "06-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -1557,7 +1569,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = TRUE
             <NA>        0                                    0.00          100.00
           Toplam       70      100.00           100.00     100.00          100.00
 
-> print(bf3, file = "07 - by.html") 
+> print(bf3, file = "07-by.html") 
 -- Switching method to 'browser'
 -- Output file written
 -- Output file appended
@@ -2036,16 +2048,16 @@ Tür: Sayisal
 
 # HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
 
-> view(freq(tobacco$age.gr), file = "08 - omissions.html", footnote = "No omissions") 
+> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions") 
 -- Output file written
 
-> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "cumul = FALSE") 
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE") 
 -- Output file appended
 
-> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08 - omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
 -- Output file appended
 
 
@@ -2100,28 +2112,58 @@ Tür: Karakter
 +---------------------+--------+-----------+----------------+----------+---------------+
 |                     | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
 +=====================+========+===========+================+==========+===============+
-|              Cancer |     34 |     17.80 |          17.80 |     3.51 |          3.51 |
+|              Cancer |     34 |     15.32 |          15.32 |     3.40 |          3.40 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|         Cholesterol |     21 |     10.99 |          28.80 |     2.17 |          5.68 |
+|         Cholesterol |     21 |      9.46 |          24.77 |     2.10 |          5.50 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|            Diabetes |     14 |      7.33 |          36.13 |     1.44 |          7.12 |
+|            Diabetes |     14 |      6.31 |          31.08 |     1.40 |          6.90 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|           Digestive |     12 |      6.28 |          42.41 |     1.24 |          8.36 |
+|           Digestive |     12 |      5.41 |          36.49 |     1.20 |          8.10 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|             Hearing |     14 |      7.33 |          49.74 |     1.44 |          9.80 |
+|             Hearing |     14 |      6.31 |          42.79 |     1.40 |          9.50 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|               Heart |     20 |     10.47 |          60.21 |     2.06 |         11.87 |
+|               Heart |     20 |      9.01 |          51.80 |     2.00 |         11.50 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|        Hypertension |     36 |     18.85 |          79.06 |     3.72 |         15.58 |
+|        Hypertension |     36 |     16.22 |          68.02 |     3.60 |         15.10 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|         Hypotension |     11 |      5.76 |          84.82 |     1.14 |         16.72 |
+|         Hypotension |     11 |      4.95 |          72.97 |     1.10 |         16.20 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|     Musculoskeletal |     19 |      9.95 |          94.76 |     1.96 |         18.68 |
+|     Musculoskeletal |     19 |      8.56 |          81.53 |     1.90 |         18.10 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|        Neurological |     10 |      5.24 |         100.00 |     1.03 |         19.71 |
+|        Neurological |     10 |      4.50 |          86.04 |     1.00 |         19.10 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|                <NA> |    778 |           |                |    80.29 |        100.00 |
+|             (Other) |     31 |     13.96 |         100.00 |     3.10 |         22.20 |
 +---------------------+--------+-----------+----------------+----------+---------------+
-|              Toplam |    969 |    100.00 |         100.00 |   100.00 |        100.00 |
+|                <NA> |    778 |           |                |    77.80 |        100.00 |
 +---------------------+--------+-----------+----------------+----------+---------------+
+|              Toplam |   1000 |    100.00 |         100.00 |   100.00 |        100.00 |
++---------------------+--------+-----------+----------------+----------+---------------+
+
+
+# Deal with explicited NA's ---------------------------------------------------- 
+
+> tobacco$age.gr %<>% forcats::fct_explicit_na() 
+> freq(tobacco$age.gr) 
+-- explicit NA's detected - setting 'report.nas' to FALSE
+
+Siklik  
+tobacco$age.gr  
+Etiket: Age Group  
+Tür: Faktör  
+
++---------------+--------+--------+--------+
+|               | Siklik |      % | Küm. % |
++===============+========+========+========+
+|         18-34 |    258 |  25.80 |  25.80 |
++---------------+--------+--------+--------+
+|         35-50 |    241 |  24.10 |  49.90 |
++---------------+--------+--------+--------+
+|         51-70 |    317 |  31.70 |  81.60 |
++---------------+--------+--------+--------+
+|          71 + |    159 |  15.90 |  97.50 |
++---------------+--------+--------+--------+
+|     (Missing) |     25 |   2.50 | 100.00 |
++---------------+--------+--------+--------+
+|        Toplam |   1000 | 100.00 | 100.00 |
++---------------+--------+--------+--------+
 

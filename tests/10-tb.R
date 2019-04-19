@@ -9,16 +9,18 @@ tobacco$smoker[sample(1:1000, size = 25, replace = FALSE)] <- NA_character_
 (fr1 <-  tobacco %$% freq(gender))
 fr1 %>% tb()
 fr1 %>% tb(2) # aucun effet attendu
+fr1 %>% tb(na.rm = TRUE)
 fr1 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T)
 
 # No NA's
 (fr2 <- tobacco %$% freq(gender, report.nas = FALSE))
-fr2 %>% tb()
+fr2 %>% tb(na.rm = TRUE)
 fr2 %>% tb() %>% select(2,3) %>% colSums(na.rm = T)
 
 # with sampling weights
 (fr3 <- tobacco %$% freq(gender, weights = samp.wgts))
 fr3 %>% tb()
+fr3 %>% tb(na.rm = TRUE)
 fr3 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T)
 
 # with sampling weights, no cumul
@@ -72,7 +74,6 @@ fgr6 %>% tb()
 fgr6 %>% tb(2)
 fgr6 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
 fgr6 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
-
 
 # Freq with grouped results, 2 grouping vars
 (fgr7 <- stby(tobacco$smoker, INDICES = list(tobacco$gender, tobacco$age.gr), FUN = freq))
@@ -149,5 +150,3 @@ tobacco$age.gr %<>% forcats::fct_explicit_na()
 view(ff5)
 ff5 %>% tb()
 ff5 %>% tb(2)
-
-

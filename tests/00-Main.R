@@ -25,6 +25,7 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   setwd(out_dir)
   
   try(detach("package:summarytools", unload = TRUE), silent = TRUE)
+  suppressWarnings(rm(tobacco, tabagisme, examens, exams))
   library(summarytools)
   if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
     Sys.setlocale("LC_CTYPE", "russian")

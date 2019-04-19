@@ -14,15 +14,16 @@
 #' @method print list
 #' @export
 print.list <- function(x,
-                       method = "pander",
-                       file = "",
-                       append = FALSE, 
-                       report.title = NA,
+                       method        = "pander",
+                       file          = "",
+                       append        = FALSE, 
+                       report.title  = NA,
                        table.classes = NA, 
                        bootstrap.css = st_options("bootstrap.css"), 
-                       custom.css = st_options("custom.css"),
-                       silent = FALSE, footnote = st_options("footnote"), 
-                       escape.pipe = st_options("escape.pipe"),
+                       custom.css    = st_options("custom.css"),
+                       silent        = FALSE,
+                       footnote      = st_options("footnote"), 
+                       escape.pipe   = st_options("escape.pipe"),
                        ...) {
   
   if (inherits(x[[1]], "summarytools")) {
@@ -41,8 +42,6 @@ print.list <- function(x,
          ...)
     
   } else {
-    
     base::print.default(x, ...)
-  
   }
 }
