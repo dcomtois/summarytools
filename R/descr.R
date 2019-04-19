@@ -5,6 +5,8 @@
 #' available when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
+#' @param var Unquoted expression referring to a specific column in x. Provides
+#'   support for piped function calls (e.g. \code{df %>% descr(some_var)}.    
 #' @param stats Which stats to produce. Either \dQuote{all} (default),
 #'   \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
@@ -92,6 +94,7 @@
 #' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all group_keys
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
+                  var             = NULL,
                   stats           = st_options("descr.stats"),
                   na.rm           = TRUE,
                   round.digits    = st_options("round.digits"),
@@ -108,6 +111,23 @@ descr <- function(x,
   
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
+    
+    if ("var" %in% names(match.call())) {
+      # var might contain a function call -- such as df %>% descr(na.omit(var1))
+      if (inherits(as.list(match.call()[-1])$var, "call")) {
+        var_obj <- eval(as.list(match.call()[-1])$var, envir = x)
+        varname <- intersect(colnames(x), 
+                             as.character(as.list(match.call()[-1])$var))
+      } else {
+        var_obj <- x[[as.list(match.call()[-1])$var]]
+        varname <- deparse(substitute(var))
+      }
+    } else {
+      var_obj  <- x[,setdiff(colnames(x), group_vars(x))]
+      varnames <- setdiff(colnames(x), group_vars(x))
+    }
+
+    
     parse_info <- try(
       parse_args(sys.calls(), sys.frames(), match.call(),
                  var_name  = (ncol(x) == 1),
@@ -119,7 +139,7 @@ descr <- function(x,
     gr_inds  <- attr(x, "groups")$.rows
     
     for (g in seq_along(gr_ks)) {
-      outlist[[g]] <- descr(x               = as_tibble(x[gr_inds[[g]], ]),
+      outlist[[g]] <- descr(x               = as_tibble(var_obj[gr_inds[[g]], ]),
                             stats           = stats,
                             na.rm           = na.rm,
                             round.digits    = round.digits,
