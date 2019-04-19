@@ -27,7 +27,7 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   setwd(out_dir)
   
   try(detach("package:summarytools", unload = TRUE), silent = TRUE)
-  suppressWarnings(rm(tobacco, tabagisme, examens, exams))
+  suppressWarnings(rm(tobacco, tabagisme, examens, exams, pr_number))
   library(summarytools)
   if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
     Sys.setlocale("LC_CTYPE", "russian")
@@ -128,6 +128,16 @@ compare_dirs <- function(lang) {
                  ' "', ref_dir, '" "', out_dir, '"'))
   }
 }
+
+prout <- function(x, ext = "html", ...) {
+  if (!exists("pr_number", envir = parent.frame()))
+    assign("pr_number", 1, envir = parent.frame())
+  fname <- paste(paste0(sprintf("%02d", pr_number), "-"),
+                 deparse(substitute(x)), ext, sep = ".")
+  print(x, file = fname, ...)
+  pr_number <<- pr_number + 1
+}
+
 
 i <- 1
 compare <- TRUE

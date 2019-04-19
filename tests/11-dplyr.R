@@ -46,18 +46,42 @@ d2 %>% print(file = "08-descr-select.html")
 d3 %>% tb()
 d3 %>% print(file = "09-descr-filter.html")
 
-(d4 <- tobacco %>% group_by(smoker) %>% descr(stats = "common"))
-#d4 %>% view(method = "browser")
+(d4 <- tobacco %$% descr(age))
+d4 %>% tb()
+d4 %>% print(file = "10-descr-dollarpipe.html")
 
-(d5 <- tobacco %$% descr(age))
+(d5 <- tobacco %>% group_by(smoker) %>% descr(stats = "common"))
+#d5 %>% view(method = "browser")
 d5 %>% tb()
+d5 %>% tb(2)
+d5 %>% print(file = "11-descr-group_by-1.html")
 
+(d6 <- tobacco %>% group_by(smoker, gender = fct_explicit_na(gender)) %>% descr(stats = "common"))
+#d5 %>% view(method = "browser")
+d6 %>% tb()
+d6 %>% tb(2)
+d6 %>% print(file = "12-descr-group_by-2.html")
+
+(d7 <- tobacco %>% group_by(smoker) %>% descr(age, stats = "common"))
+d7 %>% tb()
+d7 %>% tb(2)
+d7 %>% print(file = "13-descr-group_by-special.html")
+
+view(d7)
+
+d7_2 <- stby(tobacco$age, tobacco$smoker, descr)
+d7_2 %>% tb()
+view(d7_2)
+
+# dfSummary
 (dfs1 <- tobacco %>% dfSummary(varnumbers = FALSE, valid.col = FALSE))
-dfs1 %>% print(file = "10-dfSummary.html")
+dfs1 %>% print(file = "13-dfSummary.html")
+
 
 (dfs2 <- tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary(valid.col = FALSE))
 dfs2 %>% print(file = "11-dfSummary-select.html")
 dfs2 %>% view()
+
 
 tobacco$gender %<>% fct_explicit_na()
 (dfs3 <- tobacco %>% group_by(gender) %>% dfSummary(valid.col = F))
