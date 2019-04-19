@@ -1,4 +1,4 @@
-Version 0.9.3
+Version 0.9.4
 -------------
  - Added support for **dplyr**'s `group_by()` function (as an alternative
    to `stby()`
