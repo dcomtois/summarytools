@@ -8,7 +8,7 @@
 
 # Basic tables + general formatting (style / plain.ascii) ---------------------- 
 
-> (f1 <- freq(tobacco$gender)) 
+> (freq_gender <- freq(tobacco$gender)) 
 
 Frequencies  
 tobacco$gender  
@@ -22,7 +22,7 @@ Type: Factor
        <NA>     22                               2.20         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> print(f1, plain.ascii = F) 
+> print(freq_gender, plain.ascii = F) 
 
 ### Frequencies  
 #### tobacco$gender  
@@ -36,7 +36,7 @@ Type: Factor
   **\<NA\>**     22                               2.20         100.00
    **Total**   1000    100.00         100.00    100.00         100.00
 
-> print(f1, plain.ascii = F, style = "rmarkdown") 
+> print(freq_gender, plain.ascii = F, style = "rmarkdown") 
 
 ### Frequencies  
 #### tobacco$gender  
@@ -50,7 +50,7 @@ Type: Factor
 | **\<NA\>** |   22 |         |              |    2.20 |       100.00 |
 |  **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-> print(f1, plain.ascii = F, style = "grid", headings = FALSE) 
+> print(freq_gender, plain.ascii = F, style = "grid", headings = FALSE) 
 
 
 +------------+------+---------+--------------+---------+--------------+

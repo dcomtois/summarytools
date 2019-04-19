@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 
-  <title>Data Frame Summary</title>
+  <title>Descriptive Statistics</title>
   <style type="text/css">/*!
  * Bootstrap v4.1.2 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -194,74 +194,154 @@ table.st-table td span {
 </head>
 <body style="background-color:white;">
 <div class="container st-container">
-  <h3>Data Frame Summary</h3>
+  <h3>Descriptive Statistics</h3>
   <h4>tobacco</h4>
-  <strong>Dimensions</strong>: 1000 x 4
-  <br/><strong>Duplicates</strong>: 2
+  <strong>Group</strong>: smoker = Yes
+  <br/><strong>N</strong>: 298
   <br/>
-  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline ">
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
     <tr>
-      <th align="center" class="no st-protect-top-border"><strong>No</strong></th>
-      <th align="center" class="variable st-protect-top-border"><strong>Variable</strong></th>
-      <th align="center" class="stats.values st-protect-top-border"><strong>Stats / Values</strong></th>
-      <th align="center" class="freqs.pct.valid st-protect-top-border"><strong>Freqs (% of Valid)</strong></th>
-      <th align="center" class="graph st-protect-top-border"><strong>Graph</strong></th>
-      <th align="center" class="missing st-protect-top-border"><strong>Missing</strong></th>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">1</td>
-      <td align="left">gender
-[factor]</td>
-      <td align="left">1. F
-2. M</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA4BAMAAAB6RHnQAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQTAjgFj1kBJwAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQKDS/FoiTSqeFTxEFJMUoYdagAAvkZHpEhk7T0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTlUMDY6NTY6MDUtMDQ6MDCwCI1FAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTE5VDA2OjU2OjA1LTA0OjAwwVU1+QAAAABJRU5ErkJggg=="></td>
-      <td align="center">22
-(2.2%)</td>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>49.76</span></td>
+      <td><span>25.64</span></td>
+      <td><span>22.49</span></td>
+      <td><span>1.00</span></td>
     </tr>
     <tr>
-      <td align="center">2</td>
-      <td align="left">age
-[numeric]</td>
-      <td align="left">Mean (sd) : 49.6 (18.3)
-min < med < max:
-18 < 50 < 80
-IQR (CV) : 32 (0.4)</td>
-      <td align="left" style="vertical-align:middle">63 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQTAjgFj1kBJwAAAKlJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjTGkPv9g7RHTOrDOVKToSaj3xNtNGHLlvklJleejLC9eAHrGJN5kTxjOlzX2LEZDucZC6dQgMlJY0zuoBTTpjnBtK4Ai9Zg/8R0wg0wLbbFsnd3GxbS4xlg/vyqGWCyBusJ02fMAMubwcDAwMDAwDrGfPYb0YTdN4OBgYGBgYGBgYGBgX2NeZM4UpMVkV3DxF7FGkIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTlUMDY6NTY6MDUtMDQ6MDCwCI1FAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTE5VDA2OjU2OjA1LTA0OjAwwVU1+QAAAABJRU5ErkJggg=="></td>
-      <td align="center">25
-(2.5%)</td>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.75</span></td>
+      <td><span>4.25</span></td>
+      <td><span>10.69</span></td>
+      <td><span>0.08</span></td>
     </tr>
     <tr>
-      <td align="center">3</td>
-      <td align="left">BMI
-[numeric]</td>
-      <td align="left">Mean (sd) : 25.7 (4.5)
-min < med < max:
-8.8 < 25.6 < 39.4
-IQR (CV) : 5.7 (0.2)</td>
-      <td align="left" style="vertical-align:middle">974 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQTAjgFj1kBJwAAALhJREFUaN7t2MsNgCAQRVFa0A6EDrT/3gSixg8ogTEq3pe4IBlO2IAMSpGcNJdptU13XpOODTZgYGDvxNxm11KYsV9fLeYPRjHMGWBgYGBgYH/B4veNDCy+OrAbMD3dgESwZT5YIRZu2DOxcIcBBgYGBvYo5k56Mczs538EOz5ZFWB+AAZWJ9bOJ4YINpeDDftOthTbrA7shZheP/8nYEtXFsLMujwBcwO/ACnMDyZs80MVwYqjSE5GN6UAKgRLbAsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDQtMTlUMDY6NTY6MDUtMDQ6MDCwCI1FAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA0LTE5VDA2OjU2OjA1LTA0OjAwwVU1+QAAAABJRU5ErkJggg=="></td>
-      <td align="center">26
-(2.6%)</td>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>19.00</span></td>
+      <td><span>9.01</span></td>
+      <td><span>5.00</span></td>
+      <td><span>0.86</span></td>
     </tr>
     <tr>
-      <td align="center">4</td>
-      <td align="left">smoker
-[factor]</td>
-      <td align="left">1. Yes
-2. No</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">298</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">29.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">702</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">70.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA4BAMAAADa2xE+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wQTAjgFj1kBJwAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBQ1ivEjkAbxzhB0ajekf1juod1TsAeikp60YSAACKOHj6LKKsXgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xOVQwNjo1NjowNS0wNDowMLAIjUUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTlUMDY6NTY6MDUtMDQ6MDDBVTX5AAAAAElFTkSuQmCC"></td>
-      <td align="center">0
-(0%)</td>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>25.70</span></td>
+      <td><span>22.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>36.36</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>290</span></td>
+      <td><span>291</span></td>
+      <td><span>291</span></td>
+      <td><span>298</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.32</span></td>
+      <td><span>97.65</span></td>
+      <td><span>97.65</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+ <div class="container st-container">
+  <strong>Group</strong>: smoker = No
+  <br/><strong>N</strong>: 702
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>49.53</span></td>
+      <td><span>25.77</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.10</span></td>
+      <td><span>4.59</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>18.00</span></td>
+      <td><span>8.83</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>25.58</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>39.44</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>685</span></td>
+      <td><span>683</span></td>
+      <td><span>674</span></td>
+      <td><span>702</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.58</span></td>
+      <td><span>97.29</span></td>
+      <td><span>96.01</span></td>
+      <td><span>100.00</span></td>
     </tr>
   </tbody>
 </table>
   Placeholder footnote
-</div>
-</body>
-</html>
+</div> </body>
+</html> 

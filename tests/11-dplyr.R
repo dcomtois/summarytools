@@ -75,15 +75,15 @@ view(d7_2)
 
 # dfSummary
 (dfs1 <- tobacco %>% dfSummary(varnumbers = FALSE, valid.col = FALSE))
-dfs1 %>% print(file = "13-dfSummary.html")
+dfs1 %>% print(file = "14-dfSummary.html")
 
 
 (dfs2 <- tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary(valid.col = FALSE))
-dfs2 %>% print(file = "11-dfSummary-select.html")
+dfs2 %>% print(file = "15-dfSummary-select.html")
 dfs2 %>% view()
 
 
 tobacco$gender %<>% fct_explicit_na()
 (dfs3 <- tobacco %>% group_by(gender) %>% dfSummary(valid.col = F))
-dfs3 %>% view(file = "12-dfSummary-group_by.html")
+dfs3 %>% view(file = "16-dfSummary-group_by.html")
 

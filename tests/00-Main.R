@@ -1,5 +1,4 @@
 rm(list=ls())
-setwd("..")
 (orig_dir <- getwd())
 if (Sys.info()[["sysname"]] == "Windows") {
   (ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
@@ -147,10 +146,10 @@ compare <- FALSE
   eval_with_feedback(testfiles[11], lang, compare) # dplyr
 # }
 
-# compare_dirs("en")
-# compare_dirs("fr")
-# compare_dirs("es")
-# compare_dirs("pt")
-# compare_dirs("tr")
-# compare_dirs("ru")
+compare_dirs("en")
+compare_dirs("fr")
+compare_dirs("es")
+compare_dirs("pt")
+compare_dirs("tr")
+compare_dirs("ru")
 

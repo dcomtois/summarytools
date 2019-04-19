@@ -937,38 +937,37 @@ N: 15
 > dgr2 %>% tb() 
 
 # A tibble: 12 x 17
-   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid pct.valid
-   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
- 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14      93.3
- 2 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14      93.3
- 3 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14      93.3
- 4 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
- 5 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15     100  
- 6 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14      93.3
- 7 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
- 8 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
- 9 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
-10 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
-11 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
-
+   sexe   variable    mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid pct.valid
+   <fct>  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+ 1 Fille  anglais     73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14      93.3
+ 2 Fille  economie    72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14      93.3
+ 3 Fille  francais    71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14      93.3
+ 4 Fille  geographie  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
+ 5 Fille  histoire    71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15     100  
+ 6 Fille  maths       73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14      93.3
+ 7 Garçon anglais     77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
+ 8 Garçon economie    75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
+ 9 Garçon francais    76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
+10 Garçon geographie  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
+11 Garçon histoire    74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
+12 Garçon maths       73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
 > dgr2 %>% tb(2) 
 
 # A tibble: 12 x 17
    sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid pct.valid
    <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
  1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14      93.3
- 2 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
+ 2 Garçon anglais     77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
  3 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14      93.3
- 4 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
+ 4 Garçon economie    75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
  5 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14      93.3
- 6 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
- 7 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
- 8 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
+ 6 Garçon francais    76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
+ 7 Fille  geographie  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
+ 8 Garçon geographie  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
  9 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15     100  
-10 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
+10 Garçon histoire    74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
 11 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14      93.3
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
+12 Garçon maths       73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
 
 > library(dplyr) 
 > library(magrittr) 
@@ -1056,7 +1055,7 @@ N: 489
 
 > tobacco$gender %<>% forcats::fct_explicit_na() 
 > (dd2 <- tobacco %>% group_by(gender) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 
 Descriptive Statistics  
 tobacco  
@@ -1102,7 +1101,7 @@ N: 22
 > dd2 %>% tb() 
 
 # A tibble: 12 x 9
-   value     variable       mean      sd    min   med   max n.valid pct.valid
+   gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
  1 F         age          49.6   18.3    18     50    80        475      97.1
  2 F         BMI          26.1    4.95    9.01  25.9  39.4      475      97.1
@@ -1120,7 +1119,7 @@ N: 22
 > dd2 %>% tb(2) 
 
 # A tibble: 12 x 9
-   value     variable       mean      sd    min   med   max n.valid pct.valid
+   gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
  1 F         age          49.6   18.3    18     50    80        475      97.1
  2 M         age          49.6   18.3    18     49.5  80        478      97.8
@@ -1136,7 +1135,7 @@ N: 22
 12 (Missing) samp.wgts     1.01   0.0811  0.861  1.05  1.06      22     100  
 
 > view(dd2) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 -- Output file written
 -- Output file appended
 
@@ -1416,7 +1415,7 @@ N: 3
 
 > tobacco$age.gr %<>% forcats::fct_explicit_na() 
 > (dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: smoker, diseased, disease
 
 Descriptive Statistics  
 tobacco  
@@ -1727,7 +1726,7 @@ N: 3
 56 M         (Missing) samp.wgts     1.03   0.0558  0.861  1.04   1.05       11     100  
 
 > view(dd4) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: smoker, diseased, disease
 -- Output file written
 -- Output file appended
 
@@ -1890,7 +1889,7 @@ Group: gender = (Missing)
 > ff3 %>% tb() 
 
 # A tibble: 9 x 7
-  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 F         Yes      141     10.1           10.1    9.61        9.61
 2 F         No       324     23.2           33.3   22.1        31.7 
@@ -1905,7 +1904,7 @@ Group: gender = (Missing)
 > ff3 %>% tb(2) 
 
 # A tibble: 9 x 7
-  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 F         Yes      141     10.1           10.1    9.61        9.61
 2 M         Yes      135      9.72          19.8    9.20       18.8 
