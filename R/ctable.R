@@ -87,19 +87,19 @@
 #' @importFrom stats addmargins na.omit chisq.test
 ctable <- function(x, y,
                    prop            = st_options("ctable.prop"),
-                   useNA           = "ifany", 
-                   totals          = st_options("ctable.totals"), 
-                   style           = st_options("style"), 
+                   useNA           = "ifany",
+                   totals          = st_options("ctable.totals"),
+                   style           = st_options("style"),
                    round.digits    = 1,
-                   justify         = "right", 
+                   justify         = "right",
                    plain.ascii     = st_options("plain.ascii"),
                    headings        = st_options("headings"),
                    display.labels  = st_options("display.labels"),
-                   split.tables    = Inf, 
+                   split.tables    = Inf,
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
-                   weights         = NA, 
-                   rescale.weights = FALSE, 
+                   weights         = NA,
+                   rescale.weights = FALSE,
                    ...) {
 
   if (inherits(x, "grouped_df")) {
