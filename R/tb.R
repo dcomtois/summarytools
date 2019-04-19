@@ -7,9 +7,10 @@
 #'  \code{\link{stby}} only. When \code{1} (default), the levels of the 
 #'  grouping variable are used to sort the table, followed by the values of 
 #'  the other grouping variables (if any), and either variable names
-#'  (for \code{\link{descr}} objects). When \dQuote{order} = \code{2}, the same 
-#'  columns are used for sorting the output table, but starting from the last
-#'  grouping variable up to the first.
+#'  (for \code{\link{descr}} objects) or variable values (for \code{\link{freq}}
+#'  objects). When \dQuote{order} = \code{2}, the same columns are used for 
+#'  sorting, but they are fed to the \code{\link{order}} function in the reverse
+#'  order.
 #' @param na.rm Logical. For \code{\link{freq}} objects, remove \code{<NA>} rows
 #' (or \code{(Missing)} rows if \code{NA} values were made explicit with 
 #' \code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}} 
@@ -44,7 +45,6 @@ tb <- function(x, order = 1, na.rm = FALSE) {
       
       left_part <- as_tibble(merge(grp_stats[[non_null_grs[1]]][,1],
                                    grp_values, all = TRUE))[,-1]
-      # colnames(left_part) <- sub("(.+)\\$(.+)", "\\2", colnames(grp_values))
     }
     
     nb_gr_var <- ncol(left_part)
