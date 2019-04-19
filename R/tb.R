@@ -53,7 +53,9 @@ tb <- function(x, order = 1, na.rm = FALSE) {
     
     nb_gr_var  <- ncol(left_part)
     right_part <- bind_rows(grp_stats)
-    if (all(right_part$variable == "value") && length(names(grp_values)) == 1) {
+    
+    if (attr(x[[1]], "st_type") == "descr" && 
+        all(right_part$variable == "value") && length(names(grp_values)) == 1) {
       right_part$variable <- attr(x[[1]], "data_info")$Variable
     }
     output     <- bind_cols(left_part, right_part)
