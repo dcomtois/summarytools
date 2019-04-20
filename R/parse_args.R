@@ -491,24 +491,6 @@ parse_args <- function(sys_calls,
     }
   }
 
-  #if (isTRUE(var_name) &&
-  #    (length(output$var_name) == 0 || is.na(output$var_name))) {
-  #  if (is.call(calls$piper$expr)) {
-  #    calls$piper$expr <- standardise_call(calls$piper$expr)
-  #    if ("x" %in% names(standardise_call(calls$piper$expr))) {
-  #      vname <- setdiff(as.character(calls$piper$expr$x), c(oper, caller))
-  #      if (length(vname) == 1 && vname %in% names(obj)) {
-  #        upd_output("var_name", vname)
-  #      }
-  #    }
-  #  } else {
-  #    vname <- setdiff(as.character(calls$piper$expr), c(oper, caller))
-  #    if (length(vname) == 1 && vname %in% colnames(obj)) {
-  #      upd_output("var_name", vname)
-  #    }
-  #  }
-  #}
-  
   get_last_x <- function(expr) {
     if (is.call(expr) && "x" %in% names(standardise_call(expr))) {
       get_last_x(standardise_call(expr)$x)
