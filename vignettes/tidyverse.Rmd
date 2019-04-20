@@ -1,5 +1,5 @@
 ---
-title: "summarytools in the Age of tidyverse"
+title: "summarytools in the Age of Tidyverse"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output: 
@@ -108,6 +108,7 @@ way I approached the development of **summarytools**:
    objects which:
      + are based on iterations over groups of data
      + possess attributes specific to **summarytools** inner workings
+ - Support for sampling weights 
  - Labelling capabilities : a `label()` function is included in the package,
    although similar functions from the **rapportools** and **Hmisc** packages
    produce the same results when generating **summarytools** tables

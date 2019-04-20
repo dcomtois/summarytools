@@ -15,6 +15,12 @@ freq(x, var = NULL, round.digits = st_options("round.digits"),
   rescale.weights = FALSE, ...)
 }
 \arguments{
+\item{x}{Factor or vector, or data frame when \emph{y} is also provided, 
+usually in a piped call.}
+
+\item{var}{Unquoted expression referring to a specific column in x. Provides
+support for piped function calls (e.g. \code{df \%>\% freq(some_var)}.}
+
 \item{round.digits}{Number of significant digits to display. Defaults to
 \code{2} and can be set globally; see \code{\link{st_options}}.}
 

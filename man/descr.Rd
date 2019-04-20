@@ -15,6 +15,9 @@ descr(x, var = NULL, stats = st_options("descr.stats"), na.rm = TRUE,
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
+\item{var}{Unquoted expression referring to a specific column in x. Provides
+support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.}
+
 \item{stats}{Which stats to produce. Either \dQuote{all} (default),
 \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},

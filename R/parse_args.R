@@ -616,7 +616,7 @@ parse_args <- function(sys_calls,
                   upd_output("var_name", sub("^.+\\((.*?)\\)+$", "\\1", 
                                              deparse(calls[["fun"]]$var)))
                 } else {
-                  upd_outut("var_name", NA_character_)
+                  upd_output("var_name", NA_character_)
                 }
               }
             }
