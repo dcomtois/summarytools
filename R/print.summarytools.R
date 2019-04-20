@@ -691,6 +691,11 @@ print_freq <- function(x, method) {
                                     x = row.names(freq_table), perl = TRUE)
     }
     
+    # Translate the "(Other)" category (when "rows" was used to filter out
+    # some values
+    rownames(freq_table)[which(rownames(freq_table) == "(Other)")] <-
+      trs("other")
+    
     # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
       row.names(freq_table) <- enc2native(row.names(freq_table))

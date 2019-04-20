@@ -6,7 +6,7 @@
 #'
 #' @param x A numerical vector or a data frame.
 #' @param var Unquoted expression referring to a specific column in x. Provides
-#'   support for piped function calls (e.g. \code{df %>% descr(some_var)}.    
+#'   support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.    
 #' @param stats Which stats to produce. Either \dQuote{all} (default),
 #'   \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
@@ -205,6 +205,11 @@ descr <- function(x,
   
   # Validate arguments -------------------------------------------------------
   errmsg <- character()  # problems with arguments will be stored here
+  
+  if (is.null(x)) {
+    tmp_x_name <- deparse(substitute(x))
+    stop(tmp_x_name, " is either NULL or does not exist")
+  }
   
   if (is.atomic(x_obj) && !is.numeric(x_obj)) {
     errmsg %+=% "'x' must be numeric"

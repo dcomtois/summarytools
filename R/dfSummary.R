@@ -220,6 +220,11 @@ dfSummary <- function(x,
   }
 
   # Validate arguments ---------------------------------------------------------
+  if (is.null(x)) {
+    tmp_x_name <- deparse(substitute(x))
+    stop(tmp_x_name, " is either NULL or does not exist")
+  }
+  
   errmsg <- character()  # problems with arguments will be stored here
   
   # Flag to replace colname when x is not a data frame

@@ -25,6 +25,10 @@ check_arguments <- function(mc, dotArgs) {
   
   
   # Arguments common to all functions ------------------------------------------
+  if (is.null(pf$x)) {
+    tmp_x_name <- deparse(substitute(x, env = parent.frame()))
+    errmsg %+=% paste(tmp_x_name, "is either NULL or does not exist")
+  }
   
   if ("round.digits" %in% names(mc) && 
       !isTRUE(test_int(pf$round.digits))) {
@@ -145,7 +149,8 @@ check_arguments <- function(mc, dotArgs) {
             (sign(pf$rows[1]) == -1 && 
              length(pf$rows) >= n_distinct(pf$x, na.rm = TRUE))) {
             errmsg %+=% "Invalid 'rows' argument"
-        } else if (max(abs(pf$rows)) > n_distinct(pf$x, na.rm = TRUE)) {
+        } else if (!is.null(pf$x) && 
+                   max(abs(pf$rows)) > n_distinct(pf$x, na.rm = TRUE)) {
           nmax <- n_distinct(pf$x, na.rm = TRUE)
           wrong_ind <- which(abs(pf$rows) > nmax)
           if (length(wrong_ind)) {
@@ -187,6 +192,11 @@ check_arguments <- function(mc, dotArgs) {
   
   # ctable-specific arguments --------------------------------------------------
   if (caller == "ctable") {
+    if (is.null(pf$y)) {
+      tmp_y_name <- deparse(substitute(y, env = parent.frame()))
+      errmsg %+=% paste(tmp_y_name, "is either NULL or does not exist")
+    }
+  
     if ("prop" %in% names(mc)) {
       prop <- tolower(substr(pf$prop, 1, 1))
       if(!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {

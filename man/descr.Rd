@@ -4,7 +4,7 @@
 \alias{descr}
 \title{Univariate Statistics for Numerical Data}
 \usage{
-descr(x, stats = st_options("descr.stats"), na.rm = TRUE,
+descr(x, var = NULL, stats = st_options("descr.stats"), na.rm = TRUE,
   round.digits = st_options("round.digits"),
   transpose = st_options("descr.transpose"),
   style = st_options("style"), plain.ascii = st_options("plain.ascii"),

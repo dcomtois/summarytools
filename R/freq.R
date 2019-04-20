@@ -3,10 +3,10 @@
 #' Displays weighted or unweighted frequencies, including <NA> counts and
 #' proportions.
 #'
-#' @param x Factor or vector, or data frame when \emph{y} is also provided 
-#'   (usually in a pipe call, like \code{df %>% freq(some_var)}.
+#' @param x Factor or vector, or data frame when \emph{y} is also provided, 
+#'   usually in a piped call.
 #' @param var Unquoted expression referring to a specific column in x. Provides
-#'   support for piped function calls (e.g. \code{df %>% freq(some_var)}.    
+#'   support for piped function calls (e.g. \code{df \%>\% freq(some_var)}.    
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
 #' @param order Ordering of rows in frequency table; \dQuote{names} (default for
