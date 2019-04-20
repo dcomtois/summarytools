@@ -37,5 +37,5 @@ usethis::use_data(.translations, .keywords_context,
 rm(tr, f, items)
 
 # Check that translations is in the package's environment (after build)
-# ls(loadNamespace("summarytools")) 
-# View(translations)
+# ls(loadNamespace("summarytools"))
+# View(summarytools:::.translations)
