@@ -5,51 +5,33 @@ tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
 
 # Basic tables + general formatting (style / plain.ascii)
-(freq_gender <- freq(tobacco$gender))
-print(freq_gender, plain.ascii = F)
-print(freq_gender, plain.ascii = F, style = "rmarkdown")
-print(freq_gender, plain.ascii = F, style = "grid", headings = FALSE)
-
-# Print to files (Style and/or method should be modified with message)
-prout(freq_gender, ext = "md", caption = "markdown table")
-prout(freq_gender, ext = "html", footnote = "html table")
-prout(freq_gender, ext = "txt", caption = "txt table")
-prout(freq_gender, ext = "html", footnote = "no bootstrap, with report title", report.title = "Freq without bootstrap",  bootstrap.css = FALSE)
+(f1 <- freq(tobacco$gender))
+print(f1, plain.ascii = F)
+print(f1, plain.ascii = F, style = "rmarkdown")
+print(f1, plain.ascii = F, style = "grid", headings = FALSE)
 
 # Variable label
 data(tabagisme)
 label(tabagisme$age.gr) <- "Groupe d'âge"
 
 # Round to 1 decimal
-(freq_age_gr <- freq(tabagisme$age.gr, round.digits = 1))
+(f2 <- freq(tabagisme$age.gr, round.digits = 1))
 
 # Mask label, then type
-print(freq_age_gr, display.labels = FALSE)
-print(freq_age_gr, display.type = F)
+print(f2, display.labels = FALSE)
+print(f2, display.type = F)
 
 # Mask total / NAs / cumul
-print(freq_age_gr, totals = FALSE)          # OK
-print(freq_age_gr, report.nas = FALSE)      # OK
-print(freq_age_gr, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
-print(freq_age_gr, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
-print(freq_age_gr, report.nas = FALSE, totals = FALSE)  # OK
-print(freq_age_gr, report.nas = FALSE, cumul = FALSE)   # OK
-print(freq_age_gr, report.nas = FALSE, cumul = FALSE, totals = FALSE)
+print(f2, totals = FALSE)          # OK
+print(f2, report.nas = FALSE)      # OK
+print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
+print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
+print(f2, report.nas = FALSE, totals = FALSE)  # OK
+print(f2, report.nas = FALSE, cumul = FALSE)   # OK
+print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE)
 
 # Replace the missing symbol
-prout(freq_age_gr, missing = "---", footnote = "missing: ---")
-
-# Omit cumulative and na reporting
-print(freq_age_gr, cumul = FALSE)
-print(freq_age_gr, cumul = FALSE, report.nas = FALSE)
-prout(freq_age_gr, cumul = FALSE, report.nas = FALSE, footnote = "No cumul & no NA's")
-
-(freq_age_gr_minimal <- freq(tabagisme$age.gr, cumul = FALSE, totals = FALSE, report.nas = FALSE))
-
-print(freq_age_gr_minimal, footnote = "Minimal table")
-print(freq_age_gr_minimal, cumul = TRUE, report.nas = TRUE, totals = TRUE)
-
-prout(freq_age_gr_minimal, footnote = "Minimal orverrided to full-flavored", cumul = TRUE, report.nas = TRUE, totals = TRUE)
+print(f2, missing = "---")
 
 # 1) Original order - factor
 freq(tobacco$diseased)
@@ -90,6 +72,7 @@ freq(tobacco$age.gr, order = "levels-")
 freq(tobacco$age.gr, order = "levels-", report.nas = FALSE)
 
 
+
 # 1) Original order - character
 freq(tobacco$disease)
 
@@ -107,14 +90,14 @@ freq(tobacco$disease, order = "names-", report.nas = FALSE)
 
 # Order and subset
 freq(tobacco$disease)
-(freq_disease <- freq(tobacco$disease, order = "freq", rows = 1:5))
-print(freq_disease, cumul = FALSE)        # OK
-print(freq_disease, report.nas = FALSE)   # OK
-print(freq_disease, totals = FALSE)       # OK
-print(freq_disease, cumul = FALSE, report.nas = FALSE)  # OK
-print(freq_disease, cumul = FALSE, totals = FALSE)      # OK
-print(freq_disease, report.nas = FALSE, totals = FALSE) # OK
-print(freq_disease, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
+(f3 <- freq(tobacco$disease, order = "freq", rows = 1:5))
+print(f3, cumul = FALSE)        # OK
+print(f3, report.nas = FALSE)   # OK
+print(f3, totals = FALSE)       # OK
+print(f3, cumul = FALSE, report.nas = FALSE)  # OK
+print(f3, cumul = FALSE, totals = FALSE)      # OK
+print(f3, report.nas = FALSE, totals = FALSE) # OK
+print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
 
 freq(tobacco$disease, rows = -1)
 freq(tobacco$disease, rows = "H")
@@ -123,13 +106,14 @@ freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE)
 
 
 # Override the rounding
-print(freq_disease, round.digits = 2)
+print(f3, round.digits = 2)
+
 
 # "Free" (not in a df) variables
 Gender <- tobacco$gender
 Gender[1] <- "F"
-gender_standalone <- freq(Gender)
-prount(gender_standalone)
+freq(Gender)
+view(freq(Gender))
 
 # subsetting
 # On factor - headings not affected
@@ -140,39 +124,54 @@ freq(tobacco$gender[1:500])
 freq(tobacco[,1]) # label doesn't show (ok)
 freq(tobacco[[3]])
 
-# Weights
-(weighted_maladie <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
-print(weighted_maladie, report.nas = FALSE)
-prout(weighted_maladie)
+# Print to files (Style and/or method should be modified with message)
+print(f1, file = "01.md")
+print(f1, file = "01.html")
+print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap")
 
-(weighted_maladie_fr_ordered <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq"))
-prout(weighted_maladie_fr_ordered, footnote = "no nas overrided to yes nas", report.nas = TRUE)
+# Omit cumulative and na reporting
+(f4 <- freq(tobacco$age.gr))
+print(f4, cumul = FALSE)
+print(f4, cumul = FALSE, report.nas = FALSE)
+
+(f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE))
+print(f5, cumul = TRUE, report.nas = TRUE)
+
+# Weights
+(wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
+print(wf1, file = "03-weights.html")
+print(wf1, report.nas = FALSE)
+
+(wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq"))
+print(wf2, report.nas = TRUE)
 
 mala.f <- factor(tabagisme$maladie, levels = sort(names(table(tabagisme$maladie)), decreasing = TRUE))
-(weighted_maladie_fct <- freq(mala.f, weights = tabagisme$ponderation))
-prout(weighted_maladie_fct, footnote = "No NAs & No totals (overrides)", report.nas = FALSE, totals = FALSE)
+(wf3 <- freq(mala.f, weights = tabagisme$ponderation))
+print(wf3, report.nas = FALSE, totals = FALSE)
 
 # with()
 label(tobacco) <- "Study on Tobacco and Health"
 label(tobacco$gender) <- "Subject's Gender"
-(weighted_gender <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
-prout(weighted_gender, footnote = "With labels")
+(wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
 
 # stby()
 label(tobacco$diseased) <- "Subject has an illness"
-(dis_by_smoker <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
-view(dis_by_smoker, 'pander')
-print(dis_by_smoker, headings = FALSE, style = "rmarkdown", plain.ascii = FALSE)
-prout(dis_by_smoker, ext = "md", caption = "missing: xxxx, no headings, rmarkdown", missing = "xxxx")
-prout(dis_by_smoker, headings = FALSE, footnote = "no headings")
+(bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
+view(bf1, 'pander')
+print(bf1, headings = FALSE, plain.ascii = FALSE)
+print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx")
+view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html")
 
-(species_by_boolean_cond <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
-prout(species_by_boolean_cond)
+(bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
+print(bf2, file = "06-by.html")
+
+(bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
+print(bf3, file = "07-by.html")
 
 # Using stby() + with() --- retrieving labels works only when executed "not in batch"
 label(tobacco$diseased) <- "Subject has an illness"
-(dis_by_smoker_with <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)))
-prout(dis_by_smoker_with)
+(bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)))
+view(bwf1)
 
 # Labels, global options
 st_options(plain.ascii = TRUE, style = "grid")
@@ -180,9 +179,9 @@ label(tobacco) <- "A Study On Tobacco and Health"
 label(tobacco$gender) <- "Subject's Gender"
 label(tobacco$age.gr) <- "Age Group"
 label(tobacco$smoker) <- "Subject Smokes"
-(all_tobacco <- freq(tobacco))
-prout(all_tobacco)
-prout(all_tobacco, footnote = "No labels, No type (overrides)", display.labels = F, display.type = F)
+(ft <- freq(tobacco))
+print(ft, display.labels = F, display.type = F)
+
 
 # lapply()
 st_options(style = "simple")
@@ -190,16 +189,16 @@ tobacco_subset <- tobacco[,c(3,5,6)]
 lapply(tobacco_subset, freq, style = "rmarkdown")
 
 # Other global options
-st_options(freq.totals = FALSE, freq.report.nas = FALSE, freq.cumul = FALSE)
-print(all_tobacco, caption = "No totals, No NA's, No cumul (global options)")
+st_options(freq.totals = FALSE, freq.report.nas = FALSE)
+freq(tobacco)
 
-st_options("reset")
+st_options(freq.totals = TRUE, freq.report.nas = TRUE)
 
 # HTML - omitting NA reporting and/or Cumulative proportions
-prout(freq_age_gr, footnote = "After options reset - to be appended")
-prout(freq_age_gr, footnote = "No NAs (override), append", report.nas = FALSE, append = TRUE)
-prout(freq_age_gr, footnote = "No cumul, append", cumul = FALSE, append = TRUE)
-prout(freq_age_gr, footnote = "No NAs, No cumul, No total (override)", report.nas = FALSE, cumul = FALSE, totals = FALSE, append = TRUE)
+view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions")
+view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE")
+view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE")
+view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
 
 # tb()
 library(magrittr)

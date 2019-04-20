@@ -2,6 +2,7 @@
 library(summarytools)
 library(magrittr)
 library(dplyr)
+options(tibble.print_max = Inf)
 set.seed(765543543)
 tobacco$smoker[sample(1:1000, size = 25, replace = FALSE)] <- NA_character_
 
@@ -118,7 +119,8 @@ view(dd3, file = "01-descr-2-grp-vars.html")
 tobacco$age.gr %<>% forcats::fct_explicit_na()
 (dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common"))
 dd4 %>% tb()
-dd4 %>% tb(2)
+dd4 %>% tb(na.rm = TRUE) # no effect expected
+dd4 %>% tb(order = 2)
 view(dd4)
 
 
@@ -127,16 +129,19 @@ data(tobacco)
 (ff1 <- stby(tobacco$smoker, tobacco$gender, freq))
 ff1 %>% tb()
 ff1 %>% tb(2)
+ff1 %>% tb(2, TRUE)
 view(ff1)
 
 (ff2 <- stby(tobacco$smoker, tobacco$gender, freq, report.nas = F))
 ff2 %>% tb()
 ff2 %>% tb(2)
+ff2 %>% tb(2, TRUE)
 
 tobacco$gender %<>% forcats::fct_explicit_na()
 (ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq())
 ff3 %>% tb()
 ff3 %>% tb(2)
+ff3 %>% tb(na.rm = 2, TRUE)
 view(ff3)
 
 (ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq)))

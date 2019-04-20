@@ -1863,7 +1863,7 @@ tobacco$samp.wgts
 
 # lapply() --------------------------------------------------------------------- 
 
-> st_options(style = "rmarkdown") 
+> st_options(style = "simple") 
 > tobacco_subset <- tobacco[,c(3,5,6)] 
 > lapply(tobacco_subset, freq, style = "rmarkdown") 
 
@@ -1944,73 +1944,73 @@ tobacco$samp.wgts
 > freq(tobacco) 
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
-### Frequencies  
-#### tobacco$gender  
-**Label:** Subject's Gender  
-**Type:** Factor  
+Frequencies  
+tobacco$gender  
+Label: Subject's Gender  
+Type: Factor  
 
-| &nbsp; | Freq |     % | % Cum. |
-|-------:|-----:|------:|-------:|
-|  **F** |  489 | 50.00 |  50.00 |
-|  **M** |  489 | 50.00 | 100.00 |
+           Freq       %   % Cum.
+-------- ------ ------- --------
+       F    489   50.00    50.00
+       M    489   50.00   100.00
 
-#### tobacco$age.gr  
-**Label:** Age Group  
-**Type:** Factor  
+tobacco$age.gr  
+Label: Age Group  
+Type: Factor  
 
-|    &nbsp; | Freq |     % | % Cum. |
-|----------:|-----:|------:|-------:|
-| **18-34** |  258 | 26.46 |  26.46 |
-| **35-50** |  241 | 24.72 |  51.18 |
-| **51-70** |  317 | 32.51 |  83.69 |
-|  **71 +** |  159 | 16.31 | 100.00 |
+              Freq       %   % Cum.
+----------- ------ ------- --------
+      18-34    258   26.46    26.46
+      35-50    241   24.72    51.18
+      51-70    317   32.51    83.69
+       71 +    159   16.31   100.00
 
-#### tobacco$smoker  
-**Label:** Subject Smokes  
-**Type:** Factor  
+tobacco$smoker  
+Label: Subject Smokes  
+Type: Factor  
 
-|  &nbsp; | Freq |     % | % Cum. |
-|--------:|-----:|------:|-------:|
-| **Yes** |  298 | 29.80 |  29.80 |
-|  **No** |  702 | 70.20 | 100.00 |
+            Freq       %   % Cum.
+--------- ------ ------- --------
+      Yes    298   29.80    29.80
+       No    702   70.20   100.00
 
-#### tobacco$diseased  
-**Label:** Subject has an illness  
-**Type:** Factor  
+tobacco$diseased  
+Label: Subject has an illness  
+Type: Factor  
 
-|  &nbsp; | Freq |     % | % Cum. |
-|--------:|-----:|------:|-------:|
-| **Yes** |  224 | 22.40 |  22.40 |
-|  **No** |  776 | 77.60 | 100.00 |
+            Freq       %   % Cum.
+--------- ------ ------- --------
+      Yes    224   22.40    22.40
+       No    776   77.60   100.00
 
-#### tobacco$disease  
-**Type:** Character  
+tobacco$disease  
+Type: Character  
 
-|              &nbsp; | Freq |     % | % Cum. |
-|--------------------:|-----:|------:|-------:|
-|          **Cancer** |   34 | 15.32 |  15.32 |
-|     **Cholesterol** |   21 |  9.46 |  24.77 |
-|        **Diabetes** |   14 |  6.31 |  31.08 |
-|       **Digestive** |   12 |  5.41 |  36.49 |
-|         **Hearing** |   14 |  6.31 |  42.79 |
-|           **Heart** |   20 |  9.01 |  51.80 |
-|    **Hypertension** |   36 | 16.22 |  68.02 |
-|     **Hypotension** |   11 |  4.95 |  72.97 |
-| **Musculoskeletal** |   19 |  8.56 |  81.53 |
-|    **Neurological** |   10 |  4.50 |  86.04 |
-|           **Other** |    2 |  0.90 |  86.94 |
-|       **Pulmonary** |   20 |  9.01 |  95.95 |
-|          **Vision** |    9 |  4.05 | 100.00 |
+                        Freq       %   % Cum.
+--------------------- ------ ------- --------
+               Cancer     34   15.32    15.32
+          Cholesterol     21    9.46    24.77
+             Diabetes     14    6.31    31.08
+            Digestive     12    5.41    36.49
+              Hearing     14    6.31    42.79
+                Heart     20    9.01    51.80
+         Hypertension     36   16.22    68.02
+          Hypotension     11    4.95    72.97
+      Musculoskeletal     19    8.56    81.53
+         Neurological     10    4.50    86.04
+                Other      2    0.90    86.94
+            Pulmonary     20    9.01    95.95
+               Vision      9    4.05   100.00
 
-#### tobacco$samp.wgts  
-**Type:** Numeric  
+tobacco$samp.wgts  
+Type: Numeric  
 
-|                &nbsp; | Freq |     % | % Cum. |
-|----------------------:|-----:|------:|-------:|
-| **0.861423220973783** |  267 | 26.70 |  26.70 |
-|  **1.04417670682731** |  249 | 24.90 |  51.60 |
-|  **1.04938271604938** |  324 | 32.40 |  84.00 |
-|            **1.0625** |  160 | 16.00 | 100.00 |
+                          Freq       %   % Cum.
+----------------------- ------ ------- --------
+      0.861423220973783    267   26.70    26.70
+       1.04417670682731    249   24.90    51.60
+       1.04938271604938    324   32.40    84.00
+                 1.0625    160   16.00   100.00
 
 > st_options(freq.totals = TRUE, freq.report.nas = TRUE) 
 
@@ -2073,25 +2073,25 @@ tobacco$samp.wgts
 > library(dplyr) 
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10) 
 
-### Frequencies  
-#### tobacco$disease  
-**Type:** Character  
+Frequencies  
+tobacco$disease  
+Type: Character  
 
-|              &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|--------------------:|-----:|--------:|-------------:|--------:|-------------:|
-|          **Cancer** |   34 |   15.32 |        15.32 |    3.40 |         3.40 |
-|     **Cholesterol** |   21 |    9.46 |        24.77 |    2.10 |         5.50 |
-|        **Diabetes** |   14 |    6.31 |        31.08 |    1.40 |         6.90 |
-|       **Digestive** |   12 |    5.41 |        36.49 |    1.20 |         8.10 |
-|         **Hearing** |   14 |    6.31 |        42.79 |    1.40 |         9.50 |
-|           **Heart** |   20 |    9.01 |        51.80 |    2.00 |        11.50 |
-|    **Hypertension** |   36 |   16.22 |        68.02 |    3.60 |        15.10 |
-|     **Hypotension** |   11 |    4.95 |        72.97 |    1.10 |        16.20 |
-| **Musculoskeletal** |   19 |    8.56 |        81.53 |    1.90 |        18.10 |
-|    **Neurological** |   10 |    4.50 |        86.04 |    1.00 |        19.10 |
-|         **(Other)** |   31 |   13.96 |       100.00 |    3.10 |        22.20 |
-|          **\<NA\>** |  778 |         |              |   77.80 |       100.00 |
-|           **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+              (Other)     31     13.96         100.00      3.10          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
 
 
 # Deal with explicited NA's ---------------------------------------------------- 
@@ -2100,17 +2100,17 @@ tobacco$samp.wgts
 > freq(tobacco$age.gr) 
 -- explicit NA's detected - setting 'report.nas' to FALSE
 
-### Frequencies  
-#### tobacco$age.gr  
-**Label:** Age Group  
-**Type:** Factor  
+Frequencies  
+tobacco$age.gr  
+Label: Age Group  
+Type: Factor  
 
-|        &nbsp; | Freq |      % | % Cum. |
-|--------------:|-----:|-------:|-------:|
-|     **18-34** |  258 |  25.80 |  25.80 |
-|     **35-50** |  241 |  24.10 |  49.90 |
-|     **51-70** |  317 |  31.70 |  81.60 |
-|      **71 +** |  159 |  15.90 |  97.50 |
-| **(Missing)** |   25 |   2.50 | 100.00 |
-|     **Total** | 1000 | 100.00 | 100.00 |
+                  Freq        %   % Cum.
+--------------- ------ -------- --------
+          18-34    258    25.80    25.80
+          35-50    241    24.10    49.90
+          51-70    317    31.70    81.60
+           71 +    159    15.90    97.50
+      (Missing)     25     2.50   100.00
+          Total   1000   100.00   100.00
 

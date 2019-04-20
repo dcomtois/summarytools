@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 
-  <title>Descriptive Statistics</title>
+  <title>Frequencies</title>
   <style type="text/css">/*!
  * Bootstrap v4.1.2 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -194,66 +194,765 @@ table.st-table td span {
 </head>
 <body style="background-color:white;">
 <div class="container st-container">
-  <h3>Descriptive Statistics</h3>
-  <h4> BMI by gender </h4>
-  <strong>Data Frame</strong>: tobacco
-  <br/><strong>Label</strong>: Body Mass Index
-  <br/><strong>N</strong>: 489
+  <h3>Frequencies</h3>
+  <h4>tobacco$smoker</h4>
+  <strong>Type</strong>: Factor
+  <br/><strong>Group</strong>: age.gr = 18-34, gender = F
   <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
   <thead>
     <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">F</th>
-      <th align="center" class="st-protect-top-border">M</th>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>
-        <strong>Mean</strong></td>
-      <td><span>26.10</span></td>
-      <td><span>25.31</span></td>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">34</td>
+      <td align="center">27.64</td>
+      <td align="center">27.64</td>
+      <td align="center">27.64</td>
+      <td align="center">27.64</td>
     </tr>
     <tr>
-      <td>
-        <strong>Std.Dev</strong></td>
-      <td><span>4.95</span></td>
-      <td><span>3.98</span></td>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">89</td>
+      <td align="center">72.36</td>
+      <td align="center">100.00</td>
+      <td align="center">72.36</td>
+      <td align="center">100.00</td>
     </tr>
     <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>9.01</span></td>
-      <td><span>8.83</span></td>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
     </tr>
     <tr>
-      <td>
-        <strong>Median</strong></td>
-      <td><span>25.87</span></td>
-      <td><span>25.14</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>39.44</span></td>
-      <td><span>36.76</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>N.Valid</strong></td>
-      <td><span>475</span></td>
-      <td><span>477</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.Valid</strong></td>
-      <td><span>97.14</span></td>
-      <td><span>97.55</span></td>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">123</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
     </tr>
   </tbody>
 </table>
-  Placeholder footnote
 </div>
-</body>
-</html>
+ <div class="container st-container">
+  <strong>Group</strong>: age.gr = 18-34, gender = M
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">38</td>
+      <td align="center">29.23</td>
+      <td align="center">29.23</td>
+      <td align="center">29.23</td>
+      <td align="center">29.23</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">92</td>
+      <td align="center">70.77</td>
+      <td align="center">100.00</td>
+      <td align="center">70.77</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">130</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 18-34, gender = (Missing)
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">2</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">3</td>
+      <td align="center">60.00</td>
+      <td align="center">100.00</td>
+      <td align="center">60.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">5</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 35-50, gender = F
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">39</td>
+      <td align="center">33.05</td>
+      <td align="center">33.05</td>
+      <td align="center">33.05</td>
+      <td align="center">33.05</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">79</td>
+      <td align="center">66.95</td>
+      <td align="center">100.00</td>
+      <td align="center">66.95</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">118</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 35-50, gender = M
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">31</td>
+      <td align="center">26.27</td>
+      <td align="center">26.27</td>
+      <td align="center">26.27</td>
+      <td align="center">26.27</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">87</td>
+      <td align="center">73.73</td>
+      <td align="center">100.00</td>
+      <td align="center">73.73</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">118</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 35-50, gender = (Missing)
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">2</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+      <td align="center">40.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">3</td>
+      <td align="center">60.00</td>
+      <td align="center">100.00</td>
+      <td align="center">60.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">5</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 51-70, gender = F
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">48</td>
+      <td align="center">30.57</td>
+      <td align="center">30.57</td>
+      <td align="center">30.57</td>
+      <td align="center">30.57</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">109</td>
+      <td align="center">69.43</td>
+      <td align="center">100.00</td>
+      <td align="center">69.43</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">157</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 51-70, gender = M
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">48</td>
+      <td align="center">31.79</td>
+      <td align="center">31.79</td>
+      <td align="center">31.79</td>
+      <td align="center">31.79</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">103</td>
+      <td align="center">68.21</td>
+      <td align="center">100.00</td>
+      <td align="center">68.21</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">151</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 51-70, gender = (Missing)
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">3</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">6</td>
+      <td align="center">66.67</td>
+      <td align="center">100.00</td>
+      <td align="center">66.67</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">9</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 71 +, gender = F
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">21</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">56</td>
+      <td align="center">72.73</td>
+      <td align="center">100.00</td>
+      <td align="center">72.73</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">77</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 71 +, gender = M
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">23</td>
+      <td align="center">29.11</td>
+      <td align="center">29.11</td>
+      <td align="center">29.11</td>
+      <td align="center">29.11</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">56</td>
+      <td align="center">70.89</td>
+      <td align="center">100.00</td>
+      <td align="center">70.89</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">79</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = 71 +, gender = (Missing)
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">1</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+      <td align="center">33.33</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">2</td>
+      <td align="center">66.67</td>
+      <td align="center">100.00</td>
+      <td align="center">66.67</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">3</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = (Missing), gender = F
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">5</td>
+      <td align="center">35.71</td>
+      <td align="center">35.71</td>
+      <td align="center">35.71</td>
+      <td align="center">35.71</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">9</td>
+      <td align="center">64.29</td>
+      <td align="center">100.00</td>
+      <td align="center">64.29</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">14</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: age.gr = (Missing), gender = M
+  <br/>
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">smoker</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align="center" class="st-protect-top-border">Yes</th>
+      <td align="center">3</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+      <td align="center">27.27</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">No</th>
+      <td align="center">8</td>
+      <td align="center">72.73</td>
+      <td align="center">100.00</td>
+      <td align="center">72.73</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">0</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">0.00</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">11</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+    </tr>
+  </tbody>
+</table>
+  <p>Placeholder footnote</p>
+</div> </body>
+</html>             
