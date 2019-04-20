@@ -33,11 +33,11 @@
 parse_args <- function(sys_calls,
                        sys_frames,
                        match_call, 
-                       var = "x",
-                       silent = FALSE, 
-                       df_name = TRUE,
-                       df_label = TRUE,
-                       var_name = TRUE,
+                       var       = "x",
+                       silent    = FALSE, 
+                       df_name   = TRUE,
+                       df_label  = TRUE,
+                       var_name  = TRUE,
                        var_label = TRUE,
                        caller = "") {
   
@@ -322,6 +322,7 @@ parse_args <- function(sys_calls,
   pos$by      <- which(funs_stack %in% c("by()", "stby()"))
   pos$with    <- which(funs_stack == "with()")
   pos$pipe    <- which(funs_stack == "`%>%`()")
+  pos$piper   <- which(funs_stack == "`%>>%`()")
   pos$dollar  <- which(funs_stack == "`%$%`()")
   pos$lapply  <- which(funs_stack == "lapply()")
   pos$tapply  <- which(funs_stack == "tapply()")
@@ -490,6 +491,59 @@ parse_args <- function(sys_calls,
     }
   }
 
+  get_last_x <- function(expr) {
+    if (is.call(expr) && "x" %in% names(standardise_call(expr))) {
+      get_last_x(standardise_call(expr)$x)
+    } else {
+      return(expr)
+    }
+  }
+  
+  # in the call stack: %>>% ----------------------------------------------------
+  if ("piper" %in% names(calls)) {
+    # Get "last x" to have dataframe name
+    x_expr   <- get_last_x(calls$piper)
+    #x_name   <- deparse(x_expr)
+    x_str    <- as.character(x_expr)
+    
+    # Get object to get to the variables
+    obj      <- eval(standardise_call(calls$piper)$x, 
+                     envir = sys_frames[[pos$piper]]$envir)
+    if (is.data.frame(obj)) {
+      upd_output("df_label", label(obj))
+      if (ncol(obj) == 1) {
+        upd_output("var_name", colnames(obj))
+        upd_output("var_label", label(obj[[1]]))
+      }
+      if (length(x_str <- setdiff(x_str, c(caller, oper))) == 1) {
+        upd_output("df_name", x_str)
+      } else if (length(x_str) == 2) {
+        upd_output("df_name", x_str[1])
+        upd_output("var_name", x_str[2])
+      }
+    } else {
+      # obj is a vector or factor
+      upd_output("var_label", label(obj))
+      if (length(x_str <- setdiff(x_str, c(caller, oper, ""))) == 1) {
+        upd_output("df_name", x_str)
+      } else if (length(x_str) == 2) {
+        upd_output("df_name", x_str[1])
+        vnum <- suppressWarnings(as.numeric(x_str[2]))
+        if (!is.na(vnum)) {
+          obj_df <- get_object(name = x_str[1], "data.frame")
+          if (vnum <= ncol(obj_df)) {
+            upd_output("var_name", colnames(obj_df)[vnum])
+          }
+        } else {
+          upd_output("var_name", x_str[2])
+        }
+      }
+    }
+    if (isTRUE(do_return)) {
+      return(output)
+    }
+  }
+  
   # in the call stack: lapply() ------------------------------------------------
   if ("lapply" %in% names(calls)) {
     try(calls$lapply <- standardise_call(calls$lapply[-4]))

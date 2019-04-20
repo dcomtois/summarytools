@@ -1,6 +1,7 @@
 # ------------------------------ parse_args.R ----------------------------------
 library(dplyr)
 library(magrittr)
+library(pipeR)
 data(tobacco)
 label(tobacco) <- "Tobacco Study"
 label(tobacco$smoker) <- "Smoking Status"
@@ -29,15 +30,30 @@ with(tobacco, freq(smoker))
 with(tobacco, descr(age))             
 with(tobacco, ctable(smoker, diseased))
 
-# pipe
-tobacco$smoker %>% freq()     
-tobacco["smoker"] %>% freq()  
+# pipe - magrittr
+tobacco$smoker %>% freq()
+tobacco["smoker"] %>% freq()
 tobacco[["smoker"]] %>% freq()
-tobacco[,5] %>% freq()        
+tobacco[,5] %>% freq()
 tobacco[[5]] %>% freq()
 if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
 tobacco %$% ctable(smoker, diseased)
 tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
+tobacco %>% select(age.gr)   %>% freq() # SUCCESS
+tobacco %>% group_by(gender) %>% descr()
+tobacco %>% group_by(gender) %>% freq(smoker)
+
+# pipe - pipeR
+tobacco$smoker %>>% freq()      # OK
+tobacco[["smoker"]] %>>% freq() # OK
+tobacco["smoker"] %>>% freq()   # OK
+tobacco %>>% select(age) %>>% arrange() %>>% descr(stats = "common")  # OK
+tobacco[,5] %>>% freq()         # OK
+tobacco[[5]] %>% freq()         # OK
+if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)  # OK
+tobacco %>>% select(age.gr) %>>% freq() # SUCCESS
+tobacco %>>% group_by(gender) %>>% descr()
+tobacco %>>% group_by(gender) %>>% freq(smoker)
 
 
 # by

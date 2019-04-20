@@ -195,65 +195,445 @@ table.st-table td span {
 <body style="background-color:white;">
 <div class="container st-container">
   <h3>Descriptive Statistics</h3>
-  <h4> BMI by gender </h4>
-  <strong>Data Frame</strong>: tobacco
-  <br/><strong>Label</strong>: Body Mass Index
-  <br/><strong>N</strong>: 489
+  <h4>tobacco</h4>
+  <strong>Group</strong>: smoker = Yes, gender = F
+  <br/><strong>N</strong>: 147
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
     <tr>
       <th></th>
-      <th align="center" class="st-protect-top-border">F</th>
-      <th align="center" class="st-protect-top-border">M</th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
         <strong>Mean</strong></td>
-      <td><span>26.10</span></td>
-      <td><span>25.31</span></td>
+      <td><span>49.15</span></td>
+      <td><span>25.92</span></td>
+      <td><span>22.50</span></td>
+      <td><span>1.00</span></td>
     </tr>
     <tr>
       <td>
         <strong>Std.Dev</strong></td>
-      <td><span>4.95</span></td>
-      <td><span>3.98</span></td>
+      <td><span>18.34</span></td>
+      <td><span>4.38</span></td>
+      <td><span>11.07</span></td>
+      <td><span>0.08</span></td>
     </tr>
     <tr>
       <td>
         <strong>Min</strong></td>
+      <td><span>19.00</span></td>
       <td><span>9.01</span></td>
-      <td><span>8.83</span></td>
+      <td><span>5.00</span></td>
+      <td><span>0.86</span></td>
     </tr>
     <tr>
       <td>
         <strong>Median</strong></td>
-      <td><span>25.87</span></td>
-      <td><span>25.14</span></td>
+      <td><span>50.00</span></td>
+      <td><span>25.99</span></td>
+      <td><span>22.00</span></td>
+      <td><span>1.04</span></td>
     </tr>
     <tr>
       <td>
         <strong>Max</strong></td>
-      <td><span>39.44</span></td>
-      <td><span>36.76</span></td>
+      <td><span>80.00</span></td>
+      <td><span>36.36</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.06</span></td>
     </tr>
     <tr>
       <td>
         <strong>N.Valid</strong></td>
-      <td><span>475</span></td>
-      <td><span>477</span></td>
+      <td><span>142</span></td>
+      <td><span>144</span></td>
+      <td><span>143</span></td>
+      <td><span>147</span></td>
     </tr>
     <tr>
       <td>
         <strong>Pct.Valid</strong></td>
-      <td><span>97.14</span></td>
-      <td><span>97.55</span></td>
+      <td><span>96.60</span></td>
+      <td><span>97.96</span></td>
+      <td><span>97.28</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+ <div class="container st-container">
+  <strong>Group</strong>: smoker = Yes, gender = M
+  <br/><strong>N</strong>: 143
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>50.49</span></td>
+      <td><span>25.27</span></td>
+      <td><span>22.81</span></td>
+      <td><span>1.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>19.26</span></td>
+      <td><span>4.17</span></td>
+      <td><span>10.36</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>19.00</span></td>
+      <td><span>15.99</span></td>
+      <td><span>5.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>52.50</span></td>
+      <td><span>24.91</span></td>
+      <td><span>22.50</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>35.17</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>140</span></td>
+      <td><span>139</span></td>
+      <td><span>140</span></td>
+      <td><span>143</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.90</span></td>
+      <td><span>97.20</span></td>
+      <td><span>97.90</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: smoker = Yes, gender = (Missing)
+  <br/><strong>N</strong>: 8
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>47.88</span></td>
+      <td><span>27.21</span></td>
+      <td><span>16.75</span></td>
+      <td><span>1.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.67</span></td>
+      <td><span>2.48</span></td>
+      <td><span>8.92</span></td>
+      <td><span>0.09</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>24.00</span></td>
+      <td><span>24.22</span></td>
+      <td><span>5.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>45.50</span></td>
+      <td><span>26.94</span></td>
+      <td><span>20.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>75.00</span></td>
+      <td><span>31.18</span></td>
+      <td><span>28.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>8</span></td>
+      <td><span>8</span></td>
+      <td><span>8</span></td>
+      <td><span>8</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: smoker = No, gender = F
+  <br/><strong>N</strong>: 342
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>49.74</span></td>
+      <td><span>26.18</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.28</span></td>
+      <td><span>5.18</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>18.00</span></td>
+      <td><span>10.35</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>25.82</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>39.44</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>333</span></td>
+      <td><span>331</span></td>
+      <td><span>325</span></td>
+      <td><span>342</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.37</span></td>
+      <td><span>96.78</span></td>
+      <td><span>95.03</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: smoker = No, gender = M
+  <br/><strong>N</strong>: 346
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>49.20</span></td>
+      <td><span>25.32</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>17.96</span></td>
+      <td><span>3.91</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>18.00</span></td>
+      <td><span>8.83</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>49.00</span></td>
+      <td><span>25.16</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>36.76</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>338</span></td>
+      <td><span>338</span></td>
+      <td><span>335</span></td>
+      <td><span>346</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.69</span></td>
+      <td><span>97.69</span></td>
+      <td><span>96.82</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: smoker = No, gender = (Missing)
+  <br/><strong>N</strong>: 14
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>52.57</span></td>
+      <td><span>26.79</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.01</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.45</span></td>
+      <td><span>4.07</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>19.00</span></td>
+      <td><span>20.24</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>59.00</span></td>
+      <td><span>27.16</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>32.43</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>14</span></td>
+      <td><span>14</span></td>
+      <td><span>14</span></td>
+      <td><span>14</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
     </tr>
   </tbody>
 </table>
   Placeholder footnote
-</div>
-</body>
-</html>
+</div> </body>
+</html>     
