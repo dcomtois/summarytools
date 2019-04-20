@@ -1,0 +1,15 @@
+^doc$
+^Meta$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Renviron
+^\.Rhistory
+^\.gitignore
+^img$
+^translations$
+^TODO.R$
+^README.md$
+^README.Rmd$
+^tests$
+^COPYING$
+^inst/WORDLIST$
