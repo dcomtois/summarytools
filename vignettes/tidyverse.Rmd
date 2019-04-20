@@ -1,0 +1,266 @@
+---
+title: "summarytools in the Age of tidyverse"
+author: "Dominic Comtois"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+vignette: >
+  %\VignetteIndexEntry{Introduction to summarytools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{magrittr}
+  %\VignetteDepends{forcats}
+  %\VignetteDepends{dplyr}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+library(summarytools)
+library(dplyr)
+library(forcats)
+library(magrittr)
+st_options(plain.ascii = FALSE,
+           style = "rmarkdown",
+           footnote = NA,
+           subtitle.emphasis = FALSE)
+```
+
+```{r, echo=FALSE}
+st_css()
+```
+
+# Introduction
+
+I started writing **summarytools** several years ago (the first CRAN 
+release dates back to 2014), way before the
+[**tidyverse**](https://cran.r-project.org/package=tidyverse) came about,
+profoundly impacting the way people use R, write their code and
+organize their thoughts while doing work on and with their data. My
+focus in the last months has in been making **summarytools** fit more
+naturally in this framework, first by supporting pipe operators first from
+[**magrittr**](https://cran.r-project.org/package=magrittr), and more
+recently from [**pipeR**](https://cran.r-project.org/package=pipeR).
+
+### Several Possible Avenues
+
+I've considered making "twin copies" of the four core functions
+so that one set would work best with the traditionnal / _base R_, and the
+other with the **tidyverse**. I'Ve opted against that route
+for various reasons, but mainly because I found it worth the challenge to
+try and keep things unified, adding flexibility all the while maintaining 
+full backward compatibility. This document is not an introduction to 
+**summarytools** per se -- there is already an 
+[introductory vignette](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html) 
+and [another vignette](https://cran.r-project.org/package=summarytools/vignettes/Recommendations-rmarkdown.html) 
+focusing on the integration of **summarytools** outputs in _Rmarkdown_ 
+documents. Rather, it is a more general exposé of the package's new 
+functionalities seen through the lens of this dichotomy that has taken place
+inside the _R_ language itself.
+
+Still, a review of some of the basic basic functionalities is included, so
+that readers with no prior knowledge of **summarytools** can also follow.
+
+## The Four Core Function
+
+The following functions constitute the foundations of the package. Having worked
+in fields where the two software suites _SAS_ and _SPSS_ were largely 
+predominant, I found _R_ frustrating at first, because I was so used to 
+producing visually appealing univariate or bi-variate statistical outputs of
+the following nature:
+
+|                Category             |  _summarytools_ function |  _SAS_ procedure         |  _SPSS_  procedure |
+|:-----------------------------------:|--------------------------|--------------------------|--------------------|
+| Frequency Tables                    | `freq()`                 | PROC FREQ                | FREQUENCIES        |
+| Cross-Tabulations                   | `ctable()`               | PROC FREQ PROC TABULATE  | CROSSTABS          |
+| Univariate Statistics (Univariates) | `descr()`                | PROC MEANS PROC SUMMARY  | DESCRIPTIVES       |
+| Full-Fledged Dataset   Summaries    | `dfSummary()`            |             ?            |          ?         |
+
+
+|          Category        | Frequency Tables | Cross-Tabulations        |  Univariate Statistics (Univariates) |
+|:------------------------:|------------------|--------------------------|--------------------------------------|
+|  _summarytools_ function | `freq()`         | `ctable()`               | `descr()`                            |
+|  _SAS_ procedure         | PROC FREQ        |  PROC FREQ PROC TABULATE |  PROC MEANS PROC SUMMARY             |
+|  _SPSS_  procedure       | FREQUENCIES      | CROSSTABS                | DESCRIPTIVES                         |
+
+
+I did find useful a variery of functions spread across several packages, but 
+none offered consistency in the presentation, or sometimes even any basic 
+aesthetic concern. Moreover, no single package offered all four, nor minimally
+all three categories of statistic tables.
+
+The "Full-Fledge Data Summaries" is something I had been working on for some
+time. Its first iteration used _Python_'s interface to _SPSS_ objects to 
+generate contents similar to what `dfSummary()` offers, minus the graphics. Its
+output was directed into _Excel_ spreadsheets which in turn were formatted
+using a _VBA_ macro.
+
+The following features from the proprietary software did also influence the
+way I approached the development of **summarytools**:
+
+ - **Consistency and flexibility of outputs** : **summarytools** outputs come in 
+   two flavours - plain text / markdown, as well as HTML complemented by
+   *Twitter Bootstrap Cascading StyleSheets*; individual files can be produced,
+   as well as appended.   
+ - Split-group analysis : a "quasi-clone" of `by()`, `stby()`, allows creating
+   objects which:
+     + are based on iterations over groups of data
+     + possess attributes specific to **summarytools** inner workings
+ - Labelling capabilities : a `label()` function is included in the package,
+   although similar functions from the **rapportools** and **Hmisc** packages
+   produce the same results when generating **summarytools** tables
+ - Control over titles and footnotes : since it is not designed as a standalone
+   reporting system, flexibility on that front is limited, but users can rather
+   easily:
+     + show or hide the heading section that displays data names and a limited
+       number of attributes
+     + Add captions to plain text / rmarkdown tables, as well as footnotes to
+       HTML tables
+ - Some more advanced exporting capabilities such as appending results to 
+   existing reports
+ - Missing vs valid data information
+
+
+
++-------------------+-------------+-------------------------------+---------------------------+
+| Type              | Function    | Traditional                   | Tidyverse / pipes         |
++-------------------+-------------+-------------------------------+---------------------------+
+| Single Tables     | freq()      | freq(tobacco$gender)          | tobacco %>% freq(gender)  |
+|                   |             |                               | tobacco %$% freq(gender)  |
+|                   |             |                               | tobacco %>>% freq(gender) |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | descr()     | descr(tobacco$age)            | tobacco %>%               |
+|                   |             |                               |   group_by(gender) %>%    |
+|                   |             |                               |   freq(smoker)            |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | ctable()    | with(tobacco,                 | tobacco %$%               |
+|                   |             |   ctable(gender, smoker)      |   ctable(gender, smoker)  |
+|                   |             | )                             |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | dfSummary() | dfSummary(tobacco)            | tobacco %>% dfSummary()   |
+|                   |             |                               | tobacco %$% dfSummary()   |
+|                   |             |                               | tobacco %>>% dfSummary()  |
++-------------------+-------------+-------------------------------+---------------------------+
+| Iteration over    | freq()      | freq(tobacco)                 | tobacco %>% freq()        |
+| columns           |             |                               | tobacco %$% freq()        |
+|                   |             |                               | tobacco %>>% freq()       |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | ctable()    |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | descr()     | descr(tobacco)                | tobacco %>% descr()       |
+|                   |             |                               | tobacco %$% descr()       |
+|                   |             |                               | tobacco %>>% descr()      |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | dfSummary() |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+| Iteration over    | freq()      | with(tobacco,                 | tobacco %>%               |
+| subgroups         |             |   stby(smoker, gender, freq)  |   group_by(gender) %>%    |
+|                   |             | )                             |   freq(smoker)            |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | descr()     | with(tobacco,                 | tobacco %>%               |
+|                   |             |   stby(age, gender, descr)    |   group_by(gender) %>%    |
+|                   |             | )                             |   descr(age)              |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | ctable()    |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | dfSummary() | stby(tobacco,                 | tobacco %>%               |
+|                   |             |      tobacco$gender,          |   group_by(gender) %>%    |
+|                   |             |      dfSummary)               |   dfSummary()             |
++-------------------+-------------+-------------------------------+---------------------------+
+| Two-way iteration | freq()      |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | ctable()    |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | descr()     | stby(tobacco,                 | tobacco %>%               |
+|                   |             |      tobacco$gender,          |   group_by(gender) %>%    |
+|                   |             |      descr)                   |   descr                   |
++-------------------+-------------+-------------------------------+---------------------------+
+|                   | dfSummary() |                               |                           |
++-------------------+-------------+-------------------------------+---------------------------+
+
+
+# In the Pipeline 
+
+This section demonstrates how to effectively use **summarytools**
+with **magrittr** pipe operators and **dplyr**'s `group_by()`.
+
+## Frequency Tables With freq()
+
+Since version 0.9.0, `freq()` works both with vectors/factors and 
+data frames. In the latter case, a list-type object is created, just
+like using `lapply(df, freq)` would, with a two key distinctions: 1) the 
+resulting object's class is _stby_, which allows **summarytools** to 
+immediately seize control over their printing or html rendering; 2) a 
+threshold is used to decide whether numerical variables should be 
+ignored or not, depending on the number of distinct values they contain.
+The value of this threshold has a default value of 25 which can be
+modified using `st_options(freq.ignore.threshold)`.
+
+### Frequencies for a Single Vector or Factor
+
+<!-- The traditional way: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- freq(tobacco$smoker) -->
+<!-- ``` -->
+
+<!-- The pipes way: -->
+<!-- ```{r} -->
+<!-- tobacco %>% freq(smoker) -->
+<!-- # Also possible: -->
+<!-- # tobaaco %$% freq(smoker) -->
+<!-- ``` -->
+
+<!-- To obtain grouped statisitics the traditionnal way, we use the `stby()` -->
+<!-- function, which works exactly like base R's `by()`: -->
+<!-- ```{r, eval=FALSE} -->
+<!-- stby(data = tobacco$smoker, INDICES = tobacco$gender, FUN = freq) -->
+<!-- ``` -->
+
+<!-- The same can be achieved using `dplyr::group_by`. To avoid a warning about -->
+<!-- implicit `NA`'s on the grouping variable, we use `forcats::fct_explicit_na()` -->
+<!-- to make them explicit. -->
+<!-- ```{r} -->
+<!-- library(dplyr) -->
+<!-- library(forcats) -->
+<!-- tobacco %>%  -->
+<!--   group_by(gender = fct_explicit_na(gender)) %>% -->
+<!--   freq(smoker, totals = FALSE) -->
+<!-- ``` -->
+
+<!-- The `totals = FALSE` argument was added since it is in the spirit of tidy -->
+<!-- data. -->
+
+<!-- #### Using parameters to refine results -->
+<!-- Here is an example that illustrates the use of parameters; we want the simplest -->
+<!-- table showing the 5 most common values for the "disease" variable: -->
+<!-- ```{r, eval=FALSE} -->
+<!-- freq(tobacco$disease, order = "freq", rows = 1:5,  -->
+<!--      report.nas = FALSE, cumul = FALSE) -->
+<!-- ``` -->
+
+<!-- ... the same using pipes: -->
+<!-- ```{r} -->
+<!-- tobacco %>% freq(disease, order = "freq", rows = 1:5,  -->
+<!--                  report.nas = FALSE, cumul = FALSE) -->
+<!-- ``` -->
+
+<!-- ### Get Really Tidy -->
+<!-- The recently introduced function `tb()` takes summarytools objects and turns -->
+<!-- them into _real_ tidy tables. The letters "tb" refer to the word / function -->
+<!-- _tibble_. It works with `freq()` and `descr()` only, because the structure of -->
+<!-- `ctable()` and `dfSummary()` is not compatible with the concept of tidy data. -->
+
+<!-- Here is what a tidied `freq()` table looks like: -->
+<!-- ```{r} -->
+<!-- tobacco %>% freq(smoker) %>% tbl() -->
+<!-- ``` -->
+
+<!-- When one or more grouping variables are added, we have the following results: -->
+<!-- ```{r} -->
+<!-- tobacco$gender %<>% forcats::fct_explicit_na() -->
+<!-- tobacco$age.gr %<>% forcats::fct_explicit_na() -->
+<!-- tobacco %>% group_by(gender, age.gr) %>% freq(smoker) %>% tbl() -->
+<!-- ``` -->
