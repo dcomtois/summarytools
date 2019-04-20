@@ -11,6 +11,7 @@
 ^README.md$
 ^README.Rmd$
 ^tests$
+^inst/includes/favicon..png$
 ^COPYING$
 ^inst/WORDLIST$
 ^vignettes/tidyverse.Rmd$
