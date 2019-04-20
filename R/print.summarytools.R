@@ -504,7 +504,7 @@ print.summarytools <- function(x,
     
     if (isTRUE(append)) {
       f <- file(file, open = "r", encoding = "utf-8")
-      html_content_in <- paste(readLines(f, warn = FALSE, encoding = "utf-8"), 
+      html_content_in <- paste(readLines(f, warn = FALSE, encoding = "utf-8"),
                                collapse="\n")
       close(f)
       top_part    <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
@@ -517,13 +517,18 @@ print.summarytools <- function(x,
                                                bottom_part)), collapse="\n")
       
     } else {
-
+      
       if (method %in% c("browser", "viewer")) {
         html_content <-
           tags$div(
             class="container st-container",
             tags$head(
               tags$title(HTML(conv_non_ascii(report.title))),
+              tags$link(rel="icon", type = "image/png",
+                        href=paste0("file://", 
+                                    system.file("includes/favicon.png",
+                                                package = "summarytools",
+                                                mustWork = FALSE))),
               if (isTRUE(bootstrap.css))
                 includeCss(system.file(package="summarytools", 
                                        "includes/stylesheets/bootstrap.min.css")),
