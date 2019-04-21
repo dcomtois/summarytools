@@ -151,6 +151,7 @@ print.summarytools <- function(x,
   # object is a list, either created
   # - using lapply() 
   # - using freq with a dataframe as x
+  # - using dplyr::group_by
   if (is.list(x) && 
       !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
     view(x, method = method, file = file, append = append,
@@ -524,11 +525,6 @@ print.summarytools <- function(x,
             class="container st-container",
             tags$head(
               tags$title(HTML(conv_non_ascii(report.title))),
-              tags$link(rel="icon", type = "image/png",
-                        href=paste0("file://", 
-                                    system.file("includes/favicon.png",
-                                                package = "summarytools",
-                                                mustWork = FALSE))),
               if (isTRUE(bootstrap.css))
                 includeCss(system.file(package="summarytools", 
                                        "includes/stylesheets/bootstrap.min.css")),
