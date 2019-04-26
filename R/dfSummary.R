@@ -487,7 +487,12 @@ crunch_factor <- function(column_data, email_val) {
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-  
+
+  column_data <- ws_to_symbol(column_data)
+
+  levels(column_data)[levels(column_data) == ""] <- 
+    paste0("(", trs("empty.str"), ")")
+    
   max.string.width    <- parent.frame()$max.string.width
   max.distinct.values <- parent.frame()$max.distinct.values
   graph.magnif        <- parent.frame()$graph.magnif
@@ -599,9 +604,14 @@ crunch_character <- function(column_data, email_val) {
   
   if (isTRUE(parent.frame()$trim.strings)) {
     column_data <- trimws(column_data)
+  } else {
+    # https://stackoverflow.com/questions/46728047/r-rstudio-console-encoding-windows
+    column_data <- ws_to_symbol(column_data)
   }
   
   n_empty <- sum(column_data == "", na.rm = TRUE)
+  
+  column_data[column_data == ""] <- paste0("(", trs("empty.str"), ")")
   
   if (n_empty == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str"), "\n")

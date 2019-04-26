@@ -462,7 +462,9 @@ freq <- function(x,
     output <- rbind(output, c(colSums(output, na.rm = TRUE)[1:2], rep(100,3)))
     colnames(output) <- c(trs("freq"), trs("pct.valid.f"), trs("pct.valid.cum"), 
                           trs("pct.total"), trs("pct.total.cum"))
-    rownames(output) <- c(names(freq_table), trs("total"))
+    rownames(output) <- c(ws_to_symbol(names(freq_table)), trs("total"))
+    rownames(output)[rownames(output) == ""] <- 
+      paste0("(", trs("empty.str"), ")")
     
     # NA's explicited with forcats::fct_explicit_na(): set report.nas to FALSE
     # unless report.nas was explicit in the function call

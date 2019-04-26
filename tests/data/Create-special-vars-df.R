@@ -60,5 +60,6 @@ special_vars <- data.frame(bin         = bin,
                            some_empty_str_f = as.factor(some_empty_str), 
                            stringsAsFactors = FALSE
 )
-rm(bin, date1, date2, ean_num, ean_values, empty_na, i, probs, tri, emails, miss, inval)
+rm(bin, date1, date2, ean_num, ean_values, empty_na, i, probs, tri, emails, 
+   miss, inval, dups, some_empty_str)
 save(special_vars, file = "tests/data/special_vars.RData")
