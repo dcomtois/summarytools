@@ -60,6 +60,7 @@ missing               ,column name (dfSummary)                                  
 distinct.value        ,cell content (dfSummary) - singular form                      ,valor distinto
 distinct.values       ,cell content (dfSummary) - plural form                        ,valores distintos
 all.nas               ,cell content (dfSummary) - column has only NA's               ,Todos os NA's
+empty.str             ,cell content (freq) - column has values equal to ""           ,String vazia
 all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,Strings vazias
 all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,Todas as strings vazias/ NA's
 no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,Sem níveis definidos

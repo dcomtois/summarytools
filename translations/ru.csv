@@ -60,6 +60,7 @@ missing               ,column name (dfSummary)                                  
 distinct.value        ,cell content (dfSummary) - singular form                      ,уникальные значения
 distinct.values       ,cell content (dfSummary) - plural form                        ,уникальные значения
 all.nas               ,cell content (dfSummary) - column has only NA's               ,Все неопределенные
+empty.str             ,cell content (freq) - column has values equal to ""           ,пустые строка
 all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,Все пустые строки
 all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,Все пустые строки / неопределенные
 no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,неопределенные уровни
