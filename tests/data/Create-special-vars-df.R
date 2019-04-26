@@ -25,6 +25,8 @@ inval         <- unique(floor(runif(150, 1,1000)))
 emails[inval] <- sub("@", " ", emails[inval])
 dups              <- unique(floor(runif(100, 1,1000)))
 emails[dups + 1]  <- emails[dups]
+some_empty_str    <- sample(c("", "  ", NA, "A", "B", "C"), size = 1000, replace = TRUE,
+                            prob = c(.03,.04, .03, .6,.25,.05))
 
 special_vars <- data.frame(bin         = bin, 
                            bin_char    = as.character(bin),
@@ -54,6 +56,8 @@ special_vars <- data.frame(bin         = bin,
                            date_2_posxct = as.POSIXct(date2),
                            emails      = emails,
                            emails_fact = as.factor(emails),
+                           some_empty_str = some_empty_str,
+                           some_empty_str_f = as.factor(some_empty_str),                            
                            stringsAsFactors = FALSE
 )
 rm(bin, date1, date2, ean_num, ean_values, empty_na, i, probs, tri, emails, miss, inval)
