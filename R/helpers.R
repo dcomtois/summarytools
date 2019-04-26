@@ -46,6 +46,39 @@ conv_non_ascii <- function(...) {
   out
 }
 
+# ws_to_symbol -----------------------------------------------------------------
+# Replace leading and trailing white space in character vectors and factor
+# levels by the special character intToUtf8(183)
+#' @keywords internal
+ws_to_symbol <- function(x) {
+  #intchar <- c(729, 1632, 183, 765, 11825, 9251, 9141, 11825)
+  ws_char <- intToUtf8(183)
+  ws_char <- enc2native(ws_char)
+  if (is.character(x)) {
+    x <- enc2native(x)
+    left_ws <- nchar(x) - nchar(sub("^ +", "", x))
+    right_ws <- nchar(x) - nchar(sub(" +$", "", x))
+    right_ws[nchar(x) == left_ws] <- 0
+    outstr <- paste0(strrep(ws_char, times = left_ws), trimws(x),
+                     strrep(ws_char, times = right_ws))
+    outstr[is.na(x)] <- NA
+    return(outstr)
+  }
+  
+  if (is.factor(x)) {
+    levx <- levels(x)
+    levx <- enc2native(levx)
+    left_ws  <- nchar(levx) - nchar(sub("^ +", "", levx))
+    right_ws <- nchar(levx) - nchar(sub(" +$", "", levx))
+    right_ws[left_ws == nchar(levx)] <- 0
+    newlev <- paste0(strrep(ws_char, times = left_ws), trimws(levx),
+                     strrep(ws_char, times = right_ws))
+    newlev[is.na(levx)] <- NA              
+    levels(x) <- newlev
+    return(x)
+  }
+}
+
 # Shorcut function to get translation strings
 #' @keywords internal
 trs <- function(item, l = st_options("lang")) {
