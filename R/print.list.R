@@ -23,6 +23,7 @@ print.list <- function(x,
                        custom.css    = st_options("custom.css"),
                        silent        = FALSE,
                        footnote      = st_options("footnote"), 
+                       collapse      = 0,
                        escape.pipe   = st_options("escape.pipe"),
                        ...) {
   
@@ -38,6 +39,7 @@ print.list <- function(x,
          custom.css    = custom.css,
          silent        = silent,
          footnote      = footnote,
+         collapse      = collapse,
          escape.pipe   = escape.pipe,
          ...)
     

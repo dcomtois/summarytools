@@ -8,8 +8,7 @@
 #'    append = FALSE, report.title = NA, table.classes = NA,
 #'    bootstrap.css = st_options('bootstrap.css'), 
 #'    custom.css = st_options('custom.css'), silent = FALSE, 
-#'    footnote = st_options('footnote'), max.tbl.height = Inf,
-#'    escape.pipe = st_options('escape.pipe'), \dots)
+#'    footnote = st_options('footnote'), collapse = 0, max.tbl.height = Inf,
 #'
 #' @param x A summarytools object that was generated with \code{\link{freq}},
 #'   \code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.
@@ -47,6 +46,7 @@
 #'  in a \code{<div>} with the specified height and a scroll bar. Intended
 #'  to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
 #'  \dQuote{pander}. \code{Inf} by default.
+#' @param collapse Numeric. (TO BE COMPLETED)
 #' @param escape.pipe Logical. Set to \code{TRUE} when using \code{style='grid'}
 #'   and \code{file} argument is supplied if the intent is to generate a text
 #'   file that can be converted to other formats using \emph{Pandoc}. To change
@@ -135,17 +135,18 @@
 #'             test_string check_file_exists
 #' @export
 print.summarytools <- function(x,
-                               method         = "pander", 
-                               file           = "", 
+                               method         = "pander",
+                               file           = "",
                                append         = FALSE,
-                               report.title   = NA, 
-                               table.classes  = NA, 
+                               report.title   = NA,
+                               table.classes  = NA,
                                bootstrap.css  = st_options("bootstrap.css"),
-                               custom.css     = st_options("custom.css"), 
-                               silent         = FALSE, 
+                               custom.css     = st_options("custom.css"),
+                               silent         = FALSE,
                                footnote       = st_options("footnote"),
                                max.tbl.height = Inf,
-                               escape.pipe    = st_options("escape.pipe"), 
+                               collapse       = 0,
+                               escape.pipe    = st_options("escape.pipe"),
                                ...) {
 
   # object is a list, either created
@@ -154,11 +155,20 @@ print.summarytools <- function(x,
   # - using dplyr::group_by
   if (is.list(x) && 
       !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
-    view(x, method = method, file = file, append = append,
-         report.title = report.title, table.classes = table.classes, 
-         bootstrap.css = bootstrap.css, custom.css = custom.css, 
-         silent = silent, footnote = footnote, 
-         escape.pipe = escape.pipe, ...)
+    view(x,
+         method        = method,
+         file          = file,
+         append        = append,
+         report.title  = report.title,
+         table.classes = table.classes, 
+         bootstrap.css = bootstrap.css,
+         custom.css    = custom.css, 
+         silent        = silent,
+         footnote      = footnote,
+         collapse      = collapse,
+         escape.pipe   = escape.pipe,
+         ...)
+    
     return(invisible())
   }
   
@@ -382,6 +392,9 @@ print.summarytools <- function(x,
     }
   }
 
+  # TODO: See where to put that bit
+  attr(x, "format_info")$collapse <- collapse
+  
   # Override of data info attributes
   if ("dataframe" %in% tolower(names(dotArgs))) {
     dotArgs$Data.frame <- dotArgs$Dataframe
@@ -431,12 +444,11 @@ print.summarytools <- function(x,
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
       paste0(
-        "<p>", conv_non_ascii(trs("generated.by")),
+        conv_non_ascii(trs("generated.by")),
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
         " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
-        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt")),
-        "</p>"
+        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt"))
       )
   }
 
@@ -506,16 +518,16 @@ print.summarytools <- function(x,
     if (isTRUE(append)) {
       f <- file(file, open = "r", encoding = "utf-8")
       html_content_in <- paste(readLines(f, warn = FALSE, encoding = "utf-8"),
-                               collapse="\n")
+                               collapse = "\n")
       close(f)
       top_part    <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
       insert_part <- 
         iconv(paste(capture.output(tags$div(class="container st-container", 
                                             res)), 
-                    collapse="\n"), to = "utf-8")
+                    collapse = "\n"), to = "utf-8")
       html_content <- paste(capture.output(cat(top_part, insert_part, 
-                                               bottom_part)), collapse="\n")
+                                               bottom_part)), collapse = "\n")
       
     } else {
       
@@ -525,6 +537,14 @@ print.summarytools <- function(x,
             class="container st-container",
             tags$head(
               tags$title(HTML(conv_non_ascii(report.title))),
+              if (collapse)
+                includeScript(system.file(
+                  package="summarytools", "includes/scripts/jquery-3.4.0.slim.min.js"
+                )),
+              if (collapse)
+                includeScript(system.file(
+                  package="summarytools", "includes/scripts/bootstrap.min.js"
+                )),
               if (isTRUE(bootstrap.css))
                 includeCss(system.file(package="summarytools", 
                                        "includes/stylesheets/bootstrap.min.css")),
@@ -534,7 +554,7 @@ print.summarytools <- function(x,
                 includeCss(path = custom.css)
             ),
             res)
-        
+
       } else {
         # method == "render"
         html_content <-
@@ -865,6 +885,18 @@ print_freq <- function(x, method) {
         )
     }
     
+    # Encapsulate the table in a collapsible div if necessary
+    if (format_info$collapse) {
+      div_id <- paste0(sample(c(letters, LETTERS), size = 1),
+                      paste(sample(c(letters, LETTERS, 0:9), size = 11),
+                            collapse = ""))
+      freq_table_html <- div(freq_table_html,
+                             class = "collapse show",
+                             id    = div_id)
+    } else {
+      div_id <- NA
+    }
+
     # Cleanup extra spacing and linefeeds in html to correct layout issues
     freq_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
                             replacement = "\\1\\2", 
@@ -876,7 +908,7 @@ print_freq <- function(x, method) {
                             perl = TRUE)
     
     # Prepare the main "div" for the html report
-    div_list <- build_heading_html(format_info, data_info, method)
+    div_list <- build_heading_html(format_info, data_info, method, div_id)
     
     if (length(div_list) > 0 &&
         !("shiny.tag" %in% class(div_list[[length(div_list)]]))) {
@@ -1660,9 +1692,9 @@ print_dfs <- function(x, method) {
 build_heading_pander <- function(format_info, data_info) {
   
   caller <- as.character(sys.call(-1))[1]
-  head1 = NA # Main title (e.g. "Data Frame Summary")
-  head2 = NA # The data frame, the variable, or the 2 variables for ctable
-  head3 = NA # Additional elements (includes Variable exceptionnaly when
+  head1  <- NA # Main title (e.g. "Data Frame Summary")
+  head2  <- NA # The data frame, the variable, or the 2 variables for ctable
+  head3  <- NA # Additional elements (includes Variable exceptionnaly when
              # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
@@ -1872,7 +1904,7 @@ build_heading_pander <- function(format_info, data_info) {
 # Build headings (html) --------------------------------------------------------
 #' @keywords internal
 #' @import htmltools
-build_heading_html <- function(format_info, data_info, method) {
+build_heading_html <- function(format_info, data_info, method, div_id = NA) {
 
   caller <- as.character(sys.call(-1))[1]
   head1  <- NA # uses h3()
@@ -1921,9 +1953,27 @@ build_heading_html <- function(format_info, data_info, method) {
     } else {
       if ("Variable" %in% names(data_info)) {
         if (isTRUE(st_options("subtitle.emphasis"))) {
-          head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+          if (!is.na(div_id)) {
+            head2 <- 
+              h4(HTML(paste0(
+                '<p data-toggle="collapse" aria-expanded="true" ',
+                'aria-controls="', div_id, '" href="#', div_id, '">',
+                conv_non_ascii(data_info$Variable),
+                "</p>")))
+          } else {
+            head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+          }
         } else {
-          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
+          if (!is.na(div_id)) {
+            head2 <- 
+              strong(HTML(paste0(
+                '<p data-toggle="collapse" aria-expanded="true" ',
+                'aria-controls="', div_id, '" href="#', div_id, '">',
+                conv_non_ascii(data_info$Variable),
+                "</p>")))
+          } else {
+            head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
+          }
         }
       }
       
@@ -1958,9 +2008,27 @@ build_heading_html <- function(format_info, data_info, method) {
 
     if ("Variable" %in% names(data_info)) {
       if (isTRUE(st_options("subtitle.emphasis"))) {
-        head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        if (!is.na(div_id)) {
+          head2 <- 
+            h4(HTML(paste0(
+              '<p data-toggle="collapse" aria-expanded="true" ',
+              'aria-controls="', div_id, '" href="#', div_id, '">',
+              conv_non_ascii(data_info$Variable),
+              "</p>")))
+        } else {
+          head2 <- h4(HTML(conv_non_ascii(data_info$Variable)))
+        }
       } else {
-        head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
+        if (!is.na(div_id)) {
+            head2 <- 
+              strong(HTML(paste0(
+                '<p data-toggle="collapse" aria-expanded="true" ',
+                'aria-controls="', div_id, '" href="#', div_id, '">',
+                conv_non_ascii(data_info$Variable),
+                "</p>")))
+        } else {
+          head2 <- strong(HTML(conv_non_ascii(data_info$Variable)), br())
+        }
       }
     }
     
