@@ -1660,10 +1660,10 @@ print_dfs <- function(x, method) {
 build_heading_pander <- function(format_info, data_info) {
   
   caller <- as.character(sys.call(-1))[1]
-  head1 = NA # Main title (e.g. "Data Frame Summary")
-  head2 = NA # The data frame, the variable, or the 2 variables for ctable
-  head3 = NA # Additional elements (includes Variable exceptionnaly when
-             # headings = FALSE and by() or lapply() were used
+  head1  <- NA # Main title (e.g. "Data Frame Summary")
+  head2  <- NA # The data frame, the variable, or the 2 variables for ctable
+  head3  <- NA # Additional elements (includes Variable exceptionnaly when
+               # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
     if (!isTRUE(format_info$plain.ascii)) {
