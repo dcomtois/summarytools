@@ -214,3 +214,13 @@ tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 # Deal with explicited NA's
 tobacco$age.gr %<>% forcats::fct_explicit_na()
 freq(tobacco$age.gr)
+
+# Full dataframes
+(ftob1 <- freq(tobacco))
+(ftob2 <- freq(tobacco, display.type = FALSE))
+
+print(ftob1, file = "09-full-dataset.html", footnote = "With type")
+print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type")
+
+# Collapsible outputs
+print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections")
