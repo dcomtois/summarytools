@@ -154,11 +154,18 @@ print.summarytools <- function(x,
   # - using dplyr::group_by
   if (is.list(x) && 
       !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
-    view(x, method = method, file = file, append = append,
-         report.title = report.title, table.classes = table.classes, 
-         bootstrap.css = bootstrap.css, custom.css = custom.css, 
-         silent = silent, footnote = footnote, 
-         escape.pipe = escape.pipe, ...)
+    view(x,
+         method        = method,
+         file          = file,
+         append        = append,
+         report.title  = report.title,
+         table.classes = table.classes, 
+         bootstrap.css = bootstrap.css,
+         custom.css    = custom.css, 
+         silent        = silent,
+         footnote      = footnote, 
+         escape.pipe   = escape.pipe,
+         ...)
     return(invisible())
   }
   
@@ -1929,7 +1936,8 @@ build_heading_html <- function(format_info, data_info, method) {
       
       head3 <- append_items(list(c(Variable.label = trs("label")),
                                  c(Data.type      = trs("type"))))
-      return(list(head2, head3))
+      tmp <- list(head2, head3)
+      return(tmp[which(!is.na(tmp))])
     }
   } else if (isTRUE(format_info$group.only)) {
     if (isTRUE(format_info$headings)) {
