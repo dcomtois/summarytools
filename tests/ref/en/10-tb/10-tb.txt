@@ -4,6 +4,7 @@
 > library(summarytools) 
 > library(magrittr) 
 > library(dplyr) 
+> options(tibble.print_max = Inf) 
 > set.seed(765543543) 
 > tobacco$smoker[sample(1:1000, size = 25, replace = FALSE)] <- NA_character_ 
 
@@ -1661,7 +1662,69 @@ N: 3
 55 (Missing) 71 +      cigs.per.day  8.33  14.4     0      0     25           3     100  
 56 (Missing) 71 +      samp.wgts     1.06   0       1.06   1.06   1.06        3     100  
 
-> dd4 %>% tb(2) 
+> dd4 %>% tb(na.rm = TRUE) # no effect expected 
+
+# A tibble: 56 x 10
+   gender    age.gr    variable       mean      sd    min    med    max n.valid pct.valid
+   <fct>     <fct>     <chr>         <dbl>   <dbl>  <dbl>  <dbl>  <dbl>   <dbl>     <dbl>
+ 1 F         18-34     age          26.0    4.71   18     26     34         123     100  
+ 2 F         18-34     BMI          24.2    4.75   13.0   24.2   34.8       121      98.4
+ 3 F         18-34     cigs.per.day  5.87  11.2     0      0     38         119      96.7
+ 4 F         18-34     samp.wgts     0.861  0       0.861  0.861  0.861     123     100  
+ 5 F         35-50     age          42.0    4.54   35     42     50         118     100  
+ 6 F         35-50     BMI          25.6    4.84   10.3   25.7   39.4       112      94.9
+ 7 F         35-50     cigs.per.day  6.68  11.6     0      0     40         115      97.5
+ 8 F         35-50     samp.wgts     1.04   0       1.04   1.04   1.04      118     100  
+ 9 F         51-70     age          61      5.70   51     61     70         157     100  
+10 F         51-70     BMI          27.1    4.88    9.01  26.9   39.2       154      98.1
+11 F         51-70     cigs.per.day  7.20  12.6     0      0     40         153      97.5
+12 F         51-70     samp.wgts     1.05   0       1.05   1.05   1.05      157     100  
+13 F         71 +      age          75.5    2.94   71     76     80          77     100  
+14 F         71 +      BMI          28.0    4.60   18.4   27.7   38.4        75      97.4
+15 F         71 +      cigs.per.day  7.65  12.9     0      0     40          69      89.6
+16 F         71 +      samp.wgts     1.06   0       1.06   1.06   1.06       77     100  
+17 F         (Missing) age          NA     NA      NA     NA     NA           0      NA  
+18 F         (Missing) BMI          25.4    4.35   18.8   25.9   31.8        13      92.9
+19 F         (Missing) cigs.per.day 10.2   13.4     0      0     31          12      85.7
+20 F         (Missing) samp.wgts     0.942  0.0968  0.861  0.861  1.06       14     100  
+21 M         18-34     age          26.4    4.91   18     26     34         130     100  
+22 M         18-34     BMI          23.4    3.66    8.83  23.7   32.7       126      96.9
+23 M         18-34     cigs.per.day  7.36  12.7     0      0     40         127      97.7
+24 M         18-34     samp.wgts     0.861  0       0.861  0.861  0.861     130     100  
+25 M         35-50     age          42.6    4.70   35     42     50         118     100  
+26 M         35-50     BMI          24.7    3.82   15.1   24.7   34.8       115      97.5
+27 M         35-50     cigs.per.day  5.44  10.4     0      0     40         114      96.6
+28 M         35-50     samp.wgts     1.04   0       1.04   1.04   1.04      118     100  
+29 M         51-70     age          61.5    5.51   51     61     70         151     100  
+30 M         51-70     BMI          26.6    3.56   17.8   26.6   35.0       149      98.7
+31 M         51-70     cigs.per.day  6.89  11.7     0      0     39         146      96.7
+32 M         51-70     samp.wgts     1.05   0       1.05   1.05   1.05      151     100  
+33 M         71 +      age          75.3    2.81   71     75     80          79     100  
+34 M         71 +      BMI          26.9    4.16   16.4   26.7   36.8        77      97.5
+35 M         71 +      cigs.per.day  7.06  12.4     0      0     37          77      97.5
+36 M         71 +      samp.wgts     1.06   0       1.06   1.06   1.06       79     100  
+37 M         (Missing) age          NA     NA      NA     NA     NA           0      NA  
+38 M         (Missing) BMI          24.9    2.65   20.3   24.8   30.5        10      90.9
+39 M         (Missing) cigs.per.day  8     14.5     0      0     36          11     100  
+40 M         (Missing) samp.wgts     1.03   0.0558  0.861  1.04   1.05       11     100  
+41 (Missing) 18-34     age          26.4    4.83   19     29     30           5     100  
+42 (Missing) 18-34     BMI          25.9    3.32   21.5   25.9   29.7         5     100  
+43 (Missing) 18-34     cigs.per.day  6.6   12.2     0      0     28           5     100  
+44 (Missing) 18-34     samp.wgts     0.861  0       0.861  0.861  0.861       5     100  
+45 (Missing) 35-50     age          40.8    5.59   36     38     50           5     100  
+46 (Missing) 35-50     BMI          23.7    3.26   20.2   24.2   27.4         5     100  
+47 (Missing) 35-50     cigs.per.day  3      4.47    0      0     10           5     100  
+48 (Missing) 35-50     samp.wgts     1.04   0       1.04   1.04   1.04        5     100  
+49 (Missing) 51-70     age          61.3    5.12   53     59     69           9     100  
+50 (Missing) 51-70     BMI          28.7    3.00   25.0   30.4   32.4         9     100  
+51 (Missing) 51-70     cigs.per.day  6.78  10.2     0      0     21           9     100  
+52 (Missing) 51-70     samp.wgts     1.05   0       1.05   1.05   1.05        9     100  
+53 (Missing) 71 +      age          77      2.65   75     76     80           3     100  
+54 (Missing) 71 +      BMI          28.8    1.30   27.8   28.2   30.2         3     100  
+55 (Missing) 71 +      cigs.per.day  8.33  14.4     0      0     25           3     100  
+56 (Missing) 71 +      samp.wgts     1.06   0       1.06   1.06   1.06        3     100  
+
+> dd4 %>% tb(order = 2) 
 
 # A tibble: 56 x 10
    gender    age.gr    variable       mean      sd    min    med    max n.valid pct.valid
@@ -1794,6 +1857,18 @@ Group: gender = (Missing)
 8 M         <NA>      26     NA            100      1.77      100   
 9 (Missing) <NA>       0     NA            100      0         100   
 
+> ff1 %>% tb(2, TRUE) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
 > view(ff1) 
 -- Output file written
 -- Output file appended
@@ -1840,6 +1915,18 @@ Group: gender = (Missing)
 6 (Missing) No        14 21.2    100  
 
 > ff2 %>% tb(2) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
+> ff2 %>% tb(2, TRUE) 
 
 # A tibble: 6 x 5
   gender    smoker  freq   pct pct_cum

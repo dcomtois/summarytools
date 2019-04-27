@@ -684,7 +684,7 @@ No   Variable    Stats / Values           Freqs (% of Valid)   Graph         Val
 
 Data Frame Summary  
 special_vars  
-Dimensions: 1000 x 28  
+Dimensions: 1000 x 30  
 Duplicates: 0  
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -740,13 +740,13 @@ No   Variable            Stats / Values              Freqs (% of Valid)     Grap
 15   empty_char          All empty strings                                                         1000      0        
      [character]                                                                                   (100%)    (0%)     
 
-16   empty_fact          1.                          1000 (100.0%)          IIIIIIIIIIIIIIIIIIII   1000      0        
+16   empty_fact          1. (Empty string)           1000 (100.0%)          IIIIIIIIIIIIIIIIIIII   1000      0        
      [factor]                                                                                      (100%)    (0%)     
 
 17   empty_na_chr        All empty strings / NA's                                                  631       369      
      [character]                                                                                   (63.1%)   (36.9%)  
 
-18   empty_na_f          1.                          631 (100.0%)           IIIIIIIIIIIIIIIIIIII   631       369      
+18   empty_na_f          1. (Empty string)           631 (100.0%)           IIIIIIIIIIIIIIIIIIII   631       369      
      [factor]                                                                                      (63.1%)   (36.9%)  
 
 19   ean_num             1. 8716892700004            312 (31.2%)            IIIIII                 1000      0        
@@ -826,6 +826,18 @@ No   Variable            Stats / Values              Freqs (% of Valid)     Grap
                          9. ahuillet@att.net           2 ( 0.2%)                                                      
                          10. ahuillet@live.com         1 ( 0.1%)                                                      
                          [ 806 others ]              894 (98.6%)            IIIIIIIIIIIIIIIIIII                       
+
+29   some_empty_str      1. (Empty string)            39 ( 4.0%)                                   973       27       
+     [character]         2. ··                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
+                         3. A                        603 (62.0%)            IIIIIIIIIIII                              
+                         4. B                        231 (23.7%)            IIII                                      
+                         5. C                         67 ( 6.9%)            I                                         
+
+30   some_empty_str_f    1. (Empty string)            39 ( 4.0%)                                   973       27       
+     [factor]            2. ··                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
+                         3. A                        603 (62.0%)            IIIIIIIIIIII                              
+                         4. B                        231 (23.7%)            IIII                                      
+                         5. C                         67 ( 6.9%)            I                                         
 ----------------------------------------------------------------------------------------------------------------------
 
 > view(dfs_special, method = "browser", file = "06-special-vars.html") 

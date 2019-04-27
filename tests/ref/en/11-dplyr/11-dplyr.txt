@@ -672,10 +672,9 @@ N: 1000
 > d4 %>% tb() 
 
 # A tibble: 1 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 age       49.6  18.3    18    34    50    66    80  23.7    32 0.369  -0.0403      0.0783    -1.26
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 age       49.6  18.3    18    34    50    66    80  23.7    32 0.369  -0.0403      0.0783    -1.26     975      97.5
 
 > d4 %>% print(file = "10-descr-dollarpipe.html") 
 -- Switching method to 'browser'
@@ -945,11 +944,10 @@ N: 298
 > d7_2 %>% tb() 
 
 # A tibble: 2 x 17
-  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness
-  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>
-1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143 
-2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143     -1.27     290      97.3
+2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934    -1.26     685      97.6
 
 > view(d7_2) 
 -- Output file written
@@ -1019,7 +1017,7 @@ samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII            
                                          ! rounded                                            
 ----------------------------------------------------------------------------------------------
 
-> dfs1 %>% print(file = "13-dfSummary.html") 
+> dfs1 %>% print(file = "14-dfSummary.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -1052,7 +1050,7 @@ No   Variable    Stats / Values            Freqs (% of Valid)    Graph          
      [factor]    2. No                     702 (70.2%)           IIIIIIIIIIIIII        (0%)     
 ------------------------------------------------------------------------------------------------
 
-> dfs2 %>% print(file = "11-dfSummary-select.html") 
+> dfs2 %>% print(file = "15-dfSummary-select.html") 
 -- Switching method to 'browser'
 -- Output file written
 
@@ -1238,7 +1236,7 @@ No   Variable       Stats / Values            Freqs (% of Valid)   Graph        
                                               ! rounded                                                        
 ----------------------------------------------------------------------------------------------------
 
-> dfs3 %>% view(file = "12-dfSummary-group_by.html") 
+> dfs3 %>% view(file = "16-dfSummary-group_by.html") 
 -- Output file written
 -- Output file appended
 
