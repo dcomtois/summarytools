@@ -2001,6 +2001,18 @@ Group: gender = (Missing)
 8 M         <NA>      26     NA            100      1.77      100   
 9 (Missing) <NA>       0     NA            100      0         100   
 
+> ff3 %>% tb(2, TRUE) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
 > view(ff3) 
 -- Output file written
 -- Output file appended

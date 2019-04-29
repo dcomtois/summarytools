@@ -141,7 +141,7 @@ tobacco$gender %<>% forcats::fct_explicit_na()
 (ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq())
 ff3 %>% tb()
 ff3 %>% tb(2)
-ff3 %>% tb(na.rm = 2, TRUE)
+ff3 %>% tb(2, TRUE)
 view(ff3)
 
 (ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq)))
