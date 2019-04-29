@@ -146,6 +146,15 @@ includeCss <- function(path, ...) {
                                args)))
 }
 
+# Redefine htmltools's includeScript but use collapse = "\n"
+#' @importFrom htmltools tags HTML
+#' @keywords internal
+includeScript <- function(path, ...) {
+  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+  return(tags$script(HTML(paste8(lines, collapse = "\n")), ...))
+}
+
+
 # Clone of htmltools:::paste8
 #' @keywords internal
 paste8 <- function (..., sep = " ", collapse = NULL) {
