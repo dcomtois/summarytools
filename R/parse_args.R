@@ -137,7 +137,7 @@ parse_args <- function(sys_calls,
       by_levels <- sys_frames[[pos$tapply]]$namelist
       .st_env$byInfo$by_levels <- 
         expand.grid(by_levels, stringsAsFactors = FALSE)
-      # TODO: Check if the following line is redundant
+      # Following line is possibly redundant
       colnames(.st_env$byInfo$by_levels) <- by_var
       .st_env$byInfo$iter <- 1
     }

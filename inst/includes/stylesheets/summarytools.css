@@ -1,15 +1,52 @@
 img {
-  background-color:transparent;
-  border:0;
+  background-color: transparent;
+  border: 0;
+}
+
+.st-table td,
+.st-table th {
+  padding: 8px;
+}
+
+.st-table > thead > tr {
+   background-color: #eeeeee;
+}
+
+.st-cross-table td {
+  text-align: center;
+}
+
+.st-descr-table td {
+  text-align: right;
+}
+
+.st-small {
+  font-size: 13px;
+}
+
+.st-small td,
+.st-small th {
+  padding: 8px;
+}
+
+table.st-table th {
+  text-align: center;
+}
+
+.st-small > thead > tr > th,
+.st-small > tbody > tr > th,
+.st-small > tfoot > tr > th,
+.st-small > thead > tr > td,
+.st-small > tbody > tr > td,
+.st-small > tfoot > tr > td {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 table.st-table > thead > tr {
    background-color: #eeeeee;
 }
 
-table.st-table th {
-  text-align: center;
-}
 
 table.st-table td span {
   display: block;
@@ -37,6 +74,7 @@ table.st-table td span {
     background-color: transparent;
     border-collapse: collapse;
 }
+
 
 .st-table > thead > tr > th,
 .st-table > tbody > tr > th,
@@ -66,69 +104,6 @@ table.st-table td span {
   border-bottom: none;
 }
 
-.st-table td,
-.st-table th {
-  padding: 8px;
-}
-
-.st-table > thead > tr {
-   background-color: #eeeeee;
-}
-
-.st-table-bordered > thead > tr > th,
-.st-table-bordered > tbody > tr > th,
-.st-table-bordered > thead > tr > td,
-.st-table-bordered > tbody > tr > td {
-  border: 1px solid #cccccc;
-}
-
-
-.st-table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #ffffff;
-}
-
-.st-table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #f8f8f8;
-}
-
-.st-table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #ffffff;
-}
-
-.st-table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #f9f9f9;
-}
-
-
-.st-descr-table > thead > tr > th,
-.st-descr-table > tbody > tr > th,
-.st-descr-table > tfoot > tr > th,
-.st-descr-table > thead > tr > td,
-.st-descr-table > tbody > tr > td,
-.st-descr-table > tfoot > tr > td {
-  padding-left:  24px;
-  padding-right: 24px;
-  word-wrap: break-word;
-}
-
-.st-descr-table td {
-  text-align: right;
-}
-
-.st-freq-table,
-.st-freq-table-nomiss,
-.st-cross-table {
-  border: medium none;
-}
-
-.st-freq-table  > thead > tr:nth-child(1) > th:nth-child(1),
-.st-cross-table > thead > tr:nth-child(1) > th:nth-child(1),
-.st-cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
-  border:none;
-  background-color: #ffffff;
-  text-align: center;
-}
-
 .st-freq-table > thead > tr > th,
 .st-freq-table > tbody > tr > th,
 .st-freq-table > tfoot > tr > th,
@@ -147,34 +122,60 @@ table.st-table td span {
 .st-cross-table > thead > tr > td,
 .st-cross-table > tbody > tr > td,
 .st-cross-table > tfoot > tr > td {
-  padding-left:  20px;
+  padding-left: 20px;
   padding-right: 20px;
 }
 
 
-.st-protect-top-border {
-  border-top:1px solid #cccccc !important;
+
+
+.st-table-bordered > thead > tr > th,
+.st-table-bordered > tbody > tr > th,
+.st-table-bordered > thead > tr > td,
+.st-table-bordered > tbody > tr > td {
+  border: 1px solid #cccccc;
 }
 
-.st-cross-table td {
+.st-table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.st-table-striped > tbody > tr:nth-of-type(even) {
+  background-color: #f9f9f9;
+}
+
+
+.st-descr-table > thead > tr > th,
+.st-descr-table > tbody > tr > th,
+.st-descr-table > tfoot > tr > th,
+.st-descr-table > thead > tr > td,
+.st-descr-table > tbody > tr > td,
+.st-descr-table > tfoot > tr > td {
+  padding-left: 24px;
+  padding-right: 24px;
+  word-wrap: break-word;
+}
+
+.st-freq-table,
+.st-freq-table-nomiss,
+.st-cross-table {
+  border: medium none;
+}
+
+.st-freq-table > thead > tr:nth-child(1) > th:nth-child(1),
+.st-cross-table > thead > tr:nth-child(1) > th:nth-child(1),
+.st-cross-table > thead > tr:nth-child(1) > th:nth-child(3) {
+  border: none;
+  background-color: #ffffff;
   text-align: center;
 }
 
-.st-small {
-  font-size: 13px;
+.st-protect-top-border {
+  border-top: 1px solid #cccccc !important;
 }
 
-.st-small td,
-.st-small th {
-  padding: 8px;
-}
-
-.st-small > thead > tr > th,
-.st-small > tbody > tr > th,
-.st-small > tfoot > tr > th,
-.st-small > thead > tr > td,
-.st-small > tbody > tr > td,
-.st-small > tfoot > tr > td {
-  padding-left:  12px;
-  padding-right: 12px;
+.st-ws-char {
+  display: inline;
+  color: #999999;
+  letter-spacing: 0.2em;
 }

@@ -8,7 +8,7 @@
   append = FALSE, report.title = NA, table.classes = NA, 
   bootstrap.css = st_options('bootstrap.css'), 
   custom.css = st_options('custom.css'), silent = FALSE, 
-  footnote = st_options('footnote'), 
+  footnote = st_options('footnote'), collapse = 0,
   escape.pipe = st_options('escape.pipe'), \dots)
 }
 \arguments{
@@ -52,6 +52,10 @@ this is the package name and version, R version, and current date). Has no
 effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
 provide your own text, or set to \code{NA} to omit. To change this default
 value globally, see \code{\link{st_options}}.}
+
+\item{collapse}{Numeric. \code{0} by default. Set to \code{1} to make
+\code{freq()} sections collapsible (when clicking on the variable name).
+Future versions might provide alternate collapsing options.}
 
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
 and \code{file} argument is supplied if the intent is to generate a text

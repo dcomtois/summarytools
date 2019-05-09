@@ -10,6 +10,7 @@ view(x, method = "viewer", file = "", append = FALSE,
   custom.css = st_options("custom.css"), silent = FALSE, 
   footnote = st_options("footnote"),
   max.tbl.height = Inf,
+  collapse = 0,
   escape.pipe = st_options("escape.pipe"), \dots)
 }
 \arguments{
@@ -59,6 +60,10 @@ value globally, see \code{\link{st_options}}.}
 in a \code{<div>} with the specified height and a scroll bar. Intended
 to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
 \dQuote{pander}. \code{Inf} by default.}
+
+\item{collapse}{Numeric. \code{0} by default. Set to \code{1} to make
+\code{freq()} sections collapsible (when clicking on the variable name).
+Future versions might provide alternate collapsing options.}
 
 \item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
 and \code{file} argument is supplied if the intent is to generate a text

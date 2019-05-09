@@ -12,17 +12,12 @@ check_arguments <- function(mc, dotArgs) {
   # Deprecated arguments -------------------------------------------------------
   if ("file" %in% names(dotArgs)) {
     message(paste("'file' argument is deprecated; use with print() or view(),",
-              "e.g. print(x, file=", dotArgs$file))
+                  "e.g. print(x, file=", dotArgs$file))
   }
   
   if ("omit.headings" %in% names(dotArgs)) {
-    message(paste0("'omit.headings' argument has been replaced by 'headings'; ",
-               "setting headings = ", 
-               !isTRUE(dotArgs$omit.headings)))
-    assign(x = "headings", value = !isTRUE(dotArgs$omit.headings), 
-           envir = parent.frame())
+    errmsg %+=% "'omit.headings' is deprecated; use 'headings' instead"
   }
-  
   
   # Arguments common to all functions ------------------------------------------
   if (is.null(pf$x)) {
@@ -62,14 +57,12 @@ check_arguments <- function(mc, dotArgs) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
     
-    justify <- switch(substring(pf$justify, 1, 1),
-                      l = "left",
-                      c = "center",
-                      m = "center",
-                      d = "default",
-                      r = "right")
-    
-    assign("justify", justify, parent.frame())
+    pf$justify <- switch(substring(pf$justify, 1, 1),
+                         l = "left",
+                         c = "center",
+                         m = "center",
+                         d = "default",
+                         r = "right")
   }
   
   if ("display.labels" %in% names(mc) &&
@@ -124,10 +117,11 @@ check_arguments <- function(mc, dotArgs) {
       order_sign <- sub("^.*([-+]).*$", "\\1", pf$order)
       order_sign <- ifelse(order_sign %in% c("+", "-"), order_sign, "+")
       
-      assign("order", order, envir = parent.frame())
-      assign("order_sign", order_sign, envir = parent.frame())
+      pf$order <- order
+      pf$order_sign <- order_sign
+      
     } else {
-      assign("order_sign", "+", envir = parent.frame())
+      pf$order_sign <- "+"
     }
     
     if ("rows" %in% names(mc)) {
@@ -148,7 +142,7 @@ check_arguments <- function(mc, dotArgs) {
         if (0 %in% pf$rows || length(unique(sign(pf$rows))) > 1 ||
             (sign(pf$rows[1]) == -1 && 
              length(pf$rows) >= n_distinct(pf$x, na.rm = TRUE))) {
-            errmsg %+=% "Invalid 'rows' argument"
+          errmsg %+=% "Invalid 'rows' argument"
         } else if (!is.null(pf$x) && 
                    max(abs(pf$rows)) > n_distinct(pf$x, na.rm = TRUE)) {
           nmax <- n_distinct(pf$x, na.rm = TRUE)
@@ -156,9 +150,8 @@ check_arguments <- function(mc, dotArgs) {
           if (length(wrong_ind)) {
             message("There are only ", nmax, " rows to show; higher ",
                     "numbers will be ignored")
-            rows <- pf$rows[-wrong_ind]
+            pf$rows <- pf$rows[-wrong_ind]
           }
-          assign("rows", rows, envir = parent.frame())
         } 
       }
     }
@@ -196,14 +189,14 @@ check_arguments <- function(mc, dotArgs) {
       tmp_y_name <- deparse(substitute(y, env = parent.frame()))
       errmsg %+=% paste(tmp_y_name, "is either NULL or does not exist")
     }
-  
+    
     if ("prop" %in% names(mc)) {
       prop <- tolower(substr(pf$prop, 1, 1))
       if(!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {
         errmsg %+=% "'prop' must be one of 't', 'r', 'c', or 'n'"
       }
       if (nchar(prop > 1)) {
-        assign("prop", prop, envir = parent.frame())
+        pf$prop <- prop
       }
     }
     
@@ -232,7 +225,7 @@ check_arguments <- function(mc, dotArgs) {
         !isTRUE(test_logical(pf$transpose))) {
       errmsg %+=% "'transpose' must be either TRUE or FALSE"
     }
-
+    
     if (!identical(pf$weights, NA)) {
       if (is.null(pf$weights)) {
         errmsg %+=% "weights vector not found"
@@ -241,23 +234,21 @@ check_arguments <- function(mc, dotArgs) {
       }
     }
   }
-    
+  
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
-
-    justify <- switch(substring(pf$justify, 1, 1),
-                      l = "left",
-                      c = "center",
-                      m = "center",
-                      d = "default",
-                      r = "right")
     
-    assign("justify", justify, parent.frame())
+    pf$justify <- switch(substring(pf$justify, 1, 1),
+                         l = "left",
+                         c = "center",
+                         m = "center",
+                         d = "default",
+                         r = "right")
     
     if (!isTRUE(test_choice(pf$style, c("grid", "multiline")))) {
       errmsg %+=% "'style' must be either 'grid' or 'multiline'"
     }
-
+    
     if ("varnumbers" %in% names(mc) &&
         !isTRUE(test_logical(pf$varnumbers, 
                              len = 1, any.missing = FALSE))) {
@@ -294,7 +285,7 @@ check_arguments <- function(mc, dotArgs) {
     
     if ("style" %in% names(mc) && pf$style == "rmarkdown") {
       message("'rmarkdown' style not supported - using 'multiline' instead")
-      assign("style", "multiline", envir = parent.frame())
+      pf$style <- "multiline"
     }
     
     if ("trim.strings" %in% names(mc) &&
@@ -319,12 +310,136 @@ check_arguments <- function(mc, dotArgs) {
       message("'tmp.img.dir' will be ignored since system has no X11 ",
               "capabilities")
     }
-    
   }
-
   return(errmsg)
 }
 
+
+check_arguments_print <- function(mc) {
+  
+  pf <- parent.frame()
+  errmsg <- character()
+  
+  pf$method <- switch(tolower(substring(pf$method, 1, 1)),
+                      p = "pander",
+                      b = "browser",
+                      v = "viewer",
+                      r = "render")
+  
+  if (attr(pf$x, "lang") != st_options("lang")) {
+    op <- st_options("lang")
+    st_options(lang = attr(pf$x, "lang"))
+    on.exit(st_options(lang = op), add = TRUE)
+  }
+
+  if (!isTRUE(test_choice(pf$method, 
+                          c("pander", "browser", "viewer", "render")))) {
+    errmsg %+=% paste("'method' must be one of 'pander', 'browser', 'viewer',",
+                      "or 'render'")
+  }
+
+  if (!isTRUE(test_int(pf$max.tbl.height, lower = 100, na.ok = FALSE)) &&
+      !is.infinite(pf$max.tbl.height)) {
+    errmsg %+=% "'max.tbl.height' must be an integer between 100 and Inf"
+  } else {
+    attr(pf$x, "format_info")$max.tbl.height <- pf$max.tbl.height
+  }
+  
+  if (pf$file == "" && isTRUE(pf$append)) {
+    errmsg %+=% "'append' is set to TRUE but no file name has been specified"
+  }
+
+  if (pf$file != "" && isTRUE(pf$append) && !file.exists(pf$file)) {
+    errmsg %+=% "'append' is set to TRUE but specified file does not exist"
+  }
+
+  if (pf$file != "" && isTRUE(pf$append) && !is.na(pf$report.title)) {
+    errmsg %+=% "Appending existing file -- 'report.title' arg. will be ignored"
+  }
+
+  if (!isTRUE(test_string(pf$report.title, na.ok = TRUE))) {
+    errmsg %+=% "'report.title' must either be NA or a character string"
+  }
+
+  if (!isTRUE(test_logical(pf$escape.pipe, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'escape.pipe' must be either TRUE or FALSE"
+  }
+
+  if (!is.na(pf$custom.css) && 
+      !isTRUE(check_file_exists(pf$custom.css, access = "r"))) {
+    errmsg %+=% "'custom.css' must point to an existing file."
+  }
+
+  if (!isTRUE(test_logical(pf$silent, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'silent' must be either TRUE or FALSE"
+  }
+
+  if (pf$file != "" && !isTRUE(test_path_for_output(pf$file, overwrite = TRUE))) {
+     errmsg %+=% "'file' path is not valid - check that directory exists"
+  }
+  
+  # Change method to browser when file name was (most likely) provided by user
+  if (grepl("\\.html$", pf$file, ignore.case = TRUE, perl = TRUE) &&
+      !grepl(pattern = tempdir(), x = pf$file, fixed = TRUE) && 
+      pf$method == "pander") {
+    pf$method <- "browser"
+    message("Switching method to 'browser'")
+  }
+  
+  if (pf$method == "pander" && !is.na(pf$table.classes)) {
+    errmsg %+=% "'table.classes' option does not apply to method 'pander'"
+  }
+  
+  if (pf$method == "pander" && !is.na(pf$custom.css)) {
+    errmsg %+=% "'custom.css' option does not apply to method 'pander'"
+  }
+  
+  # Set plain.ascii to false and adjust style when file name ends with .md
+  if (grepl("\\.md$", pf$file, ignore.case = TRUE, perl = TRUE) 
+      && !"style" %in% names(pf$dotArgs)) {
+    if (isTRUE(attr(pf$x, "format_info")$plain.ascii) && 
+        !"plain.ascii" %in% names(pf$dotArgs)) {
+      tmp_msg_flag <- TRUE
+      pf$dotArgs %+=% list(plain.ascii = FALSE)
+    } else {
+      tmp_msg_flag <- FALSE
+    }
+
+    newstyle = switch(attr(pf$x, "st_type"),
+                      freq      = "rmarkdown",
+                      ctable    = "grid",
+                      descr     = "rmarkdown",
+                      dfSummary = "grid")
+    
+    if (attr(pf$x, "format_info")$style %in% c("simple", "multiline")) {
+      pf$dotArgs %+=% list(style = newstyle)
+      if (isTRUE(tmp_msg_flag)) {
+        message("Setting 'plain.ascii' to FALSE and Changing style to '",
+                newstyle, "' for improved markdown compatibility")
+      } else {
+        message("Changing style to '", newstyle, 
+                "' for improved markdown compatibility")
+      }
+    } else if (isTRUE(tmp_msg_flag)) {
+      message("Setting 'plain.ascii' to FALSE for improved markdown ",
+              "compatibility")
+    }
+  }
+  
+  if (is.na(pf$footnote)) {
+    pf$footnote <- ""
+  }
+
+  if (!"silent" %in% names(mc)) {
+    if (attr(pf$x, "st_type") == "descr") {
+      pf$silent <- st_options("descr.silent")
+    } else if (attr(pf$x, "st_type") == "dfSummary") {
+      pf$silent <- st_options("dfSummary.silent")
+    }
+  }
+ return(errmsg)
+}
+  
 # check_arguments_st_options ---------------------------------------------------
 #' @importFrom checkmate test_int test_logical test_choice 
 #' test_file_exists test_character
@@ -405,6 +520,10 @@ check_arguments_st_options <- function(mc) {
   if ("ctable.totals" %in% names(mc) &&
       !isTRUE(test_logical(pf$ctable.totals, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'ctable.totals' must be either TRUE or FALSE"
+  }
+  
+  if ("omit.headings" %in% names(mc)) {
+    errmsg %+=% "'omit.headings' is deprecated; use 'headings' instead"
   }
   
   if ("descr_stats" %in% names(mc)) {

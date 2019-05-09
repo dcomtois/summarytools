@@ -819,8 +819,7 @@ to **summarytools**. Here are the key elements:
 ### Other Notable Changes
 
  - The `omit.headings` parameter has been replaced by the more straightforward
-   (and still boolean) `headings`. `omit.heandings` is still supported 
-   but will be deprecated in future releases
+   (and still boolean) `headings`. `omit.heandings` is deprecated as of 0.9.4.
  - Because it was subject to errors, the _Rows Subset_ heading element
    has been removed. If there is a strong need for it, I can bring it back in a 
    future release (just let me known by email or on GitHub if you'd like to have
@@ -831,14 +830,6 @@ to **summarytools**. Here are the key elements:
  - The `tb()` function turns results from `freq()` and `descr()` into 
    _tidy tibbles_
    
-### Backward Compatibility
-
-No changes break backward compatibility, but at least one legacy feature will
-disappear in some further release. Namely, the boolean parameter `omit.headings`, 
-which has been replaced by the more straightforward `headings`. For now, a 
-message is shown whenever the "old" parameter name is used, encouraging users
-to transition to the newer one.
-
 ## Stay Up-to-date
 
 Check out the [GitHub project's page](https://github.com/dcomtois/summarytools) - 

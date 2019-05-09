@@ -16,7 +16,7 @@ st_options(option = NULL, value = NULL, style = "simple",
   dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
   dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
   dfSummary.silent = FALSE, tmp.img.dir = NA,
-  subtitle.emphasis = TRUE, lang = "en", omit.headings = !headings)
+  subtitle.emphasis = TRUE, lang = "en")
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -132,8 +132,6 @@ value gives it stronger emphasis.}
 \item{lang}{Character. A 2-letter code for the language to use in the
 produced outputs. Currently available languages are: \sQuote{en}, 
 \sQuote{fr}.}
-
-\item{omit.headings}{Logical. Deprecated. Use \code{headings} instead.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To

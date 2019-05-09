@@ -504,7 +504,7 @@ crunch_factor <- function(column_data, email_val) {
   props    <- prop.table(counts)
   
   if (n_levels == 0 && n_valid == 0) {
-    outlist[[1]] <- "No levels defined" # TODO: Add translation
+    outlist[[1]] <- trs("no.levels.defined")
     outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""

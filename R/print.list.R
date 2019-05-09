@@ -7,7 +7,7 @@
 #'   append = FALSE, report.title = NA, table.classes = NA, 
 #'   bootstrap.css = st_options('bootstrap.css'), 
 #'   custom.css = st_options('custom.css'), silent = FALSE, 
-#'   footnote = st_options('footnote'), 
+#'   footnote = st_options('footnote'), collapse = 0,
 #'   escape.pipe = st_options('escape.pipe'), \dots)
 #' 
 #' @inheritParams print.summarytools

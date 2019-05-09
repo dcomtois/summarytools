@@ -1,5 +1,4 @@
 # ---------------------------- st_options.R ------------------------------------
-st_options('omit.headings', FALSE)
 st_options('footnote', 'default')
 st_options()
 st_options(plain.ascii = T)

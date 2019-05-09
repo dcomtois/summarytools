@@ -845,14 +845,6 @@ to **summarytools**. Here are the key elements:
  - The `tb()` function turns results from `freq()` and `descr()` into 
    _tidy tibbles_
 
-### Backward Compatibility
-
-No changes break backward compatibility, but at least one legacy feature will be
-abandoned in some further release. Namely, the boolean parameter `omit.headings`, 
-which has been replaced by the more straightforward `headings`. For now, a 
-message is shown whenever the "old" parameter name is used, encouraging users
-to switch to the newer one.
-
 ## Stay Up-to-date
 
 For a preview of what's coming in the next release, see the 
