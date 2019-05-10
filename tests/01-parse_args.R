@@ -39,7 +39,7 @@ tobacco[[5]] %>% freq()
 if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
 tobacco %$% ctable(smoker, diseased)
 tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
-tobacco %>% select(age.gr)   %>% freq() # SUCCESS
+tobacco %>% select(age.gr)  %>% freq() # SUCCESS
 tobacco %>% group_by(gender) %>% descr()
 tobacco %>% group_by(gender) %>% freq(smoker)
 

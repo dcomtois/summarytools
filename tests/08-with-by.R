@@ -84,7 +84,7 @@ view(b6, "pander")
 # TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)
 view(b6, method = "browser", footnote = "4 stats", file = "18.html")
 with(tobacco, view(stby(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html"))
-view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html")
+view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html")
 with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander"))
 
 # Ouverture dans viewer

@@ -337,7 +337,7 @@ N: 150
 
 <div class="container st-container">
   <h3>Statistiques descriptives</h3>
-  <h4>BMIpargender</h4>
+  <h4> BMI par gender </h4>
   <strong>N</strong>: 489
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
@@ -592,7 +592,7 @@ N: 258
 -- Output file written
 -- Output file appended
 
-> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html") 
+> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html") 
 -- Output file written
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 

@@ -131,7 +131,7 @@ compare_dirs <- function(lang) {
 i <- 1
 compare <- TRUE
 compare <- FALSE
-# for (i in 1:6) {
+for (i in 2:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[i]
   eval_with_feedback(testfiles[1],  lang, compare) # parse-args
   eval_with_feedback(testfiles[2],  lang, compare) # freq
@@ -144,7 +144,7 @@ compare <- FALSE
   eval_with_feedback(testfiles[9],  lang, compare) # st_options
   eval_with_feedback(testfiles[10], lang, compare) # tb()
   eval_with_feedback(testfiles[11], lang, compare) # dplyr
-# }
+}
 
 compare_dirs("en")
 compare_dirs("fr")

@@ -337,7 +337,7 @@ iris
 
 <div class="container st-container">
   <h3>&#01050;&#01086;&#01083;-&#01074;&#01077;&#01085;&#01085;&#01099;&#01081; &#01087;&#01086;&#01082;&#01072;&#01079;&#01072;&#01090;&#01077;&#01083;&#01100; &#01088;&#01072;&#01089;&#01087;&#01088;&#01077;&#01076;&#01077;&#01083;&#01077;&#01085;&#01080;&#01103;</h3>
-  <h4>BMI&#01075;&#01088;&#01091;&#01087;&#01087;&#01072;gender</h4>
+  <h4> BMI &#01075;&#01088;&#01091;&#01087;&#01087;&#01072; gender </h4>
   <strong>&#01050;&#01086;&#01083;-&#01074;&#01086;</strong>: 489
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
@@ -592,7 +592,7 @@ BMI группа age.gr
 -- Output file written
 -- Output file appended
 
-> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html") 
+> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html") 
 -- Output file written
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 

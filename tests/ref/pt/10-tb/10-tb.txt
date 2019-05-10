@@ -4,6 +4,7 @@
 > library(summarytools) 
 > library(magrittr) 
 > library(dplyr) 
+> options(tibble.print_max = Inf) 
 > set.seed(765543543) 
 > tobacco$smoker[sample(1:1000, size = 25, replace = FALSE)] <- NA_character_ 
 
@@ -40,6 +41,14 @@ Tipo: Fator
 2 M        489        50           100   48.9         97.8
 3 <NA>      22        NA            NA    2.20       100  
 
+> fr1 %>% tb(na.rm = TRUE) 
+
+# A tibble: 2 x 4
+  gender  freq   pct pct_cum
+  <fct>  <dbl> <dbl>   <dbl>
+1 F        489    50      50
+2 M        489    50     100
+
 > fr1 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T) 
 
      freq pct_valid   pct_tot 
@@ -60,7 +69,7 @@ Tipo: Fator
           M    489    50.00    100.00
       Total    978   100.00    100.00
 
-> fr2 %>% tb() 
+> fr2 %>% tb(na.rm = TRUE) 
 
 # A tibble: 2 x 4
   gender  freq   pct pct_cum
@@ -98,6 +107,14 @@ Pesos: samp.wgts
 1 F      489.       50.0          50.0   48.9         48.9
 2 M      489.       50.0         100     48.9         97.8
 3 <NA>    22.2      NA            NA      2.22       100  
+
+> fr3 %>% tb(na.rm = TRUE) 
+
+# A tibble: 2 x 4
+  gender  freq   pct pct_cum
+  <fct>  <dbl> <dbl>   <dbl>
+1 F       489.  50.0    50.0
+2 M       489.  50.0   100  
 
 > fr3 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T) 
 
@@ -784,28 +801,26 @@ N: 30
 > de1 %>% tb() 
 
 # A tibble: 6 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 anglais   76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251 
-2 economie  73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422 
-3 francais  73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445 
-4 geograp~  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290
-5 histoire  72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596 
-6 maths     73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579 
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable    mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 anglais     76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251       29      96.7
+2 economie    73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422       29      96.7
+3 francais    73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445       29      96.7
+4 geographie  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290      29      96.7
+5 histoire    72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596       30     100  
+6 maths       73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579       28      93.3
 
 > de1 %>% tb(2) # no difference expected 
 
 # A tibble: 6 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 anglais   76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251 
-2 economie  73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422 
-3 francais  73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445 
-4 geograp~  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290
-5 histoire  72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596 
-6 maths     73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579 
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable    mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 anglais     76.0  7.92  58.3  70.9  74.1  80.6  93.1  6.52  9.70 0.104   0.279        0.434  -0.251       29      96.7
+2 economie    73.9  8.62  60.5  68.8  71.6  77    94.2  5.49  8.2  0.117   0.753        0.434  -0.422       29      96.7
+3 francais    73.9 10.8   44.8  68.2  73.6  76.7  94.7  7.56  8.5  0.146   0.0289       0.434   0.445       29      96.7
+4 geographie  70.0 10.6   47.2  65.9  68.5  77.8  96.3 12.3  11.9  0.152   0.0958       0.434  -0.0290      29      96.7
+5 histoire    72.8 10.2   53.9  68.2  72.8  76.5  93.5  6.45  8.15 0.140   0.0120       0.427  -0.596       30     100  
+6 maths       73.5  9.19  55.6  67.0  73.8  80.4  93.2  9.93 13.3  0.125   0.116        0.441  -0.579       28      93.3
 
 > (de2 <- examens$francais %>% descr()) 
 
@@ -834,10 +849,9 @@ N: 30
 > de2 %>% tb() 
 
 # A tibble: 1 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 francais  73.9  10.8  44.8  68.2  73.6  76.7  94.7  7.56   8.5 0.146   0.0289       0.434    0.445
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 francais  73.9  10.8  44.8  68.2  73.6  76.7  94.7  7.56   8.5 0.146   0.0289       0.434    0.445      29      96.7
 
 
 # Descr with grouped results, one variable only -------------------------------- 
@@ -924,43 +938,39 @@ N: 15
 > dgr2 %>% tb() 
 
 # A tibble: 12 x 17
-   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness
-   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>
- 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597
- 2 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597
- 3 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597
- 4 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580
- 5 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580
- 6 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597
- 7 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580
- 8 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580
- 9 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580
-10 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597
-11 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+   sexe   variable    mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid pct.valid
+   <fct>  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+ 1 Fille  anglais     73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14      93.3
+ 2 Fille  economie    72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14      93.3
+ 3 Fille  francais    71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14      93.3
+ 4 Fille  geographie  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
+ 5 Fille  histoire    71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15     100  
+ 6 Fille  maths       73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14      93.3
+ 7 Garçon anglais     77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
+ 8 Garçon economie    75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
+ 9 Garçon francais    76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
+10 Garçon geographie  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
+11 Garçon histoire    74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
+12 Garçon maths       73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
 
 > dgr2 %>% tb(2) 
 
 # A tibble: 12 x 17
-   sexe  variable  mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness
-   <fct> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>
- 1 Fille anglais   73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597
- 2 Garç~ anglais   77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580
- 3 Fille economie  72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597
- 4 Garç~ economie  75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580
- 5 Fille francais  71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597
- 6 Garç~ francais  76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580
- 7 Fille geograp~  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580
- 8 Garç~ geograp~  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597
- 9 Fille histoire  71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580
-10 Garç~ histoire  74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580
-11 Fille maths     73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597
-12 Garç~ maths     73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+   sexe   variable    mean    sd   min    q1   med    q3   max   mad   iqr     cv skewness se.skewness kurtosis n.valid pct.valid
+   <fct>  <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+ 1 Fille  anglais     73.9  9.41  58.3  69.7  71.8  80.6  93.1  6.15  9.12 0.127    0.509        0.597   -0.660      14      93.3
+ 2 Garçon anglais     77.8  5.94  69.6  74    77.6  80.9  90.2  5.19  6.35 0.0763   0.726        0.580   -0.419      15     100  
+ 3 Fille  economie    72.5  7.79  62.3  68.5  70.2  72.5  89.6  3.34  3.85 0.107    0.914        0.597   -0.319      14      93.3
+ 4 Garçon economie    75.2  9.40  60.5  68.8  71.7  82.6  94.2  7.56 10.4  0.125    0.513        0.580   -0.844      15     100  
+ 5 Fille  francais    71.1 12.4   44.8  65.3  68.4  74.9  93.7  7.26  9.23 0.174    0.0840       0.597   -0.150      14      93.3
+ 6 Garçon francais    76.6  8.63  63.2  70.5  74.8  76.9  94.7  3.41  5.3  0.113    0.783        0.580   -0.424      15     100  
+ 7 Fille  geographie  67.3  8.26  50.4  59.8  67.3  73.6  78.9  9.34 10.2  0.123   -0.338        0.580   -0.900      15     100  
+ 8 Garçon geographie  73   12.4   47.2  66.3  71.2  82.7  96.3 11.3  15.5  0.169   -0.134        0.597   -0.477      14      93.3
+ 9 Fille  histoire    71.2  9.17  53.9  67.3  72.9  76.3  86.4  5.34  8.55 0.129   -0.365        0.580   -0.682      15     100  
+10 Garçon histoire    74.4 11.2   54.4  68.6  72.6  86.1  93.5 11.0  14.3  0.151    0.0853       0.580   -1.11       15     100  
+11 Fille  maths       73.8  9.03  55.6  68.8  74.8  80.6  86.3  8.75 11.0  0.122   -0.503        0.597   -0.798      14      93.3
+12 Garçon maths       73.3  9.68  60.5  66.9  72.2  77.4  93.2  7.86 10.3  0.132    0.617        0.597   -0.642      14      93.3
 
-> library(dplyr) 
-> library(magrittr) 
 > (dd1 <- stby(tobacco, tobacco$gender, descr)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
@@ -1011,32 +1021,30 @@ N: 489
 > dd1 %>% tb() 
 
 # A tibble: 8 x 17
-  gender variable   mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness
-  <fct>  <chr>     <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>
-1 F      age      49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355
-2 F      BMI      26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226
-3 F      cigs.pe~  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53  
-4 F      samp.wg~  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03  
-5 M      age      49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403
-6 M      BMI      25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372
-7 M      cigs.pe~  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54  
-8 M      samp.wg~  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03  
-# ... with 4 more variables: se.skewness <dbl>, kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+  gender variable       mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness se.skewness kurtosis n.valid pct.valid
+  <fct>  <chr>         <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 F      age          49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355       0.112  -1.25       475      97.1
+2 F      BMI          26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226       0.112   0.0891     475      97.1
+3 F      cigs.per.day  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53         0.113   0.855      468      95.7
+4 F      samp.wgts     1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918      489     100  
+5 M      age          49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403       0.112  -1.27       478      97.8
+6 M      BMI          25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372       0.112   0.175      477      97.5
+7 M      cigs.per.day  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54         0.112   0.921      475      97.1
+8 M      samp.wgts     1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918      489     100  
 
 > dd1 %>% tb(2) 
 
 # A tibble: 8 x 17
-  gender variable   mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness
-  <fct>  <chr>     <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>
-1 F      age      49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355
-2 M      age      49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403
-3 F      BMI      26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226
-4 M      BMI      25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372
-5 F      cigs.pe~  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53  
-6 M      cigs.pe~  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54  
-7 F      samp.wg~  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03  
-8 M      samp.wg~  1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03  
-# ... with 4 more variables: se.skewness <dbl>, kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+  gender variable       mean      sd    min     q1   med    q3   max     mad    iqr     cv skewness se.skewness kurtosis n.valid pct.valid
+  <fct>  <chr>         <dbl>   <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 F      age          49.6   18.3    18     34     50    66    80    2.37e+1 32     0.369   -0.0355       0.112  -1.25       475      97.1
+2 M      age          49.6   18.3    18     34     49.5  66    80    2.45e+1 32     0.370   -0.0403       0.112  -1.27       478      97.8
+3 F      BMI          26.1    4.95    9.01  23.0   25.9  29.5  39.4  4.75e+0  6.49  0.190   -0.0226       0.112   0.0891     475      97.1
+4 M      BMI          25.3    3.98    8.83  22.5   25.1  28.0  36.8  4.02e+0  5.44  0.157   -0.0372       0.112   0.175      477      97.5
+5 F      cigs.per.day  6.88  12.0     0      0      0    10.5  40    0.      10.2   1.75     1.53         0.113   0.855      468      95.7
+6 M      cigs.per.day  6.72  11.8     0      0      0    11    40    0.      11     1.76     1.54         0.112   0.921      475      97.1
+7 F      samp.wgts     1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918      489     100  
+8 M      samp.wgts     1.000  0.0840  0.861  0.861  1.04  1.05  1.06 7.72e-3  0.188 0.0840  -1.03         0.110  -0.918      489     100  
 
 > view(dd1) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -1045,7 +1053,7 @@ N: 489
 
 > tobacco$gender %<>% forcats::fct_explicit_na() 
 > (dd2 <- tobacco %>% group_by(gender) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 
 Estatística descritiva  
 tobacco  
@@ -1091,7 +1099,7 @@ N: 22
 > dd2 %>% tb() 
 
 # A tibble: 12 x 9
-   value     variable       mean      sd    min   med   max n.valid pct.valid
+   gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
  1 F         age          49.6   18.3    18     50    80        475      97.1
  2 F         BMI          26.1    4.95    9.01  25.9  39.4      475      97.1
@@ -1109,7 +1117,7 @@ N: 22
 > dd2 %>% tb(2) 
 
 # A tibble: 12 x 9
-   value     variable       mean      sd    min   med   max n.valid pct.valid
+   gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
  1 F         age          49.6   18.3    18     50    80        475      97.1
  2 M         age          49.6   18.3    18     49.5  80        478      97.8
@@ -1125,7 +1133,7 @@ N: 22
 12 (Missing) samp.wgts     1.01   0.0811  0.861  1.05  1.06      22     100  
 
 > view(dd2) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 -- Output file written
 -- Output file appended
 
@@ -1405,7 +1413,7 @@ N: 3
 
 > tobacco$age.gr %<>% forcats::fct_explicit_na() 
 > (dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: smoker, diseased, disease
 
 Estatística descritiva  
 tobacco  
@@ -1653,7 +1661,69 @@ N: 3
 55 (Missing) 71 +      cigs.per.day  8.33  14.4     0      0     25           3     100  
 56 (Missing) 71 +      samp.wgts     1.06   0       1.06   1.06   1.06        3     100  
 
-> dd4 %>% tb(2) 
+> dd4 %>% tb(na.rm = TRUE) # no effect expected 
+
+# A tibble: 56 x 10
+   gender    age.gr    variable       mean      sd    min    med    max n.valid pct.valid
+   <fct>     <fct>     <chr>         <dbl>   <dbl>  <dbl>  <dbl>  <dbl>   <dbl>     <dbl>
+ 1 F         18-34     age          26.0    4.71   18     26     34         123     100  
+ 2 F         18-34     BMI          24.2    4.75   13.0   24.2   34.8       121      98.4
+ 3 F         18-34     cigs.per.day  5.87  11.2     0      0     38         119      96.7
+ 4 F         18-34     samp.wgts     0.861  0       0.861  0.861  0.861     123     100  
+ 5 F         35-50     age          42.0    4.54   35     42     50         118     100  
+ 6 F         35-50     BMI          25.6    4.84   10.3   25.7   39.4       112      94.9
+ 7 F         35-50     cigs.per.day  6.68  11.6     0      0     40         115      97.5
+ 8 F         35-50     samp.wgts     1.04   0       1.04   1.04   1.04      118     100  
+ 9 F         51-70     age          61      5.70   51     61     70         157     100  
+10 F         51-70     BMI          27.1    4.88    9.01  26.9   39.2       154      98.1
+11 F         51-70     cigs.per.day  7.20  12.6     0      0     40         153      97.5
+12 F         51-70     samp.wgts     1.05   0       1.05   1.05   1.05      157     100  
+13 F         71 +      age          75.5    2.94   71     76     80          77     100  
+14 F         71 +      BMI          28.0    4.60   18.4   27.7   38.4        75      97.4
+15 F         71 +      cigs.per.day  7.65  12.9     0      0     40          69      89.6
+16 F         71 +      samp.wgts     1.06   0       1.06   1.06   1.06       77     100  
+17 F         (Missing) age          NA     NA      NA     NA     NA           0      NA  
+18 F         (Missing) BMI          25.4    4.35   18.8   25.9   31.8        13      92.9
+19 F         (Missing) cigs.per.day 10.2   13.4     0      0     31          12      85.7
+20 F         (Missing) samp.wgts     0.942  0.0968  0.861  0.861  1.06       14     100  
+21 M         18-34     age          26.4    4.91   18     26     34         130     100  
+22 M         18-34     BMI          23.4    3.66    8.83  23.7   32.7       126      96.9
+23 M         18-34     cigs.per.day  7.36  12.7     0      0     40         127      97.7
+24 M         18-34     samp.wgts     0.861  0       0.861  0.861  0.861     130     100  
+25 M         35-50     age          42.6    4.70   35     42     50         118     100  
+26 M         35-50     BMI          24.7    3.82   15.1   24.7   34.8       115      97.5
+27 M         35-50     cigs.per.day  5.44  10.4     0      0     40         114      96.6
+28 M         35-50     samp.wgts     1.04   0       1.04   1.04   1.04      118     100  
+29 M         51-70     age          61.5    5.51   51     61     70         151     100  
+30 M         51-70     BMI          26.6    3.56   17.8   26.6   35.0       149      98.7
+31 M         51-70     cigs.per.day  6.89  11.7     0      0     39         146      96.7
+32 M         51-70     samp.wgts     1.05   0       1.05   1.05   1.05      151     100  
+33 M         71 +      age          75.3    2.81   71     75     80          79     100  
+34 M         71 +      BMI          26.9    4.16   16.4   26.7   36.8        77      97.5
+35 M         71 +      cigs.per.day  7.06  12.4     0      0     37          77      97.5
+36 M         71 +      samp.wgts     1.06   0       1.06   1.06   1.06       79     100  
+37 M         (Missing) age          NA     NA      NA     NA     NA           0      NA  
+38 M         (Missing) BMI          24.9    2.65   20.3   24.8   30.5        10      90.9
+39 M         (Missing) cigs.per.day  8     14.5     0      0     36          11     100  
+40 M         (Missing) samp.wgts     1.03   0.0558  0.861  1.04   1.05       11     100  
+41 (Missing) 18-34     age          26.4    4.83   19     29     30           5     100  
+42 (Missing) 18-34     BMI          25.9    3.32   21.5   25.9   29.7         5     100  
+43 (Missing) 18-34     cigs.per.day  6.6   12.2     0      0     28           5     100  
+44 (Missing) 18-34     samp.wgts     0.861  0       0.861  0.861  0.861       5     100  
+45 (Missing) 35-50     age          40.8    5.59   36     38     50           5     100  
+46 (Missing) 35-50     BMI          23.7    3.26   20.2   24.2   27.4         5     100  
+47 (Missing) 35-50     cigs.per.day  3      4.47    0      0     10           5     100  
+48 (Missing) 35-50     samp.wgts     1.04   0       1.04   1.04   1.04        5     100  
+49 (Missing) 51-70     age          61.3    5.12   53     59     69           9     100  
+50 (Missing) 51-70     BMI          28.7    3.00   25.0   30.4   32.4         9     100  
+51 (Missing) 51-70     cigs.per.day  6.78  10.2     0      0     21           9     100  
+52 (Missing) 51-70     samp.wgts     1.05   0       1.05   1.05   1.05        9     100  
+53 (Missing) 71 +      age          77      2.65   75     76     80           3     100  
+54 (Missing) 71 +      BMI          28.8    1.30   27.8   28.2   30.2         3     100  
+55 (Missing) 71 +      cigs.per.day  8.33  14.4     0      0     25           3     100  
+56 (Missing) 71 +      samp.wgts     1.06   0       1.06   1.06   1.06        3     100  
+
+> dd4 %>% tb(order = 2) 
 
 # A tibble: 56 x 10
    gender    age.gr    variable       mean      sd    min    med    max n.valid pct.valid
@@ -1716,7 +1786,7 @@ N: 3
 56 M         (Missing) samp.wgts     1.03   0.0558  0.861  1.04   1.05       11     100  
 
 > view(dd4) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+-- Non-numerical variable(s) ignored: smoker, diseased, disease
 -- Output file written
 -- Output file appended
 
@@ -1786,6 +1856,18 @@ Grupo: gender = (Missing)
 8 M         <NA>      26     NA            100      1.77      100   
 9 (Missing) <NA>       0     NA            100      0         100   
 
+> ff1 %>% tb(2, TRUE) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
 > view(ff1) 
 -- Output file written
 -- Output file appended
@@ -1843,6 +1925,18 @@ Grupo: gender = (Missing)
 5 M         No       328 23.6     78.8
 6 (Missing) No        14 21.2    100  
 
+> ff2 %>% tb(2, TRUE) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
+
 > tobacco$gender %<>% forcats::fct_explicit_na() 
 > (ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq()) 
 
@@ -1879,7 +1973,7 @@ Grupo: gender = (Missing)
 > ff3 %>% tb() 
 
 # A tibble: 9 x 7
-  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 F         Yes      141     10.1           10.1    9.61        9.61
 2 F         No       324     23.2           33.3   22.1        31.7 
@@ -1894,7 +1988,7 @@ Grupo: gender = (Missing)
 > ff3 %>% tb(2) 
 
 # A tibble: 9 x 7
-  value     smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
+  gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
 1 F         Yes      141     10.1           10.1    9.61        9.61
 2 M         Yes      135      9.72          19.8    9.20       18.8 
@@ -1905,6 +1999,18 @@ Grupo: gender = (Missing)
 7 F         <NA>      24     NA            100      1.64       98.2 
 8 M         <NA>      26     NA            100      1.77      100   
 9 (Missing) <NA>       0     NA            100      0         100   
+
+> ff3 %>% tb(2, TRUE) 
+
+# A tibble: 6 x 5
+  gender    smoker  freq   pct pct_cum
+  <fct>     <fct>  <dbl> <dbl>   <dbl>
+1 F         Yes      141 10.1     10.1
+2 M         Yes      135  9.72    19.8
+3 (Missing) Yes        8 12.1     31.9
+4 F         No       324 23.2     55.2
+5 M         No       328 23.6     78.8
+6 (Missing) No        14 21.2    100  
 
 > view(ff3) 
 -- Output file written
@@ -2141,7 +2247,7 @@ Grupo: gender = M, age.gr = (Missing)
 > (ff5 <- tobacco %>% group_by(gender, age.gr) %>% select(gender, age.gr, smoker) %>% freq()) 
 
 Frequências  
-smoker  
+tobacco$smoker  
 Tipo: Fator  
 Grupo: gender = F, age.gr = 18-34  
 
@@ -2368,4 +2474,38 @@ Grupo: gender = (Missing), age.gr = 71 +
 40 (Missing) 71 +      <NA>       0     NA           100      0           99.0 
 41 F         (Missing) <NA>       2     NA           100      1.02       100   
 42 M         (Missing) <NA>       0     NA           100      0          100   
+
+> ff5 %>% tb(2, na.rm = TRUE) 
+
+# A tibble: 28 x 6
+   gender    age.gr    smoker  freq   pct pct_cum
+   <fct>     <fct>     <fct>  <dbl> <dbl>   <dbl>
+ 1 F         18-34     Yes       32  2.01    2.01
+ 2 M         18-34     Yes       35  2.03    4.04
+ 3 (Missing) 18-34     Yes        2  2.86    6.89
+ 4 F         35-50     Yes       36  2.30    9.19
+ 5 M         35-50     Yes       28  1.79   11.0 
+ 6 (Missing) 35-50     Yes        2  2.86   13.8 
+ 7 F         51-70     Yes       48  2.24   16.1 
+ 8 M         51-70     Yes       48  2.36   18.4 
+ 9 (Missing) 51-70     Yes        3  2.38   20.8 
+10 F         71 +      Yes       21  2.03   22.8 
+11 M         71 +      Yes       21  2.08   24.9 
+12 (Missing) 71 +      Yes        1  2.38   27.3 
+13 F         (Missing) Yes        4  2.38   29.7 
+14 M         (Missing) Yes        3  1.95   31.6 
+15 F         18-34     No        82  5.14   36.8 
+16 M         18-34     No        88  5.11   41.9 
+17 (Missing) 18-34     No         3  4.29   46.2 
+18 F         35-50     No        76  4.85   51.0 
+19 M         35-50     No        84  5.36   56.4 
+20 (Missing) 35-50     No         3  4.29   60.7 
+21 F         51-70     No       105  4.90   65.6 
+22 M         51-70     No        97  4.78   70.3 
+23 (Missing) 51-70     No         6  4.76   75.1 
+24 F         71 +      No        53  5.12   80.2 
+25 M         71 +      No        51  5.06   85.3 
+26 (Missing) 71 +      No         2  4.76   90.0 
+27 F         (Missing) No         8  4.76   94.8 
+28 M         (Missing) No         8  5.19  100   
 
