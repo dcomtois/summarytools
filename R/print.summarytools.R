@@ -315,11 +315,12 @@ print.summarytools <- function(x,
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
       paste0(
-        conv_non_ascii(trs("generated.by")),
+        "<p>", conv_non_ascii(trs("generated.by")),
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
         " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
-        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt"))
+        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt")),
+        "</p>"
       )
   }
 
