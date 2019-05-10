@@ -6,17 +6,14 @@ Version 0.9.4
  - Added support for **pipeR**'s `%>>%` operator
  - `freq()` recognizes factor level "(Missing)" (from forcats::fct_explicit_na)
    as NA's
+ - For `freq()` objects, the `collapse` parameter can be passed to the `print()`
+   method (experimental feature)
  - Improved output when grouping by more than one variable, either with
    `stby()` or `dplyr::group_by()`
  - `tb()` supports objects having several grouping variables
  - `tb()` has an added parameter "na.rm" (for `freq()` objects)
  - improved how `descr()` deals with empty vectors and invalid weights
  
-À voir:
-?- In `define_keywords()` and `use_custom_lang()` graphical interfaces are 
-   no longer used, as it caused installation issues for many users, especially
-   on Mac OS
-
 Version 0.9.3
 -------------
  - New functions:

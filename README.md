@@ -58,7 +58,7 @@ apps*.
 
 ### Latest Improvements
 
-Version 0.9 brings **many** changes and improvements. A summary of those
+Version 0.9 brought **many** changes and improvements. A summary of those
 changes can be found [near the end of this page](#latest-changes).
 Changes specific to the latest release can be found in the
 [NEWS](https://github.com/dcomtois/summarytools/blob/master/NEWS.md)
