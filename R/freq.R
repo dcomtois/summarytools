@@ -413,7 +413,7 @@ freq <- function(x,
         if (length(rows) < n_distinct(x)) {
           freq_table <- 
             c(freq_table[rows], 
-              "(Other)" = sum(freq_table[setdiff(names(freq_table), rows)]),
+              "(Other)" = sum(freq_table[setdiff(na.omit(names(freq_table)), rows)]),
               tail(freq_table, 1))
         } else {
           freq_table <- c(freq_table[rows], tail(freq_table, 1))
