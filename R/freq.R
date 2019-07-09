@@ -265,6 +265,9 @@ freq <- function(x,
     }
     
     freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
+    if (!NA %in% names(freq_table)) {
+      freq_table <- c(freq_table, "<NA>" = 0)
+    }
   }
   
   # Order by [-]freq if needed
