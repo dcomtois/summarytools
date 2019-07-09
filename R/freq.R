@@ -360,13 +360,12 @@ freq <- function(x,
     if (identical(NA, weights)) {
       freq_table <- table(x, useNA = "always")
     } else {
-      
       # Weights are used
       weights_string <- deparse(substitute(weights))
       
       if (sum(is.na(weights)) > 0) {
-        warning("missing values on weight variable have been detected and were ",
-                "treated as zeroes")
+        warning("missing values on weight variable have been detected and ",
+                "were treated as zeroes")
         weights[is.na(weights)] <- 0
       }
       
@@ -375,6 +374,9 @@ freq <- function(x,
       }
       
       freq_table <- xtabs(formula = weights ~ x, addNA = TRUE)
+      if (!NA %in% names(freq_table)) {
+        freq_table <- c(freq_table, "<NA>" = 0)
+      }
     }
     
     # Order by [-]freq if needed
