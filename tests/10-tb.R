@@ -4,7 +4,8 @@ library(magrittr)
 library(dplyr)
 options(tibble.print_max = Inf)
 set.seed(765543543)
-tobacco$smoker[sample(1:1000, size = 25, replace = FALSE)] <- NA_character_
+na_pos <- sample(1:1000, size = 25, replace = FALSE)
+tobacco$smoker[na_pos] <- NA_character_
 
 # Normal freq table
 (fr1 <-  tobacco %$% freq(gender))
