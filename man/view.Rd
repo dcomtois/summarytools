@@ -81,7 +81,7 @@ Creates \emph{html} outputs and opens them in the Viewer, in a browser or
 renders the \emph{html} code appropriate for \emph{Rmarkdown} documents. 
 
 For objects of class \dQuote{summarytools}, this function is simply
-a wrapper around \code{link{print.summarytools}} with \emph{method} set to
+a wrapper around \code{\link{print.summarytools}} with \emph{method} set to
 \dQuote{viewer}.
  
 Objects of class \dQuote{by} or \dQuote{list} are dispatched to the present
