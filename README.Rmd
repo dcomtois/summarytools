@@ -383,7 +383,7 @@ with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ## Using dplyr::group_by() to Ventilate Results
 To create grouped statistics with `descr()` or `dfSummary()`, it is possible
 to use **dplyr**'s `group_by()` as an alternative to `stby()`. Aside from the 
-syntaxic differences, one key distinction is that `dplyr::group_by()` considers
+syntactic differences, one key distinction is that `dplyr::group_by()` considers
 `NA` values on the grouping variables as valid categories, albeit with a warning 
 message suggesting to use `forcats::fct_explicit_na` to make `NA`'s explicit. 
 The best way to go is to actually follow that advice:

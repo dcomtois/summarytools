@@ -45,7 +45,7 @@ package:
 An emphasis has been put on both _what_ and _how_ results are presented, so that
 the package can serve both as an exploration _and_ reporting tool, used on its 
 own for minimal reports, or with other sets of tools such as 
-[rmarkdown](http://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
+[rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.name/knitr/).
 
 **Building on the strengths of [pander](https://github.com/Rapporter/pander) and
 [htmltools](https://CRAN.R-project.org/package=htmltools)**, the 
@@ -369,7 +369,7 @@ with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 ## Using dplyr::group_by() to Ventilate Results
 To create grouped statistics with `descr()` or `dfSummary()`, it is possible
 to use **dplyr**'s `group_by()` as an alternative to `stby()`. Aside from the 
-syntaxic differences, one key distinction is that `dplyr::group_by()` considers
+syntactic differences, one key distinction is that `dplyr::group_by()` considers
 `NA` values on the grouping variables as valid categories, albeit with a warning 
 message suggesting to use `forcats::fct_explicit_na` to make `NA`'s explicit. 
 The best way to go is to actually follow that advice:

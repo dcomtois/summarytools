@@ -52,9 +52,3 @@ use_custom_lang <- function(file) {
   st_options(lang = "custom")
   message("Operation successful")
 }
-
-#' @export
-useTranslations <- function(file) {
-  message("useTranlations() is deprecated; please use use_custom_lang() ",
-          "instead")
-}

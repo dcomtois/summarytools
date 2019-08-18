@@ -2,7 +2,6 @@
 % Please edit documentation in R/use_custom_lang.R
 \name{use_custom_lang}
 \alias{use_custom_lang}
-\alias{useTranslations}
 \title{Import and use a custom language}
 \usage{
 use_custom_lang(file)
