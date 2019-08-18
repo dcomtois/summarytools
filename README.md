@@ -154,8 +154,7 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 
 We can simplify the results further and omit the *Totals* row by
 specifying `totals = FALSE`, as well as omit the *cumulative* rows by
-setting `cumul =
-FALSE`.
+setting `cumul = FALSE`.
 
 ``` r
 freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
@@ -209,8 +208,7 @@ We’ll now use a sample data frame called *tobacco*, which is included in
 `smoker` and `diseased`.
 
 Since *markdown* does not support multiline headings, we’ll show a
-rendered *html* version of the
-results:
+rendered *html* version of the results:
 
 ``` r
 print(ctable(tobacco$smoker, tobacco$diseased, prop = "r"), method = "render")
@@ -296,8 +294,7 @@ information as above.
 
 We specify the stats we wish to report with the `stats` argument, which
 also accepts values “all”, “fivenum”, and “common”. See `?descr` for a
-complete list of available
-statistics.
+complete list of available statistics.
 
 ``` r
 descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmarkdown")
@@ -582,7 +579,7 @@ Aside from the syntactic differences, one key distinction is that
 `dplyr::group_by()` considers `NA` values on the grouping variables as
 valid categories, albeit with a warning message suggesting to use
 `forcats::fct_explicit_na` to make `NA`’s explicit. The best way to go
-is to actually follow that advice:
+is simply to follow that advice:
 
 ``` r
 library(dplyr)
@@ -646,8 +643,8 @@ provides good guidelines, but here are a few tips to get started:
     knitr::opts_chunk$set(echo = TRUE, results = 'asis')
 ```
 
-        Refer to [this page](https://yihui.name/knitr/options/) for more
-*knitr*’s options.
+        Refer to [this page](https://yihui.name/knitr/options/) to learn
+more about *knitr*’s options.
 
   - To get better results when generating *html* output with `method =
     'render'`, set up your *.Rmd* document so that it includes
@@ -968,7 +965,7 @@ It is now possible to select the language used in the outputs. The
 following languages are available: English (*en* - default), French
 (*fr*), Spanish (*es*), Portuguese (*pt*), Turkish (*tr*), and Russian
 (*ru*). With the R community’s involvement, I believe we can add several
-more as time goes.
+more as time goes on.
 
 ### Switching Languages
 
@@ -1059,7 +1056,7 @@ As stated earlier, version 0.9 brought **many** improvements to
         opposed to “stby” objects, their automatic printing will **not**
         be optimal; that being said, `freq()` now accepts data frames as
         its first argument, so the need for `lapply()` is greatly
-        diminished)
+        reduced)
   - Easier management of global settings with `st_options()`
       - `st_options()` now has as many parameters as there are options
         to set, making it possible to set all options with only one
