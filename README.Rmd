@@ -830,21 +830,6 @@ to **summarytools**. Here are the key elements:
      (although much effort has been put into improving this as well)
    + `max.tbl.height` parameter added
 
-### Other Notable Changes
-
- - The `omit.headings` parameter has been replaced by the more straightforward
-   (and still boolean) `headings`. `omit.heandings` is still supported 
-   but will be deprecated in future releases
- - Because it was subject to errors, the _Rows Subset_ heading element
-   has been removed. If there is a strong need for it, I can bring it back in a 
-   future release (just let me known by email or on GitHub if you'd like to have
-   it back)
- - Under the hood, much has been going on; the lengthier functions have been
-   split into more manageable parts, and several normalizing operations were
-   performed, facilitating maintenance and improving code readability
- - The `tb()` function turns results from `freq()` and `descr()` into 
-   _tidy tibbles_
-
 ## Stay Up-to-date
 
 For a preview of what's coming in the next release, see the 

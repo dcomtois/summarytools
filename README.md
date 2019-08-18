@@ -578,7 +578,7 @@ with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
 
 To create grouped statistics with `descr()` or `dfSummary()`, it is
 possible to use **dplyr**’s `group_by()` as an alternative to `stby()`.
-Aside from the syntaxic differences, one key distinction is that
+Aside from the syntactic differences, one key distinction is that
 `dplyr::group_by()` considers `NA` values on the grouping variables as
 valid categories, albeit with a warning message suggesting to use
 `forcats::fct_explicit_na` to make `NA`’s explicit. The best way to go
@@ -586,20 +586,6 @@ is to actually follow that advice:
 
 ``` r
 library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
 tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
@@ -1113,30 +1099,6 @@ As stated earlier, version 0.9 brought **many** improvements to
         improving this as well)
       - `max.tbl.height` parameter added
 
-### Other Notable Changes
-
-  - The `omit.headings` parameter has been replaced by the more
-    straightforward (and still boolean) `headings`. `omit.heandings` is
-    still supported but will be deprecated in future releases
-  - Because it was subject to errors, the *Rows Subset* heading element
-    has been removed. If there is a strong need for it, I can bring it
-    back in a future release (just let me known by email or on GitHub if
-    you’d like to have it back)
-  - Under the hood, much has been going on; the lengthier functions have
-    been split into more manageable parts, and several normalizing
-    operations were performed, facilitating maintenance and improving
-    code readability
-  - The `tb()` function turns results from `freq()` and `descr()` into
-    *tidy tibbles*
-
-### Backward Compatibility
-
-No changes break backward compatibility, but at least one legacy feature
-will be abandoned in some further release. Namely, the boolean parameter
-`omit.headings`, which has been replaced by the more straightforward
-`headings`. For now, a message is shown whenever the “old” parameter
-name is used, encouraging users to switch to the newer one.
-
 ## Stay Up-to-date
 
 For a preview of what’s coming in the next release, see the [development
@@ -1147,7 +1109,7 @@ branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 The package comes with no guarantees. It is a work in progress and
 feedback / feature requests are welcome. Just send me an email
 (dominic.comtois (at) gmail.com), or open an
-[Issue](https://github.com/dcomtois/summarytools/issues) if you find a
+[issue](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
 
 Also, the package grew significantly larger, and maintaining it all by
