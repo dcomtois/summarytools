@@ -35,10 +35,11 @@ unquote <- function(x) {
 conv_non_ascii <- function(...) {
   out <- character()
   for (s in list(...)) {
+    if (is.null(s)) next
     splitted <- unlist(strsplit(s, ""))
     intvalues <- utf8ToInt(enc2utf8(s))
-    pos_to_modify_lat <- which(intvalues >=161 & intvalues <= 255)
-    pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <=1279)
+    pos_to_modify_lat <- which(intvalues >=  161 & intvalues <=  255)
+    pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <= 1279)
     pos_to_modify <- c(pos_to_modify_lat, pos_to_modify_cyr)
     splitted[pos_to_modify] <- paste0("&#0",  intvalues[pos_to_modify], ";")
     out <- c(out, paste0(splitted, collapse = ""))
