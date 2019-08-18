@@ -1,11 +1,6 @@
 # summarytools 0.9.4 (2019-08-20)
 
-## Bug Fixes
- - Fixed a problem with `freq()` arising when using sampling weights while no
-   missing values were present
-
-## New Features and Improvements
- - Added support for **dplyr**'s `group_by()` function (as an alternative
+ - Added support for **dplyr**'s `group_by()` function as an alternative
    to `stby()`
  - Added support for **magrittr** `%$%` operators 
  - Added support for **pipeR** `%>>%` operator
@@ -18,18 +13,19 @@
  - `tb()` supports objects having several grouping variables
  - `tb()` has an added parameter "na.rm" for `freq()` objects
  - Improved how `descr()` deals with empty vectors and invalid weights
+ - Fixed a problem with `freq()` arising when using sampling weights while no
+   missing values were present
  
 # summarytools 0.9.3 (2019-04-11)
 
-## New Features
  - Function `tb()` turns `freq()` and `descr()` outputs into "tidy" tibbles
  - Function `define_keywords()` allows defining translatable terms in GUI and
    optionally save the results in a _csv_ file (through _Save File..._ dialog)
  - Function `use_custom_lang()` replaces `useTranslations()` and triggers an
    _Open File..._ dialog when no argument is supplied   
- - In `freq()`, a new parameter `cumul` allows turning on or off cumulative
-   proportions
  - In `freq()`:
+   + A new parameter `cumul` allows turning on or off cumulative
+     proportions
    + The _order_ parameter values "names", "freq", and "levels"
      now have their counterparts "-names" (or "names-"), "-freq" 
      and "-levels"
@@ -44,7 +40,7 @@
    invalid, duplicates
  - Added translations : Portuguese ("pt"), Turkish ("tr"), and Russian ("ru")
 
-## Deprecated functions:
+### Deprecated functions:
 
  - `byst()` had to be dropped because of issues related to objects names;
     only `stby()` is accepted from now on
@@ -63,8 +59,6 @@ were introduced since version 0.8.8 (versions 0.8.9 and 0.9.0 were released
 solely on _GitHub_). Please refer to the README file, the two vignettes and the
 information below for all the details.
 
-## New Features
-
  - `stby()`, a summarytools-specific version of `by()`, is 
    introduced. It is **highly recommended** that you use it instead of `by()`; 
    its syntax is identical and it greatly simplifies the printing of the 
@@ -81,8 +75,6 @@ information below for all the details.
 
 # summarytools 0.9.0 (2019-01-05)
 
-## New Features
-
  - **Output translations** are introduced. For instance, setting
    `st_options(lang='fr')` gives access to French translations. Spanish ('es')
    translations are also available. 
@@ -97,8 +89,6 @@ information below for all the details.
 
 # summarytools 0.8.9 (2018-12-17)
 
-## New Features
-
  - In `dfSummary()`:  
    + Number of columns and number of duplicates added to the _headings_ 
      section  
@@ -111,21 +101,16 @@ information below for all the details.
    supported)  
  - More parameters can be overridden when calling `print()` or `view()` - 
    refer to the `print()` method's documentation to learn more  
-   
-## Other Changes:  
  - The 'omit.headings' parameter is replaced by the more straightforward
    (and still boolean) 'headings'. The former is still supported but will 
    disappear in a future release (possibly 0.9.2)  
  - Row subsetting is no longer displayed in the headings section, as it was
    error-prone  
 
-## Special Thanks
 Special thanks to Paul Feitsma for his numerous suggestions.
 
 
 # summarytools 0.8.8 (2018-10-07)
-
-## Bug Fixes
 
  - Fixed character encoding issues  
  - In `dfSummary()`:
@@ -137,8 +122,6 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 # summarytools 0.8.7 (2018-07-23)
 
-## Bug Fixes
-
  - Fixed an issue with `dfSummary()` when missing values were present along
    with whole numbers  
  - Fixed an issue with `descr()` where group was not shown for the first 
@@ -146,8 +129,6 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 
 # summarytools 0.8.6 (2018-07-20)
-
-## Bug Fixes
 
  - In `dfSummary()`:  
    + _"Label"_ column now shows proper line breaks in the html versions  
@@ -161,20 +142,14 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 # summarytools 0.8.5 (2018-06-17)
 
-## Bug Fixes
- - In `ctable()`, argument 'useNA' now correctly accepts value "no"  
-
-## New Features
-
  - In `dfSummary()`:  
    + Time intervals in `dfSummary()` now use `lubridate::as.period()`  
    + Line feeds in ASCII barplots now displayed correctly  
    + String trimming is applied consistently  
+ - In `ctable()`, argument 'useNA' now correctly accepts value "no"  
 
 
 # summarytools 0.8.4 (2018-06-07)
-
-## New Features
 
  - Method for calculating number of bins in `dfSummary()` histograms changed 
    (from `nclass.FD()` to `nclass.Sturges()`)  
@@ -185,15 +160,10 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 # summarytools 0.8.3 (2018-04-16)
 
-## New Features
-
  - Introduced global options with `st_options()`  
  - New logical options for `freq()`: 'totals' and 'display.nas'  
  - In `descr()`, _Q1_ and _Q3_ were added; also, the order in the 'stats' 
    argument is now reflected in the output table  
-   
-## Other Changes
-
  - In all functions, argument 'split.table' becomes 'split.tables' as per
    changes in the 'pander' package  
  - Argument 'omit.headings' added to all main functions  
@@ -212,26 +182,16 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 # summarytools 0.8.2 (2018-02-11)
 
-## Bug Fixes
-
- - Fixed performance issue with numerical data having a very large range  
- - Fixed missing line feeds in `dfSummary()` bar charts  
- 
-## Other Changes
-
  - Added support for Date / POSIXt objects in `dfSummary()`  
  - Improved support for `lapply()` when used with `freq()`  
+ - Fixed performance issue with numerical data having a very large range  
+ - Fixed missing line feeds in `dfSummary()` bar charts  
 
 
 # summarytools 0.8.1 (2018-01-14)
 
-## Bug Fixes
-
  - Fixed issue with all-NA factors in `dfSummary()`  
  - Fixed issues with graphs in `dfSummary()`  
-
-## Other Changes
-
  - Added vignettes  
  - Improved handling of negative column indexing by the parsing function  
  - Removed accentuated characters from docs  
@@ -239,28 +199,24 @@ Special thanks to Paul Feitsma for his numerous suggestions.
 
 # summarytools 0.8.0 (2017-12-10)
 
-## New Features
-
  - Introducing graphs in `dfSummary()`  
  - Added rudimentary support for `lapply()` to be used with `freq()`  
- 
-## Other Changes
-
  - Improved alignment of numbers in both html and ASCII tables  
  - Cleanup in css and upgrade to Bootstrap 4 beta  
  - Improved support for `by()` and `with()` with `descr()`, `freq()`, 
    and `ctable()`  
  
-## Backward-compatibility Note
+### Backward-compatibility Note
 
 In `dfSummary()`, parameter name 'display.labels' has been changed to
 'labels.col' for consistency reasons. Also, see Notes for Version 0.6.9 about
 the 'file' parameter.
 
 
-# summarytools 0.7.0 (2017-06-01)
+# summarytools 0.7.0
 
- - _GitHub-only_ release  
+_GitHub-only_ release  
+
  - Improved alignment in cells having counts + proportions  
  - Updated vignette to reflect latest changes and added examples using the
    example datasets "exams" and "tobacco"  
@@ -269,9 +225,10 @@ the 'file' parameter.
  - Internal change: **Roxygen2** is now used to generate documentation  
 
 
-# summarytools 0.6.9 (2017-04-01)
+# summarytools 0.6.9
 
- - _GitHub-only_ release
+_GitHub-only_ release
+
  - Introduced `ctable()` for cross-tabulations  
  - Extended support for printing objects created using `by()` and/or `with()`:
    variable names, labels and by-groups are now displayed correctly  
@@ -284,7 +241,7 @@ the 'file' parameter.
    rather than values  
  - Alignment of numbers in `descr()` observations table has been improved
  
-## Backward Compatibility Note
+### Backward Compatibility Note
 
 The 'file' parameter must now be used with `print()` or `view()`; its
 use with other functions is now deprecated. 
@@ -292,18 +249,13 @@ use with other functions is now deprecated.
 
 # summarytools 0.6.5 (2016-12-05)
 
-## Bug Fixes
-
- - Fixed a problem with `dfSummary()` which arose when number of factor levels 
-   exceeded max.distinct.values  
  - Improved the way `dfSummary()` reports frequencies for character variables  
  - Fixed problems with outputs when using weights  
- 
-## Other Changes
-
  - Added hash markup to table headings for better markdown integration  
  - Added an option to the `print()` method to suppress the footnote in HTML 
    outputs  
+ - Fixed a problem with `dfSummary()` which arose when number of factor levels 
+   exceeded max.distinct.values  
 
 
 # summarytools 0.6 (2016-11-21)
@@ -318,9 +270,10 @@ use with other functions is now deprecated.
  - Improved results when using `by()`  
 
 
-# summarytools 0.5 (2016-06-01)
+# summarytools 0.5
 
- - _GitHub-only_ release
+_GitHub-only_ release
+
  - Function `descr()` now supports weights  
  - Output from `what.is()` has been simplified  
  - Other changes are transparent to the user, but make the internals
@@ -336,13 +289,8 @@ use with other functions is now deprecated.
 
 # summarytools 0.3 (2015-03-11)
 
-## New Features
-
-  - HTML tables are built with **htmltools** and viewable in RStudio's Viewer
-  
-## Other Changes
+  - `view()` allows opening HTML tables in RStudio's Viewer 
   - `desc()` is renamed `descr()` 
-  - Argument 'echo' is deprecated 
   - Returned objects are now of class "summarytools" and have several 
     attributes that are used by `print.summarytools()`  
   - `print.summarytools()` has argument 'method' that can be one of "pander",
@@ -350,6 +298,7 @@ use with other functions is now deprecated.
     of the output, using Bootstrap's CSS (https://getbootstrap.com)  
   - Row indexing is "detected" and reported
   - Rounding occurs when results are displayed (non-rounded results are stored)
+  - Argument 'echo' is deprecated 
 
 # summarytools 0.2 (2014-11-25)
 
