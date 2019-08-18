@@ -592,7 +592,7 @@ N: 258
 -- Output file written
 -- Output file appended
 
-> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "29.html") 
+> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html") 
 -- Output file written
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 
