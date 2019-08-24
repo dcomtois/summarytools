@@ -9,6 +9,18 @@ check_arguments <- function(mc, dotArgs) {
   pf <- parent.frame()
   errmsg <- character()
   
+  if (caller == "FUN") {
+    # When stby() was called, deduce caller from formals
+    if ("order" %in% names(pf))
+      caller <- "freq"
+    else if ("transpose" %in% names(pf))
+      caller <- "descr"
+    else if ("chisq" %in% names(pf))
+      caller <- "ctable"
+    else if ("graph.col" %in% names(pf))
+      caller <- "dfSummary"
+  }
+  
   # Deprecated arguments -------------------------------------------------------
   if ("file" %in% names(dotArgs)) {
     message(paste("'file' argument is deprecated; use with print() or view(),",

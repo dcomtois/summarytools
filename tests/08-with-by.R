@@ -60,7 +60,10 @@ view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style =
 view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render") 
 detach(tobacco)
 
-b9 <- stby(tobacco, tobacco$gender, dfSummary)
+stby(tobacco, tobacco$gender, dfSummary)
+stby(tobacco, tobacco$gender, descr)
+stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
+
 
 # with + by
 wb1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)) 
