@@ -1,9 +1,9 @@
-# summarytools 0.9.4 (2019-08-20)
+# summarytools 0.9.4 (2019-08-24)
 
  - Added support for **dplyr**'s `group_by()` function as an alternative
    to `stby()`
- - Added support for **magrittr** `%$%` operators 
- - Added support for **pipeR** `%>>%` operator
+ - Added support for **magrittr** `%$%` operator 
+ - Added support for **pipeR** `%>>%` operator 
  - `freq()` recognizes factor level "(Missing)" from `forcats::fct_explicit_na`
    as `NA`'s
  - For `freq()` objects, `collapse` boolean parameter has been added as an
