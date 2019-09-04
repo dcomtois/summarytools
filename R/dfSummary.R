@@ -286,8 +286,7 @@ dfSummary <- function(x,
     if (is.na(tmp.img.dir)) {
       store_imgs <- FALSE
       if(!isTRUE(silent)) {
-        message("text graphs are displayed; set 'tmp.img.dir' parameter to ",
-                "activate png graphs")
+        png_message <- TRUE
       }
     } else {
       store_imgs <- TRUE
@@ -475,6 +474,9 @@ dfSummary <- function(x,
   attr(output, "user_fmt") <- list(... = ...)
   
   attr(output, "lang") <- st_options("lang")
+  
+  if (exists("png_message"))
+    attr(output, "png_message") <- TRUE
   
   return(output)
 }
