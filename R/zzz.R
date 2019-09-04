@@ -7,8 +7,10 @@
 .st_env$sysname <- Sys.info()[["sysname"]]
 
 # Check if system has X11 capability on Linux
-.st_env$noX11 <- Sys.info()[["sysname"]] != "Windows" && 
-  !isTRUE(capabilities("X11"))
+# Deprecated for now as it causes problems on some Linux systems with X11 capab.
+# .st_env$noX11 <- Sys.info()[["sysname"]] != "Windows" && 
+#  !isTRUE(capabilities("X11"))
+.st_env$noX11 <- FALSE
 
 .st_env$tmpfiles <- c()
 
