@@ -477,7 +477,8 @@ dfSummary <- function(x,
   
   if (exists("png_message"))
     attr(output, "png_message") <- TRUE
-  
+
+  try(dev.off(), silent = TRUE) # Closes empty graphical device in RGui  
   return(output)
 }
 
@@ -1057,7 +1058,6 @@ align_numbers_dfs <- function(counts, props) {
 #' @keywords internal
 encode_graph <- function(data, graph_type, graph.magnif = 1, 
                          pandoc = FALSE, emails = FALSE) {
-  
   devtype <- switch(.st_env$sysname,
                     Windows = "windows",
                     Linux   = "Xlib",
