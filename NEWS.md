@@ -3,7 +3,7 @@
  - Eliminated automatic check for X11 capabilities as it led to problems on some
    systems.
  - Added 'use.x11' option -- set with st_options(use.x11 = FALSE) in
-   case of problems using dfSummary
+   case of problems with `dfSummary()`
  - Fixed some issues when generating dfSummaries in Rmarkdown
 
 # summarytools 0.9.4 (2019-08-24)
