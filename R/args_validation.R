@@ -5,11 +5,13 @@
 #' @keywords internal
 check_arguments <- function(mc, dotArgs) {
   
-  caller <- as.character(sys.call(-1))[1]
-  pf <- parent.frame()
-  errmsg <- character()
+  caller      <- as.character(sys.call(-1))[1]
+  pf          <- parent.frame()
+  errmsg      <- character()
+  caller_orig <- caller
   
   if (caller == "FUN") {
+    
     # When stby() was called, deduce caller from formals
     if ("order" %in% names(pf))
       caller <- "freq"
@@ -180,7 +182,8 @@ check_arguments <- function(mc, dotArgs) {
     if (!identical(pf$weights, NA)) {
       if (is.null(pf$weights)) {
         errmsg %+=% "weights vector not found"
-      } else if (length(pf$weights) != nrow(as.data.frame(pf$x))) {
+      } else if (caller_orig != "FUN" && 
+                 length(pf$weights) != nrow(as.data.frame(pf$x))) {
         errmsg %+=% "weights vector must have same length as 'x'"      
       }
     }
@@ -241,7 +244,7 @@ check_arguments <- function(mc, dotArgs) {
     if (!identical(pf$weights, NA)) {
       if (is.null(pf$weights)) {
         errmsg %+=% "weights vector not found"
-      } else if (length(pf$weights) != nrow(pf$x.df)) {
+      } else if (caller_orig != "FUN" && (length(pf$weights) != nrow(pf$x.df))) {
         errmsg %+=% "weights vector must have same length as 'x'"      
       }
     }
