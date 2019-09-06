@@ -86,7 +86,7 @@ check_arguments <- function(mc, dotArgs) {
   if ("headings" %in% names(mc) &&
       !isTRUE(test_logical(pf$headings, 
                            len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'headings' must be either be TRUE or FALSE"
+    errmsg %+=% "'headings' must be either TRUE or FALSE"
   }
   
   # freq-specific arguments ----------------------------------------------------
@@ -318,9 +318,9 @@ check_arguments <- function(mc, dotArgs) {
     }
     
     if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
-        isTRUE(.st_env$noX11)) {
-      message("'tmp.img.dir' will be ignored since system has no X11 ",
-              "capabilities")
+        isFALSE(st_options("use.x11"))) {
+      message("'tmp.img.dir' will be ignored since use.x11 option is set to ",
+              "FALSE")
     }
   }
   return(errmsg)
@@ -460,16 +460,16 @@ check_arguments_st_options <- function(mc) {
   pf <- parent.frame()
   errmsg <- character()
   
+  if ("omit.headings" %in% names(mc)) {
+    errmsg %+=% "'omit.headings' is deprecated; use 'headings' instead"
+  }
+  
   if ("style" %in% names(mc)) {
     if (!isTRUE(test_choice(pf$style, 
                             c("simple", "grid", "rmarkdown")))) {
       errmsg %+=% paste("'style' must be one of 'simple', 'grid', or 'markdown';",
-                     "See documentation for details")
+                        "See documentation for details")
     }
-  }
-
-  if ("round.digits" %in% names(mc) && !isTRUE(test_int(pf$round.digits))) {
-    errmsg %+=% "'round.digits' must be a whole number"
   }
   
   if ("plain.ascii" %in% names(mc) && 
@@ -477,14 +477,18 @@ check_arguments_st_options <- function(mc) {
     errmsg %+=% "'plain.ascii' must be either TRUE or FALSE"
   }
   
+  if ("round.digits" %in% names(mc) && !isTRUE(test_int(pf$round.digits))) {
+    errmsg %+=% "'round.digits' must be a whole number"
+  }
+  
   if ("headings" %in% names(mc) &&
       !isTRUE(test_logical(pf$headings, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'headings' must be either be TRUE or FALSE"
+    errmsg %+=% "'headings' must be either TRUE or FALSE"
   }
   
   if ("footnote" %in% names(mc) &&
       !isTRUE(test_character(pf$footnote)) && !is.na(pf$footnote)) {
-    errmsg %+=% "'footnote' must be either be a string or NA"
+    errmsg %+=% "'footnote' must be either a string or NA"
   }
   
   if ("display.labels" %in% names(mc) &&
@@ -509,6 +513,11 @@ check_arguments_st_options <- function(mc) {
     errmsg %+=% "'escape.pipe' must be either TRUE or FALSE"
   }
   
+  if ("freq.cumul" %in% names(mc) &&
+      !isTRUE(test_logical(pf$freq.cumul, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'freq.cumul' must be either TRUE or FALSE"
+  }
+  
   if ("freq.totals" %in% names(mc) &&
       !isTRUE(test_logical(pf$freq.totals, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'freq.totals' must be either TRUE or FALSE"
@@ -518,12 +527,12 @@ check_arguments_st_options <- function(mc) {
       !isTRUE(test_logical(pf$freq.report.nas, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'freq.report.nas' must be either TRUE or FALSE"
   }
-
+  
   if ("freq.ignore.threshold" %in% names(mc) &&
       !isTRUE(test_int(pf$freq.ignore.threshold, lower = 0))) {
     errmsg %+=% "'freq.ignore.threshold' must be an integer greater than 0"
   }
-
+  
   if ("ctable.prop" %in% names(mc) &&
       !isTRUE(test_choice(pf$ctable.prop, c("r", "c", "t", "n")))) {
     errmsg %+=% "'ctable.prop' must be one of \"r\", \"c\", \"t\", or \"n\""
@@ -532,10 +541,6 @@ check_arguments_st_options <- function(mc) {
   if ("ctable.totals" %in% names(mc) &&
       !isTRUE(test_logical(pf$ctable.totals, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'ctable.totals' must be either TRUE or FALSE"
-  }
-  
-  if ("omit.headings" %in% names(mc)) {
-    errmsg %+=% "'omit.headings' is deprecated; use 'headings' instead"
   }
   
   if ("descr_stats" %in% names(mc)) {
@@ -559,12 +564,17 @@ check_arguments_st_options <- function(mc) {
     errmsg %+=% "'descr.transpose' must be either TRUE or FALSE"
   }
   
-  if ("freq.totals" %in% names(mc) &&
-      !isTRUE(test_logical(pf$freq.totals, 
-                           len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'freq.totals' must be either TRUE or FALSE"
+  if ("descr.silent" %in% names(mc) &&
+      !isTRUE(test_logical(pf$descr.silent, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'descr.silent' must be either TRUE or FALSE"
   }
-  
+
+  if ("dfSummary.style" %in% names(mc) &&
+      !isTRUE(test_choice(pf$dfSummary.style, 
+                          c("grid", "multiline")))) {
+    errmsg %+=% "'dfSummary.style' must be either 'grid' or 'multiline'"
+  }
+    
   if ("dfSummary.varnumbers" %in% names(mc) &&
       !isTRUE(test_logical(pf$dfSummary.varnumbers, 
                            len = 1, any.missing = FALSE))) {
@@ -576,11 +586,13 @@ check_arguments_st_options <- function(mc) {
                            len = 1, any.missing = FALSE))) {
     errmsg %+=% "'dfSummary.labels.col' must be either TRUE or FALSE"
   }
+  
   if ("dfSummary.valid.col" %in% names(mc) &&
       !isTRUE(test_logical(pf$dfSummary.valid.col,
                            len = 1, any.missing = FALSE))) {
     errmsg %+=% "'dfSummary.valid.col' must be either TRUE or FALSE"
   }
+  
   if ("dfSummary.na.col" %in% names(mc) &&
       !isTRUE(test_logical(pf$dfSummary.na.col, 
                            len = 1, any.missing = FALSE))) {
@@ -597,17 +609,34 @@ check_arguments_st_options <- function(mc) {
       pf$dfSummary.graph.magnif <= 0) {
     errmsg %+=% "'dfSummary.graph.magnif' must be > 0"
   }
-  
-  if ("lang" %in% names(mc) && !pf$lang %in% 
-      c(rownames(.translations), "custom")) {
-    errmsg %+=% paste0("'lang' can take the following values only: ",
-                       paste(rownames(.translations), collapse = ", "))
-  }
+
+  if ("dfSummary.silent" %in% names(mc) &&
+      !isTRUE(test_logical(pf$dfSummary.silent,
+                           len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'dfSummary.silent' must be either TRUE or FALSE"
+  }  
   
   if ("tmp.img.dir" %in% names(mc) &&
       (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
        nchar(pf$tmp.img.dir) > 5)) {
     errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
+  }
+
+  if ("subtitle.emphasis" %in% names(mc) &&
+      !isTRUE(test_logical(pf$subtitle.emphasis, 
+                           len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'subtitle.emphasis' must be either TRUE or FALSE"
+  }
+    
+  if ("lang" %in% names(mc) && !pf$lang %in% 
+      c(rownames(.translations), "custom")) {
+    errmsg %+=% paste0("'lang' can take the following values only: ",
+                       paste(rownames(.translations), collapse = ", "))
+  }
+
+  if ("use.x11" %in% names(mc) &&
+      !isTRUE(test_logical(pf$use.x11, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'use.x11' must be either TRUE or FALSE"
   }
   
   return(errmsg)
