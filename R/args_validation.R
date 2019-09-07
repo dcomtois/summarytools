@@ -5,7 +5,7 @@
 #' @keywords internal
 check_arguments <- function(mc, dotArgs) {
   
-  caller      <- as.character(sys.call(-1))[1]
+  caller      <- sub(".+::","",as.character(sys.call(-1))[1])
   pf          <- parent.frame()
   errmsg      <- character()
   caller_orig <- caller
