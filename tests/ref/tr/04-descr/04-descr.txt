@@ -1,6 +1,7 @@
 
 #------------------------------- descr.R ---------------------------------------  
 
+> library(magrittr) 
 > tobacco <- tibble::as_tibble(tobacco) 
 > (d1 <- descr(tobacco)) 
 -- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease

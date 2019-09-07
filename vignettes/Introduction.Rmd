@@ -374,8 +374,14 @@ syntactic differences, one key distinction is that `dplyr::group_by()` considers
 message suggesting to use `forcats::fct_explicit_na` to make `NA`'s explicit. 
 The best way to go is to actually follow that advice:
 
-```{r}
+```{r, eval=FALSE}
 library(dplyr)
+tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
+```
+
+```{r, echo=FALSE}
+suppressPackageStartupMessages(library(dplyr))
 tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
 tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```

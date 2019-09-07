@@ -91,6 +91,9 @@ $subtitle.emphasis
 $lang
 [1] "es"
 
+$use.x11
+[1] TRUE
+
 
 > st_options(plain.ascii = T) 
 > st_options('reset') 
@@ -184,6 +187,9 @@ $subtitle.emphasis
 
 $lang
 [1] "en"
+
+$use.x11
+[1] TRUE
 
 
 > st_options('plain.ascii') 
