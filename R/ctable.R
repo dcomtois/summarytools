@@ -85,7 +85,8 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
 #' @importFrom stats addmargins na.omit chisq.test
-ctable <- function(x, y,
+ctable <- function(x, 
+                   y,
                    prop            = st_options("ctable.prop"),
                    useNA           = "ifany",
                    totals          = st_options("ctable.totals"),
@@ -189,6 +190,7 @@ ctable <- function(x, y,
                  var = "x", silent = "dnn" %in% names(match.call()),
                  var_label = FALSE, caller = "ctable"),
       silent = TRUE)
+    
     if (inherits(parse_info_x, "try-error")) {
       parse_info_x <- list()
     }
@@ -198,6 +200,7 @@ ctable <- function(x, y,
                  var = "y", silent = "dnn" %in% names(match.call()),
                  var_label = FALSE, caller = "ctable"),
       silent = TRUE)
+    
     if (inherits(parse_info_y, "try-error")) {
       parse_info_y <- list()
     }
@@ -230,6 +233,12 @@ ctable <- function(x, y,
   } else {
     # Weights are used
     weights_string <- deparse(substitute(weights))
+    
+    # Subset weights when called from by()/stby() to match current data subset
+    if (isTRUE(flag_by)) {
+      pf <- parent.frame(2)
+      weights <- weights[pf$X[[pf$i]]]
+    }
     
     if (sum(is.na(weights)) > 0) {
       warning("missing values on weight variable have been detected and were ",

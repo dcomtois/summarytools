@@ -11,7 +11,7 @@ check_arguments <- function(mc, dotArgs) {
   caller_orig <- caller
   
   if (caller == "FUN") {
-    
+    pf$flag_by <- TRUE
     # When stby() was called, deduce caller from formals
     if ("order" %in% names(pf))
       caller <- "freq"
@@ -21,6 +21,8 @@ check_arguments <- function(mc, dotArgs) {
       caller <- "ctable"
     else if ("graph.col" %in% names(pf))
       caller <- "dfSummary"
+  } else {
+    pf$flag_by <- FALSE
   }
   
   # Deprecated arguments -------------------------------------------------------
