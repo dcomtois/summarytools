@@ -164,6 +164,13 @@ dfSummary <- function(x,
                       silent           = st_options('dfSummary.silent'),
                       ...) {
   
+  # Flag to handle unwanted graphic device in RGui
+  if (.Platform$GUI == "Rgui" && is.null(dev.list())) {
+    clear_rgui_device <- TRUE
+  } else {
+    clear_rgui_device <- FALSE
+  }
+  
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
     parse_info <- try(
@@ -477,8 +484,10 @@ dfSummary <- function(x,
   
   if (exists("png_message"))
     attr(output, "png_message") <- TRUE
-
-  try(dev.off(), silent = TRUE) # Closes empty graphical device in RGui  
+  
+  if (clear_rgui_device) {
+    try(dev.off(), silent = TRUE)
+  }
   return(output)
 }
 
