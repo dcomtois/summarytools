@@ -1,12 +1,16 @@
 # summarytools 0.9.5 (2019-09-09)
 
- - Eliminated automatic check for X11 capabilities as it led to problems on some
-   systems.
- - Added 'use.x11' option -- set with st_options(use.x11 = FALSE) in
+ - Eliminated automatic check for X11 capabilities as it caused problems on some
+   systems; Added 'use.x11' option -- set with st_options(use.x11 = FALSE) in
    case of problems with `dfSummary()`
  - Fixed some issues when generating dfSummaries in Rmarkdown
- - Fixed a bug arising when calling `summarytools::dfSummary()` (not loading
-   the package)
+ - Fixed a bug arising when calling `summarytools::dfSummary()` without loading
+   the package
+ - Fixed null graphic device appearing in RGUI when using `dfSummary()`
+ - Added support for weights when `freq()` and `ctable()` are used with
+   `stby()` or `dplyr::group_by()` (note that `group_by()` is compatible
+   with `freq()` but not with `ctable()`
+
 
 # summarytools 0.9.4 (2019-08-24)
 
