@@ -131,6 +131,9 @@ freq <- function(x,
                  rescale.weights = FALSE,
                  ...) {
 
+  # Initialize flag_by variable that will be set in the args validation function
+  flag_by <- logical()
+  
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
     
