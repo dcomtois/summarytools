@@ -6,7 +6,8 @@
  - Fixed some issues when generating dfSummaries in Rmarkdown
  - Fixed a bug arising when calling `summarytools::dfSummary()` without loading
    the package
- - Fixed null graphic device appearing in RGUI when using `dfSummary()`
+ - Fixed null graphic device appearing in RGui, RTerm and X11 when using
+   `dfSummary()`
  - Added support for weights when `freq()` and `ctable()` are used with
    `stby()` or `dplyr::group_by()` (note that `group_by()` is compatible
    with `freq()` but not with `ctable()`
