@@ -140,6 +140,7 @@
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
 #' @importFrom stats start end
+#' @importFrom grDevices dev.list dev.off
 #' @export
 dfSummary <- function(x,
                       round.digits     = st_options("round.digits"),
