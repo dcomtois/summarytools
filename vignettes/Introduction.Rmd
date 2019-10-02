@@ -86,7 +86,7 @@ below):
 #
 # library(summarytools)
 # st_options(plain.ascii = FALSE,       # This is very handy in all Rmd documents
-#            style = "rmarkdown"        # This too
+#            style = "rmarkdown",       # This too
 #            footnote = NA,             # Avoids footnotes which would clutter the results
 #            subtitle.emphasis = FALSE  # This is a setting to experiment with - according to
 # )                                     # the theme used, it might improve the headings' 
