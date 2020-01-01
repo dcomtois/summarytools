@@ -4,8 +4,7 @@
 \alias{st_css}
 \title{Include \strong{summarytools}' \emph{css} Into Active Document}
 \usage{
-st_css(main = TRUE, global = FALSE, bootstrap = FALSE,
-  style.tag = TRUE, ...)
+st_css(main = TRUE, global = FALSE, bootstrap = FALSE, style.tag = TRUE, ...)
 }
 \arguments{
 \item{main}{Logical. Include \emph{summarytools.css} file. \code{TRUE} by

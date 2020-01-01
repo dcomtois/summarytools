@@ -4,14 +4,25 @@
 \alias{ctable}
 \title{Cross-Tabulation}
 \usage{
-ctable(x, y, prop = st_options("ctable.prop"), useNA = "ifany",
-  totals = st_options("ctable.totals"), style = st_options("style"),
-  round.digits = 1, justify = "right",
+ctable(
+  x,
+  y,
+  prop = st_options("ctable.prop"),
+  useNA = "ifany",
+  totals = st_options("ctable.totals"),
+  style = st_options("style"),
+  round.digits = 1,
+  justify = "right",
   plain.ascii = st_options("plain.ascii"),
   headings = st_options("headings"),
-  display.labels = st_options("display.labels"), split.tables = Inf,
-  dnn = c(substitute(x), substitute(y)), chisq = FALSE, weights = NA,
-  rescale.weights = FALSE, ...)
+  display.labels = st_options("display.labels"),
+  split.tables = Inf,
+  dnn = c(substitute(x), substitute(y)),
+  chisq = FALSE,
+  weights = NA,
+  rescale.weights = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{First categorical variable - values will appear as row names.}

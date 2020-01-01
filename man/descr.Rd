@@ -4,13 +4,23 @@
 \alias{descr}
 \title{Univariate Statistics for Numerical Data}
 \usage{
-descr(x, var = NULL, stats = st_options("descr.stats"), na.rm = TRUE,
+descr(
+  x,
+  var = NULL,
+  stats = st_options("descr.stats"),
+  na.rm = TRUE,
   round.digits = st_options("round.digits"),
   transpose = st_options("descr.transpose"),
-  style = st_options("style"), plain.ascii = st_options("plain.ascii"),
-  justify = "r", headings = st_options("headings"),
-  display.labels = st_options("display.labels"), split.tables = 100,
-  weights = NA, rescale.weights = FALSE, ...)
+  style = st_options("style"),
+  plain.ascii = st_options("plain.ascii"),
+  justify = "r",
+  headings = st_options("headings"),
+  display.labels = st_options("display.labels"),
+  split.tables = 100,
+  weights = NA,
+  rescale.weights = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
