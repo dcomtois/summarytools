@@ -335,7 +335,7 @@ tobacco$age
        Цифр. корр   975.00
        Проц. корр    97.50
 
-> tobacco %>% select(age.gr)   %>% freq() # SUCCESS 
+> tobacco %>% select(age.gr)  %>% freq() # SUCCESS 
 
 Частота  
 tobacco$age.gr  
