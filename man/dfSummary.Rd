@@ -4,7 +4,9 @@
 \alias{dfSummary}
 \title{Data frame Summary}
 \usage{
-dfSummary(x, round.digits = st_options("round.digits"),
+dfSummary(
+  x,
+  round.digits = st_options("round.digits"),
   varnumbers = st_options("dfSummary.varnumbers"),
   labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
@@ -12,13 +14,20 @@ dfSummary(x, round.digits = st_options("round.digits"),
   graph.col = st_options("dfSummary.graph.col"),
   graph.magnif = st_options("dfSummary.graph.magnif"),
   style = st_options("dfSummary.style"),
-  plain.ascii = st_options("plain.ascii"), justify = "l",
-  col.widths = NA, headings = st_options("headings"),
+  plain.ascii = st_options("plain.ascii"),
+  justify = "l",
+  col.widths = NA,
+  headings = st_options("headings"),
   display.labels = st_options("display.labels"),
-  max.distinct.values = 10, trim.strings = FALSE,
-  max.string.width = 25, split.cells = 40, split.tables = Inf,
+  max.distinct.values = 10,
+  trim.strings = FALSE,
+  max.string.width = 25,
+  split.cells = 40,
+  split.tables = Inf,
   tmp.img.dir = st_options("tmp.img.dir"),
-  silent = st_options("dfSummary.silent"), ...)
+  silent = st_options("dfSummary.silent"),
+  ...
+)
 }
 \arguments{
 \item{x}{A data frame.}

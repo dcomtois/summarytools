@@ -92,3 +92,10 @@ with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pa
 
 # Ouverture dans viewer
 view(b8, method = "viewer")
+
+# by + weights
+with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
+with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
+
+library(dplyr)
+tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)

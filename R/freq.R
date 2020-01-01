@@ -131,6 +131,9 @@ freq <- function(x,
                  rescale.weights = FALSE,
                  ...) {
 
+  # Initialize flag_by variable that will be set in the args validation function
+  flag_by <- logical()
+  
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
     
@@ -169,8 +172,17 @@ freq <- function(x,
     gr_inds  <- attr(x, "groups")$.rows
     #ana_var  <- ifelse("var" %in% names(match.call()), var, 
     #                   setdiff(colnames(x), group_vars(x)))
+
+    if ("weights" %in% names(match.call())) {
+      weights_str <- deparse(substitute(weights))
+      weights_all <- parent.frame()$.[[weights_str]]
+    }
     
     for (g in seq_along(gr_ks)) {
+      if ("weights" %in% names(match.call())) {
+        weights <- weights_all[gr_inds[[g]]]
+      }
+      
       outlist[[g]] <- freq(x               = var_obj[gr_inds[[g]]],
                            round.digits    = round.digits,
                            order           = order,
@@ -191,6 +203,10 @@ freq <- function(x,
       
       if (!inherits(parse_info, "try-error") && !is.null(parse_info$df_name)) {
         attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
+      }
+      
+      if (exists("weights_str")) {
+        attr(outlist[[g]], "data_info")$Weights <- weights_str
       }
       
       if (!is.na(label(x))) {
@@ -362,6 +378,12 @@ freq <- function(x,
     } else {
       # Weights are used
       weights_string <- deparse(substitute(weights))
+      
+      # Subset weights when called from by()/stby() to match current data subset
+      if (isTRUE(flag_by)) {
+        pf <- parent.frame(2)
+        weights <- weights[pf$X[[pf$i]]]
+      }
       
       if (sum(is.na(weights)) > 0) {
         warning("missing values on weight variable have been detected and ",

@@ -4,9 +4,18 @@
 \alias{parse_args}
 \title{Extract Data Information From Arguments Passed to Functions}
 \usage{
-parse_args(sys_calls, sys_frames, match_call, var = "x",
-  silent = FALSE, df_name = TRUE, df_label = TRUE, var_name = TRUE,
-  var_label = TRUE, caller = "")
+parse_args(
+  sys_calls,
+  sys_frames,
+  match_call,
+  var = "x",
+  silent = FALSE,
+  df_name = TRUE,
+  df_label = TRUE,
+  var_name = TRUE,
+  var_label = TRUE,
+  caller = ""
+)
 }
 \arguments{
 \item{sys_calls}{Object created using \code{sys.calls()}.}

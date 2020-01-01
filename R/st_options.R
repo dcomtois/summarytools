@@ -88,6 +88,8 @@
 #' @param lang Character. A 2-letter code for the language to use in the
 #'   produced outputs. Currently available languages are: \sQuote{en}, 
 #'   \sQuote{fr}.
+#' @param use.x11 Logical. TRUE by default. In console-only Linux environments,
+#'   setting this to \code{FALSE} will prevent errors. 
 #' 
 #' @details To learn more about summarytools options, see the 
 #' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
@@ -151,7 +153,8 @@ st_options <- function(option                 = NULL,
                        dfSummary.silent       = FALSE, 
                        tmp.img.dir            = NA,
                        subtitle.emphasis      = TRUE, 
-                       lang                   = "en") {
+                       lang                   = "en",
+                       use.x11                = TRUE) {
   
   allOpts <- getOption("summarytools")
   
@@ -219,7 +222,8 @@ st_options <- function(option                 = NULL,
                    "dfSummary.silent"       = FALSE,
                    "tmp.img.dir"            = NA_character_,
                    "subtitle.emphasis"      = TRUE,
-                   "lang"                   = "en"))
+                   "lang"                   = "en",
+                   "use.x11"                = TRUE))
     
     message("summarytools options have been reset")
     return(invisible())

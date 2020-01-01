@@ -111,8 +111,8 @@ define_keywords <- function(...) {
          "or see ?use_custom_lang to use an external file to define all ",
          "keywords at once")
   }
-  if (length(mc) == 1 && isTRUE(.st_env$noX11)) {
-    message("This R session does not support X11 devices; use arguments to ",
+  if (length(mc) == 1 && isFALSE(capabilities("tcltk"))) {
+    message("Window dialogs not allowed; use arguments to ",
             "redefine specific keywords (see ?define_keywords), or turn to the ",
             "use_custom_lang() function which allows redefining all keywords at ",
             "once using a csv file")
@@ -140,7 +140,13 @@ define_keywords <- function(...) {
             "third column\n",
             "  - Close the editing window when finished")
     tr.copy <- tr
-    tr <- edit(tr)
+    tr <- try(edit(tr), silent = TRUE)
+    if (class(tr) == "try-error") {
+      stop("Window dialogs not allowed; use arguments to ",
+           "redefine specific keywords (see ?define_keywords), or turn to the ",
+           "use_custom_lang() function which allows redefining all keywords at ",
+           "once using a csv file")
+    }
     if (identical(tr[[2]], tr.copy[[2]])) {
       message("No changes were registered")
       return(invisible())
@@ -163,8 +169,50 @@ define_keywords <- function(...) {
   
   if (interactive() && length(mc) == 1) {
     
-    # GUI capabilities: no
-    if (isTRUE(.st_env$noX11)) {
+    if (isTRUE(capabilities("tcltk"))) {
+      # tcltk capabilities: yes
+      resp <- try(tk_messageBox(type = "yesno", 
+                                message = "Export language file for later use?",
+                                caption = "Keywords Successfully Updated"),
+                  silent = TRUE)
+      if (class(resp) == "try-error") {
+        tcltk_error <- TRUE
+      } else {
+        if (resp == "yes") {
+          while(!filename_ok) {
+            filename <- tclvalue(
+              tkgetSaveFile(initialfile = "custom_lang.csv", 
+                            initialdir = "~",
+                            filetypes = "{{csv files} {*.csv}}")
+            )
+            
+            if (filename != "") {
+              filename <- sub("(.csv)+$", "\\1", paste0(filename, ".csv"))
+              filename <- normalizePath(filename, mustWork = FALSE)
+              if (!isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
+                rv <- tk_messageBox(
+                  type = "okcancel", 
+                  message = "Invalid file name or location"
+                )
+                if (rv == "cancel") {
+                  filename <- ""
+                  filename_ok <- TRUE
+                }
+              } else {
+                # Filename is valid
+                filename_ok <- TRUE
+              }
+            } else {
+              # dialog "Save as..." was cancelled
+              filename_ok <- TRUE
+            }
+          }
+        }
+      }
+    }
+
+    # tcltk capabilities: no, or attempt failed
+    if (isFALSE(capabilities("tcltk")) || exists("tcltk_error")) {
       resp <- " "
       while (!resp %in% c("Y", "N", "")) {
         resp <- toupper(
@@ -186,47 +234,13 @@ define_keywords <- function(...) {
           }
         }
       }
-    } else {
-      # GUI capabilities: yes
-      resp <- tk_messageBox(type = "yesno", 
-                            message = "Export language file for later use?",
-                            caption = "Keywords Successfully Updated")
-      if (resp == "yes") {
-        while(!filename_ok) {
-          filename <- tclvalue(
-            tkgetSaveFile(initialfile = "custom_lang.csv", 
-                          initialdir = "~",
-                          filetypes = "{{csv files} {*.csv}}")
-          )
-          
-          if (filename != "") {
-            filename <- sub("(.csv)+$", "\\1", paste0(filename, ".csv"))
-            filename <- normalizePath(filename, mustWork = FALSE)
-            if (!isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
-              rv <- tk_messageBox(
-                type = "okcancel", 
-                message = "Invalid file name or location"
-              )
-              if (rv == "cancel") {
-                filename <- ""
-                filename_ok <- TRUE
-              }
-            } else {
-              # Filename is valid
-              filename_ok <- TRUE
-            }
-          } else {
-            # dialog "Save as..." was cancelled
-            filename_ok <- TRUE
-          }
-        }
-      }
-      
-      if (filename != "") {
-        write.csv(x = tr, file = filename, row.names = FALSE, 
-                  fileEncoding = "utf-8")
-        message("Custom language file written: ", normalizePath(filename))
-      }
+    }
+    
+    if (filename != "") {
+      write.csv(x = tr, file = filename, row.names = FALSE, 
+                fileEncoding = "utf-8")
+      message("Custom language file written: ", normalizePath(filename))
     }
   }
 }
+

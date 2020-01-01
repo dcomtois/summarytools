@@ -4,15 +4,26 @@
 \alias{freq}
 \title{Frequency Tables for Factors and Other Discrete Data}
 \usage{
-freq(x, var = NULL, round.digits = st_options("round.digits"),
-  order = "default", style = st_options("style"),
-  plain.ascii = st_options("plain.ascii"), justify = "default",
-  cumul = st_options("freq.cumul"), totals = st_options("freq.totals"),
-  report.nas = st_options("freq.report.nas"), rows = numeric(),
-  missing = "", display.type = TRUE,
+freq(
+  x,
+  var = NULL,
+  round.digits = st_options("round.digits"),
+  order = "default",
+  style = st_options("style"),
+  plain.ascii = st_options("plain.ascii"),
+  justify = "default",
+  cumul = st_options("freq.cumul"),
+  totals = st_options("freq.totals"),
+  report.nas = st_options("freq.report.nas"),
+  rows = numeric(),
+  missing = "",
+  display.type = TRUE,
   display.labels = st_options("display.labels"),
-  headings = st_options("headings"), weights = NA,
-  rescale.weights = FALSE, ...)
+  headings = st_options("headings"),
+  weights = NA,
+  rescale.weights = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Factor or vector, or data frame when \emph{y} is also provided, 

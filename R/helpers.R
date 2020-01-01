@@ -40,7 +40,8 @@ conv_non_ascii <- function(...) {
     intvalues <- utf8ToInt(enc2utf8(s))
     pos_to_modify_lat <- which(intvalues >=  161 & intvalues <=  255)
     pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <= 1279)
-    pos_to_modify <- c(pos_to_modify_lat, pos_to_modify_cyr)
+    pos_to_modify_no  <- which(intvalues == 8470)
+    pos_to_modify <- c(pos_to_modify_lat, pos_to_modify_cyr, pos_to_modify_no)
     splitted[pos_to_modify] <- paste0("&#0",  intvalues[pos_to_modify], ";")
     out <- c(out, paste0(splitted, collapse = ""))
   }
@@ -110,16 +111,16 @@ trs <- function(item, l = st_options("lang")) {
   }
 }
 
-# Shortcut function to get the item name of a translated element
-#' @keywords internal
-inv_trs <- function(name, l = st_options("lang")) {
-  l <- force(l)
-  if(l != "custom") {
-    colnames(.translations)[which(.translations["en",] == name)]
-  } else {
-    colnames(.st_env$custom_lang)[which(.st_env$custom_lang["custom",] == name)]
-  }
-}
+# # Shortcut function to get the item name of a translated element
+# #' @keywords internal
+# inv_trs <- function(name, l = st_options("lang")) {
+#   l <- force(l)
+#   if(l != "custom") {
+#     colnames(.translations)[which(.translations["en",] == name)]
+#   } else {
+#     colnames(.st_env$custom_lang)[which(.st_env$custom_lang["custom",] == name)]
+#   }
+# }
 
 # Count "empty" elements (NA's / vectors of size 0)
 #' @keywords internal

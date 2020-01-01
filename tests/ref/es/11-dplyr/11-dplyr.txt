@@ -717,30 +717,30 @@ N: 702
 > d5 %>% tb() 
 
 # A tibble: 8 x 9
-  smoker variable       mean      sd    min   med   max n.valid pct.valid
-  <fct>  <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
-1 Yes    age          49.8   18.7    19     50    80        290      97.3
-2 Yes    BMI          25.6    4.25    9.01  25.7  36.4      291      97.7
-3 Yes    cigs.per.day 22.5   10.7     5     22    40        291      97.7
-4 Yes    samp.wgts     1.00   0.0834  0.861  1.04  1.06     298     100  
-5 No     age          49.5   18.1    18     50    80        685      97.6
-6 No     BMI          25.8    4.59    8.83  25.6  39.4      683      97.3
-7 No     cigs.per.day  0      0       0      0     0        674      96.0
-8 No     samp.wgts     1.000  0.0841  0.861  1.04  1.06     702     100  
+  smoker variable      mean      sd    min   med   max n.valid pct.valid
+  <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 Yes    age          49.8  18.7    19     50    80        290      97.3
+2 Yes    BMI          25.6   4.25    9.01  25.7  36.4      291      97.7
+3 Yes    cigs.per.day 22.5  10.7     5     22    40        291      97.7
+4 Yes    samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
+5 No     age          49.5  18.1    18     50    80        685      97.6
+6 No     BMI          25.8   4.59    8.83  25.6  39.4      683      97.3
+7 No     cigs.per.day  0     0       0      0     0        674      96.0
+8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
 > d5 %>% tb(2) 
 
 # A tibble: 8 x 9
-  smoker variable       mean      sd    min   med   max n.valid pct.valid
-  <fct>  <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
-1 Yes    age          49.8   18.7    19     50    80        290      97.3
-2 No     age          49.5   18.1    18     50    80        685      97.6
-3 Yes    BMI          25.6    4.25    9.01  25.7  36.4      291      97.7
-4 No     BMI          25.8    4.59    8.83  25.6  39.4      683      97.3
-5 Yes    cigs.per.day 22.5   10.7     5     22    40        291      97.7
-6 No     cigs.per.day  0      0       0      0     0        674      96.0
-7 Yes    samp.wgts     1.00   0.0834  0.861  1.04  1.06     298     100  
-8 No     samp.wgts     1.000  0.0841  0.861  1.04  1.06     702     100  
+  smoker variable      mean      sd    min   med   max n.valid pct.valid
+  <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 Yes    age          49.8  18.7    19     50    80        290      97.3
+2 No     age          49.5  18.1    18     50    80        685      97.6
+3 Yes    BMI          25.6   4.25    9.01  25.7  36.4      291      97.7
+4 No     BMI          25.8   4.59    8.83  25.6  39.4      683      97.3
+5 Yes    cigs.per.day 22.5  10.7     5     22    40        291      97.7
+6 No     cigs.per.day  0     0       0      0     0        674      96.0
+7 Yes    samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
+8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
 > d5 %>% print(file = "11-descr-group_by-1.html") 
 -- Switching method to 'browser'

@@ -232,7 +232,7 @@ Label: Tobacco Study
 
 # pipe - magrittr -------------------------------------------------------------- 
 
-> tobacco$smoker %>% freq()      
+> tobacco$smoker %>% freq() 
 
 Frequencies  
 tobacco$smoker  
@@ -246,7 +246,7 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco["smoker"] %>% freq()   
+> tobacco["smoker"] %>% freq() 
 
 Frequencies  
 tobacco$smoker  
@@ -274,7 +274,7 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco[,5] %>% freq()         
+> tobacco[,5] %>% freq() 
 
 Frequencies  
 tobacco$smoker  
@@ -288,7 +288,7 @@ Type: Factor
        <NA>      0                               0.00         100.00
       Total   1000    100.00         100.00    100.00         100.00
 
-> tobacco[[5]] %>% freq()        
+> tobacco[[5]] %>% freq() 
 
 Frequencies  
 tobacco$smoker  
@@ -398,7 +398,7 @@ N: 1000
         N.Valid   975.00
       Pct.Valid    97.50
 
-> tobacco %>% select(age.gr)   %>% freq() # SUCCESS 
+> tobacco %>% select(age.gr)  %>% freq() # SUCCESS 
 
 Frequencies  
 tobacco$age.gr  

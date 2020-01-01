@@ -1,7 +1,7 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 0.9.4
+Version: 0.9.5
 Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com", 
   role = c("aut", "cre"))
 Description: Data frame summaries, cross-tabulations,
@@ -41,4 +41,4 @@ License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

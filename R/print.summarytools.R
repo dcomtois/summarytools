@@ -1221,6 +1221,16 @@ print_dfs <- function(x, method) {
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
+  if (!isTRUE(parent.frame()$silent) &&
+      "png_message" %in% names(attributes(x)) &&
+      method != "render" &&
+      !isTRUE(format_info$group.only) && 
+      (!"by_first" %in% names(data_info) || 
+       isTRUE(as.logical(data_info$by_first)))) {
+    message("text graphs are displayed; set 'tmp.img.dir' ",
+            "parameter to activate png graphs")
+  }
+  
   # make_tbl_cell --------------------------------------------------------------
   # Function to align the freqs / proportions in html outputs
   # A table is built to fit in a single cell of the final table
@@ -1426,11 +1436,11 @@ print_dfs <- function(x, method) {
     }
     
     # Remove graph if specified in call to print/view 
-    # or if X11 not supported on Linux
+    # or if use.x11 set to FALSE
     if (trs("graph") %in% names(x) && 
         ("graph.col" %in% names(format_info) &&
         !isTRUE(format_info$graph.col)) || 
-        isTRUE(.st_env$noX11)) {
+        isFALSE(st_options("use.x11"))) {
       x <- x[ ,-which(names(x) == trs("graph"))]
     }
     

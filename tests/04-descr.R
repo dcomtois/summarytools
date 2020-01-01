@@ -1,4 +1,5 @@
 #------------------------------- descr.R ---------------------------------------
+library(magrittr)
 tobacco <- tibble::as_tibble(tobacco)
 (d1 <- descr(tobacco))
 

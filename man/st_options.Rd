@@ -4,19 +4,40 @@
 \alias{st_options}
 \title{Query and set summarytools global options}
 \usage{
-st_options(option = NULL, value = NULL, style = "simple",
-  plain.ascii = TRUE, round.digits = 2, headings = TRUE,
-  footnote = "default", display.labels = TRUE, bootstrap.css = TRUE,
-  custom.css = NA, escape.pipe = FALSE, freq.cumul = TRUE,
-  freq.totals = TRUE, freq.report.nas = TRUE,
-  freq.ignore.threshold = 25, ctable.prop = "r",
-  ctable.totals = TRUE, descr.stats = "all", descr.transpose = FALSE,
-  descr.silent = FALSE, dfSummary.style = "multiline",
-  dfSummary.varnumbers = TRUE, dfSummary.labels.col = TRUE,
-  dfSummary.valid.col = TRUE, dfSummary.na.col = TRUE,
-  dfSummary.graph.col = TRUE, dfSummary.graph.magnif = 1,
-  dfSummary.silent = FALSE, tmp.img.dir = NA,
-  subtitle.emphasis = TRUE, lang = "en")
+st_options(
+  option = NULL,
+  value = NULL,
+  style = "simple",
+  plain.ascii = TRUE,
+  round.digits = 2,
+  headings = TRUE,
+  footnote = "default",
+  display.labels = TRUE,
+  bootstrap.css = TRUE,
+  custom.css = NA,
+  escape.pipe = FALSE,
+  freq.cumul = TRUE,
+  freq.totals = TRUE,
+  freq.report.nas = TRUE,
+  freq.ignore.threshold = 25,
+  ctable.prop = "r",
+  ctable.totals = TRUE,
+  descr.stats = "all",
+  descr.transpose = FALSE,
+  descr.silent = FALSE,
+  dfSummary.style = "multiline",
+  dfSummary.varnumbers = TRUE,
+  dfSummary.labels.col = TRUE,
+  dfSummary.valid.col = TRUE,
+  dfSummary.na.col = TRUE,
+  dfSummary.graph.col = TRUE,
+  dfSummary.graph.magnif = 1,
+  dfSummary.silent = FALSE,
+  tmp.img.dir = NA,
+  subtitle.emphasis = TRUE,
+  lang = "en",
+  use.x11 = TRUE
+)
 }
 \arguments{
 \item{option}{option(s) name(s) to query (optional). Can be a single string
@@ -132,6 +153,9 @@ value gives it stronger emphasis.}
 \item{lang}{Character. A 2-letter code for the language to use in the
 produced outputs. Currently available languages are: \sQuote{en}, 
 \sQuote{fr}.}
+
+\item{use.x11}{Logical. TRUE by default. In console-only Linux environments,
+setting this to \code{FALSE} will prevent errors.}
 }
 \description{
 To list all \code{summarytools} global options, call without arguments. To

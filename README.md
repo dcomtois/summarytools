@@ -17,6 +17,9 @@ summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Int
 – Contents similar to this page (minus installation instructions), with
 fancier table stylings.
 
+The [official documentation on CRAN can be found
+here](https://CRAN.R-project.org/package=summarytools).
+
 # What is summarytools?
 
 **summarytools** is an [R](https://r-project.org) package providing
@@ -24,15 +27,12 @@ tools to *neatly and quickly summarize data*. It can also make *R* a
 little easier to learn and to use, especially for data cleaning and
 preliminary analysis. Four functions are at the core of the package:
 
-  - `freq()` : **frequency tables** with proportions, cumulative
-    proportions and missing data information
-  - `ctable()` : **cross-tabulations** between two factors or any
-    discrete data, with total, rows or columns proportions, as well as
-    marginal totals
-  - `descr()` : **descriptive (univariate) statistics** for numerical
-    data
-  - `dfSummary()` : Extensive **data frame summaries** that facilitate
-    data cleaning and firsthand evaluation
+|                Function                | Description                                                                                                                       |
+| :------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------- |
+|      <a href="#freq">`freq()`</a>      | **frequency tables** with proportions, cumulative proportions and missing data information                                        |
+|    <a href="#ctable">`ctable()`</a>    | **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions, as well as marginal sums |
+|     <a href="#descr">`descr()`</a>     | **descriptive (univariate) statistics** for numerical data                                                                        |
+| <a href="#dfsummary">`dfSummary()`</a> | Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation                                         |
 
 An emphasis has been put on both *what* and *how* results are presented,
 so that the package can serve both as an exploration *and* reporting
@@ -58,60 +58,53 @@ apps*.
 
 ### Latest Improvements
 
-Version 0.9 brought **many** changes and improvements. A summary of those
-changes can be found [near the end of this page](#latest-changes).
-Changes specific to the latest release can be found in the
+Version 0.9 brought **many** changes and improvements. A summary of
+those changes can be found [near the end of this page](#latest-changes).
+Changes specific to specific releases can be found in the
 [NEWS](https://github.com/dcomtois/summarytools/blob/master/NEWS.md)
 file.
 
-## How to install
+## Installing summarytools
 
-### From GitHub
+### Prerequisite Software
+
+Windows users can skip this section.
+
+Additionnal pieces of software are used by summarytools to fine-tune
+graphics as well as provide some interactive features. If installing
+summarytools for the first time on your system, click on your OS to see
+the relevant instructions on how to proceed. This takes only a few
+minutes.
+
+<a href="#required-mac-os">Mac OS X</a>  
+<a href="#required-debian">Ubuntu / Debian / Mint</a>  
+<a href="#required--older-ubuntu">Older Ubuntu (14 and 16)</a>  
+<a href="#required-fedora">Fedora / Red Hat / CentOS</a>  
+<a href="#required-solaris">Solaris</a>
+
+### Installing summarytools From GitHub
 
 This is the recommended method, as some minor fixes are made available
 between CRAN releases.
 
-**[Magick++](https://imagemagick.org/Magick++/) Dependency on Linux and
-Mac OS**
-
-    Before proceeding, you must install Magick++
-    
-     - deb: 'libmagick++-dev' (Debian, Ubuntu)
-     - rpm: 'ImageMagick-c++-devel' (Fedora, CentOS, RHEL)
-     - csw: 'imagemagick_dev' (Solaris)
-    
-    On MacOS it is recommended to use install ImageMagick-6 from homebrew
-    with extra support for fontconfig and rsvg rendering:
-       brew reinstall imagemagick@6 --with-fontconfig --with-librsvg
-    
-    For older Ubuntu versions Trusty (14.04) and Xenial (16.04) use the PPA:
-       sudo add-apt-repository -y ppa:opencpu/imagemagick
-       sudo apt-get update
-       sudo apt-get install -y libmagick++-dev
-
-After this is done, proceed with the installation:
-
 ``` r
-install.packages("devtools")
-library(devtools)
+install.packages("remotes")
+library(remotes)
 install_github("rapporter/pander") # Necessary for optimal results!
 install_github("dcomtois/summarytools")
 ```
 
-### From CRAN
+### Installing summarytools From CRAN
 
-Simply install it with `install.packages()`:
+Simply run
 
 ``` r
 install.packages("summarytools")
 ```
 
-The official documentation can be found
-[here](https://CRAN.R-project.org/package=summarytools).
-
 # The Four Core Functions
 
-## 1 - freq() : Frequency Tables
+## <a id="freq"></a>1 - freq() : Frequency Tables
 
 The `freq()` function generates a table of frequencies with counts and
 proportions. Since GitHub uses *markdown* rendering, we’ve set the
@@ -127,8 +120,7 @@ freq(iris$Species, style = "rmarkdown")
 ### Frequencies
 
 **iris$Species**  
-**Type:**
-Factor
+**Type:** Factor
 
 |                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | -------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -138,8 +130,7 @@ Factor
 |     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-If we do not worry about missing data, we can set `report.nas =
-FALSE`:
+If we do not worry about missing data, we can set `report.nas = FALSE`:
 
 ``` r
 freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
@@ -201,7 +192,7 @@ We can without fear pass a whole data frame to `freq()`; it will figure
 out which variables to ignore (numerical variables having many distinct
 values).
 
-## 2 - ctable() : Cross-Tabulations
+## <a id="ctable"></a>2 - ctable() : Cross-Tabulations
 
 We’ll now use a sample data frame called *tobacco*, which is included in
 **summarytools**. We want to cross-tabulate two categorical variables:
@@ -250,7 +241,7 @@ tobacco %$% ctable(gender, smoker, chisq = TRUE, headings = FALSE)
 Note that a warning will be issued when at least one *expected* cell
 counts is lower than 5.
 
-## 3 - descr() : Descriptive Univariate Stats
+## <a id="descr"></a>3 - descr() : Descriptive Univariate Stats
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion for numerical data. It can handle single vectors
@@ -264,8 +255,7 @@ descr(iris, style = "rmarkdown")
 ### Descriptive Statistics
 
 **iris**  
-**N:**
-150
+**N:** 150
 
 |                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
@@ -307,7 +297,7 @@ descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmark
 | **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |  150.00 |    100.00 |
 |  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |  150.00 |    100.00 |
 
-## 4 - dfSummary() : Data Frame Summaries
+## <a id="dfsummary"></a>4 - dfSummary() : Data Frame Summaries
 
 `dfSummary()` collects information about all variables in a data frame
 and displays it in a single legible table.
@@ -364,7 +354,7 @@ iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
 ```
 
     ## # A tibble: 3 x 3
-    ##   value       freq   pct
+    ##   Species     freq   pct
     ##   <fct>      <dbl> <dbl>
     ## 1 setosa        50  33.3
     ## 2 versicolor    50  33.3
@@ -562,8 +552,7 @@ The transposed version looks like this:
 
 ### Using stby() With ctable()
 
-This is a little trickier – the working syntax is as
-follows:
+This is a little trickier – the working syntax is as follows:
 
 ``` r
 stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
@@ -582,12 +571,12 @@ valid categories, albeit with a warning message suggesting to use
 is simply to follow that advice:
 
 ``` r
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
 tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
 
-    ## Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+    ## Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 
 ### Descriptive Statistics
 
@@ -708,8 +697,7 @@ creating an *.Rmd* document.
 
 ## Global options
 
-The following options can be set with
-`st_options()`:
+The following options can be set with `st_options()`:
 
 ### General Options
 
@@ -727,8 +715,7 @@ The following options can be set with
 |  subtitle.emphasis |      TRUE | Controls headings formatting                  |
 |               lang |      “en” | Language (always 2-letter, lowercase)         |
 
-(\*) Set to FALSE in Shiny
-apps
+(\*) Set to FALSE in Shiny apps
 
 ### Function-Specific Options
 
@@ -928,8 +915,7 @@ those of pathnames pointing to images. What we get is… some issues of
 proportion (\!).
 
 At this time, there seems to be only one solution around this problem:
-cut down on characters in pathnames. So instead of
-    this:
+cut down on characters in pathnames. So instead of this:
 
     +-----------+-------------------------------------------------------------------------+---------+
     | Variable  | Graph                                                                   | Valid   |
@@ -1101,12 +1087,87 @@ As stated earlier, version 0.9 brought **many** improvements to
 For a preview of what’s coming in the next release, see the [development
 branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 
+## Additionnal Software Installations
+
+### <a id="required-mac-os"></a>Required Software on Mac OS
+
+**[Magick++](https://imagemagick.org/Magick++/)**
+
+Open a terminal window and enter the following:
+
+`brew reinstall imagemagick@6 --with-fontconfig --with-librsvg`
+
+**[XQuartz](https://www.xquartz.org/)**
+
+If you’re using Mac OS X version 10.8 (Mountain Lion) or more recent
+versions, you’ll need to download the *.dmg* image from
+[xquartz.org](https://www.xquartz.org/) and add it to your Applications
+folder.
+
+<a href="#st-install">Go to summarytools installation instructions</a>
+
+### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
+
+**[Magick++](https://imagemagick.org/Magick++/)**  
+`sudo apt install libmagick++-dev`
+
+**[Curl](https://curl.haxx.se/)**  
+`sudo apt install libcurl4-openssl-dev`
+
+<a href="#installing-summarytools-from-github">Go to summarytools
+installation instructions</a>
+
+### <a id="required-older-ubuntu"></a>Required Solftware for Older Ubuntu Versions
+
+This applies only if you are using Ubuntu Trusty (14.04) or Xenial
+(16.04).
+
+**[Magick++](https://imagemagick.org/Magick++/)**
+
+    sudo add-apt-repository -y ppa:opencpu/imagemagick
+    sudo apt-get update
+    sudo apt-get install -y libmagick++-dev
+
+**[Curl](https://curl.haxx.se/)**  
+`sudo apt-get install libcurl4-openssl-dev`
+
+<a href="#installing-summarytools-from-github">Go to summarytools
+installation instructions</a>
+
+### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
+
+**[Magick++](https://imagemagick.org/Magick++/)**  
+`sudo yum install ImageMagick-c++-devel`
+
+**[Curl](https://curl.haxx.se/)**  
+`sudo yum install curl-devel`
+
+<a href="#installing-summarytools-from-github">Go to summarytools
+installation instructions</a>
+
+### <a id="required-solaris"></a>Required Software for Solaris
+
+**[Magick++](https://imagemagick.org/Magick++/)**
+
+    pkgadd -d http://get.opencsw.org/now
+    /opt/csw/bin/pkgutil -U
+    /opt/csw/bin/pkgutil -y -i imagemagick 
+    /usr/sbin/pkgchk -L CSWimagemagick
+
+**[Curl](https://curl.haxx.se/)**
+
+    /opt/csw/bin/pkgutil -y -i curl 
+    /usr/sbin/pkgchk -L CSWcurl
+
+<a href="#installing-summarytools-from-github">Go to summarytools
+installation instructions</a>
+
 ## Final notes
 
 The package comes with no guarantees. It is a work in progress and
 feedback / feature requests are welcome. Just send me an email
 (dominic.comtois (at) gmail.com), or open an
-[issue](https://github.com/dcomtois/summarytools/issues) if you find a
+[Issue](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
 
 Also, the package grew significantly larger, and maintaining it all by
