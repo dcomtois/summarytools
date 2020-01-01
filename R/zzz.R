@@ -59,13 +59,13 @@ utils::globalVariables(c("."))
 #' @importFrom utils packageDescription
 #' @importFrom pander panderOptions
 .onAttach <- function(libname, pkgname) {
-  pander_built_dt <- packageDescription("pander")$Built
-  pander_built_dt <- sub(".+?(\\d+\\-\\d+\\-\\d+).+", "\\1", pander_built_dt)
-  should_update <- try(pander_built_dt <= "2018-11-06", silent = TRUE)
+  should_update <- try(packageDescription("pander")$Date <= "2018-11-06", silent = TRUE)
   if(isTRUE(should_update))
-    packageStartupMessage("for best results, consider updating pander to its ",
-                          "most recent version. You can do so by using \n",
-                          "devtools::install_github('rapporter/pander')")
+    packageStartupMessage("For best results, please update the pander package: \n",
+                          "  1. Restart R session \n",
+                          "  2. Use one of the following: \n",
+                          "       devtools::install_github('rapporter/pander') or \n",
+                          "       remotes::install_github('rapporter/pander')")
   if (Sys.info()[["sysname"]] != "Windows" && !isTRUE(capabilities("X11"))) {
     packageStartupMessage("system might not have X11 capabilities; in case of ",
                           "errors when using dfSummary(), set ",
