@@ -209,7 +209,7 @@ parse_args <- function(sys_calls,
       }
     }
     # fallback method
-    env <- where(name = name)
+    env <- pryr::where(name = name)
     return(get(name, env))
   }
 
@@ -241,7 +241,7 @@ parse_args <- function(sys_calls,
       }
     } else if (grepl(re3, str, perl = TRUE)) {
       obj_name <- sub(re3, "\\1", str, perl = TRUE)
-      obj_env <- try(where(obj_name))
+      obj_env <- try(pryr::where(obj_name))
       if (!inherits(obj_env, "try-error")) {
         obj <- get(obj_name, envir = obj_env)
         if (is.data.frame(obj)) {
@@ -345,9 +345,9 @@ parse_args <- function(sys_calls,
 
   # in the call stack: by() ----------------------------------------------------  
   if ("by" %in% names(calls)) {
-    calls$by <- standardise_call(calls$by)
-    try(calls$lapply <- standardise_call(calls$lapply[-4]), silent = TRUE)
-    try(calls$tapply <- standardise_call(calls$tapply), silent = TRUE)
+    calls$by <- pryr::standardise_call(calls$by)
+    try(calls$lapply <- pryr::standardise_call(calls$lapply[-4]), silent = TRUE)
+    try(calls$tapply <- pryr::standardise_call(calls$tapply), silent = TRUE)
 
     populate_by_info()
     # treat special case of by() called on ctable, with ou without "with()"
@@ -389,15 +389,15 @@ parse_args <- function(sys_calls,
   # in the call stack: with() --------------------------------------------------  
   if ("with" %in% names(calls)) {
     x <- sys_frames[[pos$with]]$data
-    calls$with <- standardise_call(calls$with)
-    calls$with$expr <- standardise_call(calls$with$expr)
+    calls$with <- pryr::standardise_call(calls$with)
+    calls$with$expr <- pryr::standardise_call(calls$with$expr)
     if (is.data.frame(x)) {
       if (length(calls$with$data) == 1) {
         tmp_name <- deparse(calls$with$data)
         if (tmp_name == "." && "dollar" %in% names(calls)) {
-          calls$dollar <- standardise_call(calls$dollar)
+          calls$dollar <- pryr::standardise_call(calls$dollar)
           if (is.call(calls$dollar$rhs) && 
-              identical(standardise_call(calls$dollar$rhs), calls$with$expr)) {
+              identical(pryr::standardise_call(calls$dollar$rhs), calls$with$expr)) {
             tmp_name <- calls$dollar$lhs
             if (length(tmp_name) == 1) {
               upd_output("df_name",  deparse(tmp_name))
@@ -407,8 +407,8 @@ parse_args <- function(sys_calls,
             upd_output("df_label", label(x))
           }
         } else if (tmp_name == "." && "pipe" %in% names(calls)) {
-          calls$pipe <- standardise_call(calls$pipe)
-          calls$pipe$lhs <- standardise_call(calls$pipe$lhs)
+          calls$pipe <- pryr::standardise_call(calls$pipe)
+          calls$pipe$lhs <- pryr::standardise_call(calls$pipe$lhs)
           tmp_name <- get_lhs(calls$pipe$lhs)
           if (length(tmp_name) == 1) {
             upd_output("df_name",  deparse(tmp_name))
@@ -428,8 +428,8 @@ parse_args <- function(sys_calls,
       
       if ("x" %in% names(calls$with$expr)) {
         if (is.call(calls$with$expr$x)) {
-          v_name <- c(x = deparse(standardise_call(calls$with$expr$x)$x),
-                      y = deparse(standardise_call(calls$with$expr$x)$y))
+          v_name <- c(x = deparse(pryr::standardise_call(calls$with$expr$x)$x),
+                      y = deparse(pryr::standardise_call(calls$with$expr$x)$y))
         } else {
           v_name <- c(x = deparse(calls$with$expr$x),
                       y = deparse(calls$with$expr$y))
@@ -442,7 +442,7 @@ parse_args <- function(sys_calls,
           upd_output("var_label", NA_character_)
         }
       } else if ("data" %in% names(calls$with$expr)) {
-        calls$with$expr$data <- standardise_call(calls$with$expr$data)
+        calls$with$expr$data <- pryr::standardise_call(calls$with$expr$data)
         if ("x" %in% names(calls$with$expr$data)) {
           v_name <- c(x = deparse(calls$with$expr$data$x),
                       y = deparse(calls$with$expr$data$y))
@@ -463,7 +463,7 @@ parse_args <- function(sys_calls,
 
   # in the call stack: %>% -----------------------------------------------------
   if ("pipe" %in% names(calls)) {
-    calls$pipe <- standardise_call(calls$pipe)
+    calls$pipe <- pryr::standardise_call(calls$pipe)
     # obj_name <- deparse(calls$pipe$lhs)
     # obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
     obj_expr <- get_lhs(calls$pipe)
@@ -492,8 +492,8 @@ parse_args <- function(sys_calls,
   }
 
   get_last_x <- function(expr) {
-    if (is.call(expr) && "x" %in% names(standardise_call(expr))) {
-      get_last_x(standardise_call(expr)$x)
+    if (is.call(expr) && "x" %in% names(pryr::standardise_call(expr))) {
+      get_last_x(pryr::standardise_call(expr)$x)
     } else {
       return(expr)
     }
@@ -507,7 +507,7 @@ parse_args <- function(sys_calls,
     x_str    <- as.character(x_expr)
     
     # Get object to get to the variables
-    obj      <- eval(standardise_call(calls$piper)$x, 
+    obj      <- eval(pryr::standardise_call(calls$piper)$x, 
                      envir = sys_frames[[pos$piper]]$envir)
     if (is.data.frame(obj)) {
       upd_output("df_label", label(obj))
@@ -546,7 +546,7 @@ parse_args <- function(sys_calls,
   
   # in the call stack: lapply() ------------------------------------------------
   if ("lapply" %in% names(calls)) {
-    try(calls$lapply <- standardise_call(calls$lapply[-4]))
+    try(calls$lapply <- pryr::standardise_call(calls$lapply[-4]))
         
     iter <- sys_frames[[pos$lapply]]$i
     obj  <- sys_frames[[pos$lapply]]$X[iter]
@@ -558,7 +558,7 @@ parse_args <- function(sys_calls,
       df_nm <- setdiff(all.names(calls$lapply$X), oper)[1]
       df_     <- get_object(df_nm, "data.frame")
       if (identical(df_, NA)) {
-        env <- try(where(df_nm))
+        env <- try(pryr::where(df_nm))
         if (!inherits(env, "try-error")) {
           df_ <- get(df_nm, envir = env)
         }
@@ -583,7 +583,7 @@ parse_args <- function(sys_calls,
   }  
       
   if ("fun" %in% names(calls)) {
-    calls$fun <- standardise_call(calls$fun)
+    calls$fun <- pryr::standardise_call(calls$fun)
     obj2 <- sys_frames[[pos$fun]][[var]]
     if (is.data.frame(obj2)) {
       if (length(calls$fun[[var]]) == 1) {
