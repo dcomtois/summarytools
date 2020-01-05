@@ -20,7 +20,7 @@ fancier table stylings.
 The [official documentation on CRAN can be found
 here](https://CRAN.R-project.org/package=summarytools).
 
-# What is summarytools?
+# <a id="what-is-summarytools"></a>What is summarytools?
 
 **summarytools** is an [R](https://r-project.org) package providing
 tools to *neatly and quickly summarize data*. It can also make *R* a
@@ -35,34 +35,33 @@ preliminary analysis. Four functions are at the core of the package:
 | <a href="#dfsummary">`dfSummary()`</a> | Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation                                         |
 
 An emphasis has been put on both *what* and *how* results are presented,
-so that the package can serve both as an exploration *and* reporting
-tool, used on its own for minimal reports, or with other sets of tools
-such as [rmarkdown](http://rmarkdown.rstudio.com/), and
-[knitr](https://yihui.name/knitr/).
+so that the package can serve both as an exploration *and* a reporting
+tool, used on its own for minimal reports, or with other packages such
+as [rmarkdown](https://rmarkdown.rstudio.com/) and
+[knitr](https://yihui.name/knitr/) for more fine-tuned, elaborate
+reports.
 
 **Building on the strengths of
 [pander](https://github.com/Rapporter/pander) and
-[htmltools](https://CRAN.R-project.org/package=htmltools)**, the outputs
-produced by **summarytools** can be:
+[htmltools](https://CRAN.R-project.org/package=htmltools) summarytools**
+results can be:
 
-  - Displayed in plain text in the *R* console (default behaviour)
+  - Sent to the *R* console as plain text (default behaviour)
   - Used in *Rmarkdown* documents and *knitted* along with other text
-    and *R* output
-  - Written to *html* files that fire up in
-    [*RStudio*](https://www.rstudio.com/)’s Viewer pane or in the
-    default browser
+    and *R*-generated results
+  - Written to *html* files that open up in
+    [*RStudio*](https://www.rstudio.com/)’s Viewer or in a Web browser
   - Written to plain or *Rmarkdown* text files
 
-It is also possible to include **summarytools**’ functions in *Shiny
-apps*.
+It is also possible to use **summarytools** functions in *Shiny apps*.
 
 ### Latest Improvements
 
 Version 0.9 brought **many** changes and improvements. A summary of
 those changes can be found [near the end of this page](#latest-changes).
-Changes specific to specific releases can be found in the
+Changes specific to individual releases can be found in the
 [NEWS](https://github.com/dcomtois/summarytools/blob/master/NEWS.md)
-file.
+document.
 
 ## Installing summarytools
 
@@ -106,15 +105,16 @@ install.packages("summarytools")
 
 ## <a id="freq"></a>1 - freq() : Frequency Tables
 
-The `freq()` function generates a table of frequencies with counts and
-proportions. Since GitHub uses *markdown* rendering, we’ve set the
-`style` argument to “rmarkdown”. When creating *Rmd* documents,
-**knitr** takes care of converting the generated markup characters into
-actual *html*.
+The `freq()` function generates a frequency table with counts and
+proportions, very similar to what SAS or SPSS users are accustomed to.
+
+Since GitHub uses *markdown* rendering, we’ve set the `style` argument
+to “rmarkdown”. When creating *Rmd* documents, **knitr** takes care of
+converting the generated markup characters into *html*.
 
 ``` r
 library(summarytools)
-freq(iris$Species, style = "rmarkdown")
+freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 ```
 
 ### Frequencies
@@ -130,10 +130,15 @@ freq(iris$Species, style = "rmarkdown")
 |     **\<NA\>** |    0 |         |              |    0.00 |       100.00 |
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
+We’ve added the `plain.ascii` and `style` arguments for this first
+example; however, since we have set these options globally using
+`st_options()`, they are not really needed. For this reason, we will not
+include them from hereon.
+
 If we do not worry about missing data, we can set `report.nas = FALSE`:
 
 ``` r
-freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
+freq(iris$Species, report.nas = FALSE, headings = FALSE)
 ```
 
 |                | Freq |      % | % Cum. |
@@ -143,12 +148,12 @@ freq(iris$Species, report.nas = FALSE, style = "rmarkdown", headings = FALSE)
 |  **virginica** |   50 |  33.33 | 100.00 |
 |      **Total** |  150 | 100.00 | 100.00 |
 
-We can simplify the results further and omit the *Totals* row by
-specifying `totals = FALSE`, as well as omit the *cumulative* rows by
-setting `cumul = FALSE`.
+We can simplify further by omitting the *Totals* row, as well as the
+*cumulative* column:
 
 ``` r
-freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "rmarkdown", headings = FALSE)
+freq(iris$Species, report.nas = FALSE, totals = FALSE, 
+     cumul = FALSE, headings = FALSE)
 ```
 
 |                | Freq |     % |
@@ -157,65 +162,92 @@ freq(iris$Species, report.nas = FALSE, totals = FALSE, cumul = FALSE, style = "r
 | **versicolor** |   50 | 33.33 |
 |  **virginica** |   50 | 33.33 |
 
-To get familiar with the various output styles, try different values for
-`style` – “simple”, “rmarkdown” or “grid”, and see how this affects the
-results in the console.
+To get familiar with the various output styles, try out different values
+for `style` – “simple”, “rmarkdown” or “grid”.
 
 #### Subsetting Rows in Frequency Tables
 
-The “rows” argument allows subsetting the resulting frequency table; we
-can use it in 3 different ways:
+The “rows” argument allows subsetting the resulting table; we can use it
+in 3 different ways:
 
   - To select rows by position, we use a numerical vector; `rows = 1:10`
     will show the frequencies for the first 10 values only
   - To select rows by name, we either use
-      - a character vector specifying all desired values (row names)
+      - a character vector specifying row names
       - a single character string to be used as a regular expression;
-        only the matching values will be displayed
+        only the matching columns will be displayed
 
 Used in combination with the “order” argument, this can be quite
-practical. Say we have a character variable containing many distinct
-values and wish to know which ones are the 10 most frequent. To achieve
-this, we would simply use `order = "freq"` along with `rows = 1:5`.
+practical. Say we have a character variable containing *many* distinct
+values; to see only the 5 most frequent values, we simply use `order =
+"freq"` along with `rows = 1:5`. Below is an example; notice the
+“(Other)” row – it shows the frequency of all the values not shown,
+which are lumped together.
+
+``` r
+freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
+```
+
+|                  | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
+| ---------------: | ---: | ------: | -----------: | ------: | -----------: |
+| **Hypertension** |   36 |   16.22 |        16.22 |    3.60 |         3.60 |
+|       **Cancer** |   34 |   15.32 |        31.53 |    3.40 |         7.00 |
+|  **Cholesterol** |   21 |    9.46 |        40.99 |    2.10 |         9.10 |
+|        **Heart** |   20 |    9.01 |        50.00 |    2.00 |        11.10 |
+|    **Pulmonary** |   20 |    9.01 |        59.01 |    2.00 |        13.10 |
+|      **(Other)** |   91 |   40.99 |       100.00 |    9.10 |        22.20 |
+|       **\<NA\>** |  778 |         |              |   77.80 |       100.00 |
+|        **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 #### Generating Several Frequency Tables at Once
 
-There is more than one way to do this, but the best approach is to
-simply pass the data frame object (subsetted if needed) to `freq()`:
-(results not shown)
+There is more than one way to do this, but the simplest approach is to
+pass the data frame object (subsetted if needed) to `freq()`: (results
+not shown)
 
 ``` r
 freq(tobacco[ ,c("gender", "age.gr", "smoker")])
 ```
 
-We can without fear pass a whole data frame to `freq()`; it will figure
-out which variables to ignore (numerical variables having many distinct
-values).
+We can even feed the function with data frame containing numerous
+columns of various data types; it will automatically discard numerical
+variables having a large number of distinct values.
+
+#### Collapsible Sections
+
+When generating an *html* document, use the `collapse = TRUE` argument
+with `print()` or `view()` to get collapsible sections; clicking on the
+variable name heading will collapse the frequency table for that
+variable (results not shown).
+
+``` r
+view(freq(tobacco), collapse = TRUE)
+```
 
 ## <a id="ctable"></a>2 - ctable() : Cross-Tabulations
 
-We’ll now use a sample data frame called *tobacco*, which is included in
-**summarytools**. We want to cross-tabulate two categorical variables:
-`smoker` and `diseased`.
+We’ll now use a sample data frame called *tobacco*, included in the
+package. We want to cross-tabulate two categorical variables: `smoker`
+and `diseased`.
 
-Since *markdown* does not support multiline headings, we’ll show a
+Since *markdown* does not (yet) support multiline headings, we’ll show a
 rendered *html* version of the results:
 
 ``` r
-print(ctable(tobacco$smoker, tobacco$diseased, prop = "r"), method = "render")
+print(ctable(tobacco$smoker, tobacco$diseased, prop = "r"),
+      method = "render")
 ```
 
 <img src="img/ctable-with-row-props.png" style="border:0"/>
 
-Note that we have to set the **knitr** chunk option `results` to “asis”
-for the results to appear as they should.
+The **knitr** chunk option `results` **needs to be set to “asis”** to
+get properly formatted results.
 
-By default, `ctable()` shows row proportions. To show column or total
+By default, `ctable()` shows *row proportions*. To show column or total
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit
 proportions, use `prop = "n"`.
 
-In the next example, we’ll create a simple “2 x 2” table (no
-proportions, no totals):
+Now let’s generate a simple “2 x 2” table (no proportions, no totals):
 
 ``` r
 with(tobacco, 
@@ -225,15 +257,17 @@ with(tobacco,
 
 <img src="img/ctable-barebones-2.png" style="border:0"/>
 
-#### Chi-square results
+#### Chi-Square Results
 
-To display chi-square results below the table, set the “chisq” parameter
-to `TRUE`. This time, instead of `with()`, we’ll use the `%$%` operator
-from the **magrittr** package, which works in a very similar fashion.
+To display chi-square results below the table, set `chisq = TRUE`. This
+time, instead of `with()`, we’ll use the `%$%` operator from the
+**magrittr** package, which works in a very similar fashion.
 
 ``` r
 library(magrittr)
-tobacco %$% ctable(gender, smoker, chisq = TRUE, headings = FALSE)
+tobacco %$% 
+  ctable(gender, smoker, chisq = TRUE, headings = FALSE) %>%
+  print(method = "render")
 ```
 
 <img src="img/ctable-chisq.png" style="border:0"  width=500px/>
@@ -244,12 +278,12 @@ counts is lower than 5.
 ## <a id="descr"></a>3 - descr() : Descriptive Univariate Stats
 
 The `descr()` function generates common central tendency statistics and
-measures of dispersion for numerical data. It can handle single vectors
-as well as data frames, in which case it will ignore non-numerical
-columns (and display a message to that effect).
+measures of dispersion. It can handle single vectors as well as data
+frames, in which case it ignores non-numerical columns (displaying a
+message to that effect).
 
 ``` r
-descr(iris, style = "rmarkdown")
+descr(iris)
 ```
 
 ### Descriptive Statistics
@@ -287,7 +321,7 @@ also accepts values “all”, “fivenum”, and “common”. See `?descr` for
 complete list of available statistics.
 
 ``` r
-descr(iris, stats = "common", transpose = TRUE, headings = FALSE, style = "rmarkdown")
+descr(iris, stats = "common", transpose = TRUE, headings = FALSE)
 ```
 
 |                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | Pct.Valid |
@@ -370,7 +404,7 @@ transformed into *tibbles*. Notice how the *order* parameter affects the
 table’s row ordering:
 
 ``` r
-grouped_freqs <- stby(data = tobacco$smoker, INDICES = tobacco$gender, 
+grouped_freqs <- stby(data = tobacco$smoker, INDICES = tobacco$gender,
                       FUN = freq, cumul = FALSE, report.nas = FALSE)
 grouped_freqs %>% tb()
 ```
@@ -445,7 +479,7 @@ which `view()` is useful is that we can use it to easily display *html*
 outputs in *RStudio*’s Viewer. The `view()` function simply acts as a
 wrapper around `print.summarytools()`, specifying `method = 'viewer'`.
 When used outside *RStudio*, `method` falls back to “browser” and the
-report is shown in the system’s default browser.
+report is shown in the default browser.
 
 ## Using stby() to Ventilate Results
 
@@ -541,7 +575,7 @@ with(tobacco, stby(BMI, age.gr, descr,
 |  **Median** | 24.04 | 25.11 | 26.77 | 27.52 |
 |     **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
-The transposed version looks like this:
+**The transposed version looks like this:**
 
 |           |  Mean | Std.Dev |   Min | Median |   Max |
 | --------: | ----: | ------: | ----: | -----: | ----: |
@@ -568,7 +602,7 @@ Aside from the syntactic differences, one key distinction is that
 `dplyr::group_by()` considers `NA` values on the grouping variables as
 valid categories, albeit with a warning message suggesting to use
 `forcats::fct_explicit_na` to make `NA`’s explicit. The best way to go
-is simply to follow that advice:
+is to actually follow that advice:
 
 ``` r
 suppressPackageStartupMessages(library(dplyr))
@@ -619,7 +653,7 @@ tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 As we have seen, **summarytools** can generate both text/*markdown* and
 *html* results. Both types of outputs can be used in Rmarkdown
 documents. The vignette [Recommendations for Using summarytools With
-Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
+Rmarkdown](https://cran.r-project.org/package=summarytools/vignettes/Recommendations-rmarkdown.html)
 provides good guidelines, but here are a few tips to get started:
 
   - Always set the `knitr` chunk option `results = 'asis'`. You can do
@@ -632,8 +666,8 @@ provides good guidelines, but here are a few tips to get started:
     knitr::opts_chunk$set(echo = TRUE, results = 'asis')
 ```
 
-        Refer to [this page](https://yihui.name/knitr/options/) to learn
-more about *knitr*’s options.
+        Refer to [this page](https://yihui.name/knitr/options/) for more
+**knitr** options.
 
   - To get better results when generating *html* output with `method =
     'render'`, set up your *.Rmd* document so that it includes
@@ -723,7 +757,7 @@ The following options can be set with `st_options()`:
 | ---------------------: | ------: | :-------------------------------------------------- |
 |            freq.totals |    TRUE | Display totals row in freq()                        |
 |        freq.report.nas |    TRUE | Display <NA> row and “valid” columns                |
-|            ctable.prop |     “r” | Display **r**ow proportions                         |
+|            ctable.prop |     “r” | Display **r**ow proportions by default              |
 |          ctable.totals |    TRUE | Show marginal totals                                |
 |            descr.stats |   “all” | “fivenum”, “common” or vector of stats              |
 |        descr.transpose |   FALSE |                                                     |
@@ -947,11 +981,10 @@ characters max) and we need to clean it up manually.
 
 ## Translations
 
-It is now possible to select the language used in the outputs. The
-following languages are available: English (*en* - default), French
-(*fr*), Spanish (*es*), Portuguese (*pt*), Turkish (*tr*), and Russian
-(*ru*). With the R community’s involvement, I believe we can add several
-more as time goes on.
+It is now possible to change the language used in the outputs. The
+following languages are available, thanks to the R community’s efforts:
+French (*fr*), Portuguese (*pt*), Russian (*ru*), Spanish (*es*), and
+Turkish (*tr*).
 
 ### Switching Languages
 
@@ -996,13 +1029,12 @@ st_options(lang = "en")
 ### Defining and Using Custom Translations
 
 Using the function `use_custom_lang()`, it is possible to add your own
-set of translations. To achieve this, simply download the template *csv*
-file from [this
-page](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
+set of translations. To achieve this, get the [*csv*
+template](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
 customize the +/- 70 items, and call `use_custom_lang()`, giving it as
-sole argument the path to the *csv* file you’ve created. Note that such
-custom translations will not persist across R sessions. This means that
-you should always have this *csv* file handy.
+sole argument the path to your edited *csv* file. Note that such custom
+translations will not persist across R sessions. This means that you
+should always have this *csv* file handy.
 
 ### Defining Specific Keywords
 
@@ -1016,11 +1048,11 @@ that is), an editable window allowing the modify only the desired items.
 ![define\_keywords](img/define_keywords.png)
 
 After closing the edit window, you will be offered to export the
-resulting “custom language” into a *.csv* file that can be imported
-later on with `use_custom_lang()`.
+resulting “custom language” into a *csv* file that can be imported later
+on with `use_custom_lang()`.
 
 Note that it is also possible to define one or several keywords using
-arguments. For the list of all possible keywords to define, see
+function arguments. For the list of all possible keywords to define, see
 `?define_keywords`. For instance:
 
 ``` r
@@ -1029,11 +1061,11 @@ define_keywords(freq = "N")
 
 ## <a id="latest-changes"></a>Latest Changes and Improvements
 
-As stated earlier, version 0.9 brought **many** improvements to
-**summarytools**. Here are the key elements:
+As stated earlier, version 0.9 brought many changes and improvements.
+Here are the main ones:
 
-  - Translations
-  - Improved printing of list objects
+  - **Translations**
+  - **Improved printing of list objects**
       - Objects of class “stby” are automatically printed in the console
         with optimal results; no more need for `view(x, method =
         "pander")`; simply use `stby()` instead of `by()`
@@ -1042,35 +1074,36 @@ As stated earlier, version 0.9 brought **many** improvements to
         opposed to “stby” objects, their automatic printing will **not**
         be optimal; that being said, `freq()` now accepts data frames as
         its first argument, so the need for `lapply()` is greatly
-        reduced)
-  - Easier management of global settings with `st_options()`
+        diminished)
+  - **Easier management of global settings with `st_options()`**
       - `st_options()` now has as many parameters as there are options
         to set, making it possible to set all options with only one
         function call; legacy way of setting options is still supported
       - Several global options were added, with a focus on simplifying
         *Rmarkdown* document creation
-  - Changes to `freq()`
+  - **improved magrittr** operators support (`%>%`, `%$%`)
+  - **Changes to `freq()`**
       - As mentioned earlier, the function now accepts data frames as
         its main argument; this makes practically obsolete the use of
         `lapply()` with it
-  - Improved outputs when using `stby()`
-  - Changes to `ctable()`
+      - Improved outputs when using `stby()`
+  - **Changes to `ctable()`**
       - Fully supports `stby()`
       - Improved number alignment
       - Added “chisq” parameter
-  - Changes to `descr()`
+  - **Changes to `descr()`**
       - For the `stats` argument, Values “fivenum” and “common” are now
         allowed, the latter representing the collection of *mean*, *sd*,
         *min*, *med*, *max*, *n.valid*, and *pct.valid*
       - Improved outputs when using `stby()`
       - The variable used for weights (if any) is removed automatically
         from the data so no stats are produced for it
-  - Changes to `dfSummary()`
-      - Now fully compatible with *Rmarkdown*
-      - Number of columns is now included in the heading section
+  - **Changes to `dfSummary()`**
+      - Now fully compatible with *Rmarkdown* with its *png* graphs
+      - Number of columns is included in the heading section
       - Number of duplicated rows is also shown in the heading section
       - Bar plots now more accurately reflect counts, as they are not
-        stretched across table cells (this allows the comparison of
+        stretched across table cells (this allows comparison of
         frequencies across variables)
       - Columns with particular content (unary/binary, integer
         sequences, UPC/EAN codes) are treated differently; more relevant
@@ -1080,7 +1113,26 @@ As stated earlier, version 0.9 brought **many** improvements to
         an issue with some graphs not being shown at the desired
         magnification level (although much effort has been put into
         improving this as well)
-      - `max.tbl.height` parameter added
+      - `max.tbl.height` parameter added, allowing lengthy summaries to
+        be shown in a scrollable window
+
+### Other Notable Changes
+
+  - The `omit.headings` parameter has been replaced by the more
+    straightforward (and still boolean) `headings`. `omit.heandings` is
+    deprecated as of 0.9.4.
+  - Because it was subject to errors, the *Rows Subset* heading element
+    has been removed. If there is a strong need for it, I can bring it
+    back in a future release (just let me known by email or on GitHub if
+    you’d like to have it back)
+  - Under the hood, much has been going on; the lengthier functions have
+    been split into more manageable parts, and several normalizing
+    operations were performed, facilitating maintenance and improving
+    code readability
+  - The `tb()` function turns results from `freq()` and `descr()` into
+    *tidy tibbles*
+
+[Back to introduction](#what-is-summarytools)
 
 ## Stay Up-to-date
 
@@ -1104,7 +1156,8 @@ versions, you’ll need to download the *.dmg* image from
 [xquartz.org](https://www.xquartz.org/) and add it to your Applications
 folder.
 
-<a href="#st-install">Go to summarytools installation instructions</a>
+<a href="#installing-summarytools-from-github">Back to installation
+instructions</a>
 
 ### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
 
@@ -1114,8 +1167,8 @@ folder.
 **[Curl](https://curl.haxx.se/)**  
 `sudo apt install libcurl4-openssl-dev`
 
-<a href="#installing-summarytools-from-github">Go to summarytools
-installation instructions</a>
+<a href="#installing-summarytools-from-github">Back to installation
+instructions</a>
 
 ### <a id="required-older-ubuntu"></a>Required Solftware for Older Ubuntu Versions
 
@@ -1131,8 +1184,8 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 **[Curl](https://curl.haxx.se/)**  
 `sudo apt-get install libcurl4-openssl-dev`
 
-<a href="#installing-summarytools-from-github">Go to summarytools
-installation instructions</a>
+<a href="#installing-summarytools-from-github">Back to installation
+instructions</a>
 
 ### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
 
@@ -1142,8 +1195,8 @@ installation instructions</a>
 **[Curl](https://curl.haxx.se/)**  
 `sudo yum install curl-devel`
 
-<a href="#installing-summarytools-from-github">Go to summarytools
-installation instructions</a>
+<a href="#installing-summarytools-from-github">Back to installation
+instructions</a>
 
 ### <a id="required-solaris"></a>Required Software for Solaris
 
@@ -1159,8 +1212,8 @@ installation instructions</a>
     /opt/csw/bin/pkgutil -y -i curl 
     /usr/sbin/pkgchk -L CSWcurl
 
-<a href="#installing-summarytools-from-github">Go to summarytools
-installation instructions</a>
+<a href="#installing-summarytools-from-github">Back to installation
+instructions</a>
 
 ## Final notes
 
