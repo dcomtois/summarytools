@@ -4,10 +4,10 @@
 #' class of the returned object.
 #'
 #' @usage stby(data, INDICES, FUN, ..., simplify = TRUE)
-#' stby(data, INDICES, FUN, ..., simplify = TRUE)
 #' 
 #' @param data an R object, normally a data frame, possibly a matrix.
-#' @param INDICES a factor or a list of factors, each of length nrow(data).
+#' @param INDICES a grouping variable or a list of grouping variables,
+#'  each of length nrow(data).
 #' @param FUN a function to be applied to (usually data-frame) subsets of data.
 #' @param \dots Further arguments to FUN.
 #' @param simplify Logical. Essentially a placeholder to maintain full
