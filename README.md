@@ -23,9 +23,9 @@ here](https://CRAN.R-project.org/package=summarytools).
 # <a id="what-is-summarytools"></a>What is summarytools?
 
 **summarytools** is an [R](https://r-project.org) package providing
-tools to *neatly and quickly summarize data*. It can also make *R* a
+functions to *neatly and quickly summarize data*. It can also make *R* a
 little easier to learn and to use, especially for data cleaning and
-preliminary analysis. Four functions are at the core of the package:
+preliminary analysis. Four functions are at its core:
 
 |                Function                | Description                                                                                                                       |
 | :------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -33,6 +33,11 @@ preliminary analysis. Four functions are at the core of the package:
 |    <a href="#ctable">`ctable()`</a>    | **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions, as well as marginal sums |
 |     <a href="#descr">`descr()`</a>     | **descriptive (univariate) statistics** for numerical data                                                                        |
 | <a href="#dfsummary">`dfSummary()`</a> | Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation                                         |
+
+|   | Function   | Description                                                                                                                       |
+| - | ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | `freq()`   | **frequency tables** with proportions, cumulative proportions and missing data information                                        |
+| 2 | `ctable()` | **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions, as well as marginal sums |
 
 An emphasis has been put on both *what* and *how* results are presented,
 so that the package can serve both as an exploration *and* a reporting
@@ -101,9 +106,7 @@ Simply run
 install.packages("summarytools")
 ```
 
-# The Four Core Functions
-
-## <a id="freq"></a>1 - freq() : Frequency Tables
+# Core Function \#1: freq() (Frequency Tables)<a id="freq"></a>
 
 The `freq()` function generates a frequency table with counts and
 proportions, very similar to what SAS or SPSS users are accustomed to.
@@ -165,7 +168,7 @@ freq(iris$Species, report.nas = FALSE, totals = FALSE,
 To get familiar with the various output styles, try out different values
 for `style` – “simple”, “rmarkdown” or “grid”.
 
-#### Subsetting Rows in Frequency Tables
+### Subsetting Rows in Frequency Tables
 
 The “rows” argument allows subsetting the resulting table; we can use it
 in 3 different ways:
@@ -185,8 +188,13 @@ values; to see only the 5 most frequent values, we simply use `order =
 which are lumped together.
 
 ``` r
-freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
+freq(tobacco$disease, order = "freq", rows = 1:5)
 ```
+
+### Frequencies
+
+**tobacco$disease**  
+**Type:** Character
 
 |                  | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | ---------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -199,7 +207,7 @@ freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
 |       **\<NA\>** |  778 |         |              |   77.80 |       100.00 |
 |        **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
-#### Generating Several Frequency Tables at Once
+### Generating Several Frequency Tables at Once
 
 There is more than one way to do this, but the simplest approach is to
 pass the data frame object (subsetted if needed) to `freq()`: (results
@@ -213,7 +221,7 @@ We can even feed the function with data frame containing numerous
 columns of various data types; it will automatically discard numerical
 variables having a large number of distinct values.
 
-#### Collapsible Sections
+### Collapsible Sections
 
 When generating an *html* document, use the `collapse = TRUE` argument
 with `print()` or `view()` to get collapsible sections; clicking on the
@@ -224,7 +232,7 @@ variable (results not shown).
 view(freq(tobacco), collapse = TRUE)
 ```
 
-## <a id="ctable"></a>2 - ctable() : Cross-Tabulations
+# Core Function \#2: ctable() (Cross-Tabulations)<a id="ctable"></a>
 
 We’ll now use a sample data frame called *tobacco*, included in the
 package. We want to cross-tabulate two categorical variables: `smoker`
@@ -275,7 +283,7 @@ tobacco %$%
 Note that a warning will be issued when at least one *expected* cell
 counts is lower than 5.
 
-## <a id="descr"></a>3 - descr() : Descriptive Univariate Stats
+# Core Function \#3: descr() (Descriptive / Univariate Statisticss)<a id="descr"></a>
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion. It can handle single vectors as well as data
@@ -331,7 +339,7 @@ descr(iris, stats = "common", transpose = TRUE, headings = FALSE)
 | **Sepal.Length** | 5.84 |    0.83 | 4.30 |   5.80 | 7.90 |  150.00 |    100.00 |
 |  **Sepal.Width** | 3.06 |    0.44 | 2.00 |   3.00 | 4.40 |  150.00 |    100.00 |
 
-## <a id="dfsummary"></a>4 - dfSummary() : Data Frame Summaries
+# Core Function \#4: dfSummary() (Full-Fledged Data Summaries)<a id="dfsummary"></a>
 
 `dfSummary()` collects information about all variables in a data frame
 and displays it in a single legible table.
@@ -397,7 +405,7 @@ iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
 By definition, no total rows are part of *tidy* tables, and row.names
 are converted to regular columns.
 
-#### Tidy Split-Group Statistics
+## Tidy Split-Group Statistics
 
 Here are two examples of how lists created using `stby()` are
 transformed into *tibbles*. Notice how the *order* parameter affects the
@@ -471,7 +479,7 @@ grouped_descr %>% tb(order = 2)
     ## 11 Girl   math       73.8  9.03  55.6  74.8  86.3      14      93.3
     ## 12 Boy    math       73.3  9.68  60.5  72.2  93.2      14      93.3
 
-## The print() and view() Functions
+# The print() and view() Functions
 
 **summarytools** has a generic `print` method, `print.summarytools()`.
 By default, its `method` argument is set to “pander”. One of the ways in
@@ -481,7 +489,7 @@ wrapper around `print.summarytools()`, specifying `method = 'viewer'`.
 When used outside *RStudio*, `method` falls back to “browser” and the
 report is shown in the default browser.
 
-## Using stby() to Ventilate Results
+# Using stby() to Ventilate Results
 
 We can use `stby()` the same way as *R*’s base function `by()` with the
 four core **summarytools** functions. This returns a list-type object
@@ -722,12 +730,49 @@ or just plain text (*txt*). The file extension indicates to
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 ```
 
-### Appending Output Files
+## Appending Output Files
 
 The `append` argument allows adding content to existing files generated
 by **summarytools**. This is useful if you want to include several
 statistical tables in a single file. It is a quick alternative to
 creating an *.Rmd* document.
+
+## Generating PDF’s
+
+There is no direct way to create a *pdf* with **summarytool**. There are
+however several tools that allow converting *html* documents into
+*pdf*’s. The most widely used is most probably
+[Pandoc](https://pandoc.org), but for converting `dfSummary()` tables,
+better results can be achieved using \[WK
+
+<html>
+
+TOpdf\](<https://wkhtmltopdf.org/index.html>).
+
+### Example
+
+``` r
+setwd("~/R")
+library(summarytools)
+print(dfSummary(iris), file = "iris_dfs.html")
+system("wkhtmltopdf --javascript-delay 1 iris_dfs.html iris_dfs.pdf")
+shell.exec("iris_dfs.pdf")        # Windows
+system("xdg-open 'iris_dfs.pdf'") # Linux
+system("open 'iris_dfs.pdf'")     # OS X
+```
+
+Note that on *Windows* systems, after installing \[WK
+
+<html>
+
+TOpdf\](<https://wkhtmltopdf.org/index.html>), we need to add
+`C:\Program Files\wkhtmltopdf\bin` to the PATH environment variable.
+
+For fine-tuned, multi-paged reports, a sensible approach would be to
+first use *Rmarkdown*, perhaps in combination with RStudio’s
+[pagedown](https://github.com/rstudio/pagedown) package if pagination is
+desired, to generate an *html* document that will lend itself easily to
+a *pdf* conversion.
 
 ## Global options
 
@@ -932,7 +977,7 @@ print(dfSummary(somedata, graph.magnif = 0.8),
       bootstrap.css = FALSE)
 ```
 
-## <a id="tmp-img-dir"></a>Graphs in Markdown dfSummaries
+## Graphs in Markdown dfSummaries<a id="tmp-img-dir"></a>
 
 When generating *markdown* (as opposed to *html*) summaries in an *.Rmd*
 document, three elements are needed to display proper *png* graphs:
@@ -1026,7 +1071,7 @@ Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
 
-### Defining and Using Custom Translations
+## Defining and Using Custom Translations
 
 Using the function `use_custom_lang()`, it is possible to add your own
 set of translations. To achieve this, get the [*csv*
@@ -1036,7 +1081,7 @@ sole argument the path to your edited *csv* file. Note that such custom
 translations will not persist across R sessions. This means that you
 should always have this *csv* file handy.
 
-### Defining Specific Keywords
+## Defining Specific Keywords
 
 Sometimes, all you might want to do is change just a few keywords – say
 you would rather have “N” instead of “Freq” in the title row of `freq()`
@@ -1059,7 +1104,7 @@ function arguments. For the list of all possible keywords to define, see
 define_keywords(freq = "N")
 ```
 
-## <a id="latest-changes"></a>Latest Changes and Improvements
+## Latest Changes and Improvements<a id="latest-changes"></a>
 
 As stated earlier, version 0.9 brought many changes and improvements.
 Here are the main ones:

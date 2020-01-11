@@ -5,12 +5,12 @@
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
 stby(data, INDICES, FUN, ..., simplify = TRUE)
-stby(data, INDICES, FUN, ..., simplify = TRUE)
 }
 \arguments{
 \item{data}{an R object, normally a data frame, possibly a matrix.}
 
-\item{INDICES}{a factor or a list of factors, each of length nrow(data).}
+\item{INDICES}{a grouping variable or a list of grouping variables,
+each of length nrow(data).}
 
 \item{FUN}{a function to be applied to (usually data-frame) subsets of data.}
 

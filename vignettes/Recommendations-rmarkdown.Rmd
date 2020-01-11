@@ -189,8 +189,8 @@ print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ## Generating pdf's
 
 There is no way to directly generate a *pdf*, but it is easy to convert an
-*html* document to that format. Refer the introductory vignette for detailed
-instructions.
+*html* document to that format. Refer the introductory vignette for more
+details.
 
 ## Final Notes
 

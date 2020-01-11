@@ -11,7 +11,9 @@
  - Added support for weights when `freq()` and `ctable()` are used with
    `stby()` or `dplyr::group_by()` (note that `group_by()` is compatible
    with `freq()` but not with `ctable()`
-
+ - Fixed an inconsistency when saving outputs to *.Rmd* documents; plain.ascii is 
+   automatically set to FALSE and style is automatically set to "rmarkdown", in
+   accordance with the way *.md* documents are handled.
 
 # summarytools 0.9.4 (2019-08-24)
 

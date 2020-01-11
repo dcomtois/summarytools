@@ -7,7 +7,7 @@
 ^\.gitignore
 ^img$
 ^translations$
-^TODO.R$
+^TODO.txt$
 ^README.md$
 ^README.Rmd$
 ^tests$
