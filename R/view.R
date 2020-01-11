@@ -76,8 +76,9 @@ view <- function(x,
     
   } else if (inherits(x = x, what = c("stby","by")) &&
              attr(x[[1]], "st_type") == "descr" &&
-             ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) || 
-              ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {             
+             length(attr(x[[1]], "data_info")$by_var) == 1 &&
+             ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) ||
+              ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
 
     # Special case: descr by() objects with 1 variable -------------------------
     
