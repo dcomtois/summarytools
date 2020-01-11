@@ -161,6 +161,10 @@ descr <- function(x,
           attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
         } else if (exists("varname")) {
           attr(outlist[[g]], "data_info")$Variable <- varname
+          if (identical(colnames(outlist[[g]]), "value"))
+            colnames(outlist[[g]]) <- varname
+          if (identical(rownames(outlist[[g]]), "value"))
+            rownames(outlist[[g]]) <- varname
         }
         if (!is.null(parse_info$var_label))
           attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
@@ -185,8 +189,7 @@ descr <- function(x,
     return(outlist)
   }
   
-  # When var is provided, we all other variables
-  # variables in the analysis
+  # When var is provided, discard all other variables
   if (is.data.frame(x) && ncol(x) > 1 && "var" %in% names(match.call())) {
     
     # var might contain a function call -- such as df %>% descr(na.omit(var1))
