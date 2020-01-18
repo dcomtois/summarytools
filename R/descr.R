@@ -526,8 +526,7 @@ descr <- function(x,
                                 sub(pattern = paste0(parse_info$df_name, "$"), 
                                     replacement = "", x = weights_string, 
                                     fixed = TRUE)),
-      by_var           = ifelse("by_var" %in% names(parse_info),
-                                parse_info$by_var, NA),
+      by_var           = NA,
       Group            = ifelse("by_group" %in% names(parse_info),
                                 parse_info$by_group, NA),
       by_first         = ifelse("by_group" %in% names(parse_info), 
@@ -536,6 +535,10 @@ descr <- function(x,
                                 parse_info$by_last, NA),
       transposed       = transpose,
       N.Obs            = nrow(x.df))
+  
+  if ("by_var" %in% names(parse_info)) {
+    data_info$by_var <- parse_info$by_var
+  }
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   

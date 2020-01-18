@@ -103,8 +103,9 @@ ctable <- function(x,
                    rescale.weights = FALSE,
                    ...) {
 
-  if (inherits(x, "grouped_df")) {
-    stop("ctable() doesn't accept split-tibbles; use stby() instead")
+  # Check for group_by()
+  if (any(grepl("group_by(", deparse(sys.calls()[[1]]), fixed = TRUE))) {
+    stop("ctable() doesn't support group_by(); use stby() instead")
   }
 
   # Support for by()
