@@ -24,36 +24,6 @@
 #' @keywords utilities
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
-  
-  # Check if variables are both in data and in INDICES
-  gr_vars <- setdiff(as.character(substitute(INDICES)), "list")
-  birole_var <- intersect(gr_vars, deparse(substitute(data)))
-  if (length(birole_var) && (is.vector(data) || is.factor(data))) {
-    warning(birole_var[1], " appears to be both a grouping as well as a data ",
-            "variable; this could cause problems when generating results")
-  }
-  
-  # Check for NA's in grouping variables
-  na_counts <- rep(0, length(gr_vars))
-  
-  for (i in seq_along(gr_vars))
-    na_counts[i] <- sum(is.na(INDICES[[i]]))
-  
-  if (sum(na_counts)) {
-    message("NA", if (sum(na_counts) > 1) "'s", 
-            " detected in the following INDICE variable",
-            if (sum(na_counts > 0) > 1) "s",  ": ", appendLF = FALSE)
-    for (i in seq_along(gr_vars)) {
-      if (na_counts[i] > 0) {
-        if (i == 1)
-          message(gr_vars[i], appendLF = FALSE)
-        else
-          message(", ", gr_vars[i], appendLF = FALSE)
-      }
-    }
-    message("\n  To include NA groups, consider using dplyr::group_by or",
-            "  using forcats::fct_explicit_na")
-  }
   UseMethod("stby", data)
 }
   
