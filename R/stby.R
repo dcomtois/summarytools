@@ -18,7 +18,8 @@
 #'
 #' @examples
 #' data("tobacco")
-#'
+#' with(tobacco, stby(BMI, gender, descr))
+#' 
 #' @seealso \code{\link[base]{by}}, \code{\link[base]{tapply}}
 #' @keywords utilities
 #' @export

@@ -29,6 +29,7 @@ class of the returned object.
 }
 \examples{
 data("tobacco")
+with(tobacco, stby(BMI, gender, descr))
 
 }
 \seealso{
