@@ -202,8 +202,10 @@ descr <- function(x,
       varname <- deparse(substitute(var))
     }
   } else {
-    x_obj    <- x
-    varname  <- colnames(x)
+    x_obj <- x
+    if (!is.null(colnames(x))) {
+      varname  <- colnames(x)
+    }
   }
   
   # Validate arguments -------------------------------------------------------
