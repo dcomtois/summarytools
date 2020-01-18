@@ -210,7 +210,7 @@ parse_args <- function(sys_calls,
     }
     # fallback method
     env <- pryr::where(name = name)
-    return(get(name, env))
+    return(get(name, env, mode = "list"))
   }
 
   parse_data_str <- function(str) {
