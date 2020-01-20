@@ -22,7 +22,6 @@ Imports:
   pander,
   pryr,
   rapportools,
-  RCurl,
   stats,
   tcltk,
   tibble,

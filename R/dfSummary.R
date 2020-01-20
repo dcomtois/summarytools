@@ -1066,7 +1066,7 @@ align_numbers_dfs <- function(counts, props) {
                        "f%%)"), props*100))
 }
 
-#' @importFrom RCurl base64Encode
+#' @importFrom base64enc base64encode
 #' @importFrom graphics barplot hist par text plot.new
 #' @importFrom grDevices dev.off nclass.Sturges png
 #' @importFrom magick image_read image_trim image_border image_write 
@@ -1157,9 +1157,8 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     return(png_path)
   } else {
     image_write(image_transparent(ii, 'white'), png_loc)
-    img_txt <- base64Encode(txt = readBin(con = png_loc, what = "raw",
-                                          n = file.info(png_loc)[["size"]]),
-                            mode = "character")
+    img_txt <- base64encode(readBin(con = png_loc, what = "raw",
+                                    n = file.info(png_loc)[["size"]]))
     return(paste0('<img style="border:none;background-color:transparent;',
                   'padding:0" src="data:image/png;base64, ', img_txt, '">'))
   }
