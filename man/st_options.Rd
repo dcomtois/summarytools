@@ -76,7 +76,7 @@ omit data frame and variable labels in the headings section.}
 \item{bootstrap.css}{Logical. Specifies whether to Include 
 \emph{Bootstrap css} in \emph{html} reports \emph{head} section outputs.
 Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
-method inside a \code{shiny} app to avoid interacting with the app's 
+method inside a \code{shiny} app to avoid interacting with the app’s 
 layout.}
 
 \item{custom.css}{Character. Path to an additional, user-provided, CSS file.
@@ -165,7 +165,7 @@ options, use single unnamed argument \sQuote{reset} or \code{0}.
 }
 \details{
 To learn more about summarytools options, see the 
-\href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
+\href{https://github.com/dcomtois/summarytools}{GitHub project’s page}.
 }
 \examples{
 \dontrun{

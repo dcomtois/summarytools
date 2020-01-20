@@ -352,7 +352,7 @@ descr <- function(x,
       rownames(output) <- parse_info$var_name
     }
 
-    # Calculate additionnal stats if needed
+    # Calculate additional stats if needed
     if ("cv" %in% stats) {
       output$cv <- output$sd / output$mean
     }

@@ -79,7 +79,7 @@ as attributes in the object being printed. See \emph{Details} section.}
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in
- \emph{RStudio}'s Viewer, or write content to file.
+ \emph{RStudio}’s Viewer, or write content to file.
 }
 \details{
 Plain ascii and \emph{rmarkdown} tables are generated via
@@ -88,7 +88,7 @@ Plain ascii and \emph{rmarkdown} tables are generated via
 
 The following additional arguments can be used to override
   formatting attributes stored in the object to be printed. Refer to the 
-  function's documentation for details on these arguments.
+  function’s documentation for details on these arguments.
    \itemize{
      \item \code{style}
      \item \code{round.digits} (except for \code{\link{dfSummary}} objects)

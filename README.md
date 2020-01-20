@@ -34,11 +34,6 @@ preliminary analysis. Four functions are at its core:
 |     <a href="#descr">`descr()`</a>     | **descriptive (univariate) statistics** for numerical data                                                                        |
 | <a href="#dfsummary">`dfSummary()`</a> | Extensive **data frame summaries** that facilitate data cleaning and firsthand evaluation                                         |
 
-|   | Function   | Description                                                                                                                       |
-| - | ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| 1 | `freq()`   | **frequency tables** with proportions, cumulative proportions and missing data information                                        |
-| 2 | `ctable()` | **cross-tabulations** between two factors or any discrete data, with total, rows or columns proportions, as well as marginal sums |
-
 An emphasis has been put on both *what* and *how* results are presented,
 so that the package can serve both as an exploration *and* a reporting
 tool, used on its own for minimal reports, or with other packages such
@@ -74,7 +69,7 @@ document.
 
 Windows users can skip this section.
 
-Additionnal pieces of software are used by summarytools to fine-tune
+Additional pieces of software are used by summarytools to fine-tune
 graphics as well as provide some interactive features. If installing
 summarytools for the first time on your system, click on your OS to see
 the relevant instructions on how to proceed. This takes only a few
@@ -283,7 +278,7 @@ tobacco %$%
 Note that a warning will be issued when at least one *expected* cell
 counts is lower than 5.
 
-# Core Function \#3: descr() (Descriptive / Univariate Statisticss)<a id="descr"></a>
+# Core Function \#3: descr() (Descriptive / Univariate Statistics)<a id="descr"></a>
 
 The `descr()` function generates common central tendency statistics and
 measures of dispersion. It can handle single vectors as well as data
@@ -739,9 +734,9 @@ creating an *.Rmd* document.
 
 ## Generating PDF’s
 
-There is no direct way to create a *pdf* with **summarytool**. There are
-however several tools that allow converting *html* documents into
-*pdf*’s. The most widely used is most probably
+There is no direct way to create a *PDF* with **summarytools**. There
+are however several tools that allow converting *html* documents into
+*PDF*’s. The most widely used is most probably
 [Pandoc](https://pandoc.org), but for converting `dfSummary()` tables,
 better results can be achieved using \[WK
 
@@ -772,7 +767,7 @@ For fine-tuned, multi-paged reports, a sensible approach would be to
 first use *Rmarkdown*, perhaps in combination with RStudio’s
 [pagedown](https://github.com/rstudio/pagedown) package if pagination is
 desired, to generate an *html* document that will lend itself easily to
-a *pdf* conversion.
+a *PDF* conversion.
 
 ## Global options
 
@@ -1184,7 +1179,7 @@ Here are the main ones:
 For a preview of what’s coming in the next release, see the [development
 branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 
-## Additionnal Software Installations
+## Additional Software Installations
 
 ### <a id="required-mac-os"></a>Required Software on Mac OS
 
@@ -1215,7 +1210,7 @@ instructions</a>
 <a href="#installing-summarytools-from-github">Back to installation
 instructions</a>
 
-### <a id="required-older-ubuntu"></a>Required Solftware for Older Ubuntu Versions
+### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
 
 This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 (16.04).

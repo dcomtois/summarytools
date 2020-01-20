@@ -33,7 +33,7 @@
 #' @param bootstrap.css Logical. Specifies whether to Include 
 #'   \emph{Bootstrap css} in \emph{html} reports \emph{head} section outputs.
 #'   Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
-#'   method inside a \code{shiny} app to avoid interacting with the app's 
+#'   method inside a \code{shiny} app to avoid interacting with the app’s 
 #'   layout.
 #' @param custom.css Character. Path to an additional, user-provided, CSS file.
 #'   \code{NA} by default.
@@ -92,7 +92,7 @@
 #'   setting this to \code{FALSE} will prevent errors. 
 #' 
 #' @details To learn more about summarytools options, see the 
-#' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
+#' \href{https://github.com/dcomtois/summarytools}{GitHub project’s page}.
 #' 
 #' @keywords utilities
 #' 

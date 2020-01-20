@@ -70,7 +70,7 @@ st_css()
 ## Demo / Examples
 
 Below are examples using recommended styles for *Rmarkdown* rendering. Available
-styles in summarytools are the same as `pander`'s: 
+styles in summarytools are the same as `pander`’s: 
 
 - _simple_ (default)  
 - _rmarkdown_  
@@ -121,7 +121,7 @@ example is provided further below.
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
 (yet), but the result is getting close to acceptable. This, however, is not
-true for all themes. That's why the rendering method is preferred.
+true for all themes. That’s why the rendering method is preferred.
 
 ```{r}
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
@@ -151,7 +151,7 @@ descr(tobacco, style = 'rmarkdown')
 
 ## HTML Rendering
 
-We'll use table.classes = 'st-small' to show how it affects the table's size
+We'll use table.classes = 'st-small' to show how it affects the table’s size
 (compare to the `freq()` table rendered earlier).
 
 ```{r}
@@ -186,9 +186,9 @@ print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 
 <a href="#top">Back to top</a>
 
-## Generating pdf's
+## Generating PDF’s
 
-There is no way to directly generate a *pdf*, but it is easy to convert an
+There is no way to directly generate a *PDF*, but it is easy to convert an
 *html* document to that format. Refer the introductory vignette for more
 details.
 
@@ -197,5 +197,5 @@ details.
 This is by no way a definitive guide; depending on the themes you use, 
 you could find that other settings yield better results. Also, this document
 focuses on _HTML_ document rendering. If you are looking to create a _Word_ of a 
-_pdf_ document, you might want to try different combinations of options. Note that
+_PDF_ document, you might want to try different combinations of options. Note that
 the _rendering_ method is not well-suited for _Word_ documents.

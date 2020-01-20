@@ -14,7 +14,7 @@ label(x) <- value
 \item{all}{Logical. When x is a data frame, setting this argument to
 \code{TRUE} will make the function return all variable labels. By default,
 its value is \code{FALSE}, so that if x is a data frame, it is the data
-frame's label that will be returned.}
+frame’s label that will be returned.}
 
 \item{fallback}{a logical value indicating if labels should fallback to
 object name(s). Defaults to \code{FALSE}.}
@@ -27,10 +27,10 @@ list} containing only non-NULL/non-NA elements.}
 }
 \description{
 Assign a label to a vector or data frame, or returns value previously stored 
-in the object's \code{label} attribute (or \code{NA} if none found).
+in the object’s \code{label} attribute (or \code{NA} if none found).
 }
 \note{
-Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 
+Loosely based on Gergely Daróczi’s \code{\link[rapportools]{label}} 
   function.
 }
 \author{
