@@ -3,6 +3,9 @@
  - Eliminated automatic check for X11 capabilities as it caused problems on some
    systems; the user can instead set global option `st_options(use.x11 = FALSE)`
    if encountering problems
+ - To simplify installation on Unix-like systems (including Mac OS), the
+   `RCurl::base64Encode()` function used to create html-encoded
+   graphs isn't used anymore; `base64enc::base64encode()` is used instead
  - When saving outputs to *.Rmd* documents; 'plain.ascii' is now automatically set
    to FALSE and 'style' is automatically set to "rmarkdown", in accordance with
    with the way *.md* documents are generated

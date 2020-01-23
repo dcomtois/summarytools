@@ -1,7 +1,7 @@
 #' Get or Set Variable or Data Frame Labels
 #'
 #' Assign a label to a vector or data frame, or returns value previously stored 
-#' in the object’s \code{label} attribute (or \code{NA} if none found).
+#' in the object's \code{label} attribute (or \code{NA} if none found).
 #' 
 #' @aliases label label<-
 #' @usage label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
@@ -11,7 +11,7 @@
 #' @param all Logical. When x is a data frame, setting this argument to
 #'   \code{TRUE} will make the function return all variable labels. By default,
 #'   its value is \code{FALSE}, so that if x is a data frame, it is the data
-#'   frame’s label that will be returned.
+#'   frame's label that will be returned.
 #' @param fallback a logical value indicating if labels should fallback to
 #'   object name(s). Defaults to \code{FALSE}.
 #' @param simplify When x is a data frame and \code{all = TRUE}, coerce results
@@ -21,7 +21,7 @@
 #' 
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
-#' @note Loosely based on Gergely Daróczi’s \code{\link[rapportools]{label}} 
+#' @note Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 
 #'   function.
 #' @export
 #' @importFrom utils tail
@@ -112,7 +112,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #' Clear Variable and Data Frame Label(s)
 #'
 #' Returns the object with all labels removed. Both the \dQuote{label} attribute
-#' and \pkg{Hmisc}’s \dQuote{labelled} class are removed.
+#' and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
 #'
 #' @usage unlabel(x)
 #' @param x An R object to remove labels from.

@@ -3,7 +3,7 @@
 #' A simulated dataset with grades for hypothetical 30 students, with
 #' the following variables:
 #' \itemize{
-#'   \item student Student’s name.
+#'   \item student Student's name.
 #'   \item gender Factor with 2 levels: \dQuote{Girl}, \dQuote{Boy}.
 #'   \item french French Grade (numerical).
 #'   \item math Math Grade (numerical).

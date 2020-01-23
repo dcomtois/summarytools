@@ -4,7 +4,7 @@
 \name{summarytools-package}
 \alias{summarytools}
 \alias{summarytools-package}
-\title{Extensive Summarizing Tools With Flexible Output}
+\title{Simple and Flexible Tools for Summarizing Data}
 \description{
 \pkg{summarytools} provides users with functions to neatly and quickly
 summarize numerical and categorical data. Data frame summaries, frequency
@@ -31,7 +31,7 @@ These are the four core functions:
    \item{rmarkdown}{Ideal when writing short papers or presentations.}
    \item{html}{This format is well integrated in RStudio (but will
    work with any browser). Use the \code{view()} function to see results
-   appear directly in RStudio’s Viewer or in your default Web
+   appear directly in RStudio's Viewer or in your default Web
    Browser.}
  }
 }

@@ -11,7 +11,7 @@ unlabel(x)
 }
 \description{
 Returns the object with all labels removed. Both the \dQuote{label} attribute
-and \pkg{Hmisc}’s \dQuote{labelled} class are removed.
+and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
 }
 \seealso{
 \code{\link{label}}

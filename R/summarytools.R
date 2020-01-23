@@ -1,4 +1,4 @@
-#' Extensive Summarizing Tools With Flexible Output
+#' Simple and Flexible Tools for Summarizing Data
 #'
 #' \pkg{summarytools} provides users with functions to neatly and quickly
 #' summarize numerical and categorical data. Data frame summaries, frequency
@@ -24,7 +24,7 @@
 #'    \item{rmarkdown}{Ideal when writing short papers or presentations.}
 #'    \item{html}{This format is well integrated in RStudio (but will
 #'    work with any browser). Use the \code{view()} function to see results
-#'    appear directly in RStudio’s Viewer or in your default Web
+#'    appear directly in RStudio's Viewer or in your default Web
 #'    Browser.}
 #'  }
 #'
