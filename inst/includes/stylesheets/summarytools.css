@@ -29,6 +29,10 @@ img {
   padding: 8px;
 }
 
+.st-left {
+  text-align: left;
+}
+
 table.st-table th {
   text-align: center;
 }
@@ -125,8 +129,6 @@ table.st-table td span {
   padding-left: 20px;
   padding-right: 20px;
 }
-
-
 
 
 .st-table-bordered > thead > tr > th,
