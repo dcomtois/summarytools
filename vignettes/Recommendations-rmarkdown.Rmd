@@ -21,10 +21,9 @@ library(summarytools)
 st_css()
 ```
 
+## This Vignette's Setup
 
-## Configuration
-
-This document uses theme `rmarkdown::html_vignette`. Its **yaml** section 
+This vignette uses theme `rmarkdown::html_vignette`. Its **yaml** section
 looks like this:
 
 ```
@@ -51,9 +50,9 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
            style             = "rmarkdown", # Idem.
            dfSummary.silent  = TRUE,        # Suppresses messages about temporary files
            footnote          = NA,          # Keeping the results minimalistic
-           subtitle.emphasis = FALSE)       # For the vignette theme, this gives
-                                            # much better results. Your mileage may vary.
-``` 
+           subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
+                                            # For other themes, using TRUE might be preferable.
+```
 
 Also, the following **knitr chunk options** were set this way:
 ```{r, eval=FALSE}
@@ -70,7 +69,7 @@ st_css()
 ## Demo / Examples
 
 Below are examples using recommended styles for *Rmarkdown* rendering. Available
-styles in summarytools are the same as `pander`’s: 
+styles in summarytools are the same as `pander`'s: 
 
 - _simple_ (default)  
 - _rmarkdown_  
@@ -121,7 +120,7 @@ example is provided further below.
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
 (yet), but the result is getting close to acceptable. This, however, is not
-true for all themes. That’s why the rendering method is preferred.
+true for all themes. That is why the rendering method is preferred.
 
 ```{r}
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
@@ -151,8 +150,8 @@ descr(tobacco, style = 'rmarkdown')
 
 ## HTML Rendering
 
-We'll use table.classes = 'st-small' to show how it affects the table’s size
-(compare to the `freq()` table rendered earlier).
+We'll use table.classes = 'st-small' to show how it affects the table's size,
+compared to the `freq()` table rendered earlier.
 
 ```{r}
 print(descr(tobacco), method = 'render', table.classes = 'st-small')
@@ -183,14 +182,28 @@ This method has also been much improved in version 0.9 of **summarytools**.
 ```{r}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ```
+### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
+
+For data frames containing numerous variables, we can use the `max.tbl.height`
+argument to wrap the results in a scrollable window having the specified
+height, in pixels. For instance:
+
+```{r}
+print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75), 
+      max.tbl.height = 300, method = "render")
+```
 
 <a href="#top">Back to top</a>
 
-## Generating PDF’s
+## Generating *PDF*'s
 
-There is no way to directly generate a *PDF*, but it is easy to convert an
-*html* document to that format. Refer the introductory vignette for more
-details.
+There is no direct way to create a *PDF* file with **summarytools**. One option is
+to generate an *html* file and convert it to *PDF* using a tool like
+[Pandoc](https://pandoc.org) or [WK<html>TOpdf](https://wkhtmltopdf.org/index.html)
+(the latter gives better results than Pandoc with `dfSummary()` outputs).
+
+Another option is to create an *Rmd* document with *PDF* output format.
+
 
 ## Final Notes
 
