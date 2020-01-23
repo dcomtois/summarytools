@@ -181,6 +181,9 @@ dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
 # Limit number of categories to be displayed for factors / categorical data
 dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 
+# Using stby()
+stby(tobacco, tobacco$gender, dfSummary)
+
 \dontrun{
 # Show in Viewer or browser (view: no capital V!)
 view(dfSummary(iris))
@@ -188,6 +191,9 @@ view(dfSummary(iris))
 # Rmarkdown-ready
 dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
+
+# Using group_by()
+tobacco \%>\% group_by(gender) \%>\% dfSummary()
 }
 
 }

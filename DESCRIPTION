@@ -1,16 +1,17 @@
 Package: summarytools
 Type: Package
-Title: Tools to Quickly and Neatly Summarize Data
+Title: Simple and Flexible Tools for Summarizing Data
 Version: 0.9.5
 Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com", 
   role = c("aut", "cre"))
 Description: Data frame summaries, cross-tabulations,
-  weight-enabled frequency tables and common univariate
-  statistics in concise tables available in a variety of
-  formats (plain ASCII, Markdown and HTML). A good 
+  weight-enabled frequency tables and common descriptive
+  (univariate) statistics in concise tables available in a
+  variety of formats (plain ASCII, Markdown and HTML). A good 
   point-of-entry for exploring data, both for experienced
   and new R users.
 Imports:
+  base64enc,
   checkmate,
   dplyr,
   grDevices,
@@ -22,7 +23,6 @@ Imports:
   pander,
   pryr,
   rapportools,
-  RCurl,
   stats,
   tcltk,
   tibble,

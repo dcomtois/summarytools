@@ -4,10 +4,10 @@
 #' class of the returned object.
 #'
 #' @usage stby(data, INDICES, FUN, ..., simplify = TRUE)
-#' stby(data, INDICES, FUN, ..., simplify = TRUE)
 #' 
 #' @param data an R object, normally a data frame, possibly a matrix.
-#' @param INDICES a factor or a list of factors, each of length nrow(data).
+#' @param INDICES a grouping variable or a list of grouping variables,
+#'  each of length nrow(data).
 #' @param FUN a function to be applied to (usually data-frame) subsets of data.
 #' @param \dots Further arguments to FUN.
 #' @param simplify Logical. Essentially a placeholder to maintain full
@@ -18,29 +18,21 @@
 #'
 #' @examples
 #' data("tobacco")
-#'
+#' with(tobacco, stby(BMI, gender, descr))
+#' 
 #' @seealso \code{\link[base]{by}}, \code{\link[base]{tapply}}
 #' @keywords utilities
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
-  # Check if variables are both in data and in INDICES
-  gr_vars <- setdiff(as.character(substitute(INDICES)), "list")
-  birole_var <- intersect(gr_vars, deparse(substitute(data)))
-  if (length(birole_var) && (is.vector(data) || is.factor(data))) {
-    warning(birole_var[1], " appears to be both a grouping as well as a data ",
-            "variable; this could cause problems when generating results")
-  }
   UseMethod("stby", data)
 }
-
+  
 #' @method stby data.frame
 #' @keywords utilities
 #' @export
 stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
   if (identical(FUN, summarytools::freq) && ncol(data) > 1) {
-    stop("when using stby() with freq(), only one variable may be analysed; ",
-         "the number of grouping variables however is not limited by any ",
-         "technical constraints")
+    stop("when using freq() with stby(), only one variable may be analysed")
   }
   if (!is.list(INDICES)) {
     IND <- vector("list", 1L)

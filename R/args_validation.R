@@ -411,8 +411,8 @@ check_arguments_print <- function(mc) {
     errmsg %+=% "'custom.css' option does not apply to method 'pander'"
   }
   
-  # Set plain.ascii to false and adjust style when file name ends with .md
-  if (grepl("\\.md$", pf$file, ignore.case = TRUE, perl = TRUE) 
+  # Set plain.ascii to false and adjust style when file extension is .md or .Rmd
+  if (grepl("\\.r?md$", pf$file, ignore.case = TRUE, perl = TRUE) 
       && !"style" %in% names(pf$dotArgs)) {
     if (isTRUE(attr(pf$x, "format_info")$plain.ascii) && 
         !"plain.ascii" %in% names(pf$dotArgs)) {

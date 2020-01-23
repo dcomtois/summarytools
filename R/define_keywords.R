@@ -13,7 +13,7 @@
 #' the user to save the modified set of keywords in a custom csv language file.
 #' 
 #' Here is the full list of modifiable keywords. Check out the 
-#' \emph{language_template.csv} file in the package’s \emph{includes} 
+#' \emph{language_template.csv} file in the package's \emph{includes} 
 #'   directory.
 #'   
 #' \describe{

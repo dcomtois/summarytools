@@ -87,12 +87,14 @@
 #'  value gives it stronger emphasis.
 #' @param lang Character. A 2-letter code for the language to use in the
 #'   produced outputs. Currently available languages are: \sQuote{en}, 
-#'   \sQuote{fr}.
-#' @param use.x11 Logical. TRUE by default. In console-only Linux environments,
-#'   setting this to \code{FALSE} will prevent errors. 
+#'   \sQuote{es}, \sQuote{fr}, \sQuote{pt}, \sQuote{ru}, and \sQuote{tr}.
+#' @param use.x11 Logical. TRUE by default. In console-only environments,
+#'   setting this to \code{FALSE} will prevent errors occurring when
+#'   \code{\link{dfSummary}}  tries to generate \emph{html} 
+#'   \dQuote{Base64-encoded} graphs.
 #' 
 #' @details To learn more about summarytools options, see the 
-#' \href{https://github.com/dcomtois/summarytools}{GitHub project's page}.
+#' \href{https://github.com/dcomtois/summarytools}{project's GitHub page}.
 #' 
 #' @keywords utilities
 #' 

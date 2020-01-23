@@ -1103,7 +1103,8 @@ print_descr <- function(x, method) {
     # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
       row.names(x) <- enc2native(row.names(x))
-      colnames(x)  <- enc2native(colnames(x))
+      if (!is.null(colnames(x)))
+        colnames(x)  <- enc2native(colnames(x))
     }
     
     pander_args <- append(list(style        = format_info$style,

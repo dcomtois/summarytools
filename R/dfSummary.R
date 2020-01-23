@@ -127,6 +127,9 @@
 #' # Limit number of categories to be displayed for factors / categorical data
 #' dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 #' 
+#' # Using stby()
+#' stby(tobacco, tobacco$gender, dfSummary)
+#' 
 #' \dontrun{
 #' # Show in Viewer or browser (view: no capital V!)
 #' view(dfSummary(iris))
@@ -134,8 +137,11 @@
 #' # Rmarkdown-ready
 #' dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
 #'           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
+#' 
+#' # Using group_by()
+#' tobacco %>% group_by(gender) %>% dfSummary()
 #' }
-#'
+#' 
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
@@ -1060,7 +1066,7 @@ align_numbers_dfs <- function(counts, props) {
                        "f%%)"), props*100))
 }
 
-#' @importFrom RCurl base64Encode
+#' @importFrom base64enc base64encode
 #' @importFrom graphics barplot hist par text plot.new
 #' @importFrom grDevices dev.off nclass.Sturges png
 #' @importFrom magick image_read image_trim image_border image_write 
@@ -1151,9 +1157,8 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     return(png_path)
   } else {
     image_write(image_transparent(ii, 'white'), png_loc)
-    img_txt <- base64Encode(txt = readBin(con = png_loc, what = "raw",
-                                          n = file.info(png_loc)[["size"]]),
-                            mode = "character")
+    img_txt <- base64encode(readBin(con = png_loc, what = "raw",
+                                    n = file.info(png_loc)[["size"]]))
     return(paste0('<img style="border:none;background-color:transparent;',
                   'padding:0" src="data:image/png;base64, ', img_txt, '">'))
   }

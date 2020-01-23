@@ -1,17 +1,27 @@
-# summarytools 0.9.5 (2019-09-09)
+# summarytools 0.9.5 (2020-01-12)
 
  - Eliminated automatic check for X11 capabilities as it caused problems on some
-   systems; Added 'use.x11' option -- set with st_options(use.x11 = FALSE) in
-   case of problems with `dfSummary()`
- - Fixed some issues when generating dfSummaries in Rmarkdown
- - Fixed a bug arising when calling `summarytools::dfSummary()` without loading
-   the package
- - Fixed null graphic device appearing in RGui, RTerm and X11 when using
-   `dfSummary()`
- - Added support for weights when `freq()` and `ctable()` are used with
-   `stby()` or `dplyr::group_by()` (note that `group_by()` is compatible
-   with `freq()` but not with `ctable()`
-
+   systems; the user can instead set global option `st_options(use.x11 = FALSE)`
+   if encountering problems
+ - To simplify installation on Unix-like systems (including Mac OS), the
+   `RCurl::base64Encode()` function used to create html-encoded
+   graphs isn't used anymore; `base64enc::base64encode()` is used instead
+ - When saving outputs to *.Rmd* documents; 'plain.ascii' is now automatically set
+   to FALSE and 'style' is automatically set to "rmarkdown", in accordance with
+   with the way *.md* documents are generated
+ - Fixed bug arising with data frames called "data"
+ - Weights are now supported for `freq()` used in conjunction with `stby()` or 
+   `dplyr::group_by()`
+ - Weights are also supported for `ctable()` used in conjunction with `stby()`
+ - Improvements and fixes for `dfSummary()`:
+   + Fixed null graphic device appearing in *RGui* and non-GUI interfaces
+   + Calling `summarytools::dfSummary()` (without loading the package) is now
+     possible
+   + Improved *Rmarkdown* compatibility
+ - Improvements and fixes for `descr()`:
+   + When `descr()` with `stby()`, results are no longer assembled into a single
+     table if more than one grouping variables are used
+   + Fixed bug arising when using `stby()` with several grouping variables
 
 # summarytools 0.9.4 (2019-08-24)
 
@@ -109,7 +119,8 @@ information below for all the details.
      section  
    + Integer sequences as well as **UPC/EAN codes** are detected and identified  
    + Statistics for unary / binary data are simplified  
-   + Bar charts now reflect frequencies across variables  
+   + Dimension of the bars in barplots now reflect frequencies relative to the
+     whole dataset, allowing comparisons across variables  
  - In `descr()`, the 'stats' parameter accepts values "common" and "fivenum"  
  - With `st_options()`, setting multiple options at once is now possible; all
    options have their own parameter (the legacy way of setting options is still

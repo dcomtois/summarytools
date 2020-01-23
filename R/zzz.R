@@ -59,16 +59,20 @@ utils::globalVariables(c("."))
 #' @importFrom utils packageDescription
 #' @importFrom pander panderOptions
 .onAttach <- function(libname, pkgname) {
-  should_update <- try(packageDescription("pander")$Date <= "2018-11-06", silent = TRUE)
-  if(isTRUE(should_update))
-    packageStartupMessage("For best results, please update the pander package: \n",
-                          "  1. Restart R session \n",
-                          "  2. Use one of the following: \n",
-                          "       devtools::install_github('rapporter/pander') or \n",
-                          "       remotes::install_github('rapporter/pander')")
+  
   if (Sys.info()[["sysname"]] != "Windows" && !isTRUE(capabilities("X11"))) {
     packageStartupMessage("system might not have X11 capabilities; in case of ",
                           "errors when using dfSummary(), set ",
                           "st_options(use.x11 = FALSE)")
   }
+  
+  # Check if the latest (github) pander is installed;
+  # We can't use version number since the relevant fix is not in an incremented
+  # package version number (still 0.6.3); we use the *Packaged* attribute as a proxy.
+  pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
+  should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
+  
+  if(isTRUE(should_update))
+    packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
+                          "install_github('rapporter/pander')")
 }
