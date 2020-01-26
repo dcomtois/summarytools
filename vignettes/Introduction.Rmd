@@ -37,7 +37,7 @@ st_css()
 **summarytools** provides a coherent set of functions centered on data exploration and simple reporting. 
 At its core reside the following **four functions**:
 
-```{r, results='asis', echo=FALSE, class.output="st-left"}
+```{r, results='asis', echo=FALSE}
 txt <- data.frame(
   Function = 
     c('<a href="#freq">freq()</a>',
