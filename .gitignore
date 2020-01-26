@@ -4,7 +4,7 @@ Meta
 .Renviron
 summarytools.Rproj
 .Rproj.user
-TODO.R
+TODO.txt
 tests/output
 tests/output/*
 tests/other

@@ -48,7 +48,7 @@ txt <- data.frame(
       paste("**Cross-Tabulations** (joint frequencies) between pairs of discrete variables featuring",
             "marginal sums as well as row, column or total proportions"),
       paste("**Descriptive (Univariate) Statistics** for numerical data featuring common measures of",
-            "central tendancy and dispersion"),
+            "central tendency and dispersion"),
       paste("Extensive **Data Frame Summaries** featuring type-specific information for all variables",
             "in a data frame: univariate statistics and/or frequency distributions, bar charts or",
             "histograms, as well as missing data counts. Very useful to quickly detect anomalies",
@@ -343,7 +343,7 @@ view(dfSummary(iris))
 ```
 <img src="dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
 
-### 2.4.2 Using dfSummary() in RMarkdown Documents
+### 2.4.2 Using dfSummary() in Rmarkdown Documents
 
 When using `dfSummary()` in *Rmarkdown* documents, it is generally a good 
 idea to exclude a column or two to avoid margin overflow. Since the *Valid*
