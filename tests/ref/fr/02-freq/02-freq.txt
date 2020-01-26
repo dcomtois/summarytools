@@ -2098,7 +2098,7 @@ Type: Alphanumérique
 
 > tobacco$age.gr %<>% forcats::fct_explicit_na() 
 > freq(tobacco$age.gr) 
--- explicit NA's detected - setting 'report.nas' to FALSE
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
 
 Tableau de fréquences  
 tobacco$age.gr  
@@ -2118,7 +2118,7 @@ Type: Facteur
 # Full dataframes -------------------------------------------------------------- 
 
 > (ftob1 <- freq(tobacco)) 
--- explicit NA's detected - setting 'report.nas' to FALSE
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
 Tableau de fréquences  
@@ -2202,7 +2202,7 @@ Type: Numérique
                   Total    1000     100.00          100.00    100.00         100.00
 
 > (ftob2 <- freq(tobacco, display.type = FALSE)) 
--- explicit NA's detected - setting 'report.nas' to FALSE
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
 -- Variable(s) ignored: age, BMI, cigs.per.day
 
 Tableau de fréquences  

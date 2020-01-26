@@ -30,7 +30,6 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   library(summarytools)
   if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
     Sys.setlocale("LC_CTYPE", "russian")
-    on.exit(Sys.setlocale("LC_CTYPE", ""), add = TRUE)
   }
   st_options(lang = lang, footnote = "Placeholder footnote")
   
@@ -64,7 +63,7 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
     
     message("> ", line, appendLF = TRUE)
     
-    # Store the cuurent executing line's output
+    # Store the current executing line's output
     res <- capture.output(eval(parse(text=line)), type = "output")
     if (is.null(res))
       res <- character()
@@ -96,6 +95,11 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   
   cat("Closing", path_out, "...\n")
   close(outfile)
+  
+  if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
+    Sys.setlocale("LC_CTYPE", "")
+    st_options(lang = "en")
+  }
   
   if (isTRUE(compare)) {
     ref_dir  <- normalizePath(paste(ref_dir, lang, sub("\\.R", "", filename),

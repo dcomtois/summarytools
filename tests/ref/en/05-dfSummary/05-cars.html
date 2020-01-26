@@ -34,33 +34,13 @@
   text-align: right;
 }
 
-.st-small {
-  font-size: 13px;
-}
-
-.st-small td,
-.st-small th {
-  padding: 8px;
-}
-
 table.st-table th {
   text-align: center;
-}
-
-.st-small > thead > tr > th,
-.st-small > tbody > tr > th,
-.st-small > tfoot > tr > th,
-.st-small > thead > tr > td,
-.st-small > tbody > tr > td,
-.st-small > tfoot > tr > td {
-  padding-left: 12px;
-  padding-right: 12px;
 }
 
 table.st-table > thead > tr {
    background-color: #eeeeee;
 }
-
 
 table.st-table td span {
   display: block;
@@ -88,7 +68,6 @@ table.st-table td span {
     background-color: transparent;
     border-collapse: collapse;
 }
-
 
 .st-table > thead > tr > th,
 .st-table > tbody > tr > th,
@@ -140,9 +119,6 @@ table.st-table td span {
   padding-right: 20px;
 }
 
-
-
-
 .st-table-bordered > thead > tr > th,
 .st-table-bordered > tbody > tr > th,
 .st-table-bordered > thead > tr > td,
@@ -157,7 +133,6 @@ table.st-table td span {
 .st-table-striped > tbody > tr:nth-of-type(even) {
   background-color: #f9f9f9;
 }
-
 
 .st-descr-table > thead > tr > th,
 .st-descr-table > tbody > tr > th,
@@ -192,6 +167,26 @@ table.st-table td span {
   display: inline;
   color: #999999;
   letter-spacing: 0.2em;
+}
+
+/* Optionnal classes */
+.st-small {
+  font-size: 13px;
+}
+
+.st-small td,
+.st-small th {
+  padding: 8px;
+}
+
+.st-small > thead > tr > th,
+.st-small > tbody > tr > th,
+.st-small > tfoot > tr > th,
+.st-small > thead > tr > td,
+.st-small > tbody > tr > td,
+.st-small > tfoot > tr > td {
+  padding-left: 12px;
+  padding-right: 12px;
 }</style>
 </head>
 <body>
@@ -223,7 +218,7 @@ min < med < max:
 4 < 15 < 25
 IQR (CV) : 7 (0.3)</td>
       <td align="left" style="vertical-align:middle">19 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wEfFyYR2Rm71gAAAGhJREFUaN7t2MEJgDAMQNGs4Ap1A7P/bl4NSGiLeHr/FkjeuTRCOx1No6luTmBnPrqyTDAYDAaDwWAwGAwGg8FgsDmsftF0WN18xcp5dlidYDAYDAaDwX7AmnfPOtacw2CwNWx8UminG0ec+fmqrsqUAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTAxVDA0OjM4OjE3LTA1OjAw1xAWZwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0wMVQwNDozODoxNy0wNTowMKZNrtsAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AEZFwMcdzV46AAAAGhJREFUaN7t2MEJgDAMQNGs4Ap1A7P/bl4NSGiLeHr/FkjeuTRCOx1No6luTmBnPrqyTDAYDAaDwWAwGAwGg8FgsDmsftF0WN18xcp5dlidYDAYDAaDwX7AmnfPOtacw2CwNWx8UminG0ec+fmqrsqUAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI2VDA0OjAzOjI4LTA1OjAw5xCUKQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yNlQwNDowMzoyOC0wNTowMJZNLJUAAAAASUVORK5CYII="></td>
       <td align="center">50
 (100%)</td>
       <td align="center">0
@@ -238,7 +233,7 @@ min < med < max:
 2 < 36 < 120
 IQR (CV) : 30 (0.6)</td>
       <td align="left" style="vertical-align:middle">35 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH4wEfFyYR2Rm71gAAAHpJREFUaN7t2LENgCAQQFFW0A3EDXT/3Sy5QqOANPp+RQEvJDQXUlJLU2nOpWWq6gTbSzAYDAaDwWAwGGwUFqb43I2tZbnBRmLx2bqxeAoGg8FgsJHYg7njObbf3xIGg9VjF7/8bVhYw2Aw2FewOM90Y3HLv7D8SkktHUNVg9A9pdw0AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTAxVDA0OjM4OjE3LTA1OjAw1xAWZwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0wMVQwNDozODoxNy0wNTowMKZNrtsAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AEZFwMcdzV46AAAAHpJREFUaN7t2LENgCAQQFFW0A3EDXT/3Sy5QqOANPp+RQEvJDQXUlJLU2nOpWWq6gTbSzAYDAaDwWAwGGwUFqb43I2tZbnBRmLx2bqxeAoGg8FgsJHYg7njObbf3xIGg9VjF7/8bVhYw2Aw2FewOM90Y3HLv7D8SkktHUNVg9A9pdw0AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI2VDA0OjAzOjI4LTA1OjAw5xCUKQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yNlQwNDowMzoyOC0wNTowMJZNLJUAAAAASUVORK5CYII="></td>
       <td align="center">50
 (100%)</td>
       <td align="center">0
