@@ -345,7 +345,9 @@ freq <- function(x,
     
     # Replace NaN's by NA's (This simplifies matters a lot)
     if (NaN %in% x)  {
-      message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
+      if (isFALSE(st_options("freq.silent"))) {
+        message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
+      }
       x[is.nan(x)] <- NA
     }
     
@@ -496,7 +498,9 @@ freq <- function(x,
     
     if (is.factor(x) && "(Missing)" %in% levels(x)
         && sum(is.na(x)) == 0 && isTRUE(report.nas)) {
-      message("explicit NA's detected - temporarily setting 'report.nas' to FALSE")
+      if (isFALSE(st_options("freq.silent"))) {
+        message("explicit NA's detected - temporarily setting 'report.nas' to FALSE")
+      }
       report.nas <- FALSE
       # hack the fn_call attribute to prevent print method from overriding it 
       tmp_args <- append(as.list(fn_call)[-1], list(report.nas = FALSE))

@@ -35,6 +35,7 @@ utils::globalVariables(c("."))
                  "freq.totals"            = TRUE,
                  "freq.report.nas"        = TRUE,
                  "freq.ignore.threshold"  = 25,
+                 "freq.silent"            = FALSE,
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
                  "descr.stats"            = "all",
