@@ -12,6 +12,8 @@
  - Fixed bug arising with data frames called "data"
  - Weights are now supported for `freq()` used in conjunction with `stby()` or 
    `dplyr::group_by()`
+ - `freq.silent` was added to global options (so now all four main functions have
+   a `silent` global option to turn off messages)
  - Weights are also supported for `ctable()` used in conjunction with `stby()`
  - Improvements and fixes for `dfSummary()`:
    + Fixed null graphic device appearing in *RGui* and non-GUI interfaces

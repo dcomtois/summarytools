@@ -538,6 +538,11 @@ check_arguments_st_options <- function(mc) {
     errmsg %+=% "'freq.ignore.threshold' must be an integer greater than 0"
   }
   
+  if ("freq.silent" %in% names(mc) &&
+      !isTRUE(test_logical(pf$freq.silent, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'freq.silent' must be either TRUE or FALSE"
+  }
+  
   if ("ctable.prop" %in% names(mc) &&
       !isTRUE(test_choice(pf$ctable.prop, c("r", "c", "t", "n")))) {
     errmsg %+=% "'ctable.prop' must be one of \"r\", \"c\", \"t\", or \"n\""

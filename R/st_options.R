@@ -49,6 +49,7 @@
 #' @param freq.ignore.threshold Numeric. Number of distinct values above which
 #'   numerical variables are ignored when calling \code{\link{freq}} with a
 #'   whole data frame as main argument. Defaults to \code{25}.
+#' @param freq.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param ctable.prop Character. Corresponds to the \code{prop} parameter of
 #'   \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
@@ -125,36 +126,37 @@
 #' st_options(0)
 #' }
 #' @export
-st_options <- function(option                 = NULL, 
-                       value                  = NULL, 
-                       style                  = "simple", 
-                       plain.ascii            = TRUE, 
+st_options <- function(option                 = NULL,
+                       value                  = NULL,
+                       style                  = "simple",
+                       plain.ascii            = TRUE,
                        round.digits           = 2,
-                       headings               = TRUE, 
-                       footnote               = "default", 
-                       display.labels         = TRUE, 
-                       bootstrap.css          = TRUE, 
-                       custom.css             = NA, 
-                       escape.pipe            = FALSE, 
+                       headings               = TRUE,
+                       footnote               = "default",
+                       display.labels         = TRUE,
+                       bootstrap.css          = TRUE,
+                       custom.css             = NA,
+                       escape.pipe            = FALSE,
                        freq.cumul             = TRUE,
                        freq.totals            = TRUE,
                        freq.report.nas        = TRUE,
                        freq.ignore.threshold  = 25,
+                       freq.silent            = FALSE,
                        ctable.prop            = "r",
-                       ctable.totals          = TRUE, 
+                       ctable.totals          = TRUE,
                        descr.stats            = "all",
-                       descr.transpose        = FALSE, 
+                       descr.transpose        = FALSE,
                        descr.silent           = FALSE,
                        dfSummary.style        = "multiline",
-                       dfSummary.varnumbers   = TRUE, 
-                       dfSummary.labels.col   = TRUE, 
-                       dfSummary.valid.col    = TRUE, 
-                       dfSummary.na.col       = TRUE, 
-                       dfSummary.graph.col    = TRUE, 
+                       dfSummary.varnumbers   = TRUE,
+                       dfSummary.labels.col   = TRUE,
+                       dfSummary.valid.col    = TRUE,
+                       dfSummary.na.col       = TRUE,
+                       dfSummary.graph.col    = TRUE,
                        dfSummary.graph.magnif = 1,
-                       dfSummary.silent       = FALSE, 
+                       dfSummary.silent       = FALSE,
                        tmp.img.dir            = NA,
-                       subtitle.emphasis      = TRUE, 
+                       subtitle.emphasis      = TRUE,
                        lang                   = "en",
                        use.x11                = TRUE) {
   
@@ -209,6 +211,7 @@ st_options <- function(option                 = NULL,
                    "freq.totals"            = TRUE,
                    "freq.report.nas"        = TRUE,
                    "freq.ignore.threshold"  = 25,
+                   "freq.silent"            = FALSE,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
                    "descr.stats"            = "all",
