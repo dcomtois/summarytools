@@ -514,10 +514,11 @@ The following options can be set with `st_options()`:
 | ---------------------: | -------: | :--------------------------------------- |
 | freq.totals            |   TRUE   | Display totals row in freq()             |
 | freq.report.nas        |   TRUE   | Display <NA> row and “valid” columns     |
+| freq.silent            |  FALSE   | Hide console messages                    |
 | ctable.prop            |    “r”   | Display **r**ow proportions by default   |
 | ctable.totals          |   TRUE   | Show marginal totals                     |
 | descr.stats            |   “all”  | “fivenum”, “common” or vector of stats   |
-| descr.transpose        |  FALSE   |                                          |
+| descr.transpose        |  FALSE   | Display stats in columns instead of rows |
 | descr.silent           |  FALSE   | Hide console messages                    |
 | dfSummary.varnumbers   |   TRUE   | Show variable numbers in 1st col.        |
 | dfSummary.labels.col   |   TRUE   | Show variable labels when present        |
