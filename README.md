@@ -28,7 +28,7 @@ data exploration and simple reporting.
 | -------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 |           <a href="#freq">`freq()`</a> | **Frequency Tables** featuring counts, proportions, as well as missing data information                                                                                                                                                                                                           |
 |       <a href="#ctable">`ctable()`</a> | **Cross-Tabulations** (joint frequencies) between pairs of discrete variables featuring marginal sums as well as row, column or total proportions                                                                                                                                                 |
-|         <a href="#descr">`descr()`</a> | **Descriptive (Univariate) Statistics** for numerical data featuring common measures of central tendancy and dispersion                                                                                                                                                                           |
+|         <a href="#descr">`descr()`</a> | **Descriptive (Univariate) Statistics** for numerical data featuring common measures of central tendency and dispersion                                                                                                                                                                           |
 | <a href="#dfsummary">`dfSummary()`</a> | Extensive **Data Frame Summaries** featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts. Very useful to quickly detect anomalies and identify trends at a glance |
 
 It was developed with the following objectives in mind:
@@ -77,7 +77,7 @@ Results can be
 
 Additional software is used by **summarytools** to fine-tune graphics as
 well as offer interactive features. If installing **summarytools** for
-the first time, click on the link corresponing to your Operating System
+the first time, click on the link corresponding to your Operating System
 to get detailed instructions. Note that on Windows, no additional
 software is required.
 
@@ -89,7 +89,7 @@ software is required.
 
 ### Installing From GitHub
 
-This is the recommended method, as some minor fixes and inmprovements
+This is the recommended method, as some minor fixes and improvements
 are regularly added.
 
 ``` r

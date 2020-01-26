@@ -1,4 +1,4 @@
-#' Simple and Flexible Tools for Summarizing Data
+#' Tools to Quickly and Neatly Summarize Data
 #'
 #' \pkg{summarytools} provides users with functions to neatly and quickly
 #' summarize numerical and categorical data. Data frame summaries, frequency
