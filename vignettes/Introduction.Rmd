@@ -11,6 +11,7 @@ vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{kableExtra}
   %\VignetteDepends{magrittr}
   %\VignetteDepends{forcats}
 ---
@@ -478,7 +479,7 @@ tables in a single file. It is a quick alternative to creating an *Rmd* document
 
 There is no direct way to create a *PDF* file with **summarytools**. One option is
 to generate an *html* file and convert it to *PDF* using a tool like
-[Pandoc](https://pandoc.org) or [WK<html>TOpdf](https://wkhtmltopdf.org/index.html)
+[Pandoc](https://pandoc.org) or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html)
 (the latter gives better results than Pandoc with `dfSummary()` outputs).
 
 Another option is to create an *Rmd* document with *PDF* output format.

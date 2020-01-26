@@ -1,6 +1,7 @@
 ^doc$
 ^docs$
 ^Meta$
+^notes$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.Renviron

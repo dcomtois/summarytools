@@ -4,7 +4,7 @@
 \name{summarytools-package}
 \alias{summarytools}
 \alias{summarytools-package}
-\title{Simple and Flexible Tools for Summarizing Data}
+\title{Tools to Quickly and Neatly Summarize Data}
 \description{
 \pkg{summarytools} provides users with functions to neatly and quickly
 summarize numerical and categorical data. Data frame summaries, frequency

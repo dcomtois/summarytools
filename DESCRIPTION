@@ -30,6 +30,7 @@ Imports:
   utils
 Suggests:
   forcats,
+  kableExtra,
   knitr,
   magrittr,
   rmarkdown,

@@ -50,9 +50,8 @@ It was developed with the following objectives in mind:
   - Offer flexibility in terms of output formats and contents  
   - Integrate well with commonly used packages and technologies used 
     for reporting ([the RStudio IDE](https://rstudio.com/products/rstudio/),
-    [Rmarkdown](https://rmarkdown.rstudio.com/), and[knitr](https://yihui.org/knitr/))
-    while also allowing stand-alone, simple report generation  
-  - Keep up with the constantly evolving *R* practices  
+    [Rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.org/knitr/))
+    while also allowing for stand-alone, simple report generation  
 
 ## 1.1 Output Options
 
@@ -435,7 +434,7 @@ tables in a single file. It is a quick alternative to creating an *Rmd* document
 
 There is no direct way to create a *PDF* file with **summarytools**. One option is
 to generate an *html* file and convert it to *PDF* using a tool like
-[Pandoc](https://pandoc.org) or [WK<html>TOpdf](https://wkhtmltopdf.org/index.html)
+[Pandoc](https://pandoc.org) or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html)
 (the latter gives better results than Pandoc with `dfSummary()` outputs).
 
 Another option is to create an *Rmd* document with *PDF* output format.

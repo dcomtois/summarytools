@@ -20,6 +20,7 @@ st_options(
   freq.totals = TRUE,
   freq.report.nas = TRUE,
   freq.ignore.threshold = 25,
+  freq.silent = FALSE,
   ctable.prop = "r",
   ctable.totals = TRUE,
   descr.stats = "all",
@@ -98,6 +99,8 @@ parameter of \code{\link{freq}}. \code{TRUE} by default.}
 \item{freq.ignore.threshold}{Numeric. Number of distinct values above which
 numerical variables are ignored when calling \code{\link{freq}} with a
 whole data frame as main argument. Defaults to \code{25}.}
+
+\item{freq.silent}{Logical. Hide console messages. \code{FALSE} by default.}
 
 \item{ctable.prop}{Character. Corresponds to the \code{prop} parameter of
 \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).}
