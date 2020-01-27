@@ -717,30 +717,30 @@ N: 702
 > d5 %>% tb() 
 
 # A tibble: 8 x 9
-  smoker variable       mean      sd    min   med   max n.valid pct.valid
-  <fct>  <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
-1 Yes    age          49.8   18.7    19     50    80        290      97.3
-2 Yes    BMI          25.6    4.25    9.01  25.7  36.4      291      97.7
-3 Yes    cigs.per.day 22.5   10.7     5     22    40        291      97.7
-4 Yes    samp.wgts     1.00   0.0834  0.861  1.04  1.06     298     100  
-5 No     age          49.5   18.1    18     50    80        685      97.6
-6 No     BMI          25.8    4.59    8.83  25.6  39.4      683      97.3
-7 No     cigs.per.day  0      0       0      0     0        674      96.0
-8 No     samp.wgts     1.000  0.0841  0.861  1.04  1.06     702     100  
+  smoker variable      mean      sd    min   med   max n.valid pct.valid
+  <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 Yes    age          49.8  18.7    19     50    80        290      97.3
+2 Yes    BMI          25.6   4.25    9.01  25.7  36.4      291      97.7
+3 Yes    cigs.per.day 22.5  10.7     5     22    40        291      97.7
+4 Yes    samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
+5 No     age          49.5  18.1    18     50    80        685      97.6
+6 No     BMI          25.8   4.59    8.83  25.6  39.4      683      97.3
+7 No     cigs.per.day  0     0       0      0     0        674      96.0
+8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
 > d5 %>% tb(2) 
 
 # A tibble: 8 x 9
-  smoker variable       mean      sd    min   med   max n.valid pct.valid
-  <fct>  <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
-1 Yes    age          49.8   18.7    19     50    80        290      97.3
-2 No     age          49.5   18.1    18     50    80        685      97.6
-3 Yes    BMI          25.6    4.25    9.01  25.7  36.4      291      97.7
-4 No     BMI          25.8    4.59    8.83  25.6  39.4      683      97.3
-5 Yes    cigs.per.day 22.5   10.7     5     22    40        291      97.7
-6 No     cigs.per.day  0      0       0      0     0        674      96.0
-7 Yes    samp.wgts     1.00   0.0834  0.861  1.04  1.06     298     100  
-8 No     samp.wgts     1.000  0.0841  0.861  1.04  1.06     702     100  
+  smoker variable      mean      sd    min   med   max n.valid pct.valid
+  <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
+1 Yes    age          49.8  18.7    19     50    80        290      97.3
+2 No     age          49.5  18.1    18     50    80        685      97.6
+3 Yes    BMI          25.6   4.25    9.01  25.7  36.4      291      97.7
+4 No     BMI          25.8   4.59    8.83  25.6  39.4      683      97.3
+5 Yes    cigs.per.day 22.5  10.7     5     22    40        291      97.7
+6 No     cigs.per.day  0     0       0      0     0        674      96.0
+7 Yes    samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
+8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
 > d5 %>% print(file = "11-descr-group_by-1.html") 
 -- Switching method to 'browser'
@@ -962,60 +962,60 @@ tobacco
 Dimensions: 1000 x 9  
 Duplicates: 2  
 
----------------------------------------------------------------------------------------------------------
-Variable        Stats / Values             Freqs (% of Valid)    Graph                          Missing  
---------------- -------------------------- --------------------- ------------------------------ ---------
-gender          1. F                       489 (50.0%)           IIIIIIIIII                     22       
-[factor]        2. M                       489 (50.0%)           IIIIIIIIII                     (2.2%)   
+----------------------------------------------------------------------------------------------
+Variable       Stats / Values            Freqs (% of Valid)    Graph                 Missing  
+-------------- ------------------------- --------------------- --------------------- ---------
+gender         1. F                      489 (50.0%)           IIIIIIIIII            22       
+[factor]       2. M                      489 (50.0%)           IIIIIIIIII            (2.2%)   
 
-age             Mean (sd) : 49.6 (18.3)    63 distinct values    .     .     . . . :            25       
-[numeric]       min < med < max:                                 : : : : : . : : : :            (2.5%)   
-                18 < 50 < 80                                     : : : : : : : : : :                     
-                IQR (CV) : 32 (0.4)                              : : : : : : : : : :                     
-                                                                 : : : : : : : : : :                     
+age            Mean (sd) : 49.6 (18.3)   63 distinct values    .     .     . . . :   25       
+[numeric]      min < med < max:                                : : : : : . : : : :   (2.5%)   
+               18 < 50 < 80                                    : : : : : : : : : :            
+               IQR (CV) : 32 (0.4)                             : : : : : : : : : :            
+                                                               : : : : : : : : : :            
 
-age.gr          1. 18-34                   258 (25.8%)           IIIII                          0        
-[factor]        2. 35-50                   241 (24.1%)           IIII                           (0%)     
-                3. 51-70                   317 (31.7%)           IIIIII                                  
-                4. 71 +                    159 (15.9%)           III                                     
-                5. (Missing)                25 ( 2.5%)                                                   
+age.gr         1. 18-34                  258 (25.8%)           IIIII                 0        
+[factor]       2. 35-50                  241 (24.1%)           IIII                  (0%)     
+               3. 51-70                  317 (31.7%)           IIIIII                         
+               4. 71 +                   159 (15.9%)           III                            
+               5. (Missing)               25 ( 2.5%)                                          
 
-BMI             Mean (sd) : 25.7 (4.5)     974 distinct values             :                    26       
-[numeric]       min < med < max:                                         : : :                  (2.6%)   
-                8.8 < 25.6 < 39.4                                        : : :                           
-                IQR (CV) : 5.7 (0.2)                                   : : : : :                         
-                                                                     . : : : : : .                       
+BMI            Mean (sd) : 25.7 (4.5)    974 distinct values             :           26       
+[numeric]      min < med < max:                                        : : :         (2.6%)   
+               8.8 < 25.6 < 39.4                                       : : :                  
+               IQR (CV) : 5.7 (0.2)                                  : : : : :                
+                                                                   . : : : : : .              
 
-smoker          1. Yes                     298 (29.8%)           IIIII                          0        
-[factor]        2. No                      702 (70.2%)           IIIIIIIIIIIIII                 (0%)     
+smoker         1. Yes                    298 (29.8%)           IIIII                 0        
+[factor]       2. No                     702 (70.2%)           IIIIIIIIIIIIII        (0%)     
 
-cigs.per.day    Mean (sd) : 6.8 (11.9)     37 distinct values    :                              35       
-[numeric]       min < med < max:                                 :                              (3.5%)   
-                0 < 0 < 40                                       :                                       
-                IQR (CV) : 11 (1.8)                              :                                       
-                                                                 :   . . . . . .                         
+cigs.per.day   Mean (sd) : 6.8 (11.9)    37 distinct values    :                     35       
+[numeric]      min < med < max:                                :                     (3.5%)   
+               0 < 0 < 40                                      :                              
+               IQR (CV) : 11 (1.8)                             :                              
+                                                               :   . . . . . .                
 
-diseased        1. Yes                     224 (22.4%)           IIII                           0        
-[factor]        2. No                      776 (77.6%)           IIIIIIIIIIIIIII                (0%)     
+diseased       1. Yes                    224 (22.4%)           IIII                  0        
+[factor]       2. No                     776 (77.6%)           IIIIIIIIIIIIIII       (0%)     
 
-disease         1. Hypertension            36 (16.2%)            III                            778      
-[character]     2. Cancer                  34 (15.3%)            III                            (77.8%)  
-                3. Cholesterol             21 ( 9.5%)            I                                       
-                4. Heart                   20 ( 9.0%)            I                                       
-                5. Pulmonary               20 ( 9.0%)            I                                       
-                6. Musculoskeletal         19 ( 8.6%)            I                                       
-                7. Diabetes                14 ( 6.3%)            I                                       
-                8. Hearing                 14 ( 6.3%)            I                                       
-                9. Digestive               12 ( 5.4%)            I                                       
-                10. Hypotension            11 ( 5.0%)                                                    
-                [ 3 others ]               21 ( 9.5%)            I                                       
+disease        1. Hypertension           36 (16.2%)            III                   778      
+[character]    2. Cancer                 34 (15.3%)            III                   (77.8%)  
+               3. Cholesterol            21 ( 9.5%)            I                              
+               4. Heart                  20 ( 9.0%)            I                              
+               5. Pulmonary              20 ( 9.0%)            I                              
+               6. Musculoskeletal        19 ( 8.6%)            I                              
+               7. Diabetes               14 ( 6.3%)            I                              
+               8. Hearing                14 ( 6.3%)            I                              
+               9. Digestive              12 ( 5.4%)            I                              
+               10. Hypotension           11 ( 5.0%)                                           
+               [ 3 others ]              21 ( 9.5%)            I                              
 
-samp.wgts       Mean (sd) : 1 (0.1)        0.86!: 267 (26.7%)    IIIII                          0        
-[numeric]       min < med < max:           1.04!: 249 (24.9%)    IIII                           (0%)     
-                0.9 < 1 < 1.1              1.05!: 324 (32.4%)    IIIIII                                  
-                IQR (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)    III                                     
-                                           ! rounded                                                     
----------------------------------------------------------------------------------------------------------
+samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 0        
+[numeric]      min < med < max:          1.04!: 249 (24.9%)    IIII                  (0%)     
+               0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                         
+               IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                            
+                                         ! rounded                                            
+----------------------------------------------------------------------------------------------
 
 > dfs1 %>% print(file = "14-dfSummary.html") 
 -- Switching method to 'browser'
@@ -1028,27 +1028,27 @@ tobacco
 Dimensions: 1000 x 4  
 Duplicates: 2  
 
-----------------------------------------------------------------------------------------------------------
-No   Variable    Stats / Values             Freqs (% of Valid)    Graph                          Missing  
----- ----------- -------------------------- --------------------- ------------------------------ ---------
-1    gender      1. F                       489 (50.0%)           IIIIIIIIII                     22       
-     [factor]    2. M                       489 (50.0%)           IIIIIIIIII                     (2.2%)   
+------------------------------------------------------------------------------------------------
+No   Variable    Stats / Values            Freqs (% of Valid)    Graph                 Missing  
+---- ----------- ------------------------- --------------------- --------------------- ---------
+1    gender      1. F                      489 (50.0%)           IIIIIIIIII            22       
+     [factor]    2. M                      489 (50.0%)           IIIIIIIIII            (2.2%)   
 
-2    age         Mean (sd) : 49.6 (18.3)    63 distinct values    .     .     . . . :            25       
-     [numeric]   min < med < max:                                 : : : : : . : : : :            (2.5%)   
-                 18 < 50 < 80                                     : : : : : : : : : :                     
-                 IQR (CV) : 32 (0.4)                              : : : : : : : : : :                     
-                                                                  : : : : : : : : : :                     
+2    age         Mean (sd) : 49.6 (18.3)   63 distinct values    .     .     . . . :   25       
+     [numeric]   min < med < max:                                : : : : : . : : : :   (2.5%)   
+                 18 < 50 < 80                                    : : : : : : : : : :            
+                 IQR (CV) : 32 (0.4)                             : : : : : : : : : :            
+                                                                 : : : : : : : : : :            
 
-3    BMI         Mean (sd) : 25.7 (4.5)     974 distinct values             :                    26       
-     [numeric]   min < med < max:                                         : : :                  (2.6%)   
-                 8.8 < 25.6 < 39.4                                        : : :                           
-                 IQR (CV) : 5.7 (0.2)                                   : : : : :                         
-                                                                      . : : : : : .                       
+3    BMI         Mean (sd) : 25.7 (4.5)    974 distinct values             :           26       
+     [numeric]   min < med < max:                                        : : :         (2.6%)   
+                 8.8 < 25.6 < 39.4                                       : : :                  
+                 IQR (CV) : 5.7 (0.2)                                  : : : : :                
+                                                                     . : : : : : .              
 
-4    smoker      1. Yes                     298 (29.8%)           IIIII                          0        
-     [factor]    2. No                      702 (70.2%)           IIIIIIIIIIIIII                 (0%)     
-----------------------------------------------------------------------------------------------------------
+4    smoker      1. Yes                    298 (29.8%)           IIIII                 0        
+     [factor]    2. No                     702 (70.2%)           IIIIIIIIIIIIII        (0%)     
+------------------------------------------------------------------------------------------------
 
 > dfs2 %>% print(file = "15-dfSummary-select.html") 
 -- Switching method to 'browser'
@@ -1066,175 +1066,175 @@ Group: gender = F
 Dimensions: 489 x 9  
 Duplicates: 0  
 
--------------------------------------------------------------------------------------------------------------
-No   Variable        Stats / Values             Freqs (% of Valid)    Graph                        Missing   
----- --------------- -------------------------- --------------------- ---------------------------- ----------
-1    gender          1. F                       489 (100.0%)          IIIIIIIIIIIIIIIIIIII         0         
-     [factor]        2. M                         0 (  0.0%)                                       (0%)      
-                     3. (Missing)                 0 (  0.0%)                                                 
+-----------------------------------------------------------------------------------------------------
+No   Variable       Stats / Values            Freqs (% of Valid)    Graph                  Missing   
+---- -------------- ------------------------- --------------------- ---------------------- ----------
+1    gender         1. F                      489 (100.0%)          IIIIIIIIIIIIIIIIIIII   0         
+     [factor]       2. M                        0 (  0.0%)                                 (0%)      
+                    3. (Missing)                0 (  0.0%)                                           
 
-2    age             Mean (sd) : 49.6 (18.3)    63 distinct values    :     . . .   : . :          14        
-     [numeric]       min < med < max:                                 : : : : : : : : : :          (2.86%)   
-                     18 < 50 < 80                                     : : : : : : : : : :                    
-                     IQR (CV) : 32 (0.4)                              : : : : : : : : : :                    
-                                                                      : : : : : : : : : :                    
+2    age            Mean (sd) : 49.6 (18.3)   63 distinct values    :     . . .   : . :    14        
+     [numeric]      min < med < max:                                : : : : : : : : : :    (2.86%)   
+                    18 < 50 < 80                                    : : : : : : : : : :              
+                    IQR (CV) : 32 (0.4)                             : : : : : : : : : :              
+                                                                    : : : : : : : : : :              
 
-3    age.gr          1. 18-34                   123 (25.1%)           IIIII                        0         
-     [factor]        2. 35-50                   118 (24.1%)           IIII                         (0%)      
-                     3. 51-70                   157 (32.1%)           IIIIII                                 
-                     4. 71 +                     77 (15.8%)           III                                    
-                     5. (Missing)                14 ( 2.9%)                                                  
+3    age.gr         1. 18-34                  123 (25.1%)           IIIII                  0         
+     [factor]       2. 35-50                  118 (24.1%)           IIII                   (0%)      
+                    3. 51-70                  157 (32.1%)           IIIIII                           
+                    4. 71 +                    77 (15.8%)           III                              
+                    5. (Missing)               14 ( 2.9%)                                            
 
-4    BMI             Mean (sd) : 26.1 (4.9)     475 distinct values           :                    14        
-     [numeric]       min < med < max:                                       : :                    (2.86%)   
-                     9 < 25.9 < 39.4                                        : : .                            
-                     IQR (CV) : 6.5 (0.2)                                 . : : :                            
-                                                                          : : : : .                          
+4    BMI            Mean (sd) : 26.1 (4.9)    475 distinct values           :              14        
+     [numeric]      min < med < max:                                      : :              (2.86%)   
+                    9 < 25.9 < 39.4                                       : : .                      
+                    IQR (CV) : 6.5 (0.2)                                . : : :                      
+                                                                        : : : : .                    
 
-5    smoker          1. Yes                     147 (30.1%)           IIIIII                       0         
-     [factor]        2. No                      342 (69.9%)           IIIIIIIIIIIII                (0%)      
+5    smoker         1. Yes                    147 (30.1%)           IIIIII                 0         
+     [factor]       2. No                     342 (69.9%)           IIIIIIIIIIIII          (0%)      
 
-6    cigs.per.day    Mean (sd) : 6.9 (12)       37 distinct values    :                            21        
-     [numeric]       min < med < max:                                 :                            (4.29%)   
-                     0 < 0 < 40                                       :                                      
-                     IQR (CV) : 10.2 (1.8)                            :                                      
-                                                                      : . . .   . . .                        
+6    cigs.per.day   Mean (sd) : 6.9 (12)      37 distinct values    :                      21        
+     [numeric]      min < med < max:                                :                      (4.29%)   
+                    0 < 0 < 40                                      :                                
+                    IQR (CV) : 10.2 (1.8)                           :                                
+                                                                    : . . .   . . .                  
 
-7    diseased        1. Yes                     111 (22.7%)           IIII                         0         
-     [factor]        2. No                      378 (77.3%)           IIIIIIIIIIIIIII              (0%)      
+7    diseased       1. Yes                    111 (22.7%)           IIII                   0         
+     [factor]       2. No                     378 (77.3%)           IIIIIIIIIIIIIII        (0%)      
 
-8    disease         1. Hypertension            18 (16.5%)            III                          380       
-     [character]     2. Cancer                  16 (14.7%)            II                           (77.71%)  
-                     3. Cholesterol             10 ( 9.2%)            I                                      
-                     4. Heart                    9 ( 8.3%)            I                                      
-                     5. Pulmonary                9 ( 8.3%)            I                                      
-                     6. Diabetes                 8 ( 7.3%)            I                                      
-                     7. Musculoskeletal          8 ( 7.3%)            I                                      
-                     8. Hypotension              7 ( 6.4%)            I                                      
-                     9. Neurological             7 ( 6.4%)            I                                      
-                     10. Vision                  6 ( 5.5%)            I                                      
-                     [ 3 others ]               11 (10.1%)            II                                     
+8    disease        1. Hypertension           18 (16.5%)            III                    380       
+     [character]    2. Cancer                 16 (14.7%)            II                     (77.71%)  
+                    3. Cholesterol            10 ( 9.2%)            I                                
+                    4. Heart                   9 ( 8.3%)            I                                
+                    5. Pulmonary               9 ( 8.3%)            I                                
+                    6. Diabetes                8 ( 7.3%)            I                                
+                    7. Musculoskeletal         8 ( 7.3%)            I                                
+                    8. Hypotension             7 ( 6.4%)            I                                
+                    9. Neurological            7 ( 6.4%)            I                                
+                    10. Vision                 6 ( 5.5%)            I                                
+                    [ 3 others ]              11 (10.1%)            II                               
 
-9    samp.wgts       Mean (sd) : 1 (0.1)        0.86!: 131 (26.8%)    IIIII                        0         
-     [numeric]       min < med < max:           1.04!: 120 (24.5%)    IIII                         (0%)      
-                     0.9 < 1 < 1.1              1.05!: 160 (32.7%)    IIIIII                                 
-                     IQR (CV) : 0.2 (0.1)       1.06!:  78 (16.0%)    III                                    
-                                                ! rounded                                                    
--------------------------------------------------------------------------------------------------------------
+9    samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  0         
+     [numeric]      min < med < max:          1.04!: 120 (24.5%)    IIII                   (0%)      
+                    0.9 < 1 < 1.1             1.05!: 160 (32.7%)    IIIIII                           
+                    IQR (CV) : 0.2 (0.1)      1.06!:  78 (16.0%)    III                              
+                                              ! rounded                                              
+-----------------------------------------------------------------------------------------------------
 
 Group: gender = M  
 Dimensions: 489 x 9  
 Duplicates: 2  
 
--------------------------------------------------------------------------------------------------------------------
-No   Variable        Stats / Values             Freqs (% of Valid)    Graph                              Missing   
----- --------------- -------------------------- --------------------- ---------------------------------- ----------
-1    gender          1. F                         0 (  0.0%)                                             0         
-     [factor]        2. M                       489 (100.0%)          IIIIIIIIIIIIIIIIIIII               (0%)      
-                     3. (Missing)                 0 (  0.0%)                                                       
+-----------------------------------------------------------------------------------------------------
+No   Variable       Stats / Values            Freqs (% of Valid)    Graph                  Missing   
+---- -------------- ------------------------- --------------------- ---------------------- ----------
+1    gender         1. F                        0 (  0.0%)                                 0         
+     [factor]       2. M                      489 (100.0%)          IIIIIIIIIIIIIIIIIIII   (0%)      
+                    3. (Missing)                0 (  0.0%)                                           
 
-2    age             Mean (sd) : 49.6 (18.3)    63 distinct values          .     .   . :                11        
-     [numeric]       min < med < max:                                 : : : : :   : : : :                (2.25%)   
-                     18 < 49.5 < 80                                   : : : : : : : : : :                          
-                     IQR (CV) : 32 (0.4)                              : : : : : : : : : :                          
-                                                                      : : : : : : : : : :                          
+2    age            Mean (sd) : 49.6 (18.3)   63 distinct values          .     .   . :    11        
+     [numeric]      min < med < max:                                : : : : :   : : : :    (2.25%)   
+                    18 < 49.5 < 80                                  : : : : : : : : : :              
+                    IQR (CV) : 32 (0.4)                             : : : : : : : : : :              
+                                                                    : : : : : : : : : :              
 
-3    age.gr          1. 18-34                   130 (26.6%)           IIIII                              0         
-     [factor]        2. 35-50                   118 (24.1%)           IIII                               (0%)      
-                     3. 51-70                   151 (30.9%)           IIIIII                                       
-                     4. 71 +                     79 (16.2%)           III                                          
-                     5. (Missing)                11 ( 2.2%)                                                        
+3    age.gr         1. 18-34                  130 (26.6%)           IIIII                  0         
+     [factor]       2. 35-50                  118 (24.1%)           IIII                   (0%)      
+                    3. 51-70                  151 (30.9%)           IIIIII                           
+                    4. 71 +                    79 (16.2%)           III                              
+                    5. (Missing)               11 ( 2.2%)                                            
 
-4    BMI             Mean (sd) : 25.3 (4)       477 distinct values             : .                      12        
-     [numeric]       min < med < max:                                           : :                      (2.45%)   
-                     8.8 < 25.1 < 36.8                                        : : : .                              
-                     IQR (CV) : 5.4 (0.2)                                     : : : : .                            
-                                                                            : : : : : :                            
+4    BMI            Mean (sd) : 25.3 (4)      477 distinct values             : .          12        
+     [numeric]      min < med < max:                                          : :          (2.45%)   
+                    8.8 < 25.1 < 36.8                                       : : : .                  
+                    IQR (CV) : 5.4 (0.2)                                    : : : : .                
+                                                                          : : : : : :                
 
-5    smoker          1. Yes                     143 (29.2%)           IIIII                              0         
-     [factor]        2. No                      346 (70.8%)           IIIIIIIIIIIIII                     (0%)      
+5    smoker         1. Yes                    143 (29.2%)           IIIII                  0         
+     [factor]       2. No                     346 (70.8%)           IIIIIIIIIIIIII         (0%)      
 
-6    cigs.per.day    Mean (sd) : 6.7 (11.8)     36 distinct values    :                                  14        
-     [numeric]       min < med < max:                                 :                                  (2.86%)   
-                     0 < 0 < 40                                       :                                            
-                     IQR (CV) : 11 (1.8)                              :                                            
-                                                                      :   .   . . . .                              
+6    cigs.per.day   Mean (sd) : 6.7 (11.8)    36 distinct values    :                      14        
+     [numeric]      min < med < max:                                :                      (2.86%)   
+                    0 < 0 < 40                                      :                                
+                    IQR (CV) : 11 (1.8)                             :                                
+                                                                    :   .   . . . .                  
 
-7    diseased        1. Yes                     110 (22.5%)           IIII                               0         
-     [factor]        2. No                      379 (77.5%)           IIIIIIIIIIIIIII                    (0%)      
+7    diseased       1. Yes                    110 (22.5%)           IIII                   0         
+     [factor]       2. No                     379 (77.5%)           IIIIIIIIIIIIIII        (0%)      
 
-8    disease         1. Cancer                  18 (16.4%)            III                                379       
-     [character]     2. Hypertension            17 (15.5%)            III                                (77.51%)  
-                     3. Cholesterol             11 (10.0%)            II                                           
-                     4. Heart                   11 (10.0%)            II                                           
-                     5. Pulmonary               11 (10.0%)            II                                           
-                     6. Musculoskeletal         10 ( 9.1%)            I                                            
-                     7. Hearing                  9 ( 8.2%)            I                                            
-                     8. Digestive                7 ( 6.4%)            I                                            
-                     9. Diabetes                 5 ( 4.5%)                                                         
-                     10. Hypotension             4 ( 3.6%)                                                         
-                     [ 3 others ]                7 ( 6.4%)            I                                            
+8    disease        1. Cancer                 18 (16.4%)            III                    379       
+     [character]    2. Hypertension           17 (15.5%)            III                    (77.51%)  
+                    3. Cholesterol            11 (10.0%)            II                               
+                    4. Heart                  11 (10.0%)            II                               
+                    5. Pulmonary              11 (10.0%)            II                               
+                    6. Musculoskeletal        10 ( 9.1%)            I                                
+                    7. Hearing                 9 ( 8.2%)            I                                
+                    8. Digestive               7 ( 6.4%)            I                                
+                    9. Diabetes                5 ( 4.5%)                                             
+                    10. Hypotension            4 ( 3.6%)                                             
+                    [ 3 others ]               7 ( 6.4%)            I                                
 
-9    samp.wgts       Mean (sd) : 1 (0.1)        0.86!: 131 (26.8%)    IIIII                              0         
-     [numeric]       min < med < max:           1.04!: 124 (25.4%)    IIIII                              (0%)      
-                     0.9 < 1 < 1.1              1.05!: 155 (31.7%)    IIIIII                                       
-                     IQR (CV) : 0.2 (0.1)       1.06!:  79 (16.2%)    III                                          
-                                                ! rounded                                                          
--------------------------------------------------------------------------------------------------------------------
+9    samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  0         
+     [numeric]      min < med < max:          1.04!: 124 (25.4%)    IIIII                  (0%)      
+                    0.9 < 1 < 1.1             1.05!: 155 (31.7%)    IIIIII                           
+                    IQR (CV) : 0.2 (0.1)      1.06!:  79 (16.2%)    III                              
+                                              ! rounded                                              
+-----------------------------------------------------------------------------------------------------
 
 Group: gender = (Missing)  
 Dimensions: 22 x 9  
 Duplicates: 0  
 
-------------------------------------------------------------------------------------------------------
-No   Variable        Stats / Values             Freqs (% of Valid)   Graph                  Missing   
----- --------------- -------------------------- -------------------- ---------------------- ----------
-1    gender          1. F                        0 (  0.0%)                                 0         
-     [factor]        2. M                        0 (  0.0%)                                 (0%)      
-                     3. (Missing)               22 (100.0%)          IIIIIIIIIIIIIIIIIIII             
+----------------------------------------------------------------------------------------------------
+No   Variable       Stats / Values            Freqs (% of Valid)   Graph                  Missing   
+---- -------------- ------------------------- -------------------- ---------------------- ----------
+1    gender         1. F                       0 (  0.0%)                                 0         
+     [factor]       2. M                       0 (  0.0%)                                 (0%)      
+                    3. (Missing)              22 (100.0%)          IIIIIIIIIIIIIIIIIIII             
 
-2    age             Mean (sd) : 50.9 (18.2)    18 distinct values           :              0         
-     [numeric]       min < med < max:                                  :     : :            (0%)      
-                     19 < 55.5 < 80                                    : :   : : :                    
-                     IQR (CV) : 27.2 (0.4)                             : : : : : :                    
-                                                                     : : : : : : :                    
+2    age            Mean (sd) : 50.9 (18.2)   18 distinct values           :              0         
+     [numeric]      min < med < max:                                 :     : :            (0%)      
+                    19 < 55.5 < 80                                   : :   : : :                    
+                    IQR (CV) : 27.2 (0.4)                            : : : : : :                    
+                                                                   : : : : : : :                    
 
-3    age.gr          1. 18-34                   5 (22.7%)            IIII                   0         
-     [factor]        2. 35-50                   5 (22.7%)            IIII                   (0%)      
-                     3. 51-70                   9 (40.9%)            IIIIIIII                         
-                     4. 71 +                    3 (13.6%)            II                               
-                     5. (Missing)               0 ( 0.0%)                                             
+3    age.gr         1. 18-34                  5 (22.7%)            IIII                   0         
+     [factor]       2. 35-50                  5 (22.7%)            IIII                   (0%)      
+                    3. 51-70                  9 (40.9%)            IIIIIIII                         
+                    4. 71 +                   3 (13.6%)            II                               
+                    5. (Missing)              0 ( 0.0%)                                             
 
-4    BMI             Mean (sd) : 26.9 (3.5)     22 distinct values       :     :            0         
-     [numeric]       min < med < max:                                    : :   :            (0%)      
-                     20.2 < 27.2 < 32.4                              :   : : : :                      
-                     IQR (CV) : 5.1 (0.1)                            :   : : : :                      
-                                                                     : : : : : : :                    
+4    BMI            Mean (sd) : 26.9 (3.5)    22 distinct values       :     :            0         
+     [numeric]      min < med < max:                                   : :   :            (0%)      
+                    20.2 < 27.2 < 32.4                             :   : : : :                      
+                    IQR (CV) : 5.1 (0.1)                           :   : : : :                      
+                                                                   : : : : : : :                    
 
-5    smoker          1. Yes                      8 (36.4%)           IIIIIII                0         
-     [factor]        2. No                      14 (63.6%)           IIIIIIIIIIII           (0%)      
+5    smoker         1. Yes                     8 (36.4%)           IIIIIII                0         
+     [factor]       2. No                     14 (63.6%)           IIIIIIIIIIII           (0%)      
 
-6    cigs.per.day    Mean (sd) : 6.1 (9.7)      0  : 14 (63.6%)      IIIIIIIIIIII           0         
-     [numeric]       min < med < max:           5  :  2 ( 9.1%)      I                      (0%)      
-                     0 < 0 < 28                 10 :  1 ( 4.5%)                                       
-                     IQR (CV) : 8.8 (1.6)       19 :  1 ( 4.5%)                                       
-                                                21 :  2 ( 9.1%)      I                                
-                                                25 :  1 ( 4.5%)                                       
-                                                28 :  1 ( 4.5%)                                       
+6    cigs.per.day   Mean (sd) : 6.1 (9.7)     0  : 14 (63.6%)      IIIIIIIIIIII           0         
+     [numeric]      min < med < max:          5  :  2 ( 9.1%)      I                      (0%)      
+                    0 < 0 < 28                10 :  1 ( 4.5%)                                       
+                    IQR (CV) : 8.8 (1.6)      19 :  1 ( 4.5%)                                       
+                                              21 :  2 ( 9.1%)      I                                
+                                              25 :  1 ( 4.5%)                                       
+                                              28 :  1 ( 4.5%)                                       
 
-7    diseased        1. Yes                      3 (13.6%)           II                     0         
-     [factor]        2. No                      19 (86.4%)           IIIIIIIIIIIIIIIII      (0%)      
+7    diseased       1. Yes                     3 (13.6%)           II                     0         
+     [factor]       2. No                     19 (86.4%)           IIIIIIIIIIIIIIIII      (0%)      
 
-8    disease         1. Diabetes                1 (33.3%)            IIIIII                 19        
-     [character]     2. Hypertension            1 (33.3%)            IIIIII                 (86.36%)  
-                     3. Musculoskeletal         1 (33.3%)            IIIIII                           
+8    disease        1. Diabetes               1 (33.3%)            IIIIII                 19        
+     [character]    2. Hypertension           1 (33.3%)            IIIIII                 (86.36%)  
+                    3. Musculoskeletal        1 (33.3%)            IIIIII                           
 
-9    samp.wgts       Mean (sd) : 1 (0.1)        0.86!: 5 (22.7%)     IIII                   0         
-     [numeric]       min < med < max:           1.04!: 5 (22.7%)     IIII                   (0%)      
-                     0.9 < 1 < 1.1              1.05!: 9 (40.9%)     IIIIIIII                         
-                     IQR (CV) : 0 (0.1)         1.06!: 3 (13.6%)     II                               
-                                                ! rounded                                             
-------------------------------------------------------------------------------------------------------
+9    samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 5 (22.7%)     IIII                   0         
+     [numeric]      min < med < max:          1.04!: 5 (22.7%)     IIII                   (0%)      
+                    0.9 < 1 < 1.1             1.05!: 9 (40.9%)     IIIIIIII                         
+                    IQR (CV) : 0 (0.1)        1.06!: 3 (13.6%)     II                               
+                                              ! rounded                                             
+----------------------------------------------------------------------------------------------------
 
 > dfs3 %>% view(file = "16-dfSummary-group_by.html") 
 -- Output file written

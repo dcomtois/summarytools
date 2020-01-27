@@ -398,7 +398,7 @@ N: 1000
         N.Valid   975.00
       Pct.Valid    97.50
 
-> tobacco %>% select(age.gr)   %>% freq() # SUCCESS 
+> tobacco %>% select(age.gr)  %>% freq() # SUCCESS 
 
 Frequencies  
 tobacco$age.gr  

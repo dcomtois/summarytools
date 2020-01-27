@@ -2098,7 +2098,7 @@ Type: Character
 
 > tobacco$age.gr %<>% forcats::fct_explicit_na() 
 > freq(tobacco$age.gr) 
--- explicit NA's detected - setting 'report.nas' to FALSE
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
 
 Frequencies  
 tobacco$age.gr  
@@ -2113,4 +2113,190 @@ Type: Factor
            71 +    159    15.90    97.50
       (Missing)     25     2.50   100.00
           Total   1000   100.00   100.00
+
+
+# Full dataframes -------------------------------------------------------------- 
+
+> (ftob1 <- freq(tobacco)) 
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
+-- Variable(s) ignored: age, BMI, cigs.per.day
+
+Frequencies  
+tobacco$gender  
+Label: Subject's Gender  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+          F    489     50.00          50.00     48.90          48.90
+          M    489     50.00         100.00     48.90          97.80
+       <NA>     22                               2.20         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$age.gr  
+Label: Age Group  
+Type: Factor  
+
+                  Freq        %   % Cum.
+--------------- ------ -------- --------
+          18-34    258    25.80    25.80
+          35-50    241    24.10    49.90
+          51-70    317    31.70    81.60
+           71 +    159    15.90    97.50
+      (Missing)     25     2.50   100.00
+          Total   1000   100.00   100.00
+
+tobacco$smoker  
+Label: Subject Smokes  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    298     29.80          29.80     29.80          29.80
+         No    702     70.20         100.00     70.20         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$diseased  
+Label: Subject has an illness  
+Type: Factor  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    224     22.40          22.40     22.40          22.40
+         No    776     77.60         100.00     77.60         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$disease  
+Type: Character  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+                Other      2      0.90          86.94      0.20          19.30
+            Pulmonary     20      9.01          95.95      2.00          21.30
+               Vision      9      4.05         100.00      0.90          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$samp.wgts  
+Type: Numeric  
+
+                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------------------- ------ --------- -------------- --------- --------------
+      0.861423220973783    267     26.70          26.70     26.70          26.70
+       1.04417670682731    249     24.90          51.60     24.90          51.60
+       1.04938271604938    324     32.40          84.00     32.40          84.00
+                 1.0625    160     16.00         100.00     16.00         100.00
+                   <NA>      0                               0.00         100.00
+                  Total   1000    100.00         100.00    100.00         100.00
+
+> (ftob2 <- freq(tobacco, display.type = FALSE)) 
+-- explicit NA's detected - temporarily setting 'report.nas' to FALSE
+-- Variable(s) ignored: age, BMI, cigs.per.day
+
+Frequencies  
+tobacco$gender  
+Label: Subject's Gender  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+          F    489     50.00          50.00     48.90          48.90
+          M    489     50.00         100.00     48.90          97.80
+       <NA>     22                               2.20         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$age.gr  
+Label: Age Group  
+
+                  Freq        %   % Cum.
+--------------- ------ -------- --------
+          18-34    258    25.80    25.80
+          35-50    241    24.10    49.90
+          51-70    317    31.70    81.60
+           71 +    159    15.90    97.50
+      (Missing)     25     2.50   100.00
+          Total   1000   100.00   100.00
+
+tobacco$smoker  
+Label: Subject Smokes  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    298     29.80          29.80     29.80          29.80
+         No    702     70.20         100.00     70.20         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$diseased  
+Label: Subject has an illness  
+
+              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------- ------ --------- -------------- --------- --------------
+        Yes    224     22.40          22.40     22.40          22.40
+         No    776     77.60         100.00     77.60         100.00
+       <NA>      0                               0.00         100.00
+      Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$disease  
+
+                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+--------------------- ------ --------- -------------- --------- --------------
+               Cancer     34     15.32          15.32      3.40           3.40
+          Cholesterol     21      9.46          24.77      2.10           5.50
+             Diabetes     14      6.31          31.08      1.40           6.90
+            Digestive     12      5.41          36.49      1.20           8.10
+              Hearing     14      6.31          42.79      1.40           9.50
+                Heart     20      9.01          51.80      2.00          11.50
+         Hypertension     36     16.22          68.02      3.60          15.10
+          Hypotension     11      4.95          72.97      1.10          16.20
+      Musculoskeletal     19      8.56          81.53      1.90          18.10
+         Neurological     10      4.50          86.04      1.00          19.10
+                Other      2      0.90          86.94      0.20          19.30
+            Pulmonary     20      9.01          95.95      2.00          21.30
+               Vision      9      4.05         100.00      0.90          22.20
+                 <NA>    778                              77.80         100.00
+                Total   1000    100.00         100.00    100.00         100.00
+
+tobacco$samp.wgts  
+
+                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+----------------------- ------ --------- -------------- --------- --------------
+      0.861423220973783    267     26.70          26.70     26.70          26.70
+       1.04417670682731    249     24.90          51.60     24.90          51.60
+       1.04938271604938    324     32.40          84.00     32.40          84.00
+                 1.0625    160     16.00         100.00     16.00         100.00
+                   <NA>      0                               0.00         100.00
+                  Total   1000    100.00         100.00    100.00         100.00
+
+> print(ftob1, file = "09-full-dataset.html", footnote = "With type") 
+-- Switching method to 'browser'
+-- Variable(s) ignored: age, BMI, cigs.per.day
+-- Output file written
+-- Output file appended
+
+> print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type") 
+-- Switching method to 'browser'
+-- Variable(s) ignored: age, BMI, cigs.per.day
+-- Output file written
+-- Output file appended
+
+
+# Collapsible outputs ---------------------------------------------------------- 
+
+> print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections") 
+-- Switching method to 'browser'
+-- Variable(s) ignored: age, BMI, cigs.per.day
+-- Output file written
+-- Output file appended
 

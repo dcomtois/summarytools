@@ -1,9 +1,6 @@
 
 # ---------------------------- st_options.R ------------------------------------  
 
-> st_options('omit.headings', FALSE) 
--- 'omit.headings' has been replaced by 'headings'. Setting 'headings' to TRUE
-
 > st_options('footnote', 'default') 
 > st_options() 
 
@@ -42,6 +39,12 @@ $freq.totals
 
 $freq.report.nas
 [1] TRUE
+
+$freq.ignore.threshold
+[1] 25
+
+$freq.silent
+[1] FALSE
 
 $ctable.prop
 [1] "r"
@@ -91,6 +94,9 @@ $subtitle.emphasis
 $lang
 [1] "pt"
 
+$use.x11
+[1] TRUE
+
 
 > st_options(plain.ascii = T) 
 > st_options('reset') 
@@ -133,6 +139,12 @@ $freq.totals
 
 $freq.report.nas
 [1] TRUE
+
+$freq.ignore.threshold
+[1] 25
+
+$freq.silent
+[1] FALSE
 
 $ctable.prop
 [1] "r"
@@ -181,6 +193,9 @@ $subtitle.emphasis
 
 $lang
 [1] "en"
+
+$use.x11
+[1] TRUE
 
 
 > st_options('plain.ascii') 
