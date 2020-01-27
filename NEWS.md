@@ -1,4 +1,4 @@
-# summarytools 0.9.5 (2020-01-12)
+# summarytools 0.9.5 (2020-01-26)
 
  - Eliminated automatic check for X11 capabilities as it caused problems on some
    systems; the user can instead set global option `st_options(use.x11 = FALSE)`

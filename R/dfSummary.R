@@ -118,6 +118,9 @@
 #'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 #'
 #' @examples
+#' 
+#' \dontrun{
+#' 
 #' data("tobacco")
 #' dfSummary(tobacco)
 #' 
@@ -130,7 +133,6 @@
 #' # Using stby()
 #' stby(tobacco, tobacco$gender, dfSummary)
 #' 
-#' \dontrun{
 #' # Show in Viewer or browser (view: no capital V!)
 #' view(dfSummary(iris))
 #' 

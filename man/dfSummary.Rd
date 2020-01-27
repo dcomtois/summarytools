@@ -172,6 +172,9 @@ The default \code{plain.ascii = TRUE} option is there to make
   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 }
 \examples{
+
+\dontrun{
+
 data("tobacco")
 dfSummary(tobacco)
 
@@ -184,7 +187,6 @@ dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 # Using stby()
 stby(tobacco, tobacco$gender, dfSummary)
 
-\dontrun{
 # Show in Viewer or browser (view: no capital V!)
 view(dfSummary(iris))
 
