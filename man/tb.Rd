@@ -30,3 +30,12 @@ A \code{\link[tibble]{tibble}} which is constructed following the
 \description{
 Make a tidy dataset out of freq() or descr() outputs
 }
+\examples{
+
+tb(freq(iris$Species))
+tb(descr(iris))
+
+data("tobacco")
+tb(stby(tobacco, tobacco$gender, descr))
+
+}

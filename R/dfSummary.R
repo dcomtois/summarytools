@@ -119,9 +119,9 @@
 #'
 #' @examples
 #' 
-#' \dontrun{
-#' 
 #' data("tobacco")
+#' saved_x11_option <- st_options("use.x11")
+#' st_options(use.x11 = FALSE)
 #' dfSummary(tobacco)
 #' 
 #' # Exclude some columns
@@ -132,6 +132,10 @@
 #' 
 #' # Using stby()
 #' stby(tobacco, tobacco$gender, dfSummary)
+#' 
+#' st_options(use.x11 = saved_x11_option)
+#' 
+#' \dontrun{
 #' 
 #' # Show in Viewer or browser (view: no capital V!)
 #' view(dfSummary(iris))

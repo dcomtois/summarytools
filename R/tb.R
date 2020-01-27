@@ -18,6 +18,14 @@
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
+#' @examples
+#' 
+#' tb(freq(iris$Species))
+#' tb(descr(iris))
+#' 
+#' data("tobacco")
+#' tb(stby(tobacco, tobacco$gender, descr))
+#' 
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_rows bind_cols
 #' @export
