@@ -29,17 +29,9 @@ Generates the \emph{css} needed by \strong{summarytools} in \emph{Rmarkdown}
 documents.
 }
 \details{
-Typically the function is called in the first R chunk of an 
-  \emph{Rmarkdown} document. For instance:
-  \code{
-  ```{r, include=FALSE}
-  library(knitr)
-  opts_chunk$set(results = "asis")
-  library(summarytools)
-  st_options(plain.ascii = FALSE, style = "rmarkdown")
-  st_css()
-  ```
-  }
+Typically the function is called right after the initial setup chunk
+  of an \emph{Rmarkdown} document, in a chunk having options
+  \code{echo=FALSE} and \code{results="asis"}.
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com}

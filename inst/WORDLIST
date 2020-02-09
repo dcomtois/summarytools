@@ -67,6 +67,7 @@ Feitsma
 Fille
 fivenum
 fonction
+formattable
 francais
 Fréq
 fréquences
@@ -89,6 +90,7 @@ intervenir
 iqr
 Jeu
 jour
+kableExtra
 knitr
 knitr's
 l'age
@@ -119,6 +121,7 @@ nrow
 numerique
 Numerique
 Oui
+outputs’
 packages’
 pagedown
 pandoc

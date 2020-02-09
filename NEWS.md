@@ -4,17 +4,17 @@
    systems; the user can instead set global option `st_options(use.x11 = FALSE)`
    if encountering problems
  - To simplify installation on Unix-like systems (including Mac OS), the
-   `RCurl::base64Encode()` function used to create html-encoded
-   graphs isn't used anymore; `base64enc::base64encode()` is used instead
+   `RCurl::base64Encode()` function used to create ascii-encoded graphs in
+   *html* documents isn't used anymore; `base64enc::base64encode()` is used instead
  - When saving outputs to *.Rmd* documents; 'plain.ascii' is now automatically set
    to FALSE and 'style' is automatically set to "rmarkdown", in accordance with
    with the way *.md* documents are generated
  - Fixed bug arising with data frames called "data"
+ - `freq.silent` was added to global options
  - Weights are now supported for `freq()` used in conjunction with `stby()` or 
    `dplyr::group_by()`
- - `freq.silent` was added to global options (so now all four main functions have
-   a `silent` global option to turn off messages)
- - Weights are also supported for `ctable()` used in conjunction with `stby()`
+ - Weights are also supported for `ctable()` used in conjunction with `stby()` (but
+   not with `dplyr::group_by()`)
  - Improvements and fixes for `dfSummary()`:
    + Fixed null graphic device appearing in *RGui* and non-GUI interfaces
    + Calling `summarytools::dfSummary()` (without loading the package) is now

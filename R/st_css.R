@@ -16,17 +16,9 @@
 #'   tags. \code{TRUE} by default.
 #' @param \dots Character. Path to additional \emph{css} file(s) to include.
 #'
-#' @details Typically the function is called in the first R chunk of an 
-#'   \emph{Rmarkdown} document. For instance:
-#'   \code{
-#'   ```{r, include=FALSE}
-#'   library(knitr)
-#'   opts_chunk$set(results = "asis")
-#'   library(summarytools)
-#'   st_options(plain.ascii = FALSE, style = "rmarkdown")
-#'   st_css()
-#'   ```
-#'   }
+#' @details Typically the function is called right after the initial setup chunk
+#'   of an \emph{Rmarkdown} document, in a chunk having options
+#'   \code{echo=FALSE} and \code{results="asis"}.
 #'   
 #' @keywords utilities
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}

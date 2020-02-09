@@ -9,6 +9,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Recommendations for Rmarkdown}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{magrittr}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -16,6 +17,7 @@ vignette: >
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 ```
+
 ```{r, echo=FALSE}
 library(summarytools)
 st_css()
@@ -77,10 +79,10 @@ styles in summarytools are the same as `pander`'s:
 - _multiline_  
  
 For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ 
-style is recommended. For`dfSummary()`, _grid_ is recommended.
+style is recommended. For `dfSummary()`, _grid_ is recommended.
  
 Starting with `freq()`, we'll review the recommended methods and styles to 
-quickly get satisfying results in your _Rmarkdown_ documents.
+quickly get satisfying results in *Rmarkdown* documents.
 
 Jump to...
 
@@ -165,19 +167,20 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 ## Grid Style
 
-This style gives good results, and since v0.9, the graphs are shown as true 
-images. Don't forget to specify `plain.ascii = FALSE` (or set it as a global
+Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
 
 ```{r dfs_grid, eval=FALSE}
-dfSummary(tobacco, style = 'grid', graph.magnif = 0.75, tmp.img.dir = "/tmp")
+dfSummary(tobacco, style = 'grid', graph.magnif = 0.75, 
+          valid.col = FALSE, tmp.img.dir = "/tmp")
 ```
 
 <img src="dfSummary_md.png" width=100%/>
 
 ## HTML Rendering
 
-This method has also been much improved in version 0.9 of **summarytools**.
+This method also works really well, and not having to 
+specify the `tmp.img.dir` parameter is a plus.
 
 ```{r}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
@@ -195,20 +198,25 @@ print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75),
 
 <a href="#top">Back to top</a>
 
-## Generating *PDF*'s
+# Using Other Formatting Packages
 
-There is no direct way to create a *PDF* file with **summarytools**. One option is
-to generate an *html* file and convert it to *PDF* using a tool like
-[Pandoc](https://pandoc.org) or [WK<html>TOpdf](https://wkhtmltopdf.org/index.html)
-(the latter gives better results than Pandoc with `dfSummary()` outputs).
+As explained in the introductory vignette, `tb()` can be used to convert
+**summarytools** objects created with `freq()` and `descr()` to simple
+*tibbles* that packages specialized in table formatting will be able
+to process. This is particularly helpful with `stby` objects:
 
-Another option is to create an *Rmd* document with *PDF* output format.
-
+```{r}
+library(kableExtra)
+library(magrittr)
+stby(iris, iris$Species, descr, stats = "fivenum") %>%
+  tb(order = 3) %>%
+  kable(format = "html", digits = 2) %>%
+  collapse_rows(columns = 1, valign = "top")
+```
 
 ## Final Notes
 
 This is by no way a definitive guide; depending on the themes you use, 
-you could find that other settings yield better results. Also, this document
-focuses on _HTML_ document rendering. If you are looking to create a _Word_ of a 
-_PDF_ document, you might want to try different combinations of options. Note that
-the _rendering_ method is not well-suited for _Word_ documents.
+you could find that other settings yield better results. If you are looking
+to create a _Word_ or a _PDF_ document, you might want to try different
+combinations of options.
