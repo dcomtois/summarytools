@@ -176,8 +176,11 @@ parse_args <- function(sys_calls,
   }
   
   by_ctable_case <- function() {
-    
-    v_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
+    if (!is.null(names(calls$by$data))) {
+      v_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
+    } else {
+      v_name <- as.character(calls$by$data[2:3])
+    }
     
     if (!"with" %in% names(calls)) {
       if (any(grepl("\\$", v_name))) {
@@ -352,7 +355,8 @@ parse_args <- function(sys_calls,
     populate_by_info()
     # treat special case of by() called on ctable, with ou without "with()"
     if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
-        && identical(names(calls$by$data), c("", "x", "y"))) {
+        #&& identical(names(calls$by$data), c("", "x", "y"))) {
+        && caller == "ctable") {
       by_ctable_case()
       if (isTRUE(do_return)) {
         return(output)
