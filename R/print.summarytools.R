@@ -199,7 +199,7 @@ print.summarytools <- function(x,
   
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
-  errmsg <- check_arguments_print(mc)
+  errmsg <- check_args_print(mc)
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
