@@ -2,19 +2,24 @@
 #'
 #' Make a tidy dataset out of freq() or descr() outputs
 #'
-#' @param x a freq() or descr() output object
-#' @param order Integer. Useful for grouped results (produced with 
-#'  \code{\link{stby}} only. When \code{1} (default), the levels of the 
-#'  grouping variable are used to sort the table, followed by the values of 
-#'  the other grouping variables (if any), and either variable names
-#'  (for \code{\link{descr}} objects) or variable values (for \code{\link{freq}}
-#'  objects). When \dQuote{order} = \code{2}, the same columns are used for 
-#'  sorting, but they are fed to the \code{\link{order}} function in the reverse
-#'  order.
+#' @param x a freq() or descr() output object.
+#' @param order Integer. Useful for grouped results produced with 
+#'  \code{\link{stby}} or \code{dplyr::group_by}. When set to \code{1}
+#'   (default), the ordering is done using the grouping variables first. When
+#'   set to \code{2}, the ordering is first determined by the \code{variable}
+#'   column for \code{\link{descr}} or the column displaying the variable
+#'   values for \code{\link{freq}}. When set to \code{3}, the same ordering
+#'   as with \code{2} is used, but columns are rearranged to reflect this
+#'   sort order.
 #' @param na.rm Logical. For \code{\link{freq}} objects, remove \code{<NA>} rows
-#' (or \code{(Missing)} rows if \code{NA} values were made explicit with 
-#' \code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}} 
-#' objects.
+#'   (or \code{(Missing)} rows if \code{NA} values were made explicit with 
+#'   \code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}} 
+#'   objects.
+#' @param drop.var.col Logical. For \code{\link{descr}} objects, drop the
+#'   \code{variable} column. This is possible only when statistics are
+#'   produced for a single variable; for multiple variables, this argument
+#'   is ignored. \code{FALSE} by default.
+#' 
 #' @return A \code{\link[tibble]{tibble}} which is constructed following the 
 #' \emph{tidy} principles.
 #' 
@@ -29,11 +34,21 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_rows bind_cols
 #' @export
-tb <- function(x, order = 1, na.rm = FALSE) {
+tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE) {
+  
+  if (!inherits(x, c("summarytools", "stby"))) {
+    stop("x must be an object of class 'summarytools' or 'stby'")
+  }
+  
+  errmsg <- check_args_tb(match.call())
+  
+  if (length(errmsg) > 0) {
+    stop(paste(errmsg, collapse = "\n  "))
+  }
   
   if (inherits(x, "stby")) {
     
-    grp_stats <- lapply(x, tb, na.rm = na.rm)
+    grp_stats <- lapply(x, tb, na.rm = na.rm, drop.var.col = FALSE)
     
     if ("groups" %in% names(attributes(x))) {
       left_part <- as_tibble(merge(grp_stats[[1]][,1],
@@ -66,15 +81,22 @@ tb <- function(x, order = 1, na.rm = FALSE) {
         all(right_part$variable == "value") && length(names(grp_values)) == 1) {
       right_part$variable <- attr(x[[1]], "data_info")$Variable
     }
-    output     <- bind_cols(left_part, right_part)
-    
-    if (identical(order, 2)) {
-      output <- output[do.call(what = "order", 
-                               args = output[ ,(nb_gr_var + 1):1]), ]
-    }
+    output <- bind_cols(left_part, right_part)
     
     colnames(output)[1:ncol(left_part)] <- 
       sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
+    
+    if (order==1) {
+      output <- output[do.call(what = "order", 
+                               args = output[ ,1:(nb_gr_var + 1)]), ]
+    } else if (order %in% 2:3) {
+      output <- output[do.call(what = "order", 
+                               args = output[ ,c(nb_gr_var + 1, 1:nb_gr_var)]), ]
+      if (order == 3) {
+        output <- output[ ,c(nb_gr_var + 1, 1:(nb_gr_var), (nb_gr_var + 2):ncol(output))]
+      }
+    }
+    
     
     if (attr(x[[1]], "st_type") == "freq") {
       
@@ -134,6 +156,10 @@ tb <- function(x, order = 1, na.rm = FALSE) {
     } else {
       output <- as_tibble(as.data.frame(x), rownames = "variable")
       names(output) <- c("variable", attr(x, "stats"))
+    }
+    
+    if (isTRUE(drop.var.col) && length(unique(output$variable)) == 1) {
+      output$variable <- NULL
     }
     
     return(output)
