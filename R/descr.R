@@ -235,7 +235,7 @@ descr <- function(x,
                      "a data.table; attempted conversion to tibble failed")
   }
   
-  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...)))
   
   valid_stats <- list(
     no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 

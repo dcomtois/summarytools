@@ -164,7 +164,7 @@ st_options <- function(option                 = NULL,
   
   # Validate arguments
   mc <- match.call()
-  errmsg <- check_arguments_st_options(mc = mc)
+  errmsg <- check_args_st_options(mc = mc)
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "), "\n No options have been modified")

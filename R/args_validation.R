@@ -3,7 +3,7 @@
 #' @importFrom checkmate test_int test_logical test_choice test_string
 #' @importFrom dplyr n_distinct
 #' @keywords internal
-check_arguments <- function(mc, dotArgs) {
+check_args <- function(mc, dotArgs) {
   
   caller      <- sub(".+::","",as.character(sys.call(-1))[1])
   pf          <- parent.frame()
@@ -331,8 +331,30 @@ check_arguments <- function(mc, dotArgs) {
   return(errmsg)
 }
 
+check_args_tb <- function(mc) {
+  
+  pf <- parent.frame()
+  errmsg <- character()
 
-check_arguments_print <- function(mc) {
+  if ("order" %in% names(mc) &&
+      !isTRUE(test_choice(pf$order, c(1, 2, 3)))) {
+    errmsg %+=% "'order' must be one of 1, 2, or 3"
+  }
+  
+  if ("na.rm" %in% names(mc) && 
+      !isTRUE(test_logical(pf$na.rm, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'na.rm' must be either TRUE or FALSE"
+  }
+
+  if ("drop.val.col" %in% names(mc) && 
+      !isTRUE(test_logical(pf$na.rm, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'na.rm' must be either TRUE or FALSE"
+  }
+  
+  return(errmsg)
+}
+
+check_args_print <- function(mc) {
   
   pf <- parent.frame()
   errmsg <- character()
@@ -457,10 +479,10 @@ check_arguments_print <- function(mc) {
  return(errmsg)
 }
   
-# check_arguments_st_options ---------------------------------------------------
+# check_args_st_options ---------------------------------------------------
 #' @importFrom checkmate test_int test_logical test_choice 
 #' test_file_exists test_character
-check_arguments_st_options <- function(mc) {
+check_args_st_options <- function(mc) {
   
   pf <- parent.frame()
   errmsg <- character()

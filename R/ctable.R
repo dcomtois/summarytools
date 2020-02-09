@@ -144,7 +144,7 @@ ctable <- function(x,
     }
   }
 
-  errmsg <- c(errmsg, check_arguments(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...)))
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
@@ -265,7 +265,6 @@ ctable <- function(x,
                    p.value = round(tmp.chisq$p.value, 4))
   }
 
-  
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
