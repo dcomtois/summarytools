@@ -11,6 +11,7 @@ tobacco$smoker[na_pos] <- NA_character_
 (fr1 <-  tobacco %$% freq(gender))
 fr1 %>% tb()
 fr1 %>% tb(2) # aucun effet attendu
+fr1 %>% tb(3) # aucun effet attendu
 fr1 %>% tb(na.rm = TRUE)
 fr1 %>% tb() %>% select(2,3,5) %>% colSums(na.rm = T)
 
@@ -39,13 +40,15 @@ fr5 %>% tb() %>% select(2,3) %>% colSums(na.rm = T)
 (fgr1 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq))
 fgr1 %>% tb()
 fgr1 %>% tb(2)
+fgr1 %>% tb(3)
+fgr1 %>% tb() %>% select(3,4,6)
 fgr1 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
-fgr1 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 
 # Freq with grouped results, no cumul
 (fgr2 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq, cumul = FALSE))
 fgr2 %>% tb()
 fgr2 %>% tb(2)
+fgr2 %>% tb(3)
 fgr2 %>% tb() %>% select(3,4,5) %>% colSums(na.rm = T)
 fgr2 %>% tb(2) %>% select(3,4,5) %>% colSums(na.rm = T)
 
@@ -53,8 +56,8 @@ fgr2 %>% tb(2) %>% select(3,4,5) %>% colSums(na.rm = T)
 (fgr3 <- stby(tobacco$smoker, INDICES = tobacco$gender, FUN = freq, cumul = FALSE, report.nas = FALSE))
 fgr3 %>% tb()
 fgr3 %>% tb(2)
+fgr3 %>% tb(3)
 fgr3 %>% tb() %>% select(3,4) %>% colSums(na.rm = T)
-fgr3 %>% tb(2) %>% select(3,4) %>% colSums(na.rm = T)
 
 # Freq with grouped results
 (fgr4 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq))
@@ -67,6 +70,7 @@ fgr4 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 (fgr5 <- stby(tobacco$smoker, INDICES = tobacco$age.gr, FUN = freq, order = "freq"))
 fgr5 %>% tb()
 fgr5 %>% tb(2)
+fgr5 %>% tb(3)
 fgr5 %>% tb() %>% select(3,4,6) %>% colSums(na.rm = T)
 fgr5 %>% tb(2) %>% select(3,4,6) %>% colSums(na.rm = T)
 
@@ -90,6 +94,7 @@ de1 %>% tb(2) # no difference expected
 
 (de2 <- examens$francais %>% descr())
 de2 %>% tb()
+de2 %>% tb(drop.var.col = T)
 
 # Descr with grouped results, one variable only
 (dgr1 <- examens %$% stby(maths, sexe, descr, stats = "common"))
@@ -100,10 +105,12 @@ identical(dgr1 %>% tb(2), dgr1 %>% tb())
 (dgr2 <- stby(examens, examens$sexe, descr))
 dgr2 %>% tb()
 dgr2 %>% tb(2)
+dgr2 %>% tb(3)
 
 (dd1 <- stby(tobacco, tobacco$gender, descr))
 dd1 %>% tb()
 dd1 %>% tb(2)
+dd1 %>% tb(3)
 view(dd1)
 
 tobacco$gender %<>% forcats::fct_explicit_na()
@@ -136,7 +143,7 @@ view(ff1)
 (ff2 <- stby(tobacco$smoker, tobacco$gender, freq, report.nas = F))
 ff2 %>% tb()
 ff2 %>% tb(2)
-ff2 %>% tb(2, TRUE)
+ff2 %>% tb(3)
 
 tobacco$gender %<>% forcats::fct_explicit_na()
 (ff3 <- tobacco %>% group_by(gender) %>% select(gender, smoker) %>% freq())
@@ -145,7 +152,8 @@ ff3 %>% tb(2)
 ff3 %>% tb(2, TRUE)
 view(ff3)
 
-(ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq)))
+ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq))
+class(ff4)
 ff4 %>% tb()
 ff4 %>% tb(2)
 
@@ -155,3 +163,13 @@ view(ff5)
 ff5 %>% tb()
 ff5 %>% tb(2)
 ff5 %>% tb(2, na.rm = TRUE)
+
+# drop.var.col argument
+tb(descr(iris$Sepal.Length), drop.var.col = TRUE)
+
+# drop.var.col should be ignored here
+tb(stby(tobacco, tobacco$gender, descr), drop.var.col = TRUE)
+
+# order & swap combination
+tb(stby(tobacco, tobacco$gender, descr), order = 2, swap = TRUE)
+tb(stby(tobacco, list(tobacco$gender, tobacco$smoker), descr), order = 2, swap = TRUE)

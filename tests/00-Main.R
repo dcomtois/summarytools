@@ -151,7 +151,7 @@ for (i in 2:6) {
 }
 
 compare_dirs("en")
-compare_dirs("fr")
+  compare_dirs("fr")
 compare_dirs("es")
 compare_dirs("pt")
 compare_dirs("tr")

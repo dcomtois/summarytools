@@ -1,4 +1,6 @@
 #-------------------------------- with-by.R ------------------------------------
+library(dplyr)
+
 # with
 w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))
 view(w1, file = "01-with.md")
@@ -84,7 +86,6 @@ print(b5, "pander", style = "rmarkdown")
 b6 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE))
 view(b6, "pander") 
 
-# TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)
 view(b6, method = "browser", footnote = "4 stats", file = "18.html")
 with(tobacco, view(stby(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html"))
 view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html")
@@ -97,5 +98,4 @@ view(b8, method = "viewer")
 with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
 with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
 
-library(dplyr)
 tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)

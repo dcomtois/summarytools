@@ -1,4 +1,5 @@
 # ---------------------------- ctable.R ----------------------------------------
+library(dplyr)
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 
@@ -53,6 +54,12 @@ view(wbc, headings = T, footnote = "with head", file = "05.html")
 (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
 print(wc1, totals = FALSE)
 print(wc1, round.digits = 2)
+
+(wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
+
+tobacco %$% stby(list(smoker, diseased), gender, ctable)
+with(tobacco, stby(list(smoker, diseased), gender, ctable))
+stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
 
 # Global Options
 st_options(ctable.prop = "t", ctable.totals = FALSE)
