@@ -20,14 +20,14 @@ frame's label that will be returned.}
 object name(s). Defaults to \code{FALSE}.}
 
 \item{simplify}{When x is a data frame and \code{all = TRUE}, coerce results
-to a vector when \code{TRUE}, otherwise (default) return a \code{named
-list} containing only non-NULL/non-NA elements.}
+to a vector and remove \code{NA}'s. Default is \code{FALSE}.}
 
-\item{value}{String to be used as label.}
+\item{value}{String to be used as label. To clear existing labels, use \code{NA}
+or \code{NULL}.}
 }
 \description{
-Assign a label to a vector or data frame, or returns value previously stored 
-in the object's \code{label} attribute (or \code{NA} if none found).
+Assigns a label to a vector or data frame, or returns value stored 
+in the object's \code{label} attribute (or \code{NA} if none exists).
 }
 \note{
 Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 

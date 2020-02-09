@@ -1,7 +1,7 @@
 #' Get or Set Variable or Data Frame Labels
 #'
-#' Assign a label to a vector or data frame, or returns value previously stored 
-#' in the object's \code{label} attribute (or \code{NA} if none found).
+#' Assigns a label to a vector or data frame, or returns value stored 
+#' in the object's \code{label} attribute (or \code{NA} if none exists).
 #' 
 #' @aliases label label<-
 #' @usage label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
@@ -15,9 +15,9 @@
 #' @param fallback a logical value indicating if labels should fallback to
 #'   object name(s). Defaults to \code{FALSE}.
 #' @param simplify When x is a data frame and \code{all = TRUE}, coerce results
-#'   to a vector when \code{TRUE}, otherwise (default) return a \code{named
-#'   list} containing only non-NULL/non-NA elements.
-#' @param value String to be used as label.
+#'   to a vector and remove \code{NA}'s. Default is \code{FALSE}.
+#' @param value String to be used as label. To clear existing labels, use \code{NA}
+#'   or \code{NULL}.
 #' 
 #' @author
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
@@ -81,11 +81,14 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
   if (missing(x) || missing(value))
     stop("Both x and value arguments must be provided")
 
+  if (is.null(value))
+    value <- NA
+  
   if (is.data.frame(x)) {
     if (length(value) > 1 && length(value) < ncol(x))
       stop("Number of labels does not match number of columns in x")
 
-    if (is.na(value)) {
+    if (length(value) == 1 && is.na(value)) {
       attr(x, "label") <- NULL
     } else if (length(value) == 1) {
       attr(x, "label") <- value
