@@ -62,7 +62,6 @@ kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
   column_spec(2, width = "28em")
 ```
 
-
 ## 1.1 Motivation
 
 The package was developed with the following objectives in mind:
@@ -100,9 +99,9 @@ Results can be
  - **Flexible**: default values for most function arguments can be modified,
    which simplifies coding and minimizes redundancy in the code  
  - **Tweakable**: For text / *markdown* table generation, the
-   [**pander**](http://rapporter.github.io/pander/) package is used. For *html*
+   [**pander**](http://rapporter.github.io/pander/) package is used internally. For *html*
    content, [**htmltools**](https://CRAN.R-project.org/package=htmltools)
-   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used.
+   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used internally.
    Both **pander** and **Bootstrap** features and options can be used to
    fine-tune **summarytools**' results
 

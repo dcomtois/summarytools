@@ -81,9 +81,9 @@ Results can be
  - **Flexible**: default values for most function arguments can be modified,
    which simplifies coding and minimizes redundancy in the code  
  - **Tweakable**: For text / *markdown* table generation, the
-   [**pander**](http://rapporter.github.io/pander/) package is used. For *html*
+   [**pander**](http://rapporter.github.io/pander/) package is used internally. For *html*
    content, [**htmltools**](https://CRAN.R-project.org/package=htmltools)
-   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used.
+   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used internally.
    Both **pander** and **Bootstrap** features and options can be used to
    fine-tune **summarytools**' results
 
@@ -820,14 +820,14 @@ If you're using Mac OS X version 10.8 (Mountain Lion) or more recent versions,
 you'll need to download the _.dmg_ image from [xquartz.org](https://www.xquartz.org/) 
 and add it to your Applications folder.
 
-<a href="#installing-summarytools-from-github">Back to installation instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
 
 **[Magick++](https://imagemagick.org/Magick++/)**  
 `sudo apt install libmagick++-dev`
 
-<a href="#installing-summarytools-from-github">Back to installation instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
 This applies only if you are using Ubuntu Trusty (14.04) or Xenial (16.04).
@@ -840,14 +840,14 @@ sudo apt-get update
 sudo apt-get install -y libmagick++-dev
 ```
 
-<a href="#installing-summarytools-from-github">Back to installation instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
 
 **[Magick++](https://imagemagick.org/Magick++/)**  
 `sudo yum install ImageMagick-c++-devel`
 
-<a href="#installing-summarytools-from-github">Back to installation instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-solaris"></a>Required Software for Solaris
 
@@ -859,7 +859,7 @@ pkgadd -d http://get.opencsw.org/now
 /usr/sbin/pkgchk -L CSWimagemagick
 ```
 
-<a href="#installing-summarytools-from-github">Back to installation instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 # 14. Conclusion
 
