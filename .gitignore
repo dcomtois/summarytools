@@ -9,6 +9,8 @@ tests/output
 tests/output/*
 tests/img
 tests/last_date_dir.Rdata
+tests/other
+tests/tests-0-9-4
 img/ds*.png
 tests/ref - Copy/
 vignettes/img/
