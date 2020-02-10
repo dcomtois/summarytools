@@ -96,14 +96,13 @@ Results can be
      translations as needed  
  - **Weights-ready**: except for `dfSummary()`, all core functions support sampling 
    weights 
- - **Flexible**: default values for most function arguments can be modified,
-   which simplifies coding and minimizes redundancy in the code  
- - **Tweakable**: For text / *markdown* table generation, the
-   [**pander**](http://rapporter.github.io/pander/) package is used internally. For *html*
-   content, [**htmltools**](https://CRAN.R-project.org/package=htmltools)
-   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used internally.
-   Both **pander** and **Bootstrap** features and options can be used to
-   fine-tune **summarytools**' results
+ - **Flexible**: 
+   + Default values for most function arguments can be modified using `st_options()`;
+     this simplifies coding and minimizes redundancy 
+   + [**Pander options**](http://rapporter.github.io/pander/) can be used for text /
+     markdown tables
+   + [**Bootstrap**](https://getbootstrap.com/) and user-defined classes can be used
+     for *html* tables
 
 <br/>
 
@@ -141,7 +140,7 @@ freq(iris$Species, report.nas = FALSE, headings = FALSE)
 
 Note that the `headings = FALSE` parameter suppresses the heading section.
 
-### 2.1.2 Minimalistic Frequency Tables
+### 2.1.2 Minimal Frequency Tables
 
 By "switching off" all optional elements, a much simpler table will be produced:
 
@@ -212,11 +211,9 @@ view(freq(tobacco), collapse = TRUE)
 `ctable()` generates cross-tabulations (joint frequencies) for
 pairs of categorical variables. 
 
-Note that `ctable()` uses multiline table headings, which to this
-date are not fully supported by *markdown*. However, *markdown*
-does allow inline *html* code. We will thus use **summarytools' 
-*html* rendering feature** in this section. This is done by calling
-the `print()` function and specifying `method = "render"`.
+Since *markdown* does not support multiline table headings
+(but does accept *html* code), we'll use the *html* rendering
+feature for this section.
 
 Using the *tobacco* data frame, we'll cross-tabulate the two
 categorical variables *smoker* and *diseased*.
@@ -232,7 +229,7 @@ Row proportions are shown by default. To display *column* or *total*
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit
 proportions altogether, use `prop = "n"`.
 
-### 2.2.2 Minimalistic Cross-Tabulations
+### 2.2.2 Minimal Cross-Tabulations
 
 By "switching off" all optional features, we get a simple “2 x 2” table:
 
@@ -579,10 +576,7 @@ or `view()` to override formatting attributes:
 | split.tables (*) |   x    |   x    |   x   |     x     |
 | caption (*)      |   x    |   x    |   x   |     x     |
 
-(*) These are **pander options**; several others can be
-used when calling **summarytools**' core functions. See
-[pander: An R Pandoc Writer](http://rapporter.github.io/pander/)
-for a list of all available options.
+(*) These are **pander options**
 
 ## 8.2 Overriding Heading Contents
 

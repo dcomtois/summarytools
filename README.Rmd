@@ -78,15 +78,13 @@ Results can be
      translations as needed  
  - **Weights-ready**: except for `dfSummary()`, all core functions support sampling 
    weights 
- - **Flexible**: default values for most function arguments can be modified,
-   which simplifies coding and minimizes redundancy in the code  
- - **Tweakable**: For text / *markdown* table generation, the
-   [**pander**](http://rapporter.github.io/pander/) package is used internally. For *html*
-   content, [**htmltools**](https://CRAN.R-project.org/package=htmltools)
-   and the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are used internally.
-   Both **pander** and **Bootstrap** features and options can be used to
-   fine-tune **summarytools**' results
-
+ - **Flexible**: 
+   + Default values for most function arguments can be modified using `st_options()`;
+     this simplifies coding and minimizes redundancy 
+   + [**Pander options**](http://rapporter.github.io/pander/) can be used for text /
+     markdown tables
+   + [**Bootstrap**](https://getbootstrap.com/) and user-defined classes can be used
+     for *html* tables
 
 ## 1.4 Installing summarytools
 
@@ -136,8 +134,8 @@ freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 ```
 
 In this first example, the `plain.ascii` and `style` arguments were
-specified. However, since we have defined them globally with `st_options()`,
-they are redundant and will be omitted from hereon.
+specified. However, since we have defined them globally for this document
+using `st_options()`, they are redundant and will be omitted from hereon.
 
 ### 2.1.1 Ignoring Missing Data
 
@@ -156,7 +154,7 @@ freq(iris$Species, report.nas = FALSE, headings = FALSE)
 
 Note that the `headings = FALSE` parameter suppresses the heading section.
 
-### 2.1.2 Minimalistic Frequency Tables
+### 2.1.2 Minimal Frequency Tables
 
 By "switching off" all optional elements, a much simpler table will be produced:
 
@@ -245,7 +243,7 @@ Row proportions are shown by default. To display *column* or *total*
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit
 proportions altogether, use `prop = "n"`.
 
-### 2.2.2 Minimalistic Cross-Tabulations
+### 2.2.2 Minimal Cross-Tabulations
 
 By "switching off" all optional features, we get a simple “2 x 2” table:
 
@@ -348,9 +346,8 @@ is also possible to delete them with the following syntax (results not shown):
 dfs <- dfSummary(iris)
 dfs$Variable <- NULL # This deletes the "Variable" column
 ```
-
-<br/>
-
+ 
+ 
 # 3. Grouped Statistics Using stby()
 
 To produce optimal results, **summarytools** has its own version of
@@ -473,7 +470,7 @@ stby(iris, iris$Species, descr, stats = "fivenum") %>%
 ```
 ![tb-kableExtra](img/tb-kableExtra.png)
 
-# 6. Redirecting Outputs to Files
+# 6. Redirecting Output to Files
 
 Using the `file` argument with `print()` or `view()`, we can write outputs
 to a file, be it *html*, *Rmd*, *md*, or just plain text (*txt*). The file
@@ -586,10 +583,7 @@ or `view()` to override formatting attributes:
 | split.tables (*) |   x    |   x    |   x   |     x     |
 | caption (*)      |   x    |   x    |   x   |     x     |
 
-(*) These are **pander options**; several others can be
-used when calling **summarytools**' core functions. See
-[pander: An R Pandoc Writer](http://rapporter.github.io/pander/)
-for a list of all available options.
+(*) These are **pander options**
 
 ## 8.2 Overriding Heading Contents
 

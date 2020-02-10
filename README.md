@@ -72,16 +72,13 @@ Results can be
         of translations as needed  
   - **Weights-ready**: except for `dfSummary()`, all core functions
     support sampling weights
-  - **Flexible**: default values for most function arguments can be
-    modified, which simplifies coding and minimizes redundancy in the
-    code  
-  - **Tweakable**: For text / *markdown* table generation, the
-    [**pander**](http://rapporter.github.io/pander/) package is used.
-    For *html* content,
-    [**htmltools**](https://CRAN.R-project.org/package=htmltools) and
-    the [**Bootstrap**](https://getbootstrap.com/) *CSS* framework are
-    used. Both **pander** and **Bootstrap** features and options can be
-    used to fine-tune **summarytools**’ results
+  - **Flexible**:
+      - Default values for most function arguments can be modified using
+        `st_options()`; this simplifies coding and minimizes redundancy
+      - [**Pander options**](http://rapporter.github.io/pander/) can be
+        used for text / markdown tables
+      - [**Bootstrap**](https://getbootstrap.com/) and user-defined
+        classes can be used for *html* tables
 
 ## 1.4 Installing summarytools
 
@@ -146,8 +143,9 @@ Factor
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 In this first example, the `plain.ascii` and `style` arguments were
-specified. However, since we have defined them globally with
-`st_options()`, they are redundant and will be omitted from hereon.
+specified. However, since we have defined them globally for this
+document using `st_options()`, they are redundant and will be omitted
+from hereon.
 
 ### 2.1.1 Ignoring Missing Data
 
@@ -176,7 +174,7 @@ freq(iris$Species, report.nas = FALSE, headings = FALSE)
 Note that the `headings = FALSE` parameter suppresses the heading
 section.
 
-### 2.1.2 Minimalistic Frequency Tables
+### 2.1.2 Minimal Frequency Tables
 
 By “switching off” all optional elements, a much simpler table will be
 produced:
@@ -291,7 +289,7 @@ Row proportions are shown by default. To display *column* or *total*
 proportions, use `prop = "c"` or `prop = "t"`, respectively. To omit
 proportions altogether, use `prop = "n"`.
 
-### 2.2.2 Minimalistic Cross-Tabulations
+### 2.2.2 Minimal Cross-Tabulations
 
 By “switching off” all optional features, we get a simple “2 x 2” table:
 
@@ -430,8 +428,6 @@ not shown):
 dfs <- dfSummary(iris)
 dfs$Variable <- NULL # This deletes the "Variable" column
 ```
-
-<br/>
 
 # 3\. Grouped Statistics Using stby()
 
@@ -717,7 +713,7 @@ stby(iris, iris$Species, descr, stats = "fivenum") %>%
 
 ![tb-kableExtra](img/tb-kableExtra.png)
 
-# 6\. Redirecting Outputs to Files
+# 6\. Redirecting Output to Files
 
 Using the `file` argument with `print()` or `view()`, we can write
 outputs to a file, be it *html*, *Rmd*, *md*, or just plain text
@@ -833,10 +829,7 @@ This table indicates what arguments can be used with `print()` or
 | split.tables (\*) |  x   |   x    |   x   |     x     |
 |      caption (\*) |  x   |   x    |   x   |     x     |
 
-(\*) These are **pander options**; several others can be used when
-calling **summarytools**’ core functions. See [pander: An R Pandoc
-Writer](http://rapporter.github.io/pander/) for a list of all available
-options.
+(\*) These are **pander options**
 
 ## 8.2 Overriding Heading Contents
 
@@ -1114,7 +1107,7 @@ versions, you’ll need to download the *.dmg* image from
 [xquartz.org](https://www.xquartz.org/) and add it to your Applications
 folder.
 
-<a href="#installing-summarytools-from-github">Back to installation
+<a href="#installing-from-github">Back to installation
 instructions</a>
 
 ### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
@@ -1122,7 +1115,7 @@ instructions</a>
 **[Magick++](https://imagemagick.org/Magick++/)**  
 `sudo apt install libmagick++-dev`
 
-<a href="#installing-summarytools-from-github">Back to installation
+<a href="#installing-from-github">Back to installation
 instructions</a>
 
 ### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
@@ -1136,7 +1129,7 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
     sudo apt-get update
     sudo apt-get install -y libmagick++-dev
 
-<a href="#installing-summarytools-from-github">Back to installation
+<a href="#installing-from-github">Back to installation
 instructions</a>
 
 ### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
@@ -1144,8 +1137,7 @@ instructions</a>
 **[Magick++](https://imagemagick.org/Magick++/)**  
 `sudo yum install ImageMagick-c++-devel`
 
-<a href="#installing-summarytools-from-github">Back to installation
-instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-solaris"></a>Required Software for Solaris
 
@@ -1156,8 +1148,7 @@ instructions</a>
     /opt/csw/bin/pkgutil -y -i imagemagick 
     /usr/sbin/pkgchk -L CSWimagemagick
 
-<a href="#installing-summarytools-from-github">Back to installation
-instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 # 14\. Conclusion
 

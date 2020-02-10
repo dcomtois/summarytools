@@ -16,37 +16,10 @@ vignette: >
 ```{r, include=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
+library(summarytools)
 ```
 
 ```{r, echo=FALSE}
-library(summarytools)
-st_css()
-```
-
-## This Vignette's Setup
-
-This vignette uses theme `rmarkdown::html_vignette`. Its **yaml** section
-looks like this:
-
-```
-# ---
-# title: "Recommendations for Using summarytools With Rmarkdown"
-# author: "Dominic Comtois"
-# date: "`r Sys.Date()`"
-# output: 
-#   rmarkdown::html_vignette: 
-#     css: 
-#     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
-# vignette: >
-#   %\VignetteIndexEntry{Recommendations for Rmarkdown}
-#   %\VignetteEngine{knitr::rmarkdown}
-#   %\VignetteEncoding{UTF-8}
-# ---
-```
-
-The following **summarytools global options** have been set. More of them can
-be useful, but this is a good starting point.
-```{r}
 st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it
            plain.ascii       = FALSE,       # One of the essential settings
            style             = "rmarkdown", # Idem.
@@ -54,24 +27,13 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
            footnote          = NA,          # Keeping the results minimalistic
            subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
                                             # For other themes, using TRUE might be preferable.
-```
-
-Also, the following **knitr chunk options** were set this way:
-```{r, eval=FALSE}
-library(knitr)
-opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
-```
-
-Finally, **summarytools' CSS** has been included in the following manner, with
-chunk option `echo = FALSE`:
-```{r, eval=FALSE}
 st_css()
 ```
 
-## Demo / Examples
+## Introduction
 
-Below are examples using recommended styles for *Rmarkdown* rendering. Available
-styles in summarytools are the same as `pander`'s: 
+This document mainly contains examples using recommended styles for *Rmarkdown* documents. 
+Available styles in summarytools are the same as `pander`'s: 
 
 - _simple_ (default)  
 - _rmarkdown_  
@@ -83,6 +45,8 @@ style is recommended. For `dfSummary()`, _grid_ is recommended.
  
 Starting with `freq()`, we'll review the recommended methods and styles to 
 quickly get satisfying results in *Rmarkdown* documents.
+
+To see how this vignette is configured, see <a href="#setup">this section</a>.
 
 Jump to...
 
@@ -149,7 +113,6 @@ also supported.
 descr(tobacco, style = 'rmarkdown')
 ```
 
-
 ## HTML Rendering
 
 We'll use table.classes = 'st-small' to show how it affects the table's size,
@@ -185,6 +148,7 @@ specify the `tmp.img.dir` parameter is a plus.
 ```{r}
 print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
 ```
+
 ### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
 
 For data frames containing numerous variables, we can use the `max.tbl.height`
@@ -198,7 +162,7 @@ print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75),
 
 <a href="#top">Back to top</a>
 
-# Using Other Formatting Packages
+## Using Other Formatting Packages
 
 As explained in the introductory vignette, `tb()` can be used to convert
 **summarytools** objects created with `freq()` and `descr()` to simple
@@ -213,6 +177,53 @@ stby(iris, iris$Species, descr, stats = "fivenum") %>%
   kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
+
+## <a id="setup"></a>This Vignette's Setup
+
+This vignette uses theme `rmarkdown::html_vignette`. Its **yaml** section
+looks like this:
+
+```
+# ---
+# title: "Recommendations for Using summarytools With Rmarkdown"
+# author: "Dominic Comtois"
+# date: "`r Sys.Date()`"
+# output: 
+#   rmarkdown::html_vignette: 
+#     css: 
+#     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+# vignette: >
+#   %\VignetteIndexEntry{Recommendations for Rmarkdown}
+#   %\VignetteEngine{knitr::rmarkdown}
+#   %\VignetteEncoding{UTF-8}
+# ---
+```
+
+The following **summarytools global options** have been set. More of them can
+be useful, but this is a good starting point.
+```{r, eval=FALSE}
+st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it
+           plain.ascii       = FALSE,       # One of the essential settings
+           style             = "rmarkdown", # Idem.
+           dfSummary.silent  = TRUE,        # Suppresses messages about temporary files
+           footnote          = NA,          # Keeping the results minimalistic
+           subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
+                                            # For other themes, using TRUE might be preferable.
+```
+
+Also, the following **knitr chunk options** were set this way:
+```{r, eval=FALSE}
+library(knitr)
+opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
+```
+
+Finally, **summarytools' CSS** has been included in the following manner, with
+chunk option `echo = FALSE`:
+```{r, eval=FALSE}
+st_css()
+```
+
+<a href="#top">Back to top</a>
 
 ## Final Notes
 
