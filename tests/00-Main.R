@@ -46,7 +46,7 @@ eval_with_feedback <- function(filename, lang, compare = FALSE) {
   cat("writing to ", path_out, "...\n")
   
   outfile <- file(description = path_out, open = "w")
-  
+
   for (line in contents) {
     # Ignore empty lines
     if (grepl("^\\s*$", line))
@@ -151,7 +151,7 @@ for (i in 2:6) {
 }
 
 compare_dirs("en")
-  compare_dirs("fr")
+compare_dirs("fr")
 compare_dirs("es")
 compare_dirs("pt")
 compare_dirs("tr")
