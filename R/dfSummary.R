@@ -808,6 +808,8 @@ crunch_numeric <- function(column_data, is_barcode) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
     counts <- table(column_data, useNA = "no")
+    min_val <- min(column_data, na.rm = TRUE)
+    max_val <- max(column_data, na.rm = TRUE)
     
     if (length(counts) == 1) {
       outlist[[1]] <- paste(1, trs("distinct.value"))
@@ -816,21 +818,21 @@ crunch_numeric <- function(column_data, is_barcode) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mode"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          min(column_data, na.rm = TRUE), "\\\n",
+          min_val, "\\\n",
           trs("mode"), strrep(" ", maxchars - nchar(trs("mode"))), " : ",
           names(counts)[which.max(counts)][1], "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          max(column_data, na.rm = TRUE)
+          max_val
         )
       } else if (length(counts) == 2) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          round(min(column_data, na.rm = TRUE), round.digits - 1), "\\\n",
+          round(min_val, round.digits - 1), "\\\n",
           trs("mean"), strrep(" ", maxchars - nchar(trs("mean"))), " : ",
           round(mean(column_data, na.rm = TRUE), round.digits - 1), "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          round(max(column_data, na.rm = TRUE), round.digits - 1)
+          round(max_val, round.digits - 1)
         )
       } else {
         outlist[[1]] <- paste(
@@ -838,9 +840,9 @@ crunch_numeric <- function(column_data, is_barcode) {
           round(mean(column_data, na.rm = TRUE), round.digits - 1),
           " (", round(sd(column_data, na.rm = TRUE), round.digits - 1), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", round(min(column_data, na.rm = TRUE), round.digits - 1),
+          ":\\\n", round(min_val, round.digits - 1),
           " < ", round(median(column_data, na.rm = TRUE), round.digits - 1),
-          " < ", round(max(column_data, na.rm = TRUE), round.digits - 1), "\\\n",
+          " < ", round(max_val, round.digits - 1), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
           round(IQR(column_data, na.rm = TRUE), round.digits - 1),
           " (", round(sd(column_data, na.rm = TRUE) /
@@ -903,12 +905,19 @@ crunch_numeric <- function(column_data, is_barcode) {
     } else {
       # Do not display specific values - only the number of distinct values
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
+      
+      # Check for integer sequences
       if (parent.frame()$n_miss == 0 &&
-          (isTRUE(all.equal(column_data, min(column_data):max(column_data))) ||
-           isTRUE(all.equal(column_data, max(column_data):min(column_data))))) {
-        outlist[[2]] <- paste(outlist[[2]], 
-                              paste0("(", trs("int.sequence"), ")"),
-                              sep = "\\\n")
+          all(is.integer(column_data)) &&
+          length(column_data) == max_val - min_val + 1) {
+        res <- try(isTRUE(all.equal(column_data, min_val:max_val)) ||
+                     isTRUE(all.equal(column_data, max_val:min_val)),
+                   silent = TRUE)
+        if (isTRUE(res)) {
+          outlist[[2]] <- paste(outlist[[2]], 
+                                paste0("(", trs("int.sequence"), ")"),
+                                sep = "\\\n")
+        }
       }
     }
     
