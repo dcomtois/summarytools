@@ -1,6 +1,6 @@
 # Arguments validation for freq, ctable, descr and dfSummary functions.
 # Another function for validating st_options arguments follows.
-#' @importFrom checkmate test_int test_logical test_choice test_string
+#' @importFrom checkmate test_int test_logical test_choice test_string test_number
 #' @importFrom dplyr n_distinct
 #' @keywords internal
 check_args <- function(mc, dotArgs) {
@@ -227,6 +227,34 @@ check_args <- function(mc, dotArgs) {
         !isTRUE(test_character(pf$dnn, any.missing = FALSE, 
                                len = 2, unique = TRUE))) {
       errmsg %+=% "'dnn' must be a character vector of 2 distinct values"
+    }
+    
+    if ("or" %in% names(mc)) {
+      if (isTRUE(pf$or)) {
+        pf$or <- .95
+      } else {
+        if (!test_number(pf$or, na.ok = TRUE, lower = .5, upper = .999)) {
+          errmsg %+=% "'or' must be a number between .5 and .999"
+        }
+        if (length(as.numeric(na.exclude(unique(pf$x)))) != 2 ||
+            length(as.numeric(na.exclude(unique(pf$y)))) != 2) {
+          errmsg %+=% "'or' can only be used with 2 x 2 tables"
+        }
+      }
+    }
+    
+    if ("rr" %in% names(mc)) {
+      if (isTRUE(pf$rr)) {
+        pf$rr <- .95
+      } else {
+        if (!test_number(pf$rr, na.ok = TRUE, lower = .5, upper = .999)) {
+          errmsg %+=% "'rr' must be a number between .5 and .999"
+        }
+        if (length(as.numeric(na.exclude(unique(pf$x)))) != 2 ||
+            length(as.numeric(na.exclude(unique(pf$y)))) != 2) {
+          errmsg %+=% "'rr' can only be used with 2 x 2 tables"
+        }
+      }
     }
   }
   

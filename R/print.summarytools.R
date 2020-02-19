@@ -913,6 +913,20 @@ print_ctable <- function(x, method) {
       )
     }
     
+    if ("OR" %in% names(attributes(x))) {
+      main_sect %+=% paste(
+        capture.output(pander::pander(format(attr(x, "OR"), digits = 2, nsmall = 2))),
+        collapse = "\n"
+      )
+    }
+    
+    if ("RR" %in% names(attributes(x))) {
+      main_sect %+=% paste(
+        capture.output(pander::pander(format(attr(x, "RR"), digits = 2, nsmall = 2))),
+        collapse = "\n"
+      )
+    }
+    
     if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
         gsub("\\|","\\\\|", main_sect[[length(main_sect)]])
@@ -1051,16 +1065,42 @@ print_ctable <- function(x, method) {
     
     div_list %+=% list(cross_table_html)
     
-    if ("chisq" %in% names(attributes(x))) {
-      chisq <- attr(x, "chisq")
-      div_list %+=% list(HTML(text = paste0(
-        "<p style='text-align:center'><strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
-        sub("^0\\.", ".", sprintf("%.4f", chisq[[1]])),
-        "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
-        "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ", 
-        sub("^0\\.", ".", sprintf("%.4f", chisq[[3]])), "</em></p>")))
-    }
-    
+    if (any(c("chisq", "OR", "RR") %in% names(attributes(x)))) {
+      
+      stats_str <- "<p style='text-align:center'>"
+      
+      if ("chisq" %in% names(attributes(x))) {
+        chisq <- attr(x, "chisq")
+        stats_str <- paste0(stats_str,
+          "<strong><em>&nbsp;&#935;<sup>2</sup></strong> = ", 
+          sub("^0\\.", ".", sprintf("%.4f", chisq[[1]])),
+          "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
+          "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ", 
+          sub("^0\\.", ".", sprintf("%.4f", chisq[[3]])), "</em><br/>")
+      }
+      
+      if ("OR" %in% names(attributes(x))) {
+        OR <- attr(x, "OR")
+        stats_str <- paste0(stats_str,
+          "<strong><em>O.R. </strong>(", attr(x, "OR-level")*100, "% C.I.) = <strong>",
+          format(OR[[1]], digits = 2, nsmall = 2), "</strong>&nbsp;&nbsp;(",  
+          format(OR[[2]], digits = 2, nsmall = 2), " - ", 
+          format(OR[[3]], digits = 2, nsmall = 2), ")</em><br/>")
+      }
+      
+      if ("RR" %in% names(attributes(x))) {
+        RR <- attr(x, "RR")
+        stats_str <- paste0(stats_str,
+                            "<strong><em>R.R. </strong>(", attr(x, "RR-level")*100, "% C.I.) = <strong>",
+                            format(RR[[1]], digits = 2, nsmall = 2), "</strong>&nbsp;&nbsp;(",  
+                            format(RR[[2]], digits = 2, nsmall = 2), " - ", 
+                            format(RR[[3]], digits = 2, nsmall = 2), ")</em>")
+      }
+      
+      div_list %+=% list(HTML(text = paste0(stats_str, "</p>")))
+      
+    }      
+      
     if (parent.frame()$footnote != "") {
       fn <- conv_non_ascii(parent.frame()[["footnote"]])
       div_list %+=% list(HTML(text = fn))

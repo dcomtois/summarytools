@@ -38,6 +38,13 @@
 #' @param dnn Names to be used in output table. Vector of two strings; By 
 #'   default, the character values for arguments x and y are used.
 #' @param chisq Logical. Display chisq statistic along with p-value in a message.
+#' @param or Numeric. Display odds ratio with the specified confidence level (typically
+#'   95%). Can be set to \code{TRUE}, in which case 95% confidence interval is given.
+#'   confidence intervals are calculated using Wald's method (normal approximation).
+#' @param rr Numeric. Display risk ratio (relative risk) with the specified confidence
+#'   level (typically 95%). Can be set to \code{TRUE}, in which case 95% confidence 
+#'   interval is given. confidence intervals are calculated using Wald's method
+#'   (normal approximation).
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -61,11 +68,13 @@
 #' # Show column proportions, without totals
 #' with(tobacco, ctable(smoker, diseased, prop = "c", totals = FALSE))
 #' 
-#' # Simple 2 x 2 table
-#' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n"))
+#' # Simple 2 x 2 table with odds ratio and risk ration
+#' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n",
+#'                      or = 95%, rr = 95%))
 #' 
 #' # Grouped cross-tabulations
 #' with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
+#'
 #'
 #' \dontrun{
 #' ct <- ctable(tobacco$gender, tobacco$smoker)
@@ -99,6 +108,8 @@ ctable <- function(x,
                    split.tables    = Inf,
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
+                   or              = NA,
+                   rr              = NA,
                    weights         = NA,
                    rescale.weights = FALSE,
                    ...) {
@@ -258,13 +269,6 @@ ctable <- function(x,
     }
   }
   
-  if (isTRUE(chisq)) {
-    tmp.chisq <- chisq.test(freq_table)
-    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
-                   tmp.chisq$parameter, 
-                   p.value = round(tmp.chisq$p.value, 4))
-  }
-
   names(dimnames(freq_table)) <- c(x_name, y_name)
 
   prop_table <- switch(prop,
@@ -323,7 +327,34 @@ ctable <- function(x,
   attr(output, "date") <- Sys.Date()
 
   if (isTRUE(chisq)) {
+    tmp.chisq <- chisq.test(freq_table)
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
+                   tmp.chisq$parameter, 
+                   p.value = round(tmp.chisq$p.value, 4))
     attr(output, "chisq") <- tmp.chisq
+  }
+  
+  if (!is.na(or) || !is.na(rr)) {
+    ft_2by2 <- table(tobacco$smoker, tobacco$diseased, useNA = "no")
+    if (!is.na(or)) {
+      OR <- prod(ft_2by2[c(1,4)]) / prod(ft_2by2[c(2,3)])
+      SE <- sqrt(sum(1/ft_2by2))
+      attr(output, "OR") <- c(OR,
+                              exp(log(OR) - qnorm(p = 1-((1-or)/2)) * SE),
+                              exp(log(OR) + qnorm(p = 1-((1-or)/2)) * SE))
+      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", or * 100, "%"), paste0("Hi - ", or * 100, "%"))
+      attr(output, "OR-level") <- or
+    }
+    
+    if (!is.na(rr)) {
+      RR <- (ft_2by2[1] / sum(ft_2by2[c(1,3)])) / (ft_2by2[2] / sum(ft_2by2[c(2,4)]))
+      SE  <- sqrt(sum(1/ft_2by2[1], 1/ft_2by2[2], -1/sum(ft_2by2[c(1,3)]), -1/sum(ft_2by2[c(2,4)])))
+      attr(output, "RR") <- c(RR,
+                              exp(log(RR) - qnorm(p = 1-((1-rr)/2)) * SE),
+                              exp(log(RR) + qnorm(p = 1-((1-rr)/2)) * SE))
+      names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", rr * 100, "%"), paste0("Hi - ", or * 100, "%"))
+      attr(output, "RR-level") <- rr
+    }
   }
 
   dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
