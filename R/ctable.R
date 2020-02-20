@@ -335,7 +335,7 @@ ctable <- function(x,
   }
   
   if (!is.na(or) || !is.na(rr)) {
-    ft_2by2 <- table(tobacco$smoker, tobacco$diseased, useNA = "no")
+    ft_2by2 <- freq_table[1:2, 1:2]
     if (!is.na(or)) {
       OR <- prod(ft_2by2[c(1,4)]) / prod(ft_2by2[c(2,3)])
       SE <- sqrt(sum(1/ft_2by2))
