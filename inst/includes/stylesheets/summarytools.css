@@ -32,6 +32,10 @@ table.st-table td span {
   display: block;
 }
 
+table.st-table > tfoot > tr > td {
+  border:none;
+}
+
 .st-container {
   width: 100%;
   padding-right: 15px;
@@ -70,10 +74,8 @@ table.st-table td span {
 
 .st-table-bordered > thead > tr > th,
 .st-table-bordered > tbody > tr > th,
-.st-table-bordered > tfoot > tr > th,
 .st-table-bordered > thead > tr > td,
-.st-table-bordered > tbody > tr > td,
-.st-table-bordered > tfoot > tr > td {
+.st-table-bordered > tbody > tr > td {
   border: 1px solid #cccccc;
 }
 
@@ -122,10 +124,8 @@ table.st-table td span {
 
 .st-descr-table > thead > tr > th,
 .st-descr-table > tbody > tr > th,
-.st-descr-table > tfoot > tr > th,
 .st-descr-table > thead > tr > td,
-.st-descr-table > tbody > tr > td,
-.st-descr-table > tfoot > tr > td {
+.st-descr-table > tbody > tr > td {
   padding-left: 24px;
   padding-right: 24px;
   word-wrap: break-word;
@@ -167,10 +167,8 @@ table.st-table td span {
 
 .st-small > thead > tr > th,
 .st-small > tbody > tr > th,
-.st-small > tfoot > tr > th,
 .st-small > thead > tr > td,
-.st-small > tbody > tr > td,
-.st-small > tfoot > tr > td {
+.st-small > tbody > tr > td {
   padding-left: 12px;
   padding-right: 12px;
 }

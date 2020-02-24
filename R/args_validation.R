@@ -2,6 +2,7 @@
 # Another function for validating st_options arguments follows.
 #' @importFrom checkmate test_int test_logical test_choice test_string test_number
 #' @importFrom dplyr n_distinct
+#' @importFrom stats na.omit
 #' @keywords internal
 check_args <- function(mc, dotArgs) {
   
@@ -236,8 +237,8 @@ check_args <- function(mc, dotArgs) {
         if (!test_number(pf$or, na.ok = TRUE, lower = .5, upper = .999)) {
           errmsg %+=% "'or' must be a number between .5 and .999"
         }
-        if (length(as.numeric(na.exclude(unique(pf$x)))) != 2 ||
-            length(as.numeric(na.exclude(unique(pf$y)))) != 2) {
+        if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
+            length(as.numeric(na.omit(unique(pf$y)))) != 2) {
           errmsg %+=% "'or' can only be used with 2 x 2 tables"
         }
       }
@@ -250,8 +251,8 @@ check_args <- function(mc, dotArgs) {
         if (!test_number(pf$rr, na.ok = TRUE, lower = .5, upper = .999)) {
           errmsg %+=% "'rr' must be a number between .5 and .999"
         }
-        if (length(as.numeric(na.exclude(unique(pf$x)))) != 2 ||
-            length(as.numeric(na.exclude(unique(pf$y)))) != 2) {
+        if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
+            length(as.numeric(na.omit(unique(pf$y)))) != 2) {
           errmsg %+=% "'rr' can only be used with 2 x 2 tables"
         }
       }

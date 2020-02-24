@@ -70,7 +70,7 @@
 #' 
 #' # Simple 2 x 2 table with odds ratio and risk ration
 #' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n",
-#'                      or = 95%, rr = 95%))
+#'                      or = .95, rr = .95))
 #' 
 #' # Grouped cross-tabulations
 #' with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
@@ -93,7 +93,7 @@
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @export
-#' @importFrom stats addmargins na.omit chisq.test
+#' @importFrom stats addmargins na.omit chisq.test qnorm
 ctable <- function(x, 
                    y,
                    prop            = st_options("ctable.prop"),
@@ -242,6 +242,8 @@ ctable <- function(x,
   # Create xfreq table ---------------------------------------------------------
   if (identical(NA, weights)) {
     freq_table <- table(x, y, useNA = useNA)
+    # Generate minimal table for calculation of chi-square, OR and RR
+    freq_table_min <- table(x, y, useNA = "no")
   } else {
     # Weights are used
     weights_string <- deparse(substitute(weights))
@@ -264,8 +266,10 @@ ctable <- function(x,
     
     if (useNA == "no") {
       freq_table <- xtabs(weights ~ x + y, addNA = FALSE)
+      freq_table_min <- freq_table
     } else {
       freq_table <- xtabs(weights ~ x + y, addNA = TRUE)
+      freq_table_min <- xtabs(weights ~ x + y, addNA = FALSE)
     }
   }
   
@@ -281,6 +285,7 @@ ctable <- function(x,
   freq_table <- addmargins(freq_table)
   rownames(freq_table)[nrow(freq_table)] <- trs("total")
   colnames(freq_table)[ncol(freq_table)] <- trs("total")
+  
   if (!is.null(prop_table)) {
     prop_table[is.nan(prop_table)] <- 0
     if (prop == "t") {
@@ -327,7 +332,7 @@ ctable <- function(x,
   attr(output, "date") <- Sys.Date()
 
   if (isTRUE(chisq)) {
-    tmp.chisq <- chisq.test(freq_table)
+    tmp.chisq <- chisq.test(freq_table_min)
     tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
                    tmp.chisq$parameter, 
                    p.value = round(tmp.chisq$p.value, 4))
@@ -335,20 +340,24 @@ ctable <- function(x,
   }
   
   if (!is.na(or) || !is.na(rr)) {
-    ft_2by2 <- freq_table[1:2, 1:2]
     if (!is.na(or)) {
-      OR <- prod(ft_2by2[c(1,4)]) / prod(ft_2by2[c(2,3)])
-      SE <- sqrt(sum(1/ft_2by2))
+      OR <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
+      SE <- sqrt(sum(1/freq_table_min))
       attr(output, "OR") <- c(OR,
                               exp(log(OR) - qnorm(p = 1-((1-or)/2)) * SE),
                               exp(log(OR) + qnorm(p = 1-((1-or)/2)) * SE))
-      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", or * 100, "%"), paste0("Hi - ", or * 100, "%"))
+      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", or * 100, "%"),
+                                     paste0("Hi - ", or * 100, "%"))
       attr(output, "OR-level") <- or
     }
     
     if (!is.na(rr)) {
-      RR <- (ft_2by2[1] / sum(ft_2by2[c(1,3)])) / (ft_2by2[2] / sum(ft_2by2[c(2,4)]))
-      SE  <- sqrt(sum(1/ft_2by2[1], 1/ft_2by2[2], -1/sum(ft_2by2[c(1,3)]), -1/sum(ft_2by2[c(2,4)])))
+      RR <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
+        (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
+      SE <- sqrt(sum(1/freq_table_min[1], 
+                     1/freq_table_min[2],
+                     -1/sum(freq_table_min[c(1,3)]), 
+                     -1/sum(freq_table_min[c(2,4)])))
       attr(output, "RR") <- c(RR,
                               exp(log(RR) - qnorm(p = 1-((1-rr)/2)) * SE),
                               exp(log(RR) + qnorm(p = 1-((1-rr)/2)) * SE))
@@ -356,6 +365,7 @@ ctable <- function(x,
       attr(output, "RR-level") <- rr
     }
   }
+  
 
   dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
   data_info <-

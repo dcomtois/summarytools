@@ -78,11 +78,12 @@ default, the character values for arguments x and y are used.}
 
 \item{or}{Numeric. Display odds ratio with the specified confidence level (typically
 95%). Can be set to \code{TRUE}, in which case 95% confidence interval is given.
-confidence intervals are calculated using Wald's method.}
+confidence intervals are calculated using Wald's method (normal approximation).}
 
 \item{rr}{Numeric. Display risk ratio (relative risk) with the specified confidence
 level (typically 95%). Can be set to \code{TRUE}, in which case 95% confidence 
-interval is given.}
+interval is given. confidence intervals are calculated using Wald's method
+(normal approximation).}
 
 \item{weights}{Vector of weights; must be of the same length as \code{x}.}
 
@@ -117,7 +118,7 @@ with(tobacco, ctable(smoker, diseased, prop = "c", totals = FALSE))
 
 # Simple 2 x 2 table with odds ratio and risk ration
 with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n",
-                     or = 95\%, rr = 95\%))
+                     or = .95, rr = .95))
 
 # Grouped cross-tabulations
 with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
