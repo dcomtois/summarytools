@@ -43,6 +43,9 @@ $freq.report.nas
 $freq.ignore.threshold
 [1] 25
 
+$freq.silent
+[1] FALSE
+
 $ctable.prop
 [1] "r"
 

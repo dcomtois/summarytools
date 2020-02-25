@@ -46,6 +46,10 @@ table.st-table td span {
   display: block;
 }
 
+table.st-table > tfoot > tr > td {
+  border:none;
+}
+
 .st-container {
   width: 100%;
   padding-right: 15px;
@@ -84,10 +88,8 @@ table.st-table td span {
 
 .st-table-bordered > thead > tr > th,
 .st-table-bordered > tbody > tr > th,
-.st-table-bordered > tfoot > tr > th,
 .st-table-bordered > thead > tr > td,
-.st-table-bordered > tbody > tr > td,
-.st-table-bordered > tfoot > tr > td {
+.st-table-bordered > tbody > tr > td {
   border: 1px solid #cccccc;
 }
 
@@ -136,10 +138,8 @@ table.st-table td span {
 
 .st-descr-table > thead > tr > th,
 .st-descr-table > tbody > tr > th,
-.st-descr-table > tfoot > tr > th,
 .st-descr-table > thead > tr > td,
-.st-descr-table > tbody > tr > td,
-.st-descr-table > tfoot > tr > td {
+.st-descr-table > tbody > tr > td {
   padding-left: 24px;
   padding-right: 24px;
   word-wrap: break-word;
@@ -181,10 +181,8 @@ table.st-table td span {
 
 .st-small > thead > tr > th,
 .st-small > tbody > tr > th,
-.st-small > tfoot > tr > th,
 .st-small > thead > tr > td,
-.st-small > tbody > tr > td,
-.st-small > tfoot > tr > td {
+.st-small > tbody > tr > td {
   padding-left: 12px;
   padding-right: 12px;
 }</style>
@@ -218,7 +216,7 @@ min < med < mak:
 4 < 15 < 25
 &#0199;A (CV) : 7 (0.3)</td>
       <td align="left" style="vertical-align:middle">19 Farklı değerler</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AEZFxI69uHeBQAAAGhJREFUaN7t2MEJgDAMQNGs4Ap1A7P/bl4NSGiLeHr/FkjeuTRCOx1No6luTmBnPrqyTDAYDAaDwWAwGAwGg8FgsDmsftF0WN18xcp5dlidYDAYDAaDwX7AmnfPOtacw2CwNWx8UminG0ec+fmqrsqUAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI2VDA0OjE4OjU4LTA1OjAw1Lu5BwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yNlQwNDoxODo1OC0wNTowMKXmAbsAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AIYFAw3oUs+iwAAAGhJREFUaN7t2MEJgDAMQNGs4Ap1A7P/bl4NSGiLeHr/FkjeuTRCOx1No6luTmBnPrqyTDAYDAaDwWAwGAwGg8FgsDmsftF0WN18xcp5dlidYDAYDAaDwX7AmnfPOtacw2CwNWx8UminG0ec+fmqrsqUAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAyLTI1VDAxOjEyOjU1LTA1OjAwNf/JRgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMi0yNVQwMToxMjo1NS0wNTowMESicfoAAAAASUVORK5CYII="></td>
       <td align="center">50
 (100%)</td>
       <td align="center">0
@@ -233,7 +231,7 @@ min < med < mak:
 2 < 36 < 120
 &#0199;A (CV) : 30 (0.6)</td>
       <td align="left" style="vertical-align:middle">35 Farklı değerler</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AEZFxI69uHeBQAAAHpJREFUaN7t2LENgCAQQFFW0A3EDXT/3Sy5QqOANPp+RQEvJDQXUlJLU2nOpWWq6gTbSzAYDAaDwWAwGGwUFqb43I2tZbnBRmLx2bqxeAoGg8FgsJHYg7njObbf3xIGg9VjF7/8bVhYw2Aw2FewOM90Y3HLv7D8SkktHUNVg9A9pdw0AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAxLTI2VDA0OjE4OjU4LTA1OjAw1Lu5BwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMS0yNlQwNDoxODo1OC0wNTowMKXmAbsAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AIYFAw3oUs+iwAAAHpJREFUaN7t2LENgCAQQFFW0A3EDXT/3Sy5QqOANPp+RQEvJDQXUlJLU2nOpWWq6gTbSzAYDAaDwWAwGGwUFqb43I2tZbnBRmLx2bqxeAoGg8FgsJHYg7njObbf3xIGg9VjF7/8bVhYw2Aw2FewOM90Y3HLv7D8SkktHUNVg9A9pdw0AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTAyLTI1VDAxOjEyOjU1LTA1OjAwNf/JRgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wMi0yNVQwMToxMjo1NS0wNTowMESicfoAAAAASUVORK5CYII="></td>
       <td align="center">50
 (100%)</td>
       <td align="center">0

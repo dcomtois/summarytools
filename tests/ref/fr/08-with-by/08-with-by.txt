@@ -1,6 +1,7 @@
 
 #-------------------------------- with-by.R ------------------------------------  
 
+> library(dplyr) 
 
 # with ------------------------------------------------------------------------- 
 
@@ -833,9 +834,6 @@ N: 258
       51-70   26.91         4.26    9.01   39.21
        71 +   27.45         4.37   16.36   38.37
 
-
-# TODO: Mettre nom de variable de groupe dans la cellule en haut à gauche (age.gr)  
-
 > view(b6, method = "browser", footnote = "4 stats", file = "18.html") 
 -- Output file written
 
@@ -954,7 +952,6 @@ Groupe: age.gr = 71 +
    Total            47.8 (28.3%)   121.1 (71.7%)   168.9 (100.0%)
 -------- -------- -------------- --------------- ----------------
 
-> library(dplyr) 
 > tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts) 
 
 Tableau de fréquences pondérées  

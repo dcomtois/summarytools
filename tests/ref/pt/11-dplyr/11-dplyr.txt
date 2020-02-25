@@ -300,33 +300,33 @@ Grupo: age.gr = (Missing), gender = M
    age.gr    gender    smoker  freq   pct pct_cum
    <fct>     <fct>     <fct>  <dbl> <dbl>   <dbl>
  1 18-34     F         Yes       34  1.97    1.97
- 2 35-50     F         Yes       39  2.36    4.34
- 3 51-70     F         Yes       48  2.18    6.52
- 4 71 +      F         Yes       21  1.95    8.47
- 5 (Missing) F         Yes        5  2.55   11.0 
- 6 18-34     M         Yes       38  2.09   13.1 
- 7 35-50     M         Yes       31  1.88   15.0 
- 8 51-70     M         Yes       48  2.27   17.3 
- 9 71 +      M         Yes       23  2.08   19.3 
-10 (Missing) M         Yes        3  1.95   21.3 
-11 18-34     (Missing) Yes        2  2.86   24.1 
-12 35-50     (Missing) Yes        2  2.86   27.0 
-13 51-70     (Missing) Yes        3  2.38   29.4 
-14 71 +      (Missing) Yes        1  2.38   31.8 
+ 2 18-34     M         Yes       38  2.09    4.06
+ 3 18-34     (Missing) Yes        2  2.86    6.92
+ 4 35-50     F         Yes       39  2.36    9.28
+ 5 35-50     M         Yes       31  1.88   11.2 
+ 6 35-50     (Missing) Yes        2  2.86   14.0 
+ 7 51-70     F         Yes       48  2.18   16.2 
+ 8 51-70     M         Yes       48  2.27   18.5 
+ 9 51-70     (Missing) Yes        3  2.38   20.8 
+10 71 +      F         Yes       21  1.95   22.8 
+11 71 +      M         Yes       23  2.08   24.9 
+12 71 +      (Missing) Yes        1  2.38   27.3 
+13 (Missing) F         Yes        5  2.55   29.8 
+14 (Missing) M         Yes        3  1.95   31.8 
 15 18-34     F         No        89  5.17   36.9 
-16 35-50     F         No        79  4.78   41.7 
-17 51-70     F         No       109  4.96   46.7 
-18 71 +      F         No        56  5.19   51.9 
-19 (Missing) F         No         9  4.59   56.5 
-20 18-34     M         No        92  5.05   61.5 
-21 35-50     M         No        87  5.27   66.8 
-22 51-70     M         No       103  4.87   71.6 
-23 71 +      M         No        56  5.06   76.7 
-24 (Missing) M         No         8  5.19   81.9 
-25 18-34     (Missing) No         3  4.29   86.2 
-26 35-50     (Missing) No         3  4.29   90.5 
-27 51-70     (Missing) No         6  4.76   95.2 
-28 71 +      (Missing) No         2  4.76  100   
+16 18-34     M         No        92  5.05   42.0 
+17 18-34     (Missing) No         3  4.29   46.3 
+18 35-50     F         No        79  4.78   51.0 
+19 35-50     M         No        87  5.27   56.3 
+20 35-50     (Missing) No         3  4.29   60.6 
+21 51-70     F         No       109  4.96   65.6 
+22 51-70     M         No       103  4.87   70.4 
+23 51-70     (Missing) No         6  4.76   75.2 
+24 71 +      F         No        56  5.19   80.4 
+25 71 +      M         No        56  5.06   85.5 
+26 71 +      (Missing) No         2  4.76   90.2 
+27 (Missing) F         No         9  4.59   94.8 
+28 (Missing) M         No         8  5.19  100   
 
 > fr3 %>% print(file = "03-freqs-group_by-2.html") 
 -- Switching method to 'browser'
@@ -870,28 +870,28 @@ N: 14
    smoker gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>  <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
  1 Yes    F         age          49.1   18.3    19     50    80        142      96.6
- 2 No     F         age          49.7   18.3    18     50    80        333      97.4
- 3 Yes    M         age          50.5   19.3    19     52.5  80        140      97.9
- 4 No     M         age          49.2   18.0    18     49    80        338      97.7
- 5 Yes    (Missing) age          47.9   18.7    24     45.5  75          8     100  
+ 2 Yes    M         age          50.5   19.3    19     52.5  80        140      97.9
+ 3 Yes    (Missing) age          47.9   18.7    24     45.5  75          8     100  
+ 4 No     F         age          49.7   18.3    18     50    80        333      97.4
+ 5 No     M         age          49.2   18.0    18     49    80        338      97.7
  6 No     (Missing) age          52.6   18.5    19     59    80         14     100  
  7 Yes    F         BMI          25.9    4.38    9.01  26.0  36.4      144      98.0
- 8 No     F         BMI          26.2    5.18   10.3   25.8  39.4      331      96.8
- 9 Yes    M         BMI          25.3    4.17   16.0   24.9  35.2      139      97.2
-10 No     M         BMI          25.3    3.91    8.83  25.2  36.8      338      97.7
-11 Yes    (Missing) BMI          27.2    2.48   24.2   26.9  31.2        8     100  
+ 8 Yes    M         BMI          25.3    4.17   16.0   24.9  35.2      139      97.2
+ 9 Yes    (Missing) BMI          27.2    2.48   24.2   26.9  31.2        8     100  
+10 No     F         BMI          26.2    5.18   10.3   25.8  39.4      331      96.8
+11 No     M         BMI          25.3    3.91    8.83  25.2  36.8      338      97.7
 12 No     (Missing) BMI          26.8    4.07   20.2   27.2  32.4       14     100  
 13 Yes    F         cigs.per.day 22.5   11.1     5     22    40        143      97.3
-14 No     F         cigs.per.day  0      0       0      0     0        325      95.0
-15 Yes    M         cigs.per.day 22.8   10.4     5     22.5  40        140      97.9
-16 No     M         cigs.per.day  0      0       0      0     0        335      96.8
-17 Yes    (Missing) cigs.per.day 16.8    8.92    5     20    28          8     100  
+14 Yes    M         cigs.per.day 22.8   10.4     5     22.5  40        140      97.9
+15 Yes    (Missing) cigs.per.day 16.8    8.92    5     20    28          8     100  
+16 No     F         cigs.per.day  0      0       0      0     0        325      95.0
+17 No     M         cigs.per.day  0      0       0      0     0        335      96.8
 18 No     (Missing) cigs.per.day  0      0       0      0     0         14     100  
 19 Yes    F         samp.wgts     1.00   0.0824  0.861  1.04  1.06     147     100  
-20 No     F         samp.wgts     0.999  0.0848  0.861  1.04  1.06     342     100  
-21 Yes    M         samp.wgts     0.999  0.0848  0.861  1.04  1.06     143     100  
-22 No     M         samp.wgts     1.00   0.0838  0.861  1.04  1.06     346     100  
-23 Yes    (Missing) samp.wgts     1.00   0.0874  0.861  1.05  1.06       8     100  
+20 Yes    M         samp.wgts     0.999  0.0848  0.861  1.04  1.06     143     100  
+21 Yes    (Missing) samp.wgts     1.00   0.0874  0.861  1.05  1.06       8     100  
+22 No     F         samp.wgts     0.999  0.0848  0.861  1.04  1.06     342     100  
+23 No     M         samp.wgts     1.00   0.0838  0.861  1.04  1.06     346     100  
 24 No     (Missing) samp.wgts     1.01   0.0806  0.861  1.05  1.06      14     100  
 
 > d6 %>% print(file = "12-descr-group_by-2.html") 
