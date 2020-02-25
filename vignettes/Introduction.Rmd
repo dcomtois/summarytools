@@ -25,7 +25,8 @@ library(magrittr)
 st_options(plain.ascii = FALSE,
            style = "rmarkdown",
            footnote = NA,
-           subtitle.emphasis = FALSE)
+           subtitle.emphasis = FALSE,
+           lang = "en")
 ```
 
 ```{r, echo=FALSE}
