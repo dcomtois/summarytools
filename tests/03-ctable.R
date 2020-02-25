@@ -61,6 +61,10 @@ tobacco %$% stby(list(smoker, diseased), gender, ctable)
 with(tobacco, stby(list(smoker, diseased), gender, ctable))
 stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
 
+# Statistics
+with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
+view(with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = .9, RR = .9)), file = "06.html")
+
 # Global Options
 st_options(ctable.prop = "t", ctable.totals = FALSE)
 with(tobacco, ctable(smoker, diseased))

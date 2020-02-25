@@ -230,30 +230,30 @@ check_args <- function(mc, dotArgs) {
       errmsg %+=% "'dnn' must be a character vector of 2 distinct values"
     }
     
-    if ("or" %in% names(mc)) {
-      if (isTRUE(pf$or)) {
-        pf$or <- .95
+    if ("OR" %in% names(mc)) {
+      if (isTRUE(pf$OR)) {
+        pf$OR <- .95
       } else {
-        if (!test_number(pf$or, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'or' must be a number between .5 and .999"
+        if (!test_number(pf$OR, na.ok = TRUE, lower = .5, upper = .999)) {
+          errmsg %+=% "'OR' must be a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
-          errmsg %+=% "'or' can only be used with 2 x 2 tables"
+          errmsg %+=% "'OR' can only be used with 2 x 2 tables"
         }
       }
     }
     
-    if ("rr" %in% names(mc)) {
-      if (isTRUE(pf$rr)) {
-        pf$rr <- .95
+    if ("RR" %in% names(mc)) {
+      if (isTRUE(pf$RR)) {
+        pf$RR <- .95
       } else {
-        if (!test_number(pf$rr, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'rr' must be a number between .5 and .999"
+        if (!test_number(pf$RR, na.ok = TRUE, lower = .5, upper = .999)) {
+          errmsg %+=% "'RR' must be a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
-          errmsg %+=% "'rr' can only be used with 2 x 2 tables"
+          errmsg %+=% "'RR' can only be used with 2 x 2 tables"
         }
       }
     }

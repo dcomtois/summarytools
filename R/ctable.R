@@ -37,14 +37,15 @@
 #'   table can be. \code{Inf} by default.
 #' @param dnn Names to be used in output table. Vector of two strings; By 
 #'   default, the character values for arguments x and y are used.
-#' @param chisq Logical. Display chisq statistic along with p-value in a message.
-#' @param or Numeric. Display odds ratio with the specified confidence level (typically
-#'   95%). Can be set to \code{TRUE}, in which case 95% confidence interval is given.
-#'   confidence intervals are calculated using Wald's method (normal approximation).
-#' @param rr Numeric. Display risk ratio (relative risk) with the specified confidence
-#'   level (typically 95%). Can be set to \code{TRUE}, in which case 95% confidence 
-#'   interval is given. confidence intervals are calculated using Wald's method
+#' @param chisq Logical. Display chisq statistic along with p-value.
+#' @param OR Logical or numeric. Display odds ratio with the specified confidence 
+#'   level (typically .95). Can be set to \code{TRUE}, in which case 95% confidence
+#'   interval is given. Confidence intervals are calculated using Wald's method
 #'   (normal approximation).
+#' @param RR Logical or numeric. Display risk ratio (also called relative risk) 
+#'   with the specified confidence level (typically .95). Can be set to \code{TRUE}, 
+#'   in which case 95% confidence interval is given. confidence intervals are
+#'   calculated using Wald's method (normal approximation).
 #' @param weights Vector of weights; must be of the same length as \code{x}.
 #' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
 #'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
@@ -68,9 +69,9 @@
 #' # Show column proportions, without totals
 #' with(tobacco, ctable(smoker, diseased, prop = "c", totals = FALSE))
 #' 
-#' # Simple 2 x 2 table with odds ratio and risk ration
+#' # Simple 2 x 2 table with odds ratio and risk ratio
 #' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n",
-#'                      or = .95, rr = .95))
+#'                      OR = TRUE, RR = TRUE))
 #' 
 #' # Grouped cross-tabulations
 #' with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
@@ -108,8 +109,8 @@ ctable <- function(x,
                    split.tables    = Inf,
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
-                   or              = NA,
-                   rr              = NA,
+                   OR              = FALSE,
+                   RR              = FALSE,
                    weights         = NA,
                    rescale.weights = FALSE,
                    ...) {
@@ -339,30 +340,31 @@ ctable <- function(x,
     attr(output, "chisq") <- tmp.chisq
   }
   
-  if (!is.na(or) || !is.na(rr)) {
-    if (!is.na(or)) {
-      OR <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
-      SE <- sqrt(sum(1/freq_table_min))
-      attr(output, "OR") <- c(OR,
-                              exp(log(OR) - qnorm(p = 1-((1-or)/2)) * SE),
-                              exp(log(OR) + qnorm(p = 1-((1-or)/2)) * SE))
-      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", or * 100, "%"),
-                                     paste0("Hi - ", or * 100, "%"))
-      attr(output, "OR-level") <- or
+  if (!isFALSE(OR) || !isFALSE(RR)) {
+    if (!isFALSE(OR)) {
+      or <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
+      se <- sqrt(sum(1/freq_table_min))
+      attr(output, "OR") <- c(or,
+                              exp(log(or) - qnorm(p = 1-((1-OR)/2)) * se),
+                              exp(log(or) + qnorm(p = 1-((1-OR)/2)) * se))
+      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", OR * 100, "%"),
+                                     paste0("Hi - ", OR * 100, "%"))
+      attr(output, "OR-level") <- OR
     }
     
-    if (!is.na(rr)) {
-      RR <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
+    if (!is.na(RR)) {
+      rr <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
         (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
-      SE <- sqrt(sum(1/freq_table_min[1], 
+      se <- sqrt(sum(1/freq_table_min[1], 
                      1/freq_table_min[2],
                      -1/sum(freq_table_min[c(1,3)]), 
                      -1/sum(freq_table_min[c(2,4)])))
-      attr(output, "RR") <- c(RR,
-                              exp(log(RR) - qnorm(p = 1-((1-rr)/2)) * SE),
-                              exp(log(RR) + qnorm(p = 1-((1-rr)/2)) * SE))
-      names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", rr * 100, "%"), paste0("Hi - ", or * 100, "%"))
-      attr(output, "RR-level") <- rr
+      attr(output, "RR") <- c(rr,
+                              exp(log(rr) - qnorm(p = 1-((1-RR)/2)) * se),
+                              exp(log(rr) + qnorm(p = 1-((1-RR)/2)) * se))
+      names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", RR * 100, "%"), 
+                                     paste0("Hi - ", RR * 100, "%"))
+      attr(output, "RR-level") <- RR
     }
   }
   
