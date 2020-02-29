@@ -1,3 +1,15 @@
+# summarytools 0.9.6 (2020-03-01)
+
+ - In ctable():
+   + added Odds Ratio and Risk Ratio (aka Relative Risk) 
+     statistics with 95% C.I.'s
+   + Fixed issue with chi-square statistic not reporting
+     appropriate values
+   + Fixed html alignment of statistics below the table
+     (now centering based on table width as it should)
+ - in dfSummary(), fixed an issue arising when a very
+   large range of numeric values exists in a column
+
 # summarytools 0.9.5 (2020-01-26)
 
  - Eliminated automatic check for X11 capabilities as it caused problems on some
