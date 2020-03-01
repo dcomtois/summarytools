@@ -83,8 +83,8 @@ Results can be
      this simplifies coding and minimizes redundancy 
    + [**Pander options**](http://rapporter.github.io/pander/) can be used for text /
      markdown tables
-   + [**Bootstrap**](https://getbootstrap.com/) and user-defined classes can be used
-     for *html* tables
+   + [**Bootstrap**](https://getbootstrap.com/) and user-defined *CSS* classes can be
+     used for *html* tables
 
 ## 1.4 Installing summarytools
 
@@ -255,16 +255,23 @@ with(tobacco,
 ```
 <img src="img/ctable-barebones-2.png" style="border:0"/>
 
-### 2.2.3 Chi-Square (&#120536;<sup>2</sup>) Statistic
+### 2.2.3 Chi-Square (&#120536;<sup>2</sup>), Odds Ratio and Risk Ratio
 
-To display the chi-square statistic, set `chisq = TRUE`. To show how
-pipes can be used with **summarytools**, we'll use **magrittr**'s
-`%$%` and `%>%` operators:
+To display the chi-square statistic, set `chisq = TRUE`. For
+*2 x 2* tables, use `OR` and `RR` to show odds ratio and
+risk ratio (also called relative risk), respectively. Those can
+be set to `TRUE`, in which case 95% confidence intervals will be
+shown; to use alternate confidence levels, use for example `OR = .90`.
+
+To show how pipes can be used with **summarytools**, we'll
+use **magrittr**'s `%$%` and `%>%` operators:
 
 ```{r, eval=FALSE}
 library(magrittr)
-tobacco %$%  # The %$% operator replaces with(tobacco, ...)
-  ctable(gender, smoker, chisq = TRUE, headings = FALSE) %>%
+tobacco %$%  # Acts like with(tobacco, ...)
+  ctable(smoker, diseased,
+         chisq = TRUE, OR = TRUE, RR = TRUE,
+         headings = FALSE) %>%
   print(method = "render")
 ```
 <img src="img/ctable-chisq.png" style="border:0"  width=500px/>
