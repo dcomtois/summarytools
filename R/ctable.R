@@ -341,33 +341,36 @@ ctable <- function(x,
   }
   
   if (!isFALSE(OR) || !isFALSE(RR)) {
-    if (!isFALSE(OR)) {
-      or <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
-      se <- sqrt(sum(1/freq_table_min))
-      attr(output, "OR") <- c(or,
-                              exp(log(or) - qnorm(p = 1-((1-OR)/2)) * se),
-                              exp(log(or) + qnorm(p = 1-((1-OR)/2)) * se))
-      names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", OR * 100, "%"),
-                                     paste0("Hi - ", OR * 100, "%"))
-      attr(output, "OR-level") <- OR
+    if (identical(as.numeric(dim(freq_table_min)), c(2,2))) {
+      if (!isFALSE(OR)) {
+        or <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
+        se <- sqrt(sum(1/freq_table_min))
+        attr(output, "OR") <- c(or,
+                                exp(log(or) - qnorm(p = 1-((1-OR)/2)) * se),
+                                exp(log(or) + qnorm(p = 1-((1-OR)/2)) * se))
+        names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", OR * 100, "%"),
+                                       paste0("Hi - ", OR * 100, "%"))
+        attr(output, "OR-level") <- OR
+      }
+      
+      if (!is.na(RR)) {
+        rr <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
+          (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
+        se <- sqrt(sum(1/freq_table_min[1], 
+                       1/freq_table_min[2],
+                       -1/sum(freq_table_min[c(1,3)]), 
+                       -1/sum(freq_table_min[c(2,4)])))
+        attr(output, "RR") <- c(rr,
+                                exp(log(rr) - qnorm(p = 1-((1-RR)/2)) * se),
+                                exp(log(rr) + qnorm(p = 1-((1-RR)/2)) * se))
+        names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", RR * 100, "%"), 
+                                       paste0("Hi - ", RR * 100, "%"))
+        attr(output, "RR-level") <- RR
+      }
+    } else {
+      message("OR and RR can only be used with 2 x 2 tables; parameter(s) ignored")
     }
-    
-    if (!is.na(RR)) {
-      rr <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
-        (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
-      se <- sqrt(sum(1/freq_table_min[1], 
-                     1/freq_table_min[2],
-                     -1/sum(freq_table_min[c(1,3)]), 
-                     -1/sum(freq_table_min[c(2,4)])))
-      attr(output, "RR") <- c(rr,
-                              exp(log(rr) - qnorm(p = 1-((1-RR)/2)) * se),
-                              exp(log(rr) + qnorm(p = 1-((1-RR)/2)) * se))
-      names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", RR * 100, "%"), 
-                                     paste0("Hi - ", RR * 100, "%"))
-      attr(output, "RR-level") <- RR
-    }
-  }
-  
+  }  
 
   dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
   data_info <-
