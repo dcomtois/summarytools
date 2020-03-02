@@ -22,8 +22,7 @@ fancier table stylings.
 **summarytools** is a an [*R*](https://www.r-project.org) package for
 data exploration and simple reporting.
 
-**Four functions** are at its
-core:
+**Four functions** are at its core:
 
 |                               Function | Description                                                                                                                                                                                                                                                                                       |
 | -------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -78,7 +77,7 @@ Results can be
       - [**Pander options**](http://rapporter.github.io/pander/) can be
         used for text / markdown tables
       - [**Bootstrap**](https://getbootstrap.com/) and user-defined
-        classes can be used for *html* tables
+        *CSS* classes can be used for *html* tables
 
 ## 1.4 Installing summarytools
 
@@ -131,8 +130,7 @@ freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 ### Frequencies
 
 **iris$Species**  
-**Type:**
-Factor
+**Type:** Factor
 
 |                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | -------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -233,8 +231,7 @@ freq(tobacco$disease, order = "freq", rows = 1:5)
 ### Frequencies
 
 **tobacco$disease**  
-**Type:**
-Character
+**Type:** Character
 
 |                  | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 | ---------------: | ---: | ------: | -----------: | ------: | -----------: |
@@ -302,16 +299,23 @@ with(tobacco,
 
 <img src="img/ctable-barebones-2.png" style="border:0"/>
 
-### 2.2.3 Chi-Square (𝛘<sup>2</sup>) Statistic
+### 2.2.3 Chi-Square (𝛘<sup>2</sup>), Odds Ratio and Risk Ratio
 
-To display the chi-square statistic, set `chisq = TRUE`. To show how
-pipes can be used with **summarytools**, we’ll use **magrittr**’s `%$%`
-and `%>%` operators:
+To display the chi-square statistic, set `chisq = TRUE`. For *2 x 2*
+tables, use `OR` and `RR` to show odds ratio and risk ratio (also called
+relative risk), respectively. Those can be set to `TRUE`, in which case
+95% confidence intervals will be shown; to use alternate confidence
+levels, use for example `OR = .90`.
+
+To show how pipes can be used with **summarytools**, we’ll use
+**magrittr**’s `%$%` and `%>%` operators:
 
 ``` r
 library(magrittr)
-tobacco %$%  # The %$% operator replaces with(tobacco, ...)
-  ctable(gender, smoker, chisq = TRUE, headings = FALSE) %>%
+tobacco %$%  # Acts like with(tobacco, ...)
+  ctable(smoker, diseased,
+         chisq = TRUE, OR = TRUE, RR = TRUE,
+         headings = FALSE) %>%
   print(method = "render")
 ```
 
@@ -331,8 +335,7 @@ descr(iris)
 ### Descriptive Statistics
 
 **iris**  
-**N:**
-150
+**N:** 150
 
 |                 | Petal.Length | Petal.Width | Sepal.Length | Sepal.Width |
 | --------------: | -----------: | ----------: | -----------: | ----------: |
@@ -447,8 +450,7 @@ would `by()`:
 
 **iris**  
 **Group:** Species = setosa  
-**N:**
-50
+**N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | Pct.Valid |
 | ---------------: | ---: | ------: | ---: | -----: | ---: | ------: | --------: |
@@ -458,8 +460,7 @@ would `by()`:
 |  **Sepal.Width** | 3.43 |    0.38 | 2.30 |   3.40 | 4.40 |   50.00 |    100.00 |
 
 **Group:** Species = versicolor  
-**N:**
-50
+**N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | Pct.Valid |
 | ---------------: | ---: | ------: | ---: | -----: | ---: | ------: | --------: |
@@ -469,8 +470,7 @@ would `by()`:
 |  **Sepal.Width** | 2.77 |    0.31 | 2.00 |   2.80 | 3.40 |   50.00 |    100.00 |
 
 **Group:** Species = virginica  
-**N:**
-50
+**N:** 50
 
 |                  | Mean | Std.Dev |  Min | Median |  Max | N.Valid | Pct.Valid |
 | ---------------: | ---: | ------: | ---: | -----: | ---: | ------: | --------: |
@@ -745,8 +745,7 @@ creating an *Rmd* document.
 
 # 7\. Global options
 
-The following options can be set with
-`st_options()`:
+The following options can be set with `st_options()`:
 
 ## 7.1 General Options
 
@@ -764,8 +763,7 @@ The following options can be set with
 |  subtitle.emphasis |      TRUE | Controls headings formatting                   |
 |               lang |      “en” | Language (always 2-letter, lowercase)          |
 
-(\*) Set to FALSE in Shiny
-apps
+(\*) Set to FALSE in Shiny apps
 
 ## 7.2 Function-Specific Options
 
@@ -966,8 +964,7 @@ widths by counting characters in a cell, even if those characters are
 paths pointing to images.
 
 At this time, there seems to be only one solution around this problem:
-cut down on characters in image paths. So instead of
-    this:
+cut down on characters in image paths. So instead of this:
 
     +-----------+---------------------------------------------------------------------+---------+
     | Variable  | Graph                                                               | Valid   |
@@ -1018,8 +1015,7 @@ freq(iris$Species)
 ### Tableau de fréquences
 
 **iris$Species**  
-**Type:**
-Facteur
+**Type:** Facteur
 
 |                | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
 | -------------: | ----: | -------: | ------------: | ------: | -----------: |
@@ -1066,8 +1062,7 @@ instance, you could prefer using “N” instead of “Freq” in the title row
 of `freq()` tables. For this, use `define_keywords()`. Calling this
 function without any arguments will bring up, on systems that support
 graphical devices (the vast majority, that is), an editable window
-allowing to modify only the desired
-item(s).
+allowing to modify only the desired item(s).
 
 <img src="img/define_keywords.png" width=95% style="border:2px;border-color:grey" />
 
@@ -1107,16 +1102,14 @@ versions, you’ll need to download the *.dmg* image from
 [xquartz.org](https://www.xquartz.org/) and add it to your Applications
 folder.
 
-<a href="#installing-from-github">Back to installation
-instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
 
 **[Magick++](https://imagemagick.org/Magick++/)**  
 `sudo apt install libmagick++-dev`
 
-<a href="#installing-from-github">Back to installation
-instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
 
@@ -1129,8 +1122,7 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
     sudo apt-get update
     sudo apt-get install -y libmagick++-dev
 
-<a href="#installing-from-github">Back to installation
-instructions</a>
+<a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
 
