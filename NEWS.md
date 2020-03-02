@@ -10,7 +10,7 @@
  - in dfSummary(), fixed an issue arising when a very
    large range of numeric values exists in a column
 
-# summarytools 0.9.5 (2020-01-26)
+# summarytools 0.9.5 (2020-02-10)
 
  - Eliminated automatic check for X11 capabilities as it caused problems on some
    systems; the user can instead set global option `st_options(use.x11 = FALSE)`
