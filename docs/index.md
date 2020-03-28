@@ -1,2 +1,0 @@
-# summarytools GitHub Page
-
