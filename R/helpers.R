@@ -53,8 +53,9 @@ conv_non_ascii <- function(...) {
 # levels by the special character intToUtf8(183)
 #' @keywords internal
 ws_to_symbol <- function(x) {
+
   
-  ws_char <- intToUtf8(183)
+  ws_symbol <- intToUtf8(183)
   
   if (is.character(x)) {
     # We convert everything to UTF-8
@@ -64,16 +65,9 @@ ws_to_symbol <- function(x) {
       x[x_encod == enc] <- iconv(x[x_encod == enc], from = enc, to = "UTF-8")
     }
     
-    left_ws_count  <- nchar(x) - nchar(sub("^ +", "", x))
-    right_ws_count <- nchar(x) - nchar(sub(" +$", "", x))
+    x <- gsub("((?:\\A|\\G) )|(?&rec)( )+(?'rec')$", ws_symbol, x, perl = TRUE)
     
-    # Correction to avoid doubling the length of whitespace-only strings
-    right_ws_count[nchar(x) == right_ws_count] <- 0
-    
-    outstr <- paste0(strrep(ws_char, times = left_ws_count), trimws(x),
-                     strrep(ws_char, times = right_ws_count))
-    outstr[is.na(x)] <- NA
-    return(outstr)
+    return(x)
   }
   
   if (is.factor(x)) {
@@ -91,10 +85,10 @@ ws_to_symbol <- function(x) {
     # Correction to avoid doubling the length of whitespace-only strings
     right_ws_count[right_ws_count == nchar(xx)] <- 0
     
-    newlev <- paste0(strrep(ws_char, times = left_ws_count), trimws(xx),
-                     strrep(ws_char, times = right_ws_count))
-
-    levels(x) <- newlev
+    xx <- gsub("((?:\\A|\\G) )|(?&rec)( )+(?'rec')$", ws_symbol, xx, perl = TRUE)
+    
+    
+    levels(x) <- xx
     
     return(x)
   }
