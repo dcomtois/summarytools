@@ -883,7 +883,7 @@ crunch_numeric <- function(column_data, is_barcode) {
       rounded_names <- 
         trimws(format(
           round(as.numeric(names(counts)), round.digits),
-          nsmall = round.digits * !all(column_data %% 1 == 0, na.rm = TRUE)
+          nsmall = round.digits * !all(floor(column_data) == column_data, na.rm = TRUE)
         ))
       
       maxchars <- max(nchar(rounded_names))

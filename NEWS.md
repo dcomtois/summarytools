@@ -1,13 +1,22 @@
+# summarytools 0.9.6 (2020-04-18)
+
+ - In dfSummary():
+   + Improved performance by optimizing barcode detection and blank character
+     replacements, which are the two main bottlenecks. 
+   + Fixed a bug with barcode detection
+   + Made slight adjustments to the barplot's height
+
+
 # summarytools 0.9.6 (2020-03-01)
 
  - In ctable():
-   + added Odds Ratio and Risk Ratio (aka Relative Risk) 
+   + Added Odds Ratio and Risk Ratio (aka Relative Risk) 
      statistics with 95% C.I.'s
    + Fixed issue with chi-square statistic not reporting
      appropriate values
    + Fixed html alignment of statistics below the table
      (now centering based on table width as it should)
- - in dfSummary(), fixed an issue arising when a very
+ - In dfSummary(), fixed an issue arising when a very
    large range of numeric values exists in a column
 
 # summarytools 0.9.5 (2020-02-10)
