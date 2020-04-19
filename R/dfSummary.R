@@ -1276,21 +1276,26 @@ detect_email <- function(x) {
 #' @keywords internal
 detect_barcode <- function(x) {
   
-  op <- options(warn=2)
-  on.exit(options(op))
-  
-  x <- try(as.numeric(x), silent = TRUE)
-  if (inherits(x, "try-error")) {
+  # Check that all strings contain numbers
+  # ref: https://rosettacode.org/wiki/Determine_if_a_string_is_numeric#R
+  if (!all(suppressWarnings(!is.na(as.numeric(x))))) {
     return(FALSE)
   }
   
-  x <- na.omit(x)[1:100]
-  if (length(x) < 10 || (len <- min(nchar(x))) != max(nchar(x)) ||
+  # Check for negatives and non-integers
+  if (min(x, na.rm = TRUE) < 0 || any(floor(as.numeric(x)) != as.numeric(x), 
+                                      na.rm = TRUE)) {
+    return(FALSE)
+  }
+  
+  # check that all lengths are equal on a sample of 50 values, and that this length
+  # is compatible with one of the EAN/UPC/ITC soecifications
+  x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
+  if (length(x_samp) < 3 || 
+      (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
   }
-  
-  x <- head(x, 20)
   
   type <- switch(as.character(len),
                  "8"  = "EAN-8",
@@ -1298,7 +1303,7 @@ detect_barcode <- function(x) {
                  "13" = "EAN-13",
                  "14" = "ITF-14")
   
-  x_pad      <- paste0(strrep("0", 14-len), x)
+  x_pad      <- paste0(strrep("0", 14-len), x_samp)
   vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
   weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
   sums       <- mapply(weighted, FUN = sum)
