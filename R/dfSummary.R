@@ -1110,7 +1110,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
           antialias = "none")
     }
     
-    mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
+    mar <- par("mar" = c(0.03, 0.02, 0.03, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
@@ -1133,7 +1133,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     
     rc <- try(png(png_loc <- tempfile(fileext = ".png"), 
                   width = 150 * graph.magnif,
-                  height = 26 * length(data) * graph.magnif, 
+                  height = 25.5 * length(data) * graph.magnif, 
                   units = "px", bg = "transparent",
                   type = devtype, antialias = "none"), silent = TRUE)
     
@@ -1141,12 +1141,12 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     if (!is.null(rc)) {
       png(png_loc <- tempfile(fileext = ".png"), 
           width = 150 * graph.magnif,
-          height = 26 * length(data) * graph.magnif, 
+          height = 25.55 * length(data) * graph.magnif, 
           units = "px", bg = "transparent",
           antialias = "none")
     }
     
-    mar <- par("mar" = c(0.02, 0.02, 0.02, 0.02)) # bottom, left, top, right
+    mar <- par("mar" = c(0.07, 0.02, 0.07, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
     
