@@ -14,6 +14,8 @@
 #'
 #' @inheritParams print.summarytools
 #' 
+#' @aliases view stview
+#' 
 #' @details 
 #' Creates \emph{html} outputs and opens them in the Viewer, in a browser or
 #' renders the \emph{html} code appropriate for \emph{Rmarkdown} documents. 
@@ -78,7 +80,7 @@ view <- function(x,
              attr(x[[1]], "st_type") == "descr" &&
              length(attr(x[[1]], "data_info")$by_var) == 1 &&
              ((!attr(x[[1]], "data_info")$transposed && dim(x[[1]])[2] == 1) ||
-              ( attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
+              (attr(x[[1]], "data_info")$transposed && dim(x[[1]])[1] == 1))) {
 
     # Special case: descr by() objects with 1 variable -------------------------
     
@@ -302,7 +304,7 @@ view <- function(x,
              inherits(x[[1]], "summarytools") && 
              attr(x[[1]], "st_type") == "freq") {
 
-    if("ignored" %in% names(attributes(x))) {
+    if ("ignored" %in% names(attributes(x))) {
       message("Variable(s) ignored: ",
               paste(attr(x, "ignored"), collapse = ", "))
     }
@@ -451,3 +453,7 @@ view <- function(x,
     )
   }
 }
+
+#' @export
+stview <- view
+

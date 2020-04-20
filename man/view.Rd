@@ -2,6 +2,7 @@
 % Please edit documentation in R/view.R
 \name{view}
 \alias{view}
+\alias{stview}
 \title{view}
 \usage{
 view(x, method = "viewer", file = "", append = FALSE,

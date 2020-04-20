@@ -1,5 +1,9 @@
 # summarytools 0.9.6 (2020-04-18)
 
+ - Added shortcut function `stview()` pointing to
+   `summarytools::view()`. This avoids potential conflicts with
+   other packages' `view()` function (notably, **tibble**, part of
+   the **tidyverse** family, defines `view()` as an alias of `View()`).
  - In dfSummary():
    + Improved performance by optimizing barcode detection and blank character
      replacements, which are the two main bottlenecks. 

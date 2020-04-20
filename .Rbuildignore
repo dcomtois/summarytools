@@ -1,12 +1,10 @@
-^doc$
 ^docs$
 ^Meta$
-^notes$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.Renviron
 ^\.Rhistory
-^\.gitignore
+^\.git*
 ^img$
 ^translations$
 ^TODO.txt$
