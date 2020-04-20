@@ -45,7 +45,7 @@ The package was developed with the following objectives in mind:
     [knitr](https://yihui.org/knitr/)) while also allowing for
     stand-alone, simple report generation
 
-## 1.2 Redirecting Outputs
+## 1.2 Output Destinations
 
 Results can be
 

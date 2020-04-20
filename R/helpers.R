@@ -16,7 +16,7 @@ smart_split <- function(str, maxlen) {
 # %+=% -------------------------------------------------------------------------
 # infix to simplify append()ing
 #' @keywords internal
-`%+=%`<- function(x, value) {
+`%+=%` <- function(x, value) {
   eval.parent(substitute(x <- append(x, value)))
 }
 
@@ -121,7 +121,7 @@ trs <- function(item, l = st_options("lang")) {
 count_empty <- function(x, count.nas = TRUE) {
   n <- 0
   for (item in x) {
-    if(length(item) == 0) {
+    if (length(item) == 0) {
       n <- n + 1
     } else if (isTRUE(count.nas)) {
       n <- n + sum(is.na(item))
