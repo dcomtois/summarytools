@@ -1,4 +1,4 @@
-# summarytools 0.9.6 (2020-05-21)
+# summarytools 0.9.7 (2020-05-21)
 
  - Added shortcut function `stview()` pointing to
    `summarytools::view()`. This avoids potential conflicts with
