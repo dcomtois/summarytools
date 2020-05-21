@@ -1052,19 +1052,42 @@ crunch_other <- function(column_data) {
   #graph.magnif        <- parent.frame()$graph.magnif
   #max.string.width    <- parent.frame()$max.string.width
   
-  counts <- table(column_data, useNA = "no")
-  
-  if (parent.frame()$n_miss == parent.frame()$n_tot) {
-    outlist[[1]] <- paste0(trs("all.nas"), "\n")
-    
-  } else if (length(counts) <= max.distinct.values) {
-    props <- round(prop.table(counts), round.digits + 2)
-    counts_props <- align_numbers_dfs(counts, props)
-    outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
-    
+  if (!is.list(column_data)) {
+    counts <- table(column_data, useNA = "no")
+
+    if (parent.frame()$n_miss == parent.frame()$n_tot) {
+      outlist[[1]] <- paste0(trs("all.nas"), "\n")
+      
+    } else if (length(counts) <= max.distinct.values) {
+      props <- round(prop.table(counts), round.digits + 2)
+      counts_props <- align_numbers_dfs(counts, props)
+      outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
+      
+    } else {
+      outlist[[2]] <- paste(as.character(length(unique(column_data))),
+                            trs("distinct.values"))
+    }
   } else {
-    outlist[[2]] <- paste(as.character(length(unique(column_data))),
-                          trs("distinct.values"))
+    # column is a list
+    if (parent.frame()$n_miss == parent.frame()$n_tot) {
+      outlist[[1]] <- paste0(trs("all.nas"), "\n")
+    } else {
+      # Get attributes for first non-na value
+      for (v in seq_along(column_data)) {
+        if (is.na(column_data[v]))
+          next
+        # get class and length of single value
+        outlist[[1]] <- paste0("Object class(es):", "\\\n",
+                               paste(class(column_data[[v]]), collapse = ", "), "\\\n",
+                               "Length: ", length(column_data[[v]]))
+        tmp_distinct <- try(paste(as.character(length(unique(column_data))),
+                                  trs("distinct.values")), silent = TRUE)
+        if (!inherits(tmp_distinct, "try-error")) {
+          outlist[[2]] <- tmp_distinct
+        }
+        break
+      }
+    }
   }
   
   return(outlist)

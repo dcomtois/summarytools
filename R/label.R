@@ -43,7 +43,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
       }
     }
   } else {
-    if (!is.data.frame(x)) {
+    if (!is.list(x)) {
       x <- as.data.frame(x)
     }
     
