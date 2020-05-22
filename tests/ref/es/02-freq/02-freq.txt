@@ -1,15 +1,17 @@
 
-# ---------------------------- freq.R ------------------------------------------  
+# -----------------  freq.R ------------------------------------------
+> suppressPackageStartupMessages(library(magrittr))
 
-> library(magrittr) 
-> data(tobacco) 
-> tobacco <- tibble::as_tibble(tobacco) 
-> label(tobacco$gender) <- "Subject's Gender" 
+> suppressPackageStartupMessages(library(summarytools))
 
-# Basic tables + general formatting (style / plain.ascii) ---------------------- 
+> data(tobacco)
 
-> (f1 <- freq(tobacco$gender)) 
+> tobacco <- tibble::as_tibble(tobacco)
 
+> label(tobacco$gender) <- "Subject's Gender"
+
+# -----------------  Basic tables + general formatting (style / plain.ascii)
+> (f1 <- freq(tobacco$gender))
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -22,8 +24,7 @@ Tipo: Factor
        <NA>      22                                 2.20         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> print(f1, plain.ascii = F) 
-
+> print(f1, plain.ascii = F)
 ### Frecuencias  
 #### tobacco$gender  
 **Etiqueta:** Subject's Gender  
@@ -36,8 +37,7 @@ Tipo: Factor
   **\<NA\>**      22                                 2.20         100.00
    **Total**    1000     100.00          100.00    100.00         100.00
 
-> print(f1, plain.ascii = F, style = "rmarkdown") 
-
+> print(f1, plain.ascii = F, style = "rmarkdown")
 ### Frecuencias  
 #### tobacco$gender  
 **Etiqueta:** Subject's Gender  
@@ -50,8 +50,7 @@ Tipo: Factor
 | **\<NA\>** |    22 |          |               |    2.20 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 
-> print(f1, plain.ascii = F, style = "grid", headings = FALSE) 
-
+> print(f1, plain.ascii = F, style = "grid", headings = FALSE)
 
 +------------+-------+----------+---------------+---------+--------------+
 |     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
@@ -65,16 +64,13 @@ Tipo: Factor
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +------------+-------+----------+---------------+---------+--------------+
 
+# -----------------  Variable label
+> data(tabagisme)
 
-# Variable label --------------------------------------------------------------- 
+> label(tabagisme$age.gr) <- "Groupe d'âge"
 
-> data(tabagisme) 
-> label(tabagisme$age.gr) <- "Groupe d'âge" 
-
-# Round to 1 decimal ----------------------------------------------------------- 
-
-> (f2 <- freq(tabagisme$age.gr, round.digits = 1)) 
-
+# -----------------  Round to 1 decimal
+> (f2 <- freq(tabagisme$age.gr, round.digits = 1))
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -89,11 +85,8 @@ Tipo: Factor
        <NA>      25                                  2.5          100.0
       Total    1000      100.0           100.0     100.0          100.0
 
-
-# Mask label, then type -------------------------------------------------------- 
-
-> print(f2, display.labels = FALSE) 
-
+# -----------------  Mask label, then type
+> print(f2, display.labels = FALSE)
 Frecuencias  
 tabagisme$age.gr  
 Tipo: Factor  
@@ -107,8 +100,7 @@ Tipo: Factor
        <NA>      25                                  2.5          100.0
       Total    1000      100.0           100.0     100.0          100.0
 
-> print(f2, display.type = F) 
-
+> print(f2, display.type = F)
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -122,11 +114,8 @@ Etiqueta: Groupe d'âge
        <NA>      25                                  2.5          100.0
       Total    1000      100.0           100.0     100.0          100.0
 
-
-# Mask total / NAs / cumul ----------------------------------------------------- 
-
-> print(f2, totals = FALSE)          # OK 
-
+# -----------------  Mask total / NAs / cumul
+> print(f2, totals = FALSE)          # OK
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -140,8 +129,7 @@ Tipo: Factor
        71 +     159       16.3           100.0      15.9           97.5
        <NA>      25                                  2.5          100.0
 
-> print(f2, report.nas = FALSE)      # OK 
-
+> print(f2, report.nas = FALSE)      # OK
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -155,8 +143,7 @@ Tipo: Factor
        71 +     159    16.3    100.0
       Total     975   100.0    100.0
 
-> print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL % 
-
+> print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -171,8 +158,7 @@ Tipo: Factor
        <NA>      25                  2.5
       Total    1000      100.0     100.0
 
-> print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL % 
-
+> print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -186,8 +172,7 @@ Tipo: Factor
        71 +     159       16.3      15.9
        <NA>      25                  2.5
 
-> print(f2, report.nas = FALSE, totals = FALSE)  # OK 
-
+> print(f2, report.nas = FALSE, totals = FALSE)  # OK
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -200,8 +185,7 @@ Tipo: Factor
       51-70     317   32.5     83.7
        71 +     159   16.3    100.0
 
-> print(f2, report.nas = FALSE, cumul = FALSE)   # OK 
-
+> print(f2, report.nas = FALSE, cumul = FALSE)   # OK
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -215,8 +199,7 @@ Tipo: Factor
        71 +     159    16.3
       Total     975   100.0
 
-> print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE) 
-
+> print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE)
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -229,11 +212,8 @@ Tipo: Factor
       51-70     317   32.5
        71 +     159   16.3
 
-
-# Replace the missing symbol --------------------------------------------------- 
-
-> print(f2, missing = "---") 
-
+# -----------------  Replace the missing symbol
+> print(f2, missing = "---")
 Frecuencias  
 tabagisme$age.gr  
 Etiqueta: Groupe d'âge  
@@ -248,11 +228,8 @@ Tipo: Factor
        <NA>      25        ---             ---       2.5          100.0
       Total    1000      100.0           100.0     100.0          100.0
 
-
-# 1) Original order - factor --------------------------------------------------- 
-
-> freq(tobacco$diseased) 
-
+# -----------------  1) Original order - factor
+> freq(tobacco$diseased)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -264,11 +241,8 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-
-# 2) Modified order ------------------------------------------------------------ 
-
-> freq(tobacco$diseased, order = "freq") 
-
+# -----------------  2) Modified order
+> freq(tobacco$diseased, order = "freq")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -280,8 +254,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "freq", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "freq", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -292,8 +265,7 @@ Tipo: Factor
         Yes     224    22.40   100.00
       Total    1000   100.00   100.00
 
-> freq(tobacco$diseased, order = "freq-") 
-
+> freq(tobacco$diseased, order = "freq-")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -305,8 +277,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "freq-", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "freq-", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -317,8 +288,7 @@ Tipo: Factor
          No     776    77.60   100.00
       Total    1000   100.00   100.00
 
-> freq(tobacco$diseased, order = "names") 
-
+> freq(tobacco$diseased, order = "names")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -330,8 +300,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "names", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "names", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -342,8 +311,7 @@ Tipo: Factor
         Yes     224    22.40   100.00
       Total    1000   100.00   100.00
 
-> freq(tobacco$diseased, order = "names-") 
-
+> freq(tobacco$diseased, order = "names-")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -355,8 +323,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "names-", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "names-", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -367,8 +334,7 @@ Tipo: Factor
          No     776    77.60   100.00
       Total    1000   100.00   100.00
 
-> freq(tobacco$diseased, order = "levels") 
-
+> freq(tobacco$diseased, order = "levels")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -380,8 +346,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "levels", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "levels", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -392,8 +357,7 @@ Tipo: Factor
          No     776    77.60   100.00
       Total    1000   100.00   100.00
 
-> freq(tobacco$diseased, order = "levels-") 
-
+> freq(tobacco$diseased, order = "levels-")
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -405,8 +369,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$diseased, order = "levels-", report.nas = FALSE) 
-
+> freq(tobacco$diseased, order = "levels-", report.nas = FALSE)
 Frecuencias  
 tobacco$diseased  
 Tipo: Factor  
@@ -417,11 +380,8 @@ Tipo: Factor
         Yes     224    22.40   100.00
       Total    1000   100.00   100.00
 
-
-# 1) Original order - factor --------------------------------------------------- 
-
-> freq(tobacco$age.gr) 
-
+# -----------------  1) Original order - factor
+> freq(tobacco$age.gr)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -435,11 +395,8 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-
-# 2) Modified order ------------------------------------------------------------ 
-
-> freq(tobacco$age.gr, order = "freq") 
-
+# -----------------  2) Modified order
+> freq(tobacco$age.gr, order = "freq")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -453,8 +410,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "freq", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "freq", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -467,8 +423,7 @@ Tipo: Factor
        71 +     159    16.31   100.00
       Total     975   100.00   100.00
 
-> freq(tobacco$age.gr, order = "freq-") 
-
+> freq(tobacco$age.gr, order = "freq-")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -482,8 +437,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "freq-", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "freq-", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -496,8 +450,7 @@ Tipo: Factor
       51-70     317    32.51   100.00
       Total     975   100.00   100.00
 
-> freq(tobacco$age.gr, order = "names") 
-
+> freq(tobacco$age.gr, order = "names")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -511,8 +464,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "names", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "names", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -525,8 +477,7 @@ Tipo: Factor
        71 +     159    16.31   100.00
       Total     975   100.00   100.00
 
-> freq(tobacco$age.gr, order = "names-") 
-
+> freq(tobacco$age.gr, order = "names-")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -540,8 +491,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "names-", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "names-", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -554,8 +504,7 @@ Tipo: Factor
       18-34     258    26.46   100.00
       Total     975   100.00   100.00
 
-> freq(tobacco$age.gr, order = "levels") 
-
+> freq(tobacco$age.gr, order = "levels")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -569,8 +518,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "levels", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "levels", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -583,8 +531,7 @@ Tipo: Factor
        71 +     159    16.31   100.00
       Total     975   100.00   100.00
 
-> freq(tobacco$age.gr, order = "levels-") 
-
+> freq(tobacco$age.gr, order = "levels-")
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -598,8 +545,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$age.gr, order = "levels-", report.nas = FALSE) 
-
+> freq(tobacco$age.gr, order = "levels-", report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -612,11 +558,8 @@ Tipo: Factor
       18-34     258    26.46   100.00
       Total     975   100.00   100.00
 
-
-# 1) Original order - character ------------------------------------------------ 
-
-> freq(tobacco$disease) 
-
+# -----------------  1) Original order - character
+> freq(tobacco$disease)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -639,11 +582,8 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-
-# 2) Modified order ------------------------------------------------------------ 
-
-> freq(tobacco$disease, order = "freq") 
-
+# -----------------  2) Modified order
+> freq(tobacco$disease, order = "freq")
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -666,8 +606,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, order = "freq", report.nas = FALSE) 
-
+> freq(tobacco$disease, order = "freq", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -689,8 +628,7 @@ Tipo: Alfahnumérico
                 Other       2     0.90   100.00
                 Total     222   100.00   100.00
 
-> freq(tobacco$disease, order = "freq-") 
-
+> freq(tobacco$disease, order = "freq-")
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -713,8 +651,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, order = "-freq", report.nas = FALSE) 
-
+> freq(tobacco$disease, order = "-freq", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -736,8 +673,7 @@ Tipo: Alfahnumérico
          Hypertension      36    16.22   100.00
                 Total     222   100.00   100.00
 
-> freq(tobacco$disease, order = "names") 
-
+> freq(tobacco$disease, order = "names")
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -760,8 +696,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, order = "names", report.nas = FALSE) 
-
+> freq(tobacco$disease, order = "names", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -783,8 +718,7 @@ Tipo: Alfahnumérico
                Vision       9     4.05   100.00
                 Total     222   100.00   100.00
 
-> freq(tobacco$disease, order = "names-") 
-
+> freq(tobacco$disease, order = "names-")
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -807,8 +741,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, order = "names-", report.nas = FALSE) 
-
+> freq(tobacco$disease, order = "names-", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -830,11 +763,8 @@ Tipo: Alfahnumérico
                Cancer      34    15.32   100.00
                 Total     222   100.00   100.00
 
-
-# Order and subset ------------------------------------------------------------- 
-
-> freq(tobacco$disease) 
-
+# -----------------  Order and subset
+> freq(tobacco$disease)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -857,8 +787,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5)) 
-
+> (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5))
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -874,8 +803,7 @@ Tipo: Alfahnumérico
               <NA>     778                                77.80         100.00
              Total    1000     100.00          100.00    100.00         100.00
 
-> print(f3, cumul = FALSE)        # OK 
-
+> print(f3, cumul = FALSE)        # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -891,8 +819,7 @@ Tipo: Alfahnumérico
               <NA>     778                77.80
              Total    1000     100.00    100.00
 
-> print(f3, report.nas = FALSE)   # OK 
-
+> print(f3, report.nas = FALSE)   # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -907,8 +834,7 @@ Tipo: Alfahnumérico
             (Otro)      91    40.99   100.00
              Total     222   100.00   100.00
 
-> print(f3, totals = FALSE)       # OK 
-
+> print(f3, totals = FALSE)       # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -923,8 +849,7 @@ Tipo: Alfahnumérico
             (Otro)      91      40.99          100.00      9.10          22.20
               <NA>     778                                77.80         100.00
 
-> print(f3, cumul = FALSE, report.nas = FALSE)  # OK 
-
+> print(f3, cumul = FALSE, report.nas = FALSE)  # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -939,8 +864,7 @@ Tipo: Alfahnumérico
             (Otro)      91    40.99
              Total     222   100.00
 
-> print(f3, cumul = FALSE, totals = FALSE)      # OK 
-
+> print(f3, cumul = FALSE, totals = FALSE)      # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -955,8 +879,7 @@ Tipo: Alfahnumérico
             (Otro)      91      40.99      9.10
               <NA>     778                77.80
 
-> print(f3, report.nas = FALSE, totals = FALSE) # OK 
-
+> print(f3, report.nas = FALSE, totals = FALSE) # OK
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -970,8 +893,7 @@ Tipo: Alfahnumérico
          Pulmonary      20    9.01    59.01
             (Otro)      91   40.99   100.00
 
-> print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK  
-
+> print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -985,8 +907,7 @@ Tipo: Alfahnumérico
          Pulmonary      20    9.01
             (Otro)      91   40.99
 
-> freq(tobacco$disease, rows = -1) 
-
+> freq(tobacco$disease, rows = -1)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -1009,8 +930,7 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, rows = "H") 
-
+> freq(tobacco$disease, rows = "H")
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -1024,8 +944,7 @@ Tipo: Alfahnumérico
               <NA>     778                                90.57         100.00
              Total     859     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, rows = -1:-10) 
-
+> freq(tobacco$disease, rows = -1:-10)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -1039,8 +958,7 @@ Tipo: Alfahnumérico
            <NA>     778                                77.80         100.00
           Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE) 
-
+> freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -1061,11 +979,8 @@ Tipo: Alfahnumérico
             Pulmonary      20    9.01    95.95
                Vision       9    4.05   100.00
 
-
-# Override the rounding -------------------------------------------------------- 
-
-> print(f3, round.digits = 2) 
-
+# -----------------  Override the rounding
+> print(f3, round.digits = 2)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -1081,13 +996,12 @@ Tipo: Alfahnumérico
               <NA>     778                                77.80         100.00
              Total    1000     100.00          100.00    100.00         100.00
 
+# -----------------  "Free" (not in a df) variables
+> Gender <- tobacco$gender
 
-# "Free" (not in a df) variables ----------------------------------------------- 
+> Gender[1] <- "F"
 
-> Gender <- tobacco$gender 
-> Gender[1] <- "F" 
-> freq(Gender) 
-
+> freq(Gender)
 Frecuencias  
 Gender  
 Etiqueta: Subject's Gender  
@@ -1100,17 +1014,12 @@ Tipo: Factor
        <NA>      22                                 2.20         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> view(freq(Gender)) 
--- Output file written
+> view(freq(Gender), file="01-Gender.html")
+Output file written
 
-
-# subsetting ------------------------------------------------------------------- 
-
-
-# On factor - headings not affected -------------------------------------------- 
-
-> freq(tobacco$gender[tobacco$smoker=="Yes"]) 
-
+# -----------------  subsetting
+# -----------------  On factor - headings not affected
+> freq(tobacco$gender[tobacco$smoker=="Yes"])
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -1123,8 +1032,7 @@ Tipo: Factor
        <NA>       8                                 2.68         100.00
       Total     298     100.00          100.00    100.00         100.00
 
-> freq(tobacco$gender[1:500]) 
-
+> freq(tobacco$gender[1:500])
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -1137,11 +1045,8 @@ Tipo: Factor
        <NA>       9                                 1.80         100.00
       Total     500     100.00          100.00    100.00         100.00
 
-
-# on dataframe - variable name should be set correctly ------------------------- 
-
-> freq(tobacco[,1]) # label doesn't show (ok) 
-
+# -----------------  on dataframe - variable name should be set correctly
+> freq(tobacco[,1]) # label doesn't show (ok)
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -1154,8 +1059,7 @@ Tipo: Factor
        <NA>      22                                 2.20         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco[[3]]) 
-
+> freq(tobacco[[3]])
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1169,26 +1073,21 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
+# -----------------  Print to files (Style and/or method should be modified with message)
+> print(f1, file = "01.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file written
 
-# Print to files (Style and/or method should be modified with message) --------- 
+> print(f1, file = "01.html")
+Switching method to 'browser'
+Output file written
 
-> print(f1, file = "01.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file written
+> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap")
+Switching method to 'browser'
+Output file written
 
-> print(f1, file = "01.html") 
--- Switching method to 'browser'
--- Output file written
-
-> print(f1, bootstrap.css = FALSE, footnote = "no bootstrap", file = "02-no-bootstrap.html", report.title = "Freq without bootstrap") 
--- Switching method to 'browser'
--- Output file written
-
-
-# Omit cumulative and na reporting --------------------------------------------- 
-
-> (f4 <- freq(tobacco$age.gr)) 
-
+# -----------------  Omit cumulative and na reporting
+> (f4 <- freq(tobacco$age.gr))
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1202,8 +1101,7 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> print(f4, cumul = FALSE) 
-
+> print(f4, cumul = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1217,8 +1115,7 @@ Tipo: Factor
        <NA>      25                 2.50
       Total    1000     100.00    100.00
 
-> print(f4, cumul = FALSE, report.nas = FALSE) 
-
+> print(f4, cumul = FALSE, report.nas = FALSE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1231,8 +1128,7 @@ Tipo: Factor
        71 +     159    16.31
       Total     975   100.00
 
-> (f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE)) 
-
+> (f5 <- freq(tobacco$age.gr, cumul = FALSE, report.nas = FALSE))
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1245,8 +1141,7 @@ Tipo: Factor
        71 +     159    16.31
       Total     975   100.00
 
-> print(f5, cumul = TRUE, report.nas = TRUE) 
-
+> print(f5, cumul = TRUE, report.nas = TRUE)
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -1260,11 +1155,8 @@ Tipo: Factor
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-
-# Weights ---------------------------------------------------------------------- 
-
-> (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation)) 
-
+# -----------------  Weights
+> (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
 Frecuencías ponderadas  
 tabagisme$maladie  
 Tipo: Alfahnumérico  
@@ -1288,12 +1180,11 @@ Pesos: ponderation
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
 
-> print(wf1, file = "03-weights.html") 
--- Switching method to 'browser'
--- Output file written
+> print(wf1, file = "03-weights.html")
+Switching method to 'browser'
+Output file written
 
-> print(wf1, report.nas = FALSE) 
-
+> print(wf1, report.nas = FALSE)
 Frecuencías ponderadas  
 tabagisme$maladie  
 Tipo: Alfahnumérico  
@@ -1316,8 +1207,7 @@ Pesos: ponderation
                        Vue     9.29     4.15   100.00
                      Total   223.93   100.00   100.00
 
-> (wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq")) 
-
+> (wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq"))
 Frecuencías ponderadas  
 tabagisme$maladie  
 Tipo: Alfahnumérico  
@@ -1340,8 +1230,7 @@ Pesos: ponderation
                      Autre     2.09     0.93   100.00
                      Total   223.93   100.00   100.00
 
-> print(wf2, report.nas = TRUE) 
-
+> print(wf2, report.nas = TRUE)
 Frecuencías ponderadas  
 tabagisme$maladie  
 Tipo: Alfahnumérico  
@@ -1365,9 +1254,9 @@ Pesos: ponderation
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
 
-> mala.f <- factor(tabagisme$maladie, levels = sort(names(table(tabagisme$maladie)), decreasing = TRUE)) 
-> (wf3 <- freq(mala.f, weights = tabagisme$ponderation)) 
+> mala.f <- factor(tabagisme$maladie, levels = sort(names(table(tabagisme$maladie)), decreasing = TRUE))
 
+> (wf3 <- freq(mala.f, weights = tabagisme$ponderation))
 Frecuencías ponderadas  
 mala.f  
 Tipo: Factor  
@@ -1391,8 +1280,7 @@ Pesos: tabagisme$ponderation
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
 
-> print(wf3, report.nas = FALSE, totals = FALSE) 
-
+> print(wf3, report.nas = FALSE, totals = FALSE)
 Frecuencías ponderadas  
 mala.f  
 Tipo: Factor  
@@ -1414,13 +1302,12 @@ Pesos: tabagisme$ponderation
                     Cancer   33.66   15.03    99.07
                      Autre    2.09    0.93   100.00
 
+# -----------------  with()
+> label(tobacco) <- "Study on Tobacco and Health"
 
-# with() ----------------------------------------------------------------------- 
+> label(tobacco$gender) <- "Subject's Gender"
 
-> label(tobacco) <- "Study on Tobacco and Health" 
-> label(tobacco$gender) <- "Subject's Gender" 
-> (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))) 
-
+> (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
 ### Frecuencías ponderadas  
 #### tobacco$gender  
 **Etiqueta:** Subject's Gender  
@@ -1434,12 +1321,10 @@ Pesos: tabagisme$ponderation
   **\<NA\>**     22.16                                 2.22         100.00
    **Total**   1000.00     100.00          100.00    100.00         100.00
 
+# -----------------  stby()
+> label(tobacco$diseased) <- "Subject has an illness"
 
-# stby() ----------------------------------------------------------------------- 
-
-> label(tobacco$diseased) <- "Subject has an illness" 
-> (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
-
+> (bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 Frecuencias  
 tobacco$diseased  
 Etiqueta: Subject has an illness  
@@ -1462,8 +1347,7 @@ Subgrupo: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> view(bf1, 'pander') 
-
+> view(bf1, 'pander')
 Frecuencias  
 tobacco$diseased  
 Etiqueta: Subject has an illness  
@@ -1486,8 +1370,7 @@ Subgrupo: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> print(bf1, headings = FALSE, plain.ascii = FALSE) 
-
+> print(bf1, headings = FALSE, plain.ascii = FALSE)
 **Subgrupo:** smoker = Yes  
 
       &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
@@ -1506,17 +1389,16 @@ Subgrupo: smoker = No
   **\<NA\>**       0                                 0.00         100.00
    **Total**     702     100.00          100.00    100.00         100.00
 
-> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> print(bf1, footnote = "by", file = "04-by.html", missing = "xxxx")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html") 
--- Output file written
--- Output file appended
+> view(bf1, headings = FALSE, footnote = "no headings", file = "05-by.html")
+Output file written
+Output file appended
 
-> (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)) 
-
+> (bf2 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq))
 Frecuencias  
 tobacco$diseased  
 Etiqueta: Subject has an illness  
@@ -1539,13 +1421,12 @@ Subgrupo: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> print(bf2, file = "06-by.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> print(bf2, file = "06-by.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)) 
-
+> (bf3 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq))
 Frecuencias  
 iris$Species  
 Tipo: Factor  
@@ -1569,17 +1450,15 @@ Subgrupo: Sepal.Length > mean(Sepal.Length) = TRUE
             <NA>       0                                 0.00         100.00
            Total      70     100.00          100.00    100.00         100.00
 
-> print(bf3, file = "07-by.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> print(bf3, file = "07-by.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
+# -----------------  Using stby() + with() --- retrieving labels works only when executed "not in batch"
+> label(tobacco$diseased) <- "Subject has an illness"
 
-# Using stby() + with() --- retrieving labels works only when executed "not in batch"  
-
-> label(tobacco$diseased) <- "Subject has an illness" 
-> (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))) 
-
+> (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)))
 Frecuencias  
 tobacco$diseased  
 Etiqueta: Subject has an illness  
@@ -1602,21 +1481,23 @@ Subgrupo: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> view(bwf1) 
--- Output file written
--- Output file appended
+> view(bwf1, file="bwf1.html")
+Output file written
+Output file appended
 
+# -----------------  Labels, global options
+> st_options(plain.ascii = TRUE, style = "grid")
 
-# Labels, global options ------------------------------------------------------- 
+> label(tobacco) <- "A Study On Tobacco and Health"
 
-> st_options(plain.ascii = TRUE, style = "grid") 
-> label(tobacco) <- "A Study On Tobacco and Health" 
-> label(tobacco$gender) <- "Subject's Gender" 
-> label(tobacco$age.gr) <- "Age Group" 
-> label(tobacco$smoker) <- "Subject Smokes" 
-> (ft <- freq(tobacco)) 
--- Variable(s) ignored: age, BMI, cigs.per.day
+> label(tobacco$gender) <- "Subject's Gender"
 
+> label(tobacco$age.gr) <- "Age Group"
+
+> label(tobacco$smoker) <- "Subject Smokes"
+
+> (ft <- freq(tobacco))
+Variable(s) ignored: age, BMI, cigs.per.day
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -1742,9 +1623,8 @@ Tipo: Numérico
 |                 Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------------------+-------+----------+---------------+---------+--------------+
 
-> print(ft, display.labels = F, display.type = F) 
--- Variable(s) ignored: age, BMI, cigs.per.day
-
+> print(ft, display.labels = F, display.type = F)
+Variable(s) ignored: age, BMI, cigs.per.day
 Frecuencias  
 tobacco$gender  
 
@@ -1860,13 +1740,12 @@ tobacco$samp.wgts
 |                 Total |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 +-----------------------+-------+----------+---------------+---------+--------------+
 
+# -----------------  lapply()
+> st_options(style = "simple")
 
-# lapply() --------------------------------------------------------------------- 
+> tobacco_subset <- tobacco[,c(3,5,6)]
 
-> st_options(style = "simple") 
-> tobacco_subset <- tobacco[,c(3,5,6)] 
-> lapply(tobacco_subset, freq, style = "rmarkdown") 
-
+> lapply(tobacco_subset, freq, style = "rmarkdown")
 ### Frecuencias  
 #### tobacco_subset$age.gr  
 **Etiqueta:** Age Group  
@@ -1937,13 +1816,11 @@ tobacco$samp.wgts
 | **\<NA\>** |    35 |          |               |    3.50 |       100.00 |
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 
+# -----------------  Other global options
+> st_options(freq.totals = FALSE, freq.report.nas = FALSE)
 
-# Other global options --------------------------------------------------------- 
-
-> st_options(freq.totals = FALSE, freq.report.nas = FALSE) 
-> freq(tobacco) 
--- Variable(s) ignored: age, BMI, cigs.per.day
-
+> freq(tobacco)
+Variable(s) ignored: age, BMI, cigs.per.day
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -2012,28 +1889,25 @@ Tipo: Numérico
        1.04938271604938     324   32.40    84.00
                  1.0625     160   16.00   100.00
 
-> st_options(freq.totals = TRUE, freq.report.nas = TRUE) 
+> st_options(freq.totals = TRUE, freq.report.nas = TRUE)
 
-# HTML - omitting NA reporting and/or Cumulative proportions ------------------- 
+# -----------------  HTML - omitting NA reporting and/or Cumulative proportions
+> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions")
+Output file written
 
-> view(freq(tobacco$age.gr), file = "08-omissions.html", footnote = "No omissions") 
--- Output file written
+> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE")
+Output file appended
 
-> view(freq(tobacco$age.gr, report.nas = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE") 
--- Output file appended
+> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE")
+Output file appended
 
-> view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "cumul = FALSE") 
--- Output file appended
+> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
+Output file appended
 
-> view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE") 
--- Output file appended
+# -----------------  tb()
+> suppressPackageStartupMessages(library(magrittr))
 
-
-# tb() ------------------------------------------------------------------------- 
-
-> library(magrittr) 
-> iris %$% freq(Species) %>% tb() 
-
+> iris %$% freq(Species) %>% tb()
 # A tibble: 4 x 6
   Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>      <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
@@ -2042,8 +1916,7 @@ Tipo: Numérico
 3 virginica     50      33.3         100.     33.3       100. 
 4 <NA>           0      NA            NA       0         100. 
 
-> iris %$% freq(Species, report.nas = FALSE) %>% tb() 
-
+> iris %$% freq(Species, report.nas = FALSE) %>% tb()
 # A tibble: 3 x 4
   Species     freq   pct pct_cum
   <fct>      <dbl> <dbl>   <dbl>
@@ -2051,8 +1924,7 @@ Tipo: Numérico
 2 versicolor    50  33.3    66.7
 3 virginica     50  33.3   100. 
 
-> iris %$% freq(Species, cumul = FALSE) %>% tb() 
-
+> iris %$% freq(Species, cumul = FALSE) %>% tb()
 # A tibble: 4 x 4
   Species     freq pct_valid pct_tot
   <fct>      <dbl>     <dbl>   <dbl>
@@ -2061,8 +1933,7 @@ Tipo: Numérico
 3 virginica     50      33.3    33.3
 4 <NA>           0      NA       0  
 
-> iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb() 
-
+> iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
 # A tibble: 3 x 3
   Species     freq   pct
   <fct>      <dbl> <dbl>
@@ -2070,9 +1941,9 @@ Tipo: Numérico
 2 versicolor    50  33.3
 3 virginica     50  33.3
 
-> library(dplyr) 
-> tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10) 
+> suppressPackageStartupMessages(library(dplyr))
 
+> tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 Frecuencias  
 tobacco$disease  
 Tipo: Alfahnumérico  
@@ -2093,13 +1964,11 @@ Tipo: Alfahnumérico
                  <NA>     778                                77.80         100.00
                 Total    1000     100.00          100.00    100.00         100.00
 
+# -----------------  Deal with explicited NA's
+> tobacco$age.gr %<>% forcats::fct_explicit_na()
 
-# Deal with explicited NA's ---------------------------------------------------- 
-
-> tobacco$age.gr %<>% forcats::fct_explicit_na() 
-> freq(tobacco$age.gr) 
--- explicit NA's detected - temporarily setting 'report.nas' to FALSE
-
+> freq(tobacco$age.gr)
+explicit NA's detected - temporarily setting 'report.nas' to FALSE
 Frecuencias  
 tobacco$age.gr  
 Etiqueta: Age Group  
@@ -2114,13 +1983,10 @@ Tipo: Factor
       (Missing)      25     2.50   100.00
           Total    1000   100.00   100.00
 
-
-# Full dataframes -------------------------------------------------------------- 
-
-> (ftob1 <- freq(tobacco)) 
--- explicit NA's detected - temporarily setting 'report.nas' to FALSE
--- Variable(s) ignored: age, BMI, cigs.per.day
-
+# -----------------  Full dataframes
+> (ftob1 <- freq(tobacco))
+explicit NA's detected - temporarily setting 'report.nas' to FALSE
+Variable(s) ignored: age, BMI, cigs.per.day
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -2201,10 +2067,9 @@ Tipo: Numérico
                    <NA>       0                                 0.00         100.00
                   Total    1000     100.00          100.00    100.00         100.00
 
-> (ftob2 <- freq(tobacco, display.type = FALSE)) 
--- explicit NA's detected - temporarily setting 'report.nas' to FALSE
--- Variable(s) ignored: age, BMI, cigs.per.day
-
+> (ftob2 <- freq(tobacco, display.type = FALSE))
+explicit NA's detected - temporarily setting 'report.nas' to FALSE
+Variable(s) ignored: age, BMI, cigs.per.day
 Frecuencias  
 tobacco$gender  
 Etiqueta: Subject's Gender  
@@ -2279,24 +2144,21 @@ tobacco$samp.wgts
                    <NA>       0                                 0.00         100.00
                   Total    1000     100.00          100.00    100.00         100.00
 
-> print(ftob1, file = "09-full-dataset.html", footnote = "With type") 
--- Switching method to 'browser'
--- Variable(s) ignored: age, BMI, cigs.per.day
--- Output file written
--- Output file appended
+> print(ftob1, file = "09-full-dataset.html", footnote = "With type")
+Switching method to 'browser'
+Variable(s) ignored: age, BMI, cigs.per.day
+Output file written
+Output file appended
 
-> print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type") 
--- Switching method to 'browser'
--- Variable(s) ignored: age, BMI, cigs.per.day
--- Output file written
--- Output file appended
+> print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type")
+Switching method to 'browser'
+Variable(s) ignored: age, BMI, cigs.per.day
+Output file written
+Output file appended
 
-
-# Collapsible outputs ---------------------------------------------------------- 
-
-> print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections") 
--- Switching method to 'browser'
--- Variable(s) ignored: age, BMI, cigs.per.day
--- Output file written
--- Output file appended
-
+# -----------------  Collapsible outputs
+> print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections")
+Switching method to 'browser'
+Variable(s) ignored: age, BMI, cigs.per.day
+Output file written
+Output file appended

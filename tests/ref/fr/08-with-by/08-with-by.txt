@@ -1,21 +1,23 @@
 
-#-------------------------------- with-by.R ------------------------------------  
+# -----------------  with-by.R ------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
 
-> library(dplyr) 
+> suppressPackageStartupMessages(library(dplyr))
 
-# with ------------------------------------------------------------------------- 
+> options(tibble.print_max = Inf)
 
-> w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)) 
-> view(w1, file = "01-with.md") 
--- Switching method to 'pander'
--- Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file written
+# -----------------  with
+> w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))
 
-> view(w1, file = "01-with.html") 
--- Output file written
+> view(w1, file = "01-with.md")
+Switching method to 'pander'
+Changing style to 'rmarkdown' for improved markdown compatibility
+Output file written
 
-> (w2 <- with(tobacco, descr(BMI, transpose = TRUE))) 
+> view(w1, file = "01-with.html")
+Output file written
 
+> (w2 <- with(tobacco, descr(BMI, transpose = TRUE)))
 Statistiques descriptives  
 tobacco$BMI  
 N: 1000  
@@ -32,11 +34,10 @@ Table: Table continues below
 --------- ----------- -------------- --------------- ----------- ------------
       BMI        0.02           0.08            0.26      974.00        97.40
 
-> view(w2, footnote = "with, transpose", file = "02-with-transposed.html") 
--- Output file written
+> view(w2, footnote = "with, transpose", file = "02-with-transposed.html")
+Output file written
 
-> view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander") 
-
+> view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander")
 Tableau croisé, proportions par rangées  
 gender * diseased  
 Data frame: tobacco  
@@ -55,8 +56,7 @@ Data frame: tobacco
 |  Total |          | 224 (22.4%) | 776 (77.6%) | 1000 (100.0%) |
 +--------+----------+-------------+-------------+---------------+
 
-> (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C"))) 
-
+> (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C")))
 Tableau croisé, proportions par colonnes  
 gender * diseased  
 Data frame: tobacco  
@@ -75,15 +75,13 @@ Data frame: tobacco
 |  Total |          | 224 (100.0%) | 776 (100.0%) | 1000 (100.0%) |
 +--------+----------+--------------+--------------+---------------+
 
-> view(w3, method = "browser", footnote = "with, prop = c", file = "03-with-col-props.html") 
--- Output file written
+> view(w3, method = "browser", footnote = "with, prop = c", file = "03-with-col-props.html")
+Output file written
 
+# -----------------  by
+> bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq)
 
-# by --------------------------------------------------------------------------- 
-
-> bf1 <- stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq) 
-> view(bf1, 'pander') 
-
+> view(bf1, 'pander')
 Tableau de fréquences  
 tobacco$diseased  
 Type: Facteur  
@@ -105,8 +103,7 @@ Groupe: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE) 
-
+> view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 **Groupe:** smoker = Yes  
 
       &nbsp;   Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
@@ -125,8 +122,7 @@ Groupe: smoker = No
   **\<NA\>**       0                                 0.00         100.00
    **Total**     702     100.00          100.00    100.00         100.00
 
-> print(bf1) 
-
+> print(bf1)
 Tableau de fréquences  
 tobacco$diseased  
 Type: Facteur  
@@ -148,27 +144,27 @@ Groupe: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> view(bf1, file = "04-by-freq.html", missing = "xxxx") 
--- Output file written
--- Output file appended
+> view(bf1, file = "04-by-freq.html", missing = "xxxx")
+Output file written
+Output file appended
 
+# -----------------  with + by
+> label(tobacco$BMI) <- "Body Mass Index"
 
-# with + by -------------------------------------------------------------------- 
+> label(tobacco$diseased) <- "Subject has illness"
 
-> label(tobacco$BMI) <- "Body Mass Index" 
-> label(tobacco$diseased) <- "Subject has illness" 
-> view(stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "05-with-and-by-freq.html") 
--- Output file written
--- Output file appended
+> view(stby(data = tobacco$diseased, INDICES = tobacco$smoker, FUN = freq), file = "05-with-and-by-freq.html")
+Output file written
+Output file appended
 
-> view(stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "06-with-and-by-descr.md") 
--- Switching method to 'pander'
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file written
+> view(stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr), file = "06-with-and-by-descr.md")
+Switching method to 'pander'
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file written
 
-> bf2 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq) 
-> view(bf2, 'pander') 
+> bf2 <- stby(iris$Species, iris$Sepal.Length > mean(iris$Sepal.Length), freq)
 
+> view(bf2, 'pander')
 Tableau de fréquences  
 iris$Species  
 Type: Facteur  
@@ -192,16 +188,16 @@ Groupe: Sepal.Length > mean(Sepal.Length) = TRUE
             <NA>       0                                 0.00         100.00
            Total      70     100.00          100.00    100.00         100.00
 
-> view(bf2, method = "browser", footnote = "condition for by", file = "07-by-calculated-freq.html") 
--- Output file written
--- Output file appended
+> view(bf2, method = "browser", footnote = "condition for by", file = "07-by-calculated-freq.html")
+Output file written
+Output file appended
 
-> bd1 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid") 
-> view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "08-by-descr-no-head.html") 
--- Output file written
+> bd1 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr, style = "grid")
 
-> view(bd1, method = 'pander') 
+> view(bd1, headings = FALSE, method = "browser", footnote = "by, no headings", file = "08-by-descr-no-head.html")
+Output file written
 
+> view(bd1, method = 'pander')
 Statistiques descriptives  
 BMI par gender  
 Data frame: tobacco  
@@ -226,55 +222,54 @@ N: 489
           Nb.Valide   475.00   477.00
          Pct.Valide    97.14    97.55
 
-> bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr) 
-> view(bd2, method = "browser", file = "09-by-descr.html") 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
--- Output file appended
+> bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
-> view(bd2, method = "pander", file = "09-by-descr-view.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file appended
+> view(bd2, method = "browser", file = "09-by-descr.html")
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
+Output file appended
 
-> label(tobacco) <- "Blabla" 
-> bd3 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr) 
-> st_options(display.labels = FALSE) 
-> view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10-by-descr.html") 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
--- Output file appended
+> view(bd2, method = "pander", file = "09-by-descr-view.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file appended
 
-> print(bd3, file = "10-by-descr.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file appended
+> label(tobacco) <- "Blabla"
 
-> attach(tobacco) 
--- The following objects are masked from tobacco (pos = 3):
--- 
---     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
--- 
+> bd3 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
-> bd4 <- stby(data = BMI, INDICES = gender, FUN = descr) 
-> view(bd4, method = "browser", footnote = "stand-alone variable", file = "11-by-descr-standalone-var.html") 
--- Output file written
+> st_options(display.labels = FALSE)
 
-> print(bd4, file = "11-by-descr-standalone-var.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file written
+> view(bd3, display.labels = T, method = "browser", footnote = "override option disp.labels = F", file = "10-by-descr.html")
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
+Output file appended
 
-> detach(tobacco) 
+> print(bd3, file = "10-by-descr.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file appended
 
-# cas particulier - by, 1 groupe seul. ----------------------------------------- 
+> attach(tobacco)
 
-> (b8 <- stby(iris, !is.na(iris$Species), descr)) 
--- Non-numerical variable(s) ignored: Species
+> bd4 <- stby(data = BMI, INDICES = gender, FUN = descr)
 
+> view(bd4, method = "browser", footnote = "stand-alone variable", file = "11-by-descr-standalone-var.html")
+Output file written
+
+> print(bd4, file = "11-by-descr-standalone-var.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file written
+
+> detach(tobacco)
+
+# -----------------  cas particulier - by, 1 groupe seul.
+> (b8 <- stby(iris, !is.na(iris$Species), descr))
+Non-numerical variable(s) ignored: Species
 Statistiques descriptives  
 iris  
 Groupe: !is.na(Species) = TRUE  
@@ -298,20 +293,15 @@ N: 150
           Nb.Valide         150.00        150.00         150.00        150.00
          Pct.Valide         100.00        100.00         100.00        100.00
 
-> view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html") 
--- Output file written
+> view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html")
+Output file written
 
-> attach(tobacco) 
--- The following objects are masked from tobacco (pos = 3):
--- 
---     age, age.gr, BMI, cigs.per.day, disease, diseased, gender, samp.wgts, smoker
--- 
+> attach(tobacco)
 
-> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "13.html")  
--- Output file written
+> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "browser", file = "13.html") 
+Output file written
 
-> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown")  
-
+> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") 
 ### Statistiques descriptives  
 #### BMI par gender  
 **N:** 489  
@@ -334,8 +324,7 @@ N: 150
 |     **Nb.Valide** | 475.00 | 477.00 |
 |    **Pct.Valide** |  97.14 |  97.55 |
 
-> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render")  
-
+> view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render") 
 <div class="container st-container">
   <h3>Statistiques descriptives</h3>
   <h4> BMI par gender </h4>
@@ -442,12 +431,12 @@ N: 150
     </tr>
   </tbody>
 </table>
-  Placeholder footnote
+  <p>G&#0233;n&#0233;r&#0233; par <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> version 3.6.3)<br/>2020-05-22</p>
 </div>
 
-> detach(tobacco) 
-> stby(tobacco, tobacco$gender, dfSummary) 
+> detach(tobacco)
 
+> stby(tobacco, tobacco$gender, dfSummary)
 Tableau-synthèse  
 tobacco  
 Groupe: gender = F  
@@ -566,9 +555,8 @@ No   Variable       Stats / valeurs           Fréq. (% de valide)   Diagramme   
                                               ! arrondi                                                         
 ----------------------------------------------------------------------------------------------------------------
 
-> stby(tobacco, tobacco$gender, descr) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
-
+> stby(tobacco, tobacco$gender, descr)
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 Statistiques descriptives  
 tobacco  
 Groupe: gender = F  
@@ -613,8 +601,7 @@ N: 489
           Nb.Valide   478.00   477.00         475.00      489.00
          Pct.Valide    97.75    97.55          97.14      100.00
 
-> stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq) 
-
+> stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 Tableau de fréquences  
 tobacco$disease  
 Type: Facteur  
@@ -698,12 +685,10 @@ Groupe: smoker = No, gender = M
                  <NA>     299                                86.42         100.00
                 Total     346     100.00          100.00    100.00         100.00
 
+# -----------------  with + by
+> wb1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)) 
 
-# with + by -------------------------------------------------------------------- 
-
-> wb1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq))  
-> view(wb1, method = "pander", caption = "with + by") 
-
+> view(wb1, method = "pander", caption = "with + by")
 Tableau de fréquences  
 tobacco$diseased  
 Type: Facteur  
@@ -729,16 +714,15 @@ Groupe: smoker = No
 
 Table: with + by
 
-> view(wb1, method = "browser", footnote = "with + by", file = "14.html") 
--- Output file written
--- Output file appended
+> view(wb1, method = "browser", footnote = "with + by", file = "14.html")
+Output file written
+Output file appended
 
-> view(wb1, headings = FALSE, footnote = "no headings", file = "15.html") 
--- Output file written
--- Output file appended
+> view(wb1, headings = FALSE, footnote = "no headings", file = "15.html")
+Output file written
+Output file appended
 
-> view(wb1, headings = FALSE, footnote = "no headings", method = "pander")  
-
+> view(wb1, headings = FALSE, footnote = "no headings", method = "pander") 
 Groupe: smoker = Yes  
 
               Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
@@ -757,9 +741,9 @@ Groupe: smoker = No
        <NA>       0                                 0.00         100.00
       Total     702     100.00          100.00    100.00         100.00
 
-> wb2 <- with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr))  
-> view(wb2, method = "pander") 
+> wb2 <- with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)) 
 
+> view(wb2, method = "pander")
 Statistiques descriptives  
 BMI par gender  
 Data frame: tobacco  
@@ -783,14 +767,13 @@ N: 489
           Nb.Valide   475.00   477.00
          Pct.Valide    97.14    97.55
 
-> view(wb2, method = "browser", footnote = "with + by", file = "16.html") 
--- Output file written
+> view(wb2, method = "browser", footnote = "with + by", file = "16.html")
+Output file written
 
-> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr, stats = "fivenum")), method = "browser", footnote = "with + by fivenum", file = "17.html") 
--- Output file written
+> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr, stats = "fivenum")), method = "browser", footnote = "with + by fivenum", file = "17.html")
+Output file written
 
-> (b5 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max")))) 
-
+> (b5 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max"))))
 Statistiques descriptives  
 BMI par age.gr  
 Data frame: tobacco  
@@ -804,8 +787,7 @@ N: 258
          Médiane   24.04   25.11   26.77   27.52
              Max   34.84   39.44   39.21   38.37
 
-> print(b5, "pander", style = "rmarkdown")  
-
+> print(b5, "pander", style = "rmarkdown") 
 ### Statistiques descriptives  
 #### BMI par age.gr  
 **Data frame:** tobacco  
@@ -819,9 +801,9 @@ N: 258
 |    **Médiane** | 24.04 | 25.11 | 26.77 | 27.52 |
 |        **Max** | 34.84 | 39.44 | 39.21 | 38.37 |
 
-> b6 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE)) 
-> view(b6, "pander")  
+> b6 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE))
 
+> view(b6, "pander") 
 Statistiques descriptives  
 BMI par age.gr  
 Data frame: tobacco  
@@ -834,18 +816,17 @@ N: 258
       51-70   26.91         4.26    9.01   39.21
        71 +   27.45         4.37   16.36   38.37
 
-> view(b6, method = "browser", footnote = "4 stats", file = "18.html") 
--- Output file written
+> view(b6, method = "browser", footnote = "4 stats", file = "18.html")
+Output file written
 
-> with(tobacco, view(stby(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html")) 
--- Output file written
--- Output file appended
+> with(tobacco, view(stby(data = diseased, INDICES = smoker, FUN = freq, totals = F), method = "browser", footnote = "with + by", file = "19.html"))
+Output file written
+Output file appended
 
-> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html") 
--- Output file written
+> view(with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)), method = "browser", file = "20.html")
+Output file written
 
-> with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander")) 
-
+> with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander"))
 Statistiques descriptives  
 BMI par gender  
 Data frame: tobacco  
@@ -869,18 +850,13 @@ N: 489
           Nb.Valide   475.00   477.00
          Pct.Valide    97.14    97.55
 
+# -----------------  Ouverture dans viewer
+> view(b8, method = "viewer")
+Non-numerical variable(s) ignored: Species
+Output file written
 
-# Ouverture dans viewer -------------------------------------------------------- 
-
-> view(b8, method = "viewer") 
--- Non-numerical variable(s) ignored: Species
--- Output file written
-
-
-# by + weights ----------------------------------------------------------------- 
-
-> with(tobacco, stby(smoker, gender, freq, weights = samp.wgts)) 
-
+# -----------------  by + weights
+> with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
 Tableau de fréquences pondérées  
 tobacco$smoker  
 Type: Facteur  
@@ -903,8 +879,7 @@ Groupe: gender = M
        <NA>     0.00                                 0.00         100.00
       Total   488.92     100.00          100.00    100.00         100.00
 
-> with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts)) 
-
+> with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
 Tableau croisé, proportions par rangées  
 gender * smoker  
 Data frame: tobacco  
@@ -952,8 +927,7 @@ Groupe: age.gr = 71 +
    Total            47.8 (28.3%)   121.1 (71.7%)   168.9 (100.0%)
 -------- -------- -------------- --------------- ----------------
 
-> tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts) 
-
+> tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)
 Tableau de fréquences pondérées  
 tobacco$smoker  
 Type: Facteur  
@@ -984,4 +958,3 @@ Groupe: gender = NA
          No   14.14      63.80          100.00     63.80         100.00
        <NA>    0.00                                 0.00         100.00
       Total   22.16     100.00          100.00    100.00         100.00
-

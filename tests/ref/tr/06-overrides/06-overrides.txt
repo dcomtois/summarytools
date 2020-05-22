@@ -1,11 +1,16 @@
 
-# ---------------------------- overrides.R -------------------------------------  
+# -----------------  overrides.R -------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
 
-> data(tobacco) 
-> label(tobacco$age.gr) <- "Groupe d'âge" 
-> f1 <- freq(tobacco$age.gr) 
-> print(f1, plain.ascii = F, round.digits = 3, display.labels = FALSE, display.type = F, missing = '------', report.nas = T, totals = F, Variable = "fake var name") # 6-1 
+> options(tibble.print_max = Inf)
 
+> data(tobacco)
+
+> label(tobacco$age.gr) <- "Groupe d'âge"
+
+> f1 <- freq(tobacco$age.gr)
+
+> print(f1, plain.ascii = F, round.digits = 3, display.labels = FALSE, display.type = F, missing = '------', report.nas = T, totals = F, Variable = "fake var name") # 6-1
 ### Siklik  
 #### fake var name  
 
@@ -17,11 +22,10 @@
     **71 +**      159      16.308          100.000     15.900          97.500
   **\<NA\>**       25      ------           ------      2.500         100.000
 
-> view(f1, round.digits = 1, display.labels = F, display.type = F, missing = '---', report.nas = F, totals = F, Variable = "fake var name", footnote = 'no totals no nas no type no label', method="browser", file = "01.html") 
--- Output file written
+> view(f1, round.digits = 1, display.labels = F, display.type = F, missing = '---', report.nas = F, totals = F, Variable = "fake var name", footnote = 'no totals no nas no type no label', method="brow ..." ... [TRUNCATED] 
+Output file written
 
-> print(f1, method = 'render', footnote = 'f1') 
-
+> print(f1, method = 'render', footnote = 'f1')
 <div class="container st-container">
   <h3>Siklik</h3>
   <h4>tobacco$age.gr</h4>
@@ -98,8 +102,7 @@
   <p>f1</p>
 </div>
 
-> (f2 <- freq(tabagisme$maladie, order = "freq")) 
-
+> (f2 <- freq(tabagisme$maladie, order = "freq"))
 Siklik  
 tabagisme$maladie  
 Tür: Karakter  
@@ -122,10 +125,9 @@ Tür: Karakter
                       <NA>      778                                   77.80          100.00
                     Toplam     1000      100.00           100.00     100.00          100.00
 
-> print(f2, justify = "left", file = "02-justify-left.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
--- Output file written
+> print(f2, justify = "left", file = "02-justify-left.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'rmarkdown' for improved markdown compatibility
+Output file written
 
-> view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html') 
--- Output file written
-
+> view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html')
+Output file written

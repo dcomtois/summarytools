@@ -1,18 +1,23 @@
 
-# ------------------------------ parse_args.R ----------------------------------  
+# -----------------  parse_args.R ----------------------------------
+> suppressPackageStartupMessages(library(dplyr))
 
-> library(dplyr) 
-> library(magrittr) 
-> library(pipeR) 
-> data(tobacco) 
-> label(tobacco) <- "Tobacco Study" 
-> label(tobacco$smoker) <- "Smoking Status" 
-> label(tobacco$age) <- "Age of the Subject" 
+> suppressPackageStartupMessages(library(magrittr))
 
-# Basic cases ------------------------------------------------------------------ 
+> suppressPackageStartupMessages(library(pipeR))
 
-> freq(tobacco$smoker) 
+> suppressPackageStartupMessages(library(summarytools))
 
+> data(tobacco)
+
+> label(tobacco) <- "Tobacco Study"
+
+> label(tobacco$smoker) <- "Smoking Status"
+
+> label(tobacco$age) <- "Age of the Subject"
+
+# -----------------  Basic cases
+> freq(tobacco$smoker)
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -25,8 +30,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco["smoker"]) 
-
+> freq(tobacco["smoker"])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -39,8 +43,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco[["smoker"]]) 
-
+> freq(tobacco[["smoker"]])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -53,8 +56,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco[,5]) 
-
+> freq(tobacco[,5])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -67,8 +69,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> freq(tobacco[[5]]) 
-
+> freq(tobacco[[5]])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -81,11 +82,8 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-
-# With row subsets ------------------------------------------------------------- 
-
-> freq(tobacco$smoker[1:100]) 
-
+# -----------------  With row subsets
+> freq(tobacco$smoker[1:100])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -98,8 +96,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total     100     100.00          100.00    100.00         100.00
 
-> freq(tobacco[1:100, "smoker"]) 
-
+> freq(tobacco[1:100, "smoker"])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -112,8 +109,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total     100     100.00          100.00    100.00         100.00
 
-> freq(tobacco[1:100, 5]) 
-
+> freq(tobacco[1:100, 5])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -126,8 +122,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total     100     100.00          100.00    100.00         100.00
 
-> freq(tobacco[[5]][1:100]) 
-
+> freq(tobacco[[5]][1:100])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -140,8 +135,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total     100     100.00          100.00    100.00         100.00
 
-> freq(tobacco$smoker[tobacco$smoker=="Yes"]) 
-
+> freq(tobacco$smoker[tobacco$smoker=="Yes"])
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -154,12 +148,10 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total     298     100.00          100.00    100.00         100.00
 
+# -----------------  Standalone variable
+> smoker <- tobacco$smoker
 
-# Standalone variable ---------------------------------------------------------- 
-
-> smoker <- tobacco$smoker 
-> freq(smoker) 
-
+> freq(smoker)
 Tableau de fréquences  
 smoker  
 Étiquette: Smoking Status  
@@ -172,11 +164,8 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-
-# with ------------------------------------------------------------------------- 
-
-> with(tobacco, freq(smoker))            
-
+# -----------------  with
+> with(tobacco, freq(smoker))           
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -189,8 +178,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> with(tobacco, descr(age))              
-
+> with(tobacco, descr(age))             
 Statistiques descriptives  
 tobacco$age  
 Étiquette: Age of the Subject  
@@ -214,8 +202,7 @@ N: 1000
           Nb.Valide   975.00
          Pct.Valide    97.50
 
-> with(tobacco, ctable(smoker, diseased)) 
-
+> with(tobacco, ctable(smoker, diseased))
 Tableau croisé, proportions par rangées  
 smoker * diseased  
 Data frame: tobacco  
@@ -229,11 +216,8 @@ Data frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-
-# pipe - magrittr -------------------------------------------------------------- 
-
-> tobacco$smoker %>% freq() 
-
+# -----------------  pipe - magrittr
+> tobacco$smoker %>% freq()
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -246,8 +230,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco["smoker"] %>% freq() 
-
+> tobacco["smoker"] %>% freq()
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -260,8 +243,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[["smoker"]] %>% freq() 
-
+> tobacco[["smoker"]] %>% freq()
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -274,8 +256,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[,5] %>% freq() 
-
+> tobacco[,5] %>% freq()
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -288,8 +269,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[[5]] %>% freq() 
-
+> tobacco[[5]] %>% freq()
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -302,8 +282,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE) 
-
+> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
 ### Tableau-synthèse  
 #### tobacco  
 **Dimensions:** 1000 x 9  
@@ -366,8 +345,7 @@ Type: Facteur
 |    |               |                    |                          | ! arrondi           | \                            |         |          |
 +----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
 
-> tobacco %$% ctable(smoker, diseased) 
-
+> tobacco %$% ctable(smoker, diseased)
 Tableau croisé, proportions par rangées  
 smoker * diseased  
 Data frame: tobacco  
@@ -381,8 +359,7 @@ Data frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common") 
-
+> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
 Statistiques descriptives  
 tobacco$age  
 Étiquette: Age of the Subject  
@@ -398,8 +375,7 @@ N: 1000
        Nb.Valide   975.00
       Pct.Valide    97.50
 
-> tobacco %>% select(age.gr)  %>% freq() # SUCCESS 
-
+> tobacco %>% select(age.gr)  %>% freq() # SUCCESS
 Tableau de fréquences  
 tobacco$age.gr  
 Type: Facteur  
@@ -413,9 +389,8 @@ Type: Facteur
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco %>% group_by(gender) %>% descr() 
--- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
-
+> tobacco %>% group_by(gender) %>% descr()
+Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 Statistiques descriptives  
 tobacco  
 Étiquette: Tobacco Study  
@@ -482,8 +457,7 @@ N: 22
           Nb.Valide    22.00    22.00          22.00       22.00
          Pct.Valide   100.00   100.00         100.00      100.00
 
-> tobacco %>% group_by(gender) %>% freq(smoker) 
-
+> tobacco %>% group_by(gender) %>% freq(smoker)
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -515,11 +489,8 @@ Groupe: gender = NA
        <NA>       0                                 0.00         100.00
       Total      22     100.00          100.00    100.00         100.00
 
-
-# pipe - pipeR ----------------------------------------------------------------- 
-
-> tobacco$smoker %>>% freq()      # OK 
-
+# -----------------  pipe - pipeR
+> tobacco$smoker %>>% freq()      # OK
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -532,8 +503,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[["smoker"]] %>>% freq() # OK 
-
+> tobacco[["smoker"]] %>>% freq() # OK
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -546,8 +516,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco["smoker"] %>>% freq()   # OK 
-
+> tobacco["smoker"] %>>% freq()   # OK
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -560,8 +529,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco %>>% select(age) %>>% arrange() %>>% descr(stats = "common")  # OK 
-
+> tobacco %>>% select(age) %>>% arrange() %>>% descr(stats = "common")  # OK
 Statistiques descriptives  
 tobacco$age  
 Étiquette: Age of the Subject  
@@ -577,8 +545,7 @@ N: 1000
        Nb.Valide   975.00
       Pct.Valide    97.50
 
-> tobacco[,5] %>>% freq()         # OK 
-
+> tobacco[,5] %>>% freq()         # OK
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -591,8 +558,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco[[5]] %>% freq()         # OK 
-
+> tobacco[[5]] %>% freq()         # OK
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -605,8 +571,7 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)  # OK 
-
+> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)  # OK
 ### Tableau-synthèse  
 #### tobacco  
 **Dimensions:** 1000 x 9  
@@ -669,8 +634,7 @@ Type: Facteur
 |    |               |                    |                          | ! arrondi           | \                            |         |          |
 +----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
 
-> tobacco %>>% select(age.gr) %>>% freq() # SUCCESS 
-
+> tobacco %>>% select(age.gr) %>>% freq() # SUCCESS
 Tableau de fréquences  
 tobacco$age.gr  
 Type: Facteur  
@@ -684,9 +648,8 @@ Type: Facteur
        <NA>      25                                 2.50         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> tobacco %>>% group_by(gender) %>>% descr() 
--- Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
-
+> tobacco %>>% group_by(gender) %>>% descr()
+Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
 Statistiques descriptives  
 tobacco  
 Étiquette: Tobacco Study  
@@ -753,8 +716,7 @@ N: 22
           Nb.Valide    22.00    22.00          22.00       22.00
          Pct.Valide   100.00   100.00         100.00      100.00
 
-> tobacco %>>% group_by(gender) %>>% freq(smoker) 
-
+> tobacco %>>% group_by(gender) %>>% freq(smoker)
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -786,11 +748,8 @@ Groupe: gender = NA
        <NA>       0                                 0.00         100.00
       Total      22     100.00          100.00    100.00         100.00
 
-
-# by --------------------------------------------------------------------------- 
-
-> stby(tobacco$smoker, tobacco$gender, freq)           
-
+# -----------------  by
+> stby(tobacco$smoker, tobacco$gender, freq)          
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -813,8 +772,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> stby(tobacco["smoker"], tobacco["gender"], freq)     
-
+> stby(tobacco["smoker"], tobacco["gender"], freq)    
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -837,8 +795,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> stby(tobacco[,"smoker"], tobacco[,"gender"], freq)   
-
+> stby(tobacco[,"smoker"], tobacco[,"gender"], freq)  
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -861,8 +818,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> stby(tobacco[["smoker"]], tobacco[["gender"]], freq) 
-
+> stby(tobacco[["smoker"]], tobacco[["gender"]], freq)
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -885,11 +841,8 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-
-# by, numeric column indexing -------------------------------------------------- 
-
-> stby(tobacco[[5]], tobacco[[1]], freq) 
-
+# -----------------  by, numeric column indexing
+> stby(tobacco[[5]], tobacco[[1]], freq)
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -912,8 +865,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> stby(tobacco[,5], tobacco[,1], freq)   
-
+> stby(tobacco[,5], tobacco[,1], freq)  
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -936,11 +888,8 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-
-# by with ctable --------------------------------------------------------------- 
-
-> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok 
-
+# -----------------  by with ctable
+> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
 Tableau croisé, proportions par rangées  
 smoker * diseased  
 Data frame: tobacco  
@@ -965,11 +914,8 @@ Groupe: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-
-# with + by -------------------------------------------------------------------- 
-
-> with(tobacco, stby(smoker, gender, freq))                                
-
+# -----------------  with + by
+> with(tobacco, stby(smoker, gender, freq))                               
 Tableau de fréquences  
 tobacco$smoker  
 Étiquette: Smoking Status  
@@ -992,8 +938,7 @@ Groupe: gender = M
        <NA>       0                                 0.00         100.00
       Total     489     100.00          100.00    100.00         100.00
 
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))      
-
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))     
 Tableau croisé, proportions par rangées  
 smoker * diseased  
 Data frame: tobacco  
@@ -1018,8 +963,7 @@ Groupe: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable)) 
-
+> with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable))
 Tableau croisé, proportions par rangées  
 smoker * diseased  
 Data frame: tobacco  
@@ -1043,11 +987,8 @@ Groupe: gender = M
    Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-
-# lapply ----------------------------------------------------------------------- 
-
-> print(lapply(tobacco[c(1,3,5)], freq)) 
-
+# -----------------  lapply
+> print(lapply(tobacco[c(1,3,5)], freq))
 Tableau de fréquences  
 tobacco$gender  
 Type: Facteur  
@@ -1082,9 +1023,9 @@ Type: Facteur
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> lap <- lapply(tobacco[c(1,3,5)], freq) 
-> print(lap) 
+> lap <- lapply(tobacco[c(1,3,5)], freq)
 
+> print(lap)
 Tableau de fréquences  
 tobacco$gender  
 Type: Facteur  
@@ -1118,4 +1059,3 @@ Type: Facteur
          No     702      70.20          100.00     70.20         100.00
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
-

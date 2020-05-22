@@ -4,6 +4,8 @@
 
 > suppressPackageStartupMessages(library(summarytools))
 
+> options(tibble.print_max = Inf)
+
 > tobacco <- tibble::as_tibble(tobacco)
 
 > (d1 <- descr(tobacco))

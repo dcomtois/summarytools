@@ -2,6 +2,8 @@
 # -----------------  ctable.R ----------------------------------------
 > suppressPackageStartupMessages(library(dplyr))
 
+> options(tibble.print_max = Inf)
+
 > suppressPackageStartupMessages(library(summarytools))
 
 > data(tobacco)

@@ -1,11 +1,16 @@
 
-# ---------------------------- ctable.R ----------------------------------------  
+# -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(dplyr))
 
-> library(dplyr) 
-> data(tobacco) 
-> tobacco <- tibble::as_tibble(tobacco) 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï") 
+> options(tibble.print_max = Inf)
 
+> suppressPackageStartupMessages(library(summarytools))
+
+> data(tobacco)
+
+> tobacco <- tibble::as_tibble(tobacco)
+
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -20,12 +25,10 @@ Veri Çerçevesi: tobacco
 
 Table: test encod: éêàáûï
 
-> label(tobacco) <- "A Study on Tobacco Use and Health" 
+> label(tobacco) <- "A Study on Tobacco Use and Health"
 
-# always show NAs -------------------------------------------------------------- 
-
-> (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always')) 
-
+# -----------------  always show NAs
+> (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -40,23 +43,21 @@ Etiket: A Study on Tobacco Use and Health
   Toplam              224 (22.4%)   776 (77.6%)   0 (0.0%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------- ---------------
 
-> st_options(display.labels = F) 
-> print(ct1, file = "01.html") 
--- Switching method to 'browser'
--- Output file written
+> st_options(display.labels = F)
 
-> print(ct1, totals=FALSE, file = "02.md", style = "grid", plain.ascii = FALSE) 
--- Output file written
+> print(ct1, file = "01.html")
+Switching method to 'browser'
+Output file written
 
-> view(ct1, totals=FALSE, file = "03.md", style = "grid", plain.ascii = FALSE) 
--- Switching method to 'pander'
--- Output file written
+> print(ct1, totals=FALSE, file = "02.md", style = "grid", plain.ascii = FALSE)
+Output file written
 
+> view(ct1, totals=FALSE, file = "03.md", style = "grid", plain.ascii = FALSE)
+Switching method to 'pander'
+Output file written
 
-# Minimal ---------------------------------------------------------------------- 
-
-> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n", totals = FALSE)) 
-
+# -----------------  Minimal
+> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n", totals = FALSE))
 
 -------- -------- ----- -----
            smoker   Yes    No
@@ -66,11 +67,8 @@ Etiket: A Study on Tobacco Use and Health
     <NA>              8    14
 -------- -------- ----- -----
 
-
-# Minimal with totals ---------------------------------------------------------- 
-
-> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n")) 
-
+# -----------------  Minimal with totals
+> with(tobacco, ctable(gender, smoker, headings = FALSE, prop = "n"))
 
 -------- -------- ----- ----- --------
            smoker   Yes    No   Toplam
@@ -81,11 +79,8 @@ Etiket: A Study on Tobacco Use and Health
   Toplam            298   702     1000
 -------- -------- ----- ----- --------
 
-
-# Non-default proportions ------------------------------------------------------ 
-
-> ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c') 
-
+# -----------------  Non-default proportions
+> ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
 Çapraz Tablo, Sütun Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -98,8 +93,7 @@ Veri Çerçevesi: tobacco
   Toplam              224 (100.0%)   776 (100.0%)   1000 (100.0%)
 -------- ---------- -------------- -------------- ---------------
 
-> ctable(tobacco$smoker, tobacco$diseased, prop = 'n') 
-
+> ctable(tobacco$smoker, tobacco$diseased, prop = 'n')
 Çapraz Tablo  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -112,8 +106,7 @@ Veri Çerçevesi: tobacco
   Toplam              224   776     1000
 -------- ---------- ----- ----- --------
 
-> ctable(tobacco$smoker, tobacco$diseased, prop = 't') 
-
+> ctable(tobacco$smoker, tobacco$diseased, prop = 't')
 Çapraz Tablo, Toplam Oranlar  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -126,12 +119,10 @@ Veri Çerçevesi: tobacco
   Toplam              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
+# -----------------  Calculated y variable
+> data(exams)
 
-# Calculated y variable -------------------------------------------------------- 
-
-> data(exams) 
-> ctable(exams$gender, exams$french < 60) 
-
+> ctable(exams$gender, exams$french < 60)
 Çapraz Tablo, Satir Oranlari  
 gender * french < 60  
 Veri Çerçevesi: exams  
@@ -144,8 +135,7 @@ Veri Çerçevesi: exams
   Toplam                 28 ( 93.3%)   1 (3.3%)   1 (3.3%)   30 (100.0%)
 -------- ------------- ------------- ---------- ---------- -------------
 
-> ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use") 
-
+> ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use")
 Çapraz Tablo, Satir Oranlari  
 Gender * Failed French Class  
 Veri Çerçevesi: exams  
@@ -160,11 +150,8 @@ Veri Çerçevesi: exams
 
 Table: dnn in use
 
-
-# Subsetting ------------------------------------------------------------------- 
-
-> ctable(tobacco$smoker[1:250], tobacco$diseased[1:250], headings = FALSE) 
-
+# -----------------  Subsetting
+> ctable(tobacco$smoker[1:250], tobacco$diseased[1:250], headings = FALSE)
 
 -------- ---------- ------------ ------------- --------------
            diseased          Yes            No         Toplam
@@ -174,8 +161,7 @@ Table: dnn in use
   Toplam              67 (26.8%)   183 (73.2%)   250 (100.0%)
 -------- ---------- ------------ ------------- --------------
 
-> ctable(tobacco[[1]], tobacco[,3]) 
-
+> ctable(tobacco[[1]], tobacco[,3])
 Çapraz Tablo, Satir Oranlari  
 gender * age.gr  
 Veri Çerçevesi: tobacco  
@@ -189,11 +175,8 @@ Veri Çerçevesi: tobacco
   Toplam            258 (25.8%)   241 (24.1%)   317 (31.7%)   159 (15.9%)   25 (2.5%)   1000 (100.0%)
 -------- -------- ------------- ------------- ------------- ------------- ----------- ---------------
 
-
-# with() ----------------------------------------------------------------------- 
-
-> with(tobacco, ctable(smoker,  diseased)) 
-
+# -----------------  with()
+> with(tobacco, ctable(smoker,  diseased))
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -206,11 +189,8 @@ Veri Çerçevesi: tobacco
   Toplam              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-
-# stby()  ---------------------------------------------------------------------- 
-
-> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) 
-
+# -----------------  stby() 
+> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -234,11 +214,8 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-
-# with() + stby() -------------------------------------------------------------- 
-
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique! 
-
+# -----------------  with() + stby()
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -262,9 +239,9 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F)) 
-> print(wbc, headings = T) 
+> wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 
+> print(wbc, headings = T)
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -288,33 +265,30 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> print(wbc, headings = T, file = "04.md") 
--- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
--- Output file written
--- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
--- Output file appended
+> print(wbc, headings = T, file = "04.md")
+Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
+Output file written
+Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
+Output file appended
 
-> print(wbc, headings = T, file = "04.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> print(wbc, headings = T, file = "04.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> view(wbc, headings = T, caption = "with head", file = "05.md") 
--- Switching method to 'pander'
--- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
--- Output file written
--- Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
--- Output file appended
+> view(wbc, headings = T, caption = "with head", file = "05.md")
+Switching method to 'pander'
+Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
+Output file written
+Setting 'plain.ascii' to FALSE and Changing style to 'grid' for improved markdown compatibility
+Output file appended
 
-> view(wbc, headings = T, footnote = "with head", file = "05.html") 
--- Output file written
--- Output file appended
+> view(wbc, headings = T, footnote = "with head", file = "05.html")
+Output file written
+Output file appended
 
-
-# Weights ---------------------------------------------------------------------- 
-
-> (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts))) 
-
+# -----------------  Weights
+> (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
 Çapraz Tablo, Satir Oranlari  
 gender * smoker  
 Veri Çerçevesi: tobacco  
@@ -328,8 +302,7 @@ Veri Çerçevesi: tobacco
   Toplam            298.3 (29.8%)   701.7 (70.2%)   1000.0 (100.0%)
 -------- -------- --------------- --------------- -----------------
 
-> print(wc1, totals = FALSE) 
-
+> print(wc1, totals = FALSE)
 Çapraz Tablo, Satir Oranlari  
 gender * smoker  
 Veri Çerçevesi: tobacco  
@@ -342,8 +315,7 @@ Veri Çerçevesi: tobacco
     <NA>              8.0 (36.2%)    14.1 (63.8%)
 -------- -------- --------------- ---------------
 
-> print(wc1, round.digits = 2) 
-
+> print(wc1, round.digits = 2)
 Çapraz Tablo, Satir Oranlari  
 gender * smoker  
 Veri Çerçevesi: tobacco  
@@ -357,8 +329,7 @@ Veri Çerçevesi: tobacco
   Toplam            298.27 (29.83%)   701.73 (70.17%)   1000.00 (100.00%)
 -------- -------- ----------------- ----------------- -------------------
 
-> (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable)) 
-
+> (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -382,8 +353,7 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> tobacco %$% stby(list(smoker, diseased), gender, ctable) 
-
+> tobacco %$% stby(list(smoker, diseased), gender, ctable)
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -407,8 +377,7 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> with(tobacco, stby(list(smoker, diseased), gender, ctable)) 
-
+> with(tobacco, stby(list(smoker, diseased), gender, ctable))
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -432,8 +401,7 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-> stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable) 
-
+> stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -457,11 +425,8 @@ Grup: gender = M
   Toplam              110 (22.5%)   379 (77.5%)   489 (100.0%)
 -------- ---------- ------------- ------------- --------------
 
-
-# Statistics ------------------------------------------------------------------- 
-
-> with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE)) 
-
+# -----------------  Statistics
+> with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
 Çapraz Tablo, Satir Oranlari  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -493,15 +458,13 @@ Veri Çerçevesi: tobacco
     2.97        2.37       3.73   
 ----------------------------------
 
-> view(with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = .9, RR = .9)), file = "06.html") 
--- Output file written
+> view(with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = .9, RR = .9)), file = "06.html")
+Output file written
 
+# -----------------  Global Options
+> st_options(ctable.prop = "t", ctable.totals = FALSE)
 
-# Global Options --------------------------------------------------------------- 
-
-> st_options(ctable.prop = "t", ctable.totals = FALSE) 
-> with(tobacco, ctable(smoker, diseased)) 
-
+> with(tobacco, ctable(smoker, diseased))
 Çapraz Tablo, Toplam Oranlar  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -513,9 +476,9 @@ Veri Çerçevesi: tobacco
       No               99 ( 9.9%)   603 (60.3%)
 -------- ---------- ------------- -------------
 
-> st_options(ctable.prop = "n") 
-> with(tobacco, ctable(smoker, diseased)) 
+> st_options(ctable.prop = "n")
 
+> with(tobacco, ctable(smoker, diseased))
 Çapraz Tablo  
 smoker * diseased  
 Veri Çerçevesi: tobacco  
@@ -526,4 +489,3 @@ Veri Çerçevesi: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
-

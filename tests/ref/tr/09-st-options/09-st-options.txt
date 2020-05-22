@@ -1,9 +1,10 @@
 
-# ---------------------------- st_options.R ------------------------------------  
+# -----------------  st_options.R ------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
 
-> st_options('footnote', 'default') 
-> st_options() 
+> st_options('footnote', 'default')
 
+> st_options()
 $style
 [1] "simple"
 
@@ -98,12 +99,12 @@ $use.x11
 [1] TRUE
 
 
-> st_options(plain.ascii = T) 
-> st_options('reset') 
--- summarytools options have been reset
+> st_options(plain.ascii = T)
 
-> st_options() 
+> st_options('reset')
+summarytools options have been reset
 
+> st_options()
 $style
 [1] "simple"
 
@@ -198,13 +199,12 @@ $use.x11
 [1] TRUE
 
 
-> st_options('plain.ascii') 
-
+> st_options('plain.ascii')
 [1] TRUE
 
-> st_options('plain.ascii', FALSE) 
-> st_options(c('plain.ascii', 'style')) 
+> st_options('plain.ascii', FALSE)
 
+> st_options(c('plain.ascii', 'style'))
 $plain.ascii
 [1] FALSE
 
@@ -212,11 +212,10 @@ $style
 [1] "simple"
 
 
-> st_options(round.digits = 3) 
-> st_options('round.digits') 
+> st_options(round.digits = 3)
 
+> st_options('round.digits')
 [1] 3
 
-> st_options('reset') 
--- summarytools options have been reset
-
+> st_options('reset')
+summarytools options have been reset

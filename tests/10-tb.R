@@ -3,12 +3,16 @@ suppressPackageStartupMessages(library(summarytools))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(dplyr))
 options(tibble.print_max = Inf)
-set.seed(765543543)
-na_pos <- sample(1:1000, size = 25, replace = FALSE)
-dput(na_pos)
+#set.seed(765543543)
+#na_pos <- sample(1:1000, size = 25, replace = FALSE)
+
 na_pos <- c(804L, 800L, 290L, 532L, 243L, 336L, 207L, 805L, 318L, 78L, 
             285L, 931L, 298L, 204L, 113L, 323L, 671L, 2L, 179L, 508L, 72L, 
             755L, 341L, 930L, 569L)
+            
+#na_pos <- c(850L, 203L, 962L, 246L, 759L, 601L, 555L, 112L, 275L, 683L, 
+#            684L, 638L, 83L, 331L, 841L, 367L, 40L, 872L, 937L, 265L, 519L, 
+#            197L, 237L, 370L, 648L)            
 data(tobacco)
 tobacco$smoker[na_pos] <- NA_character_
 

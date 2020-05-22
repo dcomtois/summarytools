@@ -1,13 +1,18 @@
 
-# -------------------------------- dplyr.R -------------------------------------  
+# -----------------  dplyr.R -------------------------------------
+> suppressPackageStartupMessages(library(dplyr))
 
-> library(dplyr) 
-> library(summarytools) 
-> library(magrittr) 
-> library(forcats) 
-> data(tobacco) 
-> (fr1 <- tobacco %>% select(age.gr, gender, smoker) %>% freq()) 
+> suppressPackageStartupMessages(library(summarytools))
 
+> suppressPackageStartupMessages(library(magrittr))
+
+> suppressPackageStartupMessages(library(forcats))
+
+> options(tibble.print_max = Inf)
+
+> data(tobacco)
+
+> (fr1 <- tobacco %>% select(age.gr, gender, smoker) %>% freq())
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
@@ -41,16 +46,13 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
+# -----------------  fr1 %>% view()
+> fr1 %>% print(file = "01-freqs-df.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-# fr1 %>% view() --------------------------------------------------------------- 
-
-> fr1 %>% print(file = "01-freqs-df.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
-
-> (fr2 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(smoker, report.nas = FALSE)) 
-
+> (fr2 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(smoker, report.nas = FALSE))
 Frecuencias  
 tobacco$smoker  
 Tipo: Factor  
@@ -94,8 +96,7 @@ Subgrupo: age.gr = (Missing)
          No      17    68.00   100.00
       Total      25   100.00   100.00
 
-> fr2 %>% tb() 
-
+> fr2 %>% tb()
 # A tibble: 10 x 5
    age.gr    smoker  freq   pct pct_cum
    <fct>     <fct>  <dbl> <dbl>   <dbl>
@@ -110,13 +111,12 @@ Subgrupo: age.gr = (Missing)
  9 (Missing) Yes        8  6.4    86.4 
 10 (Missing) No        17 13.6   100   
 
-> fr2 %>% print(file = "02-freqs-group_by-1.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> fr2 %>% print(file = "02-freqs-group_by-1.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> (fr3 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr), gender = fct_explicit_na(gender)) %>% freq(smoker)) 
-
+> (fr3 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr), gender = fct_explicit_na(gender)) %>% freq(smoker))
 Frecuencias  
 tobacco$smoker  
 Tipo: Factor  
@@ -246,8 +246,7 @@ Subgrupo: age.gr = (Missing), gender = M
        <NA>       0                                 0.00         100.00
       Total      11     100.00          100.00    100.00         100.00
 
-> fr3 %>% tb() 
-
+> fr3 %>% tb()
 # A tibble: 42 x 8
    age.gr    gender    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
    <fct>     <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
@@ -294,8 +293,7 @@ Subgrupo: age.gr = (Missing), gender = M
 41 (Missing) M         No         8      5.19        100       5.19      100   
 42 (Missing) M         <NA>       0     NA           100       0         100   
 
-> fr3 %>% tb(order = 2, na.rm = TRUE) 
-
+> fr3 %>% tb(order = 2, na.rm = TRUE)
 # A tibble: 28 x 6
    age.gr    gender    smoker  freq   pct pct_cum
    <fct>     <fct>     <fct>  <dbl> <dbl>   <dbl>
@@ -328,14 +326,14 @@ Subgrupo: age.gr = (Missing), gender = M
 27 (Missing) F         No         9  4.59   94.8 
 28 (Missing) M         No         8  5.19  100   
 
-> fr3 %>% print(file = "03-freqs-group_by-2.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> fr3 %>% print(file = "03-freqs-group_by-2.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> tobacco$age.gr %<>% fct_explicit_na() 
-> (fr4 <- tobacco %>% group_by(age.gr) %>% select(age.gr, smoker) %>% freq()) 
+> tobacco$age.gr %<>% fct_explicit_na()
 
+> (fr4 <- tobacco %>% group_by(age.gr) %>% select(age.gr, smoker) %>% freq())
 Frecuencias  
 tobacco$smoker  
 Tipo: Factor  
@@ -384,8 +382,7 @@ Subgrupo: age.gr = (Missing)
        <NA>       0                                 0.00         100.00
       Total      25     100.00          100.00    100.00         100.00
 
-> fr4 %>% tb() 
-
+> fr4 %>% tb()
 # A tibble: 15 x 7
    age.gr    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
    <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
@@ -405,13 +402,12 @@ Subgrupo: age.gr = (Missing)
 14 (Missing) No        17     13.6         100      13.6       100   
 15 (Missing) <NA>       0     NA           100       0         100   
 
-> fr4 %>% print(file = "04-freqs-group_by-3.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> fr4 %>% print(file = "04-freqs-group_by-3.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-> (fr5 <- tobacco %>% freq(fct_explicit_na(smoker))) 
-
+> (fr5 <- tobacco %>% freq(fct_explicit_na(smoker)))
 Frecuencias  
 tobacco$smoker  
 Tipo: Factor  
@@ -423,8 +419,7 @@ Tipo: Factor
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
 
-> fr5 %>% tb() 
-
+> fr5 %>% tb()
 # A tibble: 3 x 6
   smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
   <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
@@ -432,20 +427,18 @@ Tipo: Factor
 2 No       702      70.2         100.     70.2       100. 
 3 <NA>       0      NA            NA       0         100. 
 
-> fr5 %>% tb(2, TRUE) 
-
+> fr5 %>% tb(2, TRUE)
 # A tibble: 2 x 4
   smoker  freq   pct pct_cum
   <fct>  <dbl> <dbl>   <dbl>
 1 Yes      298  29.8    29.8
 2 No       702  70.2   100. 
 
-> fr5 %>% print(file = "05-freqs-fn-1.html") 
--- Switching method to 'browser'
--- Output file written
+> fr5 %>% print(file = "05-freqs-fn-1.html")
+Switching method to 'browser'
+Output file written
 
-> (fr6 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(na.omit(smoker))) 
-
+> (fr6 <- tobacco %>% group_by(age.gr = fct_explicit_na(age.gr)) %>% freq(na.omit(smoker)))
 Frecuencias  
 tobacco$smoker  
 Tipo: Factor  
@@ -494,8 +487,7 @@ Subgrupo: age.gr = (Missing)
        <NA>       0                                 0.00         100.00
       Total      25     100.00          100.00    100.00         100.00
 
-> fr6 %>% tb() 
-
+> fr6 %>% tb()
 # A tibble: 15 x 7
    age.gr    smoker  freq pct_valid pct_valid_cum pct_tot pct_tot_cum
    <fct>     <fct>  <dbl>     <dbl>         <dbl>   <dbl>       <dbl>
@@ -515,8 +507,7 @@ Subgrupo: age.gr = (Missing)
 14 (Missing) No        17     13.6         100      13.6       100   
 15 (Missing) <NA>       0     NA           100       0         100   
 
-> fr6 %>% tb(2, TRUE) 
-
+> fr6 %>% tb(2, TRUE)
 # A tibble: 10 x 5
    age.gr    smoker  freq   pct pct_cum
    <fct>     <fct>  <dbl> <dbl>   <dbl>
@@ -531,17 +522,14 @@ Subgrupo: age.gr = (Missing)
  9 71 +      No       114 14.3    86.4 
 10 (Missing) No        17 13.6   100   
 
-> fr6 %>% print(file = "06-freqs-fn-2.html") 
--- Switching method to 'browser'
--- Output file written
--- Output file appended
+> fr6 %>% print(file = "06-freqs-fn-2.html")
+Switching method to 'browser'
+Output file written
+Output file appended
 
-
-# descr ------------------------------------------------------------------------ 
-
-> (d1 <- tobacco %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
-
+# -----------------  descr
+> (d1 <- tobacco %>% descr(stats = "common"))
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 Estadísticas descriptivas  
 tobacco  
 N: 1000  
@@ -556,8 +544,7 @@ N: 1000
       Num.Válido   975.00   974.00         965.00     1000.00
       Pct.Válido    97.50    97.40          96.50      100.00
 
-> d1 %>% tb() 
-
+> d1 %>% tb()
 # A tibble: 4 x 8
   variable      mean      sd    min   med   max n.valid pct.valid
   <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -566,9 +553,8 @@ N: 1000
 3 cigs.per.day  6.78 11.9     0      0    40        965      96.5
 4 samp.wgts     1     0.0839  0.861  1.04  1.06    1000     100  
 
-> d1 %>% print(headings = FALSE) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
-
+> d1 %>% print(headings = FALSE)
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
                       age      BMI   cigs.per.day   samp.wgts
 ---------------- -------- -------- -------------- -----------
@@ -580,14 +566,13 @@ N: 1000
       Num.Válido   975.00   974.00         965.00     1000.00
       Pct.Válido    97.50    97.40          96.50      100.00
 
-> d1 %>% print(headings = FALSE, footnote = "test footnote", file = "07-descr1-footnote.html") 
--- Switching method to 'browser'
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
+> d1 %>% print(headings = FALSE, footnote = "test footnote", file = "07-descr1-footnote.html")
+Switching method to 'browser'
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
 
-> (d2 <- tobacco %>% select(age, BMI, smoker) %>% descr(stats = "fivenum")) 
--- Non-numerical variable(s) ignored: smoker
-
+> (d2 <- tobacco %>% select(age, BMI, smoker) %>% descr(stats = "fivenum"))
+Non-numerical variable(s) ignored: smoker
 Estadísticas descriptivas  
 tobacco  
 N: 1000  
@@ -600,22 +585,20 @@ N: 1000
            Q3   66.00   28.65
           Max   80.00   39.44
 
-> d2 %>% tb() 
-
+> d2 %>% tb()
 # A tibble: 2 x 6
   variable   min    q1   med    q3   max
   <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>
 1 age      18     34    50    66    80  
 2 BMI       8.83  22.9  25.6  28.7  39.4
 
-> d2 %>% print(file = "08-descr-select.html") 
--- Switching method to 'browser'
--- Non-numerical variable(s) ignored: smoker
--- Output file written
+> d2 %>% print(file = "08-descr-select.html")
+Switching method to 'browser'
+Non-numerical variable(s) ignored: smoker
+Output file written
 
-> (d3 <- tobacco %>% filter(smoker == "Yes") %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
-
+> (d3 <- tobacco %>% filter(smoker == "Yes") %>% descr(stats = "common"))
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 Estadísticas descriptivas  
 tobacco  
 N: 298  
@@ -630,8 +613,7 @@ N: 298
       Num.Válido   290.00   291.00         291.00      298.00
       Pct.Válido    97.32    97.65          97.65      100.00
 
-> d3 %>% tb() 
-
+> d3 %>% tb()
 # A tibble: 4 x 8
   variable      mean      sd    min   med   max n.valid pct.valid
   <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -640,13 +622,12 @@ N: 298
 3 cigs.per.day 22.5  10.7     5     22    40        291      97.7
 4 samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
 
-> d3 %>% print(file = "09-descr-filter.html") 
--- Switching method to 'browser'
--- Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
--- Output file written
+> d3 %>% print(file = "09-descr-filter.html")
+Switching method to 'browser'
+Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
+Output file written
 
-> (d4 <- tobacco %$% descr(age)) 
-
+> (d4 <- tobacco %$% descr(age))
 Estadísticas descriptivas  
 tobacco$age  
 N: 1000  
@@ -669,20 +650,18 @@ N: 1000
         Num.Válido   975.00
         Pct.Válido    97.50
 
-> d4 %>% tb() 
-
+> d4 %>% tb()
 # A tibble: 1 x 16
   variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
   <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
 1 age       49.6  18.3    18    34    50    66    80  23.7    32 0.369  -0.0403      0.0783    -1.26     975      97.5
 
-> d4 %>% print(file = "10-descr-dollarpipe.html") 
--- Switching method to 'browser'
--- Output file written
+> d4 %>% print(file = "10-descr-dollarpipe.html")
+Switching method to 'browser'
+Output file written
 
-> (d5 <- tobacco %>% group_by(smoker) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: gender, age.gr, diseased, disease
-
+> (d5 <- tobacco %>% group_by(smoker) %>% descr(stats = "common"))
+Non-numerical variable(s) ignored: gender, age.gr, diseased, disease
 Estadísticas descriptivas  
 tobacco  
 Subgrupo: smoker = Yes  
@@ -711,11 +690,8 @@ N: 702
       Num.Válido   685.00   683.00         674.00      702.00
       Pct.Válido    97.58    97.29          96.01      100.00
 
-
-#d5 %>% view(method = "browser") ----------------------------------------------- 
-
-> d5 %>% tb() 
-
+# ----------------- d5 %>% view(method = "browser")
+> d5 %>% tb()
 # A tibble: 8 x 9
   smoker variable      mean      sd    min   med   max n.valid pct.valid
   <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -728,8 +704,7 @@ N: 702
 7 No     cigs.per.day  0     0       0      0     0        674      96.0
 8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
-> d5 %>% tb(2) 
-
+> d5 %>% tb(2)
 # A tibble: 8 x 9
   smoker variable      mean      sd    min   med   max n.valid pct.valid
   <fct>  <chr>        <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -742,15 +717,14 @@ N: 702
 7 Yes    samp.wgts     1.00  0.0834  0.861  1.04  1.06     298     100  
 8 No     samp.wgts     1.00  0.0841  0.861  1.04  1.06     702     100  
 
-> d5 %>% print(file = "11-descr-group_by-1.html") 
--- Switching method to 'browser'
--- Non-numerical variable(s) ignored: gender, age.gr, diseased, disease
--- Output file written
--- Output file appended
+> d5 %>% print(file = "11-descr-group_by-1.html")
+Switching method to 'browser'
+Non-numerical variable(s) ignored: gender, age.gr, diseased, disease
+Output file written
+Output file appended
 
-> (d6 <- tobacco %>% group_by(smoker, gender = fct_explicit_na(gender)) %>% descr(stats = "common")) 
--- Non-numerical variable(s) ignored: age.gr, diseased, disease
-
+> (d6 <- tobacco %>% group_by(smoker, gender = fct_explicit_na(gender)) %>% descr(stats = "common"))
+Non-numerical variable(s) ignored: age.gr, diseased, disease
 Estadísticas descriptivas  
 tobacco  
 Subgrupo: smoker = Yes, gender = F  
@@ -831,11 +805,8 @@ N: 14
       Num.Válido    14.00    14.00          14.00       14.00
       Pct.Válido   100.00   100.00         100.00      100.00
 
-
-#d5 %>% view(method = "browser") ----------------------------------------------- 
-
-> d6 %>% tb() 
-
+# ----------------- d5 %>% view(method = "browser")
+> d6 %>% tb()
 # A tibble: 24 x 10
    smoker gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>  <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -864,8 +835,7 @@ N: 14
 23 No     (Missing) cigs.per.day  0      0       0      0     0         14     100  
 24 No     (Missing) samp.wgts     1.01   0.0806  0.861  1.05  1.06      14     100  
 
-> d6 %>% tb(2) 
-
+> d6 %>% tb(2)
 # A tibble: 24 x 10
    smoker gender    variable       mean      sd    min   med   max n.valid pct.valid
    <fct>  <fct>     <chr>         <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>     <dbl>
@@ -894,14 +864,13 @@ N: 14
 23 No     M         samp.wgts     1.00   0.0838  0.861  1.04  1.06     346     100  
 24 No     (Missing) samp.wgts     1.01   0.0806  0.861  1.05  1.06      14     100  
 
-> d6 %>% print(file = "12-descr-group_by-2.html") 
--- Switching method to 'browser'
--- Non-numerical variable(s) ignored: age.gr, diseased, disease
--- Output file written
--- Output file appended
+> d6 %>% print(file = "12-descr-group_by-2.html")
+Switching method to 'browser'
+Non-numerical variable(s) ignored: age.gr, diseased, disease
+Output file written
+Output file appended
 
-> (d7 <- tobacco %>% group_by(smoker) %>% descr(age, stats = "common")) 
-
+> (d7 <- tobacco %>% group_by(smoker) %>% descr(age, stats = "common"))
 Estadísticas descriptivas  
 age por smoker  
 Data frame: tobacco  
@@ -917,46 +886,42 @@ N: 298
       Num.Válido   290.00   685.00
       Pct.Válido    97.32    97.58
 
-> d7 %>% tb() 
-
+> d7 %>% tb()
 # A tibble: 2 x 9
   smoker variable  mean    sd   min   med   max n.valid pct.valid
   <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
 1 Yes    age       49.8  18.7    19    50    80     290      97.3
 2 No     age       49.5  18.1    18    50    80     685      97.6
 
-> d7 %>% tb(2) 
-
+> d7 %>% tb(2)
 # A tibble: 2 x 9
   smoker variable  mean    sd   min   med   max n.valid pct.valid
   <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
 1 Yes    age       49.8  18.7    19    50    80     290      97.3
 2 No     age       49.5  18.1    18    50    80     685      97.6
 
-> d7 %>% print(file = "13-descr-group_by-special.html") 
--- Switching method to 'browser'
--- Output file written
+> d7 %>% print(file = "13-descr-group_by-special.html")
+Switching method to 'browser'
+Output file written
 
-> view(d7) 
--- Output file written
+> view(d7, file="d7.html")
+Output file written
 
-> d7_2 <- stby(tobacco$age, tobacco$smoker, descr) 
-> d7_2 %>% tb() 
+> d7_2 <- stby(tobacco$age, tobacco$smoker, descr)
 
+> d7_2 %>% tb()
 # A tibble: 2 x 17
-  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
-  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
-1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143     -1.27     290      97.3
-2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934    -1.26     685      97.6
+  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid
+  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>
+1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143     -1.27     290
+2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934    -1.26     685
+# ... with 1 more variable: pct.valid <dbl>
 
-> view(d7_2) 
--- Output file written
+> view(d7_2, file="d7_2.html")
+Output file written
 
-
-# dfSummary -------------------------------------------------------------------- 
-
-> (dfs1 <- tobacco %>% dfSummary(varnumbers = FALSE, valid.col = FALSE)) 
-
+# -----------------  dfSummary
+> (dfs1 <- tobacco %>% dfSummary(varnumbers = FALSE, valid.col = FALSE))
 Tabla resumen  
 tobacco  
 Dimensiones: 1000 x 9  
@@ -1017,12 +982,11 @@ samp.wgts      Media (d-s) : 1 (0.1)       0.86!: 267 (26.7%)        IIIII      
                                            ! redondeo                                                
 -----------------------------------------------------------------------------------------------------
 
-> dfs1 %>% print(file = "14-dfSummary.html") 
--- Switching method to 'browser'
--- Output file written
+> dfs1 %>% print(file = "14-dfSummary.html")
+Switching method to 'browser'
+Output file written
 
-> (dfs2 <- tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary(valid.col = FALSE)) 
-
+> (dfs2 <- tobacco %>% select(gender, age, BMI, smoker) %>% dfSummary(valid.col = FALSE))
 Tabla resumen  
 tobacco  
 Dimensiones: 1000 x 4  
@@ -1050,16 +1014,16 @@ No   Variable    Estadísticas / Valores      Frec. (% sobre válidos)   Gráfico  
      [factor]    2. No                       702 (70.2%)               IIIIIIIIIIIIII        (0%)      
 -------------------------------------------------------------------------------------------------------
 
-> dfs2 %>% print(file = "15-dfSummary-select.html") 
--- Switching method to 'browser'
--- Output file written
+> dfs2 %>% print(file = "15-dfSummary-select.html")
+Switching method to 'browser'
+Output file written
 
-> dfs2 %>% view() 
--- Output file written
+> dfs2 %>% view()
+Output file written
 
-> tobacco$gender %<>% fct_explicit_na() 
-> (dfs3 <- tobacco %>% group_by(gender) %>% dfSummary(valid.col = F)) 
+> tobacco$gender %<>% fct_explicit_na()
 
+> (dfs3 <- tobacco %>% group_by(gender) %>% dfSummary(valid.col = F))
 Tabla resumen  
 tobacco  
 Subgrupo: gender = F  
@@ -1236,7 +1200,6 @@ No   Variable       Estadísticas / Valores      Frec. (% sobre válidos)   Gráfic
                                                 ! redondeo                                                 
 -----------------------------------------------------------------------------------------------------------
 
-> dfs3 %>% view(file = "16-dfSummary-group_by.html") 
--- Output file written
--- Output file appended
-
+> dfs3 %>% view(file = "16-dfSummary-group_by.html")
+Output file written
+Output file appended

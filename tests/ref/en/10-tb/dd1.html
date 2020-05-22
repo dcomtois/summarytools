@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <style>body{background-color:white;}</style>
 
-  <title>Estad&#0237;sticas descriptivas</title>
+  <title>Descriptive Statistics</title>
   <style type="text/css">/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -189,10 +189,10 @@ table.st-table > tfoot > tr > td {
 </head>
 <body>
 <div class="container st-container">
-  <h3>Estad&#0237;sticas descriptivas</h3>
+  <h3>Descriptive Statistics</h3>
   <h4>tobacco</h4>
-  <strong>Subgrupo</strong>: gender = F, age.gr = 18-34
-  <br/><strong>N</strong>: 123
+  <strong>Group</strong>: gender = F
+  <br/><strong>N</strong>: 489
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
@@ -207,66 +207,130 @@ table.st-table > tfoot > tr > td {
   <tbody>
     <tr>
       <td>
-        <strong>Media</strong></td>
-      <td><span>25.98</span></td>
-      <td><span>24.25</span></td>
-      <td><span>5.87</span></td>
-      <td><span>0.86</span></td>
+        <strong>Mean</strong></td>
+      <td><span>49.56</span></td>
+      <td><span>26.10</span></td>
+      <td><span>6.88</span></td>
+      <td><span>1.00</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>4.71</span></td>
-      <td><span>4.75</span></td>
-      <td><span>11.19</span></td>
-      <td><span>0.00</span></td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.28</span></td>
+      <td><span>4.95</span></td>
+      <td><span>12.04</span></td>
+      <td><span>0.08</span></td>
     </tr>
     <tr>
       <td>
         <strong>Min</strong></td>
       <td><span>18.00</span></td>
-      <td><span>12.98</span></td>
+      <td><span>9.01</span></td>
       <td><span>0.00</span></td>
       <td><span>0.86</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Mediana</strong></td>
-      <td><span>26.00</span></td>
-      <td><span>24.22</span></td>
+        <strong>Q1</strong></td>
+      <td><span>34.00</span></td>
+      <td><span>22.98</span></td>
       <td><span>0.00</span></td>
       <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>25.87</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Q3</strong></td>
+      <td><span>66.00</span></td>
+      <td><span>29.48</span></td>
+      <td><span>10.50</span></td>
+      <td><span>1.05</span></td>
     </tr>
     <tr>
       <td>
         <strong>Max</strong></td>
-      <td><span>34.00</span></td>
-      <td><span>34.84</span></td>
-      <td><span>38.00</span></td>
-      <td><span>0.86</span></td>
+      <td><span>80.00</span></td>
+      <td><span>39.44</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.06</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>123</span></td>
-      <td><span>121</span></td>
-      <td><span>119</span></td>
-      <td><span>123</span></td>
+        <strong>MAD</strong></td>
+      <td><span>23.72</span></td>
+      <td><span>4.75</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.01</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.37</span></td>
-      <td><span>96.75</span></td>
+        <strong>IQR</strong></td>
+      <td><span>32.00</span></td>
+      <td><span>6.49</span></td>
+      <td><span>10.25</span></td>
+      <td><span>0.19</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>CV</strong></td>
+      <td><span>0.37</span></td>
+      <td><span>0.19</span></td>
+      <td><span>1.75</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Skewness</strong></td>
+      <td><span>-0.04</span></td>
+      <td><span>-0.02</span></td>
+      <td><span>1.53</span></td>
+      <td><span>-1.03</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>SE.Skewness</strong></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Kurtosis</strong></td>
+      <td><span>-1.25</span></td>
+      <td><span>0.09</span></td>
+      <td><span>0.85</span></td>
+      <td><span>-0.92</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>475</span></td>
+      <td><span>475</span></td>
+      <td><span>468</span></td>
+      <td><span>489</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.14</span></td>
+      <td><span>97.14</span></td>
+      <td><span>95.71</span></td>
       <td><span>100.00</span></td>
     </tr>
   </tbody>
 </table>
 </div>
  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = M, age.gr = 18-34
-  <br/><strong>N</strong>: 130
+  <strong>Group</strong>: gender = M
+  <br/><strong>N</strong>: 489
   <br/>
   <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
@@ -281,19 +345,19 @@ table.st-table > tfoot > tr > td {
   <tbody>
     <tr>
       <td>
-        <strong>Media</strong></td>
-      <td><span>26.38</span></td>
-      <td><span>23.36</span></td>
-      <td><span>7.36</span></td>
-      <td><span>0.86</span></td>
+        <strong>Mean</strong></td>
+      <td><span>49.58</span></td>
+      <td><span>25.31</span></td>
+      <td><span>6.72</span></td>
+      <td><span>1.00</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>4.91</span></td>
-      <td><span>3.66</span></td>
-      <td><span>12.66</span></td>
-      <td><span>0.00</span></td>
+        <strong>Std.Dev</strong></td>
+      <td><span>18.34</span></td>
+      <td><span>3.98</span></td>
+      <td><span>11.83</span></td>
+      <td><span>0.08</span></td>
     </tr>
     <tr>
       <td>
@@ -305,768 +369,102 @@ table.st-table > tfoot > tr > td {
     </tr>
     <tr>
       <td>
-        <strong>Mediana</strong></td>
-      <td><span>26.00</span></td>
-      <td><span>23.74</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
+        <strong>Q1</strong></td>
       <td><span>34.00</span></td>
-      <td><span>32.73</span></td>
-      <td><span>40.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>130</span></td>
-      <td><span>126</span></td>
-      <td><span>127</span></td>
-      <td><span>130</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>96.92</span></td>
-      <td><span>97.69</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = (Missing), age.gr = 18-34
-  <br/><strong>N</strong>: 5
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>26.40</span></td>
-      <td><span>25.93</span></td>
-      <td><span>6.60</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>4.83</span></td>
-      <td><span>3.32</span></td>
-      <td><span>12.16</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>19.00</span></td>
-      <td><span>21.54</span></td>
+      <td><span>22.52</span></td>
       <td><span>0.00</span></td>
       <td><span>0.86</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Mediana</strong></td>
-      <td><span>29.00</span></td>
-      <td><span>25.89</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>30.00</span></td>
-      <td><span>29.72</span></td>
-      <td><span>28.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = F, age.gr = 35-50
-  <br/><strong>N</strong>: 118
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>41.99</span></td>
-      <td><span>25.55</span></td>
-      <td><span>6.68</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>4.54</span></td>
-      <td><span>4.84</span></td>
-      <td><span>11.58</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>35.00</span></td>
-      <td><span>10.35</span></td>
+        <strong>Median</strong></td>
+      <td><span>49.50</span></td>
+      <td><span>25.14</span></td>
       <td><span>0.00</span></td>
       <td><span>1.04</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Mediana</strong></td>
-      <td><span>42.00</span></td>
-      <td><span>25.66</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>39.44</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>118</span></td>
-      <td><span>112</span></td>
-      <td><span>115</span></td>
-      <td><span>118</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>94.92</span></td>
-      <td><span>97.46</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = M, age.gr = 35-50
-  <br/><strong>N</strong>: 118
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>42.64</span></td>
-      <td><span>24.74</span></td>
-      <td><span>5.44</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>4.70</span></td>
-      <td><span>3.82</span></td>
-      <td><span>10.37</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>35.00</span></td>
-      <td><span>15.15</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>42.00</span></td>
-      <td><span>24.66</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>34.76</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>118</span></td>
-      <td><span>115</span></td>
-      <td><span>114</span></td>
-      <td><span>118</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.46</span></td>
-      <td><span>96.61</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = (Missing), age.gr = 35-50
-  <br/><strong>N</strong>: 5
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>40.80</span></td>
-      <td><span>23.68</span></td>
-      <td><span>3.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>5.59</span></td>
-      <td><span>3.26</span></td>
-      <td><span>4.47</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>36.00</span></td>
-      <td><span>20.24</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>38.00</span></td>
-      <td><span>24.22</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>27.42</span></td>
-      <td><span>10.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = F, age.gr = 51-70
-  <br/><strong>N</strong>: 157
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>27.08</span></td>
-      <td><span>7.20</span></td>
+        <strong>Q3</strong></td>
+      <td><span>66.00</span></td>
+      <td><span>27.96</span></td>
+      <td><span>11.00</span></td>
       <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>5.70</span></td>
-      <td><span>4.88</span></td>
-      <td><span>12.58</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>51.00</span></td>
-      <td><span>9.01</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>26.91</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>70.00</span></td>
-      <td><span>39.21</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>157</span></td>
-      <td><span>154</span></td>
-      <td><span>153</span></td>
-      <td><span>157</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.09</span></td>
-      <td><span>97.45</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = M, age.gr = 51-70
-  <br/><strong>N</strong>: 151
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>61.51</span></td>
-      <td><span>26.62</span></td>
-      <td><span>6.89</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>5.51</span></td>
-      <td><span>3.56</span></td>
-      <td><span>11.69</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>51.00</span></td>
-      <td><span>17.79</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>26.61</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>70.00</span></td>
-      <td><span>34.97</span></td>
-      <td><span>39.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>151</span></td>
-      <td><span>149</span></td>
-      <td><span>146</span></td>
-      <td><span>151</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.68</span></td>
-      <td><span>96.69</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = (Missing), age.gr = 51-70
-  <br/><strong>N</strong>: 9
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>61.33</span></td>
-      <td><span>28.73</span></td>
-      <td><span>6.78</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>5.12</span></td>
-      <td><span>3.00</span></td>
-      <td><span>10.18</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>53.00</span></td>
-      <td><span>24.97</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>59.00</span></td>
-      <td><span>30.38</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>69.00</span></td>
-      <td><span>32.43</span></td>
-      <td><span>21.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = F, age.gr = 71 +
-  <br/><strong>N</strong>: 77
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>75.52</span></td>
-      <td><span>28.01</span></td>
-      <td><span>7.65</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>2.94</span></td>
-      <td><span>4.60</span></td>
-      <td><span>12.88</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>71.00</span></td>
-      <td><span>18.36</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>76.00</span></td>
-      <td><span>27.65</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>80.00</span></td>
-      <td><span>38.37</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>77</span></td>
-      <td><span>75</span></td>
-      <td><span>69</span></td>
-      <td><span>77</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.40</span></td>
-      <td><span>89.61</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = M, age.gr = 71 +
-  <br/><strong>N</strong>: 79
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>75.33</span></td>
-      <td><span>26.85</span></td>
-      <td><span>7.06</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>2.81</span></td>
-      <td><span>4.16</span></td>
-      <td><span>12.44</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>71.00</span></td>
-      <td><span>16.36</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>75.00</span></td>
-      <td><span>26.73</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
     </tr>
     <tr>
       <td>
         <strong>Max</strong></td>
       <td><span>80.00</span></td>
       <td><span>36.76</span></td>
-      <td><span>37.00</span></td>
+      <td><span>40.00</span></td>
       <td><span>1.06</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>79</span></td>
-      <td><span>77</span></td>
-      <td><span>77</span></td>
-      <td><span>79</span></td>
+        <strong>MAD</strong></td>
+      <td><span>24.46</span></td>
+      <td><span>4.02</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.01</span></td>
     </tr>
     <tr>
       <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.47</span></td>
-      <td><span>97.47</span></td>
+        <strong>IQR</strong></td>
+      <td><span>32.00</span></td>
+      <td><span>5.44</span></td>
+      <td><span>11.00</span></td>
+      <td><span>0.19</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>CV</strong></td>
+      <td><span>0.37</span></td>
+      <td><span>0.16</span></td>
+      <td><span>1.76</span></td>
+      <td><span>0.08</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Skewness</strong></td>
+      <td><span>-0.04</span></td>
+      <td><span>-0.04</span></td>
+      <td><span>1.54</span></td>
+      <td><span>-1.03</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>SE.Skewness</strong></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+      <td><span>0.11</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Kurtosis</strong></td>
+      <td><span>-1.27</span></td>
+      <td><span>0.17</span></td>
+      <td><span>0.92</span></td>
+      <td><span>-0.92</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>478</span></td>
+      <td><span>477</span></td>
+      <td><span>475</span></td>
+      <td><span>489</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>97.75</span></td>
+      <td><span>97.55</span></td>
+      <td><span>97.14</span></td>
       <td><span>100.00</span></td>
     </tr>
   </tbody>
 </table>
-</div>  <div class="container st-container">
-  <strong>Subgrupo</strong>: gender = (Missing), age.gr = 71 +
-  <br/><strong>N</strong>: 3
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Media</strong></td>
-      <td><span>77.00</span></td>
-      <td><span>28.75</span></td>
-      <td><span>8.33</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Dev.std.</strong></td>
-      <td><span>2.65</span></td>
-      <td><span>1.30</span></td>
-      <td><span>14.43</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>75.00</span></td>
-      <td><span>27.79</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mediana</strong></td>
-      <td><span>76.00</span></td>
-      <td><span>28.23</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Max</strong></td>
-      <td><span>80.00</span></td>
-      <td><span>30.23</span></td>
-      <td><span>25.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Num.V&#0225;lido</strong></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Pct.V&#0225;lido</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-  Placeholder footnote
+  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> version 3.6.3)<br/>2020-05-22</p>
 </div> </body>
-</html>           
+</html> 
