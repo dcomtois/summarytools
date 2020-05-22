@@ -228,7 +228,11 @@ descr <- function(x,
   }
   
   # Get variable label
-  var_label <- label(x.df[[1]])
+  if (ncol(x.df) == 1) {
+    var_label <- label(x.df[[1]])
+  } else {
+    var_label <- NA
+  }
   
   if (!is.data.frame(x.df)) {
     errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
