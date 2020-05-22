@@ -1544,11 +1544,11 @@ print_dfs <- function(x, method) {
           if (grepl(paste0("(",trs("distinct.value"), "|",
                            trs("distinct.values"), ")"), cell) || cell == "") {
             table_row %+=% list(
-              tags$td(HTML(cell), align = "left",
+              tags$td(HTML(conv_non_ascii(cell)), align = "left",
                       style = "vertical-align:middle")
             )
           } else {
-            table_row %+=% list(make_tbl_cell(cell))
+            table_row %+=% list(make_tbl_cell(conv_non_ascii(cell)))
           }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(
