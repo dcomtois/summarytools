@@ -315,12 +315,11 @@ print.summarytools <- function(x,
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
       paste0(
-        "<p>", conv_non_ascii(trs("generated.by")),
+        conv_non_ascii(trs("generated.by")),
         " <a href='https://github.com/dcomtois/summarytools'>",
         "summarytools</a> ", packageVersion(pkg = "summarytools"),
         " (<a href='https://www.r-project.org/'>R</a> ", trs("version"), " ", 
-        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt")),
-        "</p>"
+        getRversion(), ")", "<br/>", strftime(attr(x, "date"), trs("date.fmt"))
       )
   }
 
@@ -1105,8 +1104,8 @@ print_ctable <- function(x, method) {
     div_list %+=% list(cross_table_html)
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[["footnote"]])
-      div_list %+=% list(HTML(text = fn))
+      footn <- conv_non_ascii(parent.frame()[["footnote"]])
+      div_list %+=% list(HTML(text = paste0("<p>", footn, "</p>")))
     }
   }
   
@@ -1248,8 +1247,8 @@ print_descr <- function(x, method) {
     div_list %+=% list(HTML(text = descr_table_html))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[["footnote"]])
-      div_list %+=% list(HTML(text = fn))
+      footn <- conv_non_ascii(parent.frame()[["footnote"]])
+      div_list %+=% list(HTML(text = paste0("<p>", footn, "</p>")))
     }
   }
   
@@ -1620,8 +1619,8 @@ print_dfs <- function(x, method) {
     div_list %+=% list(HTML(text = dfs_table_html))
     
     if (parent.frame()$footnote != "") {
-      fn <- conv_non_ascii(parent.frame()[["footnote"]])
-      div_list %+=% list(HTML(text = fn))
+      footn <- conv_non_ascii(parent.frame()[["footnote"]])
+      div_list %+=% list(HTML(text = paste0("<p>", footn, "</p>")))
     }
   }
   
