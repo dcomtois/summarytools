@@ -10,8 +10,8 @@
    + Improved performance by optimizing barcode detection and blank character
      replacements, which are the two main bottlenecks. 
    + Fixed a bug with barcode detection
-   + Made slight adjustments to the barplot's height
- - *html* footnotes are now always enclosed within a p tag
+   + Made slight adjustments to the barplot heights
+ - *html* footnotes are now always enclosed within a `<p>` tag
  - **Testing** -- although still not automated, it has been improved and
    simplified. Since the expected result is a formatted table or file, 
    it seems more logical to batch-generate a large number of reports
@@ -20,7 +20,8 @@
    in detecting regressions (when we unexpectedly break something
    by fixing something else). Some automated testing is on the to-do
    list, and any help would definitely be welcome on that front.
-
+ - Fixed uncommon issue where grouped dfSummary tables would end up
+   imbricated in one another.
 
 # summarytools 0.9.6 (2020-03-01)
 
