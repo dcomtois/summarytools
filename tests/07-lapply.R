@@ -1,4 +1,7 @@
-# ------------------------------- lapply.R -------------------------------------
+# lapply.R -------------------------------------
+suppressPackageStartupMessages(library(summarytools))
+options(tibble.print_max = Inf)
+
 data("tobacco")
 tobacco_subset <- tibble::as_tibble(tobacco[ ,c("gender", "age.gr", "smoker")])
 label(tobacco_subset) <- "subset of tobacco"

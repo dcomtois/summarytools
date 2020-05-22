@@ -1,4 +1,7 @@
-# ---------------------------- overrides.R -------------------------------------
+# overrides.R -------------------------------------
+suppressPackageStartupMessages(library(summarytools))
+options(tibble.print_max = Inf)
+
 data(tobacco)
 label(tobacco$age.gr) <- "Groupe d'âge"
 

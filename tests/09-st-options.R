@@ -1,4 +1,5 @@
-# ---------------------------- st_options.R ------------------------------------
+# st_options.R ------------------------------------
+suppressPackageStartupMessages(library(summarytools))
 st_options('footnote', 'default')
 st_options()
 st_options(plain.ascii = T)

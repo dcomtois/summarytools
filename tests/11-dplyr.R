@@ -1,8 +1,10 @@
-# -------------------------------- dplyr.R -------------------------------------
-library(dplyr)
-library(summarytools)
-library(magrittr)
-library(forcats)
+# dplyr.R -------------------------------------
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(forcats))
+options(tibble.print_max = Inf)
+
 data(tobacco)
 (fr1 <- tobacco %>% select(age.gr, gender, smoker) %>% freq())
 # fr1 %>% view()
@@ -67,11 +69,11 @@ d7 %>% tb()
 d7 %>% tb(2)
 d7 %>% print(file = "13-descr-group_by-special.html")
 
-view(d7)
+view(d7, file="d7.html")
 
 d7_2 <- stby(tobacco$age, tobacco$smoker, descr)
 d7_2 %>% tb()
-view(d7_2)
+view(d7_2, file="d7_2.html")
 
 # dfSummary
 (dfs1 <- tobacco %>% dfSummary(varnumbers = FALSE, valid.col = FALSE))

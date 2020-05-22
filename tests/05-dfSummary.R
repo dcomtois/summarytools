@@ -1,5 +1,8 @@
-# ----------------------------- dfSummary.R  -----------------------------------
+# dfSummary.R  -----------------------------------
+suppressPackageStartupMessages(library(summarytools))
 st_options(tmp.img.dir = "/tmp")
+options(tibble.print_max = Inf)
+
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 

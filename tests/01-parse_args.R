@@ -1,7 +1,8 @@
-# ------------------------------ parse_args.R ----------------------------------
-library(dplyr)
-library(magrittr)
-library(pipeR)
+# parse_args.R ----------------------------------
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(pipeR))
+suppressPackageStartupMessages(library(summarytools))
 data(tobacco)
 label(tobacco) <- "Tobacco Study"
 label(tobacco$smoker) <- "Smoking Status"

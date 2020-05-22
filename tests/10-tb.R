@@ -1,10 +1,15 @@
-# ---------------------------- tb.R ------------------------------------
-library(summarytools)
-library(magrittr)
-library(dplyr)
+# tb.R ------------------------------------
+suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(dplyr))
 options(tibble.print_max = Inf)
 set.seed(765543543)
 na_pos <- sample(1:1000, size = 25, replace = FALSE)
+dput(na_pos)
+na_pos <- c(804L, 800L, 290L, 532L, 243L, 336L, 207L, 805L, 318L, 78L, 
+            285L, 931L, 298L, 204L, 113L, 323L, 671L, 2L, 179L, 508L, 72L, 
+            755L, 341L, 930L, 569L)
+data(tobacco)
 tobacco$smoker[na_pos] <- NA_character_
 
 # Normal freq table
@@ -111,25 +116,25 @@ dgr2 %>% tb(3)
 dd1 %>% tb()
 dd1 %>% tb(2)
 dd1 %>% tb(3)
-view(dd1)
+view(dd1, file = "dd1.html")
 
 tobacco$gender %<>% forcats::fct_explicit_na()
 (dd2 <- tobacco %>% group_by(gender) %>% descr(stats = "common"))
 dd2 %>% tb()
 dd2 %>% tb(2)
-view(dd2)
+view(dd2, file = "dd2.html")
 
 (dd3 <- with(tobacco, stby(tobacco, list(gender, age.gr), descr, stats = "common")))
 dd3 %>% tb()
 dd3 %>% tb(2)
-view(dd3, file = "01-descr-2-grp-vars.html")
+view(dd3, file = "dd3.html")
 
 tobacco$age.gr %<>% forcats::fct_explicit_na()
 (dd4 <- tobacco %>% group_by(gender, age.gr) %>% descr(stats = "common"))
 dd4 %>% tb()
 dd4 %>% tb(na.rm = TRUE) # no effect expected
 dd4 %>% tb(order = 2)
-view(dd4)
+view(dd4, file = "dd4.html")
 
 
 # freq
@@ -139,7 +144,7 @@ data(tobacco)
 ff1 %>% tb()
 ff1 %>% tb(2)
 ff1 %>% tb(2, TRUE)
-view(ff1)
+view(ff1, file = "ff1.html")
 
 (ff2 <- stby(tobacco$smoker, tobacco$gender, freq, report.nas = F))
 ff2 %>% tb()
@@ -151,17 +156,16 @@ tobacco$gender %<>% forcats::fct_explicit_na()
 ff3 %>% tb()
 ff3 %>% tb(2)
 ff3 %>% tb(2, TRUE)
-view(ff3)
+view(ff3, file = "ff3.html")
 
-# fails for unknown reason, only when calling from 00-Main.R
-# ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq))
-# class(ff4)
+# fails for unknown reason, only when sourcing from main script (00-Main.R)
+(ff4 <- with(tobacco, stby(smoker, list(gender, age.gr), freq)))
 # ff4 %>% tb()
 # ff4 %>% tb(2)
 
 tobacco$age.gr %<>% forcats::fct_explicit_na()
 (ff5 <- tobacco %>% group_by(gender, age.gr) %>% select(gender, age.gr, smoker) %>% freq())
-view(ff5)
+view(ff5, file = "ff5.html")
 ff5 %>% tb()
 ff5 %>% tb(2)
 ff5 %>% tb(2, na.rm = TRUE)

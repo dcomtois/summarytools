@@ -1,5 +1,6 @@
-# ---------------------------- freq.R ------------------------------------------
-library(magrittr)
+# freq.R ------------------------------------------
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(summarytools))
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
@@ -113,7 +114,7 @@ print(f3, round.digits = 2)
 Gender <- tobacco$gender
 Gender[1] <- "F"
 freq(Gender)
-view(freq(Gender))
+view(freq(Gender), file="01-Gender.html")
 
 # subsetting
 # On factor - headings not affected
@@ -171,7 +172,7 @@ print(bf3, file = "07-by.html")
 # Using stby() + with() --- retrieving labels works only when executed "not in batch"
 label(tobacco$diseased) <- "Subject has an illness"
 (bwf1 <- with(tobacco, stby(data = diseased, INDICES = smoker, FUN = freq)))
-view(bwf1)
+view(bwf1, file="bwf1.html")
 
 # Labels, global options
 st_options(plain.ascii = TRUE, style = "grid")
@@ -201,14 +202,14 @@ view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = T
 view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
 
 # tb()
-library(magrittr)
+suppressPackageStartupMessages(library(magrittr))
 
 iris %$% freq(Species) %>% tb()
 iris %$% freq(Species, report.nas = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
 
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 
 # Deal with explicited NA's

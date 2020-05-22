@@ -1,5 +1,7 @@
-# ---------------------------- ctable.R ----------------------------------------
-library(dplyr)
+# ctable.R ----------------------------------------
+suppressPackageStartupMessages(library(dplyr))
+options(tibble.print_max = Inf)
+suppressPackageStartupMessages(library(summarytools))
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 

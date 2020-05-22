@@ -1,12 +1,12 @@
 # sudo apt install libgsl-dev
 install.packages("Rfast")
 
-library(summarytools)
-library(microbenchmark)
-library(ggplot2)
-library(data.table)
-library(dplyr)
-library(Rfast)
+suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(microbenchmark))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(Rfast))
 
 load("~/GitHub/summarytools/tests/data/barcodes.RData")
 #barcodes$straatnaam[grep("s‐Gravenpark", barcode$straatnaam)] <- NA

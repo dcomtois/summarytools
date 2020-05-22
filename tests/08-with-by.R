@@ -1,5 +1,7 @@
-#-------------------------------- with-by.R ------------------------------------
-library(dplyr)
+# with-by.R ------------------------------------
+suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(dplyr))
+options(tibble.print_max = Inf)
 
 # with
 w1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts))

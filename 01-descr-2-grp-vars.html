@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <style>body{background-color:white;}</style>
 
-  <title>Data Frame Summary</title>
+  <title>Descriptive Statistics</title>
   <style type="text/css">/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -189,90 +189,884 @@ table.st-table > tfoot > tr > td {
 </head>
 <body>
 <div class="container st-container">
-  <h3>Data Frame Summary</h3>
+  <h3>Descriptive Statistics</h3>
   <h4>tobacco</h4>
-  <strong>Dimensions</strong>: 100 x 4
-  <br/><strong>Duplicates</strong>: 0
+  <strong>Group</strong>: gender = F, age.gr = 18-34
+  <br/><strong>N</strong>: 123
   <br/>
-  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline ">
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
   <thead>
     <tr>
-      <th align="center" class="st-protect-top-border"><strong>No</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Variable</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Label</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Stats / Values</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Freqs (% of Valid)</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Graph</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Valid</strong></th>
-      <th align="center" class="st-protect-top-border"><strong>Missing</strong></th>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">1</td>
-      <td align="left">gender
-[factor]</td>
-      <td align="left">Subject's Gender</td>
-      <td align="left">1. F
-2. M</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">53</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">54.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">45</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">45.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAF4AAAA3BAMAAAB3B+DPAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFQErQWxycwAAAD5JREFUSMdjYBj6QIlYAFWvbEwcMBpVP6p+VP2gU09qfhckFtBJPWGHK6KoJxw+o+pH1Y+qH6zqSc3vQxkAAAduUAGy7hg9AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAxOjAxOjQzLTA0OjAwv0eMegAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMTowMTo0My0wNDowMM4aNMYAAAAASUVORK5CYII="></td>
-      <td align="center">98
-(98%)</td>
-      <td align="center">2
-(2%)</td>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>25.98</span></td>
+      <td><span>24.25</span></td>
+      <td><span>5.87</span></td>
+      <td><span>0.86</span></td>
     </tr>
     <tr>
-      <td align="center">2</td>
-      <td align="left">age
-[numeric]</td>
-      <td align="left"></td>
-      <td align="left">Mean (sd) : 50.4 (18.9)
-min < med < max:
-18 < 49 < 80
-IQR (CV) : 35 (0.4)</td>
-      <td align="left" style="vertical-align:middle">54 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFQErQWxycwAAAH9JREFUaN7t17ENwCAMBVGvkGwQsgHsv1uq2I3lwnyliO4qBNIrQEJgRp2OfufwBNh6m2A1EdsuwIIAk2JxStc+dvsa2A4WhyLAfG6CgYGBfYTFLSbAkhFYA8teZW1slSMwMDAwMDAwMDAwMDAFlvwt+1hJgIGBgYH9GhuSjDo9GFiEyAG4pv4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMjJUMDE6MDE6NDMtMDQ6MDC/R4x6AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTIyVDAxOjAxOjQzLTA0OjAwzho0xgAAAABJRU5ErkJggg=="></td>
-      <td align="center">99
-(99%)</td>
-      <td align="center">1
-(1%)</td>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>4.71</span></td>
+      <td><span>4.75</span></td>
+      <td><span>11.19</span></td>
+      <td><span>0.00</span></td>
     </tr>
     <tr>
-      <td align="center">3</td>
-      <td align="left">age.gr
-[factor]</td>
-      <td align="left"></td>
-      <td align="left">1. 18-34
-2. 35-50
-3. 51-70
-4. 71 +</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">26</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">24</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">24.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">30</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">30.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">19.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADoAAABmBAMAAABo2Z+XAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFQErQWxycwAAAF1JREFUSMft07sRABAQRVEtbAnogP57Y4wAy2LGJ3kvPYENLqX+zXRGRFmtZ3NQ6Fzlrqi/A8pf1YXym6HQFZW7utfzbu1p4x8a56DQicpdvepZN1rfDIWuqtzVjwWiDFSU74HVTgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMTowMTo0My0wNDowML9HjHoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDE6MDE6NDMtMDQ6MDDOGjTGAAAAAElFTkSuQmCC"></td>
-      <td align="center">99
-(99%)</td>
-      <td align="center">1
-(1%)</td>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>18.00</span></td>
+      <td><span>12.98</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
     </tr>
     <tr>
-      <td align="center">4</td>
-      <td align="left">BMI
-[numeric]</td>
-      <td align="left">Body Mass Index</td>
-      <td align="left">Mean (sd) : 25 (4.5)
-min < med < max:
-14.2 < 24.4 < 34.3
-IQR (CV) : 5.7 (0.2)</td>
-      <td align="left" style="vertical-align:middle">100 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFQErQWxycwAAAJ9JREFUaN7t2FEKgCAQRVG3YDtId5D731uUfhgyaDpQMPd9CIkdRFGmnCMz8VK2cMcPpYulKwcYmG0sH6pdB7vbBAYGBvYh1rvVXmGxMz8wsJ9iQayZJ7Aolh9gmljZNB0sVgwYGBgYGFiLPWrmVSw/gI1heemVsLrLMFZ+F9dLu4C1w8DATGDi58gMJr4JBgbWx8pp1MFKly0sqMSRmZwsp4fB7tX7QAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMTowMTo0My0wNDowML9HjHoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDE6MDE6NDMtMDQ6MDDOGjTGAAAAAElFTkSuQmCC"></td>
-      <td align="center">100
-(100%)</td>
-      <td align="center">0
-(0%)</td>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>26.00</span></td>
+      <td><span>24.22</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>34.00</span></td>
+      <td><span>34.84</span></td>
+      <td><span>38.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>123</span></td>
+      <td><span>121</span></td>
+      <td><span>119</span></td>
+      <td><span>123</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>98.37</span></td>
+      <td><span>96.75</span></td>
+      <td><span>100.00</span></td>
     </tr>
   </tbody>
 </table>
-  subset = [1:100, 1:4]
 </div>
-</body>
-</html>
+ <div class="container st-container">
+  <strong>Group</strong>: gender = M, age.gr = 18-34
+  <br/><strong>N</strong>: 130
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>26.38</span></td>
+      <td><span>23.36</span></td>
+      <td><span>7.36</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>4.91</span></td>
+      <td><span>3.66</span></td>
+      <td><span>12.66</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>18.00</span></td>
+      <td><span>8.83</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>26.00</span></td>
+      <td><span>23.74</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>34.00</span></td>
+      <td><span>32.73</span></td>
+      <td><span>40.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>130</span></td>
+      <td><span>126</span></td>
+      <td><span>127</span></td>
+      <td><span>130</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>96.92</span></td>
+      <td><span>97.69</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = (Missing), age.gr = 18-34
+  <br/><strong>N</strong>: 5
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>26.40</span></td>
+      <td><span>25.93</span></td>
+      <td><span>6.60</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>4.83</span></td>
+      <td><span>3.32</span></td>
+      <td><span>12.16</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>19.00</span></td>
+      <td><span>21.54</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>29.00</span></td>
+      <td><span>25.89</span></td>
+      <td><span>0.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>30.00</span></td>
+      <td><span>29.72</span></td>
+      <td><span>28.00</span></td>
+      <td><span>0.86</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = F, age.gr = 35-50
+  <br/><strong>N</strong>: 118
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>41.99</span></td>
+      <td><span>25.55</span></td>
+      <td><span>6.68</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>4.54</span></td>
+      <td><span>4.84</span></td>
+      <td><span>11.58</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>35.00</span></td>
+      <td><span>10.35</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>42.00</span></td>
+      <td><span>25.66</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>39.44</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>118</span></td>
+      <td><span>112</span></td>
+      <td><span>115</span></td>
+      <td><span>118</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>94.92</span></td>
+      <td><span>97.46</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = M, age.gr = 35-50
+  <br/><strong>N</strong>: 118
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>42.64</span></td>
+      <td><span>24.74</span></td>
+      <td><span>5.44</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>4.70</span></td>
+      <td><span>3.82</span></td>
+      <td><span>10.37</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>35.00</span></td>
+      <td><span>15.15</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>42.00</span></td>
+      <td><span>24.66</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>34.76</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>118</span></td>
+      <td><span>115</span></td>
+      <td><span>114</span></td>
+      <td><span>118</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>97.46</span></td>
+      <td><span>96.61</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = (Missing), age.gr = 35-50
+  <br/><strong>N</strong>: 5
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>40.80</span></td>
+      <td><span>23.68</span></td>
+      <td><span>3.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>5.59</span></td>
+      <td><span>3.26</span></td>
+      <td><span>4.47</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>36.00</span></td>
+      <td><span>20.24</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>38.00</span></td>
+      <td><span>24.22</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>50.00</span></td>
+      <td><span>27.42</span></td>
+      <td><span>10.00</span></td>
+      <td><span>1.04</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+      <td><span>5</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = F, age.gr = 51-70
+  <br/><strong>N</strong>: 157
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>61.00</span></td>
+      <td><span>27.08</span></td>
+      <td><span>7.20</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>5.70</span></td>
+      <td><span>4.88</span></td>
+      <td><span>12.58</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>51.00</span></td>
+      <td><span>9.01</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>61.00</span></td>
+      <td><span>26.91</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>70.00</span></td>
+      <td><span>39.21</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>157</span></td>
+      <td><span>154</span></td>
+      <td><span>153</span></td>
+      <td><span>157</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>98.09</span></td>
+      <td><span>97.45</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = M, age.gr = 51-70
+  <br/><strong>N</strong>: 151
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>61.51</span></td>
+      <td><span>26.62</span></td>
+      <td><span>6.89</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>5.51</span></td>
+      <td><span>3.56</span></td>
+      <td><span>11.69</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>51.00</span></td>
+      <td><span>17.79</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>61.00</span></td>
+      <td><span>26.61</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>70.00</span></td>
+      <td><span>34.97</span></td>
+      <td><span>39.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>151</span></td>
+      <td><span>149</span></td>
+      <td><span>146</span></td>
+      <td><span>151</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>98.68</span></td>
+      <td><span>96.69</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = (Missing), age.gr = 51-70
+  <br/><strong>N</strong>: 9
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>61.33</span></td>
+      <td><span>28.73</span></td>
+      <td><span>6.78</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>5.12</span></td>
+      <td><span>3.00</span></td>
+      <td><span>10.18</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>53.00</span></td>
+      <td><span>24.97</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>59.00</span></td>
+      <td><span>30.38</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>69.00</span></td>
+      <td><span>32.43</span></td>
+      <td><span>21.00</span></td>
+      <td><span>1.05</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>9</span></td>
+      <td><span>9</span></td>
+      <td><span>9</span></td>
+      <td><span>9</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = F, age.gr = 71 +
+  <br/><strong>N</strong>: 77
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>75.52</span></td>
+      <td><span>28.01</span></td>
+      <td><span>7.65</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>2.94</span></td>
+      <td><span>4.60</span></td>
+      <td><span>12.88</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>71.00</span></td>
+      <td><span>18.36</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>76.00</span></td>
+      <td><span>27.65</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>38.37</span></td>
+      <td><span>40.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>77</span></td>
+      <td><span>75</span></td>
+      <td><span>69</span></td>
+      <td><span>77</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>97.40</span></td>
+      <td><span>89.61</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = M, age.gr = 71 +
+  <br/><strong>N</strong>: 79
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>75.33</span></td>
+      <td><span>26.85</span></td>
+      <td><span>7.06</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>2.81</span></td>
+      <td><span>4.16</span></td>
+      <td><span>12.44</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>71.00</span></td>
+      <td><span>16.36</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>75.00</span></td>
+      <td><span>26.73</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>36.76</span></td>
+      <td><span>37.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>79</span></td>
+      <td><span>77</span></td>
+      <td><span>77</span></td>
+      <td><span>79</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>97.47</span></td>
+      <td><span>97.47</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>  <div class="container st-container">
+  <strong>Group</strong>: gender = (Missing), age.gr = 71 +
+  <br/><strong>N</strong>: 3
+  <br/>
+  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <thead>
+    <tr>
+      <th></th>
+      <th align="center" class="st-protect-top-border">age</th>
+      <th align="center" class="st-protect-top-border">BMI</th>
+      <th align="center" class="st-protect-top-border">cigs.per.day</th>
+      <th align="center" class="st-protect-top-border">samp.wgts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Mean</strong></td>
+      <td><span>77.00</span></td>
+      <td><span>28.75</span></td>
+      <td><span>8.33</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Std.Dev</strong></td>
+      <td><span>2.65</span></td>
+      <td><span>1.30</span></td>
+      <td><span>14.43</span></td>
+      <td><span>0.00</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Min</strong></td>
+      <td><span>75.00</span></td>
+      <td><span>27.79</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Median</strong></td>
+      <td><span>76.00</span></td>
+      <td><span>28.23</span></td>
+      <td><span>0.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Max</strong></td>
+      <td><span>80.00</span></td>
+      <td><span>30.23</span></td>
+      <td><span>25.00</span></td>
+      <td><span>1.06</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>N.Valid</strong></td>
+      <td><span>3</span></td>
+      <td><span>3</span></td>
+      <td><span>3</span></td>
+      <td><span>3</span></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pct.Valid</strong></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+      <td><span>100.00</span></td>
+    </tr>
+  </tbody>
+</table>
+  Placeholder footnote
+</div> </body>
+</html>           
