@@ -605,9 +605,12 @@ crunch_factor <- function(column_data, email_val) {
     }
   }
   
-  Encoding(outlist[[1]]) <- "UTF-8"
-  Encoding(outlist[[2]]) <- "UTF-8"
-  Encoding(outlist[[3]]) <- "UTF-8"
+  # Encoding(outlist[[1]]) <- "UTF-8"
+  # Encoding(outlist[[2]]) <- "UTF-8"
+  # Encoding(outlist[[3]]) <- "UTF-8"
+  outlist[[1]] <- enc2utf8(outlist[[1]])
+  outlist[[2]] <- enc2utf8(outlist[[2]])
+  outlist[[3]] <- enc2utf8(outlist[[3]])
   return(outlist)
 }
 
@@ -740,9 +743,12 @@ crunch_character <- function(column_data, email_val) {
     }
   }
   
-  Encoding(outlist[[1]]) <- "UTF-8"
-  Encoding(outlist[[2]]) <- "UTF-8"
-  Encoding(outlist[[3]]) <- "UTF-8"
+  # Encoding(outlist[[1]]) <- "UTF-8"
+  # Encoding(outlist[[2]]) <- "UTF-8"
+  # Encoding(outlist[[3]]) <- "UTF-8"
+  outlist[[1]] <- enc2utf8(outlist[[1]])
+  outlist[[2]] <- enc2utf8(outlist[[2]])
+  outlist[[3]] <- enc2utf8(outlist[[3]])
   return(outlist)
 }
 
@@ -783,9 +789,12 @@ crunch_logical <- function(column_data) {
     }
   }
   
-  Encoding(outlist[[1]]) <- "UTF-8"
-  Encoding(outlist[[2]]) <- "UTF-8"
-  Encoding(outlist[[3]]) <- "UTF-8"
+  # Encoding(outlist[[1]]) <- "UTF-8"
+  # Encoding(outlist[[2]]) <- "UTF-8"
+  # Encoding(outlist[[3]]) <- "UTF-8"
+  outlist[[1]] <- enc2utf8(outlist[[1]])
+  outlist[[2]] <- enc2utf8(outlist[[2]])
+  outlist[[3]] <- enc2utf8(outlist[[3]])
   return(outlist)
 }
 
@@ -952,9 +961,13 @@ crunch_numeric <- function(column_data, is_barcode) {
       }
     }
   }
-  Encoding(outlist[[1]]) <- "UTF-8"
-  Encoding(outlist[[2]]) <- "UTF-8"
-  Encoding(outlist[[3]]) <- "UTF-8"
+  
+  # Encoding(outlist[[1]]) <- "UTF-8"
+  # Encoding(outlist[[2]]) <- "UTF-8"
+  # Encoding(outlist[[3]]) <- "UTF-8"
+  outlist[[1]] <- enc2utf8(outlist[[1]])
+  outlist[[2]] <- enc2utf8(outlist[[2]])
+  outlist[[3]] <- enc2utf8(outlist[[3]])
   return(outlist)
 }
 
