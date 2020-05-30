@@ -1149,11 +1149,18 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     mar <- par("mar" = c(0.03, 0.02, 0.03, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
-    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
-                       min.n = 1)
+    
+    # Correction for vectors of infinitesimal range
+    if (diff(range(data)) < 1e-301) {
+      e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
+      e <- min(as.numeric(e), 1e308)
+      data <- data * e
+    }
+    
+    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250), min.n = 1)
     cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x,
                                     axes = FALSE, xlab = NULL, ylab = NULL,
-                                    main = NULL, col = "grey95",
+                                    main = NULL, col = "grey94",
                                     border = "grey65")),
               silent = TRUE)
     if (inherits(cl, "try-error")) {
@@ -1188,11 +1195,11 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     
     if (isTRUE(emails)) {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
-              col = c("grey30", "grey97", "grey97"), border = "grey65",
+              col = c("grey30", "grey94", "grey94"), border = "grey65",
               horiz = TRUE, xlim = c(0, sum(data[2:3])))
     } else {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
-              col = "grey97", border = "grey65", horiz = TRUE,
+              col = "grey94", border = "grey65", horiz = TRUE,
               xlim = c(0, sum(data)))
     }
     
@@ -1247,6 +1254,14 @@ txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
 #' @keywords internal
 txthist <- function(data) {
   data <- data[!is.na(data)]
+  
+  # Correction for vectors of infinitesimal range
+  if (diff(range(data)) < 1e-301) {
+    e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
+    e <- min(as.numeric(e), 1e308)
+    data <- data * e
+  }
+  
   breaks_x <- pretty(range(data), n = nclass.Sturges(data), min.n = 1)
   if (length(breaks_x) <= 10) {
     counts <- hist(data, breaks = breaks_x, plot = FALSE)$counts
@@ -1325,7 +1340,7 @@ detect_barcode <- function(x) {
   }
   
   # check that all lengths are equal on a sample of 50 values, and that this length
-  # is compatible with one of the EAN/UPC/ITC soecifications
+  # is compatible with one of the EAN/UPC/ITC specifications
   x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
   if (length(x_samp) < 3 || 
       (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
