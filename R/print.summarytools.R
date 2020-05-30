@@ -1284,9 +1284,9 @@ print_dfs <- function(x, method) {
     }
     
     rows <- strsplit(cell, "\\\n")[[1]]
-    rows <- gsub("\\", "", rows, fixed = TRUE)
-    rows <- gsub(" " , "", rows, fixed = TRUE)
-    rows <- gsub(")$", "", rows)
+    rows <- gsub("\\", "",          rows, fixed = TRUE)
+    rows <- gsub(" " , "",          rows, fixed = TRUE)
+    rows <- gsub(")$", "",          rows)
     rows <- strsplit(rows, "[(:]")
     
     if (grepl(":", cell)) {
@@ -1301,11 +1301,16 @@ print_dfs <- function(x, method) {
       cnts <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 2)
       prps <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 3)
       
+      if (!is.na(notice)) {
+        vals <- sub("!$", "&thinsp;!", vals)
+        vals <- sub("(\\d)$", "\\1&thinsp;&thinsp;", vals)
+      }
+      
       cell <- 
         paste0(
           paste0(
             '<tr style="background-color:transparent">',
-            '<td style="padding:0 0 0 7px;margin:0;border:0" align="right">'
+            '<td style="padding:0 2px 0 7px;margin:0;border:0" align="right">'
           ),
           vals,
           paste0(
@@ -1327,7 +1332,7 @@ print_dfs <- function(x, method) {
       if (!is.na(notice)) {
         cell <- 
           paste0(cell, '<tr style="background-color:transparent">',
-                 '<td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>',
+                 '<td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">',
                  notice, "</td></tr>", collapse = "")
       }
     } else {
