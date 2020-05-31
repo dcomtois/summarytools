@@ -152,7 +152,7 @@ print.summarytools <- function(x,
                                escape.pipe    = st_options("escape.pipe"), 
                                ...) {
 
-  # object is a list, either created
+  # Deal with list objects created
   # - using lapply() 
   # - using freq with a dataframe as x
   # - using dplyr::group_by
@@ -177,8 +177,14 @@ print.summarytools <- function(x,
   
   knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
   panderOptions("knitr.auto.asis", FALSE)
-  
   on.exit(panderOptions("knitr.auto.asis", knitr.auto.asis.value))
+
+  # Set lang st_option to the language used when creating the object
+  if (isTRUE(st_options("lang") != attributes(x)$lang)) {
+    current_lang <- st_options("lang")
+    st_options(lang = attributes(x)$lang)
+    on.exit(st_options(lang = current_lang), add = TRUE)
+  }
   
   dotArgs <- list(...)
 
