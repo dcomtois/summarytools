@@ -221,13 +221,13 @@ dfSummary <- function(x,
       
       if (!inherits(parse_info, "try-error")) {
         if (!is.null(parse_info$df_name))
-          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
+          attr(outlist[[g]], "data_info")$Data.frame <- enc2utf8(parse_info$df_name)
         if (!is.null(parse_info$df_label))
-          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
+          attr(outlist[[g]], "data_info")$Data.frame.label <- enc2utf8(parse_info$df_label)
         if (!is.null(parse_info$var_name))
-          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
+          attr(outlist[[g]], "data_info")$Variable <- enc2utf8(parse_info$var_name)
         if (!is.null(parse_info$var_label))
-          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
+          attr(outlist[[g]], "data_info")$Variable.label <- enc2utf8(parse_info$var_label)
       }
       attr(outlist[[g]], "data_info")$by_var <- 
         setdiff(colnames(attr(x, "groups")), ".rows")
@@ -238,7 +238,7 @@ dfSummary <- function(x,
     class(outlist) <- "stby"
     return(outlist)
   }
-
+  
   # Validate arguments ---------------------------------------------------------
   if (is.null(x)) {
     tmp_x_name <- deparse(substitute(x))
