@@ -901,13 +901,13 @@ crunch_numeric <- function(column_data, is_barcode) {
         paste(
           paste0(rounded_names, strrep(" ", maxchars - nchar(rounded_names)),
                  ifelse(as.numeric(names(counts)) != as.numeric(rounded_names),
-                        "!", " ")),
+                        "*", " ")),
           counts_props, sep = ": ", collapse = "\\\n"
         )
       
       if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
         extra_space <- TRUE
-        outlist[[2]] <- paste(outlist[[2]], paste("!", trs("rounded")),
+        outlist[[2]] <- paste(outlist[[2]], paste("*", trs("rounded")),
                               sep = "\\\n")
       }
       

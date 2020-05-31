@@ -1279,7 +1279,7 @@ print_dfs <- function(x, method) {
   # A table is built to fit in a single cell of the final table
   make_tbl_cell <- function(cell) {
     
-    if (identical(cell, trs("all.nas"))) {
+    if (identical(cell, conv_non_ascii(trs("all.nas")))) {
       return(HTML(paste0('<td align="left">', cell, '</td>')))
     }
     
@@ -1290,10 +1290,10 @@ print_dfs <- function(x, method) {
     rows <- strsplit(rows, "[(:]")
     
     if (grepl(":", cell)) {
-      
+      # notice for rounded values
       notice <- NA
       if (length(rows[[length(rows)]]) == 1) {
-        notice <- sub("!", "! ", rows[[length(rows)]], fixed = TRUE)
+        notice <- sub("\\*", "*&thinsp;", rows[[length(rows)]])
         length(rows) <- length(rows) - 1
       }
       
@@ -1302,7 +1302,7 @@ print_dfs <- function(x, method) {
       prps <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 3)
       
       if (!is.na(notice)) {
-        vals <- sub("!$", "&thinsp;!", vals)
+        vals <- sub("\\*$", "&thinsp;*", vals)
         vals <- sub("(\\d)$", "\\1&thinsp;&thinsp;", vals)
       }
       
