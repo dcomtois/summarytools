@@ -413,6 +413,9 @@ print.summarytools <- function(x,
           tags$div(
             class="container st-container",
             tags$head(
+              includeHTML(system.file(
+                package="summarytools", "includes/favicon.html"
+              )),
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
