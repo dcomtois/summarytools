@@ -34,7 +34,7 @@ pct.total             ,column name (freq)                                       
 pct.total.cum         ,column name (freq)                                            ,% Total cum.
 pct.cum               ,column name (freq)                                            ,% Cum.
 valid                 ,column name (freq & dfSummary) & column content (dfSummary)   ,Valide
-invalid               ,column content (dfSummary for emails)                         ,Invalid
+invalid               ,column content (dfSummary for emails)                         ,Invalide
 total                 ,column grouping in html (freq)                                ,Total
 mean                  ,row name (descr)                                              ,Moy
 sd.long               ,row name (descr)                                              ,Écart-type
