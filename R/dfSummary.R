@@ -605,9 +605,6 @@ crunch_factor <- function(column_data, email_val) {
     }
   }
   
-  # Encoding(outlist[[1]]) <- "UTF-8"
-  # Encoding(outlist[[2]]) <- "UTF-8"
-  # Encoding(outlist[[3]]) <- "UTF-8"
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -632,14 +629,9 @@ crunch_character <- function(column_data, email_val) {
   
   if (isTRUE(parent.frame()$trim.strings)) {
     column_data <- trimws(column_data)
-  } else {
-    # https://stackoverflow.com/questions/46728047/r-rstudio-console-encoding-windows
-    column_data <- ws_to_symbol(column_data)
   }
   
   n_empty <- sum(column_data == "", na.rm = TRUE)
-  
-  column_data[column_data == ""] <- paste0("(", trs("empty.str"), ")")
   
   if (n_empty == parent.frame()$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str"), "\n")
@@ -679,6 +671,14 @@ crunch_character <- function(column_data, email_val) {
   } else {
     
     counts <- table(column_data, useNA = "no")
+    
+    # Replace empty strings with "(Empty string)" or the corresponding translation
+    names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), names(counts))
+    
+    # Replace white-space-only strings with as many middle-dot symbols to make them visible in 
+    # the output table
+    names(counts) <- ws_to_symbol(names(counts))
+    
     props <- prop.table(counts)
     
     if (length(counts) <= max.distinct.values + 1) {
@@ -743,9 +743,6 @@ crunch_character <- function(column_data, email_val) {
     }
   }
   
-  # Encoding(outlist[[1]]) <- "UTF-8"
-  # Encoding(outlist[[2]]) <- "UTF-8"
-  # Encoding(outlist[[3]]) <- "UTF-8"
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -789,9 +786,6 @@ crunch_logical <- function(column_data) {
     }
   }
   
-  # Encoding(outlist[[1]]) <- "UTF-8"
-  # Encoding(outlist[[2]]) <- "UTF-8"
-  # Encoding(outlist[[3]]) <- "UTF-8"
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -962,9 +956,6 @@ crunch_numeric <- function(column_data, is_barcode) {
     }
   }
   
-  # Encoding(outlist[[1]]) <- "UTF-8"
-  # Encoding(outlist[[2]]) <- "UTF-8"
-  # Encoding(outlist[[3]]) <- "UTF-8"
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -1062,8 +1053,6 @@ crunch_other <- function(column_data) {
   
   max.distinct.values <- parent.frame()$max.distinct.values
   round.digits        <- parent.frame()$round.digits
-  #graph.magnif        <- parent.frame()$graph.magnif
-  #max.string.width    <- parent.frame()$max.string.width
   
   if (!is.list(column_data)) {
     counts <- table(column_data, useNA = "no")
