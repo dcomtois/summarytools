@@ -4,24 +4,25 @@
    `summarytools::view()`. This avoids potential conflicts with
    other packages using the more and more popular `view()` function
    (notably, **tibble**, part of the **tidyverse** family, defines
-   `view()` as an alias of `View()`).
- - In dfSummary():
-   + Added support for list-type columns
-   + Improved performance by optimizing barcode detection and blank character
-     replacements, which are the two main bottlenecks. 
-   + Fixed a bug with barcode detection
-   + Made slight adjustments to the barplot heights
+   `view()` as an alias of `View()`) 
+ - Fixed a bug arising when an object created using a language other
+   than the active one (`st_options("lang")`) was displayed 
+ - Updated hex logo and added a favicon in html reports 
+ - Improved string encoding behavior 
  - *html* footnotes are now always enclosed within a `<p>` tag
- - **Testing** -- although still not automated, it has been improved and
-   simplified. Since the expected result is a formatted table or file, 
-   it seems more logical to batch-generate a large number of reports
-   and then compare results against a previously validated batch
-   using a file comparison tool. So far this has been very effective
-   in detecting regressions (when we unexpectedly break something
-   by fixing something else). Some automated testing is on the to-do
-   list, and any help would definitely be welcome on that front.
- - Fixed uncommon issue where grouped dfSummary tables would end up
-   imbricated in one another.
+ - In dfSummary(): 
+   + Added support for list-type columns 
+   + Improved performance by optimizing barcode detection and blank character
+     replacements, which are the two main bottlenecks 
+   + Fixed a bug with barcode detection 
+   + Made slight adjustments to the html graphs appearance 
+   + Improved alignment of Freq cell when numerical values are shown
+   + Replaced "!" with "*" for rounded-values notice 
+   + Fixed issue where grouped dfSummary tables would end up
+     imbricated in one another 
+   + Added a check for numerical variables having infinitesimal
+     variability, in which case a linear transformation is applied to
+     obtain better histograms 
 
 # summarytools 0.9.6 (2020-03-01)
 

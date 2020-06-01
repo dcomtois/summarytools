@@ -4,7 +4,9 @@
 \name{examens}
 \alias{examens}
 \title{Bulletin de Notes (Donne simulees)}
-\format{Un data frame de 30 rangees et 8 colonnes}
+\format{
+Un data frame de 30 rangees et 8 colonnes
+}
 \usage{
 data(examens)
 }
