@@ -10,7 +10,7 @@
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> label(tobacco) <- "A Study on Tobacco Use and Health"
+> label(tobacco) <- "A Study on Tobacco Use and Health / √âtude sur les effets du tabagisme"
 
 > label(tobacco$gender) <- "Subject's Gender"
 
@@ -24,17 +24,17 @@
 > (dfs1 <- dfSummary(tobacco))
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 ------------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- --------- ----------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            978       22        
      [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
-     [numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
                                        18 < 50 < 80                                       : : : : : : : : : :                       
                                        IQE (CV) : 32 (0.4)                                : : : : : : : : : :                       
                                                                                           : : : : : : : : : :                       
@@ -44,8 +44,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)             IIIIII                                    
                                        4. 71 +                    159 (16.3%)             III                                       
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
-     [numeric]                         mÌn < mediana < m·x:                                       : : :         (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                                       : : :         (97.4%)   (2.6%)    
                                        8.8 < 25.6 < 39.4                                          : : :                             
                                        IQE (CV) : 5.7 (0.2)                                     : : : : :                           
                                                                                               . : : : : : .                         
@@ -53,8 +53,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 1000      0         
      [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
-     [numeric]                         mÌn < mediana < m·x:                               :                     (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (96.5%)   (3.5%)    
                                        0 < 0 < 40                                         :                                         
                                        IQE (CV) : 11 (1.8)                                :                                         
                                                                                           :   . . . . . .                           
@@ -74,23 +74,23 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                                        
                                        [ 3 outros ]               21 ( 9.5%)              I                                         
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                                    
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                                       
-                                                                  ! arredondado                                                     
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                                    
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                                       
+                                                                  * arredondado                                                     
 ------------------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, headings = FALSE)
 
 ------------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- --------- ----------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            978       22        
      [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
-     [numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
                                        18 < 50 < 80                                       : : : : : : : : : :                       
                                        IQE (CV) : 32 (0.4)                                : : : : : : : : : :                       
                                                                                           : : : : : : : : : :                       
@@ -100,8 +100,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)             IIIIII                                    
                                        4. 71 +                    159 (16.3%)             III                                       
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
-     [numeric]                         mÌn < mediana < m·x:                                       : : :         (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                                       : : :         (97.4%)   (2.6%)    
                                        8.8 < 25.6 < 39.4                                          : : :                             
                                        IQE (CV) : 5.7 (0.2)                                     : : : : :                           
                                                                                               . : : : : : .                         
@@ -109,8 +109,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 1000      0         
      [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
-     [numeric]                         mÌn < mediana < m·x:                               :                     (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (96.5%)   (3.5%)    
                                        0 < 0 < 40                                         :                                         
                                        IQE (CV) : 11 (1.8)                                :                                         
                                                                                           :   . . . . . .                           
@@ -130,28 +130,28 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                                        
                                        [ 3 outros ]               21 ( 9.5%)              I                                         
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                                    
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                                       
-                                                                  ! arredondado                                                     
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                                    
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                                       
+                                                                  * arredondado                                                     
 ------------------------------------------------------------------------------------------------------------------------------------
 
 # -----------------  Omit columns
 > print(dfs1, varnumbers = FALSE)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 -------------------------------------------------------------------------------------------------------------------------------
-Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 -------------- ------------------ -------------------------- ----------------------- --------------------- --------- ----------
 gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            978       22        
 [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)   (2.2%)    
 
-age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
-[numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
+age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
+[numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
                                   18 < 50 < 80                                       : : : : : : : : : :                       
                                   IQE (CV) : 32 (0.4)                                : : : : : : : : : :                       
                                                                                      : : : : : : : : : :                       
@@ -161,8 +161,8 @@ age.gr                            1. 18-34                   258 (26.5%)        
                                   3. 51-70                   317 (32.5%)             IIIIII                                    
                                   4. 71 +                    159 (16.3%)             III                                       
 
-BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
-[numeric]                         mÌn < mediana < m·x:                                       : : :         (97.4%)   (2.6%)    
+BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
+[numeric]                         m√≠n < mediana < m√°x:                                       : : :         (97.4%)   (2.6%)    
                                   8.8 < 25.6 < 39.4                                          : : :                             
                                   IQE (CV) : 5.7 (0.2)                                     : : : : :                           
                                                                                          . : : : : : .                         
@@ -170,8 +170,8 @@ BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distint
 smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 1000      0         
 [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)    (0%)      
 
-cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
-[numeric]                         mÌn < mediana < m·x:                               :                     (96.5%)   (3.5%)    
+cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
+[numeric]                         m√≠n < mediana < m√°x:                               :                     (96.5%)   (3.5%)    
                                   0 < 0 < 40                                         :                                         
                                   IQE (CV) : 11 (1.8)                                :                                         
                                                                                      :   . . . . . .                           
@@ -191,27 +191,27 @@ disease                           1. Hypertension            36 (16.2%)         
                                   10. Hypotension            11 ( 5.0%)                                                        
                                   [ 3 outros ]               21 ( 9.5%)              I                                         
 
-samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000      0         
-[numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                                  0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                                    
-                                  IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                                       
-                                                             ! arredondado                                                     
+samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000      0         
+[numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                                  0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                                    
+                                  IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                                       
+                                                             * arredondado                                                     
 -------------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, labels.col = FALSE)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 -----------------------------------------------------------------------------------------------------------------
-No   Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+No   Vari√°vel       Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 ---- -------------- -------------------------- ----------------------- --------------------- --------- ----------
 1    gender         1. F                       489 (50.0%)             IIIIIIIIII            978       22        
      [factor]       2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age            MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
-     [numeric]      mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age            M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
+     [numeric]      m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
                     18 < 50 < 80                                       : : : : : : : : : :                       
                     IQE (CV) : 32 (0.4)                                : : : : : : : : : :                       
                                                                        : : : : : : : : : :                       
@@ -221,8 +221,8 @@ No   Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo    
                     3. 51-70                   317 (32.5%)             IIIIII                                    
                     4. 71 +                    159 (16.3%)             III                                       
 
-4    BMI            MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
-     [numeric]      mÌn < mediana < m·x:                                       : : :         (97.4%)   (2.6%)    
+4    BMI            M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
+     [numeric]      m√≠n < mediana < m√°x:                                       : : :         (97.4%)   (2.6%)    
                     8.8 < 25.6 < 39.4                                          : : :                             
                     IQE (CV) : 5.7 (0.2)                                     : : : : :                           
                                                                            . : : : : : .                         
@@ -230,8 +230,8 @@ No   Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo    
 5    smoker         1. Yes                     298 (29.8%)             IIIII                 1000      0         
      [factor]       2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day   MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
-     [numeric]      mÌn < mediana < m·x:                               :                     (96.5%)   (3.5%)    
+6    cigs.per.day   M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
+     [numeric]      m√≠n < mediana < m√°x:                               :                     (96.5%)   (3.5%)    
                     0 < 0 < 40                                         :                                         
                     IQE (CV) : 11 (1.8)                                :                                         
                                                                        :   . . . . . .                           
@@ -251,27 +251,27 @@ No   Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo    
                     10. Hypotension            11 ( 5.0%)                                                        
                     [ 3 outros ]               21 ( 9.5%)              I                                         
 
-9    samp.wgts      MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000      0         
-     [numeric]      mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                    0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                                    
-                    IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                                       
-                                               ! arredondado                                                     
+9    samp.wgts      M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000      0         
+     [numeric]      m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                    0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                                    
+                    IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                                       
+                                               * arredondado                                                     
 -----------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, valid.col = FALSE)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 --------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- ----------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            22        
      [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   25        
-     [numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   25        
+     [numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (2.5%)    
                                        18 < 50 < 80                                       : : : : : : : : : :             
                                        IQE (CV) : 32 (0.4)                                : : : : : : : : : :             
                                                                                           : : : : : : : : : :             
@@ -281,8 +281,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)             IIIIII                          
                                        4. 71 +                    159 (16.3%)             III                             
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           26        
-     [numeric]                         mÌn < mediana < m·x:                                       : : :         (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           26        
+     [numeric]                         m√≠n < mediana < m√°x:                                       : : :         (2.6%)    
                                        8.8 < 25.6 < 39.4                                          : : :                   
                                        IQE (CV) : 5.7 (0.2)                                     : : : : :                 
                                                                                               . : : : : : .               
@@ -290,8 +290,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 0         
      [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     35        
-     [numeric]                         mÌn < mediana < m·x:                               :                     (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     35        
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (3.5%)    
                                        0 < 0 < 40                                         :                               
                                        IQE (CV) : 11 (1.8)                                :                               
                                                                                           :   . . . . . .                 
@@ -311,27 +311,27 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                              
                                        [ 3 outros ]               21 ( 9.5%)              I                               
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                          
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                             
-                                                                  ! arredondado                                           
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                          
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                             
+                                                                  * arredondado                                           
 --------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, na.col = FALSE)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 -------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido   
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido   
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- ---------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            978      
      [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)  
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975      
-     [numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)  
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975      
+     [numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)  
                                        18 < 50 < 80                                       : : : : : : : : : :            
                                        IQE (CV) : 32 (0.4)                                : : : : : : : : : :            
                                                                                           : : : : : : : : : :            
@@ -341,8 +341,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)             IIIIII                         
                                        4. 71 +                    159 (16.3%)             III                            
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974      
-     [numeric]                         mÌn < mediana < m·x:                                       : : :         (97.4%)  
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974      
+     [numeric]                         m√≠n < mediana < m√°x:                                       : : :         (97.4%)  
                                        8.8 < 25.6 < 39.4                                          : : :                  
                                        IQE (CV) : 5.7 (0.2)                                     : : : : :                
                                                                                               . : : : : : .              
@@ -350,8 +350,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 1000     
      [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)   
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965      
-     [numeric]                         mÌn < mediana < m·x:                               :                     (96.5%)  
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965      
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (96.5%)  
                                        0 < 0 < 40                                         :                              
                                        IQE (CV) : 11 (1.8)                                :                              
                                                                                           :   . . . . . .                
@@ -371,27 +371,27 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                             
                                        [ 3 outros ]               21 ( 9.5%)              I                              
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000     
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)   
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                         
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                            
-                                                                  ! arredondado                                          
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000     
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)   
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                         
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                            
+                                                                  * arredondado                                          
 -------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, graph.col = FALSE)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 --------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    V√°lido    Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------- ----------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             978       22        
      [factor]                          2. M                       489 (50.0%)             (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    975       25        
-     [numeric]                         mÌn < mediana < m·x:                               (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                               (97.5%)   (2.5%)    
                                        18 < 50 < 80                                                           
                                        IQE (CV) : 32 (0.4)                                                    
 
@@ -400,16 +400,16 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)                                 
                                        4. 71 +                    159 (16.3%)                                 
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos   974       26        
-     [numeric]                         mÌn < mediana < m·x:                               (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos   974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                               (97.4%)   (2.6%)    
                                        8.8 < 25.6 < 39.4                                                      
                                        IQE (CV) : 5.7 (0.2)                                                   
 
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             1000      0         
      [factor]                          2. No                      702 (70.2%)             (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    965       35        
-     [numeric]                         mÌn < mediana < m·x:                               (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                               (96.5%)   (3.5%)    
                                        0 < 0 < 40                                                             
                                        IQE (CV) : 11 (1.8)                                                    
 
@@ -428,24 +428,24 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                  
                                        [ 3 outros ]               21 ( 9.5%)                                  
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      (100%)    (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)                          
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)                          
-                                                                  ! arredondado                               
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      (100%)    (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)                          
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)                          
+                                                                  * arredondado                               
 --------------------------------------------------------------------------------------------------------------
 
 # -----------------  Minimal results using print overrides
 > print(dfs1, headings = FALSE, labels.col = FALSE, varnumbers = FALSE, valid.col = FALSE, na.col = FALSE, graph.col = FALSE)
 
 -----------------------------------------------------------------
-Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)   
+Vari√°vel       Estat√≠sticas / Valores     Freqs (% de V√°lidos)   
 -------------- -------------------------- -----------------------
 gender         1. F                       489 (50.0%)            
 [factor]       2. M                       489 (50.0%)            
 
-age            MÈdia (dp) : 49.6 (18.3)   63 valores distintos   
-[numeric]      mÌn < mediana < m·x:                              
+age            M√©dia (dp) : 49.6 (18.3)   63 valores distintos   
+[numeric]      m√≠n < mediana < m√°x:                              
                18 < 50 < 80                                      
                IQE (CV) : 32 (0.4)                               
 
@@ -454,16 +454,16 @@ age.gr         1. 18-34                   258 (26.5%)
                3. 51-70                   317 (32.5%)            
                4. 71 +                    159 (16.3%)            
 
-BMI            MÈdia (dp) : 25.7 (4.5)    974 valores distintos  
-[numeric]      mÌn < mediana < m·x:                              
+BMI            M√©dia (dp) : 25.7 (4.5)    974 valores distintos  
+[numeric]      m√≠n < mediana < m√°x:                              
                8.8 < 25.6 < 39.4                                 
                IQE (CV) : 5.7 (0.2)                              
 
 smoker         1. Yes                     298 (29.8%)            
 [factor]       2. No                      702 (70.2%)            
 
-cigs.per.day   MÈdia (dp) : 6.8 (11.9)    37 valores distintos   
-[numeric]      mÌn < mediana < m·x:                              
+cigs.per.day   M√©dia (dp) : 6.8 (11.9)    37 valores distintos   
+[numeric]      m√≠n < mediana < m√°x:                              
                0 < 0 < 40                                        
                IQE (CV) : 11 (1.8)                               
 
@@ -482,11 +482,11 @@ disease        1. Hypertension            36 (16.2%)
                10. Hypotension            11 ( 5.0%)             
                [ 3 outros ]               21 ( 9.5%)             
 
-samp.wgts      MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)     
-[numeric]      mÌn < mediana < m·x:       1.04!: 249 (24.9%)     
-               0.9 < 1 < 1.1              1.05!: 324 (32.4%)     
-               IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)     
-                                          ! arredondado          
+samp.wgts      M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)     
+[numeric]      m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)     
+               0.9 < 1 < 1.1              1.05*: 324 (32.4%)     
+               IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)     
+                                          * arredondado          
 -----------------------------------------------------------------
 
 # -----------------  Print to file
@@ -514,17 +514,17 @@ Output file written
 > (dfs2 <- dfSummary(tobacco))
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 9  
+Dimens√µes: 1000 x 9  
 Duplicatas: 2  
 
 -----------------------------------------------------------------
-Vari·vel       EstatÌsticas / Valores     Freqs (% de V·lidos)   
+Vari√°vel       Estat√≠sticas / Valores     Freqs (% de V√°lidos)   
 -------------- -------------------------- -----------------------
 gender         1. F                       489 (50.0%)            
 [factor]       2. M                       489 (50.0%)            
 
-age            MÈdia (dp) : 49.6 (18.3)   63 valores distintos   
-[numeric]      mÌn < mediana < m·x:                              
+age            M√©dia (dp) : 49.6 (18.3)   63 valores distintos   
+[numeric]      m√≠n < mediana < m√°x:                              
                18 < 50 < 80                                      
                IQE (CV) : 32 (0.4)                               
 
@@ -533,16 +533,16 @@ age.gr         1. 18-34                   258 (26.5%)
                3. 51-70                   317 (32.5%)            
                4. 71 +                    159 (16.3%)            
 
-BMI            MÈdia (dp) : 25.7 (4.5)    974 valores distintos  
-[numeric]      mÌn < mediana < m·x:                              
+BMI            M√©dia (dp) : 25.7 (4.5)    974 valores distintos  
+[numeric]      m√≠n < mediana < m√°x:                              
                8.8 < 25.6 < 39.4                                 
                IQE (CV) : 5.7 (0.2)                              
 
 smoker         1. Yes                     298 (29.8%)            
 [factor]       2. No                      702 (70.2%)            
 
-cigs.per.day   MÈdia (dp) : 6.8 (11.9)    37 valores distintos   
-[numeric]      mÌn < mediana < m·x:                              
+cigs.per.day   M√©dia (dp) : 6.8 (11.9)    37 valores distintos   
+[numeric]      m√≠n < mediana < m√°x:                              
                0 < 0 < 40                                        
                IQE (CV) : 11 (1.8)                               
 
@@ -561,11 +561,11 @@ disease        1. Hypertension            36 (16.2%)
                10. Hypotension            11 ( 5.0%)             
                [ 3 outros ]               21 ( 9.5%)             
 
-samp.wgts      MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)     
-[numeric]      mÌn < mediana < m·x:       1.04!: 249 (24.9%)     
-               0.9 < 1 < 1.1              1.05!: 324 (32.4%)     
-               IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)     
-                                          ! arredondado          
+samp.wgts      M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)     
+[numeric]      m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)     
+               0.9 < 1 < 1.1              1.05*: 324 (32.4%)     
+               IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)     
+                                          * arredondado          
 -----------------------------------------------------------------
 
 > view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal width cols", file = "03-equal-widths.html")
@@ -585,17 +585,17 @@ summarytools options have been reset
 > (dfs3 <- dfSummary(tobacco, round.digits = 2, max.distinct.values = 4, varnumbers = FALSE, labels.col = TRUE, valid.col = FALSE, na.col = FALSE, max.string.width = 20))
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 10  
+Dimens√µes: 1000 x 10  
 Duplicatas: 2  
 
 ----------------------------------------------------------------------------------------------------------
-Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                
+Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                
 -------------- ------------------ -------------------------- ----------------------- ---------------------
 gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII           
 [factor]                          2. M                       489 (50.0%)             IIIIIIIIII           
 
-age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :  
-[numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :  
+age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :  
+[numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :  
                                   18 < 50 < 80                                       : : : : : : : : : :  
                                   IQE (CV) : 32 (0.4)                                : : : : : : : : : :  
                                                                                      : : : : : : : : : :  
@@ -605,8 +605,8 @@ age.gr                            1. 18-34                   258 (26.5%)        
                                   3. 51-70                   317 (32.5%)             IIIIII               
                                   4. 71 +                    159 (16.3%)             III                  
 
-BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :          
-[numeric]                         mÌn < mediana < m·x:                                       : : :        
+BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :          
+[numeric]                         m√≠n < mediana < m√°x:                                       : : :        
                                   8.8 < 25.6 < 39.4                                          : : :        
                                   IQE (CV) : 5.7 (0.2)                                     : : : : :      
                                                                                          . : : : : : .    
@@ -614,8 +614,8 @@ BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distint
 smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                
 [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII       
 
-cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                    
-[numeric]                         mÌn < mediana < m·x:                               :                    
+cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                    
+[numeric]                         m√≠n < mediana < m√°x:                               :                    
                                   0 < 0 < 40                                         :                    
                                   IQE (CV) : 11 (1.8)                                :                    
                                                                                      :   . . . . . .      
@@ -629,11 +629,11 @@ disease                           1. Hypertension             36 (16.2%)        
                                   4. Heart                    20 ( 9.0%)             I                    
                                   [ 9 outros ]               111 (50.0%)             IIIIIIIIII           
 
-samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                
-[numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                 
-                                  0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII               
-                                  IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                  
-                                                             ! arredondado                                
+samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                
+[numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                 
+                                  0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII               
+                                  IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                  
+                                                             * arredondado                                
 
 disease.f                         1. Cancer                   34 (15.3%)             III                  
 [factor]                          2. Cholesterol              21 ( 9.5%)             I                    
@@ -651,20 +651,20 @@ Output file written
 > (dfs4 <- dfSummary(cars))
 Resumo dos dados  
 cars  
-Dimensıes: 50 x 2  
+Dimens√µes: 50 x 2  
 Duplicatas: 1  
 
 ---------------------------------------------------------------------------------------------------
-No   Vari·vel    EstatÌsticas / Valores    Freqs (% de V·lidos)   Grafo         V·lido   Faltante  
+No   Vari√°vel    Estat√≠sticas / Valores    Freqs (% de V√°lidos)   Grafo         V√°lido   Faltante  
 ---- ----------- ------------------------- ---------------------- ------------- -------- ----------
-1    speed       MÈdia (dp) : 15.4 (5.3)   19 valores distintos       : :       50       0         
-     [numeric]   mÌn < mediana < m·x:                                 : :       (100%)   (0%)      
+1    speed       M√©dia (dp) : 15.4 (5.3)   19 valores distintos       : :       50       0         
+     [numeric]   m√≠n < mediana < m√°x:                                 : :       (100%)   (0%)      
                  4 < 15 < 25                                          : :                          
                  IQE (CV) : 7 (0.3)                                 : : : :                        
                                                                   . : : : :                        
 
-2    dist        MÈdia (dp) : 43 (25.8)    35 valores distintos     :           50       0         
-     [numeric]   mÌn < mediana < m·x:                               :           (100%)   (0%)      
+2    dist        M√©dia (dp) : 43 (25.8)    35 valores distintos     :           50       0         
+     [numeric]   m√≠n < mediana < m√°x:                               :           (100%)   (0%)      
                  2 < 36 < 120                                     : : :                            
                  IQE (CV) : 30 (0.6)                              : : : .                          
                                                                   : : : : : .                      
@@ -679,15 +679,15 @@ Output file written
 > (dfs_special <- dfSummary(special_vars))
 Resumo dos dados  
 special_vars  
-Dimensıes: 1000 x 30  
+Dimens√µes: 1000 x 30  
 Duplicatas: 0  
 
 -----------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)     Grafo                  V·lido    Faltante  
+No   Vari√°vel            Estat√≠sticas / Valores          Freqs (% de V√°lidos)     Grafo                  V√°lido    Faltante  
 ---- ------------------- ------------------------------- ------------------------ ---------------------- --------- ----------
-1    bin                 MÌn   : 2                       2   :  31 ( 3.3%)                               937       63        
-     [numeric]           MÈdia : 239.9                   248 : 906 (96.7%)        IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
-                         M·x   : 248                                                                                         
+1    bin                 M√≠n   : 2                       2   :  31 ( 3.3%)                               937       63        
+     [numeric]           M√©dia : 239.9                   248 : 906 (96.7%)        IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
+                         M√°x   : 248                                                                                         
 
 2    bin_char            1. 2                             31 ( 3.3%)                                     937       63        
      [character]         2. 248                          906 (96.7%)              IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
@@ -695,8 +695,8 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
 3    bin_fact            1. 2                             31 ( 3.3%)                                     937       63        
      [factor]            2. 248                          906 (96.7%)              IIIIIIIIIIIIIIIIIII    (93.7%)   (6.3%)    
 
-4    tri                 MÈdia (dp) : 21.2 (2.4)         15 :  29 ( 3.0%)                                972       28        
-     [numeric]           mÌn < mediana < m·x:            20 : 686 (70.6%)         IIIIIIIIIIIIII         (97.2%)   (2.8%)    
+4    tri                 M√©dia (dp) : 21.2 (2.4)         15 :  29 ( 3.0%)                                972       28        
+     [numeric]           m√≠n < mediana < m√°x:            20 : 686 (70.6%)         IIIIIIIIIIIIII         (97.2%)   (2.8%)    
                          15 < 20 < 25                    25 : 257 (26.4%)         IIIII                                      
                          IQE (CV) : 5 (0.1)                                                                                  
 
@@ -726,7 +726,7 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
 12   nas_char            Todos os NA's                                                                   0         1000      
      [character]                                                                                         (0%)      (100%)    
 
-13   nas_fact            Sem nÌveis definidos            Todos os NA's                                   0         1000      
+13   nas_fact            Sem n√≠veis definidos            Todos os NA's                                   0         1000      
      [factor]                                                                                            (0%)      (100%)    
 
 14   nas_fact_2          1. a                            Todos os NA's                                   0         1000      
@@ -746,7 +746,7 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
 
 19   ean_num             1. 8716892700004                312 (31.2%)              IIIIII                 1000      0         
      [numeric]           2. 8716892720002                188 (18.8%)              III                    (100%)    (0%)      
-     EAN-13 cÛdigos      3. 8716892750009                106 (10.6%)              II                                         
+     EAN-13 c√≥digos      3. 8716892750009                106 (10.6%)              II                                         
                          4. 8716892000005                 82 ( 8.2%)              I                                          
                          5. 8716874000009                 74 ( 7.4%)              I                                          
                          6. 8716892710003                 50 ( 5.0%)              I                                          
@@ -758,7 +758,7 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
 
 20   ean_char            1. 8716892700004                312 (31.2%)              IIIIII                 1000      0         
      [character]         2. 8716892720002                188 (18.8%)              III                    (100%)    (0%)      
-     EAN-13 cÛdigos      3. 8716892750009                106 (10.6%)              II                                         
+     EAN-13 c√≥digos      3. 8716892750009                106 (10.6%)              II                                         
                          4. 8716892000005                 82 ( 8.2%)              I                                          
                          5. 8716874000009                 74 ( 7.4%)              I                                          
                          6. 8716892710003                 50 ( 5.0%)              I                                          
@@ -770,7 +770,7 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
 
 21   ean_fact            1. 8716874000009                 74 ( 7.4%)              I                      1000      0         
      [factor]            2. 8716886000004                 40 ( 4.0%)                                     (100%)    (0%)      
-     EAN-13 cÛdigos      3. 8716892000005                 82 ( 8.2%)              I                                          
+     EAN-13 c√≥digos      3. 8716892000005                 82 ( 8.2%)              I                                          
                          4. 8716892700004                312 (31.2%)              IIIIII                                     
                          5. 8716892710003                 50 ( 5.0%)              I                                          
                          6. 8716892720002                188 (18.8%)              III                                        
@@ -780,21 +780,21 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
                          10. 8716924000003                30 ( 3.0%)                                                         
                          [ 2 outros ]                     64 ( 6.4%)              I                                          
 
-22   date                mÌn : 2015-01-01                1000 valores distintos   : : : : : : : : : :    1000      0         
+22   date                m√≠n : 2015-01-01                1000 valores distintos   : : : : : : : : : :    1000      0         
      [Date]              mediana : 2022-07-02                                     : : : : : : : : : :    (100%)    (0%)      
-                         m·x : 2029-12-31                                         : : : : : : : : : :                        
+                         m√°x : 2029-12-31                                         : : : : : : : : : :                        
                          range : 14y 11m 30d                                      : : : : : : : : : :                        
                                                                                   : : : : : : : : : :                        
 
-23   date_posxct         mÌn : 2014-12-31 19:00:00       1000 valores distintos   : : : : : : : : : :    1000      0         
+23   date_posxct         m√≠n : 2014-12-31 19:00:00       1000 valores distintos   : : : : : : : : : :    1000      0         
      [POSIXct, POSIXt]   mediana : 2022-07-01 20:00:00                            : : : : : : : : : :    (100%)    (0%)      
-                         m·x : 2029-12-30 19:00:00                                : : : : : : : : : :                        
+                         m√°x : 2029-12-30 19:00:00                                : : : : : : : : : :                        
                          range : 14y 11m 30d                                      : : : : : : : : : :                        
                                                                                   : : : : : : : : : :                        
 
-24   date_diff           mÌn : -1461                     1000 valores distintos   : : : : : : : : : :    1000      0         
+24   date_diff           m√≠n : -1461                     1000 valores distintos   : : : : : : : : : :    1000      0         
      [difftime]          mediana : 1278                                           : : : : : : : : : :    (100%)    (0%)      
-                         m·x : 4017                                               : : : : : : : : : :                        
+                         m√°x : 4017                                               : : : : : : : : : :                        
                          units : days                                             : : : : : : : : : :                        
                                                                                   : : : : : : : : : :                        
 
@@ -806,8 +806,8 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
      [POSIXct, POSIXt]   2. 2019-01-18 19:00:00          412 (43.1%)              IIIIIIII               (95.5%)   (4.5%)    
                          3. 2019-01-19 19:00:00          146 (15.3%)              III                                        
 
-27   emails              V·lido                          781 (86.1%)              IIIIIIIIIIIIIIIII      907       93        
-     [character]         Inv·lido                        126 (13.9%)              II                     (90.7%)   (9.3%)    
+27   emails              V√°lido                          781 (86.1%)              IIIIIIIIIIIIIIIII      907       93        
+     [character]         Inv√°lido                        126 (13.9%)              II                     (90.7%)   (9.3%)    
      e-mails             Duplicatas                       91 (10.0%)              DD                                         
 
 28   emails_fact         1. aardo aol.com                  1 ( 0.1%)                                     907       93        
@@ -823,13 +823,13 @@ No   Vari·vel            EstatÌsticas / Valores          Freqs (% de V·lidos)   
                          [ 806 outros ]                  894 (98.6%)              IIIIIIIIIIIIIIIIIII                        
 
 29   some_empty_str      1. (String vazia)                39 ( 4.0%)                                     973       27        
-     [character]         2. ∑∑                            33 ( 3.4%)                                     (97.3%)   (2.7%)    
+     [character]         2. ¬∑¬∑                            33 ( 3.4%)                                     (97.3%)   (2.7%)    
                          3. A                            603 (62.0%)              IIIIIIIIIIII                               
                          4. B                            231 (23.7%)              IIII                                       
                          5. C                             67 ( 6.9%)              I                                          
 
 30   some_empty_str_f    1. (String vazia)                39 ( 4.0%)                                     973       27        
-     [factor]            2. ∑∑                            33 ( 3.4%)                                     (97.3%)   (2.7%)    
+     [factor]            2. ¬∑¬∑                            33 ( 3.4%)                                     (97.3%)   (2.7%)    
                          3. A                            603 (62.0%)              IIIIIIIIIIII                               
                          4. B                            231 (23.7%)              IIII                                       
                          5. C                             67 ( 6.9%)              I                                          
@@ -845,14 +845,14 @@ Output file written
 iris$Sepal.Length was converted to a data frame
 Resumo dos dados  
 iris  
-Dimensıes: 150 x 1  
+Dimens√µes: 150 x 1  
 Duplicatas: 115  
 
 ---------------------------------------------------------------------------------------------------------
-No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo             V·lido   Faltante  
+No   Vari√°vel       Estat√≠sticas / Valores   Freqs (% de V√°lidos)   Grafo             V√°lido   Faltante  
 ---- -------------- ------------------------ ---------------------- ----------------- -------- ----------
-1    Sepal.Length   MÈdia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
-     [numeric]      mÌn < mediana < m·x:                              : : : :         (100%)   (0%)      
+1    Sepal.Length   M√©dia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
+     [numeric]      m√≠n < mediana < m√°x:                              : : : :         (100%)   (0%)      
                     4.3 < 5.8 < 7.9                                   : : : : :                          
                     IQE (CV) : 1.3 (0.1)                              : : : : :                          
                                                                     : : : : : : : :                      
@@ -861,14 +861,14 @@ No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo       
 > dfSummary(iris['Sepal.Length'])
 Resumo dos dados  
 iris  
-Dimensıes: 150 x 1  
+Dimens√µes: 150 x 1  
 Duplicatas: 115  
 
 ---------------------------------------------------------------------------------------------------------
-No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo             V·lido   Faltante  
+No   Vari√°vel       Estat√≠sticas / Valores   Freqs (% de V√°lidos)   Grafo             V√°lido   Faltante  
 ---- -------------- ------------------------ ---------------------- ----------------- -------- ----------
-1    Sepal.Length   MÈdia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
-     [numeric]      mÌn < mediana < m·x:                              : : : :         (100%)   (0%)      
+1    Sepal.Length   M√©dia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
+     [numeric]      m√≠n < mediana < m√°x:                              : : : :         (100%)   (0%)      
                     4.3 < 5.8 < 7.9                                   : : : : :                          
                     IQE (CV) : 1.3 (0.1)                              : : : : :                          
                                                                     : : : : : : : :                      
@@ -878,14 +878,14 @@ No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo       
 iris[["Sepal.Length"]] was converted to a data frame
 Resumo dos dados  
 iris  
-Dimensıes: 150 x 1  
+Dimens√µes: 150 x 1  
 Duplicatas: 115  
 
 ---------------------------------------------------------------------------------------------------------
-No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo             V·lido   Faltante  
+No   Vari√°vel       Estat√≠sticas / Valores   Freqs (% de V√°lidos)   Grafo             V√°lido   Faltante  
 ---- -------------- ------------------------ ---------------------- ----------------- -------- ----------
-1    Sepal.Length   MÈdia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
-     [numeric]      mÌn < mediana < m·x:                              : : : :         (100%)   (0%)      
+1    Sepal.Length   M√©dia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
+     [numeric]      m√≠n < mediana < m√°x:                              : : : :         (100%)   (0%)      
                     4.3 < 5.8 < 7.9                                   : : : : :                          
                     IQE (CV) : 1.3 (0.1)                              : : : : :                          
                                                                     : : : : : : : :                      
@@ -895,14 +895,14 @@ No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo       
 iris[["Sepal.Length"]] was converted to a data frame
 Resumo dos dados  
 iris  
-Dimensıes: 150 x 1  
+Dimens√µes: 150 x 1  
 Duplicatas: 115  
 
 ---------------------------------------------------------------------------------------------------------
-No   Vari·vel       EstatÌsticas / Valores   Freqs (% de V·lidos)   Grafo             V·lido   Faltante  
+No   Vari√°vel       Estat√≠sticas / Valores   Freqs (% de V√°lidos)   Grafo             V√°lido   Faltante  
 ---- -------------- ------------------------ ---------------------- ----------------- -------- ----------
-1    Sepal.Length   MÈdia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
-     [numeric]      mÌn < mediana < m·x:                              : : : :         (100%)   (0%)      
+1    Sepal.Length   M√©dia (dp) : 5.8 (0.8)   35 valores distintos     . . : :         150      0         
+     [numeric]      m√≠n < mediana < m√°x:                              : : : :         (100%)   (0%)      
                     4.3 < 5.8 < 7.9                                   : : : : :                          
                     IQE (CV) : 1.3 (0.1)                              : : : : :                          
                                                                     : : : : : : : :                      
@@ -918,17 +918,17 @@ Output file written
 > dfSummary(tobacco[1:100,])
 Resumo dos dados  
 tobacco  
-Dimensıes: 100 x 10  
+Dimens√µes: 100 x 10  
 Duplicatas: 0  
 
 -----------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido   Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido   Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- -------- ----------
 1    gender         Subject's Gender   1. F                       53 (54.1%)              IIIIIIIIII            98       2         
      [factor]                          2. M                       45 (45.9%)              IIIIIIIII             (98%)    (2%)      
 
-2    age                               MÈdia (dp) : 50.4 (18.9)   54 valores distintos      .       . :         99       1         
-     [numeric]                         mÌn < mediana < m·x:                                 : . :   : :         (99%)    (1%)      
+2    age                               M√©dia (dp) : 50.4 (18.9)   54 valores distintos      .       . :         99       1         
+     [numeric]                         m√≠n < mediana < m√°x:                                 : . :   : :         (99%)    (1%)      
                                        18 < 49 < 80                                         : : : : : :                            
                                        IQE (CV) : 35 (0.4)                                  : : : : : :                            
                                                                                           : : : : : : :                            
@@ -938,8 +938,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   30 (30.3%)              IIIIII                                   
                                        4. 71 +                    19 (19.2%)              III                                      
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25 (4.5)      100 valores distintos           :             100      0         
-     [numeric]                         mÌn < mediana < m·x:                                       : .           (100%)   (0%)      
+4    BMI            Body Mass Index    M√©dia (dp) : 25 (4.5)      100 valores distintos           :             100      0         
+     [numeric]                         m√≠n < mediana < m√°x:                                       : .           (100%)   (0%)      
                                        14.2 < 24.4 < 34.3                                       . : : : .                          
                                        IQE (CV) : 5.7 (0.2)                                     : : : : : . .                      
                                                                                           . : : : : : : : : :                      
@@ -947,8 +947,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     27 (27.0%)              IIIII                 100      0         
      [factor]                          2. No                      73 (73.0%)              IIIIIIIIIIIIII        (100%)   (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 7.1 (12.4)    22 valores distintos    :                     96       4         
-     [numeric]                         mÌn < mediana < m·x:                               :                     (96%)    (4%)      
+6    cigs.per.day                      M√©dia (dp) : 7.1 (12.4)    22 valores distintos    :                     96       4         
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (96%)    (4%)      
                                        0 < 0 < 39                                         :                                        
                                        IQE (CV) : 9 (1.7)                                 :                                        
                                                                                           :       . . .                            
@@ -968,11 +968,11 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            1 ( 4.2%)                                                        
                                        [ 2 outros ]               2 ( 8.3%)               I                                        
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 26 (26.0%)       IIIII                 100      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 24 (24.0%)       IIII                  (100%)   (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 31 (31.0%)       IIIIII                                   
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 19 (19.0%)       III                                      
-                                                                  ! arredondado                                                    
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 26 (26.0%)       IIIII                 100      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 24 (24.0%)       IIII                  (100%)   (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 31 (31.0%)       IIIIII                                   
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 19 (19.0%)       III                                      
+                                                                  * arredondado                                                    
 
 10   disease.f                         1. Cancer                  3 (12.5%)               II                    24       76        
      [factor]                          2. Cholesterol             2 ( 8.3%)               I                     (24%)    (76%)     
@@ -1003,17 +1003,17 @@ Output file written
 > dfSummary(tobacco, round.digits = 2)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 12  
+Dimens√µes: 1000 x 12  
 Duplicatas: 2  
 
 ------------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores     Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 ---- -------------- ------------------ -------------------------- ----------------------- --------------------- --------- ----------
 1    gender         Subject's Gender   1. F                       489 (50.0%)             IIIIIIIIII            978       22        
      [factor]                          2. M                       489 (50.0%)             IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
-     [numeric]                         mÌn < mediana < m·x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.3)   63 valores distintos    .     .     . . . :   975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                               : : : : : . : : : :   (97.5%)   (2.5%)    
                                        18 < 50 < 80                                       : : : : : : : : : :                       
                                        IQE (CV) : 32 (0.4)                                : : : : : : : : : :                       
                                                                                           : : : : : : : : : :                       
@@ -1023,8 +1023,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        3. 51-70                   317 (32.5%)             IIIIII                                    
                                        4. 71 +                    159 (16.3%)             III                                       
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
-     [numeric]                         mÌn < mediana < m·x:                                       : : :         (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.7 (4.5)    974 valores distintos             :           974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                                       : : :         (97.4%)   (2.6%)    
                                        8.8 < 25.6 < 39.4                                          : : :                             
                                        IQE (CV) : 5.7 (0.2)                                     : : : : :                           
                                                                                               . : : : : : .                         
@@ -1032,8 +1032,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 5    smoker         Smoking Status     1. Yes                     298 (29.8%)             IIIII                 1000      0         
      [factor]                          2. No                      702 (70.2%)             IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
-     [numeric]                         mÌn < mediana < m·x:                               :                     (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.8 (11.9)    37 valores distintos    :                     965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                               :                     (96.5%)   (3.5%)    
                                        0 < 0 < 40                                         :                                         
                                        IQE (CV) : 11 (1.8)                                :                                         
                                                                                           :   . . . . . .                           
@@ -1053,11 +1053,11 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Hypotension            11 ( 5.0%)                                                        
                                        [ 3 outros ]               21 ( 9.5%)              I                                         
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.1)       0.86!: 267 (26.7%)      IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                                       0.9 < 1 < 1.1              1.05!: 324 (32.4%)      IIIIII                                    
-                                       IQE (CV) : 0.2 (0.1)       1.06!: 160 (16.0%)      III                                       
-                                                                  ! arredondado                                                     
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.1)       0.86*: 267 (26.7%)      IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                                       0.9 < 1 < 1.1              1.05*: 324 (32.4%)      IIIIII                                    
+                                       IQE (CV) : 0.2 (0.1)       1.06*: 160 (16.0%)      III                                       
+                                                                  * arredondado                                                     
 
 10   disease.f                         1. Cancer                  34 (15.3%)              III                   222       778       
      [factor]                          2. Cholesterol             21 ( 9.5%)              I                     (22.2%)   (77.8%)   
@@ -1071,14 +1071,14 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
                                        10. Neurological           10 ( 4.5%)                                                        
                                        [ 3 outros ]               31 (14.0%)              II                                        
 
-11   samp.wgts.3    Sampling Weights   MÈdia (dp) : 0.8 (0.5)     0.00 : 267 (26.7%)      IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.04!: 249 (24.9%)      IIII                  (100%)    (0%)      
-                                       0 < 1 < 1.1                1.05!: 324 (32.4%)      IIIIII                                    
-                                       IQE (CV) : 1 (0.6)         1.06!: 160 (16.0%)      III                                       
-                                                                  ! arredondado                                                     
+11   samp.wgts.3    Sampling Weights   M√©dia (dp) : 0.8 (0.5)     0.00 : 267 (26.7%)      IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.04*: 249 (24.9%)      IIII                  (100%)    (0%)      
+                                       0 < 1 < 1.1                1.05*: 324 (32.4%)      IIIIII                                    
+                                       IQE (CV) : 1 (0.6)         1.06*: 160 (16.0%)      III                                       
+                                                                  * arredondado                                                     
 
-12   samp.wgts.4    Sampling Weights   MÈdia (dp) : 1 (0.1)       0.90 : 267 (26.7%)      IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:       1.00 : 573 (57.3%)      IIIIIIIIIII           (100%)    (0%)      
+12   samp.wgts.4    Sampling Weights   M√©dia (dp) : 1 (0.1)       0.90 : 267 (26.7%)      IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:       1.00 : 573 (57.3%)      IIIIIIIIIII           (100%)    (0%)      
                                        0.9 < 1 < 1.1              1.10 : 160 (16.0%)      III                                       
                                        IQE (CV) : 0.1 (0.1)                                                                         
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1086,17 +1086,17 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores     Freqs (% de V·
 > dfSummary(tobacco, round.digits = 3)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 12  
+Dimens√µes: 1000 x 12  
 Duplicatas: 2  
 
 -------------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V·lidos)    Grafo                 V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores      Freqs (% de V√°lidos)    Grafo                 V√°lido    Faltante  
 ---- -------------- ------------------ --------------------------- ----------------------- --------------------- --------- ----------
 1    gender         Subject's Gender   1. F                        489 (50.00%)            IIIIIIIIII            978       22        
      [factor]                          2. M                        489 (50.00%)            IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.6 (18.29)   63 valores distintos    .     .     . . . :   975       25        
-     [numeric]                         mÌn < mediana < m·x:                                : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.6 (18.29)   63 valores distintos    .     .     . . . :   975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                                : : : : : . : : : :   (97.5%)   (2.5%)    
                                        18 < 50 < 80                                        : : : : : : : : : :                       
                                        IQE (CV) : 32 (0.37)                                : : : : : : : : : :                       
                                                                                            : : : : : : : : : :                       
@@ -1106,8 +1106,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V
                                        3. 51-70                    317 (32.51%)            IIIIII                                    
                                        4. 71 +                     159 (16.31%)            III                                       
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.73 (4.49)   974 valores distintos             :           974       26        
-     [numeric]                         mÌn < mediana < m·x:                                        : : :         (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.73 (4.49)   974 valores distintos             :           974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                                        : : :         (97.4%)   (2.6%)    
                                        8.83 < 25.62 < 39.44                                        : : :                             
                                        IQE (CV) : 5.72 (0.17)                                    : : : : :                           
                                                                                                . : : : : : .                         
@@ -1115,8 +1115,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V
 5    smoker         Smoking Status     1. Yes                      298 (29.80%)            IIIII                 1000      0         
      [factor]                          2. No                       702 (70.20%)            IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.78 (11.88)   37 valores distintos    :                     965       35        
-     [numeric]                         mÌn < mediana < m·x:                                :                     (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.78 (11.88)   37 valores distintos    :                     965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                                :                     (96.5%)   (3.5%)    
                                        0 < 0 < 40                                          :                                         
                                        IQE (CV) : 11 (1.75)                                :                                         
                                                                                            :   . . . . . .                           
@@ -1136,11 +1136,11 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V
                                        10. Hypotension             11 ( 4.95%)                                                       
                                        [ 3 outros ]                21 ( 9.46%)             I                                         
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.08)       0.861!: 267 (26.70%)    IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:        1.044!: 249 (24.90%)    IIII                  (100%)    (0%)      
-                                       0.86 < 1.04 < 1.06          1.049!: 324 (32.40%)    IIIIII                                    
-                                       IQE (CV) : 0.19 (0.08)      1.062!: 160 (16.00%)    III                                       
-                                                                   ! arredondado                                                     
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.08)       0.861*: 267 (26.70%)    IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:        1.044*: 249 (24.90%)    IIII                  (100%)    (0%)      
+                                       0.86 < 1.04 < 1.06          1.049*: 324 (32.40%)    IIIIII                                    
+                                       IQE (CV) : 0.19 (0.08)      1.062*: 160 (16.00%)    III                                       
+                                                                   * arredondado                                                     
 
 10   disease.f                         1. Cancer                   34 (15.32%)             III                   222       778       
      [factor]                          2. Cholesterol              21 ( 9.46%)             I                     (22.2%)   (77.8%)   
@@ -1154,13 +1154,13 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V
                                        10. Neurological            10 ( 4.50%)                                                       
                                        [ 3 outros ]                31 (13.96%)             II                                        
 
-11   samp.wgts.3    Sampling Weights   MÈdia (dp) : 0.77 (0.46)    0.000 : 267 (26.70%)    IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:        1.044 : 249 (24.90%)    IIII                  (100%)    (0%)      
+11   samp.wgts.3    Sampling Weights   M√©dia (dp) : 0.77 (0.46)    0.000 : 267 (26.70%)    IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:        1.044 : 249 (24.90%)    IIII                  (100%)    (0%)      
                                        0 < 1.04 < 1.06             1.049 : 324 (32.40%)    IIIIII                                    
                                        IQE (CV) : 1.05 (0.6)       1.062 : 160 (16.00%)    III                                       
 
-12   samp.wgts.4    Sampling Weights   MÈdia (dp) : 0.99 (0.06)    0.900 : 267 (26.70%)    IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:        1.000 : 573 (57.30%)    IIIIIIIIIII           (100%)    (0%)      
+12   samp.wgts.4    Sampling Weights   M√©dia (dp) : 0.99 (0.06)    0.900 : 267 (26.70%)    IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:        1.000 : 573 (57.30%)    IIIIIIIIIII           (100%)    (0%)      
                                        0.9 < 1 < 1.1               1.100 : 160 (16.00%)    III                                       
                                        IQE (CV) : 0.1 (0.07)                                                                         
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -1168,17 +1168,17 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores      Freqs (% de V
 > dfSummary(tobacco, round.digits = 4)
 Resumo dos dados  
 tobacco  
-Dimensıes: 1000 x 12  
+Dimens√µes: 1000 x 12  
 Duplicatas: 2  
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-No   Vari·vel       RÛtulo             EstatÌsticas / Valores         Freqs (% de V·lidos)     Grafo                 V·lido    Faltante  
+No   Vari√°vel       R√≥tulo             Estat√≠sticas / Valores         Freqs (% de V√°lidos)     Grafo                 V√°lido    Faltante  
 ---- -------------- ------------------ ------------------------------ ------------------------ --------------------- --------- ----------
 1    gender         Subject's Gender   1. F                           489 (50.000%)            IIIIIIIIII            978       22        
      [factor]                          2. M                           489 (50.000%)            IIIIIIIIII            (97.8%)   (2.2%)    
 
-2    age                               MÈdia (dp) : 49.602 (18.289)   63 valores distintos     .     .     . . . :   975       25        
-     [numeric]                         mÌn < mediana < m·x:                                    : : : : : . : : : :   (97.5%)   (2.5%)    
+2    age                               M√©dia (dp) : 49.602 (18.289)   63 valores distintos     .     .     . . . :   975       25        
+     [numeric]                         m√≠n < mediana < m√°x:                                    : : : : : . : : : :   (97.5%)   (2.5%)    
                                        18 < 50 < 80                                            : : : : : : : : : :                       
                                        IQE (CV) : 32 (0.369)                                   : : : : : : : : : :                       
                                                                                                : : : : : : : : : :                       
@@ -1188,8 +1188,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores         Freqs (% d
                                        3. 51-70                       317 (32.513%)            IIIIII                                    
                                        4. 71 +                        159 (16.308%)            III                                       
 
-4    BMI            Body Mass Index    MÈdia (dp) : 25.731 (4.488)    974 valores distintos              :           974       26        
-     [numeric]                         mÌn < mediana < m·x:                                            : : :         (97.4%)   (2.6%)    
+4    BMI            Body Mass Index    M√©dia (dp) : 25.731 (4.488)    974 valores distintos              :           974       26        
+     [numeric]                         m√≠n < mediana < m√°x:                                            : : :         (97.4%)   (2.6%)    
                                        8.826 < 25.62 < 39.439                                          : : :                             
                                        IQE (CV) : 5.722 (0.174)                                      : : : : :                           
                                                                                                    . : : : : : .                         
@@ -1197,8 +1197,8 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores         Freqs (% d
 5    smoker         Smoking Status     1. Yes                         298 (29.800%)            IIIII                 1000      0         
      [factor]                          2. No                          702 (70.200%)            IIIIIIIIIIIIII        (100%)    (0%)      
 
-6    cigs.per.day                      MÈdia (dp) : 6.782 (11.877)    37 valores distintos     :                     965       35        
-     [numeric]                         mÌn < mediana < m·x:                                    :                     (96.5%)   (3.5%)    
+6    cigs.per.day                      M√©dia (dp) : 6.782 (11.877)    37 valores distintos     :                     965       35        
+     [numeric]                         m√≠n < mediana < m√°x:                                    :                     (96.5%)   (3.5%)    
                                        0 < 0 < 40                                              :                                         
                                        IQE (CV) : 11 (1.751)                                   :                                         
                                                                                                :   . . . . . .                           
@@ -1218,11 +1218,11 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores         Freqs (% d
                                        10. Hypotension                11 ( 4.955%)                                                       
                                        [ 3 outros ]                   21 ( 9.460%)             I                                         
 
-9    samp.wgts      Sampling Weights   MÈdia (dp) : 1 (0.084)         0.8614!: 267 (26.700%)   IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:           1.0442!: 249 (24.900%)   IIII                  (100%)    (0%)      
-                                       0.861 < 1.044 < 1.062          1.0494!: 324 (32.400%)   IIIIII                                    
+9    samp.wgts      Sampling Weights   M√©dia (dp) : 1 (0.084)         0.8614*: 267 (26.700%)   IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:           1.0442*: 249 (24.900%)   IIII                  (100%)    (0%)      
+                                       0.861 < 1.044 < 1.062          1.0494*: 324 (32.400%)   IIIIII                                    
                                        IQE (CV) : 0.188 (0.084)       1.0625 : 160 (16.000%)   III                                       
-                                                                      ! arredondado                                                      
+                                                                      * arredondado                                                      
 
 10   disease.f                         1. Cancer                      34 (15.315%)             III                   222       778       
      [factor]                          2. Cholesterol                 21 ( 9.459%)             I                     (22.2%)   (77.8%)   
@@ -1236,13 +1236,13 @@ No   Vari·vel       RÛtulo             EstatÌsticas / Valores         Freqs (% d
                                        10. Neurological               10 ( 4.505%)                                                       
                                        [ 3 outros ]                   31 (13.964%)             II                                        
 
-11   samp.wgts.3    Sampling Weights   MÈdia (dp) : 0.77 (0.465)      0.0000 : 267 (26.700%)   IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:           1.0440 : 249 (24.900%)   IIII                  (100%)    (0%)      
+11   samp.wgts.3    Sampling Weights   M√©dia (dp) : 0.77 (0.465)      0.0000 : 267 (26.700%)   IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:           1.0440 : 249 (24.900%)   IIII                  (100%)    (0%)      
                                        0 < 1.044 < 1.062              1.0490 : 324 (32.400%)   IIIIII                                    
                                        IQE (CV) : 1.049 (0.604)       1.0620 : 160 (16.000%)   III                                       
 
-12   samp.wgts.4    Sampling Weights   MÈdia (dp) : 0.989 (0.064)     0.9000 : 267 (26.700%)   IIIII                 1000      0         
-     [numeric]                         mÌn < mediana < m·x:           1.0000 : 573 (57.300%)   IIIIIIIIIII           (100%)    (0%)      
+12   samp.wgts.4    Sampling Weights   M√©dia (dp) : 0.989 (0.064)     0.9000 : 267 (26.700%)   IIIII                 1000      0         
+     [numeric]                         m√≠n < mediana < m√°x:           1.0000 : 573 (57.300%)   IIIIIIIIIII           (100%)    (0%)      
                                        0.9 < 1 < 1.1                  1.1000 : 160 (16.000%)   III                                       
                                        IQE (CV) : 0.1 (0.065)                                                                            
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -1282,7 +1282,7 @@ Output file written
       <td align="left">1. F
 2. M</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQI0VzxayIwqHlU8hBSTlGGHGgAAwzJFHyLFAJAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDAOHScrAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwf0CflwAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQI0VzxayIwqHlU8hBSTlGGHGgAAwzJFHyLFAJAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDAs8kAFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwXa/4uQAAAABJRU5ErkJggg=="></td>
       <td align="center">978
 (97.8%)</td>
       <td align="center">22
@@ -1298,7 +1298,7 @@ m&#0237;n < mediana < m&#0225;x:
 18 < 50 < 80
 IQE (CV) : 32 (0.4)</td>
       <td align="left" style="vertical-align:middle">63 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAKpJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjRqzP3+QdojJvXhHKlJV5Per4k2mrBpyXgTkysPRthaPIH9GJN5kVxjOlzH2LYZNucaC7tQgMlJY0zuoBTTpjHBtK4Ai9Zg38R0wg0wLbbFsnd3GxbS430N8/sn0gCTNdjLmD5jBljeDAYGBgYGBvZjzGe/EU3YeTMYGBgYGBgYGBgYGNjTmDeJIzWZARcGwxkfHuQgAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwDh0nKwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMH9An5cAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAKpJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjRqzP3+QdojJvXhHKlJV5Per4k2mrBpyXgTkysPRthaPIH9GJN5kVxjOlzH2LYZNucaC7tQgMlJY0zuoBTTpjHBtK4Ai9Zg38R0wg0wLbbFsnd3GxbS430N8/sn0gCTNdjLmD5jBljeDAYGBgYGBvZjzGe/EU3YeTMYGBgYGBgYGBgYGNjTmDeJIzWZARcGwxkfHuQgAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwLPJABQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMF2v+LkAAAAASUVORK5CYII="></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1314,7 +1314,7 @@ IQE (CV) : 32 (0.4)</td>
 3. 51-70
 4. 71 +</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">258</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">241</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">24.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">317</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">32.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">159</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAF9JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAaglj8N6PO43GpUflaeaPKH0R+v0T0b+AAMF3PkbDEblR+WpIU8o/dEz/StikUd2/6j8qDy15Qmlv4EEABpZYLIzlbGRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwDh0nKwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMH9An5cAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAF9JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAaglj8N6PO43GpUflaeaPKH0R+v0T0b+AAMF3PkbDEblR+WpIU8o/dEz/StikUd2/6j8qDy15Qmlv4EEABpZYLIzlbGRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwLPJABQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMF2v+LkAAAAASUVORK5CYII="></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1330,7 +1330,7 @@ m&#0237;n < mediana < m&#0225;x:
 8.8 < 25.6 < 39.4
 IQE (CV) : 5.7 (0.2)</td>
       <td align="left" style="vertical-align:middle">974 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAALlJREFUaN7t2GEOgyAMhmGuMG9gucG8/90EooYpOlJqdPP9En6QlCf8aijOEU1eX9NJSH9cU48NIWBgYA/AYucQK8yH9b4TlhqjGRYNMDAwMDCwp2D7TwQFtn87sBMwmV5AJthyHqwRKw/sSqw8FICBgYGBXYrFTm+G+fX5H8G2v0wNWNqAgf0n1s0dwwSby8GG9STbin3cDuyGmOTf/xXYMpWVMJ+XV2Bxky5ghaXNhEkeU0wdRzQZAVolACmaVEsoAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwDh0nKwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMH9An5cAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAALlJREFUaN7t2GEOgyAMhmGuMG9gucG8/90EooYpOlJqdPP9En6QlCf8aijOEU1eX9NJSH9cU48NIWBgYA/AYucQK8yH9b4TlhqjGRYNMDAwMDCwp2D7TwQFtn87sBMwmV5AJthyHqwRKw/sSqw8FICBgYGBXYrFTm+G+fX5H8G2v0wNWNqAgf0n1s0dwwSby8GG9STbin3cDuyGmOTf/xXYMpWVMJ+XV2Bxky5ghaXNhEkeU0wdRzQZAVolACmaVEsoAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwLPJABQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMF2v+LkAAAAASUVORK5CYII="></td>
       <td align="center">974
 (97.4%)</td>
       <td align="center">26
@@ -1344,7 +1344,7 @@ IQE (CV) : 5.7 (0.2)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">298</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">29.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">702</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">70.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA3BAMAAAArjaPrAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBA6xXiRyAN5zxA6NRvaN6R/WO6h0AvZSUdSMJAACiO3V1Gk5a2wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMA4dJysAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDB/QJ+XAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA3BAMAAAArjaPrAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBA6xXiRyAN5zxA6NRvaN6R/WO6h0AvZSUdSMJAACiO3V1Gk5a2wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMCzyQAUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDBdr/i5AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1360,7 +1360,7 @@ m&#0237;n < mediana < m&#0225;x:
 0 < 0 < 40
 IQE (CV) : 11 (1.8)</td>
       <td align="left" style="vertical-align:middle">37 valores distintos</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAHVJREFUaN7t2cENgCAQBEBa0A7EDrD/3vx4mEhIDJr4cPZ53A78SUlGkiPL9CAHtm5HYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDDYt9g88hPYxe4/td6bb2NnJZA6iNVyxZqNthKD6JQu1my0lf7Jv7D8SpKMZAcPx4KExMJfDAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMA4dJysAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDB/QJ+XAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAHVJREFUaN7t2cENgCAQBEBa0A7EDrD/3vx4mEhIDJr4cPZ53A78SUlGkiPL9CAHtm5HYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDDYt9g88hPYxe4/td6bb2NnJZA6iNVyxZqNthKD6JQu1my0lf7Jv7D8SpKMZAcPx4KExMJfDAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMCzyQAUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDBdr/i5AAAAAElFTkSuQmCC"></td>
       <td align="center">965
 (96.5%)</td>
       <td align="center">35
@@ -1374,7 +1374,7 @@ IQE (CV) : 11 (1.8)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">224</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">22.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">776</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">77.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA3BAMAAADZHTQLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYVCboEQ2UMARF8SDURNGTRg1YdSEkWEC5SXtKGBgAAD3iogAe+pSSAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMA4dJysAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDB/QJ+XAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA3BAMAAADZHTQLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYVCboEQ2UMARF8SDURNGTRg1YdSEkWEC5SXtKGBgAAD3iogAe+pSSAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMCzyQAUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDBdr/i5AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1397,7 +1397,7 @@ IQE (CV) : 11 (1.8)</td>
 10. Hypotension
 [ 3 outros ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAIpJREFUWMPt17ERgCAMhWFGgA1ENsD9d7PhNGeeFYlR76X8mnD5K1Kyn1XMMqxt59D8DN2+iMkGJndk/ZZO8zN0e4OWVdrYSwsw1MOgb9F7Oy3AUA/2/aZZt2Tfd9ljfS/WjpfQPA3dni3/Yx59K9hLizHUY7Zv0Xs7zd/Q7Wda3vXlXzfG0O0tZwf1JpsksH5RZQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMA4dJysAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDB/QJ+XAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAIpJREFUWMPt17ERgCAMhWFGgA1ENsD9d7PhNGeeFYlR76X8mnD5K1Kyn1XMMqxt59D8DN2+iMkGJndk/ZZO8zN0e4OWVdrYSwsw1MOgb9F7Oy3AUA/2/aZZt2Tfd9ljfS/WjpfQPA3dni3/Yx59K9hLizHUY7Zv0Xs7zd/Q7Wda3vXlXzfG0O0tZwf1JpsksH5RZQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMCzyQAUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDBdr/i5AAAAAElFTkSuQmCC"></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1412,8 +1412,8 @@ IQE (CV) : 11 (1.8)</td>
 m&#0237;n < mediana < m&#0225;x:
 0.9 < 1 < 1.1
 IQE (CV) : 0.2 (0.1)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.86!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! arredondado</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwDh0nKwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMH9An5cAAAAASUVORK5CYII=">
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.86&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;arredondado</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwLPJABQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMF2v+LkAAAAASUVORK5CYII=">
 
 </td>
       <td align="center">1000
@@ -1438,7 +1438,7 @@ IQE (CV) : 0.2 (0.1)</td>
 10. Neurological
 [ 3 outros ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">31</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAJ1JREFUWMPtlFEOgCAMQzmC3kDkBnj/uxkBFUj1h00MaT/fB1taOmPktWaaEnPbJU+mx5D3cyYJlp63OUu7kCkz5H1zlhU75nqyLgzl0ZqvBXPJ+jCUR2u+7O8YXX3MN03Jdzm3IdNjyHulfIOWYpcoMj2GvG/NsmbuPhtkHzOUh0BXf3GbyOTvM/s7Tldf+htGlf8q/i0yPYa8l9QO73eb4ZCT/V8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDAOHScrAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwf0CflwAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAJ1JREFUWMPtlFEOgCAMQzmC3kDkBnj/uxkBFUj1h00MaT/fB1taOmPktWaaEnPbJU+mx5D3cyYJlp63OUu7kCkz5H1zlhU75nqyLgzl0ZqvBXPJ+jCUR2u+7O8YXX3MN03Jdzm3IdNjyHulfIOWYpcoMj2GvG/NsmbuPhtkHzOUh0BXf3GbyOTvM/s7Tldf+htGlf8q/i0yPYa8l9QO73eb4ZCT/V8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDAs8kAFAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwXa/4uQAAAABJRU5ErkJggg=="></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1453,8 +1453,8 @@ IQE (CV) : 0.2 (0.1)</td>
 m&#0237;n < mediana < m&#0225;x:
 0 < 1 < 1.1
 IQE (CV) : 1 (0.6)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! arredondado</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQ1OjAwLTA0OjAwDh0nKwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMH9An5cAAAAASUVORK5CYII=">
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.00&thinsp;&thinsp;</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;arredondado</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA5OjM0LTA0OjAwLPJABQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMF2v+LkAAAAASUVORK5CYII=">
 
 </td>
       <td align="center">1000
@@ -1471,8 +1471,8 @@ IQE (CV) : 1 (0.6)</td>
 m&#0237;n < mediana < m&#0225;x:
 0.9 < 1 < 1.1
 IQE (CV) : 0.1 (0.1)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.90</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">573</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">57.3%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.10</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABOBAMAAAAp5d5wAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFi0A1qdexAAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJIkS5618T+Anhn7JQimJDlLaGQCA8C/vOoz7XIuvbXFeuIhCIC8K+Wp/f5+xfJZWYr4tAIF4Q9p3/UAfeS4iC9SVTaQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0NTowMC0wNDowMA4dJysAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDU6MDAtMDQ6MDB/QJ+XAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.90</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">573</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">57.3%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.10</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABOBAMAAAAp5d5wAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQkimN0IZwAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJIkS5618T+Anhn7JQimJDlLaGQCA8C/vOoz7XIuvbXFeuIhCIC8K+Wp/f5+xfJZWYr4tAIF4Q9p3/UAfeS4iC9SVTaQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowOTozNC0wNDowMCzyQAUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDk6MzQtMDQ6MDBdr/i5AAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1482,3 +1482,8 @@ IQE (CV) : 0.1 (0.1)</td>
 </table>
   <p>Placeholder footnote</p>
 </div>
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")

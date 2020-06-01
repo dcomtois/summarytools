@@ -652,10 +652,9 @@ tobacco$age
 
 > d4 %>% tb()
 # A tibble: 1 x 16
-  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis
-  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>
-1 age       49.6  18.3    18    34    50    66    80  23.7    32 0.369  -0.0403      0.0783    -1.26
-# ... with 2 more variables: n.valid <dbl>, pct.valid <dbl>
+  variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 age       49.6  18.3    18    34    50    66    80  23.7    32 0.369  -0.0403      0.0783    -1.26     975      97.5
 
 > d4 %>% print(file = "10-descr-dollarpipe.html")
 Switching method to 'browser'
@@ -912,11 +911,10 @@ Output file written
 
 > d7_2 %>% tb()
 # A tibble: 2 x 17
-  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness
-  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>
-1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143 
-2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934
-# ... with 3 more variables: kurtosis <dbl>, n.valid <dbl>, pct.valid <dbl>
+  smoker variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <fct>  <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 Yes    age       49.8  18.7    19    34    50    66    80  23.7    32 0.377  -0.0876      0.143     -1.27     290      97.3
+2 No     age       49.5  18.1    18    34    50    66    80  23.7    32 0.365  -0.0187      0.0934    -1.26     685      97.6
 
 > view(d7_2, file="d7_2.html")
 Output file written
@@ -976,11 +974,11 @@ disease        1. Hypertension                    36 (16.2%)                   I
                10. Hypotension                    11 ( 5.0%)                                                        
                [ 3 остальные ]                    21 ( 9.5%)                   I                                    
 
-samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86!: 267 (26.7%)           IIIII                 0              
-[numeric]      mин < мед < mакс:                  1.04!: 249 (24.9%)           IIII                  (0%)           
-               0.9 < 1 < 1.1                      1.05!: 324 (32.4%)           IIIIII                               
-               IQR (CV) : 0.2 (0.1)               1.06!: 160 (16.0%)           III                                  
-                                                  ! округлённое                                                     
+samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86*: 267 (26.7%)           IIIII                 0              
+[numeric]      mин < мед < mакс:                  1.04*: 249 (24.9%)           IIII                  (0%)           
+               0.9 < 1 < 1.1                      1.05*: 324 (32.4%)           IIIIII                               
+               IQR (CV) : 0.2 (0.1)               1.06*: 160 (16.0%)           III                                  
+                                                  * округлённое                                                     
 --------------------------------------------------------------------------------------------------------------------
 
 > dfs1 %>% print(file = "14-dfSummary.html")
@@ -1080,11 +1078,11 @@ tobacco
                    10. Vision                          6 ( 5.5%)                   I                                     
                    [ 3 остальные ]                    11 (10.1%)                   II                                    
 
-9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86!: 131 (26.8%)           IIIII                  0              
-    [numeric]      mин < мед < mакс:                  1.04!: 120 (24.5%)           IIII                   (0%)           
-                   0.9 < 1 < 1.1                      1.05!: 160 (32.7%)           IIIIII                                
-                   IQR (CV) : 0.2 (0.1)               1.06!:  78 (16.0%)           III                                   
-                                                      ! округлённое                                                      
+9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86*: 131 (26.8%)           IIIII                  0              
+    [numeric]      mин < мед < mакс:                  1.04*: 120 (24.5%)           IIII                   (0%)           
+                   0.9 < 1 < 1.1                      1.05*: 160 (32.7%)           IIIIII                                
+                   IQR (CV) : 0.2 (0.1)               1.06*:  78 (16.0%)           III                                   
+                                                      * округлённое                                                      
 -------------------------------------------------------------------------------------------------------------------------
 
 Переменные: gender = M  
@@ -1140,11 +1138,11 @@ tobacco
                    10. Hypotension                     4 ( 3.6%)                                                         
                    [ 3 остальные ]                     7 ( 6.4%)                   I                                     
 
-9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86!: 131 (26.8%)           IIIII                  0              
-    [numeric]      mин < мед < mакс:                  1.04!: 124 (25.4%)           IIIII                  (0%)           
-                   0.9 < 1 < 1.1                      1.05!: 155 (31.7%)           IIIIII                                
-                   IQR (CV) : 0.2 (0.1)               1.06!:  79 (16.2%)           III                                   
-                                                      ! округлённое                                                      
+9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86*: 131 (26.8%)           IIIII                  0              
+    [numeric]      mин < мед < mакс:                  1.04*: 124 (25.4%)           IIIII                  (0%)           
+                   0.9 < 1 < 1.1                      1.05*: 155 (31.7%)           IIIIII                                
+                   IQR (CV) : 0.2 (0.1)               1.06*:  79 (16.2%)           III                                   
+                                                      * округлённое                                                      
 -------------------------------------------------------------------------------------------------------------------------
 
 Переменные: gender = (Missing)  
@@ -1194,13 +1192,28 @@ tobacco
     [character]    2. Hypertension                    1 (33.3%)                    IIIIII                 (86.36%)       
                    3. Musculoskeletal                 1 (33.3%)                    IIIIII                                
 
-9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86!: 5 (22.7%)             IIII                   0              
-    [numeric]      mин < мед < mакс:                  1.04!: 5 (22.7%)             IIII                   (0%)           
-                   0.9 < 1 < 1.1                      1.05!: 9 (40.9%)             IIIIIIII                              
-                   IQR (CV) : 0 (0.1)                 1.06!: 3 (13.6%)             II                                    
-                                                      ! округлённое                                                      
+9   samp.wgts      сред. знач. (с.о.) : 1 (0.1)       0.86*: 5 (22.7%)             IIII                   0              
+    [numeric]      mин < мед < mакс:                  1.04*: 5 (22.7%)             IIII                   (0%)           
+                   0.9 < 1 < 1.1                      1.05*: 9 (40.9%)             IIIIIIII                              
+                   IQR (CV) : 0 (0.1)                 1.06*: 3 (13.6%)             II                                    
+                                                      * округлённое                                                      
 -------------------------------------------------------------------------------------------------------------------------
 
 > dfs3 %>% view(file = "16-dfSummary-group_by.html")
 Output file written
 Output file appended
+
+> dfs3 %>% view()
+Output file written
+Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:forcats")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

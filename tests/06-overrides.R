@@ -13,3 +13,6 @@ print(f1, method = 'render', footnote = 'f1')
 (f2 <- freq(tabagisme$maladie, order = "freq"))
 print(f2, justify = "left", file = "02-justify-left.md")
 view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html')
+
+st_options("reset")
+detach("package:summarytools")

@@ -22,7 +22,7 @@ Tanimlayici Istatistikler
 tobacco$BMI  
 N: 1000  
 
-            Ortalama   Std.Sap    Min      Q1   Medyan      Q3     Mak    OMS     ÇA     CV
+            Ortalama   Std.Sap    Min      Q1   Medyan      Q3     Mak    OMS     Ã‡A     CV
 --------- ---------- --------- ------ ------- -------- ------- ------- ------ ------ ------
       BMI      25.73      4.49   8.83   22.93    25.62   28.65   39.44   4.18   5.72   0.17
 
@@ -30,7 +30,7 @@ Table: Table continues below
 
  
 
-            Çarpiklik   Çarpiklik.SH   Basiklik   Geçerli.N   Geçerli.Yzd
+            Ã‡arpiklik   Ã‡arpiklik.SH   Basiklik   GeÃ§erli.N   GeÃ§erli.Yzd
 --------- ----------- -------------- ---------- ----------- -------------
       BMI        0.02           0.08       0.26      974.00         97.40
 
@@ -38,9 +38,9 @@ Table: Table continues below
 Output file written
 
 > view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander")
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 +--------+----------+-------------+-------------+---------------+
 |        | diseased |         Yes |          No |        Toplam |
@@ -57,9 +57,9 @@ Veri Çerçevesi: tobacco
 +--------+----------+-------------+-------------+---------------+
 
 > (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C")))
-Çapraz Tablo, Sütun Oranlari  
+Ã‡apraz Tablo, SÃ¼tun Oranlari  
 gender * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 +--------+----------+--------------+--------------+---------------+
 |        | diseased |          Yes |           No |        Toplam |
@@ -84,10 +84,10 @@ Output file written
 > view(bf1, 'pander')
 Siklik  
 tobacco$diseased  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -96,7 +96,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -106,7 +106,7 @@ Grup: smoker = No
 > view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 **Grup:** smoker = Yes  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
      **Yes**      125       41.95            41.95      41.95           41.95
       **No**      173       58.05           100.00      58.05          100.00
@@ -115,7 +115,7 @@ Grup: smoker = No
 
 **Grup:** smoker = No  
 
-      &nbsp;   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+      &nbsp;   Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
      **Yes**       99       14.10            14.10      14.10           14.10
       **No**      603       85.90           100.00      85.90          100.00
@@ -125,10 +125,10 @@ Grup: smoker = No
 > print(bf1)
 Siklik  
 tobacco$diseased  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -137,7 +137,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -167,10 +167,10 @@ Output file written
 > view(bf2, 'pander')
 Siklik  
 iris$Species  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Grup: Sepal.Length > mean(Sepal.Length) = FALSE  
 
-                   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                   Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa       50       62.50            62.50      62.50           62.50
       versicolor       24       30.00            92.50      30.00           92.50
@@ -180,7 +180,7 @@ Grup: Sepal.Length > mean(Sepal.Length) = FALSE
 
 Grup: Sepal.Length > mean(Sepal.Length) = TRUE  
 
-                   Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                   Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ---------------- -------- ----------- ---------------- ---------- ---------------
           setosa        0        0.00             0.00       0.00            0.00
       versicolor       26       37.14            37.14      37.14           37.14
@@ -199,8 +199,8 @@ Output file written
 
 > view(bd1, method = 'pander')
 Tanimlayici Istatistikler  
-BMI göre gender  
-Veri Çerçevesi: tobacco  
+BMI gÃ¶re gender  
+Veri Ã‡erÃ§evesi: tobacco  
 Etiket: Body Mass Index  
 N: 489  
 
@@ -214,13 +214,13 @@ N: 489
                 Q3    29.48    27.96
                Mak    39.44    36.76
                OMS     4.75     4.02
-                ÇA     6.49     5.44
+                Ã‡A     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
+         Ã‡arpiklik    -0.02    -0.04
+      Ã‡arpiklik.SH     0.11     0.11
           Basiklik     0.09     0.17
-         Geçerli.N   475.00   477.00
-       Geçerli.Yzd    97.14    97.55
+         GeÃ§erli.N   475.00   477.00
+       GeÃ§erli.Yzd    97.14    97.55
 
 > bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
@@ -285,13 +285,13 @@ N: 150
                 Q3           5.10          1.80           6.40          3.30
                Mak           6.90          2.50           7.90          4.40
                OMS           1.85          1.04           1.04          0.44
-                ÇA           3.50          1.50           1.30          0.50
+                Ã‡A           3.50          1.50           1.30          0.50
                 CV           0.47          0.64           0.14          0.14
-         Çarpiklik          -0.27         -0.10           0.31          0.31
-      Çarpiklik.SH           0.20          0.20           0.20          0.20
+         Ã‡arpiklik          -0.27         -0.10           0.31          0.31
+      Ã‡arpiklik.SH           0.20          0.20           0.20          0.20
           Basiklik          -1.42         -1.36          -0.61          0.14
-         Geçerli.N         150.00        150.00         150.00        150.00
-       Geçerli.Yzd         100.00        100.00         100.00        100.00
+         GeÃ§erli.N         150.00        150.00         150.00        150.00
+       GeÃ§erli.Yzd         100.00        100.00         100.00        100.00
 
 > view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html")
 Output file written
@@ -303,7 +303,7 @@ Output file written
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") 
 ### Tanimlayici Istatistikler  
-#### BMI göre gender  
+#### BMI gÃ¶re gender  
 **N:** 489  
 
 |           &nbsp; |      F |      M |
@@ -316,13 +316,13 @@ Output file written
 |           **Q3** |  29.48 |  27.96 |
 |          **Mak** |  39.44 |  36.76 |
 |          **OMS** |   4.75 |   4.02 |
-|           **ÇA** |   6.49 |   5.44 |
+|           **Ã‡A** |   6.49 |   5.44 |
 |           **CV** |   0.19 |   0.16 |
-|    **Çarpiklik** |  -0.02 |  -0.04 |
-| **Çarpiklik.SH** |   0.11 |   0.11 |
+|    **Ã‡arpiklik** |  -0.02 |  -0.04 |
+| **Ã‡arpiklik.SH** |   0.11 |   0.11 |
 |     **Basiklik** |   0.09 |   0.17 |
-|    **Geçerli.N** | 475.00 | 477.00 |
-|  **Geçerli.Yzd** |  97.14 |  97.55 |
+|    **GeÃ§erli.N** | 475.00 | 477.00 |
+|  **GeÃ§erli.Yzd** |  97.14 |  97.55 |
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render") 
 <div class="container st-container">
@@ -431,20 +431,20 @@ Output file written
     </tr>
   </tbody>
 </table>
-  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versiyon 3.6.3)<br/>2020-05-22</p>
+  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versiyon 3.6.3)<br/>2020-05-31</p>
 </div>
 
 > detach(tobacco)
 
 > stby(tobacco, tobacco$gender, dfSummary)
-Veri Çerçevesi Özeti  
+Veri Ã‡erÃ§evesi Ã–zeti  
 tobacco  
 Grup: gender = F  
 Boyutlar: 489 x 9  
 Tekrar Edenler: 0  
 
 --------------------------------------------------------------------------------------------------------------------
-No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik                 Geçerli    Eksik     
+No   Degisken       Istat / Degerler              Siklik (GeÃ§erli %)    Grafik                 GeÃ§erli    Eksik     
 ---- -------------- ----------------------------- --------------------- ---------------------- ---------- ----------
 1    gender         1. F                          489 (100.0%)          IIIIIIIIIIIIIIIIIIII   489        0         
      [factor]       2. M                            0 (  0.0%)                                 (100%)     (0%)      
@@ -452,7 +452,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 2    age            Ortalama (ss) : 49.6 (18.3)   63 Farkli degerler    :     . . .   : . :    475        14        
      [numeric]      min < med < mak:                                    : : : : : : : : : :    (97.14%)   (2.86%)   
                     18 < 50 < 80                                        : : : : : : : : : :                         
-                    ÇA (CV) : 32 (0.4)                                  : : : : : : : : : :                         
+                    Ã‡A (CV) : 32 (0.4)                                  : : : : : : : : : :                         
                                                                         : : : : : : : : : :                         
 
 3    age.gr         1. 18-34                      123 (25.9%)           IIIII                  475        14        
@@ -463,7 +463,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 4    BMI            Ortalama (ss) : 26.1 (4.9)    475 Farkli degerler           :              475        14        
      [numeric]      min < med < mak:                                          : :              (97.14%)   (2.86%)   
                     9 < 25.9 < 39.4                                           : : .                                 
-                    ÇA (CV) : 6.5 (0.2)                                     . : : :                                 
+                    Ã‡A (CV) : 6.5 (0.2)                                     . : : :                                 
                                                                             : : : : .                               
 
 5    smoker         1. Yes                        147 (30.1%)           IIIIII                 489        0         
@@ -472,7 +472,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 6    cigs.per.day   Ortalama (ss) : 6.9 (12)      37 Farkli degerler    :                      468        21        
      [numeric]      min < med < mak:                                    :                      (95.71%)   (4.29%)   
                     0 < 0 < 40                                          :                                           
-                    ÇA (CV) : 10.2 (1.8)                                :                                           
+                    Ã‡A (CV) : 10.2 (1.8)                                :                                           
                                                                         : . . .   . . .                             
 
 7    diseased       1. Yes                        111 (22.7%)           IIII                   489        0         
@@ -490,11 +490,11 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
                     10. Vision                     6 ( 5.5%)            I                                           
                     [ 3 digerleri ]               11 (10.1%)            II                                          
 
-9    samp.wgts      Ortalama (ss) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  489        0         
-     [numeric]      min < med < mak:              1.04!: 120 (24.5%)    IIII                   (100%)     (0%)      
-                    0.9 < 1 < 1.1                 1.05!: 160 (32.7%)    IIIIII                                      
-                    ÇA (CV) : 0.2 (0.1)           1.06!:  78 (16.0%)    III                                         
-                                                  ! yuvarlanmis                                                     
+9    samp.wgts      Ortalama (ss) : 1 (0.1)       0.86*: 131 (26.8%)    IIIII                  489        0         
+     [numeric]      min < med < mak:              1.04*: 120 (24.5%)    IIII                   (100%)     (0%)      
+                    0.9 < 1 < 1.1                 1.05*: 160 (32.7%)    IIIIII                                      
+                    Ã‡A (CV) : 0.2 (0.1)           1.06*:  78 (16.0%)    III                                         
+                                                  * yuvarlanmis                                                     
 --------------------------------------------------------------------------------------------------------------------
 
 Grup: gender = M  
@@ -502,7 +502,7 @@ Boyutlar: 489 x 9
 Tekrar Edenler: 2  
 
 --------------------------------------------------------------------------------------------------------------------
-No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik                 Geçerli    Eksik     
+No   Degisken       Istat / Degerler              Siklik (GeÃ§erli %)    Grafik                 GeÃ§erli    Eksik     
 ---- -------------- ----------------------------- --------------------- ---------------------- ---------- ----------
 1    gender         1. F                            0 (  0.0%)                                 489        0         
      [factor]       2. M                          489 (100.0%)          IIIIIIIIIIIIIIIIIIII   (100%)     (0%)      
@@ -510,7 +510,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 2    age            Ortalama (ss) : 49.6 (18.3)   63 Farkli degerler          .     .   . :    478        11        
      [numeric]      min < med < mak:                                    : : : : :   : : : :    (97.75%)   (2.25%)   
                     18 < 49.5 < 80                                      : : : : : : : : : :                         
-                    ÇA (CV) : 32 (0.4)                                  : : : : : : : : : :                         
+                    Ã‡A (CV) : 32 (0.4)                                  : : : : : : : : : :                         
                                                                         : : : : : : : : : :                         
 
 3    age.gr         1. 18-34                      130 (27.2%)           IIIII                  478        11        
@@ -521,7 +521,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 4    BMI            Ortalama (ss) : 25.3 (4)      477 Farkli degerler             : .          477        12        
      [numeric]      min < med < mak:                                              : :          (97.55%)   (2.45%)   
                     8.8 < 25.1 < 36.8                                           : : : .                             
-                    ÇA (CV) : 5.4 (0.2)                                         : : : : .                           
+                    Ã‡A (CV) : 5.4 (0.2)                                         : : : : .                           
                                                                               : : : : : :                           
 
 5    smoker         1. Yes                        143 (29.2%)           IIIII                  489        0         
@@ -530,7 +530,7 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
 6    cigs.per.day   Ortalama (ss) : 6.7 (11.8)    36 Farkli degerler    :                      475        14        
      [numeric]      min < med < mak:                                    :                      (97.14%)   (2.86%)   
                     0 < 0 < 40                                          :                                           
-                    ÇA (CV) : 11 (1.8)                                  :                                           
+                    Ã‡A (CV) : 11 (1.8)                                  :                                           
                                                                         :   .   . . . .                             
 
 7    diseased       1. Yes                        110 (22.5%)           IIII                   489        0         
@@ -548,11 +548,11 @@ No   Degisken       Istat / Degerler              Siklik (Geçerli %)    Grafik  
                     10. Hypotension                4 ( 3.6%)                                                        
                     [ 3 digerleri ]                7 ( 6.4%)            I                                           
 
-9    samp.wgts      Ortalama (ss) : 1 (0.1)       0.86!: 131 (26.8%)    IIIII                  489        0         
-     [numeric]      min < med < mak:              1.04!: 124 (25.4%)    IIIII                  (100%)     (0%)      
-                    0.9 < 1 < 1.1                 1.05!: 155 (31.7%)    IIIIII                                      
-                    ÇA (CV) : 0.2 (0.1)           1.06!:  79 (16.2%)    III                                         
-                                                  ! yuvarlanmis                                                     
+9    samp.wgts      Ortalama (ss) : 1 (0.1)       0.86*: 131 (26.8%)    IIIII                  489        0         
+     [numeric]      min < med < mak:              1.04*: 124 (25.4%)    IIIII                  (100%)     (0%)      
+                    0.9 < 1 < 1.1                 1.05*: 155 (31.7%)    IIIIII                                      
+                    Ã‡A (CV) : 0.2 (0.1)           1.06*:  79 (16.2%)    III                                         
+                                                  * yuvarlanmis                                                     
 --------------------------------------------------------------------------------------------------------------------
 
 > stby(tobacco, tobacco$gender, descr)
@@ -572,13 +572,13 @@ N: 489
                 Q3    66.00    29.48          10.50        1.05
                Mak    80.00    39.44          40.00        1.06
                OMS    23.72     4.75           0.00        0.01
-                ÇA    32.00     6.49          10.25        0.19
+                Ã‡A    32.00     6.49          10.25        0.19
                 CV     0.37     0.19           1.75        0.08
-         Çarpiklik    -0.04    -0.02           1.53       -1.03
-      Çarpiklik.SH     0.11     0.11           0.11        0.11
+         Ã‡arpiklik    -0.04    -0.02           1.53       -1.03
+      Ã‡arpiklik.SH     0.11     0.11           0.11        0.11
           Basiklik    -1.25     0.09           0.85       -0.92
-         Geçerli.N   475.00   475.00         468.00      489.00
-       Geçerli.Yzd    97.14    97.14          95.71      100.00
+         GeÃ§erli.N   475.00   475.00         468.00      489.00
+       GeÃ§erli.Yzd    97.14    97.14          95.71      100.00
 
 Grup: gender = M  
 N: 489  
@@ -593,21 +593,21 @@ N: 489
                 Q3    66.00    27.96          11.00        1.05
                Mak    80.00    36.76          40.00        1.06
                OMS    24.46     4.02           0.00        0.01
-                ÇA    32.00     5.44          11.00        0.19
+                Ã‡A    32.00     5.44          11.00        0.19
                 CV     0.37     0.16           1.76        0.08
-         Çarpiklik    -0.04    -0.04           1.54       -1.03
-      Çarpiklik.SH     0.11     0.11           0.11        0.11
+         Ã‡arpiklik    -0.04    -0.04           1.54       -1.03
+      Ã‡arpiklik.SH     0.11     0.11           0.11        0.11
           Basiklik    -1.27     0.17           0.92       -0.92
-         Geçerli.N   478.00   477.00         475.00      489.00
-       Geçerli.Yzd    97.75    97.55          97.14      100.00
+         GeÃ§erli.N   478.00   477.00         475.00      489.00
+       GeÃ§erli.Yzd    97.75    97.55          97.14      100.00
 
 > stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 Siklik  
 tobacco$disease  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Grup: smoker = Yes, gender = F  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer       10       16.39            16.39       6.80            6.80
           Cholesterol        6        9.84            26.23       4.08           10.88
@@ -627,7 +627,7 @@ Grup: smoker = Yes, gender = F
 
 Grup: smoker = No, gender = F  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer        6       12.50            12.50       1.75            1.75
           Cholesterol        4        8.33            20.83       1.17            2.92
@@ -647,7 +647,7 @@ Grup: smoker = No, gender = F
 
 Grup: smoker = Yes, gender = M  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer       12       19.05            19.05       8.39            8.39
           Cholesterol        6        9.52            28.57       4.20           12.59
@@ -667,7 +667,7 @@ Grup: smoker = Yes, gender = M
 
 Grup: smoker = No, gender = M  
 
-                        Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                        Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 --------------------- -------- ----------- ---------------- ---------- ---------------
                Cancer        6       12.77            12.77       1.73            1.73
           Cholesterol        5       10.64            23.40       1.45            3.18
@@ -691,10 +691,10 @@ Grup: smoker = No, gender = M
 > view(wb1, method = "pander", caption = "with + by")
 Siklik  
 tobacco$diseased  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -705,7 +705,7 @@ Table: with + by
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -725,7 +725,7 @@ Output file appended
 > view(wb1, headings = FALSE, footnote = "no headings", method = "pander") 
 Grup: smoker = Yes  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      125       41.95            41.95      41.95           41.95
           No      173       58.05           100.00      58.05          100.00
@@ -734,7 +734,7 @@ Grup: smoker = Yes
 
 Grup: smoker = No  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes       99       14.10            14.10      14.10           14.10
           No      603       85.90           100.00      85.90          100.00
@@ -745,8 +745,8 @@ Grup: smoker = No
 
 > view(wb2, method = "pander")
 Tanimlayici Istatistikler  
-BMI göre gender  
-Veri Çerçevesi: tobacco  
+BMI gÃ¶re gender  
+Veri Ã‡erÃ§evesi: tobacco  
 N: 489  
 
                           F        M
@@ -759,13 +759,13 @@ N: 489
                 Q3    29.48    27.96
                Mak    39.44    36.76
                OMS     4.75     4.02
-                ÇA     6.49     5.44
+                Ã‡A     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
+         Ã‡arpiklik    -0.02    -0.04
+      Ã‡arpiklik.SH     0.11     0.11
           Basiklik     0.09     0.17
-         Geçerli.N   475.00   477.00
-       Geçerli.Yzd    97.14    97.55
+         GeÃ§erli.N   475.00   477.00
+       GeÃ§erli.Yzd    97.14    97.55
 
 > view(wb2, method = "browser", footnote = "with + by", file = "16.html")
 Output file written
@@ -775,8 +775,8 @@ Output file written
 
 > (b5 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max"))))
 Tanimlayici Istatistikler  
-BMI göre age.gr  
-Veri Çerçevesi: tobacco  
+BMI gÃ¶re age.gr  
+Veri Ã‡erÃ§evesi: tobacco  
 N: 258  
 
                  18-34   35-50   51-70    71 +
@@ -789,8 +789,8 @@ N: 258
 
 > print(b5, "pander", style = "rmarkdown") 
 ### Tanimlayici Istatistikler  
-#### BMI göre age.gr  
-**Veri Çerçevesi:** tobacco  
+#### BMI gÃ¶re age.gr  
+**Veri Ã‡erÃ§evesi:** tobacco  
 **N:** 258  
 
 |       &nbsp; | 18-34 | 35-50 | 51-70 |  71 + |
@@ -805,8 +805,8 @@ N: 258
 
 > view(b6, "pander") 
 Tanimlayici Istatistikler  
-BMI göre age.gr  
-Veri Çerçevesi: tobacco  
+BMI gÃ¶re age.gr  
+Veri Ã‡erÃ§evesi: tobacco  
 N: 258  
 
               Ortalama   Std.Sap     Min     Mak
@@ -828,8 +828,8 @@ Output file written
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander"))
 Tanimlayici Istatistikler  
-BMI göre gender  
-Veri Çerçevesi: tobacco  
+BMI gÃ¶re gender  
+Veri Ã‡erÃ§evesi: tobacco  
 N: 489  
 
                           F        M
@@ -842,13 +842,13 @@ N: 489
                 Q3    29.48    27.96
                Mak    39.44    36.76
                OMS     4.75     4.02
-                ÇA     6.49     5.44
+                Ã‡A     6.49     5.44
                 CV     0.19     0.16
-         Çarpiklik    -0.02    -0.04
-      Çarpiklik.SH     0.11     0.11
+         Ã‡arpiklik    -0.02    -0.04
+      Ã‡arpiklik.SH     0.11     0.11
           Basiklik     0.09     0.17
-         Geçerli.N   475.00   477.00
-       Geçerli.Yzd    97.14    97.55
+         GeÃ§erli.N   475.00   477.00
+       GeÃ§erli.Yzd    97.14    97.55
 
 # -----------------  Ouverture dans viewer
 > view(b8, method = "viewer")
@@ -859,11 +859,11 @@ Output file written
 > with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
 Agirliklandirilmis Siklik  
 tobacco$smoker  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Agirliklar: samp.wgts  
 Grup: gender = F  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes   147.39       30.14            30.14      30.14           30.14
           No   341.54       69.86           100.00      69.86          100.00
@@ -872,7 +872,7 @@ Grup: gender = F
 
 Grup: gender = M  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes   142.86       29.22            29.22      29.22           29.22
           No   346.05       70.78           100.00      70.78          100.00
@@ -880,9 +880,9 @@ Grup: gender = M
       Toplam   488.92      100.00           100.00     100.00          100.00
 
 > with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * smoker  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: age.gr = 18-34  
 
 -------- -------- -------------- --------------- ----------------
@@ -930,11 +930,11 @@ Grup: age.gr = 71 +
 > tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)
 Agirliklandirilmis Siklik  
 tobacco$smoker  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 Agirliklar: samp.wgts  
 Grup: gender = F  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes   147.39       30.14            30.14      30.14           30.14
           No   341.54       69.86           100.00      69.86          100.00
@@ -943,7 +943,7 @@ Grup: gender = F
 
 Grup: gender = M  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes   142.86       29.22            29.22      29.22           29.22
           No   346.05       70.78           100.00      70.78          100.00
@@ -952,9 +952,16 @@ Grup: gender = M
 
 Grup: gender = NA  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes     8.02       36.20            36.20      36.20           36.20
           No    14.14       63.80           100.00      63.80          100.00
         <NA>     0.00                                    0.00          100.00
       Toplam    22.16      100.00           100.00     100.00          100.00
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")

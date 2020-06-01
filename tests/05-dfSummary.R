@@ -6,7 +6,7 @@ options(tibble.print_max = Inf)
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 
-label(tobacco) <- "A Study on Tobacco Use and Health"
+label(tobacco) <- "A Study on Tobacco Use and Health / Étude sur les effets du tabagisme"
 label(tobacco$gender) <- "Subject's Gender"
 label(tobacco$BMI) <- "Body Mass Index"
 label(tobacco$smoker) <- "Smoking Status"
@@ -87,3 +87,6 @@ print(dfSummary(tobacco, graph.magnif = 0.8), table.classes = 'st-small', footno
 
 # render
 print(dfSummary(tobacco), method = "render")
+
+st_options("reset")
+detach("package:summarytools")

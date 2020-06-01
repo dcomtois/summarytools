@@ -12,3 +12,4 @@ st_options(round.digits = 3)
 st_options('round.digits')
 st_options('reset')
 
+detach("package:summarytools")

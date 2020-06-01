@@ -1,7 +1,7 @@
 # tb.R ------------------------------------
 suppressPackageStartupMessages(library(summarytools))
-suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
 options(tibble.print_max = Inf)
 #set.seed(765543543)
 #na_pos <- sample(1:1000, size = 25, replace = FALSE)
@@ -183,3 +183,8 @@ tb(stby(tobacco, tobacco$gender, descr), drop.var.col = TRUE)
 # order & swap combination
 tb(stby(tobacco, tobacco$gender, descr), order = 3)
 tb(stby(tobacco, list(tobacco$gender, tobacco$smoker), descr), order = 3)
+
+st_options("reset")
+detach("package:summarytools")
+detach("package:dplyr")
+detach("package:magrittr")

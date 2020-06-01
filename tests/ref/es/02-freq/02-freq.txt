@@ -1,8 +1,10 @@
 
 # -----------------  freq.R ------------------------------------------
-> suppressPackageStartupMessages(library(magrittr))
-
 > suppressPackageStartupMessages(library(summarytools))
+
+> suppressPackageStartupMessages(library(dplyr))
+
+> suppressPackageStartupMessages(library(magrittr))
 
 > data(tobacco)
 
@@ -17,7 +19,7 @@ tobacco$gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -30,7 +32,7 @@ Tipo: Factor
 **Etiqueta:** Subject's Gender  
 **Tipo:** Factor  
 
-      &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ ------- ---------- --------------- --------- --------------
        **F**     489      50.00           50.00     48.90          48.90
        **M**     489      50.00          100.00     48.90          97.80
@@ -43,7 +45,7 @@ Tipo: Factor
 **Etiqueta:** Subject's Gender  
 **Tipo:** Factor  
 
-|     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|     &nbsp; | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
 |      **F** |   489 |    50.00 |         50.00 |   48.90 |        48.90 |
 |      **M** |   489 |    50.00 |        100.00 |   48.90 |        97.80 |
@@ -53,7 +55,7 @@ Tipo: Factor
 > print(f1, plain.ascii = F, style = "grid", headings = FALSE)
 
 +------------+-------+----------+---------------+---------+--------------+
-|     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|     &nbsp; | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +============+=======+==========+===============+=========+==============+
 |      **F** |   489 |    50.00 |         50.00 |   48.90 |        48.90 |
 +------------+-------+----------+---------------+---------+--------------+
@@ -67,16 +69,16 @@ Tipo: Factor
 # -----------------  Variable label
 > data(tabagisme)
 
-> label(tabagisme$age.gr) <- "Groupe d'âge"
+> label(tabagisme$age.gr) <- "Groupe d'Ã¢ge"
 
 # -----------------  Round to 1 decimal
 > (f2 <- freq(tabagisme$age.gr, round.digits = 1))
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258       26.5            26.5      25.8           25.8
       35-50     241       24.7            51.2      24.1           49.9
@@ -91,7 +93,7 @@ Frecuencias
 tabagisme$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258       26.5            26.5      25.8           25.8
       35-50     241       24.7            51.2      24.1           49.9
@@ -103,9 +105,9 @@ Tipo: Factor
 > print(f2, display.type = F)
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258       26.5            26.5      25.8           25.8
       35-50     241       24.7            51.2      24.1           49.9
@@ -118,10 +120,10 @@ Etiqueta: Groupe d'âge
 > print(f2, totals = FALSE)          # OK
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258       26.5            26.5      25.8           25.8
       35-50     241       24.7            51.2      24.1           49.9
@@ -132,7 +134,7 @@ Tipo: Factor
 > print(f2, report.nas = FALSE)      # OK
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
               Frec.       %   % Acu.
@@ -146,10 +148,10 @@ Tipo: Factor
 > print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
-              Frec.   % Válido   % Total
+              Frec.   % VÃ¡lido   % Total
 ----------- ------- ---------- ---------
       18-34     258       26.5      25.8
       35-50     241       24.7      24.1
@@ -161,10 +163,10 @@ Tipo: Factor
 > print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
-              Frec.   % Válido   % Total
+              Frec.   % VÃ¡lido   % Total
 ----------- ------- ---------- ---------
       18-34     258       26.5      25.8
       35-50     241       24.7      24.1
@@ -175,7 +177,7 @@ Tipo: Factor
 > print(f2, report.nas = FALSE, totals = FALSE)  # OK
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
               Frec.      %   % Acu.
@@ -188,7 +190,7 @@ Tipo: Factor
 > print(f2, report.nas = FALSE, cumul = FALSE)   # OK
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
               Frec.       %
@@ -202,7 +204,7 @@ Tipo: Factor
 > print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE)
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
               Frec.      %
@@ -216,10 +218,10 @@ Tipo: Factor
 > print(f2, missing = "---")
 Frecuencias  
 tabagisme$age.gr  
-Etiqueta: Groupe d'âge  
+Etiqueta: Groupe d'Ã¢ge  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258       26.5            26.5      25.8           25.8
       35-50     241       24.7            51.2      24.1           49.9
@@ -234,7 +236,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -247,7 +249,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
          No     776      77.60           77.60     77.60          77.60
         Yes     224      22.40          100.00     22.40         100.00
@@ -270,7 +272,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -293,7 +295,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
          No     776      77.60           77.60     77.60          77.60
         Yes     224      22.40          100.00     22.40         100.00
@@ -316,7 +318,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -339,7 +341,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -362,7 +364,7 @@ Frecuencias
 tobacco$diseased  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
          No     776      77.60           77.60     77.60          77.60
         Yes     224      22.40          100.00     22.40         100.00
@@ -386,7 +388,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -401,7 +403,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       51-70     317      32.51           32.51     31.70          31.70
       18-34     258      26.46           58.97     25.80          57.50
@@ -428,7 +430,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
        71 +     159      16.31           16.31     15.90          15.90
       35-50     241      24.72           41.03     24.10          40.00
@@ -455,7 +457,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -482,7 +484,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
        71 +     159      16.31           16.31     15.90          15.90
       51-70     317      32.51           48.82     31.70          47.60
@@ -509,7 +511,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -536,7 +538,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
        71 +     159      16.31           16.31     15.90          15.90
       51-70     317      32.51           48.82     31.70          47.60
@@ -562,9 +564,9 @@ Tipo: Factor
 > freq(tobacco$disease)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -586,9 +588,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "freq")
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
          Hypertension      36      16.22           16.22      3.60           3.60
                Cancer      34      15.32           31.53      3.40           7.00
@@ -609,7 +611,7 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "freq", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.        %   % Acu.
 --------------------- ------- -------- --------
@@ -631,9 +633,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "freq-")
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                 Other       2       0.90            0.90      0.20           0.20
                Vision       9       4.05            4.95      0.90           1.10
@@ -654,7 +656,7 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "-freq", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.        %   % Acu.
 --------------------- ------- -------- --------
@@ -676,9 +678,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "names")
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -699,7 +701,7 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "names", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.        %   % Acu.
 --------------------- ------- -------- --------
@@ -721,9 +723,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "names-")
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Vision       9       4.05            4.05      0.90           0.90
             Pulmonary      20       9.01           13.06      2.00           2.90
@@ -744,7 +746,7 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, order = "names-", report.nas = FALSE)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.        %   % Acu.
 --------------------- ------- -------- --------
@@ -767,9 +769,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -790,9 +792,9 @@ Tipo: Alfahnumérico
 > (f3 <- freq(tobacco$disease, order = "freq", rows = 1:5))
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                     Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------------ ------- ---------- --------------- --------- --------------
       Hypertension      36      16.22           16.22      3.60           3.60
             Cancer      34      15.32           31.53      3.40           7.00
@@ -806,9 +808,9 @@ Tipo: Alfahnumérico
 > print(f3, cumul = FALSE)        # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Total
+                     Frec.   % VÃ¡lido   % Total
 ------------------ ------- ---------- ---------
       Hypertension      36      16.22      3.60
             Cancer      34      15.32      3.40
@@ -822,7 +824,7 @@ Tipo: Alfahnumérico
 > print(f3, report.nas = FALSE)   # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                      Frec.        %   % Acu.
 ------------------ ------- -------- --------
@@ -837,9 +839,9 @@ Tipo: Alfahnumérico
 > print(f3, totals = FALSE)       # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                     Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------------ ------- ---------- --------------- --------- --------------
       Hypertension      36      16.22           16.22      3.60           3.60
             Cancer      34      15.32           31.53      3.40           7.00
@@ -852,7 +854,7 @@ Tipo: Alfahnumérico
 > print(f3, cumul = FALSE, report.nas = FALSE)  # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                      Frec.        %
 ------------------ ------- --------
@@ -867,9 +869,9 @@ Tipo: Alfahnumérico
 > print(f3, cumul = FALSE, totals = FALSE)      # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Total
+                     Frec.   % VÃ¡lido   % Total
 ------------------ ------- ---------- ---------
       Hypertension      36      16.22      3.60
             Cancer      34      15.32      3.40
@@ -882,7 +884,7 @@ Tipo: Alfahnumérico
 > print(f3, report.nas = FALSE, totals = FALSE) # OK
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                      Frec.       %   % Acu.
 ------------------ ------- ------- --------
@@ -896,7 +898,7 @@ Tipo: Alfahnumérico
 > print(f3, report.nas = FALSE, totals = FALSE, cumul = FALSE)   # OK 
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                      Frec.       %
 ------------------ ------- -------
@@ -910,9 +912,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, rows = -1)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
           Cholesterol      21       9.46            9.46      2.10           2.10
              Diabetes      14       6.31           15.77      1.40           3.50
@@ -933,9 +935,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, rows = "H")
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                     Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------------ ------- ---------- --------------- --------- --------------
            Hearing      14      17.28           17.28      1.63           1.63
              Heart      20      24.69           41.98      2.33           3.96
@@ -947,9 +949,9 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, rows = -1:-10)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                  Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                  Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------- ------- ---------- --------------- --------- --------------
           Other       2       0.90            0.90      0.20           0.20
       Pulmonary      20       9.01            9.91      2.00           2.20
@@ -961,7 +963,7 @@ Tipo: Alfahnumérico
 > freq(tobacco$disease, rows = 1:13, report.nas = FALSE, totals = FALSE)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.       %   % Acu.
 --------------------- ------- ------- --------
@@ -983,9 +985,9 @@ Tipo: Alfahnumérico
 > print(f3, round.digits = 2)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                     Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                     Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------------ ------- ---------- --------------- --------- --------------
       Hypertension      36      16.22           16.22      3.60           3.60
             Cancer      34      15.32           31.53      3.40           7.00
@@ -1007,7 +1009,7 @@ Gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     490      50.10           50.10     49.00          49.00
           M     488      49.90          100.00     48.80          97.80
@@ -1025,7 +1027,7 @@ tobacco$gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     147      50.69           50.69     49.33          49.33
           M     143      49.31          100.00     47.99          97.32
@@ -1038,7 +1040,7 @@ tobacco$gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     248      50.51           50.51     49.60          49.60
           M     243      49.49          100.00     48.60          98.20
@@ -1052,7 +1054,7 @@ tobacco$gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -1064,7 +1066,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -1092,7 +1094,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -1106,7 +1108,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Total
+              Frec.   % VÃ¡lido   % Total
 ----------- ------- ---------- ---------
       18-34     258      26.46     25.80
       35-50     241      24.72     24.10
@@ -1146,7 +1148,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -1157,25 +1159,25 @@ Tipo: Factor
 
 # -----------------  Weights
 > (wf1 <- freq(tabagisme$maladie, weights = tabagisme$ponderation))
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tabagisme$maladie  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 Pesos: ponderation  
 
-                               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 -------------------------- --------- ---------- --------------- --------- --------------
                      Autre      2.09       0.93            0.93      0.21           0.21
                     Cancer     33.66      15.03           15.96      3.37           3.57
                  Cardiaque     19.89       8.88           24.85      1.99           5.56
-               Cholestérol     21.11       9.42           34.27      2.11           7.67
-                   Diabète     14.36       6.41           40.68      1.44           9.11
+               CholestÃ©rol     21.11       9.42           34.27      2.11           7.67
+                   DiabÃ¨te     14.36       6.41           40.68      1.44           9.11
               Hypertension     36.52      16.31           56.99      3.65          12.76
                Hypotension     11.37       5.08           62.07      1.14          13.90
       Musculo-squelettique     19.59       8.75           70.82      1.96          15.86
               Neurologique     10.14       4.53           75.35      1.01          16.87
-                      Ouïe     14.15       6.32           81.66      1.41          18.29
+                      OuÃ¯e     14.15       6.32           81.66      1.41          18.29
                 Pulmonaire     20.29       9.06           90.72      2.03          20.32
-          Système digestif     11.49       5.13           95.85      1.15          21.46
+          SystÃ¨me digestif     11.49       5.13           95.85      1.15          21.46
                        Vue      9.29       4.15          100.00      0.93          22.39
                       <NA>    776.07                                77.61         100.00
                      Total   1000.00     100.00          100.00    100.00         100.00
@@ -1185,9 +1187,9 @@ Switching method to 'browser'
 Output file written
 
 > print(wf1, report.nas = FALSE)
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tabagisme$maladie  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 Pesos: ponderation  
 
                               Frec.        %   % Acu.
@@ -1195,35 +1197,35 @@ Pesos: ponderation
                      Autre     2.09     0.93     0.93
                     Cancer    33.66    15.03    15.96
                  Cardiaque    19.89     8.88    24.85
-               Cholestérol    21.11     9.42    34.27
-                   Diabète    14.36     6.41    40.68
+               CholestÃ©rol    21.11     9.42    34.27
+                   DiabÃ¨te    14.36     6.41    40.68
               Hypertension    36.52    16.31    56.99
                Hypotension    11.37     5.08    62.07
       Musculo-squelettique    19.59     8.75    70.82
               Neurologique    10.14     4.53    75.35
-                      Ouïe    14.15     6.32    81.66
+                      OuÃ¯e    14.15     6.32    81.66
                 Pulmonaire    20.29     9.06    90.72
-          Système digestif    11.49     5.13    95.85
+          SystÃ¨me digestif    11.49     5.13    95.85
                        Vue     9.29     4.15   100.00
                      Total   223.93   100.00   100.00
 
 > (wf2 <- freq(tabagisme$maladie, weights = tabagisme$ponderation, report.nas = FALSE, order = "freq"))
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tabagisme$maladie  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 Pesos: ponderation  
 
                               Frec.        %   % Acu.
 -------------------------- -------- -------- --------
               Hypertension    36.52    16.31    16.31
                     Cancer    33.66    15.03    31.34
-               Cholestérol    21.11     9.42    40.76
+               CholestÃ©rol    21.11     9.42    40.76
                 Pulmonaire    20.29     9.06    49.82
                  Cardiaque    19.89     8.88    58.70
       Musculo-squelettique    19.59     8.75    67.45
-                   Diabète    14.36     6.41    73.86
-                      Ouïe    14.15     6.32    80.18
-          Système digestif    11.49     5.13    85.31
+                   DiabÃ¨te    14.36     6.41    73.86
+                      OuÃ¯e    14.15     6.32    80.18
+          SystÃ¨me digestif    11.49     5.13    85.31
                Hypotension    11.37     5.08    90.39
               Neurologique    10.14     4.53    94.92
                        Vue     9.29     4.15    99.07
@@ -1231,22 +1233,22 @@ Pesos: ponderation
                      Total   223.93   100.00   100.00
 
 > print(wf2, report.nas = TRUE)
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tabagisme$maladie  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 Pesos: ponderation  
 
-                               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 -------------------------- --------- ---------- --------------- --------- --------------
               Hypertension     36.52      16.31           16.31      3.65           3.65
                     Cancer     33.66      15.03           31.34      3.37           7.02
-               Cholestérol     21.11       9.42           40.76      2.11           9.13
+               CholestÃ©rol     21.11       9.42           40.76      2.11           9.13
                 Pulmonaire     20.29       9.06           49.82      2.03          11.16
                  Cardiaque     19.89       8.88           58.70      1.99          13.15
       Musculo-squelettique     19.59       8.75           67.45      1.96          15.10
-                   Diabète     14.36       6.41           73.86      1.44          16.54
-                      Ouïe     14.15       6.32           80.18      1.41          17.96
-          Système digestif     11.49       5.13           85.31      1.15          19.10
+                   DiabÃ¨te     14.36       6.41           73.86      1.44          16.54
+                      OuÃ¯e     14.15       6.32           80.18      1.41          17.96
+          SystÃ¨me digestif     11.49       5.13           85.31      1.15          19.10
                Hypotension     11.37       5.08           90.39      1.14          20.24
               Neurologique     10.14       4.53           94.92      1.01          21.26
                        Vue      9.29       4.15           99.07      0.93          22.18
@@ -1257,23 +1259,23 @@ Pesos: ponderation
 > mala.f <- factor(tabagisme$maladie, levels = sort(names(table(tabagisme$maladie)), decreasing = TRUE))
 
 > (wf3 <- freq(mala.f, weights = tabagisme$ponderation))
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 mala.f  
 Tipo: Factor  
 Pesos: tabagisme$ponderation  
 
-                               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 -------------------------- --------- ---------- --------------- --------- --------------
                        Vue      9.29       4.15            4.15      0.93           0.93
-          Système digestif     11.49       5.13            9.28      1.15           2.08
+          SystÃ¨me digestif     11.49       5.13            9.28      1.15           2.08
                 Pulmonaire     20.29       9.06           18.34      2.03           4.11
-                      Ouïe     14.15       6.32           24.65      1.41           5.52
+                      OuÃ¯e     14.15       6.32           24.65      1.41           5.52
               Neurologique     10.14       4.53           29.18      1.01           6.53
       Musculo-squelettique     19.59       8.75           37.93      1.96           8.49
                Hypotension     11.37       5.08           43.01      1.14           9.63
               Hypertension     36.52      16.31           59.32      3.65          13.28
-                   Diabète     14.36       6.41           65.73      1.44          14.72
-               Cholestérol     21.11       9.42           75.15      2.11          16.83
+                   DiabÃ¨te     14.36       6.41           65.73      1.44          14.72
+               CholestÃ©rol     21.11       9.42           75.15      2.11          16.83
                  Cardiaque     19.89       8.88           84.04      1.99          18.82
                     Cancer     33.66      15.03           99.07      3.37          22.18
                      Autre      2.09       0.93          100.00      0.21          22.39
@@ -1281,7 +1283,7 @@ Pesos: tabagisme$ponderation
                      Total   1000.00     100.00          100.00    100.00         100.00
 
 > print(wf3, report.nas = FALSE, totals = FALSE)
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 mala.f  
 Tipo: Factor  
 Pesos: tabagisme$ponderation  
@@ -1289,15 +1291,15 @@ Pesos: tabagisme$ponderation
                              Frec.       %   % Acu.
 -------------------------- ------- ------- --------
                        Vue    9.29    4.15     4.15
-          Système digestif   11.49    5.13     9.28
+          SystÃ¨me digestif   11.49    5.13     9.28
                 Pulmonaire   20.29    9.06    18.34
-                      Ouïe   14.15    6.32    24.65
+                      OuÃ¯e   14.15    6.32    24.65
               Neurologique   10.14    4.53    29.18
       Musculo-squelettique   19.59    8.75    37.93
                Hypotension   11.37    5.08    43.01
               Hypertension   36.52   16.31    59.32
-                   Diabète   14.36    6.41    65.73
-               Cholestérol   21.11    9.42    75.15
+                   DiabÃ¨te   14.36    6.41    65.73
+               CholestÃ©rol   21.11    9.42    75.15
                  Cardiaque   19.89    8.88    84.04
                     Cancer   33.66   15.03    99.07
                      Autre    2.09    0.93   100.00
@@ -1308,13 +1310,13 @@ Pesos: tabagisme$ponderation
 > label(tobacco$gender) <- "Subject's Gender"
 
 > (wf1 <- with(tobacco, freq(gender, plain.ascii = F, weights = samp.wgts)))
-### Frecuencías ponderadas  
+### FrecuencÃ­as ponderadas  
 #### tobacco$gender  
 **Etiqueta:** Subject's Gender  
 **Tipo:** Factor  
 **Pesos:** samp.wgts  
 
-      &nbsp;     Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;     Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ --------- ---------- --------------- --------- --------------
        **F**    488.92      50.00           50.00     48.89          48.89
        **M**    488.92      50.00          100.00     48.89          97.78
@@ -1331,7 +1333,7 @@ Etiqueta: Subject has an illness
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -1340,7 +1342,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -1354,7 +1356,7 @@ Etiqueta: Subject has an illness
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -1363,7 +1365,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -1373,7 +1375,7 @@ Subgrupo: smoker = No
 > print(bf1, headings = FALSE, plain.ascii = FALSE)
 **Subgrupo:** smoker = Yes  
 
-      &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ ------- ---------- --------------- --------- --------------
      **Yes**     125      41.95           41.95     41.95          41.95
       **No**     173      58.05          100.00     58.05         100.00
@@ -1382,7 +1384,7 @@ Subgrupo: smoker = No
 
 **Subgrupo:** smoker = No  
 
-      &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ ------- ---------- --------------- --------- --------------
      **Yes**      99      14.10           14.10     14.10          14.10
       **No**     603      85.90          100.00     85.90         100.00
@@ -1405,7 +1407,7 @@ Etiqueta: Subject has an illness
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -1414,7 +1416,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -1432,7 +1434,7 @@ iris$Species
 Tipo: Factor  
 Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE  
 
-                   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ---------------- ------- ---------- --------------- --------- --------------
           setosa      50      62.50           62.50     62.50          62.50
       versicolor      24      30.00           92.50     30.00          92.50
@@ -1442,7 +1444,7 @@ Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE
 
 Subgrupo: Sepal.Length > mean(Sepal.Length) = TRUE  
 
-                   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ---------------- ------- ---------- --------------- --------- --------------
           setosa       0       0.00            0.00      0.00           0.00
       versicolor      26      37.14           37.14     37.14          37.14
@@ -1465,7 +1467,7 @@ Etiqueta: Subject has an illness
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -1474,7 +1476,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -1504,7 +1506,7 @@ Etiqueta: Subject's Gender
 Tipo: Factor  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |         F |   489 |    50.00 |         50.00 |   48.90 |        48.90 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1520,7 +1522,7 @@ Etiqueta: Age Group
 Tipo: Factor  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |     18-34 |   258 |    26.46 |         26.46 |   25.80 |        25.80 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1540,7 +1542,7 @@ Etiqueta: Subject Smokes
 Tipo: Factor  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |       Yes |   298 |    29.80 |         29.80 |   29.80 |        29.80 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1556,7 +1558,7 @@ Etiqueta: Subject has an illness
 Tipo: Factor  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |       Yes |   224 |    22.40 |         22.40 |   22.40 |        22.40 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1568,10 +1570,10 @@ Tipo: Factor
 +-----------+-------+----------+---------------+---------+--------------+
 
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
 +---------------------+-------+----------+---------------+---------+--------------+
-|                     | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|                     | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +=====================+=======+==========+===============+=========+==============+
 |              Cancer |    34 |    15.32 |         15.32 |    3.40 |         3.40 |
 +---------------------+-------+----------+---------------+---------+--------------+
@@ -1605,10 +1607,10 @@ Tipo: Alfahnumérico
 +---------------------+-------+----------+---------------+---------+--------------+
 
 tobacco$samp.wgts  
-Tipo: Numérico  
+Tipo: NumÃ©rico  
 
 +-----------------------+-------+----------+---------------+---------+--------------+
-|                       | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|                       | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +=======================+=======+==========+===============+=========+==============+
 |     0.861423220973783 |   267 |    26.70 |         26.70 |   26.70 |        26.70 |
 +-----------------------+-------+----------+---------------+---------+--------------+
@@ -1629,7 +1631,7 @@ Frecuencias
 tobacco$gender  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |         F |   489 |    50.00 |         50.00 |   48.90 |        48.90 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1643,7 +1645,7 @@ tobacco$gender
 tobacco$age.gr  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |     18-34 |   258 |    26.46 |         26.46 |   25.80 |        25.80 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1661,7 +1663,7 @@ tobacco$age.gr
 tobacco$smoker  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |       Yes |   298 |    29.80 |         29.80 |   29.80 |        29.80 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1675,7 +1677,7 @@ tobacco$smoker
 tobacco$diseased  
 
 +-----------+-------+----------+---------------+---------+--------------+
-|           | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|           | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +===========+=======+==========+===============+=========+==============+
 |       Yes |   224 |    22.40 |         22.40 |   22.40 |        22.40 |
 +-----------+-------+----------+---------------+---------+--------------+
@@ -1689,7 +1691,7 @@ tobacco$diseased
 tobacco$disease  
 
 +---------------------+-------+----------+---------------+---------+--------------+
-|                     | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|                     | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +=====================+=======+==========+===============+=========+==============+
 |              Cancer |    34 |    15.32 |         15.32 |    3.40 |         3.40 |
 +---------------------+-------+----------+---------------+---------+--------------+
@@ -1725,7 +1727,7 @@ tobacco$disease
 tobacco$samp.wgts  
 
 +-----------------------+-------+----------+---------------+---------+--------------+
-|                       | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|                       | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 +=======================+=======+==========+===============+=========+==============+
 |     0.861423220973783 |   267 |    26.70 |         26.70 |   26.70 |        26.70 |
 +-----------------------+-------+----------+---------------+---------+--------------+
@@ -1751,7 +1753,7 @@ tobacco$samp.wgts
 **Etiqueta:** Age Group  
 **Tipo:** Factor  
 
-|     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|     &nbsp; | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
 |  **18-34** |   258 |    26.46 |         26.46 |   25.80 |        25.80 |
 |  **35-50** |   241 |    24.72 |         51.18 |   24.10 |        49.90 |
@@ -1764,7 +1766,7 @@ tobacco$samp.wgts
 **Etiqueta:** Subject Smokes  
 **Tipo:** Factor  
 
-|     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|     &nbsp; | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
 |    **Yes** |   298 |    29.80 |         29.80 |   29.80 |        29.80 |
 |     **No** |   702 |    70.20 |        100.00 |   70.20 |       100.00 |
@@ -1772,9 +1774,9 @@ tobacco$samp.wgts
 |  **Total** |  1000 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 #### tobacco_subset$cigs.per.day  
-**Tipo:** Numérico  
+**Tipo:** NumÃ©rico  
 
-|     &nbsp; | Frec. | % Válido | % Válido acu. | % Total | % Total acu. |
+|     &nbsp; | Frec. | % VÃ¡lido | % VÃ¡lido acu. | % Total | % Total acu. |
 |-----------:|------:|---------:|--------------:|--------:|-------------:|
 |      **0** |   674 |    69.84 |         69.84 |   67.40 |        67.40 |
 |      **5** |    11 |     1.14 |         70.98 |    1.10 |        68.50 |
@@ -1861,7 +1863,7 @@ Tipo: Factor
        No     776   77.60   100.00
 
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
                         Frec.       %   % Acu.
 --------------------- ------- ------- --------
@@ -1880,7 +1882,7 @@ Tipo: Alfahnumérico
                Vision       9    4.05   100.00
 
 tobacco$samp.wgts  
-Tipo: Numérico  
+Tipo: NumÃ©rico  
 
                           Frec.       %   % Acu.
 ----------------------- ------- ------- --------
@@ -1905,8 +1907,7 @@ Output file appended
 Output file appended
 
 # -----------------  tb()
-> suppressPackageStartupMessages(library(magrittr))
-
+> 
 > iris %$% freq(Species) %>% tb()
 # A tibble: 4 x 6
   Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
@@ -1941,14 +1942,12 @@ Output file appended
 2 versicolor    50  33.3
 3 virginica     50  33.3
 
-> suppressPackageStartupMessages(library(dplyr))
-
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 Frecuencias  
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -1992,7 +1991,7 @@ tobacco$gender
 Etiqueta: Subject's Gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -2016,7 +2015,7 @@ tobacco$smoker
 Etiqueta: Subject Smokes  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -2027,7 +2026,7 @@ tobacco$diseased
 Etiqueta: Subject has an illness  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -2035,9 +2034,9 @@ Tipo: Factor
       Total    1000     100.00          100.00    100.00         100.00
 
 tobacco$disease  
-Tipo: Alfahnumérico  
+Tipo: AlfahnumÃ©rico  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -2056,9 +2055,9 @@ Tipo: Alfahnumérico
                 Total    1000     100.00          100.00    100.00         100.00
 
 tobacco$samp.wgts  
-Tipo: Numérico  
+Tipo: NumÃ©rico  
 
-                          Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                          Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------------------- ------- ---------- --------------- --------- --------------
       0.861423220973783     267      26.70           26.70     26.70          26.70
        1.04417670682731     249      24.90           51.60     24.90          51.60
@@ -2074,7 +2073,7 @@ Frecuencias
 tobacco$gender  
 Etiqueta: Subject's Gender  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -2096,7 +2095,7 @@ Etiqueta: Age Group
 tobacco$smoker  
 Etiqueta: Subject Smokes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -2106,7 +2105,7 @@ Etiqueta: Subject Smokes
 tobacco$diseased  
 Etiqueta: Subject has an illness  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     224      22.40           22.40     22.40          22.40
          No     776      77.60          100.00     77.60         100.00
@@ -2115,7 +2114,7 @@ Etiqueta: Subject has an illness
 
 tobacco$disease  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      34      15.32           15.32      3.40           3.40
           Cholesterol      21       9.46           24.77      2.10           5.50
@@ -2135,7 +2134,7 @@ tobacco$disease
 
 tobacco$samp.wgts  
 
-                          Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                          Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------------------- ------- ---------- --------------- --------- --------------
       0.861423220973783     267      26.70           26.70     26.70          26.70
        1.04417670682731     249      24.90           51.60     24.90          51.60
@@ -2162,3 +2161,12 @@ Switching method to 'browser'
 Variable(s) ignored: age, BMI, cigs.per.day
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

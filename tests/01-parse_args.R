@@ -78,3 +78,8 @@ print(lapply(tobacco[c(1,3,5)], freq))
 lap <- lapply(tobacco[c(1,3,5)], freq)
 print(lap)
 
+st_options("reset")
+detach("package:summarytools")
+detach("package:pipeR")
+detach("package:dplyr")
+detach("package:magrittr")

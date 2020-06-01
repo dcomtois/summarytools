@@ -937,3 +937,14 @@ tobacco$smoker
          No     702     70.20          100.00     70.20               100.00
        <NA>       0                                0.00               100.00
       сумма    1000    100.00          100.00    100.00               100.00
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:pipeR")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

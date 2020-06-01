@@ -1,8 +1,10 @@
 
 # -----------------  freq.R ------------------------------------------
-> suppressPackageStartupMessages(library(magrittr))
-
 > suppressPackageStartupMessages(library(summarytools))
+
+> suppressPackageStartupMessages(library(dplyr))
+
+> suppressPackageStartupMessages(library(magrittr))
 
 > data(tobacco)
 
@@ -1905,8 +1907,7 @@ Output file appended
 Output file appended
 
 # -----------------  tb()
-> suppressPackageStartupMessages(library(magrittr))
-
+> 
 > iris %$% freq(Species) %>% tb()
 # A tibble: 4 x 6
   Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
@@ -1940,8 +1941,6 @@ Output file appended
 1 setosa        50  33.3
 2 versicolor    50  33.3
 3 virginica     50  33.3
-
-> suppressPackageStartupMessages(library(dplyr))
 
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 Частота  
@@ -2162,3 +2161,12 @@ Switching method to 'browser'
 Variable(s) ignored: age, BMI, cigs.per.day
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

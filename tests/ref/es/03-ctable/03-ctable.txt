@@ -1,17 +1,19 @@
 
 # -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
+
 > suppressPackageStartupMessages(library(dplyr))
 
-> options(tibble.print_max = Inf)
+> suppressPackageStartupMessages(library(magrittr))
 
-> suppressPackageStartupMessages(library(summarytools))
+> options(tibble.print_max = Inf)
 
 > data(tobacco)
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: 殛噌")
-Tabulaci髇 cruzada, proporciones por l韓eas  
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: 茅锚脿谩没茂")
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -23,13 +25,13 @@ Data frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: 殛噌
+Table: test encod: 茅锚脿谩没茂
 
 > label(tobacco) <- "A Study on Tobacco Use and Health"
 
 # -----------------  always show NAs
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: A Study on Tobacco Use and Health  
@@ -81,7 +83,7 @@ Output file written
 
 # -----------------  Non-default proportions
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
-Tabulaci髇 cruzada, proporciones por columnas  
+Tabulaci贸n cruzada, proporciones por columnas  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -94,7 +96,7 @@ Data frame: tobacco
 -------- ---------- -------------- -------------- ---------------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n')
-Tabulaci髇 cruzada  
+Tabulaci贸n cruzada  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -107,7 +109,7 @@ Data frame: tobacco
 -------- ---------- ----- ----- -------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't')
-Tabulaci髇 cruzada, proporc眢n del total  
+Tabulaci贸n cruzada, proporc铆贸n del total  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -123,7 +125,7 @@ Data frame: tobacco
 > data(exams)
 
 > ctable(exams$gender, exams$french < 60)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 gender * french < 60  
 Data frame: exams  
 
@@ -136,7 +138,7 @@ Data frame: exams
 -------- ------------- ------------- ---------- ---------- -------------
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use")
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 Gender * Failed French Class  
 Data frame: exams  
 
@@ -162,7 +164,7 @@ Table: dnn in use
 -------- ---------- ------------ ------------- --------------
 
 > ctable(tobacco[[1]], tobacco[,3])
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 gender * age.gr  
 Data frame: tobacco  
 
@@ -177,7 +179,7 @@ Data frame: tobacco
 
 # -----------------  with()
 > with(tobacco, ctable(smoker,  diseased))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -191,7 +193,7 @@ Data frame: tobacco
 
 # -----------------  stby() 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -215,8 +217,8 @@ Subgrupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 # -----------------  with() + stby()
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # probl閙atique!
-Tabulaci髇 cruzada, proporciones por l韓eas  
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # probl茅matique!
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -242,7 +244,7 @@ Subgrupo: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 
 > print(wbc, headings = T)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -289,7 +291,7 @@ Output file appended
 
 # -----------------  Weights
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 gender * smoker  
 Data frame: tobacco  
 
@@ -303,7 +305,7 @@ Data frame: tobacco
 -------- -------- --------------- --------------- -----------------
 
 > print(wc1, totals = FALSE)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 gender * smoker  
 Data frame: tobacco  
 
@@ -316,7 +318,7 @@ Data frame: tobacco
 -------- -------- --------------- ---------------
 
 > print(wc1, round.digits = 2)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 gender * smoker  
 Data frame: tobacco  
 
@@ -330,7 +332,7 @@ Data frame: tobacco
 -------- -------- ----------------- ----------------- -------------------
 
 > (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -354,7 +356,7 @@ Subgrupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > tobacco %$% stby(list(smoker, diseased), gender, ctable)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -378,7 +380,7 @@ Subgrupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > with(tobacco, stby(list(smoker, diseased), gender, ctable))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -402,7 +404,7 @@ Subgrupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -427,7 +429,7 @@ Subgrupo: gender = M
 
 # -----------------  Statistics
 > with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
-Tabulaci髇 cruzada, proporciones por l韓eas  
+Tabulaci贸n cruzada, proporciones por l铆neas  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -465,7 +467,7 @@ Output file written
 > st_options(ctable.prop = "t", ctable.totals = FALSE)
 
 > with(tobacco, ctable(smoker, diseased))
-Tabulaci髇 cruzada, proporc眢n del total  
+Tabulaci贸n cruzada, proporc铆贸n del total  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -479,7 +481,7 @@ Data frame: tobacco
 > st_options(ctable.prop = "n")
 
 > with(tobacco, ctable(smoker, diseased))
-Tabulaci髇 cruzada  
+Tabulaci贸n cruzada  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -489,3 +491,12 @@ Data frame: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

@@ -18,7 +18,7 @@ Output file written
 Output file written
 
 > (w2 <- with(tobacco, descr(BMI, transpose = TRUE)))
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco$BMI  
 N: 1000  
 
@@ -30,7 +30,7 @@ Table: Table continues below
 
  
 
-            Asimetría   ES-Asimetría   Curtosis   Num.Válido   Pct.Válido
+            AsimetrÃ­a   ES-AsimetrÃ­a   Curtosis   Num.VÃ¡lido   Pct.VÃ¡lido
 --------- ----------- -------------- ---------- ------------ ------------
       BMI        0.02           0.08       0.26       974.00        97.40
 
@@ -38,7 +38,7 @@ Table: Table continues below
 Output file written
 
 > view(with(tobacco, ctable(gender, diseased, style = "grid")), method = "pander")
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 gender * diseased  
 Data frame: tobacco  
 
@@ -57,7 +57,7 @@ Data frame: tobacco
 +--------+----------+-------------+-------------+---------------+
 
 > (w3 <- with(tobacco, ctable(gender, diseased, style = "grid", prop = "C")))
-Tabulación cruzada, proporciones por columnas  
+TabulaciÃ³n cruzada, proporciones por columnas  
 gender * diseased  
 Data frame: tobacco  
 
@@ -87,7 +87,7 @@ tobacco$diseased
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -96,7 +96,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -106,7 +106,7 @@ Subgrupo: smoker = No
 > view(bf1, 'pander', headings = FALSE, plain.ascii = FALSE)
 **Subgrupo:** smoker = Yes  
 
-      &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ ------- ---------- --------------- --------- --------------
      **Yes**     125      41.95           41.95     41.95          41.95
       **No**     173      58.05          100.00     58.05         100.00
@@ -115,7 +115,7 @@ Subgrupo: smoker = No
 
 **Subgrupo:** smoker = No  
 
-      &nbsp;   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+      &nbsp;   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ------------ ------- ---------- --------------- --------- --------------
      **Yes**      99      14.10           14.10     14.10          14.10
       **No**     603      85.90          100.00     85.90         100.00
@@ -128,7 +128,7 @@ tobacco$diseased
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -137,7 +137,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -170,7 +170,7 @@ iris$Species
 Tipo: Factor  
 Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE  
 
-                   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ---------------- ------- ---------- --------------- --------- --------------
           setosa      50      62.50           62.50     62.50          62.50
       versicolor      24      30.00           92.50     30.00          92.50
@@ -180,7 +180,7 @@ Subgrupo: Sepal.Length > mean(Sepal.Length) = FALSE
 
 Subgrupo: Sepal.Length > mean(Sepal.Length) = TRUE  
 
-                   Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                   Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ---------------- ------- ---------- --------------- --------- --------------
           setosa       0       0.00            0.00      0.00           0.00
       versicolor      26      37.14           37.14     37.14          37.14
@@ -198,7 +198,7 @@ Output file appended
 Output file written
 
 > view(bd1, method = 'pander')
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 BMI por gender  
 Data frame: tobacco  
 Etiqueta: Body Mass Index  
@@ -216,11 +216,11 @@ N: 489
                DAP     4.75     4.02
                 RI     6.49     5.44
                 CV     0.19     0.16
-         Asimetría    -0.02    -0.04
-      ES-Asimetría     0.11     0.11
+         AsimetrÃ­a    -0.02    -0.04
+      ES-AsimetrÃ­a     0.11     0.11
           Curtosis     0.09     0.17
-        Num.Válido   475.00   477.00
-        Pct.Válido    97.14    97.55
+        Num.VÃ¡lido   475.00   477.00
+        Pct.VÃ¡lido    97.14    97.55
 
 > bd2 <- stby(data = tobacco, INDICES = tobacco$gender, FUN = descr)
 
@@ -270,7 +270,7 @@ Output file written
 # -----------------  cas particulier - by, 1 groupe seul.
 > (b8 <- stby(iris, !is.na(iris$Species), descr))
 Non-numerical variable(s) ignored: Species
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 iris  
 Subgrupo: !is.na(Species) = TRUE  
 N: 150  
@@ -287,11 +287,11 @@ N: 150
                DAP           1.85          1.04           1.04          0.44
                 RI           3.50          1.50           1.30          0.50
                 CV           0.47          0.64           0.14          0.14
-         Asimetría          -0.27         -0.10           0.31          0.31
-      ES-Asimetría           0.20          0.20           0.20          0.20
+         AsimetrÃ­a          -0.27         -0.10           0.31          0.31
+      ES-AsimetrÃ­a           0.20          0.20           0.20          0.20
           Curtosis          -1.42         -1.36          -0.61          0.14
-        Num.Válido         150.00        150.00         150.00        150.00
-        Pct.Válido         100.00        100.00         100.00        100.00
+        Num.VÃ¡lido         150.00        150.00         150.00        150.00
+        Pct.VÃ¡lido         100.00        100.00         100.00        100.00
 
 > view(with(tobacco, descr(BMI, transpose = TRUE)), method = "browser", footnote = "with, transpose", file = "12.html")
 Output file written
@@ -302,7 +302,7 @@ Output file written
 Output file written
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander", style = "rmarkdown") 
-### Estadísticas descriptivas  
+### EstadÃ­sticas descriptivas  
 #### BMI por gender  
 **N:** 489  
 
@@ -318,11 +318,11 @@ Output file written
 |          **DAP** |   4.75 |   4.02 |
 |           **RI** |   6.49 |   5.44 |
 |           **CV** |   0.19 |   0.16 |
-|    **Asimetría** |  -0.02 |  -0.04 |
-| **ES-Asimetría** |   0.11 |   0.11 |
+|    **AsimetrÃ­a** |  -0.02 |  -0.04 |
+| **ES-AsimetrÃ­a** |   0.11 |   0.11 |
 |     **Curtosis** |   0.09 |   0.17 |
-|   **Num.Válido** | 475.00 | 477.00 |
-|   **Pct.Válido** |  97.14 |  97.55 |
+|   **Num.VÃ¡lido** | 475.00 | 477.00 |
+|   **Pct.VÃ¡lido** |  97.14 |  97.55 |
 
 > view(stby(data = BMI, INDICES = gender, FUN = descr), method = "render") 
 <div class="container st-container">
@@ -431,7 +431,7 @@ Output file written
     </tr>
   </tbody>
 </table>
-  <p>Generado por <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versi&#0243;n 3.6.3)<br/>2020-05-22</p>
+  <p>Generado por <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versi&#0243;n 3.6.3)<br/>2020-05-31</p>
 </div>
 
 > detach(tobacco)
@@ -444,7 +444,7 @@ Dimensiones: 489 x 9
 Duplicados: 0  
 
 ----------------------------------------------------------------------------------------------------------------------
-No   Variable       Estadísticas / Valores      Frec. (% sobre válidos)   Gráfico                Válido     Perdidos  
+No   Variable       EstadÃ­sticas / Valores      Frec. (% sobre vÃ¡lidos)   GrÃ¡fico                VÃ¡lido     Perdidos  
 ---- -------------- --------------------------- ------------------------- ---------------------- ---------- ----------
 1    gender         1. F                        489 (100.0%)              IIIIIIIIIIIIIIIIIIII   489        0         
      [factor]       2. M                          0 (  0.0%)                                     (100%)     (0%)      
@@ -490,11 +490,11 @@ No   Variable       Estadísticas / Valores      Frec. (% sobre válidos)   Gráfic
                     10. Vision                   6 ( 5.5%)                I                                           
                     [ 3 otros ]                 11 (10.1%)                II                                          
 
-9    samp.wgts      Media (d-s) : 1 (0.1)       0.86!: 131 (26.8%)        IIIII                  489        0         
-     [numeric]      min < mediana < max:        1.04!: 120 (24.5%)        IIII                   (100%)     (0%)      
-                    0.9 < 1 < 1.1               1.05!: 160 (32.7%)        IIIIII                                      
-                    RI (CV) : 0.2 (0.1)         1.06!:  78 (16.0%)        III                                         
-                                                ! redondeo                                                            
+9    samp.wgts      Media (d-s) : 1 (0.1)       0.86*: 131 (26.8%)        IIIII                  489        0         
+     [numeric]      min < mediana < max:        1.04*: 120 (24.5%)        IIII                   (100%)     (0%)      
+                    0.9 < 1 < 1.1               1.05*: 160 (32.7%)        IIIIII                                      
+                    RI (CV) : 0.2 (0.1)         1.06*:  78 (16.0%)        III                                         
+                                                * redondeo                                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 Subgrupo: gender = M  
@@ -502,7 +502,7 @@ Dimensiones: 489 x 9
 Duplicados: 2  
 
 ----------------------------------------------------------------------------------------------------------------------
-No   Variable       Estadísticas / Valores      Frec. (% sobre válidos)   Gráfico                Válido     Perdidos  
+No   Variable       EstadÃ­sticas / Valores      Frec. (% sobre vÃ¡lidos)   GrÃ¡fico                VÃ¡lido     Perdidos  
 ---- -------------- --------------------------- ------------------------- ---------------------- ---------- ----------
 1    gender         1. F                          0 (  0.0%)                                     489        0         
      [factor]       2. M                        489 (100.0%)              IIIIIIIIIIIIIIIIIIII   (100%)     (0%)      
@@ -548,16 +548,16 @@ No   Variable       Estadísticas / Valores      Frec. (% sobre válidos)   Gráfic
                     10. Hypotension              4 ( 3.6%)                                                            
                     [ 3 otros ]                  7 ( 6.4%)                I                                           
 
-9    samp.wgts      Media (d-s) : 1 (0.1)       0.86!: 131 (26.8%)        IIIII                  489        0         
-     [numeric]      min < mediana < max:        1.04!: 124 (25.4%)        IIIII                  (100%)     (0%)      
-                    0.9 < 1 < 1.1               1.05!: 155 (31.7%)        IIIIII                                      
-                    RI (CV) : 0.2 (0.1)         1.06!:  79 (16.2%)        III                                         
-                                                ! redondeo                                                            
+9    samp.wgts      Media (d-s) : 1 (0.1)       0.86*: 131 (26.8%)        IIIII                  489        0         
+     [numeric]      min < mediana < max:        1.04*: 124 (25.4%)        IIIII                  (100%)     (0%)      
+                    0.9 < 1 < 1.1               1.05*: 155 (31.7%)        IIIIII                                      
+                    RI (CV) : 0.2 (0.1)         1.06*:  79 (16.2%)        III                                         
+                                                * redondeo                                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 > stby(tobacco, tobacco$gender, descr)
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco  
 Subgrupo: gender = F  
 N: 489  
@@ -574,11 +574,11 @@ N: 489
                DAP    23.72     4.75           0.00        0.01
                 RI    32.00     6.49          10.25        0.19
                 CV     0.37     0.19           1.75        0.08
-         Asimetría    -0.04    -0.02           1.53       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.02           1.53       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.25     0.09           0.85       -0.92
-        Num.Válido   475.00   475.00         468.00      489.00
-        Pct.Válido    97.14    97.14          95.71      100.00
+        Num.VÃ¡lido   475.00   475.00         468.00      489.00
+        Pct.VÃ¡lido    97.14    97.14          95.71      100.00
 
 Subgrupo: gender = M  
 N: 489  
@@ -595,11 +595,11 @@ N: 489
                DAP    24.46     4.02           0.00        0.01
                 RI    32.00     5.44          11.00        0.19
                 CV     0.37     0.16           1.76        0.08
-         Asimetría    -0.04    -0.04           1.54       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.04           1.54       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.27     0.17           0.92       -0.92
-        Num.Válido   478.00   477.00         475.00      489.00
-        Pct.Válido    97.75    97.55          97.14      100.00
+        Num.VÃ¡lido   478.00   477.00         475.00      489.00
+        Pct.VÃ¡lido    97.75    97.55          97.14      100.00
 
 > stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 Frecuencias  
@@ -607,7 +607,7 @@ tobacco$disease
 Tipo: Factor  
 Subgrupo: smoker = Yes, gender = F  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      10      16.39           16.39      6.80           6.80
           Cholesterol       6       9.84           26.23      4.08          10.88
@@ -627,7 +627,7 @@ Subgrupo: smoker = Yes, gender = F
 
 Subgrupo: smoker = No, gender = F  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer       6      12.50           12.50      1.75           1.75
           Cholesterol       4       8.33           20.83      1.17           2.92
@@ -647,7 +647,7 @@ Subgrupo: smoker = No, gender = F
 
 Subgrupo: smoker = Yes, gender = M  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer      12      19.05           19.05      8.39           8.39
           Cholesterol       6       9.52           28.57      4.20          12.59
@@ -667,7 +667,7 @@ Subgrupo: smoker = Yes, gender = M
 
 Subgrupo: smoker = No, gender = M  
 
-                        Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+                        Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 --------------------- ------- ---------- --------------- --------- --------------
                Cancer       6      12.77           12.77      1.73           1.73
           Cholesterol       5      10.64           23.40      1.45           3.18
@@ -694,7 +694,7 @@ tobacco$diseased
 Tipo: Factor  
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -705,7 +705,7 @@ Table: with + by
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -725,7 +725,7 @@ Output file appended
 > view(wb1, headings = FALSE, footnote = "no headings", method = "pander") 
 Subgrupo: smoker = Yes  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     125      41.95           41.95     41.95          41.95
          No     173      58.05          100.00     58.05         100.00
@@ -734,7 +734,7 @@ Subgrupo: smoker = Yes
 
 Subgrupo: smoker = No  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      99      14.10           14.10     14.10          14.10
          No     603      85.90          100.00     85.90         100.00
@@ -744,7 +744,7 @@ Subgrupo: smoker = No
 > wb2 <- with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr)) 
 
 > view(wb2, method = "pander")
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 BMI por gender  
 Data frame: tobacco  
 N: 489  
@@ -761,11 +761,11 @@ N: 489
                DAP     4.75     4.02
                 RI     6.49     5.44
                 CV     0.19     0.16
-         Asimetría    -0.02    -0.04
-      ES-Asimetría     0.11     0.11
+         AsimetrÃ­a    -0.02    -0.04
+      ES-AsimetrÃ­a     0.11     0.11
           Curtosis     0.09     0.17
-        Num.Válido   475.00   477.00
-        Pct.Válido    97.14    97.55
+        Num.VÃ¡lido   475.00   477.00
+        Pct.VÃ¡lido    97.14    97.55
 
 > view(wb2, method = "browser", footnote = "with + by", file = "16.html")
 Output file written
@@ -774,7 +774,7 @@ Output file written
 Output file written
 
 > (b5 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "med", "max"))))
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 BMI por age.gr  
 Data frame: tobacco  
 N: 258  
@@ -788,7 +788,7 @@ N: 258
            Max   34.84   39.44   39.21   38.37
 
 > print(b5, "pander", style = "rmarkdown") 
-### Estadísticas descriptivas  
+### EstadÃ­sticas descriptivas  
 #### BMI por age.gr  
 **Data frame:** tobacco  
 **N:** 258  
@@ -804,7 +804,7 @@ N: 258
 > b6 <- with(tobacco, stby(BMI, age.gr, descr, stats = c("mean", "sd", "min", "max"), transpose = TRUE))
 
 > view(b6, "pander") 
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 BMI por age.gr  
 Data frame: tobacco  
 N: 258  
@@ -827,7 +827,7 @@ Output file appended
 Output file written
 
 > with(tobacco, view(stby(data = BMI, INDICES = gender, FUN = descr), method = "pander"))
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 BMI por gender  
 Data frame: tobacco  
 N: 489  
@@ -844,11 +844,11 @@ N: 489
                DAP     4.75     4.02
                 RI     6.49     5.44
                 CV     0.19     0.16
-         Asimetría    -0.02    -0.04
-      ES-Asimetría     0.11     0.11
+         AsimetrÃ­a    -0.02    -0.04
+      ES-AsimetrÃ­a     0.11     0.11
           Curtosis     0.09     0.17
-        Num.Válido   475.00   477.00
-        Pct.Válido    97.14    97.55
+        Num.VÃ¡lido   475.00   477.00
+        Pct.VÃ¡lido    97.14    97.55
 
 # -----------------  Ouverture dans viewer
 > view(b8, method = "viewer")
@@ -857,13 +857,13 @@ Output file written
 
 # -----------------  by + weights
 > with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tobacco$smoker  
 Tipo: Factor  
 Pesos: samp.wgts  
 Subgrupo: gender = F  
 
-               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- -------- ---------- --------------- --------- --------------
         Yes   147.39      30.14           30.14     30.14          30.14
          No   341.54      69.86          100.00     69.86         100.00
@@ -872,7 +872,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- -------- ---------- --------------- --------- --------------
         Yes   142.86      29.22           29.22     29.22          29.22
          No   346.05      70.78          100.00     70.78         100.00
@@ -880,7 +880,7 @@ Subgrupo: gender = M
       Total   488.92     100.00          100.00    100.00         100.00
 
 > with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 gender * smoker  
 Data frame: tobacco  
 Subgrupo: age.gr = 18-34  
@@ -928,13 +928,13 @@ Subgrupo: age.gr = 71 +
 -------- -------- -------------- --------------- ----------------
 
 > tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)
-Frecuencías ponderadas  
+FrecuencÃ­as ponderadas  
 tobacco$smoker  
 Tipo: Factor  
 Pesos: samp.wgts  
 Subgrupo: gender = F  
 
-               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- -------- ---------- --------------- --------- --------------
         Yes   147.39      30.14           30.14     30.14          30.14
          No   341.54      69.86          100.00     69.86         100.00
@@ -943,7 +943,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-               Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+               Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- -------- ---------- --------------- --------- --------------
         Yes   142.86      29.22           29.22     29.22          29.22
          No   346.05      70.78          100.00     70.78         100.00
@@ -952,9 +952,16 @@ Subgrupo: gender = M
 
 Subgrupo: gender = NA  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes    8.02      36.20           36.20     36.20          36.20
          No   14.14      63.80          100.00     63.80         100.00
        <NA>    0.00                                 0.00         100.00
       Total   22.16     100.00          100.00    100.00         100.00
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")

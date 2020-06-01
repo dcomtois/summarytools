@@ -22,9 +22,9 @@
 Siklik  
 tobacco_subset$gender  
 Etiket: The Gender  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -33,9 +33,9 @@ Tür: Faktör
 
 tobacco_subset$age.gr  
 Etiket: The Age Group  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -46,9 +46,9 @@ Tür: Faktör
 
 tobacco_subset$smoker  
 Etiket: Subject smokes  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Yes      298       29.80            29.80      29.80           29.80
           No      702       70.20           100.00      70.20          100.00
@@ -63,7 +63,7 @@ Output file appended
 
 > label(tabagisme$sexe) <- "Le sexe"
 
-> label(tabagisme$age.gr) <- "Groupe d'age"
+> label(tabagisme$age.gr) <- "Groupe d'Ã¢ge"
 
 > l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq) 
 
@@ -71,9 +71,9 @@ Output file appended
 Siklik  
 tabagisme$sexe  
 Etiket: Le sexe  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            F      489       50.00            50.00      48.90           48.90
            M      489       50.00           100.00      48.90           97.80
@@ -81,10 +81,10 @@ Tür: Faktör
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$age.gr  
-Etiket: Groupe d'age  
-Tür: Faktör  
+Etiket: Groupe d'Ã¢ge  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
        18-34      258       26.46            26.46      25.80           25.80
        35-50      241       24.72            51.18      24.10           49.90
@@ -94,9 +94,9 @@ Tür: Faktör
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$fumeur  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Oui      298       29.80            29.80      29.80           29.80
          Non      702       70.20           100.00      70.20          100.00
@@ -104,9 +104,9 @@ Tür: Faktör
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$cigs.par.jour  
-Tür: Sayisal  
+TÃ¼r: Sayisal  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
            0      674       69.84            69.84      67.40           67.40
            5       11        1.14            70.98       1.10           68.50
@@ -149,9 +149,9 @@ Tür: Sayisal
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$malade  
-Tür: Faktör  
+TÃ¼r: FaktÃ¶r  
 
-               Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+               Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 ------------ -------- ----------- ---------------- ---------- ---------------
          Oui      224       22.40            22.40      22.40           22.40
          Non      776       77.60           100.00      77.60          100.00
@@ -159,22 +159,22 @@ Tür: Faktör
       Toplam     1000      100.00           100.00     100.00          100.00
 
 tabagisme$maladie  
-Tür: Karakter  
+TÃ¼r: Karakter  
 
-                             Siklik   Geçerli %   Küm. Geçerli %   Toplam %   Küm. Toplam %
+                             Siklik   GeÃ§erli %   KÃ¼m. GeÃ§erli %   Toplam %   KÃ¼m. Toplam %
 -------------------------- -------- ----------- ---------------- ---------- ---------------
                      Autre        2        0.90             0.90       0.20            0.20
                     Cancer       34       15.32            16.22       3.40            3.60
                  Cardiaque       20        9.01            25.23       2.00            5.60
-               Cholestérol       21        9.46            34.68       2.10            7.70
-                   Diabète       14        6.31            40.99       1.40            9.10
+               CholestÃ©rol       21        9.46            34.68       2.10            7.70
+                   DiabÃ¨te       14        6.31            40.99       1.40            9.10
               Hypertension       36       16.22            57.21       3.60           12.70
                Hypotension       11        4.95            62.16       1.10           13.80
       Musculo-squelettique       19        8.56            70.72       1.90           15.70
               Neurologique       10        4.50            75.23       1.00           16.70
-                      Ouïe       14        6.31            81.53       1.40           18.10
+                      OuÃ¯e       14        6.31            81.53       1.40           18.10
                 Pulmonaire       20        9.01            90.54       2.00           20.10
-          Système digestif       12        5.41            95.95       1.20           21.30
+          SystÃ¨me digestif       12        5.41            95.95       1.20           21.30
                        Vue        9        4.05           100.00       0.90           22.20
                       <NA>      778                                   77.80          100.00
                     Toplam     1000      100.00           100.00     100.00          100.00
@@ -200,9 +200,9 @@ Output file appended
 ### Siklik  
 #### tabagisme$sexe  
 **Etiket:** Le sexe  
-**Tür:** Faktör  
+**TÃ¼r:** FaktÃ¶r  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Siklik | GeÃ§erli % | KÃ¼m. GeÃ§erli % | Toplam % | KÃ¼m. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **F** |      9 |     47.37 |          47.37 |    45.00 |         45.00 |
 |      **M** |     10 |     52.63 |         100.00 |    50.00 |         95.00 |
@@ -211,10 +211,10 @@ Output file appended
 Table: 2 columns with row indexing, no totals
 
 #### tabagisme$age.gr  
-**Etiket:** Groupe d'age  
-**Tür:** Faktör  
+**Etiket:** Groupe d'Ã¢ge  
+**TÃ¼r:** FaktÃ¶r  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Siklik | GeÃ§erli % | KÃ¼m. GeÃ§erli % | Toplam % | KÃ¼m. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |  **18-34** |      3 |     15.00 |          15.00 |    15.00 |         15.00 |
 |  **35-50** |      8 |     40.00 |          55.00 |    40.00 |         55.00 |
@@ -229,7 +229,7 @@ Table: 2 columns with row indexing, no totals
 #### tabagisme$sexe  
 **Etiket:** Le sexe  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Siklik | GeÃ§erli % | KÃ¼m. GeÃ§erli % | Toplam % | KÃ¼m. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |      **F** |      9 |     47.37 |          47.37 |    45.00 |         45.00 |
 |      **M** |     10 |     52.63 |         100.00 |    50.00 |         95.00 |
@@ -238,9 +238,9 @@ Table: 2 columns with row indexing, no totals
 Table: display.type = FALSE
 
 #### tabagisme$age.gr  
-**Etiket:** Groupe d'age  
+**Etiket:** Groupe d'Ã¢ge  
 
-|     &nbsp; | Siklik | Geçerli % | Küm. Geçerli % | Toplam % | Küm. Toplam % |
+|     &nbsp; | Siklik | GeÃ§erli % | KÃ¼m. GeÃ§erli % | Toplam % | KÃ¼m. Toplam % |
 |-----------:|-------:|----------:|---------------:|---------:|--------------:|
 |  **18-34** |      3 |     15.00 |          15.00 |    15.00 |         15.00 |
 |  **35-50** |      8 |     40.00 |          55.00 |    40.00 |         55.00 |
@@ -254,3 +254,8 @@ Table: display.type = FALSE
 Switching method to 'browser'
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")

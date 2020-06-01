@@ -1,16 +1,18 @@
 
 # -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
+
 > suppressPackageStartupMessages(library(dplyr))
 
-> options(tibble.print_max = Inf)
+> suppressPackageStartupMessages(library(magrittr))
 
-> suppressPackageStartupMessages(library(summarytools))
+> options(tibble.print_max = Inf)
 
 > data(tobacco)
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: Ã©ÃªÃ Ã¡Ã»Ã¯")
 Cross-Tabulation, Row Proportions  
 smoker * diseased  
 Data Frame: tobacco  
@@ -23,7 +25,7 @@ Data Frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: éêàáûï
+Table: test encod: Ã©ÃªÃ Ã¡Ã»Ã¯
 
 > label(tobacco) <- "A Study on Tobacco Use and Health"
 
@@ -215,7 +217,7 @@ Group: gender = M
 -------- ---------- ------------- ------------- --------------
 
 # -----------------  with() + stby()
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problÃ©matique!
 Cross-Tabulation, Row Proportions  
 smoker * diseased  
 Data Frame: tobacco  
@@ -489,3 +491,12 @@ Data Frame: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

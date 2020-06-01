@@ -1,17 +1,19 @@
 
 # -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
+
 > suppressPackageStartupMessages(library(dplyr))
 
-> options(tibble.print_max = Inf)
+> suppressPackageStartupMessages(library(magrittr))
 
-> suppressPackageStartupMessages(library(summarytools))
+> options(tibble.print_max = Inf)
 
 > data(tobacco)
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
-Tableau croisé, proportions par rangées  
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: Ã©ÃªÃ Ã¡Ã»Ã¯")
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -23,16 +25,16 @@ Data frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: éêàáûï
+Table: test encod: Ã©ÃªÃ Ã¡Ã»Ã¯
 
 > label(tobacco) <- "A Study on Tobacco Use and Health"
 
 # -----------------  always show NAs
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
-Étiquette: A Study on Tobacco Use and Health  
+Ã‰tiquette: A Study on Tobacco Use and Health  
 
 -------- ---------- ------------- ------------- ---------- ---------------
            diseased           Yes            No       <NA>           Total
@@ -81,7 +83,7 @@ Output file written
 
 # -----------------  Non-default proportions
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
-Tableau croisé, proportions par colonnes  
+Tableau croisÃ©, proportions par colonnes  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -94,7 +96,7 @@ Data frame: tobacco
 -------- ---------- -------------- -------------- ---------------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n')
-Tableau croisé  
+Tableau croisÃ©  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -107,7 +109,7 @@ Data frame: tobacco
 -------- ---------- ----- ----- -------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't')
-Tableau croisé, proportions sur le total  
+Tableau croisÃ©, proportions sur le total  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -123,7 +125,7 @@ Data frame: tobacco
 > data(exams)
 
 > ctable(exams$gender, exams$french < 60)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 gender * french < 60  
 Data frame: exams  
 
@@ -136,7 +138,7 @@ Data frame: exams
 -------- ------------- ------------- ---------- ---------- -------------
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use")
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 Gender * Failed French Class  
 Data frame: exams  
 
@@ -162,7 +164,7 @@ Table: dnn in use
 -------- ---------- ------------ ------------- --------------
 
 > ctable(tobacco[[1]], tobacco[,3])
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 gender * age.gr  
 Data frame: tobacco  
 
@@ -177,7 +179,7 @@ Data frame: tobacco
 
 # -----------------  with()
 > with(tobacco, ctable(smoker,  diseased))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -191,7 +193,7 @@ Data frame: tobacco
 
 # -----------------  stby() 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -215,8 +217,8 @@ Groupe: gender = M
 -------- ---------- ------------- ------------- --------------
 
 # -----------------  with() + stby()
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
-Tableau croisé, proportions par rangées  
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problÃ©matique!
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -242,7 +244,7 @@ Groupe: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 
 > print(wbc, headings = T)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -289,7 +291,7 @@ Output file appended
 
 # -----------------  Weights
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 gender * smoker  
 Data frame: tobacco  
 
@@ -303,7 +305,7 @@ Data frame: tobacco
 -------- -------- --------------- --------------- -----------------
 
 > print(wc1, totals = FALSE)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 gender * smoker  
 Data frame: tobacco  
 
@@ -316,7 +318,7 @@ Data frame: tobacco
 -------- -------- --------------- ---------------
 
 > print(wc1, round.digits = 2)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 gender * smoker  
 Data frame: tobacco  
 
@@ -330,7 +332,7 @@ Data frame: tobacco
 -------- -------- ----------------- ----------------- -------------------
 
 > (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -354,7 +356,7 @@ Groupe: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > tobacco %$% stby(list(smoker, diseased), gender, ctable)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -378,7 +380,7 @@ Groupe: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > with(tobacco, stby(list(smoker, diseased), gender, ctable))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -402,7 +404,7 @@ Groupe: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 Groupe: gender = F  
@@ -427,7 +429,7 @@ Groupe: gender = M
 
 # -----------------  Statistics
 > with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
-Tableau croisé, proportions par rangées  
+Tableau croisÃ©, proportions par rangÃ©es  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -465,7 +467,7 @@ Output file written
 > st_options(ctable.prop = "t", ctable.totals = FALSE)
 
 > with(tobacco, ctable(smoker, diseased))
-Tableau croisé, proportions sur le total  
+Tableau croisÃ©, proportions sur le total  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -479,7 +481,7 @@ Data frame: tobacco
 > st_options(ctable.prop = "n")
 
 > with(tobacco, ctable(smoker, diseased))
-Tableau croisé  
+Tableau croisÃ©  
 smoker * diseased  
 Data frame: tobacco  
 
@@ -489,3 +491,12 @@ Data frame: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

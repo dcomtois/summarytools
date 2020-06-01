@@ -131,3 +131,8 @@ Output file written
 
 > view(f2, justify = "right", footnote = 'justify right', file = '03-justify-right.html')
 Output file written
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")

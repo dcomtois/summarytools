@@ -1,8 +1,10 @@
 
 # -----------------  freq.R ------------------------------------------
-> suppressPackageStartupMessages(library(magrittr))
-
 > suppressPackageStartupMessages(library(summarytools))
+
+> suppressPackageStartupMessages(library(dplyr))
+
+> suppressPackageStartupMessages(library(magrittr))
 
 > data(tobacco)
 
@@ -67,13 +69,13 @@ Type: Factor
 # -----------------  Variable label
 > data(tabagisme)
 
-> label(tabagisme$age.gr) <- "Groupe d'âge"
+> label(tabagisme$age.gr) <- "Groupe d'Ã¢ge"
 
 # -----------------  Round to 1 decimal
 > (f2 <- freq(tabagisme$age.gr, round.digits = 1))
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -103,7 +105,7 @@ Type: Factor
 > print(f2, display.type = F)
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 ----------- ------ --------- -------------- --------- --------------
@@ -118,7 +120,7 @@ Label: Groupe d'âge
 > print(f2, totals = FALSE)          # OK
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -132,7 +134,7 @@ Type: Factor
 > print(f2, report.nas = FALSE)      # OK
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq       %   % Cum.
@@ -146,7 +148,7 @@ Type: Factor
 > print(f2, cumul = FALSE)                              # FIXED: MISSING <NA> % IN TOTAL %
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq   % Valid   % Total
@@ -161,7 +163,7 @@ Type: Factor
 > print(f2, totals = FALSE, cumul = FALSE)              # FIXED: MISSING <NA> % IN TOTAL %
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq   % Valid   % Total
@@ -175,7 +177,7 @@ Type: Factor
 > print(f2, report.nas = FALSE, totals = FALSE)  # OK
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq      %   % Cum.
@@ -188,7 +190,7 @@ Type: Factor
 > print(f2, report.nas = FALSE, cumul = FALSE)   # OK
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq       %
@@ -202,7 +204,7 @@ Type: Factor
 > print(f2, report.nas = FALSE, cumul = FALSE, totals = FALSE)
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq      %
@@ -216,7 +218,7 @@ Type: Factor
 > print(f2, missing = "---")
 Frequencies  
 tabagisme$age.gr  
-Label: Groupe d'âge  
+Label: Groupe d'Ã¢ge  
 Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -1167,15 +1169,15 @@ Weights: ponderation
                      Autre      2.09      0.93           0.93      0.21           0.21
                     Cancer     33.66     15.03          15.96      3.37           3.57
                  Cardiaque     19.89      8.88          24.85      1.99           5.56
-               Cholestérol     21.11      9.42          34.27      2.11           7.67
-                   Diabète     14.36      6.41          40.68      1.44           9.11
+               CholestÃ©rol     21.11      9.42          34.27      2.11           7.67
+                   DiabÃ¨te     14.36      6.41          40.68      1.44           9.11
               Hypertension     36.52     16.31          56.99      3.65          12.76
                Hypotension     11.37      5.08          62.07      1.14          13.90
       Musculo-squelettique     19.59      8.75          70.82      1.96          15.86
               Neurologique     10.14      4.53          75.35      1.01          16.87
-                      Ouïe     14.15      6.32          81.66      1.41          18.29
+                      OuÃ¯e     14.15      6.32          81.66      1.41          18.29
                 Pulmonaire     20.29      9.06          90.72      2.03          20.32
-          Système digestif     11.49      5.13          95.85      1.15          21.46
+          SystÃ¨me digestif     11.49      5.13          95.85      1.15          21.46
                        Vue      9.29      4.15         100.00      0.93          22.39
                       <NA>    776.07                              77.61         100.00
                      Total   1000.00    100.00         100.00    100.00         100.00
@@ -1195,15 +1197,15 @@ Weights: ponderation
                      Autre     2.09     0.93     0.93
                     Cancer    33.66    15.03    15.96
                  Cardiaque    19.89     8.88    24.85
-               Cholestérol    21.11     9.42    34.27
-                   Diabète    14.36     6.41    40.68
+               CholestÃ©rol    21.11     9.42    34.27
+                   DiabÃ¨te    14.36     6.41    40.68
               Hypertension    36.52    16.31    56.99
                Hypotension    11.37     5.08    62.07
       Musculo-squelettique    19.59     8.75    70.82
               Neurologique    10.14     4.53    75.35
-                      Ouïe    14.15     6.32    81.66
+                      OuÃ¯e    14.15     6.32    81.66
                 Pulmonaire    20.29     9.06    90.72
-          Système digestif    11.49     5.13    95.85
+          SystÃ¨me digestif    11.49     5.13    95.85
                        Vue     9.29     4.15   100.00
                      Total   223.93   100.00   100.00
 
@@ -1217,13 +1219,13 @@ Weights: ponderation
 -------------------------- -------- -------- --------
               Hypertension    36.52    16.31    16.31
                     Cancer    33.66    15.03    31.34
-               Cholestérol    21.11     9.42    40.76
+               CholestÃ©rol    21.11     9.42    40.76
                 Pulmonaire    20.29     9.06    49.82
                  Cardiaque    19.89     8.88    58.70
       Musculo-squelettique    19.59     8.75    67.45
-                   Diabète    14.36     6.41    73.86
-                      Ouïe    14.15     6.32    80.18
-          Système digestif    11.49     5.13    85.31
+                   DiabÃ¨te    14.36     6.41    73.86
+                      OuÃ¯e    14.15     6.32    80.18
+          SystÃ¨me digestif    11.49     5.13    85.31
                Hypotension    11.37     5.08    90.39
               Neurologique    10.14     4.53    94.92
                        Vue     9.29     4.15    99.07
@@ -1240,13 +1242,13 @@ Weights: ponderation
 -------------------------- --------- --------- -------------- --------- --------------
               Hypertension     36.52     16.31          16.31      3.65           3.65
                     Cancer     33.66     15.03          31.34      3.37           7.02
-               Cholestérol     21.11      9.42          40.76      2.11           9.13
+               CholestÃ©rol     21.11      9.42          40.76      2.11           9.13
                 Pulmonaire     20.29      9.06          49.82      2.03          11.16
                  Cardiaque     19.89      8.88          58.70      1.99          13.15
       Musculo-squelettique     19.59      8.75          67.45      1.96          15.10
-                   Diabète     14.36      6.41          73.86      1.44          16.54
-                      Ouïe     14.15      6.32          80.18      1.41          17.96
-          Système digestif     11.49      5.13          85.31      1.15          19.10
+                   DiabÃ¨te     14.36      6.41          73.86      1.44          16.54
+                      OuÃ¯e     14.15      6.32          80.18      1.41          17.96
+          SystÃ¨me digestif     11.49      5.13          85.31      1.15          19.10
                Hypotension     11.37      5.08          90.39      1.14          20.24
               Neurologique     10.14      4.53          94.92      1.01          21.26
                        Vue      9.29      4.15          99.07      0.93          22.18
@@ -1265,15 +1267,15 @@ Weights: tabagisme$ponderation
                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 -------------------------- --------- --------- -------------- --------- --------------
                        Vue      9.29      4.15           4.15      0.93           0.93
-          Système digestif     11.49      5.13           9.28      1.15           2.08
+          SystÃ¨me digestif     11.49      5.13           9.28      1.15           2.08
                 Pulmonaire     20.29      9.06          18.34      2.03           4.11
-                      Ouïe     14.15      6.32          24.65      1.41           5.52
+                      OuÃ¯e     14.15      6.32          24.65      1.41           5.52
               Neurologique     10.14      4.53          29.18      1.01           6.53
       Musculo-squelettique     19.59      8.75          37.93      1.96           8.49
                Hypotension     11.37      5.08          43.01      1.14           9.63
               Hypertension     36.52     16.31          59.32      3.65          13.28
-                   Diabète     14.36      6.41          65.73      1.44          14.72
-               Cholestérol     21.11      9.42          75.15      2.11          16.83
+                   DiabÃ¨te     14.36      6.41          65.73      1.44          14.72
+               CholestÃ©rol     21.11      9.42          75.15      2.11          16.83
                  Cardiaque     19.89      8.88          84.04      1.99          18.82
                     Cancer     33.66     15.03          99.07      3.37          22.18
                      Autre      2.09      0.93         100.00      0.21          22.39
@@ -1289,15 +1291,15 @@ Weights: tabagisme$ponderation
                               Freq       %   % Cum.
 -------------------------- ------- ------- --------
                        Vue    9.29    4.15     4.15
-          Système digestif   11.49    5.13     9.28
+          SystÃ¨me digestif   11.49    5.13     9.28
                 Pulmonaire   20.29    9.06    18.34
-                      Ouïe   14.15    6.32    24.65
+                      OuÃ¯e   14.15    6.32    24.65
               Neurologique   10.14    4.53    29.18
       Musculo-squelettique   19.59    8.75    37.93
                Hypotension   11.37    5.08    43.01
               Hypertension   36.52   16.31    59.32
-                   Diabète   14.36    6.41    65.73
-               Cholestérol   21.11    9.42    75.15
+                   DiabÃ¨te   14.36    6.41    65.73
+               CholestÃ©rol   21.11    9.42    75.15
                  Cardiaque   19.89    8.88    84.04
                     Cancer   33.66   15.03    99.07
                      Autre    2.09    0.93   100.00
@@ -1905,8 +1907,7 @@ Output file appended
 Output file appended
 
 # -----------------  tb()
-> suppressPackageStartupMessages(library(magrittr))
-
+> 
 > iris %$% freq(Species) %>% tb()
 # A tibble: 4 x 6
   Species     freq pct_valid pct_valid_cum pct_tot pct_tot_cum
@@ -1940,8 +1941,6 @@ Output file appended
 1 setosa        50  33.3
 2 versicolor    50  33.3
 3 virginica     50  33.3
-
-> suppressPackageStartupMessages(library(dplyr))
 
 > tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 Frequencies  
@@ -2162,3 +2161,12 @@ Switching method to 'browser'
 Variable(s) ignored: age, BMI, cigs.per.day
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

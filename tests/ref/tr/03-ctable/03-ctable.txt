@@ -1,19 +1,21 @@
 
 # -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
+
 > suppressPackageStartupMessages(library(dplyr))
 
-> options(tibble.print_max = Inf)
+> suppressPackageStartupMessages(library(magrittr))
 
-> suppressPackageStartupMessages(library(summarytools))
+> options(tibble.print_max = Inf)
 
 > data(tobacco)
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
-Çapraz Tablo, Satir Oranlari  
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: Ã©ÃªÃ Ã¡Ã»Ã¯")
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No          Toplam
@@ -23,15 +25,15 @@ Veri Çerçevesi: tobacco
   Toplam              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: éêàáûï
+Table: test encod: Ã©ÃªÃ Ã¡Ã»Ã¯
 
 > label(tobacco) <- "A Study on Tobacco Use and Health"
 
 # -----------------  always show NAs
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Etiket: A Study on Tobacco Use and Health  
 
 -------- ---------- ------------- ------------- ---------- ---------------
@@ -81,9 +83,9 @@ Output file written
 
 # -----------------  Non-default proportions
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
-Çapraz Tablo, Sütun Oranlari  
+Ã‡apraz Tablo, SÃ¼tun Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- -------------- -------------- ---------------
            diseased            Yes             No          Toplam
@@ -94,9 +96,9 @@ Veri Çerçevesi: tobacco
 -------- ---------- -------------- -------------- ---------------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n')
-Çapraz Tablo  
+Ã‡apraz Tablo  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ----- ----- --------
            diseased   Yes    No   Toplam
@@ -107,9 +109,9 @@ Veri Çerçevesi: tobacco
 -------- ---------- ----- ----- --------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't')
-Çapraz Tablo, Toplam Oranlar  
+Ã‡apraz Tablo, Toplam Oranlar  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No          Toplam
@@ -123,9 +125,9 @@ Veri Çerçevesi: tobacco
 > data(exams)
 
 > ctable(exams$gender, exams$french < 60)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * french < 60  
-Veri Çerçevesi: exams  
+Veri Ã‡erÃ§evesi: exams  
 
 -------- ------------- ------------- ---------- ---------- -------------
            french < 60         FALSE       TRUE       <NA>        Toplam
@@ -136,9 +138,9 @@ Veri Çerçevesi: exams
 -------- ------------- ------------- ---------- ---------- -------------
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use")
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 Gender * Failed French Class  
-Veri Çerçevesi: exams  
+Veri Ã‡erÃ§evesi: exams  
 
 -------- --------------------- ------------- ---------- ---------- -------------
            Failed French Class         FALSE       TRUE       <NA>        Toplam
@@ -162,9 +164,9 @@ Table: dnn in use
 -------- ---------- ------------ ------------- --------------
 
 > ctable(tobacco[[1]], tobacco[,3])
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * age.gr  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- -------- ------------- ------------- ------------- ------------- ----------- ---------------
            age.gr         18-34         35-50         51-70          71 +        <NA>          Toplam
@@ -177,9 +179,9 @@ Veri Çerçevesi: tobacco
 
 # -----------------  with()
 > with(tobacco, ctable(smoker,  diseased))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ------------- ------------- ---------------
            diseased           Yes            No          Toplam
@@ -191,9 +193,9 @@ Veri Çerçevesi: tobacco
 
 # -----------------  stby() 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -215,10 +217,10 @@ Grup: gender = M
 -------- ---------- ------------- ------------- --------------
 
 # -----------------  with() + stby()
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
-Çapraz Tablo, Satir Oranlari  
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problÃ©matique!
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -242,9 +244,9 @@ Grup: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 
 > print(wbc, headings = T)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -289,9 +291,9 @@ Output file appended
 
 # -----------------  Weights
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * smoker  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- -------- --------------- --------------- -----------------
            smoker             Yes              No            Toplam
@@ -303,9 +305,9 @@ Veri Çerçevesi: tobacco
 -------- -------- --------------- --------------- -----------------
 
 > print(wc1, totals = FALSE)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * smoker  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- -------- --------------- ---------------
            smoker             Yes              No
@@ -316,9 +318,9 @@ Veri Çerçevesi: tobacco
 -------- -------- --------------- ---------------
 
 > print(wc1, round.digits = 2)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 gender * smoker  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- -------- ----------------- ----------------- -------------------
            smoker               Yes                No              Toplam
@@ -330,9 +332,9 @@ Veri Çerçevesi: tobacco
 -------- -------- ----------------- ----------------- -------------------
 
 > (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -354,9 +356,9 @@ Grup: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > tobacco %$% stby(list(smoker, diseased), gender, ctable)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -378,9 +380,9 @@ Grup: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > with(tobacco, stby(list(smoker, diseased), gender, ctable))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -402,9 +404,9 @@ Grup: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 Grup: gender = F  
 
 -------- ---------- ------------- ------------- --------------
@@ -427,9 +429,9 @@ Grup: gender = M
 
 # -----------------  Statistics
 > with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
-Çapraz Tablo, Satir Oranlari  
+Ã‡apraz Tablo, Satir Oranlari  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 
 -------- ---------- ------------- ------------- ---------------
@@ -465,9 +467,9 @@ Output file written
 > st_options(ctable.prop = "t", ctable.totals = FALSE)
 
 > with(tobacco, ctable(smoker, diseased))
-Çapraz Tablo, Toplam Oranlar  
+Ã‡apraz Tablo, Toplam Oranlar  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ------------- -------------
            diseased           Yes            No
@@ -479,9 +481,9 @@ Veri Çerçevesi: tobacco
 > st_options(ctable.prop = "n")
 
 > with(tobacco, ctable(smoker, diseased))
-Çapraz Tablo  
+Ã‡apraz Tablo  
 smoker * diseased  
-Veri Çerçevesi: tobacco  
+Veri Ã‡erÃ§evesi: tobacco  
 
 -------- ---------- ----- -----
            diseased   Yes    No
@@ -489,3 +491,12 @@ Veri Çerçevesi: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

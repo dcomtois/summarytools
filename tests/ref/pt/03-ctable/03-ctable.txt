@@ -1,17 +1,19 @@
 
 # -----------------  ctable.R ----------------------------------------
+> suppressPackageStartupMessages(library(summarytools))
+
 > suppressPackageStartupMessages(library(dplyr))
 
-> options(tibble.print_max = Inf)
+> suppressPackageStartupMessages(library(magrittr))
 
-> suppressPackageStartupMessages(library(summarytools))
+> options(tibble.print_max = Inf)
 
 > data(tobacco)
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: éêàáûï")
-Tabulação cruzada, Proporções por linhas  
+> ctable(tobacco$smoker, tobacco$diseased, caption = "test encod: Ã©ÃªÃ Ã¡Ã»Ã¯")
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -23,16 +25,16 @@ Data Frame: tobacco
    Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
 -------- ---------- ------------- ------------- ---------------
 
-Table: test encod: éêàáûï
+Table: test encod: Ã©ÃªÃ Ã¡Ã»Ã¯
 
 > label(tobacco) <- "A Study on Tobacco Use and Health"
 
 # -----------------  always show NAs
 > (ct1 <- ctable(tobacco$smoker, tobacco$diseased, useNA = 'always'))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
-Rótulo: A Study on Tobacco Use and Health  
+RÃ³tulo: A Study on Tobacco Use and Health  
 
 -------- ---------- ------------- ------------- ---------- ---------------
            diseased           Yes            No       <NA>           Total
@@ -81,7 +83,7 @@ Output file written
 
 # -----------------  Non-default proportions
 > ctable(tobacco$smoker, tobacco$diseased, useNA = 'no', prop = 'c')
-Tabulação cruzada, Proporções por colunas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por colunas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -94,7 +96,7 @@ Data Frame: tobacco
 -------- ---------- -------------- -------------- ---------------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 'n')
-Tabulação cruzada  
+TabulaÃ§Ã£o cruzada  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -107,7 +109,7 @@ Data Frame: tobacco
 -------- ---------- ----- ----- -------
 
 > ctable(tobacco$smoker, tobacco$diseased, prop = 't')
-Tabulação cruzada, Proporções totais  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes totais  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -123,7 +125,7 @@ Data Frame: tobacco
 > data(exams)
 
 > ctable(exams$gender, exams$french < 60)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 gender * french < 60  
 Data Frame: exams  
 
@@ -136,7 +138,7 @@ Data Frame: exams
 -------- ------------- ------------- ---------- ---------- -------------
 
 > ctable(exams$gender, exams$french < 60, dnn = c("Gender", "Failed French Class"), caption = "dnn in use")
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 Gender * Failed French Class  
 Data Frame: exams  
 
@@ -162,7 +164,7 @@ Table: dnn in use
 -------- ---------- ------------ ------------- --------------
 
 > ctable(tobacco[[1]], tobacco[,3])
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 gender * age.gr  
 Data Frame: tobacco  
 
@@ -177,7 +179,7 @@ Data Frame: tobacco
 
 # -----------------  with()
 > with(tobacco, ctable(smoker,  diseased))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -191,7 +193,7 @@ Data Frame: tobacco
 
 # -----------------  stby() 
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -215,8 +217,8 @@ Grupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 # -----------------  with() + stby()
-> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problématique!
-Tabulação cruzada, Proporções por linhas  
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable)) # problÃ©matique!
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -242,7 +244,7 @@ Grupo: gender = M
 > wbc <- with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable, headings = F))
 
 > print(wbc, headings = T)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -289,7 +291,7 @@ Output file appended
 
 # -----------------  Weights
 > (wc1 <- with(tobacco, ctable(gender, smoker, weights = samp.wgts)))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -303,7 +305,7 @@ Data Frame: tobacco
 -------- -------- --------------- --------------- -----------------
 
 > print(wc1, totals = FALSE)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -316,7 +318,7 @@ Data Frame: tobacco
 -------- -------- --------------- ---------------
 
 > print(wc1, round.digits = 2)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 gender * smoker  
 Data Frame: tobacco  
 
@@ -330,7 +332,7 @@ Data Frame: tobacco
 -------- -------- ----------------- ----------------- -------------------
 
 > (wc2 <- tobacco %$% stby(list(x = smoker, y = diseased), gender, ctable))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -354,7 +356,7 @@ Grupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > tobacco %$% stby(list(smoker, diseased), gender, ctable)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -378,7 +380,7 @@ Grupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > with(tobacco, stby(list(smoker, diseased), gender, ctable))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -402,7 +404,7 @@ Grupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > stby(list(tobacco$smoker, tobacco$diseased), tobacco$gender, ctable)
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 Grupo: gender = F  
@@ -427,7 +429,7 @@ Grupo: gender = M
 
 # -----------------  Statistics
 > with(tobacco, ctable(smoker, diseased, chisq = TRUE, OR = TRUE, RR = TRUE))
-Tabulação cruzada, Proporções por linhas  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes por linhas  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -465,7 +467,7 @@ Output file written
 > st_options(ctable.prop = "t", ctable.totals = FALSE)
 
 > with(tobacco, ctable(smoker, diseased))
-Tabulação cruzada, Proporções totais  
+TabulaÃ§Ã£o cruzada, ProporÃ§Ãµes totais  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -479,7 +481,7 @@ Data Frame: tobacco
 > st_options(ctable.prop = "n")
 
 > with(tobacco, ctable(smoker, diseased))
-Tabulação cruzada  
+TabulaÃ§Ã£o cruzada  
 smoker * diseased  
 Data Frame: tobacco  
 
@@ -489,3 +491,12 @@ Data Frame: tobacco
      Yes              125   173
       No               99   603
 -------- ---------- ----- -----
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

@@ -1,8 +1,10 @@
 
 # -----------------  descr.R ---------------------------------------
-> suppressPackageStartupMessages(library(magrittr))
-
 > suppressPackageStartupMessages(library(summarytools))
+
+> suppressPackageStartupMessages(library(dplyr))
+
+> suppressPackageStartupMessages(library(magrittr))
 
 > options(tibble.print_max = Inf)
 
@@ -522,8 +524,6 @@ Output file appended
 3 cigs.per.day  6.78 11.9     0      0    40        965      96.5
 4 samp.wgts     1     0.0839  0.861  1.04  1.06    1000     100  
 
-> suppressPackageStartupMessages(library(dplyr))
-
 > tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
 ### Кол-венный показатель распределения  
 #### tobacco$age  
@@ -538,3 +538,12 @@ Output file appended
 |        **Mакс** |  80.00 |
 |  **Цифр. корр** | 975.00 |
 |  **Проц. корр** |  97.50 |
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

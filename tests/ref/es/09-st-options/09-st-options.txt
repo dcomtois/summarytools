@@ -219,3 +219,5 @@ $style
 
 > st_options('reset')
 summarytools options have been reset
+
+> detach("package:summarytools")

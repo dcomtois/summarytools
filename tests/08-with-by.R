@@ -101,3 +101,7 @@ with(tobacco, stby(smoker, gender, freq, weights = samp.wgts))
 with(tobacco, stby(list(x=gender, y=smoker), age.gr, ctable, weights = samp.wgts))
 
 tobacco %>% group_by(gender) %>% freq(smoker, weights = samp.wgts)
+
+st_options("reset")
+detach("package:summarytools")
+detach("package:dplyr")

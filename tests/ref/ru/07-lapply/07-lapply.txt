@@ -254,3 +254,8 @@ Table: display.type = FALSE
 Switching method to 'browser'
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")

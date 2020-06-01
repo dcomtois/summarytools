@@ -23,7 +23,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -36,7 +36,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -49,7 +49,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -62,7 +62,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -75,7 +75,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -89,7 +89,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      27      27.00           27.00     27.00          27.00
          No      73      73.00          100.00     73.00         100.00
@@ -102,7 +102,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      27      27.00           27.00     27.00          27.00
          No      73      73.00          100.00     73.00         100.00
@@ -115,7 +115,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      27      27.00           27.00     27.00          27.00
          No      73      73.00          100.00     73.00         100.00
@@ -128,7 +128,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes      27      27.00           27.00     27.00          27.00
          No      73      73.00          100.00     73.00         100.00
@@ -141,7 +141,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298     100.00          100.00    100.00         100.00
          No       0       0.00          100.00      0.00         100.00
@@ -157,7 +157,7 @@ smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -171,7 +171,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -179,7 +179,7 @@ Tipo: Factor
       Total    1000     100.00          100.00    100.00         100.00
 
 > with(tobacco, descr(age))             
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco$age  
 Etiqueta: Age of the Subject  
 N: 1000  
@@ -196,14 +196,14 @@ N: 1000
                DAP    23.72
                 RI    32.00
                 CV     0.37
-         Asimetría    -0.04
-      ES-Asimetría     0.08
+         AsimetrÃ­a    -0.04
+      ES-AsimetrÃ­a     0.08
           Curtosis    -1.26
-        Num.Válido   975.00
-        Pct.Válido    97.50
+        Num.VÃ¡lido   975.00
+        Pct.VÃ¡lido    97.50
 
 > with(tobacco, ctable(smoker, diseased))
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -223,7 +223,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -236,7 +236,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -249,7 +249,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -262,7 +262,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -275,7 +275,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -289,7 +289,7 @@ Tipo: Factor
 **Duplicados:** 2  
 
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
-| No | Variable      | Etiqueta           | Estadísticas / Valores     | Frec. (% sobre válidos) | Gráfico                      | Válido  | Perdidos |
+| No | Variable      | Etiqueta           | EstadÃ­sticas / Valores     | Frec. (% sobre vÃ¡lidos) | GrÃ¡fico                      | VÃ¡lido  | Perdidos |
 +====+===============+====================+============================+=========================+==============================+=========+==========+
 | 1  | gender\       |                    | 1\. F\                     | 489 (50.0%)\            | IIIIIIIIII \                 | 978\    | 22\      |
 |    | [factor]      |                    | 2\. M                      | 489 (50.0%)             | IIIIIIIIII                   | (97.8%) | (2.2%)   |
@@ -338,15 +338,15 @@ Tipo: Factor
 |    |               |                    | 10\. Hypotension\          | 11 ( 5.0%)\             | \                            |         |          |
 |    |               |                    | [ 3 otros ]                | 21 ( 9.5%)              | I                            |         |          |
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
-| 9  | samp.wgts\    |                    | Media (d-s) : 1 (0.1)\     | 0.86!: 267 (26.7%)\     | IIIII \                      | 1000\   | 0\       |
-|    | [numeric]     |                    | min < mediana < max:\      | 1.04!: 249 (24.9%)\     | IIII \                       | (100%)  | (0%)     |
-|    |               |                    | 0.9 < 1 < 1.1\             | 1.05!: 324 (32.4%)\     | IIIIII \                     |         |          |
-|    |               |                    | RI (CV) : 0.2 (0.1)        | 1.06!: 160 (16.0%)\     | III \                        |         |          |
-|    |               |                    |                            | ! redondeo              | \                            |         |          |
+| 9  | samp.wgts\    |                    | Media (d-s) : 1 (0.1)\     | 0.86*: 267 (26.7%)\     | IIIII \                      | 1000\   | 0\       |
+|    | [numeric]     |                    | min < mediana < max:\      | 1.04*: 249 (24.9%)\     | IIII \                       | (100%)  | (0%)     |
+|    |               |                    | 0.9 < 1 < 1.1\             | 1.05*: 324 (32.4%)\     | IIIIII \                     |         |          |
+|    |               |                    | RI (CV) : 0.2 (0.1)        | 1.06*: 160 (16.0%)\     | III \                        |         |          |
+|    |               |                    |                            | * redondeo              | \                            |         |          |
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
 
 > tobacco %$% ctable(smoker, diseased)
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -360,7 +360,7 @@ Etiqueta: Tobacco Study
 -------- ---------- ------------- ------------- ---------------
 
 > tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco$age  
 Etiqueta: Age of the Subject  
 N: 1000  
@@ -372,15 +372,15 @@ N: 1000
              Min    18.00
          Mediana    50.00
              Max    80.00
-      Num.Válido   975.00
-      Pct.Válido    97.50
+      Num.VÃ¡lido   975.00
+      Pct.VÃ¡lido    97.50
 
 > tobacco %>% select(age.gr)  %>% freq() # SUCCESS
 Frecuencias  
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -391,7 +391,7 @@ Tipo: Factor
 
 > tobacco %>% group_by(gender) %>% descr()
 Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco  
 Etiqueta: Tobacco Study  
 Subgrupo: gender = F  
@@ -409,11 +409,11 @@ N: 489
                DAP    23.72     4.75           0.00        0.01
                 RI    32.00     6.49          10.25        0.19
                 CV     0.37     0.19           1.75        0.08
-         Asimetría    -0.04    -0.02           1.53       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.02           1.53       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.25     0.09           0.85       -0.92
-        Num.Válido   475.00   475.00         468.00      489.00
-        Pct.Válido    97.14    97.14          95.71      100.00
+        Num.VÃ¡lido   475.00   475.00         468.00      489.00
+        Pct.VÃ¡lido    97.14    97.14          95.71      100.00
 
 Subgrupo: gender = M  
 N: 489  
@@ -430,11 +430,11 @@ N: 489
                DAP    24.46     4.02           0.00        0.01
                 RI    32.00     5.44          11.00        0.19
                 CV     0.37     0.16           1.76        0.08
-         Asimetría    -0.04    -0.04           1.54       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.04           1.54       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.27     0.17           0.92       -0.92
-        Num.Válido   478.00   477.00         475.00      489.00
-        Pct.Válido    97.75    97.55          97.14      100.00
+        Num.VÃ¡lido   478.00   477.00         475.00      489.00
+        Pct.VÃ¡lido    97.75    97.55          97.14      100.00
 
 Subgrupo: gender = NA  
 N: 22  
@@ -451,11 +451,11 @@ N: 22
                DAP    22.98     4.07           0.00        0.01
                 RI    27.25     5.06           8.75        0.01
                 CV     0.36     0.13           1.60        0.08
-         Asimetría    -0.13    -0.34           1.13       -1.20
-      ES-Asimetría     0.49     0.49           0.49        0.49
+         AsimetrÃ­a    -0.13    -0.34           1.13       -1.20
+      ES-AsimetrÃ­a     0.49     0.49           0.49        0.49
           Curtosis    -1.36    -0.92          -0.44       -0.56
-        Num.Válido    22.00    22.00          22.00       22.00
-        Pct.Válido   100.00   100.00         100.00      100.00
+        Num.VÃ¡lido    22.00    22.00          22.00       22.00
+        Pct.VÃ¡lido   100.00   100.00         100.00      100.00
 
 > tobacco %>% group_by(gender) %>% freq(smoker)
 Frecuencias  
@@ -464,7 +464,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -473,7 +473,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -482,7 +482,7 @@ Subgrupo: gender = M
 
 Subgrupo: gender = NA  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes       8      36.36           36.36     36.36          36.36
          No      14      63.64          100.00     63.64         100.00
@@ -496,7 +496,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -509,7 +509,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -522,7 +522,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -530,7 +530,7 @@ Tipo: Factor
       Total    1000     100.00          100.00    100.00         100.00
 
 > tobacco %>>% select(age) %>>% arrange() %>>% descr(stats = "common")  # OK
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco$age  
 Etiqueta: Age of the Subject  
 N: 1000  
@@ -542,8 +542,8 @@ N: 1000
              Min    18.00
          Mediana    50.00
              Max    80.00
-      Num.Válido   975.00
-      Pct.Válido    97.50
+      Num.VÃ¡lido   975.00
+      Pct.VÃ¡lido    97.50
 
 > tobacco[,5] %>>% freq()         # OK
 Frecuencias  
@@ -551,7 +551,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -564,7 +564,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -578,7 +578,7 @@ Tipo: Factor
 **Duplicados:** 2  
 
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
-| No | Variable      | Etiqueta           | Estadísticas / Valores     | Frec. (% sobre válidos) | Gráfico                      | Válido  | Perdidos |
+| No | Variable      | Etiqueta           | EstadÃ­sticas / Valores     | Frec. (% sobre vÃ¡lidos) | GrÃ¡fico                      | VÃ¡lido  | Perdidos |
 +====+===============+====================+============================+=========================+==============================+=========+==========+
 | 1  | gender\       |                    | 1\. F\                     | 489 (50.0%)\            | IIIIIIIIII \                 | 978\    | 22\      |
 |    | [factor]      |                    | 2\. M                      | 489 (50.0%)             | IIIIIIIIII                   | (97.8%) | (2.2%)   |
@@ -627,11 +627,11 @@ Tipo: Factor
 |    |               |                    | 10\. Hypotension\          | 11 ( 5.0%)\             | \                            |         |          |
 |    |               |                    | [ 3 otros ]                | 21 ( 9.5%)              | I                            |         |          |
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
-| 9  | samp.wgts\    |                    | Media (d-s) : 1 (0.1)\     | 0.86!: 267 (26.7%)\     | IIIII \                      | 1000\   | 0\       |
-|    | [numeric]     |                    | min < mediana < max:\      | 1.04!: 249 (24.9%)\     | IIII \                       | (100%)  | (0%)     |
-|    |               |                    | 0.9 < 1 < 1.1\             | 1.05!: 324 (32.4%)\     | IIIIII \                     |         |          |
-|    |               |                    | RI (CV) : 0.2 (0.1)        | 1.06!: 160 (16.0%)\     | III \                        |         |          |
-|    |               |                    |                            | ! redondeo              | \                            |         |          |
+| 9  | samp.wgts\    |                    | Media (d-s) : 1 (0.1)\     | 0.86*: 267 (26.7%)\     | IIIII \                      | 1000\   | 0\       |
+|    | [numeric]     |                    | min < mediana < max:\      | 1.04*: 249 (24.9%)\     | IIII \                       | (100%)  | (0%)     |
+|    |               |                    | 0.9 < 1 < 1.1\             | 1.05*: 324 (32.4%)\     | IIIIII \                     |         |          |
+|    |               |                    | RI (CV) : 0.2 (0.1)        | 1.06*: 160 (16.0%)\     | III \                        |         |          |
+|    |               |                    |                            | * redondeo              | \                            |         |          |
 +----+---------------+--------------------+----------------------------+-------------------------+------------------------------+---------+----------+
 
 > tobacco %>>% select(age.gr) %>>% freq() # SUCCESS
@@ -639,7 +639,7 @@ Frecuencias
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -650,7 +650,7 @@ Tipo: Factor
 
 > tobacco %>>% group_by(gender) %>>% descr()
 Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
-Estadísticas descriptivas  
+EstadÃ­sticas descriptivas  
 tobacco  
 Etiqueta: Tobacco Study  
 Subgrupo: gender = F  
@@ -668,11 +668,11 @@ N: 489
                DAP    23.72     4.75           0.00        0.01
                 RI    32.00     6.49          10.25        0.19
                 CV     0.37     0.19           1.75        0.08
-         Asimetría    -0.04    -0.02           1.53       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.02           1.53       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.25     0.09           0.85       -0.92
-        Num.Válido   475.00   475.00         468.00      489.00
-        Pct.Válido    97.14    97.14          95.71      100.00
+        Num.VÃ¡lido   475.00   475.00         468.00      489.00
+        Pct.VÃ¡lido    97.14    97.14          95.71      100.00
 
 Subgrupo: gender = M  
 N: 489  
@@ -689,11 +689,11 @@ N: 489
                DAP    24.46     4.02           0.00        0.01
                 RI    32.00     5.44          11.00        0.19
                 CV     0.37     0.16           1.76        0.08
-         Asimetría    -0.04    -0.04           1.54       -1.03
-      ES-Asimetría     0.11     0.11           0.11        0.11
+         AsimetrÃ­a    -0.04    -0.04           1.54       -1.03
+      ES-AsimetrÃ­a     0.11     0.11           0.11        0.11
           Curtosis    -1.27     0.17           0.92       -0.92
-        Num.Válido   478.00   477.00         475.00      489.00
-        Pct.Válido    97.75    97.55          97.14      100.00
+        Num.VÃ¡lido   478.00   477.00         475.00      489.00
+        Pct.VÃ¡lido    97.75    97.55          97.14      100.00
 
 Subgrupo: gender = NA  
 N: 22  
@@ -710,11 +710,11 @@ N: 22
                DAP    22.98     4.07           0.00        0.01
                 RI    27.25     5.06           8.75        0.01
                 CV     0.36     0.13           1.60        0.08
-         Asimetría    -0.13    -0.34           1.13       -1.20
-      ES-Asimetría     0.49     0.49           0.49        0.49
+         AsimetrÃ­a    -0.13    -0.34           1.13       -1.20
+      ES-AsimetrÃ­a     0.49     0.49           0.49        0.49
           Curtosis    -1.36    -0.92          -0.44       -0.56
-        Num.Válido    22.00    22.00          22.00       22.00
-        Pct.Válido   100.00   100.00         100.00      100.00
+        Num.VÃ¡lido    22.00    22.00          22.00       22.00
+        Pct.VÃ¡lido   100.00   100.00         100.00      100.00
 
 > tobacco %>>% group_by(gender) %>>% freq(smoker)
 Frecuencias  
@@ -723,7 +723,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -732,7 +732,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -741,7 +741,7 @@ Subgrupo: gender = M
 
 Subgrupo: gender = NA  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes       8      36.36           36.36     36.36          36.36
          No      14      63.64          100.00     63.64         100.00
@@ -756,7 +756,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -765,7 +765,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -779,7 +779,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -788,7 +788,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -802,7 +802,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -811,7 +811,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -825,7 +825,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -834,7 +834,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -849,7 +849,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -858,7 +858,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -872,7 +872,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -881,7 +881,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -890,7 +890,7 @@ Subgrupo: gender = M
 
 # -----------------  by with ctable
 > stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -922,7 +922,7 @@ Etiqueta: Smoking Status
 Tipo: Factor  
 Subgrupo: gender = F  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     147      30.06           30.06     30.06          30.06
          No     342      69.94          100.00     69.94         100.00
@@ -931,7 +931,7 @@ Subgrupo: gender = F
 
 Subgrupo: gender = M  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     143      29.24           29.24     29.24          29.24
          No     346      70.76          100.00     70.76         100.00
@@ -939,7 +939,7 @@ Subgrupo: gender = M
       Total     489     100.00          100.00    100.00         100.00
 
 > with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))     
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 smoker * diseased  
 Data frame: tobacco  
 Etiqueta: Tobacco Study  
@@ -964,7 +964,7 @@ Subgrupo: gender = M
 -------- ---------- ------------- ------------- --------------
 
 > with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable))
-Tabulación cruzada, proporciones por líneas  
+TabulaciÃ³n cruzada, proporciones por lÃ­neas  
 smoker * diseased  
 Data frame: tobacco  
 Subgrupo: gender = F  
@@ -993,7 +993,7 @@ Frecuencias
 tobacco$gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -1003,7 +1003,7 @@ Tipo: Factor
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -1016,7 +1016,7 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
@@ -1030,7 +1030,7 @@ Frecuencias
 tobacco$gender  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
           F     489      50.00           50.00     48.90          48.90
           M     489      50.00          100.00     48.90          97.80
@@ -1040,7 +1040,7 @@ Tipo: Factor
 tobacco$age.gr  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
       18-34     258      26.46           26.46     25.80          25.80
       35-50     241      24.72           51.18     24.10          49.90
@@ -1053,9 +1053,20 @@ tobacco$smoker
 Etiqueta: Smoking Status  
 Tipo: Factor  
 
-              Frec.   % Válido   % Válido acu.   % Total   % Total acu.
+              Frec.   % VÃ¡lido   % VÃ¡lido acu.   % Total   % Total acu.
 ----------- ------- ---------- --------------- --------- --------------
         Yes     298      29.80           29.80     29.80          29.80
          No     702      70.20          100.00     70.20         100.00
        <NA>       0                                 0.00         100.00
       Total    1000     100.00          100.00    100.00         100.00
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:pipeR")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

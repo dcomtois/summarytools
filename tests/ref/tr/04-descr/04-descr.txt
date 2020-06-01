@@ -1,8 +1,10 @@
 
 # -----------------  descr.R ---------------------------------------
-> suppressPackageStartupMessages(library(magrittr))
-
 > suppressPackageStartupMessages(library(summarytools))
+
+> suppressPackageStartupMessages(library(dplyr))
+
+> suppressPackageStartupMessages(library(magrittr))
 
 > options(tibble.print_max = Inf)
 
@@ -24,13 +26,13 @@ N: 1000
                 Q3    66.00    28.65          11.00        1.05
                Mak    80.00    39.44          40.00        1.06
                OMS    23.72     4.18           0.00        0.01
-                ÇA    32.00     5.72          11.00        0.19
+                Ã‡A    32.00     5.72          11.00        0.19
                 CV     0.37     0.17           1.75        0.08
-         Çarpiklik    -0.04     0.02           1.54       -1.04
-      Çarpiklik.SH     0.08     0.08           0.08        0.08
+         Ã‡arpiklik    -0.04     0.02           1.54       -1.04
+      Ã‡arpiklik.SH     0.08     0.08           0.08        0.08
           Basiklik    -1.26     0.26           0.90       -0.90
-         Geçerli.N   975.00   974.00         965.00     1000.00
-       Geçerli.Yzd    97.50    97.40          96.50      100.00
+         GeÃ§erli.N   975.00   974.00         965.00     1000.00
+       GeÃ§erli.Yzd    97.50    97.40          96.50      100.00
 
 > print(d1, plain.ascii = F)
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -48,13 +50,13 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
             **Q3**    66.00    28.65          11.00        1.05
            **Mak**    80.00    39.44          40.00        1.06
            **OMS**    23.72     4.18           0.00        0.01
-            **ÇA**    32.00     5.72          11.00        0.19
+            **Ã‡A**    32.00     5.72          11.00        0.19
             **CV**     0.37     0.17           1.75        0.08
-     **Çarpiklik**    -0.04     0.02           1.54       -1.04
-  **Çarpiklik.SH**     0.08     0.08           0.08        0.08
+     **Ã‡arpiklik**    -0.04     0.02           1.54       -1.04
+  **Ã‡arpiklik.SH**     0.08     0.08           0.08        0.08
       **Basiklik**    -1.26     0.26           0.90       -0.90
-     **Geçerli.N**   975.00   974.00         965.00     1000.00
-   **Geçerli.Yzd**    97.50    97.40          96.50      100.00
+     **GeÃ§erli.N**   975.00   974.00         965.00     1000.00
+   **GeÃ§erli.Yzd**    97.50    97.40          96.50      100.00
 
 > print(d1, style = 'rmarkdown')
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -72,13 +74,13 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |           **Q3** |  66.00 |  28.65 |        11.00 |      1.05 |
 |          **Mak** |  80.00 |  39.44 |        40.00 |      1.06 |
 |          **OMS** |  23.72 |   4.18 |         0.00 |      0.01 |
-|           **ÇA** |  32.00 |   5.72 |        11.00 |      0.19 |
+|           **Ã‡A** |  32.00 |   5.72 |        11.00 |      0.19 |
 |           **CV** |   0.37 |   0.17 |         1.75 |      0.08 |
-|    **Çarpiklik** |  -0.04 |   0.02 |         1.54 |     -1.04 |
-| **Çarpiklik.SH** |   0.08 |   0.08 |         0.08 |      0.08 |
+|    **Ã‡arpiklik** |  -0.04 |   0.02 |         1.54 |     -1.04 |
+| **Ã‡arpiklik.SH** |   0.08 |   0.08 |         0.08 |      0.08 |
 |     **Basiklik** |  -1.26 |   0.26 |         0.90 |     -0.90 |
-|    **Geçerli.N** | 975.00 | 974.00 |       965.00 |   1000.00 |
-|  **Geçerli.Yzd** |  97.50 |  97.40 |        96.50 |    100.00 |
+|    **GeÃ§erli.N** | 975.00 | 974.00 |       965.00 |   1000.00 |
+|  **GeÃ§erli.Yzd** |  97.50 |  97.40 |        96.50 |    100.00 |
 
 > print(d1, style = 'grid', plain.ascii = FALSE)
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -105,19 +107,19 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 +------------------+--------+--------+--------------+-----------+
 |          **OMS** |  23.72 |   4.18 |         0.00 |      0.01 |
 +------------------+--------+--------+--------------+-----------+
-|           **ÇA** |  32.00 |   5.72 |        11.00 |      0.19 |
+|           **Ã‡A** |  32.00 |   5.72 |        11.00 |      0.19 |
 +------------------+--------+--------+--------------+-----------+
 |           **CV** |   0.37 |   0.17 |         1.75 |      0.08 |
 +------------------+--------+--------+--------------+-----------+
-|    **Çarpiklik** |  -0.04 |   0.02 |         1.54 |     -1.04 |
+|    **Ã‡arpiklik** |  -0.04 |   0.02 |         1.54 |     -1.04 |
 +------------------+--------+--------+--------------+-----------+
-| **Çarpiklik.SH** |   0.08 |   0.08 |         0.08 |      0.08 |
+| **Ã‡arpiklik.SH** |   0.08 |   0.08 |         0.08 |      0.08 |
 +------------------+--------+--------+--------------+-----------+
 |     **Basiklik** |  -1.26 |   0.26 |         0.90 |     -0.90 |
 +------------------+--------+--------+--------------+-----------+
-|    **Geçerli.N** | 975.00 | 974.00 |       965.00 |   1000.00 |
+|    **GeÃ§erli.N** | 975.00 | 974.00 |       965.00 |   1000.00 |
 +------------------+--------+--------+--------------+-----------+
-|  **Geçerli.Yzd** |  97.50 |  97.40 |        96.50 |    100.00 |
+|  **GeÃ§erli.Yzd** |  97.50 |  97.40 |        96.50 |    100.00 |
 +------------------+--------+--------+--------------+-----------+
 
 # -----------------  Global options
@@ -129,7 +131,7 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 #### tobacco  
 **N:** 1000  
 
-|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |-----------------:|---------:|--------:|------:|-------:|------:|----------:|------------:|
 |          **age** |    49.60 |   18.29 | 18.00 |  50.00 | 80.00 |    975.00 |       97.50 |
 |          **BMI** |    25.73 |    4.49 |  8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
@@ -139,7 +141,7 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 > print(d2, headings = FALSE)
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 
-|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |-----------------:|---------:|--------:|------:|-------:|------:|----------:|------------:|
 |          **age** |    49.60 |   18.29 | 18.00 |  50.00 | 80.00 |    975.00 |       97.50 |
 |          **BMI** |    25.73 |    4.49 |  8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
@@ -152,7 +154,7 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 #### tobacco  
 **N:** 1000  
 
-|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |-----------------:|---------:|--------:|------:|-------:|------:|----------:|------------:|
 |          **age** |    49.60 |   18.29 | 18.00 |  50.00 | 80.00 |    975.00 |       97.50 |
 |          **BMI** |    25.73 |    4.49 |  8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
@@ -166,7 +168,7 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 #### tobacco  
 **N:** 1000  
 
-|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |-----------------:|---------:|--------:|------:|-------:|------:|----------:|------------:|
 |          **age** |    49.60 |   18.29 | 18.00 |  50.00 | 80.00 |    975.00 |       97.50 |
 |          **BMI** |    25.73 |    4.49 |  8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
@@ -179,7 +181,7 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 #### tobacco  
 **N:** 1000  
 
-|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|           &nbsp; | Ortalama | Std.Sap |   Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |-----------------:|---------:|--------:|------:|-------:|------:|----------:|------------:|
 |          **age** |    49.60 |   18.29 | 18.00 |  50.00 | 80.00 |    975.00 |       97.50 |
 |          **BMI** |    25.73 |    4.49 |  8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
@@ -198,7 +200,7 @@ tobacco
 Etiket: A study on Tobacco and Health  
 N: 1000  
 
-                     Ortalama   Std.Sap     Min   Medyan     Mak   Geçerli.N   Geçerli.Yzd
+                     Ortalama   Std.Sap     Min   Medyan     Mak   GeÃ§erli.N   GeÃ§erli.Yzd
 ------------------ ---------- --------- ------- -------- ------- ----------- -------------
                age      49.60     18.29   18.00    50.00   80.00      975.00         97.50
                BMI      25.73      4.49    8.83    25.62   39.44      974.00         97.40
@@ -213,7 +215,7 @@ N: 1000
 **Etiket:** Body Mass Index  
 **N:** 1000  
 
-|  &nbsp; | Ortalama | Std.Sap |  Min | Medyan |   Mak | Geçerli.N | Geçerli.Yzd |
+|  &nbsp; | Ortalama | Std.Sap |  Min | Medyan |   Mak | GeÃ§erli.N | GeÃ§erli.Yzd |
 |--------:|---------:|--------:|-----:|-------:|------:|----------:|------------:|
 | **BMI** |    25.73 |    4.49 | 8.83 |  25.62 | 39.44 |    974.00 |       97.40 |
 
@@ -222,10 +224,10 @@ N: 1000
 Switching method to 'browser'
 Output file written
 
-> view(d2, footnote = "test: àéïôù", file = "02.html")
+> view(d2, footnote = "test: Ã Ã©Ã¯Ã´Ã¹", file = "02.html")
 Output file written
 
-> print(d2, caption = "test: àéïôù", file = "02.md")
+> print(d2, caption = "test: Ã Ã©Ã¯Ã´Ã¹", file = "02.md")
 Output file written
 
 # -----------------  long var names
@@ -255,8 +257,8 @@ Output file written
 |         **Min** |  18.0 |
 |      **Medyan** |  50.0 |
 |         **Mak** |  80.0 |
-|   **Geçerli.N** | 975.0 |
-| **Geçerli.Yzd** |  97.5 |
+|   **GeÃ§erli.N** | 975.0 |
+| **GeÃ§erli.Yzd** |  97.5 |
 
 > view(d3,  file = "05.md")
 Switching method to 'pander'
@@ -318,8 +320,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   8.83 |         0.00 |
 |      **Medyan** |  52.00 |  25.68 |         0.00 |
 |         **Mak** |  80.00 |  39.44 |        40.00 |
-|   **Geçerli.N** | 975.49 | 973.85 |       964.68 |
-| **Geçerli.Yzd** |  97.55 |  97.38 |        96.47 |
+|   **GeÃ§erli.N** | 975.49 | 973.85 |       964.68 |
+| **GeÃ§erli.Yzd** |  97.55 |  97.38 |        96.47 |
 
 # -----------------  Weights (outside data frame)
 > wgts <- tobacco$samp.wgts
@@ -341,8 +343,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   8.83 |         0.00 |
 |      **Medyan** |  52.00 |  25.68 |         0.00 |
 |         **Mak** |  80.00 |  39.44 |        40.00 |
-|   **Geçerli.N** | 975.49 | 973.85 |       964.68 |
-| **Geçerli.Yzd** |  97.55 |  97.38 |        96.47 |
+|   **GeÃ§erli.N** | 975.49 | 973.85 |       964.68 |
+| **GeÃ§erli.Yzd** |  97.55 |  97.38 |        96.47 |
 
 > print(d5, file = "06.html", footnote = "Weights")
 Switching method to 'browser'
@@ -365,8 +367,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   8.83 |
 |      **Medyan** |  52.00 |  25.68 |
 |         **Mak** |  80.00 |  39.44 |
-|   **Geçerli.N** | 975.49 | 973.85 |
-| **Geçerli.Yzd** |  97.55 |  97.38 |
+|   **GeÃ§erli.N** | 975.49 | 973.85 |
+| **GeÃ§erli.Yzd** |  97.55 |  97.38 |
 
 Table: Table continues below
 
@@ -379,14 +381,14 @@ Table: Table continues below
 |         **Min** |         0.00 |
 |      **Medyan** |         0.00 |
 |         **Mak** |        40.00 |
-|   **Geçerli.N** |       964.68 |
-| **Geçerli.Yzd** |        96.47 |
+|   **GeÃ§erli.N** |       964.68 |
+| **GeÃ§erli.Yzd** |        96.47 |
 
 # -----------------  stby(), special case
 > (d7 <- stby(data = tobacco$BMI, INDICES = tobacco$gender, FUN = descr))
 ### Tanimlayici Istatistikler  
-#### BMI göre gender  
-**Veri Çerçevesi:** tobacco  
+#### BMI gÃ¶re gender  
+**Veri Ã‡erÃ§evesi:** tobacco  
 **Etiket:** Body Mass Index  
 **N:** 489  
 
@@ -397,8 +399,8 @@ Table: Table continues below
 |         **Min** |   9.01 |   8.83 |
 |      **Medyan** |  25.87 |  25.14 |
 |         **Mak** |  39.44 |  36.76 |
-|   **Geçerli.N** | 475.00 | 477.00 |
-| **Geçerli.Yzd** |  97.14 |  97.55 |
+|   **GeÃ§erli.N** | 475.00 | 477.00 |
+| **GeÃ§erli.Yzd** |  97.14 |  97.55 |
 
 > print(d7, file = "07.html")
 Switching method to 'browser'
@@ -420,8 +422,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   9.01 |         0.00 |      0.86 |
 |      **Medyan** |  50.00 |  25.87 |         0.00 |      1.04 |
 |         **Mak** |  80.00 |  39.44 |        40.00 |      1.06 |
-|   **Geçerli.N** | 475.00 | 475.00 |       468.00 |    489.00 |
-| **Geçerli.Yzd** |  97.14 |  97.14 |        95.71 |    100.00 |
+|   **GeÃ§erli.N** | 475.00 | 475.00 |       468.00 |    489.00 |
+| **GeÃ§erli.Yzd** |  97.14 |  97.14 |        95.71 |    100.00 |
 
 **Grup:** gender = M  
 **N:** 489  
@@ -433,8 +435,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   8.83 |         0.00 |      0.86 |
 |      **Medyan** |  49.50 |  25.14 |         0.00 |      1.04 |
 |         **Mak** |  80.00 |  36.76 |        40.00 |      1.06 |
-|   **Geçerli.N** | 478.00 | 477.00 |       475.00 |    489.00 |
-| **Geçerli.Yzd** |  97.75 |  97.55 |        97.14 |    100.00 |
+|   **GeÃ§erli.N** | 478.00 | 477.00 |       475.00 |    489.00 |
+| **GeÃ§erli.Yzd** |  97.75 |  97.55 |        97.14 |    100.00 |
 
 > view(d8, file = "08.md")
 Switching method to 'pander'
@@ -447,8 +449,8 @@ Output file appended
 
 > (d9 <- with(tobacco, stby(BMI, gender, descr)))
 ### Tanimlayici Istatistikler  
-#### BMI göre gender  
-**Veri Çerçevesi:** tobacco  
+#### BMI gÃ¶re gender  
+**Veri Ã‡erÃ§evesi:** tobacco  
 **Etiket:** Body Mass Index  
 **N:** 489  
 
@@ -459,8 +461,8 @@ Output file appended
 |         **Min** |   9.01 |   8.83 |
 |      **Medyan** |  25.87 |  25.14 |
 |         **Mak** |  39.44 |  36.76 |
-|   **Geçerli.N** | 475.00 | 477.00 |
-| **Geçerli.Yzd** |  97.14 |  97.55 |
+|   **GeÃ§erli.N** | 475.00 | 477.00 |
+| **GeÃ§erli.Yzd** |  97.14 |  97.55 |
 
 > view(d9, file = "09.html")
 Output file written
@@ -482,8 +484,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  19.00 |   9.01 |         5.00 |
 |      **Medyan** |  50.00 |  25.70 |        22.00 |
 |         **Mak** |  80.00 |  36.36 |        40.00 |
-|   **Geçerli.N** | 291.00 | 292.08 |       292.26 |
-| **Geçerli.Yzd** |  29.10 |  29.21 |        29.23 |
+|   **GeÃ§erli.N** | 291.00 | 292.08 |       292.26 |
+| **GeÃ§erli.Yzd** |  29.10 |  29.21 |        29.23 |
 
 **Grup:** smoker = No  
 **N:** 702  
@@ -495,8 +497,8 @@ Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
 |         **Min** |  18.00 |   8.83 |         0.00 |
 |      **Medyan** |  49.00 |  25.60 |         0.00 |
 |         **Mak** |  80.00 |  39.44 |         0.00 |
-|   **Geçerli.N** | 685.93 | 685.05 |       674.97 |
-| **Geçerli.Yzd** |  68.59 |  68.50 |        67.50 |
+|   **GeÃ§erli.N** | 685.93 | 685.05 |       674.97 |
+| **GeÃ§erli.Yzd** |  68.59 |  68.50 |        67.50 |
 
 > view(d10)
 Non-numerical variable(s) ignored: gender, age.gr, smoker, diseased, disease
@@ -522,8 +524,6 @@ Output file appended
 3 cigs.per.day  6.78 11.9     0      0    40        965      96.5
 4 samp.wgts     1     0.0839  0.861  1.04  1.06    1000     100  
 
-> suppressPackageStartupMessages(library(dplyr))
-
 > tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
 ### Tanimlayici Istatistikler  
 #### tobacco$age  
@@ -536,5 +536,14 @@ Output file appended
 |         **Min** |  18.00 |
 |      **Medyan** |  50.00 |
 |         **Mak** |  80.00 |
-|   **Geçerli.N** | 975.00 |
-| **Geçerli.Yzd** |  97.50 |
+|   **GeÃ§erli.N** | 975.00 |
+| **GeÃ§erli.Yzd** |  97.50 |
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
+
+> detach("package:dplyr")
+
+> detach("package:magrittr")

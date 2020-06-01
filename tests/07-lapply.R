@@ -15,7 +15,7 @@ view(l1, footnote = "freq -- gender/age.gr/smoker", file = "01.html")
 
 label(tabagisme) <- "Label tabagisme"
 label(tabagisme$sexe) <- "Le sexe"
-label(tabagisme$age.gr) <- "Groupe d'age"
+label(tabagisme$age.gr) <- "Groupe d'âge"
 
 l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq) 
 print(l1)
@@ -29,3 +29,6 @@ l3 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq, totals = FALSE)
 print(l3, style = "rmarkdown", caption = "2 columns with row indexing, no totals")
 view(l3, method = "pander", style = "rmarkdown", display.type = FALSE, caption = "display.type = FALSE")
 print(l3, headings = FALSE, footnote = "no headings", file = "05.html")
+
+st_options("reset")
+detach("package:summarytools")

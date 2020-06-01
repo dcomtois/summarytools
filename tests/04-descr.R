@@ -1,6 +1,8 @@
 # descr.R ---------------------------------------
-suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+
 options(tibble.print_max = Inf)
 
 tobacco <- tibble::as_tibble(tobacco)
@@ -85,5 +87,9 @@ view(d10)
 descr(tobacco) %>% tb()
 descr(tobacco, stats = "common", transpose = TRUE) %>% tb()
 
-suppressPackageStartupMessages(library(dplyr))
 tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
+
+st_options("reset")
+detach("package:summarytools")
+detach("package:dplyr")
+detach("package:magrittr")

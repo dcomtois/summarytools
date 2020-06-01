@@ -10,7 +10,7 @@
 
 > tobacco <- tibble::as_tibble(tobacco)
 
-> label(tobacco) <- "A Study on Tobacco Use and Health"
+> label(tobacco) <- "A Study on Tobacco Use and Health / 脡tude sur les effets du tabagisme"
 
 > label(tobacco$gender) <- "Subject's Gender"
 
@@ -74,11 +74,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
-                                                                 ! rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
+                                                                 * rounded                                                      
 --------------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, headings = FALSE)
@@ -130,11 +130,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
-                                                                 ! rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
+                                                                 * rounded                                                      
 --------------------------------------------------------------------------------------------------------------------------------
 
 # -----------------  Omit columns
@@ -191,11 +191,11 @@ disease                           1. Hypertension           36 (16.2%)          
                                   10. Hypotension           11 ( 5.0%)                                                     
                                   [ 3 others ]              21 ( 9.5%)            I                                        
 
-samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
-[numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                  0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
-                                  IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
-                                                            ! rounded                                                      
+samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
+[numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                  0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
+                                  IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
+                                                            * rounded                                                      
 ---------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, labels.col = FALSE)
@@ -251,11 +251,11 @@ No   Variable       Stats / Values            Freqs (% of Valid)    Graph       
                     10. Hypotension           11 ( 5.0%)                                                     
                     [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]      min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                    0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
-                    IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
-                                              ! rounded                                                      
+9    samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]      min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                    0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
+                    IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
+                                              * rounded                                                      
 -------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, valid.col = FALSE)
@@ -311,11 +311,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                           
                                        [ 3 others ]              21 ( 9.5%)            I                              
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                         
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                            
-                                                                 ! rounded                                            
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 0        
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                         
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                            
+                                                                 * rounded                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, na.col = FALSE)
@@ -371,11 +371,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                           
                                        [ 3 others ]              21 ( 9.5%)            I                              
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000     
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)   
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                         
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                            
-                                                                 ! rounded                                            
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000     
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)   
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                         
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                            
+                                                                 * rounded                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, graph.col = FALSE)
@@ -428,11 +428,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                               
                                        [ 3 others ]              21 ( 9.5%)                               
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    1000      0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)                       
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)                       
-                                                                 ! rounded                                
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    1000      0        
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)                       
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)                       
+                                                                 * rounded                                
 ----------------------------------------------------------------------------------------------------------
 
 # -----------------  Minimal results using print overrides
@@ -482,11 +482,11 @@ disease        1. Hypertension           36 (16.2%)
                10. Hypotension           11 ( 5.0%)           
                [ 3 others ]              21 ( 9.5%)           
 
-samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)   
-[numeric]      min < med < max:          1.04!: 249 (24.9%)   
-               0.9 < 1 < 1.1             1.05!: 324 (32.4%)   
-               IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)   
-                                         ! rounded            
+samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)   
+[numeric]      min < med < max:          1.04*: 249 (24.9%)   
+               0.9 < 1 < 1.1             1.05*: 324 (32.4%)   
+               IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)   
+                                         * rounded            
 --------------------------------------------------------------
 
 # -----------------  Print to file
@@ -561,11 +561,11 @@ disease        1. Hypertension           36 (16.2%)
                10. Hypotension           11 ( 5.0%)           
                [ 3 others ]              21 ( 9.5%)           
 
-samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)   
-[numeric]      min < med < max:          1.04!: 249 (24.9%)   
-               0.9 < 1 < 1.1             1.05!: 324 (32.4%)   
-               IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)   
-                                         ! rounded            
+samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)   
+[numeric]      min < med < max:          1.04*: 249 (24.9%)   
+               0.9 < 1 < 1.1             1.05*: 324 (32.4%)   
+               IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)   
+                                         * rounded            
 --------------------------------------------------------------
 
 > view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal width cols", file = "03-equal-widths.html")
@@ -629,11 +629,11 @@ disease                           1. Hypertension            36 (16.2%)         
                                   4. Heart                   20 ( 9.0%)           I                    
                                   [ 9 others ]              111 (50.0%)           IIIIIIIIII           
 
-samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                
-[numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                 
-                                  0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII               
-                                  IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                  
-                                                            ! rounded                                  
+samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                
+[numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                 
+                                  0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII               
+                                  IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                  
+                                                            * rounded                                  
 
 disease.f                         1. Cancer                  34 (15.3%)           III                  
 [factor]                          2. Cholesterol             21 ( 9.5%)           I                    
@@ -823,13 +823,13 @@ No   Variable            Stats / Values              Freqs (% of Valid)     Grap
                          [ 806 others ]              894 (98.6%)            IIIIIIIIIIIIIIIIIII                       
 
 29   some_empty_str      1. (Empty string)            39 ( 4.0%)                                   973       27       
-     [character]         2. 贩                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
+     [character]         2. 路路                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
                          3. A                        603 (62.0%)            IIIIIIIIIIII                              
                          4. B                        231 (23.7%)            IIII                                      
                          5. C                         67 ( 6.9%)            I                                         
 
 30   some_empty_str_f    1. (Empty string)            39 ( 4.0%)                                   973       27       
-     [factor]            2. 贩                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
+     [factor]            2. 路路                        33 ( 3.4%)                                   (97.3%)   (2.7%)   
                          3. A                        603 (62.0%)            IIIIIIIIIIII                              
                          4. B                        231 (23.7%)            IIII                                      
                          5. C                         67 ( 6.9%)            I                                         
@@ -968,11 +968,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           1 ( 4.2%)                                                     
                                        [ 2 others ]              2 ( 8.3%)             I                                       
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 26 (26.0%)     IIIII                 100      0        
-     [numeric]                         min < med < max:          1.04!: 24 (24.0%)     IIII                  (100%)   (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 31 (31.0%)     IIIIII                                  
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 19 (19.0%)     III                                     
-                                                                 ! rounded                                                     
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 26 (26.0%)     IIIII                 100      0        
+     [numeric]                         min < med < max:          1.04*: 24 (24.0%)     IIII                  (100%)   (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 31 (31.0%)     IIIIII                                  
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 19 (19.0%)     III                                     
+                                                                 * rounded                                                     
 
 10   disease.f                         1. Cancer                 3 (12.5%)             II                    24       76       
      [factor]                          2. Cholesterol            2 ( 8.3%)             I                     (24%)    (76%)    
@@ -1053,11 +1053,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
-                                                                 ! rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
+                                                                 * rounded                                                      
 
 10   disease.f                         1. Cancer                 34 (15.3%)            III                   222       778      
      [factor]                          2. Cholesterol            21 ( 9.5%)            I                     (22.2%)   (77.8%)  
@@ -1072,10 +1072,10 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        [ 3 others ]              31 (14.0%)            II                                       
 
 11   samp.wgts.3    Sampling Weights   Mean (sd) : 0.8 (0.5)     0.00 : 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0 < 1 < 1.1               1.05!: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 1 (0.6)        1.06!: 160 (16.0%)    III                                      
-                                                                 ! rounded                                                      
+     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0 < 1 < 1.1               1.05*: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 1 (0.6)        1.06*: 160 (16.0%)    III                                      
+                                                                 * rounded                                                      
 
 12   samp.wgts.4    Sampling Weights   Mean (sd) : 1 (0.1)       0.90 : 267 (26.7%)    IIIII                 1000      0        
      [numeric]                         min < med < max:          1.00 : 573 (57.3%)    IIIIIIIIIII           (100%)    (0%)     
@@ -1136,11 +1136,11 @@ No   Variable       Label              Stats / Values             Freqs (% of Va
                                        10. Hypotension            11 ( 4.95%)                                                     
                                        [ 3 others ]               21 ( 9.46%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.08)       0.861!: 267 (26.70%)   IIIII                 1000      0        
-     [numeric]                         min < med < max:           1.044!: 249 (24.90%)   IIII                  (100%)    (0%)     
-                                       0.86 < 1.04 < 1.06         1.049!: 324 (32.40%)   IIIIII                                   
-                                       IQR (CV) : 0.19 (0.08)     1.062!: 160 (16.00%)   III                                      
-                                                                  ! rounded                                                       
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.08)       0.861*: 267 (26.70%)   IIIII                 1000      0        
+     [numeric]                         min < med < max:           1.044*: 249 (24.90%)   IIII                  (100%)    (0%)     
+                                       0.86 < 1.04 < 1.06         1.049*: 324 (32.40%)   IIIIII                                   
+                                       IQR (CV) : 0.19 (0.08)     1.062*: 160 (16.00%)   III                                      
+                                                                  * rounded                                                       
 
 10   disease.f                         1. Cancer                  34 (15.32%)            III                   222       778      
      [factor]                          2. Cholesterol             21 ( 9.46%)            I                     (22.2%)   (77.8%)  
@@ -1218,11 +1218,11 @@ No   Variable       Label              Stats / Values                Freqs (% of
                                        10. Hypotension               11 ( 4.955%)                                                      
                                        [ 3 others ]                  21 ( 9.460%)             I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.084)         0.8614!: 267 (26.700%)   IIIII                 1000      0        
-     [numeric]                         min < med < max:              1.0442!: 249 (24.900%)   IIII                  (100%)    (0%)     
-                                       0.861 < 1.044 < 1.062         1.0494!: 324 (32.400%)   IIIIII                                   
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.084)         0.8614*: 267 (26.700%)   IIIII                 1000      0        
+     [numeric]                         min < med < max:              1.0442*: 249 (24.900%)   IIII                  (100%)    (0%)     
+                                       0.861 < 1.044 < 1.062         1.0494*: 324 (32.400%)   IIIIII                                   
                                        IQR (CV) : 0.188 (0.084)      1.0625 : 160 (16.000%)   III                                      
-                                                                     ! rounded                                                         
+                                                                     * rounded                                                         
 
 10   disease.f                         1. Cancer                     34 (15.315%)             III                   222       778      
      [factor]                          2. Cholesterol                21 ( 9.459%)             I                     (22.2%)   (77.8%)  
@@ -1282,7 +1282,7 @@ Output file written
       <td align="left">1. F
 2. M</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">489</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio1z1UMIAAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQI0VzxayIwqHlU8hBSTlGGHGgAAwzJFHyLFAJAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMjJUMDI6NDI6NTMtMDQ6MDCVySirAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTIyVDAyOjQyOjUzLTA0OjAw5JSQFwAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYs+P05rwAAADdJREFUSMdjYBiaQIkYoABVrGxMBBhVPKp4VDHNFJOUYQWJAQI0VzxayIwqHlU8hBSTlGGHGgAAwzJFHyLFAJAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMzFUMjE6MDY6NDQtMDQ6MDDXPBKRAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTMxVDIxOjA2OjQ0LTA0OjAwpmGqLQAAAABJRU5ErkJggg=="></td>
       <td align="center">978
 (97.8%)</td>
       <td align="center">22
@@ -1298,7 +1298,7 @@ min < med < max:
 18 < 50 < 80
 IQR (CV) : 32 (0.4)</td>
       <td align="left" style="vertical-align:middle">63 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio1z1UMIAAAAKpJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjRqzP3+QdojJvXhHKlJV5Per4k2mrBpyXgTkysPRthaPIH9GJN5kVxjOlzH2LYZNucaC7tQgMlJY0zuoBTTpjHBtK4Ai9Zg38R0wg0wLbbFsnd3GxbS430N8/sn0gCTNdjLmD5jBljeDAYGBgYGBvZjzGe/EU3YeTMYGBgYGBgYGBgYGNjTmDeJIzWZARcGwxkfHuQgAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQyOjUzLTA0OjAwlckoqwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0Mjo1My0wNDowMOSUkBcAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYs+P05rwAAAKpJREFUaN7t1usNgCAMRlFW0A2EDXT/3Xw0sUA0CjRqzP3+QdojJvXhHKlJV5Per4k2mrBpyXgTkysPRthaPIH9GJN5kVxjOlzH2LYZNucaC7tQgMlJY0zuoBTTpjHBtK4Ai9Zg38R0wg0wLbbFsnd3GxbS430N8/sn0gCTNdjLmD5jBljeDAYGBgYGBvZjzGe/EU3YeTMYGBgYGBgYGBgYGNjTmDeJIzWZARcGwxkfHuQgAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ0LTA0OjAw1zwSkQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NC0wNDowMKZhqi0AAAAASUVORK5CYII="></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1314,7 +1314,7 @@ IQR (CV) : 32 (0.4)</td>
 3. 51-70
 4. 71 +</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">258</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">241</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">24.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">317</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">32.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">159</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio1z1UMIAAAAF9JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAaglj8N6PO43GpUflaeaPKH0R+v0T0b+AAMF3PkbDEblR+WpIU8o/dEz/StikUd2/6j8qDy15Qmlv4EEABpZYLIzlbGRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQyOjUzLTA0OjAwlckoqwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0Mjo1My0wNDowMOSUkBcAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYs+P05rwAAAF9JREFUSMdjYBh4oIQFCAKBAFRe2RgDGI3Kj8pTS55Q+hPEAaglj8N6PO43GpUflaeaPKH0R+v0T0b+AAMF3PkbDEblR+WpIU8o/dEz/StikUd2/6j8qDy15Qmlv4EEABpZYLIzlbGRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ0LTA0OjAw1zwSkQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NC0wNDowMKZhqi0AAAAASUVORK5CYII="></td>
       <td align="center">975
 (97.5%)</td>
       <td align="center">25
@@ -1330,7 +1330,7 @@ min < med < max:
 8.8 < 25.6 < 39.4
 IQR (CV) : 5.7 (0.2)</td>
       <td align="left" style="vertical-align:middle">974 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAALlJREFUaN7t2GEOgyAMhmGuMG9gucG8/90EooYpOlJqdPP9En6QlCf8aijOEU1eX9NJSH9cU48NIWBgYA/AYucQK8yH9b4TlhqjGRYNMDAwMDCwp2D7TwQFtn87sBMwmV5AJthyHqwRKw/sSqw8FICBgYGBXYrFTm+G+fX5H8G2v0wNWNqAgf0n1s0dwwSby8GG9STbin3cDuyGmOTf/xXYMpWVMJ+XV2Bxky5ghaXNhEkeU0wdRzQZAVolACmaVEsoAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQyOjU0LTA0OjAwUG4WJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMCEzrpkAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYs+P05rwAAALlJREFUaN7t2GEOgyAMhmGuMG9gucG8/90EooYpOlJqdPP9En6QlCf8aijOEU1eX9NJSH9cU48NIWBgYA/AYucQK8yH9b4TlhqjGRYNMDAwMDCwp2D7TwQFtn87sBMwmV5AJthyHqwRKw/sSqw8FICBgYGBXYrFTm+G+fX5H8G2v0wNWNqAgf0n1s0dwwSby8GG9STbin3cDuyGmOTf/xXYMpWVMJ+XV2Bxky5ghaXNhEkeU0wdRzQZAVolACmaVEsoAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ0LTA0OjAw1zwSkQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NC0wNDowMKZhqi0AAAAASUVORK5CYII="></td>
       <td align="center">974
 (97.4%)</td>
       <td align="center">26
@@ -1344,7 +1344,7 @@ IQR (CV) : 5.7 (0.2)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">298</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">29.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">702</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">70.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA3BAMAAAArjaPrAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBA6xXiRyAN5zxA6NRvaN6R/WO6h0AvZSUdSMJAACiO3V1Gk5a2wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMFBuFiUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDAhM66ZAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHYAAAA3BAMAAAArjaPrAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAEVJREFUSMdjYBh5QAkrUBTEC6B6lY2xgVG9o3pH9Y7qHXx6KSnrBMkBA6xXiRyAN5zxA6NRvaN6R/WO6h0AvZSUdSMJAACiO3V1Gk5a2wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMHFLGSUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDAAFqGZAAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1360,7 +1360,7 @@ min < med < max:
 0 < 0 < 40
 IQR (CV) : 11 (1.8)</td>
       <td align="left" style="vertical-align:middle">37 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAHVJREFUaN7t2cENgCAQBEBa0A7EDrD/3vx4mEhIDJr4cPZ53A78SUlGkiPL9CAHtm5HYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDDYt9g88hPYxe4/td6bb2NnJZA6iNVyxZqNthKD6JQu1my0lf7Jv7D8SpKMZAcPx4KExMJfDAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMFBuFiUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDAhM66ZAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAHVJREFUaN7t2cENgCAQBEBa0A7EDrD/3vx4mEhIDJr4cPZ53A78SUlGkiPL9CAHtm5HYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDDYt9g88hPYxe4/td6bb2NnJZA6iNVyxZqNthKD6JQu1my0lf7Jv7D8SpKMZAcPx4KExMJfDAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMHFLGSUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDAAFqGZAAAAAElFTkSuQmCC"></td>
       <td align="center">965
 (96.5%)</td>
       <td align="center">35
@@ -1374,7 +1374,7 @@ IQR (CV) : 11 (1.8)</td>
       <td align="left">1. Yes
 2. No</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">224</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">22.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">776</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">77.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA3BAMAAADZHTQLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYVCboEQ2UMARF8SDURNGTRg1YdSEkWEC5SXtKGBgAAD3iogAe+pSSAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMFBuFiUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDAhM66ZAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIEAAAA3BAMAAADZHTQLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAEtJREFUSMdjYBgFMKCEDgSJBQJQE5SNUYHRqAmjJoyaMGrCqAkoJlBe0hKtYVCboEQ2UMARF8SDURNGTRg1YdSEkWEC5SXtKGBgAAD3iogAe+pSSAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMHFLGSUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDAAFqGZAAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1397,7 +1397,7 @@ IQR (CV) : 11 (1.8)</td>
 10. Hypotension
 [ 3 others ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAIpJREFUWMPt17ERgCAMhWFGgA1ENsD9d7PhNGeeFYlR76X8mnD5K1Kyn1XMMqxt59D8DN2+iMkGJndk/ZZO8zN0e4OWVdrYSwsw1MOgb9F7Oy3AUA/2/aZZt2Tfd9ljfS/WjpfQPA3dni3/Yx59K9hLizHUY7Zv0Xs7zd/Q7Wda3vXlXzfG0O0tZwf1JpsksH5RZQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMFBuFiUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDAhM66ZAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAIpJREFUWMPt17ERgCAMhWFGgA1ENsD9d7PhNGeeFYlR76X8mnD5K1Kyn1XMMqxt59D8DN2+iMkGJndk/ZZO8zN0e4OWVdrYSwsw1MOgb9F7Oy3AUA/2/aZZt2Tfd9ljfS/WjpfQPA3dni3/Yx59K9hLizHUY7Zv0Xs7zd/Q7Wda3vXlXzfG0O0tZwf1JpsksH5RZQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMHFLGSUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDAAFqGZAAAAAElFTkSuQmCC"></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1412,8 +1412,8 @@ IQR (CV) : 11 (1.8)</td>
 min < med < max:
 0.9 < 1 < 1.1
 IQR (CV) : 0.2 (0.1)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.86!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! rounded</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQyOjU0LTA0OjAwUG4WJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMCEzrpkAAAAASUVORK5CYII=">
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.86&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;rounded</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ1LTA0OjAwcUsZJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMAAWoZkAAAAASUVORK5CYII=">
 
 </td>
       <td align="center">1000
@@ -1438,7 +1438,7 @@ IQR (CV) : 0.2 (0.1)</td>
 10. Neurological
 [ 3 others ]</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">21</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">12</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">14</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">36</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">11</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">8.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">31</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAJ1JREFUWMPtlFEOgCAMQzmC3kDkBnj/uxkBFUj1h00MaT/fB1taOmPktWaaEnPbJU+mx5D3cyYJlp63OUu7kCkz5H1zlhU75nqyLgzl0ZqvBXPJ+jCUR2u+7O8YXX3MN03Jdzm3IdNjyHulfIOWYpcoMj2GvG/NsmbuPhtkHzOUh0BXf3GbyOTvM/s7Tldf+htGlf8q/i0yPYa8l9QO73eb4ZCT/V8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDBQbhYlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTIyVDAyOjQyOjU0LTA0OjAwITOumQAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACUAAAEKBAMAAABnPYFnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAJ1JREFUWMPtlFEOgCAMQzmC3kDkBnj/uxkBFUj1h00MaT/fB1taOmPktWaaEnPbJU+mx5D3cyYJlp63OUu7kCkz5H1zlhU75nqyLgzl0ZqvBXPJ+jCUR2u+7O8YXX3MN03Jdzm3IdNjyHulfIOWYpcoMj2GvG/NsmbuPhtkHzOUh0BXf3GbyOTvM/s7Tldf+htGlf8q/i0yPYa8l9QO73eb4ZCT/V8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDBxSxklAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA1LTMxVDIxOjA2OjQ1LTA0OjAwABahmQAAAABJRU5ErkJggg=="></td>
       <td align="center">222
 (22.2%)</td>
       <td align="center">778
@@ -1453,8 +1453,8 @@ IQR (CV) : 0.2 (0.1)</td>
 min < med < max:
 0 < 1 < 1.1
 IQR (CV) : 1 (0.6)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.04!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.05!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.06!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan=3>! rounded</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTIyVDAyOjQyOjU0LTA0OjAwUG4WJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMCEzrpkAAAAASUVORK5CYII=">
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.00&thinsp;&thinsp;</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;rounded</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ1LTA0OjAwcUsZJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMAAWoZkAAAAASUVORK5CYII=">
 
 </td>
       <td align="center">1000
@@ -1471,8 +1471,8 @@ IQR (CV) : 1 (0.6)</td>
 min < med < max:
 0.9 < 1 < 1.1
 IQR (CV) : 0.1 (0.1)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">0.90</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">573</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">57.3%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1.10</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABOBAMAAAAp5d5wAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUVFio2VlxdmgAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJIkS5618T+Anhn7JQimJDlLaGQCA8C/vOoz7XIuvbXFeuIhCIC8K+Wp/f5+xfJZWYr4tAIF4Q9p3/UAfeS4iC9SVTaQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0yMlQwMjo0Mjo1NC0wNDowMFBuFiUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMjJUMDI6NDI6NTQtMDQ6MDAhM66ZAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.90</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.00</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">573</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">57.3%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.10</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAGIAAABOBAMAAAAp5d5wAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAFdJREFUSMft1LEJACAMBVFXcAR1A91/NxsLwSAJIkS5618T+Anhn7JQimJDlLaGQCA8C/vOoz7XIuvbXFeuIhCIC8K+Wp/f5+xfJZWYr4tAIF4Q9p3/UAfeS4iC9SVTaQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMHFLGSUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDUtMzFUMjE6MDY6NDUtMDQ6MDAAFqGZAAAAAElFTkSuQmCC"></td>
       <td align="center">1000
 (100%)</td>
       <td align="center">0
@@ -1482,3 +1482,8 @@ IQR (CV) : 0.1 (0.1)</td>
 </table>
   <p>Placeholder footnote</p>
 </div>
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")

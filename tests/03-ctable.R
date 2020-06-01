@@ -1,7 +1,8 @@
 # ctable.R ----------------------------------------
-suppressPackageStartupMessages(library(dplyr))
-options(tibble.print_max = Inf)
 suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+options(tibble.print_max = Inf)
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 
@@ -73,3 +74,8 @@ with(tobacco, ctable(smoker, diseased))
 
 st_options(ctable.prop = "n")
 with(tobacco, ctable(smoker, diseased))
+
+st_options("reset")
+detach("package:summarytools")
+detach("package:dplyr")
+detach("package:magrittr")

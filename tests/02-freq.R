@@ -1,6 +1,7 @@
 # freq.R ------------------------------------------
-suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(summarytools))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
 data(tobacco)
 tobacco <- tibble::as_tibble(tobacco)
 label(tobacco$gender) <- "Subject's Gender"
@@ -202,14 +203,12 @@ view(freq(tobacco$age.gr, cumul = FALSE), file = "08-omissions.html", append = T
 view(freq(tobacco$age.gr, report.nas = FALSE, cumul = FALSE), file = "08-omissions.html", append = TRUE, footnote = "report.nas = FALSE & cumul = FALSE")
 
 # tb()
-suppressPackageStartupMessages(library(magrittr))
 
 iris %$% freq(Species) %>% tb()
 iris %$% freq(Species, report.nas = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE) %>% tb()
 iris %$% freq(Species, cumul = FALSE, report.nas = FALSE) %>% tb()
 
-suppressPackageStartupMessages(library(dplyr))
 tobacco %>% select(disease) %>% arrange() %>% freq(rows = 1:10)
 
 # Deal with explicited NA's
@@ -225,3 +224,8 @@ print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type")
 
 # Collapsible outputs
 print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections")
+
+st_options("reset")
+detach("package:summarytools")
+detach("package:dplyr")
+detach("package:magrittr")

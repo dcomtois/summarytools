@@ -63,7 +63,7 @@ Output file appended
 
 > label(tabagisme$sexe) <- "Le sexe"
 
-> label(tabagisme$age.gr) <- "Groupe d'age"
+> label(tabagisme$age.gr) <- "Groupe d'âge"
 
 > l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq) 
 
@@ -81,7 +81,7 @@ Type: Factor
       Total   1000    100.00         100.00    100.00         100.00
 
 tabagisme$age.gr  
-Label: Groupe d'age  
+Label: Groupe d'âge  
 Type: Factor  
 
               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
@@ -166,15 +166,15 @@ Type: Character
                      Autre      2      0.90           0.90      0.20           0.20
                     Cancer     34     15.32          16.22      3.40           3.60
                  Cardiaque     20      9.01          25.23      2.00           5.60
-               Cholest�rol     21      9.46          34.68      2.10           7.70
-                   Diab�te     14      6.31          40.99      1.40           9.10
+               Cholestérol     21      9.46          34.68      2.10           7.70
+                   Diabète     14      6.31          40.99      1.40           9.10
               Hypertension     36     16.22          57.21      3.60          12.70
                Hypotension     11      4.95          62.16      1.10          13.80
       Musculo-squelettique     19      8.56          70.72      1.90          15.70
               Neurologique     10      4.50          75.23      1.00          16.70
-                      Ou�e     14      6.31          81.53      1.40          18.10
+                      Ouïe     14      6.31          81.53      1.40          18.10
                 Pulmonaire     20      9.01          90.54      2.00          20.10
-          Syst�me digestif     12      5.41          95.95      1.20          21.30
+          Système digestif     12      5.41          95.95      1.20          21.30
                        Vue      9      4.05         100.00      0.90          22.20
                       <NA>    778                              77.80         100.00
                      Total   1000    100.00         100.00    100.00         100.00
@@ -211,7 +211,7 @@ Output file appended
 Table: 2 columns with row indexing, no totals
 
 #### tabagisme$age.gr  
-**Label:** Groupe d'age  
+**Label:** Groupe d'âge  
 **Type:** Factor  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
@@ -238,7 +238,7 @@ Table: 2 columns with row indexing, no totals
 Table: display.type = FALSE
 
 #### tabagisme$age.gr  
-**Label:** Groupe d'age  
+**Label:** Groupe d'âge  
 
 |     &nbsp; | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -254,3 +254,8 @@ Table: display.type = FALSE
 Switching method to 'browser'
 Output file written
 Output file appended
+
+> st_options("reset")
+summarytools options have been reset
+
+> detach("package:summarytools")
