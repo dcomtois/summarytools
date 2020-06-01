@@ -8,7 +8,7 @@ TODO.txt
 tests/output
 tests/output/*
 tests/img
-tests/last_date_dir.Rdata
+tests/date_dirs.Rdata
 tests/ref_bak_*
 tests/other
 tests/tests-0-9-4
