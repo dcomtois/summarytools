@@ -1302,7 +1302,7 @@ print_dfs <- function(x, method) {
       # notice for rounded values
       notice <- NA
       if (length(rows[[length(rows)]]) == 1) {
-        notice <- sub("\\*", "*&thinsp;", rows[[length(rows)]])
+        notice <- sub("!", "!&thinsp;", rows[[length(rows)]])
         length(rows) <- length(rows) - 1
       }
       
@@ -1311,7 +1311,7 @@ print_dfs <- function(x, method) {
       prps <- vapply(X = rows, FUN = `[`,  FUN.VALUE = " ", 3)
       
       if (!is.na(notice)) {
-        vals <- sub("\\*$", "&thinsp;*", vals)
+        vals <- sub("!", "&thinsp;!", vals)
         vals <- sub("(\\d)$", "\\1&thinsp;&thinsp;", vals)
       }
       
