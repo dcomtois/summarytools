@@ -1537,7 +1537,7 @@ print_dfs <- function(x, method) {
         } else if (colnames(x)[co] %in% c(trs("variable"), 
                                           trs("stats.values"))) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
-          cell <- gsub("\\s{2,}", " ", cell)
+          cell <- gsub("[ \\t]{2,}", " ", cell)
           table_row %+=% list(
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
