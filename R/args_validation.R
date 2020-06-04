@@ -585,7 +585,8 @@ check_args_st_options <- function(mc) {
   }
   
   if ("freq.ignore.threshold" %in% names(mc) &&
-      !isTRUE(test_int(pf$freq.ignore.threshold, lower = 0))) {
+      !isTRUE(test_int(pf$freq.ignore.threshold, lower = 0)) &&
+      !is.infinite(pf$freq.ignore.threshold)) {
     errmsg %+=% "'freq.ignore.threshold' must be an integer greater than 0"
   }
   
