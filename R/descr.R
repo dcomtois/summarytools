@@ -91,7 +91,7 @@
 #' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all group_keys
+#' @importFrom dplyr %>% as_tibble select starts_with summarize_all group_keys
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
                   var             = NULL,
@@ -321,7 +321,7 @@ descr <- function(x,
     
     # Prepare the summarizing functions for dplyr::summarize; there are 3 stats
     # that will be calculated later on so to not slow down the function
-    summar_funs <- funs(mean, 
+    summar_funs <- list(mean, 
                         sd, 
                         min, 
                         q1 = quantile(., probs = .25, type = 2, names = FALSE),
