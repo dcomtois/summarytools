@@ -317,6 +317,52 @@ print.summarytools <- function(x,
     }
   }
   
+  # Separate formatting elements into two groups: one to be used by
+  # format(), the other by pander()
+  
+  # First fix the value of justify which depends on method ("center"/"centre")
+  if (method=="pander") {
+    justify <- switch(tolower(substring(attr(x, "format_info")$justify, 1, 1)),
+                      l = "left",
+                      c = "centre",
+                      d = "right",
+                      r = "right")
+  } else {
+    justify <- switch(tolower(substring(attr(x, "format_info")$justify, 1, 1)),
+                      l = "left",
+                      c = "center",
+                      d = "center",
+                      r = "right")
+  }
+  
+  all_fmt_args <- 
+    append(list(style               = attr(x, "format_info")$style,
+                plain.ascii         = attr(x, "format_info")$plain.ascii,
+                justify             = justify,
+                missing             = attr(x, "format_info")$missing,
+                nsmall              = attr(x, "format_info")$round.digits,
+                digits              = attr(x, "format_info")$round.digits,
+                scientific          = FALSE,
+                trim                = FALSE,
+                keep.trailing.zeros = TRUE,
+                split.tables        = Inf),
+           attr(x, "user_fmt"))
+  
+  # Eliminate redundant arguments (keeping last)
+  redundant_args <- names(which(table(names(all_fmt_args)) > 1))
+  for (arg in redundant_args) {
+    temp_val <- all_fmt_args[tail(which(names(all_fmt_args) == arg), 1)]
+    all_fmt_args[names(all_fmt_args)==arg] <- NULL
+    all_fmt_args <- append(all_fmt_args, temp_val)
+  }
+  
+  # Make the two lists of arguments to be passed to format() / pander()
+  format_args <- all_fmt_args[intersect(names(all_fmt_args),
+                                        names(formals(format.default)))]
+  pander_args <- all_fmt_args[setdiff(names(all_fmt_args),
+                                      names(format_args))]
+  
+  
   # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
@@ -520,8 +566,9 @@ print.summarytools <- function(x,
 print_freq <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
-  format_info <- attr(x, "format_info")
-  user_fmt    <- attr(x, "user_fmt")
+  #format_info <- attr(x, "format_info")
+  #user_fmt    <- attr(x, "user_fmt")
+  #ls(parent.frame)
   
   if (!isTRUE(parent.frame()$silent) && !isTRUE(format_info$group.only) && 
      (!"by_first" %in% names(data_info) || 
@@ -554,14 +601,25 @@ print_freq <- function(x, method) {
     x <- x[-nrow(x),]
   }
   
-  if (method=="pander") {
+  # Use format() on row names when x is numerical
+  if (data_info$Data.type == "Numeric") {
+    temp_rownames <- suppressWarnings(as.numeric(rownames(x)))
+    temp_rownames_nas <- which(is.na(temp_rownames))
     
-    # print_freq -- pander method ---------------------------------------------
-    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-                      l = "left",
-                      c = "centre",
-                      d = "right",
-                      r = "right")
+    # Check if all row names are integers (if so, decimals will be removed)
+    rownames_are_int <- all(as.integer(temp_rownames) == temp_rownames, 
+                            na.rm = TRUE)
+    temp_rownames <- do.call(format, append(format_args, 
+                                            list(x = quote(temp_rownames))))
+    if (rownames_are_int) {
+      temp_rownames <- sub("\\.0+", "", temp_rownames)
+    }
+    temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
+    row.names(x) <- temp_rownames
+  }
+  
+  
+  if (method=="pander") {
     
     freq_table <- format(x = round(x, format_info$round.digits),
                          trim = FALSE,
@@ -629,12 +687,7 @@ print_freq <- function(x, method) {
   } else {
     
     # print_freq -- html method ------------------------------------------------
-    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-                      l = "left",
-                      c = "center",
-                      d = "center",
-                      r = "right")
-    
+
     table_head <- list()
     table_rows <- list()
     
