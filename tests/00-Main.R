@@ -60,7 +60,7 @@ for (l in 1:6) {
     content <- readLines(fff)
     close(fff)
 
-    if (lang=="ru") {
+    if (lang=="ru" && Sys.info()[["sysname"]] == "Windows") {
       content_utf8 <- iconv(content, "1251", "UTF-8")
     } else {
       content_utf8 <- enc2utf8(content) #iconv(content, "1252", "UTF-8") #enc2utf8(content) 
