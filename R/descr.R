@@ -91,7 +91,7 @@
 #' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-#' @importFrom dplyr %>% as_tibble funs select starts_with summarize_all group_keys
+#' @importFrom dplyr %>% as_tibble select starts_with summarize_all group_keys
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
                   var             = NULL,
@@ -321,27 +321,32 @@ descr <- function(x,
     
     # Prepare the summarizing functions for dplyr::summarize; there are 3 stats
     # that will be calculated later on so to not slow down the function
-    summar_funs <- funs(mean, 
-                        sd, 
-                        min, 
-                        q1 = quantile(., probs = .25, type = 2, names = FALSE),
-                        med = median,
-                        q3 = quantile(., probs = .75, type = 2, names = FALSE),
-                        max,
-                        mad,
-                        iqr = IQR,
-                        cv = -999,
-                        skewness = rapportools::skewness,
-                        se.skewness = -999,
-                        kurtosis = rapportools::kurtosis,
-                        n.valid = rapportools::nvalid,
-                        pct.valid = -999)
+    dummy <- function(x) NA
     
-    summar_funs <- summar_funs[which(names(summar_funs) %in% stats)]
+    summar_funs <- list(~ mean(., na.rm = na.rm),
+                        ~ sd(., na.rm = na.rm),
+                        ~ min(., na.rm = na.rm),
+                        ~ quantile(., probs = .25, type = 2, names = FALSE, na.rm = na.rm),
+                        ~ median(., na.rm = na.rm),
+                        ~ quantile(., probs = .75, type = 2, names = FALSE, na.rm = na.rm),
+                        ~ max(., na.rm = na.rm),
+                        ~ mad(., na.rm = na.rm),
+                        ~ IQR(., na.rm = na.rm),
+                        ~ dummy(.), # placeholder for cv
+                        ~ rapportools::skewness(., na.rm = na.rm),
+                        ~ dummy(.), # placeholder for se.skewnes
+                        ~ rapportools::kurtosis(., na.rm = na.rm),
+                        ~ rapportools::nvalid(., na.rm = na.rm),
+                        ~ dummy(.))  # placeholder for pct.valid
+    
+    fun_names <- c("mean", "sd", "min", "q1", "med", "q3", "max", "mad", "iqr", "cv", "skewness",
+                   "se.skewness", "kurtosis", "n.valid", "pct.valid")
+    names(summar_funs) <- fun_names
+    summar_funs <- summar_funs[which(fun_names %in% stats)]
 
     if (ncol(x.df) > 1) {
       results <- suppressWarnings(
-        x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+        x.df %>% summarize_all(.funs = summar_funs) %>%
         gather("variable", "value") %>%
         separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
         spread("var", "value")
