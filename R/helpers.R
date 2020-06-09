@@ -53,46 +53,39 @@ conv_non_ascii <- function(...) {
 # levels by the special character intToUtf8(183)
 #' @keywords internal
 ws_to_symbol <- function(x) {
-
   
   ws_symbol <- intToUtf8(183)
-  
-  if (is.character(x)) {
-    # We convert everything to UTF-8
-    x_encod <- Encoding(x)
-    
-    for (enc in setdiff(Encoding(x), "unknown")) {
-      x[x_encod == enc] <- iconv(x[x_encod == enc], from = enc, to = "UTF-8")
-    }
-    
-    x <- gsub("((?:\\A|\\G) )|(?&rec)( )+(?'rec')$", ws_symbol, x, perl = TRUE)
-    
-    return(x)
+  x_is_char <- is.character(x)
+  if (isTRUE(x_is_char)) {
+    x <- as.factor(x)
   }
   
-  if (is.factor(x)) {
-    xx <- levels(x)
-    xx_encod <- Encoding(xx)
-    
-    for (enc in setdiff(Encoding(xx), "unknown")) {
-      xx[xx_encod == enc] <- iconv(xx[xx_encod == enc], 
-                                   from = enc, to = "UTF-8")
-    }
-    
-    left_ws_count  <- nchar(xx) - nchar(sub("^ +", "", xx))
-    right_ws_count <- nchar(xx) - nchar(sub(" +$", "", xx))
-
-    # Correction to avoid doubling the length of whitespace-only strings
-    right_ws_count[right_ws_count == nchar(xx)] <- 0
-    
-    xx <- gsub("((?:\\A|\\G) )|(?&rec)( )+(?'rec')$", ws_symbol, xx, perl = TRUE)
-    
-    
-    levels(x) <- xx
-    
+  xx <- levels(x)
+  xx_encod <- Encoding(xx)
+  
+  for (enc in setdiff(Encoding(xx), "unknown")) {
+    xx[xx_encod == enc] <- iconv(xx[xx_encod == enc], 
+                                 from = enc, to = "UTF-8")
+  }
+  
+  left_ws_count  <- nchar(xx) - nchar(sub("^ +", "", xx))
+  right_ws_count <- nchar(xx) - nchar(sub(" +$", "", xx))
+  
+  # Correction to avoid doubling the length of whitespace-only strings
+  right_ws_count[right_ws_count == nchar(xx)] <- 0
+  
+  xx <- gsub("((?:\\A|\\G) )|(?&rec)( )+(?'rec')$", ws_symbol, xx, perl = TRUE)
+  
+  
+  levels(x) <- xx
+  
+  if (isTRUE(x_is_char)) {
+    return(as.character(x))
+  } else {
     return(x)
   }
 }
+
 
 # Shorcut function to get translation strings
 #' @keywords internal
