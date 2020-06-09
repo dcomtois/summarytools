@@ -4,7 +4,9 @@
 \name{tabagisme}
 \alias{tabagisme}
 \title{Usage du Tabac et etat de Sante (Donnees simulees)}
-\format{Un data frame de 1000 rangees et 9 colonnes}
+\format{
+Un data frame de 1000 rangees et 9 colonnes
+}
 \usage{
 data(tabagisme)
 }

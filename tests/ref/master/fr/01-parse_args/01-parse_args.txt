@@ -1,0 +1,1059 @@
+
+# -----------------  ------------------------------ parse_args.R ----------------------------------
+> library(dplyr)
+
+> library(magrittr)
+
+> library(pipeR)
+
+> data(tobacco)
+
+> label(tobacco) <- "Tobacco Study"
+
+> label(tobacco$smoker) <- "Smoking Status"
+
+> label(tobacco$age) <- "Age of the Subject"
+
+# -----------------  Basic cases
+> freq(tobacco$smoker)
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> freq(tobacco["smoker"])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> freq(tobacco[["smoker"]])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> freq(tobacco[,5])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> freq(tobacco[[5]])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+# -----------------  With row subsets
+> freq(tobacco$smoker[1:100])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      27      27.00           27.00     27.00          27.00
+         No      73      73.00          100.00     73.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total     100     100.00          100.00    100.00         100.00
+
+> freq(tobacco[1:100, "smoker"])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      27      27.00           27.00     27.00          27.00
+         No      73      73.00          100.00     73.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total     100     100.00          100.00    100.00         100.00
+
+> freq(tobacco[1:100, 5])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      27      27.00           27.00     27.00          27.00
+         No      73      73.00          100.00     73.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total     100     100.00          100.00    100.00         100.00
+
+> freq(tobacco[[5]][1:100])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes      27      27.00           27.00     27.00          27.00
+         No      73      73.00          100.00     73.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total     100     100.00          100.00    100.00         100.00
+
+> freq(tobacco$smoker[tobacco$smoker=="Yes"])
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298     100.00          100.00    100.00         100.00
+         No       0       0.00          100.00      0.00         100.00
+       <NA>       0                                 0.00         100.00
+      Total     298     100.00          100.00    100.00         100.00
+
+# -----------------  Standalone variable
+> smoker <- tobacco$smoker
+
+> freq(smoker)
+Tableau de fréquences  
+smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+# -----------------  with
+> with(tobacco, freq(smoker))           
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> with(tobacco, descr(age))             
+Statistiques descriptives  
+tobacco$age  
+Étiquette: Age of the Subject  
+N: 1000  
+
+                         age
+------------------- --------
+                Moy    49.60
+         Écart-type    18.29
+                Min    18.00
+                 Q1    34.00
+            Médiane    50.00
+                 Q3    66.00
+                Max    80.00
+                ÉMA    23.72
+                ÉIQ    32.00
+                 CV     0.37
+          Asymétrie    -0.04
+       ET-Asymétrie     0.08
+      Aplatissement    -1.26
+          Nb.Valide   975.00
+         Pct.Valide    97.50
+
+> with(tobacco, ctable(smoker, diseased))
+Tableau croisé, proportions par rangées  
+smoker * diseased  
+Data frame: tobacco  
+Étiquette: Tobacco Study  
+
+-------- ---------- ------------- ------------- ---------------
+           diseased           Yes            No           Total
+  smoker                                                       
+     Yes              125 (41.9%)   173 (58.1%)    298 (100.0%)
+      No               99 (14.1%)   603 (85.9%)    702 (100.0%)
+   Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
+-------- ---------- ------------- ------------- ---------------
+
+# -----------------  pipe - magrittr
+> tobacco$smoker %>% freq()
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco["smoker"] %>% freq()
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco[["smoker"]] %>% freq()
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco[,5] %>% freq()
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco[[5]] %>% freq()
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)
+### Tableau-synthèse  
+#### tobacco  
+**Dimensions:** 1000 x 9  
+**Doublons:** 2  
+
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| No | Variable      | Étiquette          | Stats / valeurs          | Fréq. (% de valide) | Diagramme                    | Valide  | Manquant |
++====+===============+====================+==========================+=====================+==============================+=========+==========+
+| 1  | gender\       |                    | 1\. F\                   | 489 (50.0%)\        | IIIIIIIIII \                 | 978\    | 22\      |
+|    | [factor]      |                    | 2\. M                    | 489 (50.0%)         | IIIIIIIIII                   | (97.8%) | (2.2%)   |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 2  | age\          | Age of the Subject | Moy (é-t) : 49.6 (18.3)\ | 63 valeurs uniques  | \                            | 975\    | 25\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | . \ \ \ \ . \ \ \ \ . . . :\ | (97.5%) | (2.5%)   |
+|    |               |                    | 18 < 50 < 80\            |                     | : : : : : . : : : :\         |         |          |
+|    |               |                    | ÉIQ (CV) : 32 (0.4)      |                     | : : : : : : : : : :\         |         |          |
+|    |               |                    |                          |                     | : : : : : : : : : :\         |         |          |
+|    |               |                    |                          |                     | : : : : : : : : : :          |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 3  | age.gr\       |                    | 1\. 18-34\               | 258 (26.5%)\        | IIIII \                      | 975\    | 25\      |
+|    | [factor]      |                    | 2\. 35-50\               | 241 (24.7%)\        | IIII \                       | (97.5%) | (2.5%)   |
+|    |               |                    | 3\. 51-70\               | 317 (32.5%)\        | IIIIII \                     |         |          |
+|    |               |                    | 4\. 71 +                 | 159 (16.3%)         | III                          |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 4  | BMI\          |                    | Moy (é-t) : 25.7 (4.5)\  | 974 valeurs uniques | \                            | 974\    | 26\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | \ \ \ \ \ \ \ \ \ \ :\       | (97.4%) | (2.6%)   |
+|    |               |                    | 8.8 < 25.6 < 39.4\       |                     | \ \ \ \ \ \ \ \ : : :\       |         |          |
+|    |               |                    | ÉIQ (CV) : 5.7 (0.2)     |                     | \ \ \ \ \ \ \ \ : : :\       |         |          |
+|    |               |                    |                          |                     | \ \ \ \ \ \ : : : : :\       |         |          |
+|    |               |                    |                          |                     | \ \ \ \ . : : : : : .        |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 5  | smoker\       | Smoking Status     | 1\. Yes\                 | 298 (29.8%)\        | IIIII \                      | 1000\   | 0\       |
+|    | [factor]      |                    | 2\. No                   | 702 (70.2%)         | IIIIIIIIIIIIII               | (100%)  | (0%)     |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 6  | cigs.per.day\ |                    | Moy (é-t) : 6.8 (11.9)\  | 37 valeurs uniques  | \                            | 965\    | 35\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | :\                           | (96.5%) | (3.5%)   |
+|    |               |                    | 0 < 0 < 40\              |                     | :\                           |         |          |
+|    |               |                    | ÉIQ (CV) : 11 (1.8)      |                     | :\                           |         |          |
+|    |               |                    |                          |                     | :\                           |         |          |
+|    |               |                    |                          |                     | : \ \ . . . . . .            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 7  | diseased\     |                    | 1\. Yes\                 | 224 (22.4%)\        | IIII \                       | 1000\   | 0\       |
+|    | [factor]      |                    | 2\. No                   | 776 (77.6%)         | IIIIIIIIIIIIIII              | (100%)  | (0%)     |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 8  | disease\      |                    | 1\. Hypertension\        | 36 (16.2%)\         | III \                        | 222\    | 778\     |
+|    | [character]   |                    | 2\. Cancer\              | 34 (15.3%)\         | III \                        | (22.2%) | (77.8%)  |
+|    |               |                    | 3\. Cholesterol\         | 21 ( 9.5%)\         | I \                          |         |          |
+|    |               |                    | 4\. Heart\               | 20 ( 9.0%)\         | I \                          |         |          |
+|    |               |                    | 5\. Pulmonary\           | 20 ( 9.0%)\         | I \                          |         |          |
+|    |               |                    | 6\. Musculoskeletal\     | 19 ( 8.6%)\         | I \                          |         |          |
+|    |               |                    | 7\. Diabetes\            | 14 ( 6.3%)\         | I \                          |         |          |
+|    |               |                    | 8\. Hearing\             | 14 ( 6.3%)\         | I \                          |         |          |
+|    |               |                    | 9\. Digestive\           | 12 ( 5.4%)\         | I \                          |         |          |
+|    |               |                    | 10\. Hypotension\        | 11 ( 5.0%)\         | \                            |         |          |
+|    |               |                    | [ 3 autres ]             | 21 ( 9.5%)          | I                            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 9  | samp.wgts\    |                    | Moy (é-t) : 1 (0.1)\     | 0.86!: 267 (26.7%)\ | IIIII \                      | 1000\   | 0\       |
+|    | [numeric]     |                    | min < med < max:\        | 1.04!: 249 (24.9%)\ | IIII \                       | (100%)  | (0%)     |
+|    |               |                    | 0.9 < 1 < 1.1\           | 1.05!: 324 (32.4%)\ | IIIIII \                     |         |          |
+|    |               |                    | ÉIQ (CV) : 0.2 (0.1)     | 1.06!: 160 (16.0%)\ | III \                        |         |          |
+|    |               |                    |                          | ! arrondi           | \                            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+
+> tobacco %$% ctable(smoker, diseased)
+Tableau croisé, proportions par rangées  
+smoker * diseased  
+Data frame: tobacco  
+Étiquette: Tobacco Study  
+
+-------- ---------- ------------- ------------- ---------------
+           diseased           Yes            No           Total
+  smoker                                                       
+     Yes              125 (41.9%)   173 (58.1%)    298 (100.0%)
+      No               99 (14.1%)   603 (85.9%)    702 (100.0%)
+   Total              224 (22.4%)   776 (77.6%)   1000 (100.0%)
+-------- ---------- ------------- ------------- ---------------
+
+> tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
+Statistiques descriptives  
+tobacco$age  
+Étiquette: Age of the Subject  
+N: 1000  
+
+                      age
+---------------- --------
+             Moy    49.60
+      Écart-type    18.29
+             Min    18.00
+         Médiane    50.00
+             Max    80.00
+       Nb.Valide   975.00
+      Pct.Valide    97.50
+
+> tobacco %>% select(age.gr)  %>% freq() # SUCCESS
+Tableau de fréquences  
+tobacco$age.gr  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco %>% group_by(gender) %>% descr()
+Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
+Statistiques descriptives  
+tobacco  
+Étiquette: Tobacco Study  
+Groupe: gender = F  
+N: 489  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    49.56    26.10           6.88        1.00
+         Écart-type    18.28     4.95          12.04        0.08
+                Min    18.00     9.01           0.00        0.86
+                 Q1    34.00    22.98           0.00        0.86
+            Médiane    50.00    25.87           0.00        1.04
+                 Q3    66.00    29.48          10.50        1.05
+                Max    80.00    39.44          40.00        1.06
+                ÉMA    23.72     4.75           0.00        0.01
+                ÉIQ    32.00     6.49          10.25        0.19
+                 CV     0.37     0.19           1.75        0.08
+          Asymétrie    -0.04    -0.02           1.53       -1.03
+       ET-Asymétrie     0.11     0.11           0.11        0.11
+      Aplatissement    -1.25     0.09           0.85       -0.92
+          Nb.Valide   475.00   475.00         468.00      489.00
+         Pct.Valide    97.14    97.14          95.71      100.00
+
+Groupe: gender = M  
+N: 489  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    49.58    25.31           6.72        1.00
+         Écart-type    18.34     3.98          11.83        0.08
+                Min    18.00     8.83           0.00        0.86
+                 Q1    34.00    22.52           0.00        0.86
+            Médiane    49.50    25.14           0.00        1.04
+                 Q3    66.00    27.96          11.00        1.05
+                Max    80.00    36.76          40.00        1.06
+                ÉMA    24.46     4.02           0.00        0.01
+                ÉIQ    32.00     5.44          11.00        0.19
+                 CV     0.37     0.16           1.76        0.08
+          Asymétrie    -0.04    -0.04           1.54       -1.03
+       ET-Asymétrie     0.11     0.11           0.11        0.11
+      Aplatissement    -1.27     0.17           0.92       -0.92
+          Nb.Valide   478.00   477.00         475.00      489.00
+         Pct.Valide    97.75    97.55          97.14      100.00
+
+Groupe: gender = NA  
+N: 22  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    50.86    26.95           6.09        1.01
+         Écart-type    18.23     3.51           9.72        0.08
+                Min    19.00    20.24           0.00        0.86
+                 Q1    36.00    24.97           0.00        1.04
+            Médiane    55.50    27.16           0.00        1.05
+                 Q3    64.00    30.23          10.00        1.05
+                Max    80.00    32.43          28.00        1.06
+                ÉMA    22.98     4.07           0.00        0.01
+                ÉIQ    27.25     5.06           8.75        0.01
+                 CV     0.36     0.13           1.60        0.08
+          Asymétrie    -0.13    -0.34           1.13       -1.20
+       ET-Asymétrie     0.49     0.49           0.49        0.49
+      Aplatissement    -1.36    -0.92          -0.44       -0.56
+          Nb.Valide    22.00    22.00          22.00       22.00
+         Pct.Valide   100.00   100.00         100.00      100.00
+
+> tobacco %>% group_by(gender) %>% freq(smoker)
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = NA  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes       8      36.36           36.36     36.36          36.36
+         No      14      63.64          100.00     63.64         100.00
+       <NA>       0                                 0.00         100.00
+      Total      22     100.00          100.00    100.00         100.00
+
+# -----------------  pipe - pipeR
+> tobacco$smoker %>>% freq()      # OK
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco[["smoker"]] %>>% freq() # OK
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco["smoker"] %>>% freq()   # OK
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco %>>% select(age) %>>% arrange() %>>% descr(stats = "common")  # OK
+Statistiques descriptives  
+tobacco$age  
+Étiquette: Age of the Subject  
+N: 1000  
+
+                      age
+---------------- --------
+             Moy    49.60
+      Écart-type    18.29
+             Min    18.00
+         Médiane    50.00
+             Max    80.00
+       Nb.Valide   975.00
+      Pct.Valide    97.50
+
+> tobacco[,5] %>>% freq()         # OK
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco[[5]] %>% freq()         # OK
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> if (lang != "ru") dfSummary(tobacco) %>% print(style = "grid", plain.ascii = FALSE)  # OK
+### Tableau-synthèse  
+#### tobacco  
+**Dimensions:** 1000 x 9  
+**Doublons:** 2  
+
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| No | Variable      | Étiquette          | Stats / valeurs          | Fréq. (% de valide) | Diagramme                    | Valide  | Manquant |
++====+===============+====================+==========================+=====================+==============================+=========+==========+
+| 1  | gender\       |                    | 1\. F\                   | 489 (50.0%)\        | IIIIIIIIII \                 | 978\    | 22\      |
+|    | [factor]      |                    | 2\. M                    | 489 (50.0%)         | IIIIIIIIII                   | (97.8%) | (2.2%)   |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 2  | age\          | Age of the Subject | Moy (é-t) : 49.6 (18.3)\ | 63 valeurs uniques  | \                            | 975\    | 25\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | . \ \ \ \ . \ \ \ \ . . . :\ | (97.5%) | (2.5%)   |
+|    |               |                    | 18 < 50 < 80\            |                     | : : : : : . : : : :\         |         |          |
+|    |               |                    | ÉIQ (CV) : 32 (0.4)      |                     | : : : : : : : : : :\         |         |          |
+|    |               |                    |                          |                     | : : : : : : : : : :\         |         |          |
+|    |               |                    |                          |                     | : : : : : : : : : :          |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 3  | age.gr\       |                    | 1\. 18-34\               | 258 (26.5%)\        | IIIII \                      | 975\    | 25\      |
+|    | [factor]      |                    | 2\. 35-50\               | 241 (24.7%)\        | IIII \                       | (97.5%) | (2.5%)   |
+|    |               |                    | 3\. 51-70\               | 317 (32.5%)\        | IIIIII \                     |         |          |
+|    |               |                    | 4\. 71 +                 | 159 (16.3%)         | III                          |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 4  | BMI\          |                    | Moy (é-t) : 25.7 (4.5)\  | 974 valeurs uniques | \                            | 974\    | 26\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | \ \ \ \ \ \ \ \ \ \ :\       | (97.4%) | (2.6%)   |
+|    |               |                    | 8.8 < 25.6 < 39.4\       |                     | \ \ \ \ \ \ \ \ : : :\       |         |          |
+|    |               |                    | ÉIQ (CV) : 5.7 (0.2)     |                     | \ \ \ \ \ \ \ \ : : :\       |         |          |
+|    |               |                    |                          |                     | \ \ \ \ \ \ : : : : :\       |         |          |
+|    |               |                    |                          |                     | \ \ \ \ . : : : : : .        |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 5  | smoker\       | Smoking Status     | 1\. Yes\                 | 298 (29.8%)\        | IIIII \                      | 1000\   | 0\       |
+|    | [factor]      |                    | 2\. No                   | 702 (70.2%)         | IIIIIIIIIIIIII               | (100%)  | (0%)     |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 6  | cigs.per.day\ |                    | Moy (é-t) : 6.8 (11.9)\  | 37 valeurs uniques  | \                            | 965\    | 35\      |
+|    | [numeric]     |                    | min < med < max:\        |                     | :\                           | (96.5%) | (3.5%)   |
+|    |               |                    | 0 < 0 < 40\              |                     | :\                           |         |          |
+|    |               |                    | ÉIQ (CV) : 11 (1.8)      |                     | :\                           |         |          |
+|    |               |                    |                          |                     | :\                           |         |          |
+|    |               |                    |                          |                     | : \ \ . . . . . .            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 7  | diseased\     |                    | 1\. Yes\                 | 224 (22.4%)\        | IIII \                       | 1000\   | 0\       |
+|    | [factor]      |                    | 2\. No                   | 776 (77.6%)         | IIIIIIIIIIIIIII              | (100%)  | (0%)     |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 8  | disease\      |                    | 1\. Hypertension\        | 36 (16.2%)\         | III \                        | 222\    | 778\     |
+|    | [character]   |                    | 2\. Cancer\              | 34 (15.3%)\         | III \                        | (22.2%) | (77.8%)  |
+|    |               |                    | 3\. Cholesterol\         | 21 ( 9.5%)\         | I \                          |         |          |
+|    |               |                    | 4\. Heart\               | 20 ( 9.0%)\         | I \                          |         |          |
+|    |               |                    | 5\. Pulmonary\           | 20 ( 9.0%)\         | I \                          |         |          |
+|    |               |                    | 6\. Musculoskeletal\     | 19 ( 8.6%)\         | I \                          |         |          |
+|    |               |                    | 7\. Diabetes\            | 14 ( 6.3%)\         | I \                          |         |          |
+|    |               |                    | 8\. Hearing\             | 14 ( 6.3%)\         | I \                          |         |          |
+|    |               |                    | 9\. Digestive\           | 12 ( 5.4%)\         | I \                          |         |          |
+|    |               |                    | 10\. Hypotension\        | 11 ( 5.0%)\         | \                            |         |          |
+|    |               |                    | [ 3 autres ]             | 21 ( 9.5%)          | I                            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+| 9  | samp.wgts\    |                    | Moy (é-t) : 1 (0.1)\     | 0.86!: 267 (26.7%)\ | IIIII \                      | 1000\   | 0\       |
+|    | [numeric]     |                    | min < med < max:\        | 1.04!: 249 (24.9%)\ | IIII \                       | (100%)  | (0%)     |
+|    |               |                    | 0.9 < 1 < 1.1\           | 1.05!: 324 (32.4%)\ | IIIIII \                     |         |          |
+|    |               |                    | ÉIQ (CV) : 0.2 (0.1)     | 1.06!: 160 (16.0%)\ | III \                        |         |          |
+|    |               |                    |                          | ! arrondi           | \                            |         |          |
++----+---------------+--------------------+--------------------------+---------------------+------------------------------+---------+----------+
+
+> tobacco %>>% select(age.gr) %>>% freq() # SUCCESS
+Tableau de fréquences  
+tobacco$age.gr  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> tobacco %>>% group_by(gender) %>>% descr()
+Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
+Statistiques descriptives  
+tobacco  
+Étiquette: Tobacco Study  
+Groupe: gender = F  
+N: 489  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    49.56    26.10           6.88        1.00
+         Écart-type    18.28     4.95          12.04        0.08
+                Min    18.00     9.01           0.00        0.86
+                 Q1    34.00    22.98           0.00        0.86
+            Médiane    50.00    25.87           0.00        1.04
+                 Q3    66.00    29.48          10.50        1.05
+                Max    80.00    39.44          40.00        1.06
+                ÉMA    23.72     4.75           0.00        0.01
+                ÉIQ    32.00     6.49          10.25        0.19
+                 CV     0.37     0.19           1.75        0.08
+          Asymétrie    -0.04    -0.02           1.53       -1.03
+       ET-Asymétrie     0.11     0.11           0.11        0.11
+      Aplatissement    -1.25     0.09           0.85       -0.92
+          Nb.Valide   475.00   475.00         468.00      489.00
+         Pct.Valide    97.14    97.14          95.71      100.00
+
+Groupe: gender = M  
+N: 489  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    49.58    25.31           6.72        1.00
+         Écart-type    18.34     3.98          11.83        0.08
+                Min    18.00     8.83           0.00        0.86
+                 Q1    34.00    22.52           0.00        0.86
+            Médiane    49.50    25.14           0.00        1.04
+                 Q3    66.00    27.96          11.00        1.05
+                Max    80.00    36.76          40.00        1.06
+                ÉMA    24.46     4.02           0.00        0.01
+                ÉIQ    32.00     5.44          11.00        0.19
+                 CV     0.37     0.16           1.76        0.08
+          Asymétrie    -0.04    -0.04           1.54       -1.03
+       ET-Asymétrie     0.11     0.11           0.11        0.11
+      Aplatissement    -1.27     0.17           0.92       -0.92
+          Nb.Valide   478.00   477.00         475.00      489.00
+         Pct.Valide    97.75    97.55          97.14      100.00
+
+Groupe: gender = NA  
+N: 22  
+
+                         age      BMI   cigs.per.day   samp.wgts
+------------------- -------- -------- -------------- -----------
+                Moy    50.86    26.95           6.09        1.01
+         Écart-type    18.23     3.51           9.72        0.08
+                Min    19.00    20.24           0.00        0.86
+                 Q1    36.00    24.97           0.00        1.04
+            Médiane    55.50    27.16           0.00        1.05
+                 Q3    64.00    30.23          10.00        1.05
+                Max    80.00    32.43          28.00        1.06
+                ÉMA    22.98     4.07           0.00        0.01
+                ÉIQ    27.25     5.06           8.75        0.01
+                 CV     0.36     0.13           1.60        0.08
+          Asymétrie    -0.13    -0.34           1.13       -1.20
+       ET-Asymétrie     0.49     0.49           0.49        0.49
+      Aplatissement    -1.36    -0.92          -0.44       -0.56
+          Nb.Valide    22.00    22.00          22.00       22.00
+         Pct.Valide   100.00   100.00         100.00      100.00
+
+> tobacco %>>% group_by(gender) %>>% freq(smoker)
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = NA  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes       8      36.36           36.36     36.36          36.36
+         No      14      63.64          100.00     63.64         100.00
+       <NA>       0                                 0.00         100.00
+      Total      22     100.00          100.00    100.00         100.00
+
+# -----------------  by
+> stby(tobacco$smoker, tobacco$gender, freq)          
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+> stby(tobacco["smoker"], tobacco["gender"], freq)    
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+> stby(tobacco[,"smoker"], tobacco[,"gender"], freq)  
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+> stby(tobacco[["smoker"]], tobacco[["gender"]], freq)
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+# -----------------  by, numeric column indexing
+> stby(tobacco[[5]], tobacco[[1]], freq)
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+> stby(tobacco[,5], tobacco[,1], freq)  
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+# -----------------  by with ctable
+> stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable) # ok
+Tableau croisé, proportions par rangées  
+smoker * diseased  
+Data frame: tobacco  
+Étiquette: Tobacco Study  
+Groupe: gender = F  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               62 (42.2%)    85 (57.8%)   147 (100.0%)
+      No               49 (14.3%)   293 (85.7%)   342 (100.0%)
+   Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+Groupe: gender = M  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               63 (44.1%)    80 (55.9%)   143 (100.0%)
+      No               47 (13.6%)   299 (86.4%)   346 (100.0%)
+   Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+# -----------------  with + by
+> with(tobacco, stby(smoker, gender, freq))                               
+Tableau de fréquences  
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+Groupe: gender = F  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     147      30.06           30.06     30.06          30.06
+         No     342      69.94          100.00     69.94         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+Groupe: gender = M  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     143      29.24           29.24     29.24          29.24
+         No     346      70.76          100.00     70.76         100.00
+       <NA>       0                                 0.00         100.00
+      Total     489     100.00          100.00    100.00         100.00
+
+> with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))     
+Tableau croisé, proportions par rangées  
+smoker * diseased  
+Data frame: tobacco  
+Étiquette: Tobacco Study  
+Groupe: gender = F  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               62 (42.2%)    85 (57.8%)   147 (100.0%)
+      No               49 (14.3%)   293 (85.7%)   342 (100.0%)
+   Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+Groupe: gender = M  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               63 (44.1%)    80 (55.9%)   143 (100.0%)
+      No               47 (13.6%)   299 (86.4%)   346 (100.0%)
+   Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+> with(tobacco[1:7], stby(list(x = smoker, y = diseased), gender, ctable))
+Tableau croisé, proportions par rangées  
+smoker * diseased  
+Data frame: tobacco  
+Groupe: gender = F  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               62 (42.2%)    85 (57.8%)   147 (100.0%)
+      No               49 (14.3%)   293 (85.7%)   342 (100.0%)
+   Total              111 (22.7%)   378 (77.3%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+Groupe: gender = M  
+
+-------- ---------- ------------- ------------- --------------
+           diseased           Yes            No          Total
+  smoker                                                      
+     Yes               63 (44.1%)    80 (55.9%)   143 (100.0%)
+      No               47 (13.6%)   299 (86.4%)   346 (100.0%)
+   Total              110 (22.5%)   379 (77.5%)   489 (100.0%)
+-------- ---------- ------------- ------------- --------------
+
+# -----------------  lapply
+> print(lapply(tobacco[c(1,3,5)], freq))
+Tableau de fréquences  
+tobacco$gender  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+          F     489      50.00           50.00     48.90          48.90
+          M     489      50.00          100.00     48.90          97.80
+       <NA>      22                                 2.20         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco$age.gr  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+> lap <- lapply(tobacco[c(1,3,5)], freq)
+
+> print(lap)
+Tableau de fréquences  
+tobacco$gender  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+          F     489      50.00           50.00     48.90          48.90
+          M     489      50.00          100.00     48.90          97.80
+       <NA>      22                                 2.20         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco$age.gr  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+      18-34     258      26.46           26.46     25.80          25.80
+      35-50     241      24.72           51.18     24.10          49.90
+      51-70     317      32.51           83.69     31.70          81.60
+       71 +     159      16.31          100.00     15.90          97.50
+       <NA>      25                                 2.50         100.00
+      Total    1000     100.00          100.00    100.00         100.00
+
+tobacco$smoker  
+Étiquette: Smoking Status  
+Type: Facteur  
+
+              Fréq.   % Valide   % Valide cum.   % Total   % Total cum.
+----------- ------- ---------- --------------- --------- --------------
+        Yes     298      29.80           29.80     29.80          29.80
+         No     702      70.20          100.00     70.20         100.00
+       <NA>       0                                 0.00         100.00
+      Total    1000     100.00          100.00    100.00         100.00

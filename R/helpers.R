@@ -38,9 +38,9 @@ conv_non_ascii <- function(...) {
     if (is.null(s)) next
     splitted <- unlist(strsplit(s, ""))
     intvalues <- utf8ToInt(enc2utf8(s))
-    pos_to_modify_lat <- which(intvalues >=  161 & intvalues <=  255)
-    pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <= 1279)
-    pos_to_modify_no  <- which(intvalues == 8470)
+    pos_to_modify_lat <- which(intvalues >=  161 & intvalues <=  255) # latin accentuated
+    pos_to_modify_cyr <- which(intvalues >= 1024 & intvalues <= 1279) # cyrillic
+    pos_to_modify_no  <- which(intvalues == 8470)                     # rus number symbol
     pos_to_modify <- c(pos_to_modify_lat, pos_to_modify_cyr, pos_to_modify_no)
     splitted[pos_to_modify] <- paste0("&#0",  intvalues[pos_to_modify], ";")
     out <- c(out, paste0(splitted, collapse = ""))

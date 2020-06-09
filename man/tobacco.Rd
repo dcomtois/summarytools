@@ -4,7 +4,9 @@
 \name{tobacco}
 \alias{tobacco}
 \title{Tobacco Use and Health - Simulated Dataset}
-\format{A data frame with 1000 rows and 9 variables}
+\format{
+A data frame with 1000 rows and 9 variables
+}
 \usage{
 data(tobacco)
 }

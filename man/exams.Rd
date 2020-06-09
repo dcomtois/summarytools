@@ -4,7 +4,9 @@
 \name{exams}
 \alias{exams}
 \title{Report Cards - Simulated Data}
-\format{A data frame with 30 rows and 8 variables}
+\format{
+A data frame with 30 rows and 8 variables
+}
 \usage{
 data(exams)
 }
