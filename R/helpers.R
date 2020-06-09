@@ -81,7 +81,7 @@ ws_to_symbol <- function(x) {
   
   if (isTRUE(x_is_char)) {
     return(as.character(x))
-  }  else {
+  } else {
     return(x)
   }
 }
@@ -98,16 +98,6 @@ trs <- function(item, l = st_options("lang")) {
   }
 }
 
-# # Shortcut function to get the item name of a translated element
-# #' @keywords internal
-# inv_trs <- function(name, l = st_options("lang")) {
-#   l <- force(l)
-#   if(l != "custom") {
-#     colnames(.translations)[which(.translations["en",] == name)]
-#   } else {
-#     colnames(.st_env$custom_lang)[which(.st_env$custom_lang["custom",] == name)]
-#   }
-# }
 
 # Count "empty" elements (NA's / vectors of size 0)
 #' @keywords internal
