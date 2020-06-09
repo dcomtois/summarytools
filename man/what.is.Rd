@@ -4,7 +4,7 @@
 \alias{what.is}
 \title{Obtain Extended Properties of Objects}
 \usage{
-what.is(x, show.all = FALSE, timeout_sec = 30, ...)
+what.is(x, ...)
 }
 \arguments{
 \item{x}{Any object.}
