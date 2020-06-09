@@ -48,20 +48,35 @@
 #' @importFrom methods is
 #' @importFrom pryr ftype otype
 #' @export
-what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
+what.is <- function(x, show.all=FALSE, timeout_sec=30, ...) {
 
-  if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {
-    stop(paste(
-      "object.size(x) is greater than 10K; computing time might be long.",
-      "Set argument ignore.size.warn to TRUE to force execution anyway")
-    )
+  if ("ignore.size.warn" %in% names(list(...))) {
+    message("ignore.size.warn is deprecated. Use timeout_sec argument to set",
+            "a time limit larger than the default 30 seconds if needed")
   }
+  
+  # if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {
+  #   stop(paste(
+  #     "object.size(x) is greater than 15K; this could take a while.",
+  #     "Set argument ignore.size.warn to TRUE to force execution anyway")
+  #   )
+  # }
 
   # set the warn option to -1 to temporarily ignore warnings
   op <- options("warn")
   options(warn = -1)
   on.exit(options(op))
 
+  # https://stackoverflow.com/questions/7891073/time-out-an-r-command-via-something-like-try
+  with_timeout <- function(expr) {
+    expr  <- substitute(expr)
+    envir <- parent.frame()
+    setTimeLimit(cpu = timeout_sec, elapsed = timeout_sec, transient = TRUE)
+    on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
+    eval(expr, envir = envir)
+  }
+  
+  
   # Part 1. Data Properties - class, typeof, mode, storage.mode
   properties <- 
     data.frame(
@@ -80,32 +95,24 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
     attributes.lengths <- NULL
   }
 
-
-  # Part 3. Test object against all "is.[...]" functions
+  # Part 3. Test object against all "is[...]" functions
   # Look for all relevant functions
   list.id.fun <- grep(methods(is), pattern = "<-", invert = TRUE, value = TRUE)
 
-  # remove is.R which is not relevant and can take a lot of time
-  list.id.fun <- setdiff(list.id.fun, "is.R")
+  # Remove functions which are not essential AND use a lot of time
+  #list.id.fun <- setdiff(list.id.fun, c("is.R", "is.single", "is.na.data.frame",
+  #                                      "is.na.POSIXlt"))
 
-  # loop over all "is" functions with x as argument, and store the results
-  if(!show.all) {
-    extensive.is <- c()
-    for(fun in list.id.fun) {
-      res <- try(eval(call(fun,x)),silent=TRUE)
-      if(isTRUE(res))
-        extensive.is <- append(extensive.is, fun)
-    }
-  } else {
-
+  # loop over "is" functions with x as argument, and store the results
+  if (isTRUE(show.all)) {
     # Generate table of all identifier tests
     extensive.is <- data.frame(test=character(), value=character(),
                                warnings=character(), 
                                stringsAsFactors = FALSE)
-
+    
     # loop over all functions with x as argument, and store the results
     for(fun in list.id.fun) {
-      value <- try(eval(call(fun,x)),silent=TRUE)
+      value <- try(eval(call(fun, x)), silent=TRUE)
       if(inherits(value, "try-error")) {
         next() # ignore tests that yield an error
       } else if (length(value)>1) {
@@ -117,12 +124,24 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
       }
       extensive.is[nrow(extensive.is) + 1, ] <- list(fun, value, warn)
     }
-
+    
     # sort the results according to the results and warnings if any
     extensive.is <- extensive.is[order(extensive.is$value,
                                        extensive.is$warnings == "", 
                                        decreasing = TRUE), ]
-  }
+  } else {
+    extensive.is <- c()
+    cat("Checking object against known is[...] functions .")
+    for(fun in list.id.fun) {
+      if (fun == "is.symmetric" && !is.matrix(x))
+        next
+      cat(".")
+      res <- with_timeout(try(eval(call(fun, x)), silent=TRUE))
+      if(isTRUE(res))
+        extensive.is <- append(extensive.is, fun)
+    }
+    cat("\n")
+  } 
 
   # Part 4. Get info on the type of object - S3, S4, attributes / slots
 
