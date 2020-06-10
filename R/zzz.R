@@ -18,6 +18,14 @@
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 
+# list of all arguments passed internally - this is used to
+# differentiate between pander arguments and other types of arguments
+.st_env$internal_args <- 
+  c("col.widths", "collapse", "cumul", "display.labels",
+    "display.type", "graph.col", "group.only", "headings",
+    "labels.col", "max.tbl.height", "na.col", "report.nas",
+    "round.digits", "valid.col", "var.only", "varnumbers")
+
 # summarytools global options
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
