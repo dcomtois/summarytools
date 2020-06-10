@@ -4,12 +4,13 @@
    `summarytools::view()`. This avoids potential conflicts with
    other packages using the more and more popular `view()` function
    (notably, **tibble**, part of the **tidyverse** family, defines
-   `view()` as an alias of `View()`) 
+   `view()` as an alias for `View()`) 
  - Fixed a bug arising when an object created using a language other
    than the active one (`st_options("lang")`) was displayed 
- - Updated hex logo and added a favicon in html reports 
- - Improved string encoding behavior 
+ - Improved string encoding behavior
  - *html* footnotes are now always enclosed within a `<p>` tag
+ - Updated hex logo and added a favicon in html reports 
+ - Simplified and improved performance of what.is()
  - In dfSummary(): 
    + Added support for list-type columns 
    + Improved performance by optimizing barcode detection and blank character

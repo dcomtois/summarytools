@@ -51,7 +51,8 @@ ultimately realized would benefit a lot of people who are looking for
 the same thing I was seeking in the first place.
 
 If you find **summarytools** helps you accomplish your own work, please
-consider making a small donation using *PayPal*.
+consider making a small donation using *PayPal* or becoming a GitHub
+Sponsor.
 
 <table style="width:100%">
 
@@ -59,7 +60,7 @@ consider making a small donation using *PayPal*.
 
 <td style="text-align:center; border-color:white">
 
-<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+arount+the+globe&currency_code=CAD&source=url'><img src='img/paypal-grey.svg' align="center" height="44"></a>
+<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+arount+the+globe&currency_code=CAD&source=url'><img src='img/paypal-blue.svg' align="center" height="44"></a>
 
 </td>
 

@@ -48,15 +48,18 @@
 #' @importFrom methods is
 #' @importFrom pryr ftype otype
 #' @export
-what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
+what.is <- function(x, ...) {
 
-  if(!is.function(x) && object.size(x) > 20000 && ignore.size.warn == FALSE) {
-    stop(paste(
-      "object.size(x) is greater than 10K; computing time might be long.",
-      "Set argument ignore.size.warn to TRUE to force execution anyway")
-    )
+  if ("ignore.size.warn" %in% names(list(...))) {
+    message("ignore.size.warn is deprecated. The function has been modified ",
+            "in such a way that objects of any size should be processed ",
+            "rapidly")
   }
-
+  
+  if ("show.all" %in% names(list(...))) {
+    message("show.all is deprecated.")
+  }
+  
   # set the warn option to -1 to temporarily ignore warnings
   op <- options("warn")
   options(warn = -1)
@@ -80,50 +83,32 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
     attributes.lengths <- NULL
   }
 
-
-  # Part 3. Test object against all "is.[...]" functions
+  # Part 3. Test object against all "is[...]" functions
   # Look for all relevant functions
   list.id.fun <- grep(methods(is), pattern = "<-", invert = TRUE, value = TRUE)
 
-  # remove is.R which is not relevant and can take a lot of time
-  list.id.fun <- setdiff(list.id.fun, "is.R")
+  # Remove functions which are not essential AND use a lot of time
+  list.id.fun <- setdiff(list.id.fun, c("is.R", "is.single", "is.na.data.frame",
+                                        "is.na.POSIXlt"))
 
-  # loop over all "is" functions with x as argument, and store the results
-  if(!show.all) {
-    extensive.is <- c()
-    for(fun in list.id.fun) {
-      res <- try(eval(call(fun,x)),silent=TRUE)
-      if(isTRUE(res))
-        extensive.is <- append(extensive.is, fun)
-    }
-  } else {
-
-    # Generate table of all identifier tests
-    extensive.is <- data.frame(test=character(), value=character(),
-                               warnings=character(), 
-                               stringsAsFactors = FALSE)
-
-    # loop over all functions with x as argument, and store the results
-    for(fun in list.id.fun) {
-      value <- try(eval(call(fun,x)),silent=TRUE)
-      if(inherits(value, "try-error")) {
-        next() # ignore tests that yield an error
-      } else if (length(value)>1) {
-        warn <- paste("!!! Logical value applies only to the first element of",
-                      "the provided object !!!")
-        value <- paste(value, sep="")
-      } else {
-        warn <- ""
-      }
-      extensive.is[nrow(extensive.is) + 1, ] <- list(fun, value, warn)
-    }
-
-    # sort the results according to the results and warnings if any
-    extensive.is <- extensive.is[order(extensive.is$value,
-                                       extensive.is$warnings == "", 
-                                       decreasing = TRUE), ]
+  # loop over "is" functions with x as argument, and store the results
+  extensive.is <- c()
+  cat("Checking object against known 'is...' functions (", length(list.id.fun), ")")
+  
+  # create progress bar
+  pb <- txtProgressBar(min = 0, max = length(list.id.fun), style = 3)
+  
+  for(i in seq_along(list.id.fun)) {
+    # update progress bar
+    setTxtProgressBar(pb, i)
+    if (list.id.fun[i] == "is.symmetric" && !is.matrix(x))
+      next
+    res <- try(eval(call(fun, x)), silent=TRUE)
+    if(isTRUE(res))
+      extensive.is <- append(extensive.is, fun)
   }
-
+  close(pb)
+  
   # Part 4. Get info on the type of object - S3, S4, attributes / slots
 
   if(is.function(x)) {
@@ -140,3 +125,4 @@ what.is <- function(x, show.all=FALSE, ignore.size.warn=FALSE) {
 
   return(output)
 }
+

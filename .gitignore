@@ -11,6 +11,7 @@ tests/img
 tests/date_dirs.Rdata
 tests/ref_bak_*
 tests/other
+tests/97-misc.R
 tests/tests-0-9-4
 img/ds*.png
 tests/ref - Copy/
