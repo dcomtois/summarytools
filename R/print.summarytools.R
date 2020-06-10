@@ -362,7 +362,6 @@ print.summarytools <- function(x,
   pander_args <- all_fmt_args[setdiff(names(all_fmt_args),
                                       names(format_args))]
   
-  
   # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
@@ -586,7 +585,7 @@ print_freq <- function(x, method) {
     colnames(x) <- c(trs("freq"), trs("pct"))
     
   } else if (!isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
-    # Substract NA counts from total
+    # Subtract NA counts from total
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     # Remove NA row and keep only desired columns
     x <- x[-(nrow(x)-1), 1:3]
