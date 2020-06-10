@@ -24,7 +24,8 @@ utils::globalVariables(c("."))
   c("col.widths", "collapse", "cumul", "display.labels",
     "display.type", "graph.col", "group.only", "headings",
     "labels.col", "max.tbl.height", "na.col", "report.nas",
-    "round.digits", "valid.col", "var.only", "varnumbers")
+    "round.digits", "totals", "valid.col", "var.only",
+    "varnumbers")
 
 # summarytools global options
 #' @importFrom utils data
