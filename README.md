@@ -45,6 +45,29 @@ The package was developed with the following objectives in mind:
     [knitr](https://yihui.org/knitr/)) while also allowing for
     stand-alone, simple report generation
 
+On a more personal level, I simply wish to share with the scientific
+community at large the functions I first developed for myself, that I
+ultimately realized would benefit a lot of people who are looking for
+the same thing I was seeking in the first place.
+
+If you find **summarytools** helps you accomplish your own work, please
+consider making a small donation using *PayPal* or becoming a GitHub
+Sponsor.
+
+<table style="width:100%">
+
+<tr>
+
+<td style="text-align:center; border-color:white">
+
+<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+arount+the+globe&currency_code=CAD&source=url'><img src='img/paypal-blue.svg' align="center" height="52"></a>
+
+</td>
+
+</tr>
+
+</table>
+
 ## 1.2 Redirecting Outputs
 
 Results can be
