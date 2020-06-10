@@ -69,7 +69,7 @@ check_args <- function(mc, dotArgs) {
                               c("l", "c", "m", "r", "d")))) {
         errmsg %+=% "'justify' must be one of 'l', 'c', 'r', or 'd' (default)"
       }
-    } else if (!isTRUE(test_choice(pf$justify, 
+    } else if (!isTRUE(test_choice(tolower(substr(pf$justify, 1, 1)),
                                    c("l", "c", "m", "r")))) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
