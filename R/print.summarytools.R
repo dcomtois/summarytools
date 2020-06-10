@@ -358,9 +358,10 @@ print.summarytools <- function(x,
   pander_args <- append(list(style               = format_info$style,
                              plain.ascii         = format_info$plain.ascii,
                              justify             = justify,
-                             missing             = format_info$missing,
-                             keep.trailing.zeros = TRUE,
-                             split.tables        = Inf),
+                             #missing             = format_info$missing,
+                             #keep.trailing.zeros = TRUE,
+                             split.tables        = format_info$split.tables,
+                             keep.line.breaks    = TRUE),
                         user_fmt) 
   
   # Put back modified x attributes in x 
@@ -887,7 +888,8 @@ print_ctable <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
-  user_fmt    <- attr(x, "user_fmt")
+  format_args <- attr(x, "format_args")
+  pander_args <- attr(x, "pander_args")
   
   # align_numbers --------------------------------------------------------------
   align_numbers <- function(counts, props) {
@@ -942,16 +944,11 @@ print_ctable <- function(x, method) {
     cross_table <- x$cross_table
   }
   
-  format_info$justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-                    l = "left",
-                    c = "center",
-                    r = "right")
-  
   # print_ctable -- pander method ----------------------------------------------
   if (method == "pander") {
     
     # Escape "<" and ">" when used in pairs in rownames or colnames
-    if (!isTRUE(format_info$plain.ascii)) {
+    if (!isTRUE(pander_args$plain.ascii)) {
       row.names(cross_table) <-
         gsub(pattern = "\\<(.*)\\>", replacement = "\\\\<\\1\\\\>",
              x = row.names(cross_table), perl = TRUE)
@@ -960,13 +957,10 @@ print_ctable <- function(x, method) {
              x = colnames(cross_table), perl = TRUE)
     }
     
-    pander_args <- append(list(style        = format_info$style,
-                               plain.ascii  = format_info$plain.ascii,
-                               justify      = format_info$justify,
-                               split.tables = format_info$split.tables),
-                          user_fmt)
-    
     main_sect <- build_heading_pander(format_info, data_info)
+    
+    # formatting <- append(pander_args, format_args)
+    # formatting <- formatting[which(!duplicated(names(formatting)))]
     
     main_sect %+=%
       paste(
@@ -976,7 +970,7 @@ print_ctable <- function(x, method) {
         ),
         collapse = "\n")
     
-    if (isTRUE(format_info$headings) && format_info$style != "grid") {
+    if (isTRUE(format_info$headings) && pander_args$style != "grid") {
       main_sect[[length(main_sect)]] <- sub("^\n", "\n\n", 
                                             main_sect[[length(main_sect)]])
     }
@@ -1339,7 +1333,8 @@ print_dfs <- function(x, method) {
   
   data_info   <- attr(x, "data_info")
   format_info <- attr(x, "format_info")
-  user_fmt    <- attr(x, "user_fmt")
+  format_args <- attr(x, "format_args")
+  pander_args <- attr(x, "pander_args")
   
   if (!isTRUE(parent.frame()$silent) &&
       "png_message" %in% names(attributes(x)) &&
@@ -1490,11 +1485,11 @@ print_dfs <- function(x, method) {
     }
     
     # Check that style is not "simple" or "rmarkdown"
-    if (isTRUE(format_info$style == "simple")) {
-      format_info$style <- "multiline"
+    if (isTRUE(pander_args$style == "simple")) {
+      pander_args$style <- "multiline"
     }
     
-    if (!isTRUE(format_info$plain.ascii)) {
+    if (!isTRUE(pander_args$plain.ascii)) {
       # Escape symbols for words between <>'s to allow <NA> or factor
       # levels such as <ABC> to be rendered correctly
       if (trs("label") %in% names(x)) {
@@ -1527,13 +1522,13 @@ print_dfs <- function(x, method) {
       colnames(x) <- enc2native(colnames(x))
     }
     
-    pander_args <- append(list(style            = format_info$style,
-                               plain.ascii      = format_info$plain.ascii,
-                               justify          = format_info$justify,
-                               split.cells      = format_info$split.cells,
-                               split.tables     = format_info$split.tables,
-                               keep.line.breaks = TRUE),
-                          user_fmt)
+    # pander_args <- append(list(style            = format_info$style,
+    #                            plain.ascii      = format_info$plain.ascii,
+    #                            justify          = format_info$justify,
+    #                            split.cells      = format_info$split.cells,
+    #                            split.tables     = format_info$split.tables,
+    #                            keep.line.breaks = TRUE),
+    #                       user_fmt)
     
     main_sect <- build_heading_pander(format_info, data_info)
 
