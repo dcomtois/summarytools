@@ -3,7 +3,7 @@ setwd("~/GitHub/summarytools")
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
 load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
-#ref_dir <- "D:/Documents/GitHub/summarytools/tests/ref/master"
+ref_dir <- "D:/Documents/GitHub/summarytools/tests/ref/dev-current"
 # To use last saved directory, skip this step ------------------------------------
 # date_dir <- "D:/Documents/GitHub/summarytools/tests/ref-master/"
 (date_dir <- paste(orig_dir, "tests/output", 
@@ -24,8 +24,8 @@ save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
 # Following objects will not be deleted after each iteration; all others will.
 base_content <- c("date_dir", "f", "l", "orig_dir", "ref_dir", "reset", 
                   "testfiles", "base_content", "lang", "compare_dirs")
-l=1
-f=1
+l=2
+f=2
 for (l in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
   for (f in 1:11) {
@@ -70,6 +70,7 @@ for (l in 1:6) {
     
     if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
       Sys.setlocale("LC_CTYPE", "")
+      library(summarytools)
       st_options(lang = "en")
     }
     
