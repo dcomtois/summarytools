@@ -578,7 +578,8 @@ freq <- function(x,
                                         missing        = missing,
                                         display.type   = display.type,
                                         display.labels = display.labels,
-                                        headings       = headings)
+                                        headings       = headings,
+                                        split.tables   = Inf)
     
     attr(output, "user_fmt") <- list(... = ...)
     

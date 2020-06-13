@@ -152,12 +152,15 @@ print.summarytools <- function(x,
                                escape.pipe    = st_options("escape.pipe"), 
                                ...) {
 
-  # Deal with list objects created
-  # - using lapply() 
-  # - using freq with a dataframe as x
-  # - using dplyr::group_by
+  # For list objects (generally created in one of the following ways:
+  # - using lapply(df, FUN), where FUN is [ctable() | descr() | dfSummary()]
+  # - using freq(x) where x is a data frame
+  # - using dplyr::group_by() %>% FUN, FUN in [ctable(), descr(), dfSummary()]
+  #
+  # ... we dispatch x [possibly back] to view()
   if (is.list(x) && 
       !attr(x, "st_type") %in% c("ctable", "descr", "dfSummary")) {
+    
     view(x,
          method        = method,
          file          = file,
@@ -178,32 +181,69 @@ print.summarytools <- function(x,
   knitr.auto.asis.value <- panderOptions("knitr.auto.asis")
   panderOptions("knitr.auto.asis", FALSE)
   on.exit(panderOptions("knitr.auto.asis", knitr.auto.asis.value))
-
-  # Set lang st_option to the language used when creating the object
-  if (isTRUE(st_options("lang") != attributes(x)$lang)) {
-    current_lang <- st_options("lang")
-    st_options(lang = attributes(x)$lang)
-    on.exit(st_options(lang = current_lang), add = TRUE)
-  }
   
-  dotArgs     <- list(...)
-  format_info <- attr(x, "format_info")
-  user_fmt    <- attr(x, "user_fmt")
+  dotArgs <- list(...)
   
   # Recuperate arguments from view() if present -------------------------------
   if ("open.doc" %in% names(dotArgs)) {
-    open.doc <- eval(dotArgs[["open.doc"]])
+    open.doc <- eval(dotArgs$group.only)
   } else {
     open.doc <- FALSE
   }
   
   if ("group.only" %in% names(dotArgs)) {
-    format_info$group.only <- eval(dotArgs[["group.only"]])
+    group.only <- eval(dotArgs$group.only)
+  } else {
+    group.only <- FALSE
   }
-
+  
   if ("var.only" %in% names(dotArgs)) {
-    format_info$var.only <- eval(dotArgs[["var.only"]])
+    var.only <- eval(dotArgs[["var.only"]])
+  } else {
+    var.only <- FALSE
   }
+  
+  # Set st_option(lang) to the language that was active when the object was
+  # created (as indicated by attr(x, "lang")
+  if (isTRUE(st_options("lang") != attr(x, "lang"))) {
+    current_lang <- st_options("lang")
+    st_options(lang = attr(x, "lang"))
+    on.exit(st_options(lang = current_lang), add = TRUE)
+  }
+  
+  method <- switch(tolower(substring(method, 1, 1)),
+                   p = "pander",
+                   b = "browser",
+                   v = "viewer",
+                   r = "render")
+
+  # Change method to browser when file name has .html extension
+  if (grepl("\\.html$", file, ignore.case = TRUE, perl = TRUE) &&
+      !grepl(pattern = tempdir(), x = file, fixed = TRUE) && 
+      method == "pander") {
+    method <- "browser"
+    message("Switching method to 'browser'")
+  }
+  
+  # "Compile" the 3 sources of formatting arguments into a single list,
+  # where source 3 has priority over source 2, which itself has priority
+  # over source 1. 
+  # Source 1 = global options / default values for function
+  # Source 2 = arguments used when creating x
+  # Source 3 = arguments used when calling print / view (overriding feature)
+  cat(123)
+  
+  # Turn some of the arguments into attributes of x
+  # (this simplifies things later on)
+  attr(x, "format_info")$max.tbl.height <- max.tbl.height
+  
+  src1 <- formals()
+  
+  # TODO -- temp - delete IS REPEATED A BIT BELOW?
+  #user_fmt    <- attr(x, "user_fmt")
+  #format_info <- attr(x, "format_info")
+  #format_info$collapse <- collapse
+  
   
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
@@ -213,7 +253,9 @@ print.summarytools <- function(x,
     stop(paste(errmsg, collapse = "\n  "))
   }
 
-  format_info$collapse <- collapse
+  #user_fmt2    <- attr(x, "user_fmt")
+  #format_info <- attr(x, "format_info")
+  #format_info$collapse <- collapse
     
   # Display message if list object printed with base print() method with pander
   if (method == "pander" && 
@@ -307,9 +349,9 @@ print.summarytools <- function(x,
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
   # explicitly specified otherwise
   if (method == "pander" && format_info$style == "rmarkdown" &&
-      isTRUE(format_info$plain.ascii) &&
+      isTRUE(pander_args$plain.ascii) &&
       (!"plain.ascii" %in% (names(dotArgs)))) {
-    format_info$plain.ascii <- FALSE
+    pander_args$plain.ascii <- FALSE
   }
   
   # Evaluate formatting attributes that are symbols at this stage (F, T)
@@ -340,7 +382,7 @@ print.summarytools <- function(x,
   tmp_ind <- which(names(format_info) %in% names(formals(format.default)))
   format_args <- append(
     format_info[tmp_ind],
-    list(justify    = justify,
+    list(justify    = sub("center", "centre", justify),
          nsmall     = format_info$round.digits,
          digits     = format_info$round.digits,
          scientific = FALSE,
@@ -364,7 +406,7 @@ print.summarytools <- function(x,
                              keep.line.breaks    = TRUE),
                         user_fmt) 
   
-  # Put back modified x attributes in x 
+  # Put back modified x attributes "into" x 
   attr(x, "format_info") <- format_info[which(names(format_info) %in% 
                                                 .st_env$internal_args)]
   attr(x, "format_args") <- format_args
@@ -628,11 +670,6 @@ print_freq <- function(x, method) {
   
   if (method=="pander") {
     
-    # freq_table <- format(x = round(x, format_info$round.digits),
-    #                      trim = FALSE,
-    #                      nsmall = format_info$round.digits,
-    #                      justify = justify)
-    
     if (isTRUE(format_info$report.nas)) {
       # Put NA in relevant cells so that pander recognizes them as such
       x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 2] <- NA
@@ -649,7 +686,7 @@ print_freq <- function(x, method) {
     # }
     # 
     # Escape "<" and ">" when used in pairs in rownames
-    if (!isTRUE(format_info$plain.ascii)) {
+    if (!isTRUE(pander_args$plain.ascii)) {
       row.names(x) <- gsub(pattern = "\\<(.*)\\>", 
                            replacement = "\\\\<\\1\\\\>",
                            x = row.names(x), perl = TRUE)
@@ -657,23 +694,15 @@ print_freq <- function(x, method) {
     
     # Translate the "(Other)" category (when "rows" was used to filter out
     # some values
-    rownames(x)[which(rownames(x) == "(Other)")] <-
-      trs("other")
+    rownames(x)[which(rownames(x) == "(Other)")] <- trs("other")
     
     # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
       row.names(x) <- enc2native(row.names(x))
       colnames(x)  <- enc2native(colnames(x))
     }
-    
-    # pander_args <- append(list(style        = format_info$style,
-    #                            plain.ascii  = format_info$plain.ascii,
-    #                            justify      = justify,
-    #                            missing      = format_info$missing,
-    #                            split.tables = Inf),
-    #                       user_fmt)
-    
-    main_sect <- build_heading_pander(format_info, data_info)
+
+    main_sect <- build_heading_pander()
     
     formatting <- append(pander_args, format_args)
     formatting <- formatting[which(!duplicated(names(formatting)))]
@@ -957,7 +986,7 @@ print_ctable <- function(x, method) {
              x = colnames(cross_table), perl = TRUE)
     }
     
-    main_sect <- build_heading_pander(format_info, data_info)
+    main_sect <- build_heading_pander()
     
     # formatting <- append(pander_args, format_args)
     # formatting <- formatting[which(!duplicated(names(formatting)))]
@@ -1219,7 +1248,7 @@ print_descr <- function(x, method) {
         colnames(x)  <- enc2native(colnames(x))
     }
     
-    main_sect <- build_heading_pander(format_info, data_info)
+    main_sect <- build_heading_pander()
 
     formatting <- append(pander_args, format_args)
     formatting <- formatting[which(!duplicated(names(formatting)))]
@@ -1522,15 +1551,7 @@ print_dfs <- function(x, method) {
       colnames(x) <- enc2native(colnames(x))
     }
     
-    # pander_args <- append(list(style            = format_info$style,
-    #                            plain.ascii      = format_info$plain.ascii,
-    #                            justify          = format_info$justify,
-    #                            split.cells      = format_info$split.cells,
-    #                            split.tables     = format_info$split.tables,
-    #                            keep.line.breaks = TRUE),
-    #                       user_fmt)
-    
-    main_sect <- build_heading_pander(format_info, data_info)
+    main_sect <- build_heading_pander()
 
     main_sect %+=%
       paste(
@@ -1708,7 +1729,11 @@ print_dfs <- function(x, method) {
 
 # Build headings (pander) ------------------------------------------------------
 #' @keywords internal
-build_heading_pander <- function(format_info, data_info) {
+build_heading_pander <- function() {
+  
+  format_info <- parent.frame()$format_info
+  data_info   <- parent.frame()$data_info
+  pander_args <- parent.frame(2)$pander_args
   
   caller <- as.character(sys.call(-1))[1]
   head1  <- NA # Main title (e.g. "Data Frame Summary")
@@ -1717,7 +1742,7 @@ build_heading_pander <- function(format_info, data_info) {
              # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
-    if (!isTRUE(format_info$plain.ascii)) {
+    if (!isTRUE(pander_args$plain.ascii)) {
       if (h == 0) {
         re <- paste0("^(\\s*\\n)(.+)\\s", trs("by"), "\\s(.+)$")
         if (grepl(re, str, perl = TRUE)) {
