@@ -69,12 +69,12 @@ check_args <- function(mc, dotArgs) {
                               c("l", "c", "m", "r", "d")))) {
         errmsg %+=% "'justify' must be one of 'l', 'c', 'r', or 'd' (default)"
       }
-    } else if (!isTRUE(test_choice(pf$justify, 
+    } else if (!isTRUE(test_choice(tolower(substr(pf$justify,1,1)), 
                                    c("l", "c", "m", "r")))) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
     
-    pf$justify <- switch(substring(tolower(pf$justify, 1, 1)),
+    pf$justify <- switch(tolower(substr(pf$justify, 1, 1)),
                          l = "left",
                          c = "center",
                          m = "center",
@@ -115,7 +115,7 @@ check_args <- function(mc, dotArgs) {
     }
     
     if ("order" %in% names(mc)) {
-      order <- switch(tolower(substring(sub("[+-]", "", pf$order), 1, 1)),
+      order <- switch(tolower(substr(sub("[+-]", "", pf$order), 1, 1)),
                       d = "default",
                       l = "levels",
                       f = "freq",
@@ -284,7 +284,7 @@ check_args <- function(mc, dotArgs) {
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
     
-    pf$justify <- switch(substring(pf$justify, 1, 1),
+    pf$justify <- switch(tolower(substr(pf$justify, 1, 1)),
                          l = "left",
                          c = "center",
                          m = "center",
@@ -388,7 +388,7 @@ check_args_print <- function(mc) {
   pf <- parent.frame()
   errmsg <- character()
   
-  pf$method <- switch(tolower(substring(pf$method, 1, 1)),
+  pf$method <- switch(tolower(substr(pf$method, 1, 1)),
                       p = "pander",
                       b = "browser",
                       v = "viewer",
