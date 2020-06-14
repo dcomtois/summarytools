@@ -539,7 +539,7 @@ print_freq <- function(x, method) {
     colnames(x) <- c(trs("freq"), trs("pct"))
     
   } else if (!isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
-    # Substract NA counts from total
+    # Subtract NA counts from total
     x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
     # Remove NA row and keep only desired columns
     x <- x[-(nrow(x)-1), 1:3]
@@ -1550,7 +1550,7 @@ print_dfs <- function(x, method) {
         } else if (colnames(x)[co] %in% c(trs("variable"), 
                                           trs("stats.values"))) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
-          cell <- gsub("[ \\t]{2,}", " ", cell)
+          cell <- gsub("[ \t]{2,}", " ", cell)
           table_row %+=% list(
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
