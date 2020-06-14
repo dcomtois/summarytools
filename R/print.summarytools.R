@@ -225,25 +225,7 @@ print.summarytools <- function(x,
     message("Switching method to 'browser'")
   }
   
-  # "Compile" the 3 sources of formatting arguments into a single list,
-  # where source 3 has priority over source 2, which itself has priority
-  # over source 1. 
-  # Source 1 = global options / default values for function
-  # Source 2 = arguments used when creating x
-  # Source 3 = arguments used when calling print / view (overriding feature)
-  cat(123)
-  
-  # Turn some of the arguments into attributes of x
-  # (this simplifies things later on)
   attr(x, "format_info")$max.tbl.height <- max.tbl.height
-  
-  src1 <- formals()
-  
-  # TODO -- temp - delete IS REPEATED A BIT BELOW?
-  #user_fmt    <- attr(x, "user_fmt")
-  #format_info <- attr(x, "format_info")
-  #format_info$collapse <- collapse
-  
   
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
@@ -253,10 +235,6 @@ print.summarytools <- function(x,
     stop(paste(errmsg, collapse = "\n  "))
   }
 
-  #user_fmt2    <- attr(x, "user_fmt")
-  #format_info <- attr(x, "format_info")
-  #format_info$collapse <- collapse
-    
   # Display message if list object printed with base print() method with pander
   if (method == "pander" && 
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
@@ -276,6 +254,9 @@ print.summarytools <- function(x,
   # were not explicit in the latter.
   # Here we check for arguments that can be specified at the function level for
   # freq, descr, ctable and dfSummary (we don't include print/view args)
+  format_info <- attr(x, "format_info")
+  user_fmt    <- attr(x, "user_fmt")
+  
   overrided_args <- character()
   for (format_element in c("style", "plain.ascii", "round.digits",
                            "justify", "cumul", "totals", "report.nas",
@@ -343,7 +324,7 @@ print.summarytools <- function(x,
   
   # Add caption if present in dotArgs
   if ("caption" %in% names(dotArgs)) {
-    attr(x, "user_fmt")$caption <- dotArgs$caption
+    user_fmt$caption <- dotArgs$caption
   }
 
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
