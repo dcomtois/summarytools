@@ -13,9 +13,8 @@ load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
                    sep = "/"))
 date_dirs[nrow(date_dirs) + 1,] <- list(lubridate::today(), date_dir, ref_dir)
 save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
-date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
+#date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
 # end skip -----------------------------------------------------------------------
-date_dirs$dir[1]
 
 (date_dir <- tail(date_dirs$dir, 1))
 
@@ -45,6 +44,9 @@ for (l in 1:6) {
     }
     (setwd(out_dir))
     (outfilename <- paste0(out_dir, "/", sub("\\.R", "", filename), ".txt"))
+    options(width = 180)
+    options(tibble.width = Inf)
+    options(tibble.print_max = Inf)
     outfile <- file(outfilename, open = "wt")
     sink(outfile)
     sink(outfile, type = "message")
