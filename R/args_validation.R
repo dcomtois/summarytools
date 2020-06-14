@@ -65,7 +65,7 @@ check_args <- function(mc, dotArgs) {
   if ("justify" %in% names(mc)) {
     if (caller == "freq") {
       if (!isTRUE(test_string(pf$justify, min.chars = 1)) ||
-          !isTRUE(test_choice(substr(pf$justify,1,1), 
+          !isTRUE(test_choice(tolower(substr(pf$justify,1,1)), 
                               c("l", "c", "m", "r", "d")))) {
         errmsg %+=% "'justify' must be one of 'l', 'c', 'r', or 'd' (default)"
       }
@@ -74,7 +74,7 @@ check_args <- function(mc, dotArgs) {
       errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
     }
     
-    pf$justify <- switch(substring(pf$justify, 1, 1),
+    pf$justify <- switch(substring(tolower(pf$justify, 1, 1)),
                          l = "left",
                          c = "center",
                          m = "center",
