@@ -2,17 +2,20 @@ rm(list=ls())
 setwd("~/GitHub/summarytools")
 (orig_dir <- getwd())
 (ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
-load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
 #ref_dir <- "D:/Documents/GitHub/summarytools/tests/ref/master"
+
+load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
+
 # To use last saved directory, skip this step ------------------------------------
-# date_dir <- "D:/Documents/GitHub/summarytools/tests/ref-master/"
 (date_dir <- paste(orig_dir, "tests/output", 
                    paste(format(Sys.time(), format = "%Y-%m-%d-%Hh%M"),
                          git2r::repository_head()$name, sep = "-"),
                    sep = "/"))
-date_dirs[nrow(date_dirs) + 1,] <- list(nrow(date_dirs) + 1, date_dir, ref_dir)
+date_dirs[nrow(date_dirs) + 1,] <- list(lubridate::today(), date_dir, ref_dir)
 save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
+date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
 # end skip -----------------------------------------------------------------------
+date_dirs$dir[1]
 
 (date_dir <- tail(date_dirs$dir, 1))
 
@@ -70,7 +73,7 @@ for (l in 1:6) {
     
     if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
       Sys.setlocale("LC_CTYPE", "")
-      st_options(lang = "en")
+      #st_options(lang = "en")
     }
     
     rm(list=setdiff(ls(), base_content))
