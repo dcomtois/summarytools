@@ -74,11 +74,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
-                                                                 * rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
+                                                                 ! rounded                                                      
 --------------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, headings = FALSE)
@@ -130,11 +130,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
-                                                                 * rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
+                                                                 ! rounded                                                      
 --------------------------------------------------------------------------------------------------------------------------------
 
 # -----------------  Omit columns
@@ -191,11 +191,11 @@ disease                           1. Hypertension           36 (16.2%)          
                                   10. Hypotension           11 ( 5.0%)                                                     
                                   [ 3 others ]              21 ( 9.5%)            I                                        
 
-samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
-[numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                  0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
-                                  IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
-                                                            * rounded                                                      
+samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
+[numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                  0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
+                                  IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
+                                                            ! rounded                                                      
 ---------------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, labels.col = FALSE)
@@ -251,11 +251,11 @@ No   Variable       Stats / Values            Freqs (% of Valid)    Graph       
                     10. Hypotension           11 ( 5.0%)                                                     
                     [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]      min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                    0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
-                    IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
-                                              * rounded                                                      
+9    samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]      min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                    0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
+                    IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
+                                              ! rounded                                                      
 -------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, valid.col = FALSE)
@@ -311,11 +311,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                           
                                        [ 3 others ]              21 ( 9.5%)            I                              
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                         
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                            
-                                                                 * rounded                                            
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 0        
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                         
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                            
+                                                                 ! rounded                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, na.col = FALSE)
@@ -371,11 +371,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                           
                                        [ 3 others ]              21 ( 9.5%)            I                              
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000     
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)   
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                         
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                            
-                                                                 * rounded                                            
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000     
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)   
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                         
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                            
+                                                                 ! rounded                                            
 ----------------------------------------------------------------------------------------------------------------------
 
 > print(dfs1, graph.col = FALSE)
@@ -428,11 +428,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                               
                                        [ 3 others ]              21 ( 9.5%)                               
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    1000      0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)                       
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)                       
-                                                                 * rounded                                
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    1000      0        
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)                       
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)                       
+                                                                 ! rounded                                
 ----------------------------------------------------------------------------------------------------------
 
 # -----------------  Minimal results using print overrides
@@ -482,11 +482,11 @@ disease        1. Hypertension           36 (16.2%)
                10. Hypotension           11 ( 5.0%)           
                [ 3 others ]              21 ( 9.5%)           
 
-samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)   
-[numeric]      min < med < max:          1.04*: 249 (24.9%)   
-               0.9 < 1 < 1.1             1.05*: 324 (32.4%)   
-               IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)   
-                                         * rounded            
+samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)   
+[numeric]      min < med < max:          1.04!: 249 (24.9%)   
+               0.9 < 1 < 1.1             1.05!: 324 (32.4%)   
+               IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)   
+                                         ! rounded            
 --------------------------------------------------------------
 
 # -----------------  Print to file
@@ -561,11 +561,11 @@ disease        1. Hypertension           36 (16.2%)
                10. Hypotension           11 ( 5.0%)           
                [ 3 others ]              21 ( 9.5%)           
 
-samp.wgts      Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)   
-[numeric]      min < med < max:          1.04*: 249 (24.9%)   
-               0.9 < 1 < 1.1             1.05*: 324 (32.4%)   
-               IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)   
-                                         * rounded            
+samp.wgts      Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)   
+[numeric]      min < med < max:          1.04!: 249 (24.9%)   
+               0.9 < 1 < 1.1             1.05!: 324 (32.4%)   
+               IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)   
+                                         ! rounded            
 --------------------------------------------------------------
 
 > view(dfs2, method="browser", col.widths = c(240, 240, 240), footnote = "3 equal width cols", file = "03-equal-widths.html")
@@ -629,11 +629,11 @@ disease                           1. Hypertension            36 (16.2%)         
                                   4. Heart                   20 ( 9.0%)           I                    
                                   [ 9 others ]              111 (50.0%)           IIIIIIIIII           
 
-samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                
-[numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                 
-                                  0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII               
-                                  IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                  
-                                                            * rounded                                  
+samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                
+[numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                 
+                                  0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII               
+                                  IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                  
+                                                            ! rounded                                  
 
 disease.f                         1. Cancer                  34 (15.3%)           III                  
 [factor]                          2. Cholesterol             21 ( 9.5%)           I                    
@@ -968,11 +968,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           1 ( 4.2%)                                                     
                                        [ 2 others ]              2 ( 8.3%)             I                                       
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 26 (26.0%)     IIIII                 100      0        
-     [numeric]                         min < med < max:          1.04*: 24 (24.0%)     IIII                  (100%)   (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 31 (31.0%)     IIIIII                                  
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 19 (19.0%)     III                                     
-                                                                 * rounded                                                     
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 26 (26.0%)     IIIII                 100      0        
+     [numeric]                         min < med < max:          1.04!: 24 (24.0%)     IIII                  (100%)   (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 31 (31.0%)     IIIIII                                  
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 19 (19.0%)     III                                     
+                                                                 ! rounded                                                     
 
 10   disease.f                         1. Cancer                 3 (12.5%)             II                    24       76       
      [factor]                          2. Cholesterol            2 ( 8.3%)             I                     (24%)    (76%)    
@@ -1053,11 +1053,11 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        10. Hypotension           11 ( 5.0%)                                                     
                                        [ 3 others ]              21 ( 9.5%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86*: 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0.9 < 1 < 1.1             1.05*: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 0.2 (0.1)      1.06*: 160 (16.0%)    III                                      
-                                                                 * rounded                                                      
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.1)       0.86!: 267 (26.7%)    IIIII                 1000      0        
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0.9 < 1 < 1.1             1.05!: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 0.2 (0.1)      1.06!: 160 (16.0%)    III                                      
+                                                                 ! rounded                                                      
 
 10   disease.f                         1. Cancer                 34 (15.3%)            III                   222       778      
      [factor]                          2. Cholesterol            21 ( 9.5%)            I                     (22.2%)   (77.8%)  
@@ -1072,10 +1072,10 @@ No   Variable       Label              Stats / Values            Freqs (% of Val
                                        [ 3 others ]              31 (14.0%)            II                                       
 
 11   samp.wgts.3    Sampling Weights   Mean (sd) : 0.8 (0.5)     0.00 : 267 (26.7%)    IIIII                 1000      0        
-     [numeric]                         min < med < max:          1.04*: 249 (24.9%)    IIII                  (100%)    (0%)     
-                                       0 < 1 < 1.1               1.05*: 324 (32.4%)    IIIIII                                   
-                                       IQR (CV) : 1 (0.6)        1.06*: 160 (16.0%)    III                                      
-                                                                 * rounded                                                      
+     [numeric]                         min < med < max:          1.04!: 249 (24.9%)    IIII                  (100%)    (0%)     
+                                       0 < 1 < 1.1               1.05!: 324 (32.4%)    IIIIII                                   
+                                       IQR (CV) : 1 (0.6)        1.06!: 160 (16.0%)    III                                      
+                                                                 ! rounded                                                      
 
 12   samp.wgts.4    Sampling Weights   Mean (sd) : 1 (0.1)       0.90 : 267 (26.7%)    IIIII                 1000      0        
      [numeric]                         min < med < max:          1.00 : 573 (57.3%)    IIIIIIIIIII           (100%)    (0%)     
@@ -1136,11 +1136,11 @@ No   Variable       Label              Stats / Values             Freqs (% of Va
                                        10. Hypotension            11 ( 4.95%)                                                     
                                        [ 3 others ]               21 ( 9.46%)            I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.08)       0.861*: 267 (26.70%)   IIIII                 1000      0        
-     [numeric]                         min < med < max:           1.044*: 249 (24.90%)   IIII                  (100%)    (0%)     
-                                       0.86 < 1.04 < 1.06         1.049*: 324 (32.40%)   IIIIII                                   
-                                       IQR (CV) : 0.19 (0.08)     1.062*: 160 (16.00%)   III                                      
-                                                                  * rounded                                                       
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.08)       0.861!: 267 (26.70%)   IIIII                 1000      0        
+     [numeric]                         min < med < max:           1.044!: 249 (24.90%)   IIII                  (100%)    (0%)     
+                                       0.86 < 1.04 < 1.06         1.049!: 324 (32.40%)   IIIIII                                   
+                                       IQR (CV) : 0.19 (0.08)     1.062!: 160 (16.00%)   III                                      
+                                                                  ! rounded                                                       
 
 10   disease.f                         1. Cancer                  34 (15.32%)            III                   222       778      
      [factor]                          2. Cholesterol             21 ( 9.46%)            I                     (22.2%)   (77.8%)  
@@ -1218,11 +1218,11 @@ No   Variable       Label              Stats / Values                Freqs (% of
                                        10. Hypotension               11 ( 4.955%)                                                      
                                        [ 3 others ]                  21 ( 9.460%)             I                                        
 
-9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.084)         0.8614*: 267 (26.700%)   IIIII                 1000      0        
-     [numeric]                         min < med < max:              1.0442*: 249 (24.900%)   IIII                  (100%)    (0%)     
-                                       0.861 < 1.044 < 1.062         1.0494*: 324 (32.400%)   IIIIII                                   
+9    samp.wgts      Sampling Weights   Mean (sd) : 1 (0.084)         0.8614!: 267 (26.700%)   IIIII                 1000      0        
+     [numeric]                         min < med < max:              1.0442!: 249 (24.900%)   IIII                  (100%)    (0%)     
+                                       0.861 < 1.044 < 1.062         1.0494!: 324 (32.400%)   IIIIII                                   
                                        IQR (CV) : 0.188 (0.084)      1.0625 : 160 (16.000%)   III                                      
-                                                                     * rounded                                                         
+                                                                     ! rounded                                                         
 
 10   disease.f                         1. Cancer                     34 (15.315%)             III                   222       778      
      [factor]                          2. Cholesterol                21 ( 9.459%)             I                     (22.2%)   (77.8%)  
@@ -1412,7 +1412,7 @@ IQR (CV) : 11 (1.8)</td>
 min < med < max:
 0.9 < 1 < 1.1
 IQR (CV) : 0.2 (0.1)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.86&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;rounded</td></tr></table></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.86&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">!&thinsp;rounded</td></tr></table></td>
       <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ1LTA0OjAwcUsZJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMAAWoZkAAAAASUVORK5CYII=">
 
 </td>
@@ -1453,7 +1453,7 @@ IQR (CV) : 0.2 (0.1)</td>
 min < med < max:
 0 < 1 < 1.1
 IQR (CV) : 1 (0.6)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.00&thinsp;&thinsp;</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;*</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">*&thinsp;rounded</td></tr></table></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">0.00&thinsp;&thinsp;</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">267</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">26.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.04&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">249</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">24.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.05&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">324</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">32.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 2px 0 7px;margin:0;border:0" align="right">1.06&thinsp;!</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">160</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">16.0%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;border:0;margin:0" colspan="5">!&thinsp;rounded</td></tr></table></td>
       <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD0AAABmBAMAAACKBYTuAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5AUfEQYtj/oJOQAAAGJJREFUSMdjYBh4oIQFKAoKCgpA5ZWNMcGo/Kg8teQJpT9BHIBa8lisR5HHdL/RqPyoPNXkCaU/Wqd/MvIHGCjgyd8gMCo/Kk8NeULpj57pXxGLPLL7R+VH5aktTyj9DSQAADsFYhWL4P06AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTMxVDIxOjA2OjQ1LTA0OjAwcUsZJQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0zMVQyMTowNjo0NS0wNDowMAAWoZkAAAAASUVORK5CYII=">
 
 </td>
