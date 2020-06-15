@@ -186,21 +186,17 @@ print.summarytools <- function(x,
   
   # Recuperate arguments from view() if present -------------------------------
   if ("open.doc" %in% names(dotArgs)) {
-    open.doc <- eval(dotArgs$group.only)
+    open.doc <- eval(dotArgs[["open.doc"]])
   } else {
     open.doc <- FALSE
   }
   
   if ("group.only" %in% names(dotArgs)) {
-    group.only <- eval(dotArgs$group.only)
-  } else {
-    group.only <- FALSE
+    attr(x, "format_info")$group.only <- eval(dotArgs[["group.only"]])
   }
   
   if ("var.only" %in% names(dotArgs)) {
-    var.only <- eval(dotArgs[["var.only"]])
-  } else {
-    var.only <- FALSE
+    attr(x, "format_info")$var.only <- eval(dotArgs[["var.only"]])
   }
   
   # Set st_option(lang) to the language that was active when the object was
@@ -226,6 +222,7 @@ print.summarytools <- function(x,
   }
   
   attr(x, "format_info")$max.tbl.height <- max.tbl.height
+  attr(x, "format_info")$collapse       <- collapse
   
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
@@ -330,9 +327,10 @@ print.summarytools <- function(x,
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
   # explicitly specified otherwise
   if (method == "pander" && format_info$style == "rmarkdown" &&
-      isTRUE(pander_args$plain.ascii) &&
+      isTRUE(format_info$plain.ascii) &&
       (!"plain.ascii" %in% (names(dotArgs)))) {
-    pander_args$plain.ascii <- FALSE
+    format_info$plain.ascii <- FALSE
+    #pander_args$plain.ascii <- FALSE
   }
   
   # Evaluate formatting attributes that are symbols at this stage (F, T)
@@ -345,7 +343,7 @@ print.summarytools <- function(x,
   # Separate formatting elements into two groups: one to be used by
   # format(), the other by pander()
   
-  # First fix the value of justify which depends on method ("center"/"centre")
+  # First fix the value of justify - default depends on method
   if (method=="pander") {
     justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                       l = "left",
@@ -363,7 +361,7 @@ print.summarytools <- function(x,
   tmp_ind <- which(names(format_info) %in% names(formals(format.default)))
   format_args <- append(
     format_info[tmp_ind],
-    list(justify    = sub("center", "centre", justify),
+    list(justify    = justify,
          nsmall     = format_info$round.digits,
          digits     = format_info$round.digits,
          scientific = FALSE,
@@ -381,7 +379,9 @@ print.summarytools <- function(x,
   pander_args <- append(list(style               = format_info$style,
                              plain.ascii         = format_info$plain.ascii,
                              justify             = justify,
-                             #missing             = format_info$missing,
+                             missing             = ifelse("missing" %in% names(format_info), 
+                                                          format_info$missing,
+                                                          "NA"),
                              #keep.trailing.zeros = TRUE,
                              split.tables        = format_info$split.tables,
                              keep.line.breaks    = TRUE),
@@ -639,15 +639,26 @@ print_freq <- function(x, method) {
     # Check if all row names are integers (if so, decimals will be removed)
     rownames_are_int <- all(as.integer(temp_rownames) == temp_rownames, 
                             na.rm = TRUE)
-    temp_rownames <- do.call(format, append(format_args, 
-                                            list(x = quote(temp_rownames))))
+    rownames_are_num <- all(is.numeric(rownames(x)))
     if (rownames_are_int) {
+      format_args_tmp <- format_args 
+      format_args_tmp$justify <- sub("center", "centre", format_args_tmp$justify)
+      temp_rownames <- do.call(format, append(format_args_tmp, 
+                                              list(x = quote(temp_rownames))))
       temp_rownames <- sub("\\.0+", "", temp_rownames)
+    } else {
+      # TODO: Make sure to include all compatible arguments
+      temp_rownames <-format(rownames(x),
+                             justify = sub("center", "centre", format_args$justify))
+      # temp_args <- format_args[c("justify", "trim")]
+      # temp_args$justify <- sub("center", "centre", temp_args$justify)
+      # temp_rownames <- do.call(format, append(temp_args, 
+      #                                         list(x = quote(temp_rownames))))
+      
     }
     temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
     row.names(x) <- temp_rownames
   }
-  
   
   if (method=="pander") {
     
@@ -687,12 +698,15 @@ print_freq <- function(x, method) {
     
     formatting <- append(pander_args, format_args)
     formatting <- formatting[which(!duplicated(names(formatting)))]
+    is_na_x   <- is.na(x)
     
     x <- do.call(format, append(format_args, x = quote(x)))
     
     if (!"Weights" %in% names(data_info)) {
       x[ ,1] <- sub("\\.0+", "", x[ ,1])
     }
+    
+    x[is_na_x] <- pander_args$missing
     
     main_sect %+=%
       paste(
@@ -1211,11 +1225,6 @@ print_descr <- function(x, method) {
             paste(attr(x, "ignored"), collapse = ", "))
   }
   
-  # justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-  #                   l = "left",
-  #                   c = "center",
-  #                   r = "right")
-  
   if (method == "pander") {
     
     # print_descr -- pander method ---------------------------------------------
@@ -1233,11 +1242,17 @@ print_descr <- function(x, method) {
 
     formatting <- append(pander_args, format_args)
     formatting <- formatting[which(!duplicated(names(formatting)))]
+    x <- round(x, formatting$digits)
+    
+    x <- do.call(format, append(formatting, list(x = quote(x))))
+    #x <- as.numeric(x)
     
     main_sect %+=%
       paste(
         capture.output(
-          do.call(pander, append(formatting, list(x = quote(x))))
+          do.call(pander, append(formatting[c("style", "plain.ascii",
+                                              "justify", "missing")], 
+                                 list(x = quote(x))))
         ),
         collapse = "\n")
     
@@ -1615,7 +1630,7 @@ print_dfs <- function(x, method) {
         } else if (colnames(x)[co] %in% c(trs("variable"), 
                                           trs("stats.values"))) {
           cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
-          cell <- gsub("[ \\t]{2,}", " ", cell)
+          cell <- gsub("[ \t]{2,}", " ", cell)
           table_row %+=% list(
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
