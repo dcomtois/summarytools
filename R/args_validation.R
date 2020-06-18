@@ -71,7 +71,7 @@ check_args <- function(mc, dotArgs) {
       }
     } else if (!isTRUE(test_choice(tolower(substr(pf$justify,1,1)), 
                                    c("l", "c", "m", "r")))) {
-      errmsg %+=% "'justify' must be one of 'l', 'c', 'r'"
+      errmsg %+=% "'justify' must be one of 'l', 'c', or 'r'"
     }
     
     pf$justify <- switch(tolower(substr(pf$justify, 1, 1)),
@@ -283,14 +283,7 @@ check_args <- function(mc, dotArgs) {
   
   # dfSummary arguments --------------------------------------------------------
   if (caller == "dfSummary") {
-    
-    pf$justify <- switch(tolower(substr(pf$justify, 1, 1)),
-                         l = "left",
-                         c = "center",
-                         m = "center",
-                         d = "default",
-                         r = "right")
-    
+
     if (!isTRUE(test_choice(pf$style, c("grid", "multiline")))) {
       errmsg %+=% "'style' must be either 'grid' or 'multiline'"
     }
@@ -388,18 +381,6 @@ check_args_print <- function(mc) {
   pf <- parent.frame()
   errmsg <- character()
   
-  pf$method <- switch(tolower(substr(pf$method, 1, 1)),
-                      p = "pander",
-                      b = "browser",
-                      v = "viewer",
-                      r = "render")
-  
-  if (attr(pf$x, "lang") != st_options("lang")) {
-    op <- st_options("lang")
-    st_options(lang = attr(pf$x, "lang"))
-    on.exit(st_options(lang = op), add = TRUE)
-  }
-
   if (!isTRUE(test_choice(pf$method, 
                           c("pander", "browser", "viewer", "render")))) {
     errmsg %+=% paste("'method' must be one of 'pander', 'browser', 'viewer',",
@@ -409,9 +390,7 @@ check_args_print <- function(mc) {
   if (!isTRUE(test_int(pf$max.tbl.height, lower = 100, na.ok = FALSE)) &&
       !is.infinite(pf$max.tbl.height)) {
     errmsg %+=% "'max.tbl.height' must be an integer between 100 and Inf"
-  } else {
-    attr(pf$x, "format_info")$max.tbl.height <- pf$max.tbl.height
-  }
+  } 
   
   if (pf$file == "" && isTRUE(pf$append)) {
     errmsg %+=% "'append' is set to TRUE but no file name has been specified"
@@ -446,14 +425,14 @@ check_args_print <- function(mc) {
      errmsg %+=% "'file' path is not valid - check that directory exists"
   }
   
-  # Change method to browser when file name was (most likely) provided by user
-  if (grepl("\\.html$", pf$file, ignore.case = TRUE, perl = TRUE) &&
-      !grepl(pattern = tempdir(), x = pf$file, fixed = TRUE) && 
-      pf$method == "pander") {
-    pf$method <- "browser"
-    message("Switching method to 'browser'")
-  }
-  
+  # # Change method to browser when file name was (most likely) provided by user
+  # if (grepl("\\.html$", pf$file, ignore.case = TRUE, perl = TRUE) &&
+  #     !grepl(pattern = tempdir(), x = pf$file, fixed = TRUE) && 
+  #     pf$method == "pander") {
+  #   pf$method <- "browser"
+  #   message("Switching method to 'browser'")
+  # }
+  # 
   if (pf$method == "pander" && !is.na(pf$table.classes)) {
     errmsg %+=% "'table.classes' option does not apply to method 'pander'"
   }

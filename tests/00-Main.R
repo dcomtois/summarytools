@@ -1,9 +1,17 @@
 rm(list=ls())
 setwd("~/GitHub/summarytools")
 (orig_dir <- getwd())
-(ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
-#ref_dir <- "D:/Documents/GitHub/summarytools/tests/ref/master"
-
+if (!git2r::repository_head()$name %in% dir("tests/ref")) {
+  cat("********** Using dev-current references as no exist for current branch ************\n")
+  cat("********** branch name: ", git2r::repository_head()$name, "\n")
+  cat("********** Ref dirs available: ", paste(dir("tests/ref"), collapse = ", "))
+  cat("********** Ref dir used: tests/ref/dev-current\n")
+  ref_dir <- paste0(orig_dir, "/tests/ref/dev-current")
+  # ref_dir <- paste0(orig_dir, "/tests/ref/master")
+} else {
+  (ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
+}
+  
 load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
 
 # To use last saved directory, skip this step ------------------------------------
@@ -16,21 +24,31 @@ save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
 #date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
 # end skip -----------------------------------------------------------------------
 
+#date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors=F)
+
 (date_dir <- tail(date_dirs$dir, 1))
-
 (dir.create(date_dir, recursive = TRUE, showWarnings = FALSE))
-
 (testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "^\\d{2}\\-",
                    perl = TRUE, value = TRUE)[-1])
 
 # Following objects will not be deleted after each iteration; all others will.
 base_content <- c("date_dir", "f", "l", "orig_dir", "ref_dir", "reset", 
                   "testfiles", "base_content", "lang", "compare_dirs")
+
+cleanup <- function() {
+  closeAllConnections()
+  cat("\nSink has been stopped for results and messages\n")
+}
+
 l=1
 f=1
 for (l in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
   for (f in 1:11) {
+    options(width = 200)
+    options(tibble.print_max = 200)
+    options(tibble.width = 200)
+    
     filename <- testfiles[f]
     (out_dir <- paste(date_dir, lang, sub("\\.R", "", filename), sep = "/"))
     (dir.create(out_dir, recursive = TRUE, showWarnings = FALSE))
@@ -44,15 +62,13 @@ for (l in 1:6) {
     }
     (setwd(out_dir))
     (outfilename <- paste0(out_dir, "/", sub("\\.R", "", filename), ".txt"))
-    options(width = 180)
-    options(tibble.width = Inf)
-    options(tibble.print_max = Inf)
     outfile <- file(outfilename, open = "wt")
     sink(outfile)
     sink(outfile, type = "message")
     source(file = paste0(orig_dir, "/tests/", filename), local=FALSE, echo=TRUE, spaced=TRUE, 
            prompt.echo="> ", chdir=FALSE, encoding="UTF-8", continue.echo=">", max.deparse.length = 200,
            width.cutoff=200, keep.source=TRUE, print.eval=TRUE)
+    
     sink(type = "message")
     sink()
     close(outfile)
@@ -75,11 +91,9 @@ for (l in 1:6) {
     
     if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
       Sys.setlocale("LC_CTYPE", "")
-      #st_options(lang = "en")
     }
     
     rm(list=setdiff(ls(), base_content))
-    #getwd()
     setwd(orig_dir)
   }
 }
@@ -95,6 +109,8 @@ compare_dirs <- function(lang) {
   }
   if (Sys.info()[['sysname']] == "Linux") {
     system(paste0('meld "', ref_dir, '" "', out_dir, '"'), wait = FALSE)
+    library(summarytools)
+    st_options(lang="en")
   } else {
     cat(ref_dir)
     cat("\n")
