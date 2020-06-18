@@ -140,7 +140,6 @@ dd4 %>% tb(na.rm = TRUE) # no effect expected
 dd4 %>% tb(order = 2)
 view(dd4, file = "dd4.html")
 
-
 # freq
 data(tobacco)
 

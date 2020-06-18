@@ -40,7 +40,7 @@ cleanup <- function() {
 }
 
 l=1
-f=2
+f=1
 for (l in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
   for (f in 1:11) {
@@ -90,12 +90,9 @@ for (l in 1:6) {
     
     if (lang == "ru" && Sys.info()[["sysname"]] == "Windows") {
       Sys.setlocale("LC_CTYPE", "")
-      library(summarytools)
-      st_options(lang = "en")
     }
     
     rm(list=setdiff(ls(), base_content))
-    #getwd()
     setwd(orig_dir)
   }
 }

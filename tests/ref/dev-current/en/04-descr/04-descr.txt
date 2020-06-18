@@ -224,10 +224,10 @@ N: 1000
 Switching method to 'browser'
 Output file written
 
-> view(d2, footnote = "test: ΰιοτω", file = "02.html")
+> view(d2, footnote = "test: Γ Γ©Γ―Γ΄ΓΉ", file = "02.html")
 Output file written
 
-> print(d2, caption = "test: ΰιοτω", file = "02.md")
+> print(d2, caption = "test: Γ Γ©Γ―Γ΄ΓΉ", file = "02.md")
 Output file written
 
 # -----------------  long var names

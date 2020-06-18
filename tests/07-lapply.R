@@ -21,7 +21,7 @@ l1 <- lapply(X = tabagisme[,-c(2,4,9)], FUN = freq)
 print(l1)
 print(l1, footnote = "freq -- negative indexing on columns", file = "02.html")
 view(l1, headings = FALSE, footnote = "headings = FALSE", file = "03.html") 
-view(l1)
+
 l2 <- lapply(X = tabagisme[1:20, c(1,3)], FUN = freq)
 view(l2, footnote = "2 columns with row indexing", file = "04.html")
 
