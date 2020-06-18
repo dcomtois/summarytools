@@ -1218,9 +1218,10 @@ print_descr <- function(x, method) {
     x <- round(x, format_info$digits)
     x <- do.call(format, append(format_args, list(x = quote(x))))
     
-    #if (!"Weights" %in% names(data_info)) {
-    #  x["N.Valid",] <- sub("\\.0+", "", x["N.Valid",])
-    #}
+    if (!"Weights" %in% names(data_info)) {
+      row_ind <- which(trs("n.valid") == rownames(x))
+      x[row_ind, ] <- sub("\\.0+", "", x[row_ind, ])
+    }
     
     main_sect %+=%
       paste(
