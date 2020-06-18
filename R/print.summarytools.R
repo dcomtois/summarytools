@@ -221,9 +221,6 @@ print.summarytools <- function(x,
     message("Switching method to 'browser'")
   }
   
-  attr(x, "format_info")$max.tbl.height <- max.tbl.height
-  attr(x, "format_info")$collapse       <- collapse
-  
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
   errmsg <- check_args_print(mc)
@@ -250,7 +247,7 @@ print.summarytools <- function(x,
   # then by looking at the match.call() from x to set global parameters that 
   # were not explicit in the latter.
   # Here we check for arguments that can be specified at the function level for
-  # freq, descr, ctable and dfSummary (we don't include print/view args)
+  # freq, descr, ctable and dfSummary (we don't include print/view args yet.)
   format_info <- attr(x, "format_info")
   user_fmt    <- attr(x, "user_fmt")
   
@@ -330,7 +327,6 @@ print.summarytools <- function(x,
       isTRUE(format_info$plain.ascii) &&
       (!"plain.ascii" %in% (names(dotArgs)))) {
     format_info$plain.ascii <- FALSE
-    #pander_args$plain.ascii <- FALSE
   }
   
   # Evaluate formatting attributes that are symbols at this stage (F, T)
@@ -340,59 +336,57 @@ print.summarytools <- function(x,
     }
   }
   
-  # Separate formatting elements into two groups: one to be used by
-  # format(), the other by pander()
-  
-  # First fix the value of justify - default depends on method
+  # Fix the value of justify - default depends on method
   if (method=="pander") {
-    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-                      l = "left",
-                      c = "center",
-                      d = "right",
-                      r = "right")
+    format_info$justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                                  l = "left",
+                                  c = "center",
+                                  d = "right",
+                                  r = "right")
   } else {
-    justify <- switch(tolower(substring(format_info$justify, 1, 1)),
-                      l = "left",
-                      c = "center",
-                      d = "center",
-                      r = "right")
+    format_info$justify <- switch(tolower(substring(format_info$justify, 1, 1)),
+                                  l = "left",
+                                  c = "center",
+                                  d = "center",
+                                  r = "right")
   }
   
-  tmp_ind <- which(names(format_info) %in% names(formals(format.default)))
-  format_args <- append(
-    format_info[tmp_ind],
-    list(justify    = justify,
-         nsmall     = format_info$round.digits,
-         digits     = format_info$round.digits,
-         scientific = FALSE,
-         trim       = FALSE)
+  # Add a few elements to format_info
+  format_info <- append(
+    format_info,
+    list(nsmall           = format_info$round.digits,
+         digits           = format_info$round.digits,
+         scientific       = FALSE,
+         keep.line.breaks = TRUE,
+         max.tbl.height   = max.tbl.height,
+         collapse         = collapse)
   )
   
-  # Check if some of user arguments are format.default compatible
-  tmp_ind <- which(names(user_fmt) %in% names(formals(format.default)))
-  format_args <- append(format_args, user_fmt[tmp_ind])
+  format_info$missing <- ifelse("missing" %in% names(format_info),
+                                format_info$missing, "NA")
   
-  # Eliminate redundant arguments (keeping last)
-  format_args <- format_args[which(!duplicated(names(format_args), fromLast = TRUE))]
-
-  # Isolate pander arguments
-  pander_args <- append(list(style               = format_info$style,
-                             plain.ascii         = format_info$plain.ascii,
-                             justify             = justify,
-                             missing             = ifelse("missing" %in% names(format_info), 
-                                                          format_info$missing,
-                                                          "NA"),
-                             #keep.trailing.zeros = TRUE,
-                             split.tables        = format_info$split.tables,
-                             keep.line.breaks    = TRUE),
-                        user_fmt) 
+  format_info <- append(format_info, user_fmt)
   
-  # Put back modified x attributes "into" x 
-  attr(x, "format_info") <- format_info[which(names(format_info) %in% 
-                                                .st_env$internal_args)]
+  # Keep last when multiple values
+  format_info <- format_info[which(!duplicated(names(format_info), 
+                                               fromLast = TRUE))]
+  
+  # Put back modified attributes "into" x 
+  attr(x, "format_info") <- format_info
+  format_args <- format_info[which(names(format_info) %in% 
+                                     names(formals(format.default)))]
+  format_args$justify <- sub("center", "centre", format_args$justify)
   attr(x, "format_args") <- format_args
-  attr(x, "pander_args") <- pander_args
   
+  pander_args <- append(
+    format_info[which(names(format_info) %in% 
+                        c(sub("^table\\.", "", names(panderOptions())), 
+                          "style", "caption", "justify", "missing",
+                          "split.tables", "split.cells", "keep.line.breaks"))],
+    user_fmt)
+  attr(x, "pander_args") <- pander_args[which(!duplicated(names(pander_args), 
+                                                          fromLast = TRUE))]
+    
   # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
     footnote <- 
@@ -641,20 +635,11 @@ print_freq <- function(x, method) {
                             na.rm = TRUE)
     rownames_are_num <- all(is.numeric(rownames(x)))
     if (rownames_are_int) {
-      format_args_tmp <- format_args 
-      format_args_tmp$justify <- sub("center", "centre", format_args_tmp$justify)
-      temp_rownames <- do.call(format, append(format_args_tmp, 
+      temp_rownames <- do.call(format, append(format_args, 
                                               list(x = quote(temp_rownames))))
       temp_rownames <- sub("\\.0+", "", temp_rownames)
     } else {
-      # TODO: Make sure to include all compatible arguments
-      temp_rownames <-format(rownames(x),
-                             justify = sub("center", "centre", format_args$justify))
-      # temp_args <- format_args[c("justify", "trim")]
-      # temp_args$justify <- sub("center", "centre", temp_args$justify)
-      # temp_rownames <- do.call(format, append(temp_args, 
-      #                                         list(x = quote(temp_rownames))))
-      
+      temp_rownames <-format(rownames(x), justify = format_args$justify)
     }
     temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
     row.names(x) <- temp_rownames
@@ -672,11 +657,6 @@ print_freq <- function(x, method) {
       }
     }
     
-    # Remove .00 digits in Freq column when weights are not used
-    # if (!"Weights" %in% names(data_info)) {
-    #   x[ ,1] <- sub("\\.0+", "", x[ ,1])
-    # }
-    # 
     # Escape "<" and ">" when used in pairs in rownames
     if (!isTRUE(pander_args$plain.ascii)) {
       row.names(x) <- gsub(pattern = "\\<(.*)\\>", 
@@ -696,8 +676,6 @@ print_freq <- function(x, method) {
 
     main_sect <- build_heading_pander()
     
-    formatting <- append(pander_args, format_args)
-    formatting <- formatting[which(!duplicated(names(formatting)))]
     is_na_x   <- is.na(x)
     
     x <- do.call(format, append(format_args, x = quote(x)))
@@ -706,7 +684,7 @@ print_freq <- function(x, method) {
       x[ ,1] <- sub("\\.0+", "", x[ ,1])
     }
     
-    x[is_na_x] <- pander_args$missing
+    x[is_na_x] <- format_info$missing
     
     main_sect %+=%
       paste(
@@ -733,23 +711,23 @@ print_freq <- function(x, method) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
         if (co == 1) {
-          table_row %+=% list(tags$th(row.names(x)[ro],
+          table_row %+=% list(tags$th(trimws(row.names(x)[ro]),
                                       align = "center",
                                       class = "st-protect-top-border"))
           if (!"Weights" %in% names(data_info)) {
             cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
                         perl = TRUE)
-            table_row %+=% list(tags$td(cell, align = format_args$justify))
+            table_row %+=% list(tags$td(cell, align = format_info$justify))
             next
           }
         }
         
         if (is.na(x[ro,co])) {
           table_row %+=% list(tags$td(format_info$missing, 
-                                      align = format_args$justify))
+                                      align = format_info$justify))
         } else {
           cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-          table_row %+=% list(tags$td(cell, align = format_args$justify))
+          table_row %+=% list(tags$td(cell, align = format_info$justify))
         }
         
         if (co == ncol(x)) {
@@ -982,9 +960,6 @@ print_ctable <- function(x, method) {
     }
     
     main_sect <- build_heading_pander()
-    
-    # formatting <- append(pander_args, format_args)
-    # formatting <- formatting[which(!duplicated(names(formatting)))]
     
     main_sect %+=%
       paste(
@@ -1240,24 +1215,20 @@ print_descr <- function(x, method) {
     
     main_sect <- build_heading_pander()
 
-    formatting <- append(pander_args, format_args)
-    formatting <- formatting[which(!duplicated(names(formatting)))]
-    x <- round(x, formatting$digits)
+    x <- round(x, format_info$digits)
+    x <- do.call(format, append(format_args, list(x = quote(x))))
     
-    x <- do.call(format, append(formatting, list(x = quote(x))))
-    #x <- as.numeric(x)
+    #if (!"Weights" %in% names(data_info)) {
+    #  x["N.Valid",] <- sub("\\.0+", "", x["N.Valid",])
+    #}
     
     main_sect %+=%
       paste(
         capture.output(
-          do.call(pander, append(formatting[c("style", "plain.ascii",
-                                              "justify", "missing")], 
-                                 list(x = quote(x))))
+          do.call(pander, append(pander_args, list(x = quote(x))))
         ),
         collapse = "\n")
     
-    
-    #do.call(pander, append(arrr, list(x=quote(x))))
     
     if (isTRUE(parent.frame()$escape.pipe) && format_info$style == "grid") {
       main_sect[[length(main_sect)]] <- 
@@ -1268,6 +1239,8 @@ print_descr <- function(x, method) {
     
   } else {
     # print_descr -- html method -----------------------------------------------
+    x <- round(x, format_info$digits)
+    
     table_head <- list(tags$th(""))
 
     for(cn in colnames(x)) {
@@ -1729,7 +1702,7 @@ build_heading_pander <- function() {
   
   format_info <- parent.frame()$format_info
   data_info   <- parent.frame()$data_info
-  pander_args <- parent.frame(2)$pander_args
+  #pander_args <- parent.frame(2)$pander_args
   
   caller <- as.character(sys.call(-1))[1]
   head1  <- NA # Main title (e.g. "Data Frame Summary")
@@ -1738,7 +1711,7 @@ build_heading_pander <- function() {
              # headings = FALSE and by() or lapply() were used
   
   add_markup <- function(str, h = 0) {
-    if (!isTRUE(pander_args$plain.ascii)) {
+    if (!isTRUE(format_info$plain.ascii)) {
       if (h == 0) {
         re <- paste0("^(\\s*\\n)(.+)\\s", trs("by"), "\\s(.+)$")
         if (grepl(re, str, perl = TRUE)) {
