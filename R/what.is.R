@@ -44,7 +44,7 @@
 #'
 #' @keywords attribute classes utilities
 #'
-#' @importFrom utils methods object.size
+#' @importFrom utils methods object.size txtProgressBar setTxtProgressBar
 #' @importFrom methods is
 #' @importFrom pryr ftype otype
 #' @export
