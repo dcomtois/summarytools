@@ -184,19 +184,22 @@ print.summarytools <- function(x,
   
   dotArgs <- list(...)
   
-  # Recuperate arguments from view() if present -------------------------------
+  # Recuperate internal arguments passed from view() if present ----------------
   if ("open.doc" %in% names(dotArgs)) {
     open.doc <- eval(dotArgs[["open.doc"]])
+    dotArgs$open.doc <- NULL
   } else {
     open.doc <- FALSE
   }
   
   if ("group.only" %in% names(dotArgs)) {
     attr(x, "format_info")$group.only <- eval(dotArgs[["group.only"]])
+    dotArgs$group.only <- NULL
   }
   
   if ("var.only" %in% names(dotArgs)) {
     attr(x, "format_info")$var.only <- eval(dotArgs[["var.only"]])
+    dotArgs$var.only <- NULL
   }
   
   # Set st_option(lang) to the language that was active when the object was
@@ -207,7 +210,7 @@ print.summarytools <- function(x,
     on.exit(st_options(lang = current_lang), add = TRUE)
   }
   
-  method <- switch(tolower(substring(method, 1, 1)),
+  method <- switch(tolower(substr(method, 1, 1)),
                    p = "pander",
                    b = "browser",
                    v = "viewer",
@@ -229,7 +232,9 @@ print.summarytools <- function(x,
     stop(paste(errmsg, collapse = "\n  "))
   }
 
-  # Display message if list object printed with base print() method with pander
+  # Display message if list object is being printed (console) with base print()
+  # (thus not taking advantage of print.summarytools() which makes results
+  # much cleaner in the console)
   if (method == "pander" && 
       (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]", 
@@ -238,38 +243,88 @@ print.summarytools <- function(x,
             "use print(x); if by() was used, use stby() instead")
   }
   
-  # Override x's attributes (format_info and heading info) ---------------------
+  # Apply / override parameters - first deal with "meta" information -----------
+  # date is a stand-alone attribute so we treat it separately
   if ("date" %in% names(dotArgs)) {
     attr(x, "date") <- dotArgs[["date"]]
+    dotArgs$date <- NULL
   }
   
-  # Override of formatting elements, first by looking at '...' (var dotArgs),
-  # then by looking at the match.call() from x to set global parameters that 
-  # were not explicit in the latter.
-  # Here we check for arguments that can be specified at the function level for
-  # freq, descr, ctable and dfSummary (we don't include print/view args yet.)
-  format_info <- attr(x, "format_info")
-  user_fmt    <- attr(x, "user_fmt")
+  # Check for elements which have changed names - will be removed in next issue
+  if ("dataframe" %in% tolower(names(dotArgs))) {
+    attr(x, "data_info")$Data.frame <- dotArgs$Dataframe
+    dotArgs$Dataframe <- NULL
+    message("Attribute 'Dataframe' has been renamed to 'Data.frame'; ",
+            "please use the latter in the future")
+  }
   
-  overrided_args <- character()
-  for (format_element in c("style", "plain.ascii", "round.digits",
-                           "justify", "cumul", "totals", "report.nas",
-                           "missing", "headings", "display.labels",
-                           "display.type", "varnumbers", "labels.col", 
-                           "graph.col", "col.widths", "na.col", "valid.col", 
-                           "split.tables")) {
-    if (format_element %in% names(dotArgs)) {
-      format_info[[format_element]] <- dotArgs[[format_element]]
-      overrided_args <- append(overrided_args, format_element)
+  if ("dataframe.label" %in% tolower(names(dotArgs))) {
+    attr(x, "data_info")$Data.frame.label <- dotArgs$Dataframe.label
+    dotArgs$Dataframe.label <- NULL
+    message("Attribute 'Dataframe.label' has been renamed to ",
+            "'Data.frame.label'; please use the latter in the future")
+  }
+  
+  # Scan "dotArgs" for metadata elements
+  overrided_data_info <- character()
+  data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
+                          "Variable.label", "Data.type", "Group", "Weights",
+                          "Row.variable", "Col.variable")
+  for (data_info_element in data_info_elements) {
+    if (length(dotArgs) > 0) {
+      if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
+        # Get matching index if present
+        elem_ind <- grep(paste0("^", data_info_element, "$"), 
+                         names(dotArgs), ignore.case = TRUE)
+        if (length(elem_ind) > 0) {
+          elem_ind_last <- tail(elem_ind, 1) # take last if more than one match
+          # Display message if arugment not spelled exactly as supposed
+          if (names(dotArgs)[elem_ind_last] != data_info_element) {
+            message("Argument ", data_info_element, " misspelled as ",
+                    names(dotArgs)[elem_ind_last])
+            names(dotArgs)[elem_ind_last] <- data_info_element
+          }
+          attr(x, "data_info")[[data_info_element]] <- dotArgs[[elem_ind_last]]
+          for (ind in elem_ind) {
+            dotArgs[[elem_ind]] <- NULL
+          }
+          overrided_data_info <- c(overrided_data_info, data_info_element)
+        }
+      }
     }
   }
   
-  # Global options that apply to all types of summarytools objects
-  # This is useful in a case where some global option was changed after the
-  # object was created.
-  for (format_element in c("style", "plain.ascii", "round.digits", 
-                           "headings", "display.labels")) {
-    if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
+  # Assume all remaining arguments have to do with formatting. Put everything
+  # into a list and eliminate redundant items, keeping last, giving priority
+  # to "dotArgs", then to explicit arguments used when creating the object, as
+  # given by the 'fn_call' attribute; and finally, the other arguments will be
+  # obtained from the st_options() function once more, so that changes in 
+  # those options since the object's creation will be applied.
+  format_info <- 
+    append(list(scientific       = FALSE,
+                keep.line.breaks = TRUE,
+                max.tbl.height   = max.tbl.height,
+                collapse         = collapse),
+           attr(x, "format_info"))
+  
+  if (length(attr(x, "user_fmt")) > 0) {
+    format_info <- append(format_info, attr(x, "user_fmt"))
+  }  
+  
+  if (length(dotArgs) > 0) {
+    format_info <- append(format_info, dotArgs)
+  }
+
+  # Keep only last instance of repeated items
+  format_info <- format_info[which(!duplicated(names(format_info), 
+                                               fromLast = TRUE))]
+  
+  # For parameters that were not explicit, we get their value from
+  # st_options().
+  list_fmt_elements <- c("style", "plain.ascii", "round.digits", "headings",
+                         "display.labels")
+  for (format_element in list_fmt_elements) {
+    if (!format_element %in% c(names(attr(x, "fn_call")), names(dotArgs))) {
       if (!(format_element == "style" &&
             attr(x, "st_type") == "dfSummary") &&
           !(format_element == "round.digits" && 
@@ -279,48 +334,19 @@ print.summarytools <- function(x,
     }
   }
   
-  # Global options specific to one type of summarytools object
+  # Global options specific to the type of st object being printed
   prefix <- paste0(attr(x, "st_type"), ".")
   for (format_element in sub(prefix, "", 
                              grep(prefix, names(st_options()), value = TRUE, 
                                   fixed = TRUE),
                              fixed = TRUE)) {
-    if (!format_element %in% c(overrided_args, names(attr(x, "fn_call")))) {
+    
+    if (!format_element %in% c(names(attr(x, "fn_call")), names(dotArgs))) {
       format_info[[format_element]] <- 
         st_options(paste0(prefix, format_element))
     }
   }
-
-  # Override of data info attributes
-  if ("dataframe" %in% tolower(names(dotArgs))) {
-    dotArgs$Data.frame <- dotArgs$Dataframe
-    message("Attribute 'Dataframe' has been renamed to 'Data.frame'; ",
-            "please use the latter in the future")
-  }
   
-  if ("dataframe.label" %in% tolower(names(dotArgs))) {
-    dotArgs$Data.frame.label <- dotArgs$Dataframe.label
-    message("Attribute 'Dataframe.label' has been renamed to ",
-            "'Data.frame.label'; please use the latter in the future")
-  }
-
-  data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
-                          "Variable.label", "Data.type", "Group", "Weights",
-                          "Row.variable", "Col.variable")
-  for (data_info_element in data_info_elements) {
-    if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
-      attr(x, "data_info")[[data_info_element]] <- 
-        dotArgs[[grep(paste0("^", data_info_element, "$"), names(dotArgs), 
-                      ignore.case = TRUE)]]
-      overrided_args <- append(overrided_args, data_info_element)
-    }
-  }
-  
-  # Add caption if present in dotArgs
-  if ("caption" %in% names(dotArgs)) {
-    user_fmt$caption <- dotArgs$caption
-  }
-
   # When style == 'rmarkdown', set plain.ascii to FALSE unless 
   # explicitly specified otherwise
   if (method == "pander" && format_info$style == "rmarkdown" &&
@@ -351,25 +377,21 @@ print.summarytools <- function(x,
                                   r = "right")
   }
   
-  # Add a few elements to format_info
-  format_info <- append(
-    format_info,
-    list(nsmall           = format_info$round.digits,
-         digits           = format_info$round.digits,
-         scientific       = FALSE,
-         keep.line.breaks = TRUE,
-         max.tbl.height   = max.tbl.height,
-         collapse         = collapse)
-  )
-  
   format_info$missing <- ifelse("missing" %in% names(format_info),
                                 format_info$missing, "NA")
-  
-  format_info <- append(format_info, user_fmt)
   
   # Keep last when multiple values
   format_info <- format_info[which(!duplicated(names(format_info), 
                                                fromLast = TRUE))]
+  
+  # Add nsmall and digits to format_info if not already there
+  if (!"nsmall" %in% names(format_info)) {
+    format_info$nsmall <- format_info$round.digits
+  }
+  
+  if (!"digits" %in% names(format_info)) {
+    format_info$digits <- format_info$round.digits
+  }
   
   # Put back modified attributes "into" x 
   attr(x, "format_info") <- format_info
@@ -383,7 +405,7 @@ print.summarytools <- function(x,
                         c(sub("^table\\.", "", names(panderOptions())), 
                           "style", "caption", "justify", "missing",
                           "split.tables", "split.cells", "keep.line.breaks"))],
-    user_fmt)
+    attr(x, "user_fmt"))
   attr(x, "pander_args") <- pander_args[which(!duplicated(names(pander_args), 
                                                           fromLast = TRUE))]
     
@@ -400,9 +422,9 @@ print.summarytools <- function(x,
   }
 
   # Concatenate data frame + $ + variable name where appropriate
-  if (!("Variable" %in% overrided_args) && 
-      length(attr(x, "data_info")$Variable) == 1 && 
+  if (!("Variable" %in% overrided_data_info) && 
       length(attr(x, "data_info")$Data.frame) == 1 &&
+      "Variable" %in% names(attr(x, "data_info")) &&
       !("by_var_special" %in% names(attr(x, "data_info")))) {
     attr(x, "data_info")$Variable <- paste(attr(x, "data_info")$Data.frame,
                                            attr(x, "data_info")$Variable, 
@@ -625,7 +647,7 @@ print_freq <- function(x, method) {
     x <- x[-nrow(x),]
   }
   
-  # Use format() on row names when x is numerical
+  # Use format() on row names when x is numeric
   if (data_info$Data.type == "Numeric") {
     temp_rownames <- suppressWarnings(as.numeric(rownames(x)))
     temp_rownames_nas <- which(is.na(temp_rownames))
@@ -633,11 +655,11 @@ print_freq <- function(x, method) {
     # Check if all row names are integers (if so, decimals will be removed)
     rownames_are_int <- all(as.integer(temp_rownames) == temp_rownames, 
                             na.rm = TRUE)
-    rownames_are_num <- all(is.numeric(rownames(x)))
+    
     if (rownames_are_int) {
       temp_rownames <- do.call(format, append(format_args, 
                                               list(x = quote(temp_rownames))))
-      temp_rownames <- sub("\\.0+", "", temp_rownames)
+      temp_rownames <- sub("\\D0+$", "", temp_rownames)
     } else {
       temp_rownames <-format(rownames(x), justify = format_args$justify)
     }
@@ -647,15 +669,13 @@ print_freq <- function(x, method) {
   
   if (method=="pander") {
     
-    if (isTRUE(format_info$report.nas)) {
-      # Put NA in relevant cells so that pander recognizes them as such
-      x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 2] <- NA
-      
-      # This not good for case with cumul = FALSE
-      if (isTRUE(format_info$cumul)) {
-        x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 3] <- NA
-      }
-    }
+    # see if this changes anything
+    # if (isTRUE(format_info$report.nas)) {
+    #   x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 2] <- NA
+    #   if (isTRUE(format_info$cumul)) {
+    #     x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 3] <- NA
+    #   }
+    # }
     
     # Escape "<" and ">" when used in pairs in rownames
     if (!isTRUE(pander_args$plain.ascii)) {
@@ -681,7 +701,7 @@ print_freq <- function(x, method) {
     x <- do.call(format, append(format_args, x = quote(x)))
     
     if (!"Weights" %in% names(data_info)) {
-      x[ ,1] <- sub("\\.0+", "", x[ ,1])
+      x[ ,1] <- sub("\\D0+$", "", x[ ,1])
     }
     
     x[is_na_x] <- format_info$missing
@@ -714,12 +734,14 @@ print_freq <- function(x, method) {
           table_row %+=% list(tags$th(trimws(row.names(x)[ro]),
                                       align = "center",
                                       class = "st-protect-top-border"))
+          
+          cell <- do.call(format, append(format_args, x=quote(x[ro,co])))
           if (!"Weights" %in% names(data_info)) {
-            cell <- sub(pattern = "\\.0+", replacement = "", x[ro,co], 
+            cell <- sub(pattern = "\\.0+", replacement = "", cell, 
                         perl = TRUE)
-            table_row %+=% list(tags$td(cell, align = format_info$justify))
-            next
           }
+          table_row %+=% list(tags$td(cell, align = format_info$justify))
+          next
         }
         
         if (is.na(x[ro,co])) {
@@ -1203,8 +1225,6 @@ print_descr <- function(x, method) {
   if (method == "pander") {
     
     # print_descr -- pander method ---------------------------------------------
-    # Format numbers (avoids inconsistencies with pander rounding digits)
-    # x <- do.call(format, args = format_arg)
     
     # set encoding to native to allow proper display of accentuated characters
     if (parent.frame()$file == "") {
@@ -1218,10 +1238,10 @@ print_descr <- function(x, method) {
     x <- round(x, format_info$digits)
     x <- do.call(format, append(format_args, list(x = quote(x))))
     
-    if (!"Weights" %in% names(data_info)) {
-      row_ind <- which(trs("n.valid") == rownames(x))
-      x[row_ind, ] <- sub("\\.0+", "", x[row_ind, ])
-    }
+    #if (!"Weights" %in% names(data_info)) {
+    #  row_ind <- which(trs("n.valid") == rownames(x))
+    #  x[row_ind, ] <- sub("\\.0+", "", x[row_ind, ])
+    #}
     
     main_sect %+=%
       paste(
