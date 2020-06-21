@@ -225,6 +225,15 @@ print(ftob2, file = "10-full-dataset-notype.html", footnote = "Without type")
 # Collapsible outputs
 print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "collapsible sections")
 
+# bigger numbers
+bignum <- rep(tobacco$cigs.per.day, 500) * 999
+freq(bignum, big.mark = ",")
+(fbig <- freq(bignum, big.mark = " ", decimal.mark = ","))
+view(fbig, file = "12-big-numbers.html")
+
+(fbig_w <- freq(bignum, weights = rep(tobacco$samp.wgts, 500), big.mark=" "))
+print(fbig_w, big.mark="'")
+
 st_options("reset")
 detach("package:summarytools")
 detach("package:dplyr")

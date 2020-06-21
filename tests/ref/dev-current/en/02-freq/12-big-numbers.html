@@ -5,7 +5,7 @@
 <style>body{background-color:white;}</style>
 
   <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABZVBMVEUAAAAdPlkcPlkbPlodPVkbO1kbPFcdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPln///+ifs4iAAAAdXRSTlMAAAAAAAAABCpZgZWZmpuhsrgdi7vv939KTE1PUlqiwSCpfR6HsBBFgwtnAhK0gBEaXgcy4Ldda/zRJuUNr6gMd/qmDsoiw6cVb6QUGbUXAxMcCgWgv0PVPsIl1vBOSUiRrRYIlv79+fv15JCPfHRzeIiCZjST6WECAAAAAWJLR0R2MWPJQQAAAAlwSFlzAABcRQAAXEUBuS1iLAAAAAd0SU1FB+QGAQEGMAe8nOwAAADrSURBVBjTJY75P0JREMXn2NWrLK1XIZH2aLEXl56ykwqPspN9ff+/e6/5ac75nPmeISL09vVbrJqm2eyOgUEChoadLrfH62Mj/sDoGGE8OBGaNKfCIBGejlDUGosjkTRTceEgPUOzWgZANudikBmi/Bw6BGh+YXFJLGKWmTpeKZjFVRVxr8koEODrG8rIlRIQWt8sV9Apja3tHQHd3Svs/yPoQJYcFvNH6CJU9WPpIVyr64rUODlV2nZmqCdgnDPqRtp+4WFNn7d16b+6viHc3t0/PHLO2/zp2WGIxsrL69v7x2fq6/vnN4OeP6dLIlhQnl/oAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA2LTAxVDAxOjA2OjQ4KzAyOjAw8gzdpAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNi0wMVQwMTowNjo0OCswMjowMINRZRgAAABXelRYdFJhdyBwcm9maWxlIHR5cGUgaXB0YwAAeJzj8gwIcVYoKMpPy8xJ5VIAAyMLLmMLEyMTS5MUAxMgRIA0w2QDI7NUIMvY1MjEzMQcxAfLgEigSi4A6hcRdPJCNZUAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-  <title>Tanimlayici Istatistikler</title>
+  <title>Frequencies</title>
   <style type="text/css">/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -190,1030 +190,342 @@ table.st-table > tfoot > tr > td {
 </head>
 <body>
 <div class="container st-container">
-  <h3>Tanimlayici Istatistikler</h3>
-  <h4>tobacco</h4>
-  <strong>Grup</strong>: gender = F, age.gr = 18-34
-  <br/><strong>N</strong>: 123
+  <h3>Frequencies</h3>
+  <h4>bignum</h4>
+  <strong>Type</strong>: Numeric
   <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
+  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
   <thead>
     <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
+      <th colspan="2"></th>
+      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+    </tr>
+    <tr>
+      <th align="center">bignum</th>
+      <th align="center">Freq</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
+      <th align="center">%</th>
+      <th align="center">% Cum.</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>25.98</span></td>
-      <td><span>24.25</span></td>
-      <td><span>5.87</span></td>
-      <td><span>0.86</span></td>
+      <th align="center" class="st-protect-top-border">0</th>
+      <td align="center">337 000,00</td>
+      <td align="center">69.84</td>
+      <td align="center">69.84</td>
+      <td align="center">67.40</td>
+      <td align="center">67.40</td>
     </tr>
     <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>4.71</span></td>
-      <td><span>4.75</span></td>
-      <td><span>11.19</span></td>
-      <td><span>0.00</span></td>
+      <th align="center" class="st-protect-top-border">4 995</th>
+      <td align="center">5 500,00</td>
+      <td align="center">1.14</td>
+      <td align="center">70.98</td>
+      <td align="center">1.10</td>
+      <td align="center">68.50</td>
     </tr>
     <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>18.00</span></td>
-      <td><span>12.98</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
+      <th align="center" class="st-protect-top-border">5 994</th>
+      <td align="center">4 500,00</td>
+      <td align="center">0.93</td>
+      <td align="center">71.92</td>
+      <td align="center">0.90</td>
+      <td align="center">69.40</td>
     </tr>
     <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>26.00</span></td>
-      <td><span>24.22</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
+      <th align="center" class="st-protect-top-border">6 993</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">72.64</td>
+      <td align="center">0.70</td>
+      <td align="center">70.10</td>
     </tr>
     <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>34.00</span></td>
-      <td><span>34.84</span></td>
-      <td><span>38.00</span></td>
-      <td><span>0.86</span></td>
+      <th align="center" class="st-protect-top-border">7 992</th>
+      <td align="center">3 000,00</td>
+      <td align="center">0.62</td>
+      <td align="center">73.26</td>
+      <td align="center">0.60</td>
+      <td align="center">70.70</td>
     </tr>
     <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>123</span></td>
-      <td><span>121</span></td>
-      <td><span>119</span></td>
-      <td><span>123</span></td>
+      <th align="center" class="st-protect-top-border">8 991</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">73.78</td>
+      <td align="center">0.50</td>
+      <td align="center">71.20</td>
     </tr>
     <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.37</span></td>
-      <td><span>96.75</span></td>
-      <td><span>100.00</span></td>
+      <th align="center" class="st-protect-top-border">9 990</th>
+      <td align="center">3 000,00</td>
+      <td align="center">0.62</td>
+      <td align="center">74.40</td>
+      <td align="center">0.60</td>
+      <td align="center">71.80</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">10 989</th>
+      <td align="center">9 500,00</td>
+      <td align="center">1.97</td>
+      <td align="center">76.37</td>
+      <td align="center">1.90</td>
+      <td align="center">73.70</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">11 988</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">76.89</td>
+      <td align="center">0.50</td>
+      <td align="center">74.20</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">12 987</th>
+      <td align="center">4 000,00</td>
+      <td align="center">0.83</td>
+      <td align="center">77.72</td>
+      <td align="center">0.80</td>
+      <td align="center">75.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">13 986</th>
+      <td align="center">4 500,00</td>
+      <td align="center">0.93</td>
+      <td align="center">78.65</td>
+      <td align="center">0.90</td>
+      <td align="center">75.90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">14 985</th>
+      <td align="center">5 500,00</td>
+      <td align="center">1.14</td>
+      <td align="center">79.79</td>
+      <td align="center">1.10</td>
+      <td align="center">77.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">15 984</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">80.52</td>
+      <td align="center">0.70</td>
+      <td align="center">77.70</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">16 983</th>
+      <td align="center">3 000,00</td>
+      <td align="center">0.62</td>
+      <td align="center">81.14</td>
+      <td align="center">0.60</td>
+      <td align="center">78.30</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">17 982</th>
+      <td align="center">4 500,00</td>
+      <td align="center">0.93</td>
+      <td align="center">82.07</td>
+      <td align="center">0.90</td>
+      <td align="center">79.20</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">18 981</th>
+      <td align="center">3 000,00</td>
+      <td align="center">0.62</td>
+      <td align="center">82.69</td>
+      <td align="center">0.60</td>
+      <td align="center">79.80</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">19 980</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">83.42</td>
+      <td align="center">0.70</td>
+      <td align="center">80.50</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">20 979</th>
+      <td align="center">6 000,00</td>
+      <td align="center">1.24</td>
+      <td align="center">84.66</td>
+      <td align="center">1.20</td>
+      <td align="center">81.70</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">21 978</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">85.18</td>
+      <td align="center">0.50</td>
+      <td align="center">82.20</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">22 977</th>
+      <td align="center">4 000,00</td>
+      <td align="center">0.83</td>
+      <td align="center">86.01</td>
+      <td align="center">0.80</td>
+      <td align="center">83.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">23 976</th>
+      <td align="center">1 500,00</td>
+      <td align="center">0.31</td>
+      <td align="center">86.32</td>
+      <td align="center">0.30</td>
+      <td align="center">83.30</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">24 975</th>
+      <td align="center">5 500,00</td>
+      <td align="center">1.14</td>
+      <td align="center">87.46</td>
+      <td align="center">1.10</td>
+      <td align="center">84.40</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">25 974</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">87.98</td>
+      <td align="center">0.50</td>
+      <td align="center">84.90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">26 973</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">88.70</td>
+      <td align="center">0.70</td>
+      <td align="center">85.60</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">27 972</th>
+      <td align="center">5 000,00</td>
+      <td align="center">1.04</td>
+      <td align="center">89.74</td>
+      <td align="center">1.00</td>
+      <td align="center">86.60</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">28 971</th>
+      <td align="center">4 000,00</td>
+      <td align="center">0.83</td>
+      <td align="center">90.57</td>
+      <td align="center">0.80</td>
+      <td align="center">87.40</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">29 970</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">91.09</td>
+      <td align="center">0.50</td>
+      <td align="center">87.90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">30 969</th>
+      <td align="center">4 000,00</td>
+      <td align="center">0.83</td>
+      <td align="center">91.92</td>
+      <td align="center">0.80</td>
+      <td align="center">88.70</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">31 968</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">92.64</td>
+      <td align="center">0.70</td>
+      <td align="center">89.40</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">32 967</th>
+      <td align="center">3 000,00</td>
+      <td align="center">0.62</td>
+      <td align="center">93.26</td>
+      <td align="center">0.60</td>
+      <td align="center">90.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">33 966</th>
+      <td align="center">4 500,00</td>
+      <td align="center">0.93</td>
+      <td align="center">94.20</td>
+      <td align="center">0.90</td>
+      <td align="center">90.90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">34 965</th>
+      <td align="center">4 000,00</td>
+      <td align="center">0.83</td>
+      <td align="center">95.03</td>
+      <td align="center">0.80</td>
+      <td align="center">91.70</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">35 964</th>
+      <td align="center">4 500,00</td>
+      <td align="center">0.93</td>
+      <td align="center">95.96</td>
+      <td align="center">0.90</td>
+      <td align="center">92.60</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">36 963</th>
+      <td align="center">6 500,00</td>
+      <td align="center">1.35</td>
+      <td align="center">97.31</td>
+      <td align="center">1.30</td>
+      <td align="center">93.90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">37 962</th>
+      <td align="center">7 000,00</td>
+      <td align="center">1.45</td>
+      <td align="center">98.76</td>
+      <td align="center">1.40</td>
+      <td align="center">95.30</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">38 961</th>
+      <td align="center">3 500,00</td>
+      <td align="center">0.73</td>
+      <td align="center">99.48</td>
+      <td align="center">0.70</td>
+      <td align="center">96.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">39 960</th>
+      <td align="center">2 500,00</td>
+      <td align="center">0.52</td>
+      <td align="center">100.00</td>
+      <td align="center">0.50</td>
+      <td align="center">96.50</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
+      <td align="center">17 500,00</td>
+      <td align="center"></td>
+      <td align="center"></td>
+      <td align="center">3.50</td>
+      <td align="center">100.00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">Total</th>
+      <td align="center">500 000,00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
+      <td align="center">100.00</td>
     </tr>
   </tbody>
 </table>
+  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> version 3.6.3)<br/>2020-06-21</p>
 </div>
- <div class="container st-container">
-  <strong>Grup</strong>: gender = F, age.gr = 35-50
-  <br/><strong>N</strong>: 118
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>41.99</span></td>
-      <td><span>25.55</span></td>
-      <td><span>6.68</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>4.54</span></td>
-      <td><span>4.84</span></td>
-      <td><span>11.58</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>35.00</span></td>
-      <td><span>10.35</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>42.00</span></td>
-      <td><span>25.66</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>39.44</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>118</span></td>
-      <td><span>112</span></td>
-      <td><span>115</span></td>
-      <td><span>118</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>94.92</span></td>
-      <td><span>97.46</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = F, age.gr = 51-70
-  <br/><strong>N</strong>: 157
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>27.08</span></td>
-      <td><span>7.20</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>5.70</span></td>
-      <td><span>4.88</span></td>
-      <td><span>12.58</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>51.00</span></td>
-      <td><span>9.01</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>26.91</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>70.00</span></td>
-      <td><span>39.21</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>157</span></td>
-      <td><span>154</span></td>
-      <td><span>153</span></td>
-      <td><span>157</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.09</span></td>
-      <td><span>97.45</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = F, age.gr = 71 +
-  <br/><strong>N</strong>: 77
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>75.52</span></td>
-      <td><span>28.01</span></td>
-      <td><span>7.65</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>2.94</span></td>
-      <td><span>4.60</span></td>
-      <td><span>12.88</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>71.00</span></td>
-      <td><span>18.36</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>76.00</span></td>
-      <td><span>27.65</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>80.00</span></td>
-      <td><span>38.37</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>77</span></td>
-      <td><span>75</span></td>
-      <td><span>69</span></td>
-      <td><span>77</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.40</span></td>
-      <td><span>89.61</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = F, age.gr = (Missing)
-  <br/><strong>N</strong>: 14
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td>NA</td>
-      <td><span>25.37</span></td>
-      <td><span>10.17</span></td>
-      <td><span>0.94</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td>NA</td>
-      <td><span>4.35</span></td>
-      <td><span>13.39</span></td>
-      <td><span>0.10</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td>NA</td>
-      <td><span>18.84</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td>NA</td>
-      <td><span>25.92</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td>NA</td>
-      <td><span>31.83</span></td>
-      <td><span>31.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>0</span></td>
-      <td><span>13</span></td>
-      <td><span>12</span></td>
-      <td><span>14</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td>NA</td>
-      <td><span>92.86</span></td>
-      <td><span>85.71</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = M, age.gr = 18-34
-  <br/><strong>N</strong>: 130
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>26.38</span></td>
-      <td><span>23.36</span></td>
-      <td><span>7.36</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>4.91</span></td>
-      <td><span>3.66</span></td>
-      <td><span>12.66</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>18.00</span></td>
-      <td><span>8.83</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>26.00</span></td>
-      <td><span>23.74</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>34.00</span></td>
-      <td><span>32.73</span></td>
-      <td><span>40.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>130</span></td>
-      <td><span>126</span></td>
-      <td><span>127</span></td>
-      <td><span>130</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>96.92</span></td>
-      <td><span>97.69</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = M, age.gr = 35-50
-  <br/><strong>N</strong>: 118
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>42.64</span></td>
-      <td><span>24.74</span></td>
-      <td><span>5.44</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>4.70</span></td>
-      <td><span>3.82</span></td>
-      <td><span>10.37</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>35.00</span></td>
-      <td><span>15.15</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>42.00</span></td>
-      <td><span>24.66</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>34.76</span></td>
-      <td><span>40.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>118</span></td>
-      <td><span>115</span></td>
-      <td><span>114</span></td>
-      <td><span>118</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.46</span></td>
-      <td><span>96.61</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = M, age.gr = 51-70
-  <br/><strong>N</strong>: 151
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>61.51</span></td>
-      <td><span>26.62</span></td>
-      <td><span>6.89</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>5.51</span></td>
-      <td><span>3.56</span></td>
-      <td><span>11.69</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>51.00</span></td>
-      <td><span>17.79</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>61.00</span></td>
-      <td><span>26.61</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>70.00</span></td>
-      <td><span>34.97</span></td>
-      <td><span>39.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>151</span></td>
-      <td><span>149</span></td>
-      <td><span>146</span></td>
-      <td><span>151</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>98.68</span></td>
-      <td><span>96.69</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = M, age.gr = 71 +
-  <br/><strong>N</strong>: 79
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>75.33</span></td>
-      <td><span>26.85</span></td>
-      <td><span>7.06</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>2.81</span></td>
-      <td><span>4.16</span></td>
-      <td><span>12.44</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>71.00</span></td>
-      <td><span>16.36</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>75.00</span></td>
-      <td><span>26.73</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>80.00</span></td>
-      <td><span>36.76</span></td>
-      <td><span>37.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>79</span></td>
-      <td><span>77</span></td>
-      <td><span>77</span></td>
-      <td><span>79</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>97.47</span></td>
-      <td><span>97.47</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = M, age.gr = (Missing)
-  <br/><strong>N</strong>: 11
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td>NA</td>
-      <td><span>24.90</span></td>
-      <td><span>8.00</span></td>
-      <td><span>1.03</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td>NA</td>
-      <td><span>2.65</span></td>
-      <td><span>14.51</span></td>
-      <td><span>0.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td>NA</td>
-      <td><span>20.27</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td>NA</td>
-      <td><span>24.80</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td>NA</td>
-      <td><span>30.52</span></td>
-      <td><span>36.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>0</span></td>
-      <td><span>10</span></td>
-      <td><span>11</span></td>
-      <td><span>11</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td>NA</td>
-      <td><span>90.91</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = (Missing), age.gr = 18-34
-  <br/><strong>N</strong>: 5
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>26.40</span></td>
-      <td><span>25.93</span></td>
-      <td><span>6.60</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>4.83</span></td>
-      <td><span>3.32</span></td>
-      <td><span>12.16</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>19.00</span></td>
-      <td><span>21.54</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>29.00</span></td>
-      <td><span>25.89</span></td>
-      <td><span>0.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>30.00</span></td>
-      <td><span>29.72</span></td>
-      <td><span>28.00</span></td>
-      <td><span>0.86</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = (Missing), age.gr = 35-50
-  <br/><strong>N</strong>: 5
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>40.80</span></td>
-      <td><span>23.68</span></td>
-      <td><span>3.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>5.59</span></td>
-      <td><span>3.26</span></td>
-      <td><span>4.47</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>36.00</span></td>
-      <td><span>20.24</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>38.00</span></td>
-      <td><span>24.22</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>50.00</span></td>
-      <td><span>27.42</span></td>
-      <td><span>10.00</span></td>
-      <td><span>1.04</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-      <td><span>5</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = (Missing), age.gr = 51-70
-  <br/><strong>N</strong>: 9
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>61.33</span></td>
-      <td><span>28.73</span></td>
-      <td><span>6.78</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>5.12</span></td>
-      <td><span>3.00</span></td>
-      <td><span>10.18</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>53.00</span></td>
-      <td><span>24.97</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>59.00</span></td>
-      <td><span>30.38</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>69.00</span></td>
-      <td><span>32.43</span></td>
-      <td><span>21.00</span></td>
-      <td><span>1.05</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-      <td><span>9</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-</div>  <div class="container st-container">
-  <strong>Grup</strong>: gender = (Missing), age.gr = 71 +
-  <br/><strong>N</strong>: 3
-  <br/>
-  <table class="table table-bordered table-striped st-table st-table-bordered st-table-striped st-descr-table ">
-  <thead>
-    <tr>
-      <th></th>
-      <th align="center" class="st-protect-top-border">age</th>
-      <th align="center" class="st-protect-top-border">BMI</th>
-      <th align="center" class="st-protect-top-border">cigs.per.day</th>
-      <th align="center" class="st-protect-top-border">samp.wgts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Ortalama</strong></td>
-      <td><span>77.00</span></td>
-      <td><span>28.75</span></td>
-      <td><span>8.33</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Std.Sap</strong></td>
-      <td><span>2.65</span></td>
-      <td><span>1.30</span></td>
-      <td><span>14.43</span></td>
-      <td><span>0.00</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Min</strong></td>
-      <td><span>75.00</span></td>
-      <td><span>27.79</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Medyan</strong></td>
-      <td><span>76.00</span></td>
-      <td><span>28.23</span></td>
-      <td><span>0.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Mak</strong></td>
-      <td><span>80.00</span></td>
-      <td><span>30.23</span></td>
-      <td><span>25.00</span></td>
-      <td><span>1.06</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.N</strong></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-      <td><span>3</span></td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Ge&#0231;erli.Yzd</strong></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-      <td><span>100.00</span></td>
-    </tr>
-  </tbody>
-</table>
-  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versiyon 3.6.3)<br/>2020-06-18</p>
-</div> </body>
-</html>             
+</body>
+</html>

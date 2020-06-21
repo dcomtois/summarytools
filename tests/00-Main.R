@@ -24,8 +24,6 @@ save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
 #date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
 # end skip -----------------------------------------------------------------------
 
-#date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors=F)
-
 (date_dir <- tail(date_dirs$dir, 1))
 (dir.create(date_dir, recursive = TRUE, showWarnings = FALSE))
 (testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "^\\d{2}\\-",
@@ -42,7 +40,7 @@ cleanup <- function() {
 
 l=1
 f=1
-for (l in 1:6) {
+for (l in 2:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
   for (f in 1:11) {
     options(width = 200)
