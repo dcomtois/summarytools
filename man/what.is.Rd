@@ -9,16 +9,10 @@ what.is(x, ...)
 \arguments{
 \item{x}{Any object.}
 
-\item{show.all}{Logical. When \code{TRUE}, all logical results from the
-\dQuote{is.} \emph{identifier functions} will be displayed, with a warning
-message when the result applies only to the first element in the structure.
-\code{FALSE} by default.}
-
-\item{ignore.size.warn}{Set to \code{TRUE} to force execution of the function
-for large (> 20 K-bytes) objects. Defaults to \code{FALSE}.}
+\item{\dots}{Included for backward-compatibility only. Has no real use.}
 }
 \value{
-A list with following elements:
+A list with following elements: 
 \describe{
   \item{properties}{A data frame with the class(es), type, mode and storage
     mode of the object as well as the dim, length and object.size.}
