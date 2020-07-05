@@ -8,14 +8,9 @@
 #' this information at once.
 #'
 #' @param x Any object.
-#' @param show.all Logical. When \code{TRUE}, all logical results from the
-#'   \dQuote{is.} \emph{identifier functions} will be displayed, with a warning
-#'   message when the result applies only to the first element in the structure.
-#'   \code{FALSE} by default.
-#' @param ignore.size.warn Set to \code{TRUE} to force execution of the function
-#'   for large (> 20 K-bytes) objects. Defaults to \code{FALSE}.
+#' @param \dots Included for backward-compatibility only. Has no real use.
 #'   
-#' @return A list with following elements:
+#' @return A list with following elements: 
 #' \describe{
 #'   \item{properties}{A data frame with the class(es), type, mode and storage
 #'     mode of the object as well as the dim, length and object.size.}
@@ -44,7 +39,7 @@
 #'
 #' @keywords attribute classes utilities
 #'
-#' @importFrom utils methods object.size txtProgressBar setTxtProgressBar
+#' @importFrom utils methods object.size setTxtProgressBar txtProgressBar
 #' @importFrom methods is
 #' @importFrom pryr ftype otype
 #' @export
@@ -72,7 +67,8 @@ what.is <- function(x, ...) {
                    "is.object","object.type","object.size"),
       value = c(paste(class(x),collapse=" "), typeof(x), mode(x), 
                 storage.mode(x), paste(dim(x), collapse = " x "), length(x),
-                is.object(x), pryr::otype(x), paste(object.size(x), "Bytes")))
+                is.object(x), pryr::otype(x), paste(object.size(x), "Bytes")),
+      stringsAsFactors = FALSE)
   
   
   # Part 2. Make a list of all x's attribute and their length
@@ -95,19 +91,24 @@ what.is <- function(x, ...) {
   extensive.is <- c()
   cat("Checking object against known 'is...' functions (", length(list.id.fun), ")")
   
-  # create progress bar
-  pb <- txtProgressBar(min = 0, max = length(list.id.fun), style = 3)
+  # create progress bar if large object
+  largeObj <- as.numeric(object.size(x)) > 100000
+  if (largeObj)
+    pb <- txtProgressBar(min = 0, max = length(list.id.fun), style = 3)
   
   for(i in seq_along(list.id.fun)) {
     # update progress bar
-    setTxtProgressBar(pb, i)
-    if (list.id.fun[i] == "is.symmetric" && !is.matrix(x))
+    if (largeObj)
+      setTxtProgressBar(pb, i)
+    fun <- list.id.fun[i]
+    if (fun == "is.symmetric" && !is.matrix(x))
       next
     res <- try(eval(call(fun, x)), silent=TRUE)
     if(isTRUE(res))
       extensive.is <- append(extensive.is, fun)
   }
-  close(pb)
+  if (largeObj)
+    close(pb)
   
   # Part 4. Get info on the type of object - S3, S4, attributes / slots
 
@@ -118,11 +119,10 @@ what.is <- function(x, ...) {
   }
 
   output <- list()
-  output$properties <- properties
+  output$properties         <- properties
   output$attributes.lengths <- attributes.lengths
-  output$extensive.is <- extensive.is
-  output$function.type <- function.type
+  output$extensive.is       <- extensive.is
+  output$function.type      <- function.type
 
   return(output)
 }
-
