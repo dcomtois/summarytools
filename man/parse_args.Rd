@@ -43,7 +43,7 @@ A list consisting of one or many of the following items
 }
 \description{
 Using sys.calls(), sys.frames() and match.call(), this utility function
-extracts and/or deducts information about the data being processed.
+extracts and/or infers information about the data being processed.
 Data frame name, variable names and labels if any, subsetting information,
 grouping information (when by() is used) are returned by the function which
 tries various methods to get this information.

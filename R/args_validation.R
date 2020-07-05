@@ -14,7 +14,7 @@ check_args <- function(mc, dotArgs) {
   if (caller == "FUN") {
     pf$flag_by <- TRUE
     # When stby() was called, deduce caller from formals
-    if ("order" %in% names(pf))
+    if ("cumul" %in% names(pf))
       caller <- "freq"
     else if ("transpose" %in% names(pf))
       caller <- "descr"
@@ -270,6 +270,28 @@ check_args <- function(mc, dotArgs) {
     if ("transpose" %in% names(mc) &&
         !isTRUE(test_logical(pf$transpose))) {
       errmsg %+=% "'transpose' must be either TRUE or FALSE"
+    }
+    
+    if ("order" %in% names(mc)) {
+      if (length(pf$order) == 1) {
+        if (tolower(pf$order) == "s") {
+          pf$order <- "sort"
+        } else if (tolower(pf$order) == "p") {
+          pf$order <- "preserve"
+        }
+        
+        if (!pf$order %in% c("sort", "preserve")) {
+          errmsg %+=% paste0("'order' must be one of 'sort', ",
+                             "'preserve', or a vector of variable names")
+        }
+      } else {
+        # order has length > 1 -- all elements must correspond to column names
+        if (length(ind <- which(!pf$order %in% colnames(pf$x.df))) > 0) {
+          errmsg %+=% paste("Following ordering element(s) not recognized:", 
+                            paste(pf$order[ind], sep = ", "),
+                            collapse = " ")
+        }
+      }
     }
     
     if (!identical(pf$weights, NA)) {

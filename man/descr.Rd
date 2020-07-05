@@ -11,6 +11,7 @@ descr(
   na.rm = TRUE,
   round.digits = st_options("round.digits"),
   transpose = st_options("descr.transpose"),
+  order = "sorted",
   style = st_options("style"),
   plain.ascii = st_options("plain.ascii"),
   justify = "r",
@@ -45,6 +46,10 @@ support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.}
 \item{transpose}{Logical. Makes variables appears as columns, and stats as
 rows. Defaults to \code{FALSE}. To change this default value, see
 \code{\link{st_options}} (option \dQuote{descr.transpose}).}
+
+\item{order}{Character. One of \dQuote{sort} (or simply \dQuote{s}), 
+\dQuote{preserve} (or \dQuote{p}), or a vector of all variable names
+in the desired order. Defaults to \dQuote{sort}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
 output table; One of \dQuote{simple} (default), \dQuote{grid}, or

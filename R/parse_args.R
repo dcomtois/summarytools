@@ -1,7 +1,7 @@
 #' Extract Data Information From Arguments Passed to Functions
 #'
 #' Using sys.calls(), sys.frames() and match.call(), this utility function
-#' extracts and/or deducts information about the data being processed.
+#' extracts and/or infers information about the data being processed.
 #' Data frame name, variable names and labels if any, subsetting information,
 #' grouping information (when by() is used) are returned by the function which
 #' tries various methods to get this information.
@@ -274,7 +274,7 @@ parse_args <- function(sys_calls,
   }
   
   # When pipe is used, this recursive function gets the "deepest" lhs
-  # that constitues something other than a function call
+  # that constitutes something other than a function call
   get_lhs <- function(x) {
     if (!is.null(names(x)) && "lhs" %in% names(x) && is.call(x$lhs)) {
       x$lhs <- pryr::standardise_call(x$lhs)
