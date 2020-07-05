@@ -117,17 +117,17 @@ check_args <- function(mc, dotArgs) {
     if ("order" %in% names(mc)) {
       order <- switch(tolower(substr(sub("[+-]", "", pf$order), 1, 1)),
                       d = "default",
-                      l = "levels",
+                      l = "level",
                       f = "freq",
-                      n = "names")
+                      n = "name")
       
       if (!isTRUE(test_choice(order, 
-                              c("default", "levels", "freq", "names")))) {
-        errmsg %+=% paste("'order' must be one of 'default', 'levels',",
-                          "'freq', or 'names'")
-      } else if (order == "levels" && !is.factor(pf$x)) {
-        errmsg %+=% paste("'order' can be set to 'factor' only for factors.",
-                          "Use 'names' or 'freq', or convert object to factor",
+                              c("default", "level", "freq", "name")))) {
+        errmsg %+=% paste("'order' must be one of 'default', 'level',",
+                          "'freq', or 'name'")
+      } else if (order == "level" && !is.factor(pf$x)) {
+        errmsg %+=% paste("'order' can be set to 'level' only for factors.",
+                          "Use 'name' or 'freq', or convert object to factor",
                           "prior to calling freq()")
       }
       
@@ -391,8 +391,8 @@ check_args_tb <- function(mc) {
   }
 
   if ("drop.val.col" %in% names(mc) && 
-      !isTRUE(test_logical(pf$na.rm, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'na.rm' must be either TRUE or FALSE"
+      !isTRUE(test_logical(pf$drop.val.col, len = 1, any.missing = FALSE))) {
+    errmsg %+=% "'drop.val.col' must be either TRUE or FALSE"
   }
   
   return(errmsg)

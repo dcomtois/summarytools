@@ -9,8 +9,8 @@
 #'   support for piped function calls (e.g. \code{df \%>\% freq(some_var)}.    
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{2} and can be set globally; see \code{\link{st_options}}.
-#' @param order Ordering of rows in frequency table; \dQuote{names} (default for
-#'   non-factors), \dQuote{levels} (default for factors), or \dQuote{freq} (from
+#' @param order Ordering of rows in frequency table; \dQuote{name} (default for
+#'   non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
 #'   most frequent to less frequent). To invert the order, place a minus sign
 #'   before or after the word. \dQuote{-freq} will thus display the items
 #'   starting from the lowest in frequency to the highest, and so forth.
@@ -411,15 +411,15 @@ freq <- function(x,
       freq_table <- append(freq_table, nas_freq)
     }
     
-    # order by [-]names if needed
-    if (order == "names") {
+    # order by [-]name if needed
+    if (order == "name") {
       freq_table <- freq_table[order(names(freq_table), 
                                      decreasing = (order_sign == "-"), 
                                      na.last = TRUE)]
     }
     
-    # order by [-]levels if needed
-    if (is.factor(x) && order == "levels" && order_sign == "-") {
+    # order by [-]level if needed
+    if (is.factor(x) && order == "level" && order_sign == "-") {
       freq_table <- c(freq_table[rev(levels(x))], tail(freq_table, 1))
     }
     

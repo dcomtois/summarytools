@@ -44,15 +44,15 @@ freq(tobacco$diseased, order = "freq", report.nas = FALSE)
 freq(tobacco$diseased, order = "freq-")
 freq(tobacco$diseased, order = "freq-", report.nas = FALSE)
 
-freq(tobacco$diseased, order = "names")
+freq(tobacco$diseased, order = "name")
 freq(tobacco$diseased, order = "names", report.nas = FALSE)
-freq(tobacco$diseased, order = "names-")
+freq(tobacco$diseased, order = "name-")
 freq(tobacco$diseased, order = "names-", report.nas = FALSE)
 
-freq(tobacco$diseased, order = "levels")
+freq(tobacco$diseased, order = "level")
 freq(tobacco$diseased, order = "levels", report.nas = FALSE)
 freq(tobacco$diseased, order = "levels-")
-freq(tobacco$diseased, order = "levels-", report.nas = FALSE)
+freq(tobacco$diseased, order = "level-", report.nas = FALSE)
 
 # 1) Original order - factor
 freq(tobacco$age.gr)
@@ -63,15 +63,15 @@ freq(tobacco$age.gr, order = "freq", report.nas = FALSE)
 freq(tobacco$age.gr, order = "freq-")
 freq(tobacco$age.gr, order = "freq-", report.nas = FALSE)
 
-freq(tobacco$age.gr, order = "names")
+freq(tobacco$age.gr, order = "name")
 freq(tobacco$age.gr, order = "names", report.nas = FALSE)
 freq(tobacco$age.gr, order = "names-")
-freq(tobacco$age.gr, order = "names-", report.nas = FALSE)
+freq(tobacco$age.gr, order = "name-", report.nas = FALSE)
 
-freq(tobacco$age.gr, order = "levels")
+freq(tobacco$age.gr, order = "level")
 freq(tobacco$age.gr, order = "levels", report.nas = FALSE)
 freq(tobacco$age.gr, order = "levels-")
-freq(tobacco$age.gr, order = "levels-", report.nas = FALSE)
+freq(tobacco$age.gr, order = "lev-", report.nas = FALSE)
 
 
 
@@ -84,10 +84,10 @@ freq(tobacco$disease, order = "freq", report.nas = FALSE)
 freq(tobacco$disease, order = "freq-")
 freq(tobacco$disease, order = "-freq", report.nas = FALSE)
 
-freq(tobacco$disease, order = "names")
+freq(tobacco$disease, order = "nams")
 freq(tobacco$disease, order = "names", report.nas = FALSE)
 freq(tobacco$disease, order = "names-")
-freq(tobacco$disease, order = "names-", report.nas = FALSE)
+freq(tobacco$disease, order = "name-", report.nas = FALSE)
 
 
 # Order and subset
