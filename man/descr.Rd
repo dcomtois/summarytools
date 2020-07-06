@@ -11,7 +11,7 @@ descr(
   na.rm = TRUE,
   round.digits = st_options("round.digits"),
   transpose = st_options("descr.transpose"),
-  order = "sorted",
+  order = "sort",
   style = st_options("style"),
   plain.ascii = st_options("plain.ascii"),
   justify = "r",
