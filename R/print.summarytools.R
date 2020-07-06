@@ -302,6 +302,7 @@ print.summarytools <- function(x,
   # those options since the object's creation will be applied.
   format_info <- 
     append(list(scientific       = FALSE,
+                decimal.mark     = getOption("OutDec"),
                 keep.line.breaks = TRUE,
                 max.tbl.height   = max.tbl.height,
                 collapse         = collapse),
@@ -648,7 +649,7 @@ print_freq <- function(x, method) {
   }
   
   # Use format() on row names when x is numeric
-  if (data_info$Data.type == "Numeric") {
+  if (data_info$Data.type == trs("numeric")) {
     temp_rownames <- suppressWarnings(as.numeric(rownames(x)))
     temp_rownames_nas <- which(is.na(temp_rownames))
     
@@ -659,7 +660,8 @@ print_freq <- function(x, method) {
     if (rownames_are_int) {
       temp_rownames <- do.call(format, append(format_args, 
                                               list(x = quote(temp_rownames))))
-      temp_rownames <- sub("\\D0+$", "", temp_rownames)
+      temp_rownames <- sub(paste0("^(.+)\\", format_info$decimal.mark, "0+$"),
+                           "\\1", temp_rownames)
     } else {
       temp_rownames <-format(rownames(x), justify = format_args$justify)
     }
@@ -668,14 +670,6 @@ print_freq <- function(x, method) {
   }
   
   if (method=="pander") {
-    
-    # see if this changes anything
-    # if (isTRUE(format_info$report.nas)) {
-    #   x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 2] <- NA
-    #   if (isTRUE(format_info$cumul)) {
-    #     x[nrow(x) - as.numeric(isTRUE(format_info$totals)), 3] <- NA
-    #   }
-    # }
     
     # Escape "<" and ">" when used in pairs in rownames
     if (!isTRUE(pander_args$plain.ascii)) {
@@ -701,7 +695,8 @@ print_freq <- function(x, method) {
     x <- do.call(format, append(format_args, x = quote(x)))
     
     if (!"Weights" %in% names(data_info)) {
-      x[ ,1] <- sub("\\D0+$", "", x[ ,1])
+      x[ ,1] <- sub(paste0("^(.+)\\", format_info$decimal.mark, "0+$"),
+                    "\\1", x[ ,1])
     }
     
     x[is_na_x] <- format_info$missing
@@ -730,15 +725,17 @@ print_freq <- function(x, method) {
     for (ro in seq_len(nrow(x))) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
+        cell <- do.call(format, append(format_args, x=quote(x[ro,co])))
         if (co == 1) {
           table_row %+=% list(tags$th(trimws(row.names(x)[ro]),
                                       align = "center",
                                       class = "st-protect-top-border"))
           
-          cell <- do.call(format, append(format_args, x=quote(x[ro,co])))
           if (!"Weights" %in% names(data_info)) {
-            cell <- sub(pattern = "\\.0+", replacement = "", cell, 
-                        perl = TRUE)
+            cell <- sub(pattern = paste0("^(.+)\\", 
+                                         format_info$decimal.mark, 
+                                         "0+$"), 
+                        replacement = "\\1", cell, perl = TRUE)
           }
           table_row %+=% list(tags$td(cell, align = format_info$justify))
           next
@@ -748,7 +745,8 @@ print_freq <- function(x, method) {
           table_row %+=% list(tags$td(format_info$missing, 
                                       align = format_info$justify))
         } else {
-          cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
+          #cell <- sprintf(paste0("%", ".",#format_info$decimal.mark, 
+          #                       format_info$round.digits, "f"), x[ro,co])
           table_row %+=% list(tags$td(cell, align = format_info$justify))
         }
         
@@ -870,10 +868,10 @@ print_freq <- function(x, method) {
     }
 
     # Cleanup extra spacing and linefeeds in html to correct layout issues
-    freq_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
-                            replacement = "\\1\\2", 
-                            x = as.character(freq_table_html),
-                            perl = TRUE)
+    # freq_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
+    #                         replacement = "\\1\\2", 
+    #                         x = as.character(freq_table_html),
+    #                         perl = TRUE)
     freq_table_html <- gsub(pattern = "</span>\\s*</span>",
                             replacement = "</span></span>",
                             x = freq_table_html,
