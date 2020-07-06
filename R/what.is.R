@@ -89,16 +89,19 @@ what.is <- function(x, ...) {
 
   # loop over "is" functions with x as argument, and store the results
   extensive.is <- c()
-  cat("Checking object against known 'is...' functions (", length(list.id.fun), ")")
-  
+  cat("Checking object against known 'is...' functions (", 
+      length(list.id.fun), ")", sep = "")
+      
   # create progress bar if large object
-  largeObj <- as.numeric(object.size(x)) > 100000
-  if (largeObj)
+  if (as.numeric(object.size(x)) > 500000 && length(list.id.fun) >= 10) {
     pb <- txtProgressBar(min = 0, max = length(list.id.fun), style = 3)
+  } else {
+    pb <- NA
+  }
   
   for(i in seq_along(list.id.fun)) {
     # update progress bar
-    if (largeObj)
+    if (!identical(pb, NA))
       setTxtProgressBar(pb, i)
     fun <- list.id.fun[i]
     if (fun == "is.symmetric" && !is.matrix(x))
@@ -107,7 +110,7 @@ what.is <- function(x, ...) {
     if(isTRUE(res))
       extensive.is <- append(extensive.is, fun)
   }
-  if (largeObj)
+  if (!identical(pb, NA))
     close(pb)
   
   # Part 4. Get info on the type of object - S3, S4, attributes / slots
