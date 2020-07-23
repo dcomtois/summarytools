@@ -26,7 +26,7 @@ freq(
 )
 }
 \arguments{
-\item{x}{Factor or vector, or data frame when \emph{y} is also provided, 
+\item{x}{Factor or vector, or data frame when \emph{var} is also provided, 
 usually in a piped call.}
 
 \item{var}{Unquoted expression referring to a specific column in x. Provides
