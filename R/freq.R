@@ -3,7 +3,7 @@
 #' Displays weighted or unweighted frequencies, including <NA> counts and
 #' proportions.
 #'
-#' @param x Factor or vector, or data frame when \emph{y} is also provided, 
+#' @param x Factor or vector, or data frame when \emph{var} is also provided, 
 #'   usually in a piped call.
 #' @param var Unquoted expression referring to a specific column in x. Provides
 #'   support for piped function calls (e.g. \code{df \%>\% freq(some_var)}.    
