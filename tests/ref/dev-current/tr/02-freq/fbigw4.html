@@ -5,7 +5,7 @@
 <style>body{background-color:white;}</style>
 
   <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABZVBMVEUAAAAdPlkcPlkbPlodPVkbO1kbPFcdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPlkdPln///+ifs4iAAAAdXRSTlMAAAAAAAAABCpZgZWZmpuhsrgdi7vv939KTE1PUlqiwSCpfR6HsBBFgwtnAhK0gBEaXgcy4Ldda/zRJuUNr6gMd/qmDsoiw6cVb6QUGbUXAxMcCgWgv0PVPsIl1vBOSUiRrRYIlv79+fv15JCPfHRzeIiCZjST6WECAAAAAWJLR0R2MWPJQQAAAAlwSFlzAABcRQAAXEUBuS1iLAAAAAd0SU1FB+QGAQEGMAe8nOwAAADrSURBVBjTJY75P0JREMXn2NWrLK1XIZH2aLEXl56ykwqPspN9ff+/e6/5ac75nPmeISL09vVbrJqm2eyOgUEChoadLrfH62Mj/sDoGGE8OBGaNKfCIBGejlDUGosjkTRTceEgPUOzWgZANudikBmi/Bw6BGh+YXFJLGKWmTpeKZjFVRVxr8koEODrG8rIlRIQWt8sV9Apja3tHQHd3Svs/yPoQJYcFvNH6CJU9WPpIVyr64rUODlV2nZmqCdgnDPqRtp+4WFNn7d16b+6viHc3t0/PHLO2/zp2WGIxsrL69v7x2fq6/vnN4OeP6dLIlhQnl/oAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA2LTAxVDAxOjA2OjQ4KzAyOjAw8gzdpAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNi0wMVQwMTowNjo0OCswMjowMINRZRgAAABXelRYdFJhdyBwcm9maWxlIHR5cGUgaXB0YwAAeJzj8gwIcVYoKMpPy8xJ5VIAAyMLLmMLEyMTS5MUAxMgRIA0w2QDI7NUIMvY1MjEzMQcxAfLgEigSi4A6hcRdPJCNZUAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-  <title>Frequencies</title>
+  <title>Ağırlıklandırılmış Sıklık</title>
   <style type="text/css">/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -190,118 +190,343 @@ table.st-table > tfoot > tr > td {
 </head>
 <body>
 <div class="container st-container">
-  <h3>Frequencies</h3>
-  <h4>tobacco$diseased</h4>
-  <strong>Label</strong>: Subject has an illness
-  <br/><strong>Type</strong>: Factor
-  <br/><strong>Group</strong>: smoker = Yes
+  <h3>Ağırlıklandırılmış Sıklık</h3>
+  <h4>bignum</h4>
+  <strong>T&#0252;r</strong>: Sayısal
+  <br/><strong>Ağırlıklar</strong>: bigwgt
   <br/>
   <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
   <thead>
     <tr>
       <th colspan="2"></th>
-      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
-      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Ge&#0231;erli</th>
+      <th colspan="2" align="center" class="st-protect-top-border">Toplam</th>
     </tr>
     <tr>
-      <th align="center">diseased</th>
-      <th align="center">Freq</th>
+      <th align="center">bignum</th>
+      <th align="center">Sıklık</th>
       <th align="center">%</th>
-      <th align="center">% Cum.</th>
+      <th align="center">K&#0252;m. %</th>
       <th align="center">%</th>
-      <th align="center">% Cum.</th>
+      <th align="center">K&#0252;m. %</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th align="center" class="st-protect-top-border">Yes</th>
-      <td align="center">125</td>
-      <td align="center">41.95</td>
-      <td align="center">41.95</td>
-      <td align="center">41.95</td>
-      <td align="center">41.95</td>
+      <th align="center" class="st-protect-top-border">0</th>
+      <td align="center">336.689,83</td>
+      <td align="center">69,80</td>
+      <td align="center">69,80</td>
+      <td align="center">67,34</td>
+      <td align="center">67,34</td>
     </tr>
     <tr>
-      <th align="center" class="st-protect-top-border">No</th>
-      <td align="center">173</td>
-      <td align="center">58.05</td>
-      <td align="center">100.00</td>
-      <td align="center">58.05</td>
-      <td align="center">100.00</td>
+      <th align="center" class="st-protect-top-border">4.995</th>
+      <td align="center">5.488,42</td>
+      <td align="center">1,14</td>
+      <td align="center">70,94</td>
+      <td align="center">1,10</td>
+      <td align="center">68,44</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">5.994</th>
+      <td align="center">4.526,45</td>
+      <td align="center">0,94</td>
+      <td align="center">71,88</td>
+      <td align="center">0,91</td>
+      <td align="center">69,34</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">6.993</th>
+      <td align="center">3.483,63</td>
+      <td align="center">0,72</td>
+      <td align="center">72,60</td>
+      <td align="center">0,70</td>
+      <td align="center">70,04</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">7.992</th>
+      <td align="center">3.152,10</td>
+      <td align="center">0,65</td>
+      <td align="center">73,26</td>
+      <td align="center">0,63</td>
+      <td align="center">70,67</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">8.991</th>
+      <td align="center">2.526,87</td>
+      <td align="center">0,52</td>
+      <td align="center">73,78</td>
+      <td align="center">0,51</td>
+      <td align="center">71,17</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">9.990</th>
+      <td align="center">2.952,38</td>
+      <td align="center">0,61</td>
+      <td align="center">74,39</td>
+      <td align="center">0,59</td>
+      <td align="center">71,76</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">10.989</th>
+      <td align="center">9.606,44</td>
+      <td align="center">1,99</td>
+      <td align="center">76,38</td>
+      <td align="center">1,92</td>
+      <td align="center">73,69</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">11.988</th>
+      <td align="center">2.533,43</td>
+      <td align="center">0,53</td>
+      <td align="center">76,91</td>
+      <td align="center">0,51</td>
+      <td align="center">74,19</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">12.987</th>
+      <td align="center">3.932,66</td>
+      <td align="center">0,82</td>
+      <td align="center">77,72</td>
+      <td align="center">0,79</td>
+      <td align="center">74,98</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">13.986</th>
+      <td align="center">4.623,04</td>
+      <td align="center">0,96</td>
+      <td align="center">78,68</td>
+      <td align="center">0,92</td>
+      <td align="center">75,90</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">14.985</th>
+      <td align="center">5.479,25</td>
+      <td align="center">1,14</td>
+      <td align="center">79,82</td>
+      <td align="center">1,10</td>
+      <td align="center">77,00</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">15.984</th>
+      <td align="center">3.294,32</td>
+      <td align="center">0,68</td>
+      <td align="center">80,50</td>
+      <td align="center">0,66</td>
+      <td align="center">77,66</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">16.983</th>
+      <td align="center">3.146,90</td>
+      <td align="center">0,65</td>
+      <td align="center">81,15</td>
+      <td align="center">0,63</td>
+      <td align="center">78,29</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">17.982</th>
+      <td align="center">4.345,05</td>
+      <td align="center">0,90</td>
+      <td align="center">82,05</td>
+      <td align="center">0,87</td>
+      <td align="center">79,16</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">18.981</th>
+      <td align="center">3.156,06</td>
+      <td align="center">0,65</td>
+      <td align="center">82,71</td>
+      <td align="center">0,63</td>
+      <td align="center">79,79</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">19.980</th>
+      <td align="center">3.575,01</td>
+      <td align="center">0,74</td>
+      <td align="center">83,45</td>
+      <td align="center">0,72</td>
+      <td align="center">80,50</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">20.979</th>
+      <td align="center">6.191,90</td>
+      <td align="center">1,28</td>
+      <td align="center">84,73</td>
+      <td align="center">1,24</td>
+      <td align="center">81,74</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">21.978</th>
+      <td align="center">2.526,87</td>
+      <td align="center">0,52</td>
+      <td align="center">85,26</td>
+      <td align="center">0,51</td>
+      <td align="center">82,25</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">22.977</th>
+      <td align="center">3.914,34</td>
+      <td align="center">0,81</td>
+      <td align="center">86,07</td>
+      <td align="center">0,78</td>
+      <td align="center">83,03</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">23.976</th>
+      <td align="center">1.587,19</td>
+      <td align="center">0,33</td>
+      <td align="center">86,40</td>
+      <td align="center">0,32</td>
+      <td align="center">83,35</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">24.975</th>
+      <td align="center">5.497,58</td>
+      <td align="center">1,14</td>
+      <td align="center">87,54</td>
+      <td align="center">1,10</td>
+      <td align="center">84,45</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">25.974</th>
+      <td align="center">2.539,99</td>
+      <td align="center">0,53</td>
+      <td align="center">88,06</td>
+      <td align="center">0,51</td>
+      <td align="center">84,95</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">26.973</th>
+      <td align="center">3.580,21</td>
+      <td align="center">0,74</td>
+      <td align="center">88,81</td>
+      <td align="center">0,72</td>
+      <td align="center">85,67</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">27.972</th>
+      <td align="center">4.787,53</td>
+      <td align="center">0,99</td>
+      <td align="center">89,80</td>
+      <td align="center">0,96</td>
+      <td align="center">86,63</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">28.971</th>
+      <td align="center">4.026,64</td>
+      <td align="center">0,83</td>
+      <td align="center">90,63</td>
+      <td align="center">0,81</td>
+      <td align="center">87,43</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">29.970</th>
+      <td align="center">2.530,83</td>
+      <td align="center">0,52</td>
+      <td align="center">91,16</td>
+      <td align="center">0,51</td>
+      <td align="center">87,94</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">30.969</th>
+      <td align="center">4.016,13</td>
+      <td align="center">0,83</td>
+      <td align="center">91,99</td>
+      <td align="center">0,80</td>
+      <td align="center">88,74</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">31.968</th>
+      <td align="center">3.216,06</td>
+      <td align="center">0,67</td>
+      <td align="center">92,66</td>
+      <td align="center">0,64</td>
+      <td align="center">89,39</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">32.967</th>
+      <td align="center">2.970,70</td>
+      <td align="center">0,62</td>
+      <td align="center">93,27</td>
+      <td align="center">0,59</td>
+      <td align="center">89,98</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">33.966</th>
+      <td align="center">4.445,59</td>
+      <td align="center">0,92</td>
+      <td align="center">94,20</td>
+      <td align="center">0,89</td>
+      <td align="center">90,87</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">34.965</th>
+      <td align="center">3.734,19</td>
+      <td align="center">0,77</td>
+      <td align="center">94,97</td>
+      <td align="center">0,75</td>
+      <td align="center">91,62</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">35.964</th>
+      <td align="center">4.523,85</td>
+      <td align="center">0,94</td>
+      <td align="center">95,91</td>
+      <td align="center">0,90</td>
+      <td align="center">92,52</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">36.963</th>
+      <td align="center">6.654,06</td>
+      <td align="center">1,38</td>
+      <td align="center">97,29</td>
+      <td align="center">1,33</td>
+      <td align="center">93,85</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">37.962</th>
+      <td align="center">6.977,67</td>
+      <td align="center">1,45</td>
+      <td align="center">98,73</td>
+      <td align="center">1,40</td>
+      <td align="center">95,25</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">38.961</th>
+      <td align="center">3.576,26</td>
+      <td align="center">0,74</td>
+      <td align="center">99,48</td>
+      <td align="center">0,72</td>
+      <td align="center">95,96</td>
+    </tr>
+    <tr>
+      <th align="center" class="st-protect-top-border">39.960</th>
+      <td align="center">2.530,83</td>
+      <td align="center">0,52</td>
+      <td align="center">100,00</td>
+      <td align="center">0,51</td>
+      <td align="center">96,47</td>
     </tr>
     <tr>
       <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
-      <td align="center">0</td>
+      <td align="center">17.659,72</td>
       <td align="center"></td>
       <td align="center"></td>
-      <td align="center">0.00</td>
-      <td align="center">100.00</td>
+      <td align="center">3,53</td>
+      <td align="center">100,00</td>
     </tr>
     <tr>
-      <th align="center" class="st-protect-top-border">Total</th>
-      <td align="center">298</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
+      <th align="center" class="st-protect-top-border">Toplam</th>
+      <td align="center">500.000,00</td>
+      <td align="center">100,00</td>
+      <td align="center">100,00</td>
+      <td align="center">100,00</td>
+      <td align="center">100,00</td>
     </tr>
   </tbody>
 </table>
+  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> versiyon 3.6.3)<br/>2020-07-06</p>
 </div>
- <div class="container st-container">
-  <strong>Group</strong>: smoker = No
-  <br/>
-  <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-freq-table ">
-  <thead>
-    <tr>
-      <th colspan="2"></th>
-      <th colspan="2" align="center" class="st-protect-top-border">Valid</th>
-      <th colspan="2" align="center" class="st-protect-top-border">Total</th>
-    </tr>
-    <tr>
-      <th align="center">diseased</th>
-      <th align="center">Freq</th>
-      <th align="center">%</th>
-      <th align="center">% Cum.</th>
-      <th align="center">%</th>
-      <th align="center">% Cum.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th align="center" class="st-protect-top-border">Yes</th>
-      <td align="center">99</td>
-      <td align="center">14.10</td>
-      <td align="center">14.10</td>
-      <td align="center">14.10</td>
-      <td align="center">14.10</td>
-    </tr>
-    <tr>
-      <th align="center" class="st-protect-top-border">No</th>
-      <td align="center">603</td>
-      <td align="center">85.90</td>
-      <td align="center">100.00</td>
-      <td align="center">85.90</td>
-      <td align="center">100.00</td>
-    </tr>
-    <tr>
-      <th align="center" class="st-protect-top-border">&lt;NA&gt;</th>
-      <td align="center">0</td>
-      <td align="center"></td>
-      <td align="center"></td>
-      <td align="center">0.00</td>
-      <td align="center">100.00</td>
-    </tr>
-    <tr>
-      <th align="center" class="st-protect-top-border">Total</th>
-      <td align="center">702</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
-      <td align="center">100.00</td>
-    </tr>
-  </tbody>
-</table>
-  <p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> version 3.6.3)<br/>2020-07-06</p>
-</div> </body>
-</html> 
+</body>
+</html>

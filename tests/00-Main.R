@@ -11,8 +11,15 @@ if (!git2r::repository_head()$name %in% dir("tests/ref")) {
 } else {
   (ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
 }
-  
-load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
+
+if (file.exists(paste0(orig_dir, "/tests/date_dirs.Rdata"))) {
+  load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
+} else {
+  date_dirs <- data.frame(date=lubridate::today(), 
+                          date_dir = "", 
+                          ref_dir = "",
+                          stringsAsFactors = FALSE)[-1,]
+}
 
 # To use last saved directory, skip this step ------------------------------------
 (date_dir <- paste(orig_dir, "tests/output", 
@@ -20,11 +27,13 @@ load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
                          git2r::repository_head()$name, sep = "-"),
                    sep = "/"))
 date_dirs[nrow(date_dirs) + 1,] <- list(lubridate::today(), date_dir, ref_dir)
+
 save(date_dirs, file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
+
 #date_dirs <- data.frame(date=lubridate::today(), dir=date_dir, ref=ref_dir, stringsAsFactors = FALSE)
 # end skip -----------------------------------------------------------------------
 
-(date_dir <- tail(date_dirs$dir, 1))
+(date_dir <- tail(date_dirs$date_dir, 1))
 (dir.create(date_dir, recursive = TRUE, showWarnings = FALSE))
 (testfiles <- grep(dir(paste0(orig_dir, "/tests")), pattern = "^\\d{2}\\-",
                    perl = TRUE, value = TRUE)[-1])
@@ -40,7 +49,7 @@ cleanup <- function() {
 
 l=1
 f=1
-for (l in 2:6) {
+for (l in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
   for (f in 1:11) {
     options(width = 200)
@@ -93,6 +102,7 @@ for (l in 2:6) {
     
     rm(list=setdiff(ls(), base_content))
     setwd(orig_dir)
+    suppressPackageStartupMessages(library(summarytools))
   }
 }
 

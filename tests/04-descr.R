@@ -89,6 +89,12 @@ descr(tobacco, stats = "common", transpose = TRUE) %>% tb()
 
 tobacco %>% select(age) %>% arrange() %>% descr(stats = "common")
 
+# Column order
+descr(exams, order = "sort")
+descr(exams, order = c("french", "english", "geography", "history", "math", "economics"))
+(d11 <- descr(exams, order = "preserve"))
+view(d11, file = "11.html")
+
 st_options("reset")
 detach("package:summarytools")
 detach("package:dplyr")

@@ -539,6 +539,59 @@ Output file appended
 |   **Geçerli.N** | 975.00 |
 | **Geçerli.Yzd** |  97.50 |
 
+# -----------------  Column order
+> descr(exams, order = "sort")
+Non-numerical variable(s) ignored: student, gender
+### Tanimlayici Istatistikler  
+#### exams  
+**N:** 30  
+
+|          &nbsp; | economics | english | french | geography | history |  math |
+|----------------:|----------:|--------:|-------:|----------:|--------:|------:|
+|    **Ortalama** |     73.91 |   75.96 |  73.94 |     70.04 |   72.77 | 73.54 |
+|     **Std.Sap** |      8.62 |    7.92 |  10.79 |     10.65 |   10.20 |  9.19 |
+|         **Min** |     60.50 |   58.30 |  44.80 |     47.20 |   53.90 | 55.60 |
+|      **Medyan** |     71.60 |   74.10 |  73.60 |     68.50 |   72.75 | 73.75 |
+|         **Mak** |     94.20 |   93.10 |  94.70 |     96.30 |   93.50 | 93.20 |
+|   **Geçerli.N** |     29.00 |   29.00 |  29.00 |     29.00 |   30.00 | 28.00 |
+| **Geçerli.Yzd** |     96.67 |   96.67 |  96.67 |     96.67 |  100.00 | 93.33 |
+
+> descr(exams, order = c("french", "english", "geography", "history", "math", "economics"))
+Non-numerical variable(s) ignored: student, gender
+### Tanimlayici Istatistikler  
+#### exams  
+**N:** 30  
+
+|          &nbsp; | french | english | geography | history |  math | economics |
+|----------------:|-------:|--------:|----------:|--------:|------:|----------:|
+|    **Ortalama** |  73.94 |   75.96 |     70.04 |   72.77 | 73.54 |     73.91 |
+|     **Std.Sap** |  10.79 |    7.92 |     10.65 |   10.20 |  9.19 |      8.62 |
+|         **Min** |  44.80 |   58.30 |     47.20 |   53.90 | 55.60 |     60.50 |
+|      **Medyan** |  73.60 |   74.10 |     68.50 |   72.75 | 73.75 |     71.60 |
+|         **Mak** |  94.70 |   93.10 |     96.30 |   93.50 | 93.20 |     94.20 |
+|   **Geçerli.N** |  29.00 |   29.00 |     29.00 |   30.00 | 28.00 |     29.00 |
+| **Geçerli.Yzd** |  96.67 |   96.67 |     96.67 |  100.00 | 93.33 |     96.67 |
+
+> (d11 <- descr(exams, order = "preserve"))
+Non-numerical variable(s) ignored: student, gender
+### Tanimlayici Istatistikler  
+#### exams  
+**N:** 30  
+
+|          &nbsp; | french |  math | geography | history | economics | english |
+|----------------:|-------:|------:|----------:|--------:|----------:|--------:|
+|    **Ortalama** |  73.94 | 73.54 |     70.04 |   72.77 |     73.91 |   75.96 |
+|     **Std.Sap** |  10.79 |  9.19 |     10.65 |   10.20 |      8.62 |    7.92 |
+|         **Min** |  44.80 | 55.60 |     47.20 |   53.90 |     60.50 |   58.30 |
+|      **Medyan** |  73.60 | 73.75 |     68.50 |   72.75 |     71.60 |   74.10 |
+|         **Mak** |  94.70 | 93.20 |     96.30 |   93.50 |     94.20 |   93.10 |
+|   **Geçerli.N** |  29.00 | 28.00 |     29.00 |   30.00 |     29.00 |   29.00 |
+| **Geçerli.Yzd** |  96.67 | 93.33 |     96.67 |  100.00 |     96.67 |   96.67 |
+
+> view(d11, file = "11.html")
+Non-numerical variable(s) ignored: student, gender
+Output file written
+
 > st_options("reset")
 summarytools options have been reset
 

@@ -83,11 +83,19 @@ freq(tobacco$disease, order = "freq")
 freq(tobacco$disease, order = "freq", report.nas = FALSE)
 freq(tobacco$disease, order = "freq-")
 freq(tobacco$disease, order = "-freq", report.nas = FALSE)
-
-freq(tobacco$disease, order = "nams")
-freq(tobacco$disease, order = "names", report.nas = FALSE)
-freq(tobacco$disease, order = "names-")
+freq(tobacco$disease, order = "name")
 freq(tobacco$disease, order = "name-", report.nas = FALSE)
+freq(tobacco$disease, order = "name")
+freq(tobacco$disease, order = "name-", report.nas = FALSE)
+
+
+# check backward compatibility with plural forms (nameS, freqS, levelS)
+freq(tobacco$disease, order = "names")
+freq(tobacco$disease, order = "names-")
+freq(tobacco$disease, order = "freqs")
+freq(tobacco$disease, order = "freqs-")
+freq(tobacco$age.gr, order = "levels")
+freq(tobacco$age.gr, order = "-levels")
 
 
 # Order and subset
@@ -227,12 +235,30 @@ print(ftob2, collapse = 1, file = "11-full-dataset-collapse.html", footnote = "c
 
 # bigger numbers
 bignum <- rep(tobacco$cigs.per.day, 500) * 999
-freq(bignum, big.mark = ",")
-(fbig <- freq(bignum, big.mark = " ", decimal.mark = ","))
-view(fbig, file = "12-big-numbers.html")
+
+(fbig1 <- freq(bignum, big.mark = ","))
+view(fbig1, file = "fbig1.html")
+(fbig2 <- freq(bignum, big.mark = " ", decimal.mark = ","))
+view(fbig2, file = "fbig2.html")
+(fbig3 <- freq(bignum, big.mark = "'", decimal.mark = "."))
+view(fbig3, file = "fbig3.html")
+(fbig4 <- freq(bignum, big.mark = ".", decimal.mark = ","))
+view(fbig4, file = "fbig4.html")
+
+bigwgt <- rep(tobacco$samp.wgts, 500)
+
+(fbigw1 <- freq(bignum, weights=bigwgt, big.mark = ","))
+view(fbigw1, file = "fbigw1.html")
+(fbigw2 <- freq(bignum, weights=bigwgt, big.mark = " ", decimal.mark = ","))
+view(fbigw2, file = "fbigw2.html")
+(fbigw3 <- freq(bignum, weights=bigwgt, big.mark = "'", decimal.mark = "."))
+view(fbigw3, file = "fbigw3.html")
+(fbigw4 <- freq(bignum, weights=bigwgt, big.mark = ".", decimal.mark = ","))
+view(fbigw4, file = "fbigw4.html")
 
 (fbig_w <- freq(bignum, weights = rep(tobacco$samp.wgts, 500), big.mark=" "))
 print(fbig_w, big.mark="'")
+print(fbig_w, big.mark=" ", decimal.mark=",")
 
 st_options("reset")
 detach("package:summarytools")
