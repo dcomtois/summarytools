@@ -51,21 +51,32 @@ The package was developed with the following objectives in mind:
 
  - Provide a coherent set of easy to use descriptive functions that are
    akin to those included in commercial statistical packages such
-   as SAS, SPSS and Stata  
- - Offer flexibility in terms of output formats and contents  
- - Integrate well with software and tools commonly used for reporting
+   as SAS, SPSS, and Stata  
+ - Offer flexibility in terms of output formats & contents  
+ - Integrate well with commonly used software & tools for reporting
    ([the RStudio IDE](https://rstudio.com/products/rstudio/),
    [Rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.org/knitr/))
    while also allowing for stand-alone, simple report generation  
 
-On a more personal level, I simply wish to share with the scientific community
-at large the functions I first developed for myself, that I ultimately
-realized would benefit a lot of people who are looking for the same
-thing I was seeking in the first place. 
+On a more personal level, I simply wish to share with the R community and
+the scientific community at large the functions I first developed for myself,
+that I ultimately realized would benefit a lot of people who are looking for
+the same thing I was seeking in the first place. 
 
-Maintaining and improving the package takes time. If you find
-**summarytools** useful, please consider making a small donation using the
-*PayPal* donation link at the top of this page.
+### Encourage *summarytools*' Development With a Small Donation
+Some package developers and maintainers get paid to do exactly that. They
+may also work in teams. _This is not my case_. Seeing the package grow
+in popularity was and still is in itself a rewarding experience, but I won't
+lie; keeping up with the maintenance, feature requests and other features
+I have in mind takes more time than I can afford.
+
+So if you find **summarytools** useful and want to support its development,
+please consider making a small donation using the *PayPal* link at the top of
+this page. In exchange, you'll get:
+
+  - My sincere gratitude
+  - A space with your name in the future _Sponsors_ section of this page
+  - My personal commitment to dedicate more time to the package's development
 
 
 ## 1.2 Redirecting Outputs
@@ -134,6 +145,16 @@ CRAN versions are stable but are not updated as often as the GitHub versions.
 install.packages("summarytools")
 ```
 
+## 1.5 Latest Features
+
+Version 0.9.7 brings along...
+ - Performance and formatting improvements
+ - The `stview()` function which ensures the package's own `view()` method
+   is used (avoiding potential conflicts with other packages' versions of
+   that method)
+ - Several other features detailed in the news section (see NEWS.md or try
+   `news(package="summarytools"`))
+ 
 # 2. The Four Core Functions 
 
 ## <a id="freq"></a>2.1 Frequency Tables With freq()
@@ -528,15 +549,17 @@ The following options can be set with `st_options()`:
 | plain.ascii               |    TRUE   | Set to FALSE in .Rmd documents                  |
 | round.digits              |       2   | Number of decimals to show                      |
 | headings                  |    TRUE   | Formerly “omit.headings”                        |
-| footnote                  | “default” | Personalize, or set to NA to omit               |
+| footnote                  | “default” | Customize or set to NA to omit                  |
 | display.labels            |    TRUE   | Show variable / data frame labels in headings   |
 | bootstrap.css (*)         |    TRUE   | Include Bootstrap 4 CSS in *html* output files  |
 | custom.css                |      NA   | Path to your own CSS file                       |
 | escape.pipe               |   FALSE   | Useful for some Pandoc conversions              |
+| char.split (**)           |      12   | Threshold for line-wrapping in column headings  |
 | subtitle.emphasis         |    TRUE   | Controls headings formatting                    |
 | lang                      |   “en”    | Language (always 2-letter, lowercase)           |
 
 (*) Set to FALSE in Shiny apps
+(**) Affects `descr()` and `ctable()` *html* outputs
 
 ## 7.2 Function-Specific Options
 
@@ -881,7 +904,7 @@ feedback is always welcome. Please open an
 [issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
 
-### Stay Up-to-date
+### Stay Up to Date
 
 Check out the [GitHub project's page](https://github.com/dcomtois/summarytools);
 from there you can see the latest updates and also submit feature requests.

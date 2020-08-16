@@ -16,6 +16,7 @@ st_options(
   bootstrap.css = TRUE,
   custom.css = NA,
   escape.pipe = FALSE,
+  char.split = 12,
   freq.cumul = TRUE,
   freq.totals = TRUE,
   freq.report.nas = TRUE,
@@ -54,9 +55,9 @@ be set via their own parameter. That is, instead of
 or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
 \item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
-using summarytools with a rendering tool such as \code{knitr} or when
-creating rmarkdown output files to be converted with Pandoc. Note however
-that its value will automatically be set to \code{FALSE} whenever
+using \strong{summarytools} with a rendering tool such as \code{knitr} or
+when creating rmarkdown output files to be converted with Pandoc. Note 
+however that its value will automatically be set to \code{FALSE} whenever
 \code{style} is set to \dQuote{rmarkdown}).}
 
 \item{round.digits}{Numeric. Defaults to \code{2}.}
@@ -75,7 +76,7 @@ provide a custom string. Applies only to \emph{html} outputs.}
 omit data frame and variable labels in the headings section.}
 
 \item{bootstrap.css}{Logical. Specifies whether to Include 
-\emph{Bootstrap css} in \emph{html} reports \emph{head} section outputs.
+\emph{Bootstrap css} in \emph{html} reports' \emph{head} section.
 Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
 method inside a \code{shiny} app to avoid interacting with the app's 
 layout.}
@@ -86,6 +87,11 @@ layout.}
 \item{escape.pipe}{Logical. Set to \code{TRUE} if Pandoc conversion is your
 goal and you have unsatisfying results with grid or multiline tables.
 \code{FALSE} by default.}
+
+\item{char.split}{Numeric. Maximum number of characters allowed in a column
+heading for \code{\link{descr}} and \code{\link{ctable}} \emph{html} 
+outputs. Any variable name having more than this number of characters
+will be split on two or more lines. Defaults to 12.}
 
 \item{freq.cumul}{Logical. Corresponds to the \code{cumul} parameter of
 \code{\link{freq}}. \code{TRUE} by default.}

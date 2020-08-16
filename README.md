@@ -40,21 +40,34 @@ The package was developed with the following objectives in mind:
   - Provide a coherent set of easy to use descriptive functions that are
     akin to those included in commercial statistical packages such as
     SAS, SPSS and Stata  
-  - Offer flexibility in terms of output formats and contents  
-  - Integrate well with software and tools commonly used for reporting
+  - Offer flexibility in terms of output formats / contents  
+  - Integrate well with commonly used software & tools for reporting
     ([the RStudio IDE](https://rstudio.com/products/rstudio/),
     [Rmarkdown](https://rmarkdown.rstudio.com/), and
     [knitr](https://yihui.org/knitr/)) while also allowing for
-    stand-alone, simple report generation
+    standalone, simple report generation
 
-On a more personal level, I simply wish to share with the scientific
-community at large the functions I first developed for myself, that I
-ultimately realized would benefit a lot of people who are looking for
-the same thing I was seeking in the first place.
+On a more personal level, I simply wish to share with the R community
+and the scientific community at large the functions I first developed
+for myself, that I ultimately realized would benefit a lot of people who
+are looking for the same thing I was seeking in the first place.
 
-Maintaining and improving the package takes time. If you find
-**summarytools** useful, please consider making a small donation using
-the *PayPal* donation link at the top of this page.
+### Encourage *summarytools*’ Development With a Small Donation
+
+Some package developers and maintainers get paid to do exactly that.
+They may also work in teams. *This is not my case*. Seeing the package
+grow in popularity was and still is in itself a rewarding experience,
+but I won’t lie; keeping up with the maintenance, feature requests and
+other features I have in mind takes more time than I can afford.
+
+So if you find **summarytools** useful and want to support its
+development, please consider making a small donation using the *PayPal*
+link at the top of this page. In exchange, you’ll get:
+
+  - My sincere gratitude
+  - A space with your name in the future *Sponsors* section of this page
+  - My personal commitment to dedicate more time to the package’s
+    development
 
 ## 1.2 Redirecting Outputs
 
@@ -126,6 +139,14 @@ versions.
 ``` r
 install.packages("summarytools")
 ```
+
+## 1.5 Latest Features
+
+Version 0.9.7 brings along… - Performance and formatting improvements -
+The `stview()` function which ensures the package’s own `view()` method
+is used (avoiding potential conflicts with other packages’ versions of
+that method) - Several other features detailed in the news section (see
+NEWS.md or try `news(package="summarytools"`))
 
 # 2\. The Four Core Functions
 
@@ -1160,7 +1181,7 @@ feedback is always welcome. Please open an [issue on
 GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
 
-### Stay Up-to-date
+### Stay Up to Date
 
 Check out the [GitHub project’s
 page](https://github.com/dcomtois/summarytools); from there you can see

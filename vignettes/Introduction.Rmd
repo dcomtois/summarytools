@@ -68,9 +68,10 @@ kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
 The package was developed with the following objectives in mind:
 
  - Provide a coherent set of easy to use descriptive functions that are
-   akin to those included in commercial statistical packages  
- - Offer flexibility in terms of output formats and contents  
- - Integrate well with software and tools commonly used for reporting
+   akin to those included in commercial statistical packages such as SAS,
+   SPSS, and Stata 
+ - Offer flexibility in terms of output formats & contents  
+ - Integrate well with commonly used software & tools for reporting
    ([the RStudio IDE](https://rstudio.com/products/rstudio/),
    [Rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.org/knitr/))
    while also allowing for stand-alone, simple report generation  
@@ -119,8 +120,8 @@ freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 ```
 
 In this first example, the `plain.ascii` and `style` arguments were
-specified. However, since we have defined them globally with `st_options()`
-in the setup chunk, they are redundant and will be omitted from hereon.
+specified. However, since we have defined them globally for this document
+using `st_options()`, they are redundant and will be omitted from hereon.
 See <a href="#setup">section 13</a> for more details on this vignette's
 setup.
 
@@ -205,7 +206,6 @@ not shown).
 ```{r, eval=FALSE}
 view(freq(tobacco), collapse = TRUE)
 ```
- 
 
 ## <a id="ctable"></a>2.2 Cross-Tabulations with ctable()
 
@@ -510,15 +510,17 @@ The following options can be set with `st_options()`:
 | plain.ascii               |    TRUE   | Set to FALSE in .Rmd documents                  |
 | round.digits              |       2   | Number of decimals to show                      |
 | headings                  |    TRUE   | Formerly “omit.headings”                        |
-| footnote                  | “default” | Personalize, or set to NA to omit               |
+| footnote                  | “default” | Customize or set to NA to omit                  |
 | display.labels            |    TRUE   | Show variable / data frame labels in headings   |
 | bootstrap.css (*)         |    TRUE   | Include Bootstrap 4 CSS in *html* output files  |
 | custom.css                |      NA   | Path to your own CSS file                       |
 | escape.pipe               |   FALSE   | Useful for some Pandoc conversions              |
+| char.split (**)           |      12   | Threshold for line-wrapping in column headings  |
 | subtitle.emphasis         |    TRUE   | Controls headings formatting                    |
 | lang                      |   “en”    | Language (always 2-letter, lowercase)           |
 
 (*) Set to FALSE in Shiny apps
+(**) Affects `descr()` and `ctable()` *html* outputs
 
 ## 7.2 Function-Specific Options
 
@@ -859,7 +861,7 @@ feedback is always welcome. Please open an
 [issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
 
-### Stay Up-to-date
+### Stay Up to Date
 
 Check out the [GitHub project's page](https://github.com/dcomtois/summarytools);
 from there you can see the latest updates and also submit feature requests.
