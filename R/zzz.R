@@ -40,6 +40,7 @@ utils::globalVariables(c("."))
                  "bootstrap.css"          = TRUE,
                  "custom.css"             = NA,
                  "escape.pipe"            = FALSE,
+                 "char.split"             = 12,
                  "freq.cumul"             = TRUE,
                  "freq.totals"            = TRUE,
                  "freq.report.nas"        = TRUE,

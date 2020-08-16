@@ -250,7 +250,7 @@ print.summarytools <- function(x,
     dotArgs$date <- NULL
   }
   
-  # Check for elements which have changed names - will be removed in next issue
+  # Check for elements with modified names - will be removed in next release
   if ("dataframe" %in% tolower(names(dotArgs))) {
     attr(x, "data_info")$Data.frame <- dotArgs$Dataframe
     dotArgs$Dataframe <- NULL
@@ -270,6 +270,7 @@ print.summarytools <- function(x,
   data_info_elements <- c("Data.frame", "Data.frame.label", "Variable", 
                           "Variable.label", "Data.type", "Group", "Weights",
                           "Row.variable", "Col.variable")
+  
   for (data_info_element in data_info_elements) {
     if (length(dotArgs) > 0) {
       if (tolower(data_info_element) %in% tolower(names(dotArgs))) {
@@ -1049,11 +1050,15 @@ print_ctable <- function(x, method) {
     table_head[[2]] <-list(tags$td(tags$strong(dnn[1]), align = "center"))
     
     for(cn in colnames(cross_table)) {
-      if (nchar(cn) > 12) {
-        cn <- smart_split(cn, 12)
+      flag_split <- FALSE
+      if (nchar(cn) > st_options("char.split")) {
+        flag_split <- TRUE
       }
       cn <- sub("<", "&lt;", cn, fixed = TRUE)
       cn <- sub(">", "&gt;", cn, fixed = TRUE)
+      if (isTRUE(flag_split)) {
+        cn <- smart_split(cn, st_options("char.split"))
+      }
       table_head[[2]][[length(table_head[[2]]) + 1]] <- 
         tags$th(HTML(conv_non_ascii(cn)), 
                 colspan = (1 + has_prop*3), align = "center")
@@ -1263,8 +1268,8 @@ print_descr <- function(x, method) {
     table_head <- list(tags$th(""))
 
     for(cn in colnames(x)) {
-      if (nchar(cn) > 12) {
-        cn <- smart_split(cn, 12)
+      if (nchar(cn) > st_options("char.split")) {
+        cn <- smart_split(cn, st_options("char.split"))
       }
       table_head %+=% list(tags$th(HTML(cn), align = "center",
                                    class = "st-protect-top-border"))
