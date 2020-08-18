@@ -1,16 +1,7 @@
 rm(list=ls())
 setwd("~/GitHub/summarytools")
 (orig_dir <- getwd())
-if (!git2r::repository_head()$name %in% dir("tests/ref")) {
-  cat("********** Using dev-current references as no exist for current branch ************\n")
-  cat("********** branch name: ", git2r::repository_head()$name, "\n")
-  cat("********** Ref dirs available: ", paste(dir("tests/ref"), collapse = ", "))
-  cat("********** Ref dir used: tests/ref/dev-current\n")
-  ref_dir <- paste0(orig_dir, "/tests/ref/dev-current")
-  # ref_dir <- paste0(orig_dir, "/tests/ref/master")
-} else {
-  (ref_dir <- paste(orig_dir, "tests/ref", git2r::repository_head()$name, sep = "/"))
-}
+(ref_dir <- paste(orig_dir, "tests/ref", sep = "/"))
 
 if (file.exists(paste0(orig_dir, "/tests/date_dirs.Rdata"))) {
   load(file = paste0(orig_dir, "/tests/date_dirs.Rdata"))
