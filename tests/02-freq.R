@@ -85,9 +85,6 @@ freq(tobacco$disease, order = "freq-")
 freq(tobacco$disease, order = "-freq", report.nas = FALSE)
 freq(tobacco$disease, order = "name")
 freq(tobacco$disease, order = "name-", report.nas = FALSE)
-freq(tobacco$disease, order = "name")
-freq(tobacco$disease, order = "name-", report.nas = FALSE)
-
 
 # check backward compatibility with plural forms (nameS, freqS, levelS)
 freq(tobacco$disease, order = "names")

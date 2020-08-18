@@ -601,6 +601,8 @@ N: 489
           N.Valid   478.00   477.00         475.00      489.00
         Pct.Valid    97.75    97.55          97.14      100.00
 
+> tobacco$disease <- factor(tobacco$disease)
+
 > stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 Frequencies  
 tobacco$disease  

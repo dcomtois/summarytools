@@ -51,7 +51,7 @@ l=1
 f=1
 for (l in 1:6) {
   lang <- c("en", "fr", "es", "pt", "tr", "ru")[l]
-  for (f in 1:11) {
+  for (f in 2:2) {#1:11) {
     options(width = 200)
     options(tibble.print_max = 200)
     options(tibble.width = 200)

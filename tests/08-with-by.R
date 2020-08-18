@@ -66,6 +66,7 @@ detach(tobacco)
 
 stby(tobacco, tobacco$gender, dfSummary)
 stby(tobacco, tobacco$gender, descr)
+tobacco$disease <- factor(tobacco$disease)
 stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 
 

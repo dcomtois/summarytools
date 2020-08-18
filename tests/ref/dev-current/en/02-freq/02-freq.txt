@@ -720,51 +720,6 @@ Type: Character
                Cancer     34    15.32   100.00
                 Total    222   100.00   100.00
 
-> freq(tobacco$disease, order = "name")
-Frequencies  
-tobacco$disease  
-Type: Character  
-
-                        Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
---------------------- ------ --------- -------------- --------- --------------
-               Cancer     34     15.32          15.32      3.40           3.40
-          Cholesterol     21      9.46          24.77      2.10           5.50
-             Diabetes     14      6.31          31.08      1.40           6.90
-            Digestive     12      5.41          36.49      1.20           8.10
-              Hearing     14      6.31          42.79      1.40           9.50
-                Heart     20      9.01          51.80      2.00          11.50
-         Hypertension     36     16.22          68.02      3.60          15.10
-          Hypotension     11      4.95          72.97      1.10          16.20
-      Musculoskeletal     19      8.56          81.53      1.90          18.10
-         Neurological     10      4.50          86.04      1.00          19.10
-                Other      2      0.90          86.94      0.20          19.30
-            Pulmonary     20      9.01          95.95      2.00          21.30
-               Vision      9      4.05         100.00      0.90          22.20
-                 <NA>    778                              77.80         100.00
-                Total   1000    100.00         100.00    100.00         100.00
-
-> freq(tobacco$disease, order = "name-", report.nas = FALSE)
-Frequencies  
-tobacco$disease  
-Type: Character  
-
-                        Freq        %   % Cum.
---------------------- ------ -------- --------
-               Vision      9     4.05     4.05
-            Pulmonary     20     9.01    13.06
-                Other      2     0.90    13.96
-         Neurological     10     4.50    18.47
-      Musculoskeletal     19     8.56    27.03
-          Hypotension     11     4.95    31.98
-         Hypertension     36    16.22    48.20
-                Heart     20     9.01    57.21
-              Hearing     14     6.31    63.51
-            Digestive     12     5.41    68.92
-             Diabetes     14     6.31    75.23
-          Cholesterol     21     9.46    84.68
-               Cancer     34    15.32   100.00
-                Total    222   100.00   100.00
-
 # -----------------  check backward compatibility with plural forms (nameS, freqS, levelS)
 > freq(tobacco$disease, order = "names")
 Frequencies  

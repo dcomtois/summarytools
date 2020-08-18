@@ -32,6 +32,9 @@ $custom.css
 $escape.pipe
 [1] FALSE
 
+$char.split
+[1] 12
+
 $freq.cumul
 [1] TRUE
 
@@ -131,6 +134,9 @@ $custom.css
 
 $escape.pipe
 [1] FALSE
+
+$char.split
+[1] 12
 
 $freq.cumul
 [1] TRUE

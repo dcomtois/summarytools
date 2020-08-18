@@ -431,7 +431,7 @@ Output file written
     </tr>
   </tbody>
 </table>
-  <p>&#01057;&#01075;&#01077;&#01085;&#01077;&#01088;&#01080;&#01088;&#01086;&#01074;&#01072;&#01085;&#01086; <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> &#01074;&#01077;&#01088;&#01089;&#01080;&#01103; 3.6.3)<br/>2020-06-14</p>
+  <p>&#01057;&#01075;&#01077;&#01085;&#01077;&#01088;&#01080;&#01088;&#01086;&#01074;&#01072;&#01085;&#01086; <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.7 (<a href='https://www.r-project.org/'>R</a> &#01074;&#01077;&#01088;&#01089;&#01080;&#01103; 4.0.2)<br/>2020-08-17</p>
 </div>
 
 > detach(tobacco)
@@ -600,6 +600,8 @@ tobacco
             эксцесс    -1.27     0.17           0.92       -0.92
          Цифр. корр   478.00   477.00         475.00      489.00
          Проц. корр    97.75    97.55          97.14      100.00
+
+> tobacco$disease <- factor(tobacco$disease)
 
 > stby(tobacco$disease, list(tobacco$smoker, tobacco$gender), freq)
 Частота  
