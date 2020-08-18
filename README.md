@@ -51,7 +51,7 @@ and the scientific community at large the functions I first developed
 for myself, that I ultimately realized would benefit a lot of people who
 are looking for the same thing I was seeking in the first place.
 
-### Encourage *summarytools*’ Development With a Small Donation
+### Support *summarytools*’ Development With a Small Donation
 
 Some package developers and maintainers get paid to do exactly that.
 They may also work in teams. *This is not my case*. Seeing the package
