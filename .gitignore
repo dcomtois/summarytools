@@ -6,14 +6,9 @@ summarytools.Rproj
 .Rproj.user
 TODO.txt
 tests/output
-tests/output/*
 tests/img
 tests/date_dirs.Rdata
-tests/ref_bak_*
 tests/other
-tests/97-misc.R
 img/ds*.png
 vignettes/img/
 notes/
-tests/ref
-tests/ref/*
