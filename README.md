@@ -7,8 +7,7 @@
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
-
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+arount+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button" /></a></span>
 
 The following vignettes complement this page:
 
@@ -39,13 +38,13 @@ The package was developed with the following objectives in mind:
 
   - Provide a coherent set of easy to use descriptive functions that are
     akin to those included in commercial statistical packages such as
-    SAS, SPSS and Stata  
-  - Offer flexibility in terms of output formats / contents  
+    SAS, SPSS, and Stata  
+  - Offer flexibility in terms of output formats & contents  
   - Integrate well with commonly used software & tools for reporting
     ([the RStudio IDE](https://rstudio.com/products/rstudio/),
     [Rmarkdown](https://rmarkdown.rstudio.com/), and
     [knitr](https://yihui.org/knitr/)) while also allowing for
-    standalone, simple report generation
+    stand-alone, simple report generation
 
 On a more personal level, I simply wish to share with the R community
 and the scientific community at large the functions I first developed
@@ -60,9 +59,11 @@ grow in popularity was and still is in itself a rewarding experience,
 but I won’t lie; keeping up with the maintenance, feature requests and
 other features I have in mind takes more time than I can afford.
 
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
+
 So if you find **summarytools** useful and want to support its
 development, please consider making a small donation using the *PayPal*
-link at the top of this page. In exchange, you’ll get:
+button. In exchange, you’ll get:
 
   - My sincere gratitude
   - A space with your name in the future *Sponsors* section of this page
@@ -787,15 +788,17 @@ The following options can be set with `st_options()`:
 |        plain.ascii |      TRUE | Set to FALSE in .Rmd documents                 |
 |       round.digits |         2 | Number of decimals to show                     |
 |           headings |      TRUE | Formerly “omit.headings”                       |
-|           footnote | “default” | Personalize, or set to NA to omit              |
+|           footnote | “default” | Customize or set to NA to omit                 |
 |     display.labels |      TRUE | Show variable / data frame labels in headings  |
 | bootstrap.css (\*) |      TRUE | Include Bootstrap 4 CSS in *html* output files |
 |         custom.css |        NA | Path to your own CSS file                      |
 |        escape.pipe |     FALSE | Useful for some Pandoc conversions             |
+|  char.split (\*\*) |        12 | Threshold for line-wrapping in column headings |
 |  subtitle.emphasis |      TRUE | Controls headings formatting                   |
 |               lang |      “en” | Language (always 2-letter, lowercase)          |
 
-(\*) Set to FALSE in Shiny apps
+(\*) Set to FALSE in Shiny apps (\*\*) Affects `descr()` and `ctable()`
+*html* outputs
 
 ## 7.2 Function-Specific Options
 
