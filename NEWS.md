@@ -33,11 +33,14 @@
    + Added a check for numerical variables having infinitesimal
      variability, in which case a linear transformation is applied to
      obtain better histograms 
- - In descr():
+ - In `descr()`:
    + Added the `order` argument that gives the option to display variables in
      their order of appearance in the data or in a custom order (as opposed to
      the default behavior which is to display them alphabetically sorted)
-
+ - In `freq()`, values for the `order` argument are now singular (backward
+   compatibility is preserved for now)
+   + levels --> level
+   + names --> name
 
 # summarytools 0.9.6 (2020-03-01)
 
