@@ -15,5 +15,5 @@ tests/97-misc.R
 img/ds*.png
 vignettes/img/
 notes/
-tests/
-tests/*
+tests/ref
+tests/ref/*
