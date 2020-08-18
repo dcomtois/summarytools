@@ -65,8 +65,9 @@ So if you find **summarytools** useful and want to support its
 development, please consider making a small donation using the *PayPal*
 button. In exchange, you’ll get:
 
-  - My sincere gratitude
-  - A space with your name in the future *Sponsors* section of this page
+  - My sincere gratitude  
+  - A space with your name in the future *Sponsors* section of this
+    page  
   - My personal commitment to dedicate more time to the package’s
     development
 
@@ -141,13 +142,15 @@ versions.
 install.packages("summarytools")
 ```
 
-## 1.5 Latest Features
+## 1.5 Latest Features (v0.9.7)
 
-Version 0.9.7 brings along… - Performance and formatting improvements -
-The `stview()` function which ensures the package’s own `view()` method
-is used (avoiding potential conflicts with other packages’ versions of
-that method) - Several other features detailed in the news section (see
-NEWS.md or try `news(package="summarytools"`))
+  - Performance and formatting improvements  
+  - The `stview()` function which ensures the package’s own `view()`
+    method  
+    is used (avoiding potential conflicts with other packages’ versions
+    of that method)  
+  - Several other features (see NEWS.md or try
+    `news(package="summarytools"`))
 
 # 2\. The Four Core Functions
 
