@@ -6,7 +6,7 @@
 \usage{
 dfSummary(
   x,
-  round.digits = st_options("round.digits"),
+  round.digits = 1,
   varnumbers = st_options("dfSummary.varnumbers"),
   labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
@@ -33,7 +33,7 @@ dfSummary(
 \item{x}{A data frame.}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{2} and can be set globally; see \code{\link{st_options}}.}
+\code{1}.}
 
 \item{varnumbers}{Logical. Should the first column contain variable number?
 Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
@@ -43,7 +43,7 @@ option \dQuote{dfSummary.varnumbers}.}
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
 column is only shown if at least one column has a defined label. This
-option can also be set globally; see \code{\link{st_options}}, option 
+option can also be set globally; see \code{\link{st_options}}, option
 \dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
@@ -81,7 +81,7 @@ markdown rendering. To change the default value globally, see
 
 \item{col.widths}{Numeric or character. Vector of column widths. If numeric,
 values are assumed to be numbers of pixels. Otherwise, any CSS-supported
-units can be used. \code{NA} by default, meaning widths are calculated 
+units can be used. \code{NA} by default, meaning widths are calculated
 automatically.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit headings. To change this
@@ -111,10 +111,10 @@ Defaults to \code{40}.}
 of a table. Keeping the default value (\code{Inf}) is recommended.}
 
 \item{tmp.img.dir}{Character. Directory used to store temporary images when
-rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and 
+rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 `style = "grid"`. See \emph{Details}.}
 
-\item{silent}{Logical. Hide console messages. \code{FALSE} by default. To 
+\item{silent}{Logical. Hide console messages. \code{FALSE} by default. To
 change this value globally, see \code{\link{st_options}}.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
@@ -168,7 +168,7 @@ The default \code{plain.ascii = TRUE} option is there to make
   user will have to choose a directory and cleanup the temporary images
   manually after the document has been rendered. Providing a relative path
   such as \dQuote{img} is recommended. The maximum length for this parameter
-  is set to 5 characters. It can be set globally using 
+  is set to 5 characters. It can be set globally using
   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 }
 \examples{

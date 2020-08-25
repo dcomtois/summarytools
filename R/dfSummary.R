@@ -6,7 +6,7 @@
 #'
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{2} and can be set globally; see \code{\link{st_options}}.
+#'   \code{1}.
 #' @param varnumbers Logical. Should the first column contain variable number?
 #'   Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
@@ -155,7 +155,7 @@
 #' @importFrom grDevices dev.list dev.off
 #' @export
 dfSummary <- function(x,
-                      round.digits     = st_options("round.digits"),
+                      round.digits     = 1,
                       varnumbers       = st_options("dfSummary.varnumbers"),
                       labels.col       = st_options("dfSummary.labels.col"),
                       valid.col        = st_options("dfSummary.valid.col"),
@@ -460,10 +460,10 @@ dfSummary <- function(x,
 
     output[i,8] <-
       paste0(format_number(n_valid, 0), "\\\n(",
-             format_number(n_valid / n_tot * 100, round.digits - 1), "%)")
+             format_number(n_valid / n_tot * 100, round.digits), "%)")
     output[i,9] <-
       paste0(format_number(n_miss, 0), "\\\n(",
-             format_number(n_miss / n_tot * 100, round.digits - 1), "%)")
+             format_number(n_miss / n_tot * 100, round.digits), "%)")
 
   }
 
@@ -876,26 +876,26 @@ crunch_numeric <- function(column_data, is_barcode) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          round(min_val, round.digits - 1), "\\\n",
+          round(min_val, round.digits), "\\\n",
           trs("mean"), strrep(" ", maxchars - nchar(trs("mean"))), " : ",
-          round(mean(column_data, na.rm = TRUE), round.digits - 1), "\\\n",
+          round(mean(column_data, na.rm = TRUE), round.digits), "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          round(max_val, round.digits - 1)
+          round(max_val, round.digits)
         )
       } else {
         outlist[[1]] <- paste(
           trs("mean"), paste0(" (", trs("sd"), ") : "),
-          pf$format_number(mean(column_data, na.rm = TRUE), round.digits - 1),
-          " (", pf$format_number(sd(column_data, na.rm = TRUE), round.digits - 1), ")\\\n",
+          pf$format_number(mean(column_data, na.rm = TRUE), round.digits),
+          " (", pf$format_number(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", pf$format_number(min_val, round.digits - 1),
-          " < ", pf$format_number(median(column_data, na.rm = TRUE), round.digits - 1),
-          " < ", pf$format_number(max_val, round.digits - 1), "\\\n",
+          ":\\\n", pf$format_number(min_val, round.digits),
+          " < ", pf$format_number(median(column_data, na.rm = TRUE), round.digits),
+          " < ", pf$format_number(max_val, round.digits), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          pf$format_number(IQR(column_data, na.rm = TRUE), round.digits - 1),
+          pf$format_number(IQR(column_data, na.rm = TRUE), round.digits),
           " (", pf$format_number(sd(column_data, na.rm = TRUE) /
                                    mean(column_data, na.rm = TRUE),
-                                 round.digits - 1), ")", collapse="", sep="")
+                                 round.digits), ")", collapse="", sep="")
       }
     }
 
@@ -923,7 +923,7 @@ crunch_numeric <- function(column_data, is_barcode) {
       (all(column_data %% 1 == 0, na.rm = TRUE) ||
        identical(names(column_data), "0") ||
        all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
-           10^-round.digits))) {
+           10^-(round.digits + 1)))) {
 
       props <- round(prop.table(counts), round.digits + 2)
       counts_props <- align_numbers_dfs(counts, props)
@@ -1065,7 +1065,7 @@ crunch_time_date <- function(column_data) {
           tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
           tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
           "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
-                          x = round(as.period(interval(tmin, tmax)),round.digits))
+                          x = round(as.period(interval(tmin, tmax)), round.digits))
         )
       }
 
@@ -1153,10 +1153,10 @@ align_numbers_dfs <- function(counts, props) {
   }
 
   maxchar_cnt <- nchar(as.character(max(counts)))
-  maxchar_pct <- nchar(sprintf(paste0("%.",parent.frame()$round.digits - 1, "f"),
+  maxchar_pct <- nchar(sprintf(paste0("%.",parent.frame()$round.digits, "f"),
                                max(props*100)))
   retval <- paste(sprintf(paste0("%", maxchar_cnt, "i"), counts),
-                  sprintf(paste0("(%", maxchar_pct, ".", parent.frame()$round.digits - 1,
+                  sprintf(paste0("(%", maxchar_pct, ".", parent.frame()$round.digits,
                                  "f%%)"), props*100))
   if ("decimal.mark" %in% names(parent.frame(2)$dotArgs)) {
     retval <- gsub("(\\d)\\.(\\d)",
