@@ -288,10 +288,6 @@ dfSummary <- function(x,
     }
   }
 
-  if (!"nsmall" %in% names(fmtArgs)) {
-    fmtArgs$nsmall <- round.digits
-  }
-
   if (!"digits" %in% names(fmtArgs)) {
     fmtArgs$digits <- getOption("digits")
   }
@@ -302,7 +298,6 @@ dfSummary <- function(x,
       return(do.call(format, append(fmtArgs, x = quote(x))))
     } else {
       x <- round(x, round.digits)
-      fmtArgs$nsmall <- round.digits
       return(do.call(format, append(fmtArgs, x = quote(x))))
     }
   }
@@ -460,10 +455,10 @@ dfSummary <- function(x,
 
     output[i,8] <-
       paste0(format_number(n_valid, 0), "\\\n(",
-             format_number(n_valid / n_tot * 100, round.digits), "%)")
+             format_number(n_valid / n_tot * 100, 1), "%)")
     output[i,9] <-
       paste0(format_number(n_miss, 0), "\\\n(",
-             format_number(n_miss / n_tot * 100, round.digits), "%)")
+             format_number(n_miss / n_tot * 100, 1), "%)")
 
   }
 
@@ -585,7 +580,7 @@ crunch_factor <- function(column_data, email_val) {
     outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    counts_props <- align_numbers_dfs(counts, round(props, 3))
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
     if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       if (isTRUE(st_options("use.x11"))) {
@@ -619,8 +614,7 @@ crunch_factor <- function(column_data, email_val) {
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
       c(props[1:max.distinct.values],
-        round(sum(props[(max.distinct.values + 1):length(props)]),
-              round.digits + 2))
+        round(sum(props[(max.distinct.values + 1):length(props)]), 3))
     )
 
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
@@ -687,11 +681,11 @@ crunch_character <- function(column_data, email_val) {
       paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
 
     dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
-    prop.dups <- round(dups / n_valid, round.digits + 2)
+    prop.dups <- round(dups / n_valid, 3)
 
     counts_props <- align_numbers_dfs(
       c(email_val, dups),
-      c(round(prop.table(email_val), round.digits + 2), prop.dups)
+      c(round(prop.table(email_val), 3), prop.dups)
     )
 
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
@@ -718,8 +712,8 @@ crunch_character <- function(column_data, email_val) {
     # Replace empty strings with "(Empty string)" or the corresponding translation
     names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), names(counts))
 
-    # Replace white-space-only strings with as many middle-dot symbols to make them visible in
-    # the output table
+    # Replace white-space-only strings with as many middle-dot symbols to make
+    # them visible in the output table
     names(counts) <- ws_to_symbol(names(counts))
 
     props <- prop.table(counts)
@@ -729,7 +723,7 @@ crunch_character <- function(column_data, email_val) {
       outlist[[1]] <- paste0(seq_along(counts), "\\. ",
                              substr(names(counts), 1, max.string.width),
                              collapse = "\\\n")
-      counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+      counts_props <- align_numbers_dfs(counts, round(props, 3))
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
       if (isTRUE(pf$graph.col) &&
           any(!is.na(column_data))) {
@@ -759,8 +753,7 @@ crunch_character <- function(column_data, email_val) {
         c(counts[1:max.distinct.values],
           sum(counts[(max.distinct.values + 1):length(counts)])),
         c(props[1:max.distinct.values],
-          round(sum(props[(max.distinct.values + 1):length(props)]),
-                round.digits + 2))
+          round(sum(props[(max.distinct.values + 1):length(props)]), 3))
       )
 
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
@@ -814,7 +807,7 @@ crunch_logical <- function(column_data) {
 
     outlist[[1]] <- paste0(seq_along(counts), "\\. ", names(counts),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    counts_props <- align_numbers_dfs(counts, round(props, 3))
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
     if (isTRUE(pf$graph.col) &&
         any(!is.na(column_data))) {
@@ -925,13 +918,14 @@ crunch_numeric <- function(column_data, is_barcode) {
        all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
            10^-(round.digits + 1)))) {
 
-      props <- round(prop.table(counts), round.digits + 2)
+      props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
 
       rounded_names <-
         trimws(format(
           round(as.numeric(names(counts)), round.digits),
-          nsmall = round.digits * !all(floor(column_data) == column_data, na.rm = TRUE)
+          nsmall = round.digits * !all(floor(column_data) == column_data,
+                                       na.rm = TRUE)
         ))
 
       maxchars <- max(nchar(rounded_names))
@@ -952,7 +946,8 @@ crunch_numeric <- function(column_data, is_barcode) {
 
     } else {
       # Do not display specific values - only the number of distinct values
-      outlist[[2]] <- paste(pf$format_number(length(counts), 0), trs("distinct.values"))
+      outlist[[2]] <- paste(pf$format_number(length(counts), 0),
+                            trs("distinct.values"))
 
       # Check for integer sequences
       if (pf$n_miss == 0 &&
@@ -1033,7 +1028,7 @@ crunch_time_date <- function(column_data) {
     if (length(counts) <= max.distinct.values) {
       outlist[[1]] <- paste0(seq_along(counts),". ", names(counts),
                              collapse="\\\n")
-      props <- round(prop.table(counts), round.digits + 2)
+      props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
       if (isTRUE(st_options("use.x11"))) {
@@ -1108,7 +1103,7 @@ crunch_other <- function(column_data) {
       outlist[[1]] <- paste0(trs("all.nas"), "\n")
 
     } else if (length(counts) <= max.distinct.values) {
-      props <- round(prop.table(counts), round.digits + 2)
+      props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
 
