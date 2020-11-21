@@ -592,6 +592,81 @@ Non-numerical variable(s) ignored: student, gender
 Non-numerical variable(s) ignored: student, gender
 Output file written
 
+# -----------------  Large numbers
+> bignum <- rep(tobacco$cigs.per.day, 500) * 999.25
+
+> (dbig1 <- descr(bignum, big.mark = ","))
+### Descriptive Statistics  
+#### bignum  
+**N:** 500,000  
+
+|        &nbsp; |     bignum |
+|--------------:|-----------:|
+|      **Mean** |   6,777.30 |
+|   **Std.Dev** |  11,861.49 |
+|       **Min** |       0.00 |
+|    **Median** |       0.00 |
+|       **Max** |  39,970.00 |
+|   **N.Valid** | 482,500.00 |
+| **Pct.Valid** |      96.50 |
+
+> view(dbig1, file = "dbig1.html")
+Output file written
+
+> (dbig2 <- descr(bignum, big.mark = " ", decimal.mark = ","))
+### Descriptive Statistics  
+#### bignum  
+**N:** 500 000  
+
+|        &nbsp; |     bignum |
+|--------------:|-----------:|
+|      **Mean** |   6 777,30 |
+|   **Std.Dev** |  11 861,49 |
+|       **Min** |       0,00 |
+|    **Median** |       0,00 |
+|       **Max** |  39 970,00 |
+|   **N.Valid** | 482 500,00 |
+| **Pct.Valid** |      96,50 |
+
+> view(dbig2, file = "dbig2.html")
+Output file written
+
+> (dbig3 <- descr(bignum, big.mark = "'", decimal.mark = "."))
+### Descriptive Statistics  
+#### bignum  
+**N:** 500'000  
+
+|        &nbsp; |     bignum |
+|--------------:|-----------:|
+|      **Mean** |   6'777.30 |
+|   **Std.Dev** |  11'861.49 |
+|       **Min** |       0.00 |
+|    **Median** |       0.00 |
+|       **Max** |  39'970.00 |
+|   **N.Valid** | 482'500.00 |
+| **Pct.Valid** |      96.50 |
+
+> view(dbig3, file = "dbig3.html")
+Output file written
+
+> (dbig4 <- descr(bignum, big.mark = ".", decimal.mark = ","))
+### Descriptive Statistics  
+#### bignum  
+**N:** 500.000  
+
+|        &nbsp; |     bignum |
+|--------------:|-----------:|
+|      **Mean** |   6.777,30 |
+|   **Std.Dev** |  11.861,49 |
+|       **Min** |       0,00 |
+|    **Median** |       0,00 |
+|       **Max** |  39.970,00 |
+|   **N.Valid** | 482.500,00 |
+| **Pct.Valid** |      96,50 |
+
+> view(dbig4, file = "dbig4.html")
+Output file written
+
 > st_options("reset")
 summarytools options have been reset
 

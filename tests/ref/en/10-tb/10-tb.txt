@@ -2428,6 +2428,22 @@ Output file appended
 23 samp.wgts    (Missing) Yes     1.00   0.0874  0.861  0.953  1.05  1.05  1.06  0.00386  0.0509    0.0872  -0.933        0.752   -1.22        8     100  
 24 samp.wgts    (Missing) No      1.01   0.0806  0.861  1.04   1.05  1.05  1.06  0.00772  0.00521   0.0799  -1.23         0.597   -0.483      14     100  
 
+# -----------------  Check use of variable named "method" (Issue #127)
+> tobacco$method <- tobacco$age.gr
+
+> tobacco %>%
+>  group_by(method) %>%
+>  descr(BMI) %>%
+>  tb() 
+# A tibble: 5 x 17
+  method    variable  mean    sd   min    q1   med    q3   max   mad   iqr    cv skewness se.skewness kurtosis n.valid pct.valid
+  <fct>     <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>       <dbl>    <dbl>   <dbl>     <dbl>
+1 18-34     BMI       23.8  4.23  8.83  20.9  24.0  26.4  34.8  4.13  5.46 0.178  -0.143        0.153   0.0341     252      97.7
+2 35-50     BMI       25.1  4.34 10.3   21.8  25.1  27.8  39.4  4.19  5.99 0.173   0.171        0.160   0.523      232      96.3
+3 51-70     BMI       26.9  4.26  9.01  24.0  26.8  29.8  39.2  4.33  5.84 0.158  -0.0628       0.138   0.544      312      98.4
+4 71 +      BMI       27.4  4.37 16.4   24.0  27.5  30.5  38.4  4.90  6.48 0.159   0.146        0.195  -0.339      155      97.5
+5 (Missing) BMI       25.2  3.64 18.8   23.1  24.9  27.4  31.8  2.65  3.85 0.145   0.0829       0.481  -0.892       23      92  
+
 > st_options("reset")
 summarytools options have been reset
 

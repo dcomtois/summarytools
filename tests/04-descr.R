@@ -95,6 +95,19 @@ descr(exams, order = c("french", "english", "geography", "history", "math", "eco
 (d11 <- descr(exams, order = "preserve"))
 view(d11, file = "11.html")
 
+# Large numbers
+bignum <- rep(tobacco$cigs.per.day, 500) * 999.25
+
+(dbig1 <- descr(bignum, big.mark = ","))
+view(dbig1, file = "dbig1.html")
+(dbig2 <- descr(bignum, big.mark = " ", decimal.mark = ","))
+view(dbig2, file = "dbig2.html")
+(dbig3 <- descr(bignum, big.mark = "'", decimal.mark = "."))
+view(dbig3, file = "dbig3.html")
+(dbig4 <- descr(bignum, big.mark = ".", decimal.mark = ","))
+view(dbig4, file = "dbig4.html")
+
+
 st_options("reset")
 detach("package:summarytools")
 detach("package:dplyr")
