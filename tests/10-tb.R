@@ -183,6 +183,13 @@ tb(stby(tobacco, tobacco$gender, descr), drop.var.col = TRUE)
 tb(stby(tobacco, tobacco$gender, descr), order = 3)
 tb(stby(tobacco, list(tobacco$gender, tobacco$smoker), descr), order = 3)
 
+# Check use of variable named "method" (Issue #127)
+tobacco$method <- tobacco$age.gr
+tobacco %>%
+  group_by(method) %>%
+  descr(BMI) %>%
+  tb() 
+
 st_options("reset")
 detach("package:summarytools")
 detach("package:dplyr")
