@@ -177,15 +177,18 @@ dfSummary <- function(x,
                       silent           = st_options('dfSummary.silent'),
                       ...) {
 
-  # Flag to handle unwanted graphic device
+  # Flag for elimination of unwanted graphic device in non-RStudio envirs
   if (.Platform$GUI %in% c("Rgui", "RTerm", "X11") && is.null(dev.list())) {
     clear_null_device <- TRUE
   } else {
     clear_null_device <- FALSE
   }
 
-  # handle objects of class "grouped_df" (dplyr::group_by)
+  # Make recursive calls when function is invoked on split-group data using
+  # dplyr::group_by()
   if (inherits(x, "grouped_df")) {
+    
+    # Get metadata for heading section
     parse_info <- try(
       parse_args(sys.calls(), sys.frames(), match.call(),
                  var_name  = FALSE, var_label = FALSE,
@@ -193,8 +196,8 @@ dfSummary <- function(x,
       silent = TRUE)
 
     outlist <- list()
-    g_ks    <- map_groups(group_keys(x))
-    g_inds  <- attr(x, "groups")$.rows
+    g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
+    g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
     for (g in seq_along(g_ks)) {
       outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]], ]),
                                 round.digits        = round.digits,
@@ -220,14 +223,22 @@ dfSummary <- function(x,
                                 ...                 = ...)
 
       if (!inherits(parse_info, "try-error")) {
-        if (!is.null(parse_info$df_name))
-          attr(outlist[[g]], "data_info")$Data.frame <- enc2utf8(parse_info$df_name)
-        if (!is.null(parse_info$df_label))
-          attr(outlist[[g]], "data_info")$Data.frame.label <- enc2utf8(parse_info$df_label)
-        if (!is.null(parse_info$var_name))
-          attr(outlist[[g]], "data_info")$Variable <- enc2utf8(parse_info$var_name)
-        if (!is.null(parse_info$var_label))
-          attr(outlist[[g]], "data_info")$Variable.label <- enc2utf8(parse_info$var_label)
+        if (!is.null(parse_info$df_name)) {
+          attr(outlist[[g]], "data_info")$Data.frame <- 
+            enc2utf8(parse_info$df_name)
+        }
+        if (!is.null(parse_info$df_label)) {
+          attr(outlist[[g]], "data_info")$Data.frame.label <- 
+            enc2utf8(parse_info$df_label)
+        }
+        if (!is.null(parse_info$var_name)) {
+          attr(outlist[[g]], "data_info")$Variable <-
+            enc2utf8(parse_info$var_name)
+        }
+        if (!is.null(parse_info$var_label)) {
+          attr(outlist[[g]], "data_info")$Variable.label <-
+            enc2utf8(parse_info$var_label)
+        }
       }
       attr(outlist[[g]], "data_info")$by_var <-
         setdiff(colnames(attr(x, "groups")), ".rows")
@@ -274,13 +285,17 @@ dfSummary <- function(x,
 
   # Declare number formatting function ----------------------------------
   # Normally, formatting is handled by print() / view(), but in dfSummary,
-  # the numbers are mixed in with text in multiline cells, so it will
+  # the numbers are mixed in with text in multiline cells, so it would
   # require some more work, i.e. changing cell contents to lists that
-  # can then be handled correctly by print(). So this can be viewed as
-  # a temporary solution for this complex problem.
+  # could then be handled correctly by summarytools' print method. So what 
+  # follows can be viewed as a temporary solution for a complex formatting 
+  # problem.
   dotArgs <- list(...)
   fmtArgs <- list()
 
+  # Gather from additional arguments (...) those which will be used by format().
+  # Most format arguments are actually recognized. Formatting arguments that are
+  # neither in this list, neither recognized by pander, will be ignored.
   for (fmt in c("big.mark", "small.mark", "decimal.mark", "scientific",
                 "small.interval", "big.interval", "nsmall", "digits")) {
     if (fmt %in% names(dotArgs)) {
@@ -288,28 +303,18 @@ dfSummary <- function(x,
     }
   }
 
+  # Make sure fmtArgs has at least one element; digits is an arbitrary choice.
   if (!"digits" %in% names(fmtArgs)) {
     fmtArgs$digits <- getOption("digits")
   }
 
-  format_number <- function(x, round.digits) {
-    # If we have digits + scientific = TRUE, we don't want to round
-    if ("digits" %in% names(fmtArgs) && isTRUE(fmtArgs$scientific)) {
-      return(do.call(format, append(fmtArgs, x = quote(x))))
-    } else {
-      x <- round(x, round.digits)
-      return(do.call(format, append(fmtArgs, x = quote(x))))
-    }
-  }
-
-  # Check for labels ----------------------------------------------------
+  # Check for column labels ----------------------------------------------------
   if (isTRUE(labels.col) && length(label(x, all = TRUE)) == 0) {
     labels.col <- FALSE
   }
 
-  # Get info on x from parsing function ---------------------------------
+  # Get metadata for x ---------------------------------------------------------
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               #max.varnames = max.varnames,
                                var_name = converted_to_df,
                                var_label = converted_to_df,
                                caller = "dfSummary"),
@@ -336,14 +341,14 @@ dfSummary <- function(x,
   } else if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
     if (is.na(tmp.img.dir)) {
       store_imgs <- FALSE
-      if(!isTRUE(silent)) {
+      if (!isTRUE(silent)) {
         png_message <- TRUE
       }
     } else {
       store_imgs <- TRUE
       dir.create(tmp.img.dir, showWarnings = FALSE)
       if (.st_env$sysname == "Windows" || tmp.img.dir != "/tmp") {
-        if(!isTRUE(silent)) {
+        if (!isTRUE(silent)) {
           message("temporary images written to '",
                   normalizePath(tmp.img.dir), "'")
         }
@@ -372,7 +377,7 @@ dfSummary <- function(x,
 
   # iterate over columns of x --------------------------------------------------
 
-  for(i in seq_len(ncol(x))) {
+  for (i in seq_len(ncol(x))) {
 
     # extract column data
     column_data <- x[[i]]
@@ -411,7 +416,7 @@ dfSummary <- function(x,
       output[i,2] <- paste(output[i,2],
                            paste(barcode_type, trs("codes")),
                            sep = "\\\n")
-      if(is.numeric(column_data)) {
+      if (is.numeric(column_data)) {
         column_data <- as.character(column_data)
       }
     }
@@ -422,6 +427,8 @@ dfSummary <- function(x,
       if (is.na(output[i,3]))
         output[i,3] <- ""
     }
+
+    # Data crunching by type starts here ---------------------------------------
 
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
@@ -453,12 +460,19 @@ dfSummary <- function(x,
       output[i,4:7] <- crunch_other(column_data)
     }
 
+    # Data crunching by type ends here -----------------------------------------
+
+    # Valid (non-missing) data, frequency and proportion -----------------------
     output[i,8] <-
-      paste0(format_number(n_valid, 0), "\\\n(",
-             format_number(n_valid / n_tot * 100, 1), "%)")
+      paste0(format_number(n_valid, round.digits = 0), "\\\n(",
+             format_number(n_valid / n_tot * 100, round.digits = 1, nsmall = 1),
+             "%)")
+    
+    # Missing data, frequency and proportion -----------------------------------
     output[i,9] <-
-      paste0(format_number(n_miss, 0), "\\\n(",
-             format_number(n_miss / n_tot * 100, 1), "%)")
+      paste0(format_number(n_miss, round.digits = 0), "\\\n(",
+             format_number(n_miss / n_tot * 100, round.digits = 1, nsmall = 1),
+             "%)")
 
   }
 
@@ -558,7 +572,7 @@ crunch_factor <- function(column_data, email_val) {
   graph.magnif        <- pf$graph.magnif
   round.digits        <- pf$round.digits
   n_valid             <- pf$n_valid
-
+  
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
   props    <- prop.table(counts)
@@ -580,7 +594,8 @@ crunch_factor <- function(column_data, email_val) {
     outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, 3))
+    # counts_props <- align_numbers_dfs(counts, round(props, 3))
+    counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
     if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       if (isTRUE(st_options("use.x11"))) {

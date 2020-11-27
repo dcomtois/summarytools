@@ -35,7 +35,7 @@ tables. All \emph{Bootstrap css} classes can be used. It also allows
 user-defined classes (see custom.css parameter). See \emph{details}
 section. \code{NA} by default.}
 
-\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit 
+\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit
 \emph{Bootstrap css}. \code{TRUE} by default. To change this default value
 globally, see \code{\link{st_options}}.}
 

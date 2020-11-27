@@ -163,7 +163,7 @@ ctable <- function(x,
   }
   
   # When style is rmarkdown, make plain.ascii FALSE unless specified explicitly
-  if (style=="rmarkdown" && isTRUE(plain.ascii) && 
+  if (style == "rmarkdown" && isTRUE(plain.ascii) && 
       (!"plain.ascii" %in% (names(match.call())))) {
     plain.ascii <- FALSE
   }
@@ -293,13 +293,15 @@ ctable <- function(x,
       prop_table <- addmargins(prop_table)
     } else if (prop == "r") {
       prop_table <- addmargins(prop_table, 2)
-      sum_props <- 
-        c(prop.table(freq_table[nrow(freq_table), -ncol(freq_table)]), Total=1)
+      sum_props <- c(prop.table(freq_table[nrow(freq_table),
+                                           -ncol(freq_table)]),
+                     Total = 1)
       prop_table <- rbind(prop_table, sum_props)
     } else if (prop == "c") {
       prop_table <- addmargins(prop_table, 1)
-      sum_props <- 
-        c(prop.table(freq_table[-nrow(freq_table), ncol(freq_table)]), Total=1)
+      sum_props <- c(prop.table(freq_table[-nrow(freq_table), 
+                                           ncol(freq_table)]),
+                     Total = 1)
       prop_table <- cbind(prop_table, sum_props)
     }
     rownames(prop_table)[nrow(prop_table)] <- trs("total")
@@ -346,8 +348,8 @@ ctable <- function(x,
         or <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
         se <- sqrt(sum(1/freq_table_min))
         attr(output, "OR") <- c(or,
-                                exp(log(or) - qnorm(p = 1-((1-OR)/2)) * se),
-                                exp(log(or) + qnorm(p = 1-((1-OR)/2)) * se))
+                                exp(log(or) - qnorm(p = 1 - ((1 - OR)/2)) * se),
+                                exp(log(or) + qnorm(p = 1 - ((1 - OR)/2)) * se))
         names(attr(output, "OR")) <- c("Odds Ratio", paste0("Lo - ", OR * 100, "%"),
                                        paste0("Hi - ", OR * 100, "%"))
         attr(output, "OR-level") <- OR

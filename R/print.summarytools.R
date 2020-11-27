@@ -236,9 +236,9 @@ print.summarytools <- function(x,
   # (thus not taking advantage of print.summarytools() which makes results
   # much cleaner in the console)
   if (method == "pander" &&
-      (identical(deparse(sys.calls()[[sys.nframe()-1]][2]), "x[[i]]()") ||
+      (identical(deparse(sys.calls()[[sys.nframe() - 1]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]",
-                 x = deparse(sys.calls()[[sys.nframe()-1]]), fixed = TRUE)))) {
+                 x = deparse(sys.calls()[[sys.nframe() - 1]]), fixed = TRUE)))) {
     message("For best results printing list objects with summarytools, ",
             "use print(x); if by() was used, use stby() instead")
   }
@@ -296,11 +296,16 @@ print.summarytools <- function(x,
   }
 
   # Assume all remaining arguments have to do with formatting. Put everything
-  # into a list and eliminate redundant items, keeping last, giving priority
-  # to "dotArgs", then to explicit arguments used when creating the object, as
-  # given by the 'fn_call' attribute; and finally, the other arguments will be
-  # obtained from the st_options() function once more, so that changes in
-  # those options since the object's creation will be applied.
+  # into a list and eliminate redundant items, keeping only the last one,
+  # giving priority to 
+  # 
+  #  1. "dotArgs", then to 
+  #  2. explicit arguments used when creating the object, as given by the
+  #     'fn_call' attribute.
+  # 
+  # The remaining arguments will be obtained from the st_options() function
+  # so that changes in summarytools options made after the object's creation
+  # will be applied.
   format_info <-
     append(list(scientific       = FALSE,
                 decimal.mark     = getOption("OutDec"),
@@ -365,7 +370,7 @@ print.summarytools <- function(x,
   }
 
   # Fix the value of justify - default depends on method
-  if (method=="pander") {
+  if (method == "pander") {
     format_info$justify <- switch(tolower(substring(format_info$justify, 1, 1)),
                                   l = "left",
                                   c = "center",
@@ -395,7 +400,7 @@ print.summarytools <- function(x,
     format_info$digits <- format_info$round.digits
   }
 
-  # Put back modified attributes "into" x
+  # Put modified attributes back into x
   attr(x, "format_info") <- format_info
   format_args <- format_info[which(names(format_info) %in%
                                      names(formals(format.default)))]
@@ -467,7 +472,7 @@ print.summarytools <- function(x,
   # Print or write to file - pander --------------------------------------------
   if (method == "pander") {
 
-    # Remove doubled linefeed
+    # Remove double-linefeeds
     res[[length(res)]] <-
       sub("^\\n\\n", "\n", res[[length(res)]])
 
@@ -494,7 +499,7 @@ print.summarytools <- function(x,
       top_part    <- sub("(^.+)(</body>.+)", "\\1", html_content_in)
       bottom_part <- sub("(^.+)(</body>.+)", "\\2", html_content_in)
       insert_part <-
-        iconv(paste(capture.output(tags$div(class="container st-container",
+        iconv(paste(capture.output(tags$div(class = "container st-container",
                                             res)),
                     collapse = "\n"), to = "utf-8")
       html_content <- paste(capture.output(cat(top_part, insert_part,
@@ -505,25 +510,31 @@ print.summarytools <- function(x,
       if (method %in% c("browser", "viewer")) {
         html_content <-
           tags$div(
-            class="container st-container",
+            class = "container st-container",
             tags$head(
               includeHTML(system.file(
-                package="summarytools", "includes/favicon.html"
+                package = "summarytools", "includes/favicon.html"
               )),
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
-                  package="summarytools", "includes/scripts/jquery-3.4.0.slim.min.js"
+                  "includes/scripts/jquery-3.4.0.slim.min.js",
+                  package = "summarytools"
                 )),
               if (collapse)
                 includeScript(system.file(
-                  package="summarytools", "includes/scripts/bootstrap.min.js"
+                  "includes/scripts/bootstrap.min.js",
+                  package = "summarytools"
                 )),
               if (isTRUE(bootstrap.css))
-                includeCss(system.file(package="summarytools",
-                                       "includes/stylesheets/bootstrap.min.css")),
-              includeCss(system.file(package="summarytools",
-                                     "includes/stylesheets/summarytools.css")),
+                includeCss(system.file(
+                  "includes/stylesheets/bootstrap.min.css",
+                  package = "summarytools"
+                )),
+              includeCss(system.file(
+                "includes/stylesheets/summarytools.css",
+                package = "summarytools"
+              )),
               if (!is.na(custom.css))
                 includeCss(path = custom.css)
             ),
@@ -533,9 +544,9 @@ print.summarytools <- function(x,
         # method == "render"
         html_content <-
           tags$div(
-            class="container st-container",
+            class = "container st-container",
             tags$head(
-              includeCss(system.file(package="summarytools",
+              includeCss(system.file(package = "summarytools",
                                      "includes/stylesheets/summarytools.css")),
               if (!is.na(custom.css))
                 includeCss(path = custom.css)
@@ -628,16 +639,16 @@ print_freq <- function(x, method) {
 
   if (!isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
     # Subtract NA counts from total
-    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
+    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) - 1, 1]
     # Remove NA row and keep only desired columns
-    x <- x[-(nrow(x)-1), 1:2]
+    x <- x[-(nrow(x) - 1), 1:2]
     colnames(x) <- c(trs("freq"), trs("pct"))
 
   } else if (!isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
     # Subtract NA counts from total
-    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) -1, 1]
+    x[nrow(x), 1] <- x[nrow(x), 1] - x[nrow(x) - 1, 1]
     # Remove NA row and keep only desired columns
-    x <- x[-(nrow(x)-1), 1:3]
+    x <- x[-(nrow(x) - 1), 1:3]
     colnames(x) <- c(trs("freq"), trs("pct"), trs("pct.cum"))
 
   } else if (isTRUE(format_info$report.nas) && !isTRUE(format_info$cumul)) {
@@ -726,17 +737,14 @@ print_freq <- function(x, method) {
     for (ro in seq_len(nrow(x))) {
       table_row <- list()
       for (co in seq_len(ncol(x))) {
-        cell <- do.call(format, append(format_args, x=quote(x[ro,co])))
+        cell <- do.call(format, append(format_args, x = quote(x[ro,co])))
         if (co == 1) {
           table_row %+=% list(tags$th(trimws(row.names(x)[ro]),
                                       align = "center",
                                       class = "st-protect-top-border"))
 
           if (!"Weights" %in% names(data_info)) {
-            cell <- sub(pattern = paste0("^(.+)\\",
-                                         format_info$decimal.mark,
-                                         "0+$"),
-                        replacement = "\\1", cell, perl = TRUE)
+            cell <- sub(paste0(format_info$decimal.mark, "0+$"), "", cell)
           }
           table_row %+=% list(tags$td(cell, align = format_info$justify))
           next
@@ -746,8 +754,6 @@ print_freq <- function(x, method) {
           table_row %+=% list(tags$td(format_info$missing,
                                       align = format_info$justify))
         } else {
-          #cell <- sprintf(paste0("%", ".",#format_info$decimal.mark,
-          #                       format_info$round.digits, "f"), x[ro,co])
           table_row %+=% list(tags$td(cell, align = format_info$justify))
         }
 
@@ -760,25 +766,25 @@ print_freq <- function(x, method) {
     if (isTRUE(format_info$report.nas) && isTRUE(format_info$cumul)) {
       table_head[[1]] <- list(tags$th("", colspan = 2),
                               tags$th(HTML(conv_non_ascii(trs("valid"))),
-                                      colspan=2, align="center",
+                                      colspan = 2, align = "center",
                                       class = "st-protect-top-border"),
                               tags$th(HTML(conv_non_ascii(trs("total"))),
-                                      colspan=2, align="center",
+                                      colspan = 2, align = "center",
                                       class = "st-protect-top-border"))
       table_head[[2]] <- list(tags$th(HTML(conv_non_ascii(
                                             sub("^.*\\$(.+)$", "\\1",
                                             data_info$Variable))),
-                                      align="center"),
+                                      align = "center"),
                               tags$th(HTML(conv_non_ascii(trs("freq"))),
-                                      align="center"),
+                                      align = "center"),
                               tags$th(HTML(conv_non_ascii(trs("pct"))),
-                                      align="center"),
+                                      align = "center"),
                               tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
-                                      align="center"),
+                                      align = "center"),
                               tags$th(HTML(conv_non_ascii(trs("pct"))),
-                                      align="center"),
+                                      align = "center"),
                               tags$th(HTML(conv_non_ascii(trs("pct.cum"))),
-                                      align="center"))
+                                      align = "center"))
 
       freq_table_html <-
         tags$table(
@@ -869,10 +875,6 @@ print_freq <- function(x, method) {
     }
 
     # Cleanup extra spacing and linefeeds in html to correct layout issues
-    # freq_table_html <- gsub(pattern = "\\s*(\\d*)\\s*(<span|</td>)",
-    #                         replacement = "\\1\\2",
-    #                         x = as.character(freq_table_html),
-    #                         perl = TRUE)
     freq_table_html <- gsub(pattern = "</span>\\s*</span>",
                             replacement = "</span></span>",
                             x = freq_table_html,
@@ -1047,9 +1049,9 @@ print_ctable <- function(x, method) {
       table_head[[1]][[3]] <- tags$th("", colspan = (1 + has_prop*3))
     }
 
-    table_head[[2]] <-list(tags$td(tags$strong(dnn[1]), align = "center"))
+    table_head[[2]] <- list(tags$td(tags$strong(dnn[1]), align = "center"))
 
-    for(cn in colnames(cross_table)) {
+    for (cn in colnames(cross_table)) {
       flag_split <- FALSE
       if (nchar(cn) > st_options("char.split")) {
         flag_split <- TRUE
@@ -1267,7 +1269,7 @@ print_descr <- function(x, method) {
 
     table_head <- list(tags$th(""))
 
-    for(cn in colnames(x)) {
+    for (cn in colnames(x)) {
       if (nchar(cn) > st_options("char.split")) {
         cn <- smart_split(cn, st_options("char.split"))
       }
@@ -1517,26 +1519,26 @@ print_dfs <- function(x, method) {
       if (trs("label") %in% names(x)) {
         x[[trs("label")]] <-
           gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-               x = x[[trs("label")]], perl=TRUE)
+               x = x[[trs("label")]], perl = TRUE)
       }
 
       x[[trs("stats.values")]] <-
         gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-             x = x[[trs("stats.values")]], perl=TRUE)
+             x = x[[trs("stats.values")]], perl = TRUE)
 
       x[[trs("freqs.pct.valid")]] <-
         gsub(pattern = "\\<(\\w*)\\>", replacement = "\\\\<\\1\\\\>",
-             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl = TRUE)
 
 
       # Remove leading characters used for alignment in plain.ascii
       x[[trs("freqs.pct.valid")]] <-
         gsub(pattern = "^\\\\ *", replacement = "",
-             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl = TRUE)
 
       x[[trs("freqs.pct.valid")]] <-
         gsub(pattern = "\\n\\\\ *", replacement = "\n",
-             x = x[[trs("freqs.pct.valid")]], perl=TRUE)
+             x = x[[trs("freqs.pct.valid")]], perl = TRUE)
     }
 
     # set column names encoding to native to allow proper display of non-ascii
@@ -1579,7 +1581,7 @@ print_dfs <- function(x, method) {
     }
 
     table_head <- list()
-    for(cn in colnames(x)) {
+    for (cn in colnames(x)) {
       table_head %+=% list(tags$th(tags$strong(HTML(conv_non_ascii(cn))),
                                    align = "center",
                                    class = "st-protect-top-border"))
@@ -1726,7 +1728,6 @@ build_heading_pander <- function() {
 
   format_info <- parent.frame()$format_info
   data_info   <- parent.frame()$data_info
-  #pander_args <- parent.frame(2)$pander_args
 
   caller <- as.character(sys.call(-1))[1]
   head1  <- NA # Main title (e.g. "Data Frame Summary")
@@ -1840,6 +1841,7 @@ build_heading_pander <- function() {
       return(list())
     }
   }
+  # (End special cases)
 
   # Regular cases - Build the 3 heading elementss
   if (caller == "print_freq") {

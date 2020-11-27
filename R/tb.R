@@ -86,7 +86,7 @@ tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE) {
     colnames(output)[1:ncol(left_part)] <- 
       sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
     
-    if (order==1) {
+    if (order == 1) {
       output <- output[do.call(what = "order", 
                                args = output[ ,1:(nb_gr_var + 1)]), ]
     } else if (order %in% 2:3) {
