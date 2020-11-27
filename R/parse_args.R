@@ -325,13 +325,12 @@ parse_args <- function(sys_calls,
   ls_sys_frames <- lapply(sys_frames, ls)
   funs_stack    <- lapply(sys_calls, head, 1)
   names(ls_sys_frames) <- sub("summarytools::", "",
-                              as.character(unlist(funs_stack)),
-                              fixed = TRUE)
+                              as.character(unlist(funs_stack)))
   
   # Look for position of by() + tapply(), with() lapply() and %>% in sys.calls()
   pos         <- list()
   pos$by      <- which(funs_stack %in% c("by()", "stby()"))
-  pos$with    <- which(funs_stack == "with()")
+  pos$with    <- which(funs_stack %in% c("base::with()", "with()"))
   pos$pipe    <- which(funs_stack == "`%>%`()")
   pos$piper   <- which(funs_stack == "`%>>%`()")
   pos$dollar  <- which(funs_stack == "`%$%`()")
