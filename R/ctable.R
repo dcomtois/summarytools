@@ -363,8 +363,8 @@ ctable <- function(x,
                        -1/sum(freq_table_min[c(1,3)]), 
                        -1/sum(freq_table_min[c(2,4)])))
         attr(output, "RR") <- c(rr,
-                                exp(log(rr) - qnorm(p = 1-((1-RR)/2)) * se),
-                                exp(log(rr) + qnorm(p = 1-((1-RR)/2)) * se))
+                                exp(log(rr) - qnorm(p = 1 - ((1 - RR)/2)) * se),
+                                exp(log(rr) + qnorm(p = 1 - ((1 - RR)/2)) * se))
         names(attr(output, "RR")) <- c("Risk Ratio", paste0("Lo - ", RR * 100, "%"), 
                                        paste0("Hi - ", RR * 100, "%"))
         attr(output, "RR-level") <- RR
@@ -374,9 +374,52 @@ ctable <- function(x,
     }
   }  
 
+  # Determine data "type" for x, in a non-strict way
+  if (all(c("ordered", "factor") %in% class(x))) {
+    Data.type.x <- trs("factor.ordered")
+  } else if ("factor" %in% class(x)) {
+    Data.type.x <- trs("factor")
+  } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { 
+    Data.type.x <- trs("datetime")
+  } else if ("Date" %in% class(x)) {
+    Data.type.x <- trs("date")
+  } else if ("logical" %in% class(x)) {
+    Data.type.x <- trs("logical")
+  } else if ("character" %in% class(x)) {
+    Data.type.x <- trs("character")
+  } else if ("numeric" %in% class(x)) {
+    Data.type.x <- trs("numeric")
+  } else {
+    Data.type.x <- NA
+  }
+
+  # Determine data "type" for y, in a non-strict way
+  if (all(c("ordered", "factor") %in% class(y))) {
+    Data.type.y <- trs("factor.ordered")
+  } else if ("factor" %in% class(y)) {
+    Data.type.y <- trs("factor")
+  } else if (all(c("POSIXct", "POSIXt") %in% class(y))) { 
+    Data.type.y <- trs("datetime")
+  } else if ("Date" %in% class(y)) {
+    Data.type.y <- trs("date")
+  } else if ("logical" %in% class(y)) {
+    Data.type.y <- trs("logical")
+  } else if ("character" %in% class(y)) {
+    Data.type.y <- trs("character")
+  } else if ("numeric" %in% class(y)) {
+    Data.type.y <- trs("numeric")
+  } else {
+    Data.type.y <- NA
+  }
+  
+  # Store dataframe name in a variable since this will be used in
+  # several places in next step
   dfn <- ifelse(exists("df_name", inherits = FALSE), df_name, NA)
+  
+  # Prepare metadata to be stored as the data_info attribute
   data_info <-
-    list(Data.frame          = dfn,
+    list(Data.frame          = ifelse(exists("df_name", inherits = FALSE), 
+                                      df_name, NA),
          Data.frame.label    = ifelse(exists("df_label", inherits = FALSE),
                                       df_label, NA),
          Row.variable        = x_name,
@@ -389,6 +432,8 @@ ctable <- function(x,
                                       c = "Column",
                                       t = "Total",
                                       n = "None"),
+         Data.type.x         = Data.type.x,
+         Data.type.y         = Data.type.y,
          Weights             = ifelse(identical(weights, NA), NA,
                                       ifelse(is.na(dfn), 
                                              weights_string,
