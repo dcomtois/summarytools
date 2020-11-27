@@ -672,16 +672,18 @@ print_freq <- function(x, method) {
     if (rownames_are_int) {
       temp_rownames <- do.call(format, append(format_args,
                                               list(x = quote(temp_rownames))))
-      temp_rownames <- sub(paste0("^(.+)\\", format_info$decimal.mark, "0+$"),
+      temp_rownames <- sub(paste0("^(.+)\\", format_info$decimal.mark, 
+                                  #  "0+$"),
+                                  "(0(0|\\D)*$)"),
                            "\\1", temp_rownames)
     } else {
-      temp_rownames <-format(rownames(x), justify = format_args$justify)
+      temp_rownames <- format(rownames(x), justify = format_args$justify)
     }
     temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
     row.names(x) <- temp_rownames
   }
 
-  if (method=="pander") {
+  if (method == "pander") {
 
     # Escape "<" and ">" when used in pairs in rownames
     if (!isTRUE(pander_args$plain.ascii)) {
@@ -707,8 +709,7 @@ print_freq <- function(x, method) {
     x <- do.call(format, append(format_args, x = quote(x)))
 
     if (!"Weights" %in% names(data_info)) {
-      x[ ,1] <- sub(paste0("^(.+)\\", format_info$decimal.mark, "0+$"),
-                    "\\1", x[ ,1])
+      x[ ,1] <- sub(paste0(format_info$decimal.mark, "0+$"), "", x[ ,1])
     }
 
     x[is_na_x] <- format_info$missing
@@ -916,34 +917,88 @@ print_ctable <- function(x, method) {
   format_args <- attr(x, "format_args")
   pander_args <- attr(x, "pander_args")
 
-  # align_numbers --------------------------------------------------------------
+  # Use format() on the table's row names when numeric
+  temp_rownames     <- suppressWarnings(as.numeric(rownames(x[[1]])))
+  temp_rownames_nas <- which(is.na(temp_rownames))
+
+  # Use format() on row names when x is numeric
+  if (data_info$Data.type.x == trs("numeric")) {
+    temp_rownames <- suppressWarnings(as.numeric(rownames(x)))
+    temp_rownames_nas <- which(is.na(temp_rownames))
+    
+    # Check if all row names are integers (if so, decimals will be removed)
+    rownames_are_int <- all(as.integer(temp_rownames) == temp_rownames,
+                            na.rm = TRUE)
+    
+    if (rownames_are_int) {
+      temp_rownames <- do.call(format, append(format_args,
+                                              list(x = quote(temp_rownames))))
+      temp_rownames <- sub(paste0("^(.+)\\", format_info$decimal.mark,
+                                  "(0(0|\\D)*$)"),
+                           "\\1", temp_rownames)
+    } else {
+      temp_rownames <- format(rownames(x), justify = format_args$justify)
+    }
+    temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
+    row.names(x) <- temp_rownames
+  }
+  
+  # Use format() on col names when numeric
+  temp_colnames     <- suppressWarnings(as.numeric(colnames(x[[1]])))
+  temp_colnames_nas <- which(is.na(temp_colnames))
+  
+  # Use format() on row names when x is numeric
+  if (data_info$Data.type.y == trs("numeric")) {
+    temp_colnames <- suppressWarnings(as.numeric(colnames(x)))
+    temp_colnames_nas <- which(is.na(temp_colnames))
+    
+    # Check if all row names are integers (if so, decimals will be removed)
+    colnames_are_int <- all(as.integer(temp_colnames) == temp_colnames,
+                            na.rm = TRUE)
+    
+    if (colnames_are_int) {
+      temp_colnames <- do.call(format, append(format_args,
+                                              list(x = quote(temp_colnames))))
+      temp_colnames <- sub(paste0("^(.+)\\", format_info$decimal.mark,
+                                  "(0(0|\\D)*$)"),
+                           "\\1", temp_colnames)
+    } else {
+      temp_colnames <- format(colnames(x), justify = format_args$justify)
+    }
+    temp_colnames[temp_colnames_nas] <- colnames(x)[temp_colnames_nas]
+    row.names(x) <- temp_colnames
+  }
+  
+
+  # align_numbers() ------------------------------------------------------------
+  # Create vertically aligned strings for counts and proportions
   align_numbers <- function(counts, props) {
     res <- sapply(seq_len(ncol(counts)), function(colnum) {
-
+    
       if ("Weights" %in% names(data_info)) {
-        maxchar_cnt <-
-          nchar(as.character(round(max(counts[ ,colnum]),
-                                   digits = format_info$round.digits)))
-        maxchar_pct <-
-          nchar(sprintf(paste0("%.", format_info$round.digits, "f"),
-                        max(props[ ,colnum]*100)))
-
-        return(paste(sprintf(paste0("%", maxchar_cnt, ".",
-                                    format_info$round.digits, "f"),
-                             counts[ ,colnum]),
-                     sprintf(paste0("(%", maxchar_pct, ".",
-                                    format_info$round.digits, "f%%)"),
-                             props[ ,colnum]*100)))
+        counts_fmted <- do.call(
+          format, append(format_args,
+                         list(x = counts[ ,colnum]))
+          )
       } else {
-        maxchar_cnt <- nchar(as.character(max(counts[ ,colnum])))
-        maxchar_pct <- nchar(sprintf(paste0("%.", format_info$round.digits,"f"),
-                                     max(props[ ,colnum]*100)))
-        return(paste(sprintf(paste0("%", maxchar_cnt, "i"),
-                             counts[ ,colnum]),
-                     sprintf(paste0("(%", maxchar_pct, ".",
-                                    format_info$round.digits, "f%%)"),
-                             props[ ,colnum]*100)))
-      }
+        counts_fmted <- do.call(
+          format, append(format_args[-which(names(format_args) == "nsmall")],
+                         list(x = counts[ ,colnum]))  # use quote? list(x = quote(counts[,colnum]
+        )
+      }      
+      props_fmted  <- do.call(
+        format, 
+        append(format_args, list(x = props[ ,colnum] * 100))
+        #list(x = quote(props[,colnum]*100))))
+        )
+      
+      return(
+        paste0(
+          pad(counts_fmted, max(nchar(counts_fmted))),
+          " (",
+          pad(props_fmted, max(nchar(props_fmted))),
+          "%)")
+      )
     })
 
     dim(res) <- dim(counts)
@@ -1284,14 +1339,14 @@ print_descr <- function(x, method) {
         # cell is NA
         if (is.na(x[ro,co])) {
           table_row %+=% list(tags$td(format_info$missing))
-        } else if ((rownames(x)[ro] == trs("n.valid") ||
-                    colnames(x)[co] == trs("n.valid")) &&
-                   !"Weights" %in% names(data_info)) {
-          table_row %+=% list(tags$td(tags$span(round(x[ro,co], 0))))
         } else {
-          # When not NA, and not N.Valid row, format cell content
-          # cell <- sprintf(paste0("%.", format_info$round.digits, "f"), x[ro,co])
-          cell <- do.call(format, append(format_args, x=quote(x[ro,co])))
+          # When not NA format cell content
+          cell <- do.call(format, append(format_args, x = quote(x[ro,co])))
+          if ((rownames(x)[ro] == trs("n.valid") ||
+               colnames(x)[co] == trs("n.valid")) &&
+              !"Weights" %in% names(data_info)) {
+            cell <- sub(paste0(format_info$decimal.mark, "0+$"), "", cell)
+          }
           table_row %+=% list(tags$td(tags$span(cell)))
         }
         # On last column, insert row to table_rows list
@@ -1768,10 +1823,13 @@ build_heading_pander <- function() {
           value <- data_info[[names(item)]]
           tmpargs <- c("big.mark", "small.mark", "decimal.mark",
                        "small.interval", "big.interval")
-          if (isTRUE(is.numeric(value)) && any(names(format_info) %in% tmpargs)) {
-            value <-
-              do.call(format, append(format_info[which(names(format_info) %in% tmpargs)],
-                                     x = quote(value)))
+          if (isTRUE(is.numeric(value)) && 
+              any(names(format_info) %in% tmpargs)) {
+            value <- do.call(
+              format, 
+              append(format_info[which(names(format_info) %in% tmpargs)],
+                     x = quote(value))
+              )
 
             if (names(item) == "Dimensions") {
               value <- paste(trimws(value[1]), trimws(value[2]), sep = " x ")
@@ -1780,11 +1838,11 @@ build_heading_pander <- function() {
 
           # Create pairing of item name + item (example: "N: 500")
           if (item != "") {
-            to_append <-
-              append(to_append,
-                     paste0(add_markup(paste(item, value, sep = ": "), h),
-                            "  \n")
-                     )
+            to_append <- append(
+              to_append,
+              paste0(add_markup(paste(item, value, sep = ": "), h),
+                     "  \n")
+            )
           } else {
             to_append <- append(to_append, paste0(add_markup(value, h), "  \n"))
           }

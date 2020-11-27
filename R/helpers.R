@@ -154,3 +154,7 @@ map_groups <- function(gk) {
   }
   grs
 }
+
+pad <- function(string, width) {
+  paste0(strrep(" ", max(0, width - nchar(string))), string)
+}

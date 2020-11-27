@@ -618,30 +618,33 @@ crunch_factor <- function(column_data, email_val) {
       paste0(1:max.distinct.values,"\\. ",
              substr(levels(column_data), 1,
                     max.string.width)[1:max.distinct.values],
-             collapse="\\\n")
+             collapse = "\\\n")
 
     outlist[[1]] <- paste(outlist[[1]],
-                          paste("[", pf$format_number(n_extra_levels, 0),
+                          paste("[", format_number(n_extra_levels, 
+                                                   round.digits = 0),
                                 trs("others"), "]"),
-                          sep="\\\n")
+                          sep = "\\\n")
 
     counts_props <- align_numbers_dfs(
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
       c(props[1:max.distinct.values],
-        round(sum(props[(max.distinct.values + 1):length(props)]), 3))
+        #round(sum(props[(max.distinct.values + 1):length(props)]), 3))
+        sum(props[(max.distinct.values + 1):length(props)]))
     )
 
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
 
-    if (isTRUE(pf$graph.col) &&
-        any(!is.na(column_data))) {
+    if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       # Prepare data for bar plot
       tmp_data <- column_data
       levels(tmp_data)[max.distinct.values + 1] <-
-        paste("[", pf$format_number(n_extra_levels, 0), trs("others"), "]")
+        paste("[", format_number(n_extra_levels, round.digits = 0),
+              trs("others"), "]")
       tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
-        paste("[", pf$format_number(n_extra_levels, 0), trs("others"), "]")
+        paste("[", format_number(n_extra_levels, round.digits = 0),
+              trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
       if (isTRUE(st_options("use.x11"))) {
         outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
@@ -677,7 +680,7 @@ crunch_character <- function(column_data, email_val) {
   graph.magnif        <- pf$graph.magnif
   round.digits        <- pf$round.digits
   n_valid             <- pf$n_valid
-
+  
   if (isTRUE(pf$trim.strings)) {
     column_data <- trimws(column_data)
   }
@@ -696,11 +699,14 @@ crunch_character <- function(column_data, email_val) {
       paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
 
     dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
+    
+    # TODO: Check if rounding is relevant here
     prop.dups <- round(dups / n_valid, 3)
 
     counts_props <- align_numbers_dfs(
       c(email_val, dups),
-      c(round(prop.table(email_val), 3), prop.dups)
+      #c(round(prop.table(email_val), 3), prop.dups)
+      c(prop.table(email_val), prop.dups)
     )
 
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
@@ -724,8 +730,10 @@ crunch_character <- function(column_data, email_val) {
 
     counts <- table(column_data, useNA = "no")
 
-    # Replace empty strings with "(Empty string)" or the corresponding translation
-    names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), names(counts))
+    # Replace empty strings with "(Empty string)" or the corresponding
+    #  translation
+    names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), 
+                         names(counts))
 
     # Replace white-space-only strings with as many middle-dot symbols to make
     # them visible in the output table
@@ -738,7 +746,8 @@ crunch_character <- function(column_data, email_val) {
       outlist[[1]] <- paste0(seq_along(counts), "\\. ",
                              substr(names(counts), 1, max.string.width),
                              collapse = "\\\n")
-      counts_props <- align_numbers_dfs(counts, round(props, 3))
+      #counts_props <- align_numbers_dfs(counts, round(props, 3))
+      counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
       if (isTRUE(pf$graph.col) &&
           any(!is.na(column_data))) {
@@ -757,18 +766,23 @@ crunch_character <- function(column_data, email_val) {
       counts <- sort(counts, decreasing = TRUE)
       props <- sort(props, decreasing = TRUE)
       n_extra_values <- length(counts) - max.distinct.values
+      
+      # Build list of most frequent values 
       outlist[[1]] <- paste0(
         paste0(1:max.distinct.values,"\\. ",
                substr(names(counts), 1,
                       max.string.width)[1:max.distinct.values],
-               collapse="\\\n"),
-        paste("\\\n[", pf$format_number(n_extra_values, 0), trs("others"), "]")
+               collapse = "\\\n"),
+        paste("\\\n[", format_number(n_extra_values, round.digits = 0),
+              trs("others"), "]")
       )
+      
+      # Prepare data for building frequency cell with numbers + proportions
       counts_props <- align_numbers_dfs(
         c(counts[1:max.distinct.values],
           sum(counts[(max.distinct.values + 1):length(counts)])),
         c(props[1:max.distinct.values],
-          round(sum(props[(max.distinct.values + 1):length(props)]), 3))
+          sum(props[(max.distinct.values + 1):length(props)]))
       )
 
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
@@ -822,7 +836,8 @@ crunch_logical <- function(column_data) {
 
     outlist[[1]] <- paste0(seq_along(counts), "\\. ", names(counts),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, 3))
+    #counts_props <- align_numbers_dfs(counts, round(props, 3))
+    counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
     if (isTRUE(pf$graph.col) &&
         any(!is.na(column_data))) {
@@ -859,7 +874,7 @@ crunch_numeric <- function(column_data, is_barcode) {
   max.distinct.values <- pf$max.distinct.values
   graph.magnif        <- pf$graph.magnif
   round.digits        <- pf$round.digits
-
+  
   if (pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
@@ -867,6 +882,8 @@ crunch_numeric <- function(column_data, is_barcode) {
     min_val <- min(column_data, na.rm = TRUE)
     max_val <- max(column_data, na.rm = TRUE)
 
+    # Stats cell
+    # Check number of distinct values & presence of bar code data
     if (length(counts) == 1) {
       outlist[[1]] <- paste(1, trs("distinct.value"))
     } else {
@@ -893,24 +910,27 @@ crunch_numeric <- function(column_data, is_barcode) {
       } else {
         outlist[[1]] <- paste(
           trs("mean"), paste0(" (", trs("sd"), ") : "),
-          pf$format_number(mean(column_data, na.rm = TRUE), round.digits),
-          " (", pf$format_number(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
+          format_number(mean(column_data, na.rm = TRUE), round.digits), " (",
+          format_number(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", pf$format_number(min_val, round.digits),
-          " < ", pf$format_number(median(column_data, na.rm = TRUE), round.digits),
-          " < ", pf$format_number(max_val, round.digits), "\\\n",
+          ":\\\n", format_number(min_val, round.digits),
+          " < ", format_number(median(column_data, na.rm = TRUE), round.digits),
+          " < ", format_number(max_val, round.digits), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          pf$format_number(IQR(column_data, na.rm = TRUE), round.digits),
-          " (", pf$format_number(sd(column_data, na.rm = TRUE) /
-                                   mean(column_data, na.rm = TRUE),
-                                 round.digits), ")", collapse="", sep="")
+          format_number(IQR(column_data, na.rm = TRUE), round.digits),
+          " (", format_number(sd(column_data, na.rm = TRUE) /
+                                mean(column_data, na.rm = TRUE),
+                              round.digits), ")", collapse = "", sep = "")
       }
     }
 
+    # Frequencies cell
+
+    # Initialize variable indicating if an extra line is required, when
+    # frequencies are displayed for rounded values
     extra_space <- FALSE
 
-    # Values columns
-    # for "ts" objects, display n distinct & start / end
+    # With timeseries (ts) objects, display n distinct, start & end
     if (inherits(column_data, "ts")) {
       maxchars <- max(nchar(c(trs("start"), trs("end"))))
       outlist[[2]] <-
@@ -925,35 +945,57 @@ crunch_numeric <- function(column_data, is_barcode) {
                     collapse = "-"))
     }
 
-    # In specific circumstances, display most common values
+    # Display most common values in following circumstances:
+    # 1. Number of distinct values is allowed by max.distinct.values 
+    # AND one of the following is true
+    # a. All values are whole numbers
+    # b. Once rounding applied, number of unique values is unchanged
     else if (
       length(counts) <= max.distinct.values &&
       (all(column_data %% 1 == 0, na.rm = TRUE) ||
-       identical(names(column_data), "0") ||
-       all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
-           10^-(round.digits + 1)))) {
+       length(counts) == length(unique(round(column_data, round.digits + 1))))
+      ) {
 
-      props <- round(prop.table(counts), 3)
-      counts_props <- align_numbers_dfs(counts, props)
+      rounded_names <- 
+        format_number(as.numeric(names(counts)), 
+                      round.digits = round.digits + 1,
+                      nsmall = (round.digits + (round.digits == 1)) * 
+                        !all(floor(column_data) == column_data, na.rm = TRUE)
+        )
+        # The last multiplication above causes the function to show
+        # the preferred "final" column in the frequencies cell, rather than
+        # those shown in the "rounded" column:
+        # 
+        #    number  rounded   final       Actual cell
+        # --------------------------       ------------------
+        # 1.0600778   1.0600    1.06  ==>  0.86!: 267 (26.7%)
+        # 1.0500121   1.0500    1.05  ==>  1.04!: 249 (24.9%) 
+        # 1.0400007   1.0400    1.04  ==>  1.05!: 324 (32.4%)
+        # 0.8600902   0.8600    0.86  ==>  1.06!: 160 (16.0%)
+        # 
+        # Also, when round.digits = 1 (default), we allow an 
+        # additional digit, for practical reasons. Based on
+        # experience, keeping an additional digit is preferable --
+        # this avoids having to set round.digits to 2, affecting
+        # all statistics, which is an overkill in most cases.
 
-      rounded_names <-
-        trimws(format(
-          round(as.numeric(names(counts)), round.digits),
-          nsmall = round.digits * !all(floor(column_data) == column_data,
-                                       na.rm = TRUE)
-        ))
-
+      # Variable used for padding
       maxchars <- max(nchar(rounded_names))
 
-      outlist[[2]]  <-
+      props <- prop.table(counts)
+      counts_props <- align_numbers_dfs(counts, props)
+
+      outlist[[2]] <-
         paste(
           paste0(rounded_names, strrep(" ", maxchars - nchar(rounded_names)),
-                 ifelse(as.numeric(names(counts)) != as.numeric(rounded_names),
+                 ifelse(as.numeric(names(counts)) != 
+                          round(as.numeric(names(counts)), round.digits + 1),
                         "!", " ")),
           counts_props, sep = ": ", collapse = "\\\n"
         )
 
-      if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
+      # Add "! rounded" when relevant 
+      if (grepl("!", outlist[[2]])) {
         extra_space <- TRUE
         outlist[[2]] <- paste(outlist[[2]], paste("!", trs("rounded")),
                               sep = "\\\n")
@@ -961,7 +1003,7 @@ crunch_numeric <- function(column_data, is_barcode) {
 
     } else {
       # Do not display specific values - only the number of distinct values
-      outlist[[2]] <- paste(pf$format_number(length(counts), 0),
+      outlist[[2]] <- paste(format_number(length(counts), round.digits = 0),
                             trs("distinct.values"))
 
       # Check for integer sequences
@@ -1028,7 +1070,6 @@ crunch_time_date <- function(column_data) {
   outlist[[4]] <- ""
 
   pf <- parent.frame()
-  #max.string.width    <- pf$max.string.width
   max.distinct.values <- pf$max.distinct.values
   graph.magnif        <- pf$graph.magnif
   round.digits        <- pf$round.digits
@@ -1042,7 +1083,7 @@ crunch_time_date <- function(column_data) {
     # Report all frequencies when allowed by max.distinct.values
     if (length(counts) <= max.distinct.values) {
       outlist[[1]] <- paste0(seq_along(counts),". ", names(counts),
-                             collapse="\\\n")
+                             collapse = "\\\n")
       props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
@@ -1060,22 +1101,30 @@ crunch_time_date <- function(column_data) {
       if (inherits(column_data, what = "difftime")) {
 
         outlist[[1]] <- paste0(
-          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), na.rm = TRUE), "\\\n",
-          tolower(trs("med.short")), " : ", median(as.numeric(column_data), na.rm = TRUE), "\\\n",
-          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), na.rm = TRUE)
+          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), 
+                                                  na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(as.numeric(column_data), 
+                                                   na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), 
+                                                  na.rm = TRUE)
         )
 
         if ("units" %in% names(attributes(column_data))) {
-          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", units(column_data))
+          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", 
+                                 units(column_data))
         }
 
       } else {
         outlist[[1]] <- paste0(
-          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE),
+          "\\\n",
+          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE),
+          "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), 
+          "\\\n",
           "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
-                          x = round(as.period(interval(tmin, tmax)), round.digits))
+                          x = round(as.period(interval(tmin, tmax)), 
+                                    round.digits))
         )
       }
 
@@ -1084,10 +1133,12 @@ crunch_time_date <- function(column_data) {
       if (isTRUE(pf$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
         if (isTRUE(st_options("use.x11"))) {
-          outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
+          outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", 
+                                       graph.magnif)
         }
         if (isTRUE(pf$store_imgs)) {
-          png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif, TRUE)
+          png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif,
+                                  TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txthist(tmp - mean(tmp))
@@ -1137,8 +1188,8 @@ crunch_other <- function(column_data) {
           next
         # get class and length of single value
         outlist[[1]] <- paste0("Object class(es):", "\\\n",
-                               paste(class(column_data[[v]]), collapse = ", "), "\\\n",
-                               "Length: ", length(column_data[[v]]))
+                               paste(class(column_data[[v]]), collapse = ", "),
+                               "\\\n", "Length: ", length(column_data[[v]]))
         tmp_distinct <- try(paste(as.character(length(unique(column_data))),
                                   trs("distinct.values")), silent = TRUE)
         if (!inherits(tmp_distinct, "try-error")) {
@@ -1153,26 +1204,46 @@ crunch_other <- function(column_data) {
 }
 
 # Utility functions ------------------------------------------------------------
+
+#' @keywords internal
+format_number <- function(x, round.digits, ...) {
+  
+  n <- 1
+  repeat {
+    fmtArgs <- parent.frame(n)$fmtArgs
+    if (is.null(fmtArgs) && n < sys.nframe())
+      n <- n + 1
+    else
+      break
+  }
+  
+  # Allow over-riding of formatting attributes - for now this is only to allow
+  # nsmall = 1, so that proportions always use one decimal. 
+  dotArgs <- list(...)
+  for (f in names(dotArgs)) {
+    fmtArgs[f] <- dotArgs[f]
+  }
+  
+  # If we have digits + scientific = TRUE, we don't want to round
+  if ("digits" %in% names(fmtArgs) && isTRUE(fmtArgs$scientific)) {
+    return(do.call(format, append(fmtArgs, x = quote(x))))
+  } else {
+    x <- round(x, round.digits)
+    return(do.call(format, append(fmtArgs, x = quote(x))))
+  }
+}
+
+
 #' @keywords internal
 align_numbers_dfs <- function(counts, props) {
-
-  if ("big.mark" %in% names(parent.frame(2)$dotArgs)) {
-    retval <- gsub("(\\d)\\.(\\d)",
-                   paste0("\\1", parent.frame(2)$dotArgs[['decimal.mark']], "\\2"),
-                   retval)
-  }
-
-  maxchar_cnt <- nchar(as.character(max(counts)))
-  maxchar_pct <- nchar(sprintf(paste0("%.",parent.frame()$round.digits, "f"),
-                               max(props*100)))
-  retval <- paste(sprintf(paste0("%", maxchar_cnt, "i"), counts),
-                  sprintf(paste0("(%", maxchar_pct, ".", parent.frame()$round.digits,
-                                 "f%%)"), props*100))
-  if ("decimal.mark" %in% names(parent.frame(2)$dotArgs)) {
-    retval <- gsub("(\\d)\\.(\\d)",
-                   paste0("\\1", parent.frame(2)$dotArgs[['decimal.mark']], "\\2"),
-                   retval)
-  }
+  
+  # New version
+  counts   <- format_number(counts, round.digits = parent.frame()$round.digits)
+  props    <- format_number(props * 100, round.digits = 1, nsmall = 1)
+  pad_cnt  <- max(nchar(counts)) - nchar(counts)
+  pad_pct  <- max(nchar(props)) - nchar(props)
+  retval   <- paste(paste0(strrep(" ", pad_cnt), counts),
+                    paste0("(", strrep(" ", pad_pct), props, "%)"))
   retval
 }
 
@@ -1216,7 +1287,8 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
       data <- data * e
     }
 
-    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250), min.n = 1)
+    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
+                       min.n = 1)
     cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x,
                                     axes = FALSE, xlab = NULL, ylab = NULL,
                                     main = NULL, col = "grey94",
@@ -1398,8 +1470,8 @@ detect_barcode <- function(x) {
     return(FALSE)
   }
 
-  # check that all lengths are equal on a sample of 50 values, and that this length
-  # is compatible with one of the EAN/UPC/ITC specifications
+  # check that all lengths are equal on a sample of 50 values, and that this 
+  # length is compatible with one of the EAN/UPC/ITC specifications
   x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
   if (length(x_samp) < 3 ||
       (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
