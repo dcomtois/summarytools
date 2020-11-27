@@ -6,7 +6,7 @@
 #'
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{2} and can be set globally; see \code{\link{st_options}}.
+#'   \code{1}.
 #' @param varnumbers Logical. Should the first column contain variable number?
 #'   Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
@@ -14,7 +14,7 @@
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 #'   functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
 #'   column is only shown if at least one column has a defined label. This
-#'   option can also be set globally; see \code{\link{st_options}}, option 
+#'   option can also be set globally; see \code{\link{st_options}}, option
 #'   \dQuote{dfSummary.labels.col}.
 #' @param valid.col Logical. Include column indicating count and proportion of
 #'   valid (non-missing) values. \code{TRUE} by default, but can be set
@@ -44,7 +44,7 @@
 #'   (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
 #' @param col.widths Numeric or character. Vector of column widths. If numeric,
 #'   values are assumed to be numbers of pixels. Otherwise, any CSS-supported
-#'   units can be used. \code{NA} by default, meaning widths are calculated 
+#'   units can be used. \code{NA} by default, meaning widths are calculated
 #'   automatically.
 #' @param headings Logical. Set to \code{FALSE} to omit headings. To change this
 #'   default value globally, see \code{\link{st_options}}.
@@ -66,9 +66,9 @@
 #' @param split.tables \pkg{pander} argument which determines the maximum width
 #'   of a table. Keeping the default value (\code{Inf}) is recommended.
 #' @param tmp.img.dir Character. Directory used to store temporary images when
-#'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and 
+#'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 #'   `style = "grid"`. See \emph{Details}.
-#' @param silent Logical. Hide console messages. \code{FALSE} by default. To 
+#' @param silent Logical. Hide console messages. \code{FALSE} by default. To
 #'   change this value globally, see \code{\link{st_options}}.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
 #'
@@ -114,40 +114,40 @@
 #'   user will have to choose a directory and cleanup the temporary images
 #'   manually after the document has been rendered. Providing a relative path
 #'   such as \dQuote{img} is recommended. The maximum length for this parameter
-#'   is set to 5 characters. It can be set globally using 
+#'   is set to 5 characters. It can be set globally using
 #'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
 #'
 #' @examples
-#' 
+#'
 #' data("tobacco")
 #' saved_x11_option <- st_options("use.x11")
 #' st_options(use.x11 = FALSE)
 #' dfSummary(tobacco)
-#' 
+#'
 #' # Exclude some columns
 #' dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
-#' 
+#'
 #' # Limit number of categories to be displayed for factors / categorical data
 #' dfSummary(tobacco, max.distinct.values = 5, style = "grid")
-#' 
+#'
 #' # Using stby()
 #' stby(tobacco, tobacco$gender, dfSummary)
-#' 
+#'
 #' st_options(use.x11 = saved_x11_option)
-#' 
+#'
 #' \dontrun{
-#' 
+#'
 #' # Show in Viewer or browser (view: no capital V!)
 #' view(dfSummary(iris))
-#' 
+#'
 #' # Rmarkdown-ready
 #' dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
 #'           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
-#' 
+#'
 #' # Using group_by()
 #' tobacco %>% group_by(gender) %>% dfSummary()
 #' }
-#' 
+#'
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
@@ -155,7 +155,7 @@
 #' @importFrom grDevices dev.list dev.off
 #' @export
 dfSummary <- function(x,
-                      round.digits     = st_options("round.digits"),
+                      round.digits     = 1,
                       varnumbers       = st_options("dfSummary.varnumbers"),
                       labels.col       = st_options("dfSummary.labels.col"),
                       valid.col        = st_options("dfSummary.valid.col"),
@@ -176,16 +176,19 @@ dfSummary <- function(x,
                       tmp.img.dir      = st_options('tmp.img.dir'),
                       silent           = st_options('dfSummary.silent'),
                       ...) {
-  
-  # Flag to handle unwanted graphic device
+
+  # Flag for elimination of unwanted graphic device in non-RStudio envirs
   if (.Platform$GUI %in% c("Rgui", "RTerm", "X11") && is.null(dev.list())) {
     clear_null_device <- TRUE
   } else {
     clear_null_device <- FALSE
   }
-  
-  # handle objects of class "grouped_df" (dplyr::group_by)
+
+  # Make recursive calls when function is invoked on split-group data using
+  # dplyr::group_by()
   if (inherits(x, "grouped_df")) {
+    
+    # Get metadata for heading section
     parse_info <- try(
       parse_args(sys.calls(), sys.frames(), match.call(),
                  var_name  = FALSE, var_label = FALSE,
@@ -193,8 +196,8 @@ dfSummary <- function(x,
       silent = TRUE)
 
     outlist <- list()
-    g_ks    <- map_groups(group_keys(x))
-    g_inds  <- attr(x, "groups")$.rows
+    g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
+    g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
     for (g in seq_along(g_ks)) {
       outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]], ]),
                                 round.digits        = round.digits,
@@ -218,18 +221,26 @@ dfSummary <- function(x,
                                 tmp.img.dir         = tmp.img.dir,
                                 silent              = silent,
                                 ...                 = ...)
-      
+
       if (!inherits(parse_info, "try-error")) {
-        if (!is.null(parse_info$df_name))
-          attr(outlist[[g]], "data_info")$Data.frame <- enc2utf8(parse_info$df_name)
-        if (!is.null(parse_info$df_label))
-          attr(outlist[[g]], "data_info")$Data.frame.label <- enc2utf8(parse_info$df_label)
-        if (!is.null(parse_info$var_name))
-          attr(outlist[[g]], "data_info")$Variable <- enc2utf8(parse_info$var_name)
-        if (!is.null(parse_info$var_label))
-          attr(outlist[[g]], "data_info")$Variable.label <- enc2utf8(parse_info$var_label)
+        if (!is.null(parse_info$df_name)) {
+          attr(outlist[[g]], "data_info")$Data.frame <- 
+            enc2utf8(parse_info$df_name)
+        }
+        if (!is.null(parse_info$df_label)) {
+          attr(outlist[[g]], "data_info")$Data.frame.label <- 
+            enc2utf8(parse_info$df_label)
+        }
+        if (!is.null(parse_info$var_name)) {
+          attr(outlist[[g]], "data_info")$Variable <-
+            enc2utf8(parse_info$var_name)
+        }
+        if (!is.null(parse_info$var_label)) {
+          attr(outlist[[g]], "data_info")$Variable.label <-
+            enc2utf8(parse_info$var_label)
+        }
       }
-      attr(outlist[[g]], "data_info")$by_var <- 
+      attr(outlist[[g]], "data_info")$by_var <-
         setdiff(colnames(attr(x, "groups")), ".rows")
       attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
@@ -238,21 +249,21 @@ dfSummary <- function(x,
     class(outlist) <- "stby"
     return(outlist)
   }
-  
+
   # Validate arguments ---------------------------------------------------------
   if (is.null(x)) {
     tmp_x_name <- deparse(substitute(x))
     stop(tmp_x_name, " is either NULL or does not exist")
   }
-  
+
   errmsg <- character()  # problems with arguments will be stored here
-  
+
   # Flag to replace colname when x is not a data frame
   converted_to_df <- FALSE
   if (!is.data.frame(x)) {
     xnames <- substitute(x)
     x <- try(as.data.frame(x))
-    
+
     if (inherits(x, "try-error")) {
       errmsg %+=% paste(deparse(xnames), " is not coercible to a data frame")
     } else {
@@ -263,35 +274,60 @@ dfSummary <- function(x,
       }
     }
   }
-  
+
   errmsg <- c(errmsg, check_args(match.call(), list(...)))
-  
+
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
-  
+
   # End of arguments validation ------------------------------------------------
-  
+
+  # Declare number formatting function ----------------------------------
+  # Normally, formatting is handled by print() / view(), but in dfSummary,
+  # the numbers are mixed in with text in multiline cells, so it would
+  # require some more work, i.e. changing cell contents to lists that
+  # could then be handled correctly by summarytools' print method. So what 
+  # follows can be viewed as a temporary solution for a complex formatting 
+  # problem.
+  dotArgs <- list(...)
+  fmtArgs <- list()
+
+  # Gather from additional arguments (...) those which will be used by format().
+  # Most format arguments are actually recognized. Formatting arguments that are
+  # neither in this list, neither recognized by pander, will be ignored.
+  for (fmt in c("big.mark", "small.mark", "decimal.mark", "scientific",
+                "small.interval", "big.interval", "nsmall", "digits")) {
+    if (fmt %in% names(dotArgs)) {
+      fmtArgs[fmt] <- dotArgs[fmt]
+    }
+  }
+
+  # Make sure fmtArgs has at least one element; digits is an arbitrary choice.
+  if (!"digits" %in% names(fmtArgs)) {
+    fmtArgs$digits <- getOption("digits")
+  }
+
+  # Check for column labels ----------------------------------------------------
   if (isTRUE(labels.col) && length(label(x, all = TRUE)) == 0) {
     labels.col <- FALSE
   }
-  
-  # Get info on x from parsing function ----------------------------------------
+
+  # Get metadata for x ---------------------------------------------------------
   parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               #max.varnames = max.varnames,
-                               var_name = converted_to_df, 
+                               var_name = converted_to_df,
                                var_label = converted_to_df,
                                caller = "dfSummary"),
                     silent = TRUE)
-  
+
   if (inherits(parse_info, "try-error")) {
     parse_info <- list()
   }
-  
+
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
     parse_info$df_name <- df_name
   }
-  
+
   if (isTRUE(converted_to_df) && identical(colnames(x), "x")) {
     if ("var_name" %in% names(parse_info)) {
       colnames(x) <- parse_info$var_name
@@ -299,21 +335,21 @@ dfSummary <- function(x,
       colnames(x) <- parse_info$df_name
     }
   }
-  
+
   if (isFALSE(st_options("use.x11"))) {
     store_imgs <- FALSE
   } else if (!isTRUE(plain.ascii) && style == "grid" && isTRUE(graph.col)) {
     if (is.na(tmp.img.dir)) {
       store_imgs <- FALSE
-      if(!isTRUE(silent)) {
+      if (!isTRUE(silent)) {
         png_message <- TRUE
       }
     } else {
       store_imgs <- TRUE
       dir.create(tmp.img.dir, showWarnings = FALSE)
       if (.st_env$sysname == "Windows" || tmp.img.dir != "/tmp") {
-        if(!isTRUE(silent)) {
-          message("temporary images written to '", 
+        if (!isTRUE(silent)) {
+          message("temporary images written to '",
                   normalizePath(tmp.img.dir), "'")
         }
       }
@@ -321,9 +357,9 @@ dfSummary <- function(x,
   } else {
     store_imgs <- FALSE
   }
-  
+
   # Initialize the output data frame -------------------------------------------
-  
+
   output <- data.frame(no               = numeric(),
                        variable         = character(),
                        label            = character(),
@@ -335,29 +371,29 @@ dfSummary <- function(x,
                        missing          = character(),
                        stringsAsFactors = FALSE,
                        check.names      = FALSE)
-  
+
   n_tot <- nrow(x)
-  
-  
+
+
   # iterate over columns of x --------------------------------------------------
-  
-  for(i in seq_len(ncol(x))) {
-    
+
+  for (i in seq_len(ncol(x))) {
+
     # extract column data
     column_data <- x[[i]]
-    
+
     # Add column number
     output[i,1] <- i
 
     # Calculate valid vs missing data info
     n_miss <- sum(is.na(column_data))
     n_valid <- n_tot - n_miss
-    
+
     # Add column name and class
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
-    
+
     # Check if column contains emails
     if (is.character(column_data)) {
       email_val <- detect_email(column_data)
@@ -368,116 +404,128 @@ dfSummary <- function(x,
     if (!identical(email_val, FALSE)) {
       output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
     }
-    
+
     # Add UPC/EAN info if applicable
     if (is.factor(column_data)) {
       barcode_type <- detect_barcode(as.character(column_data))
     } else {
       barcode_type <- detect_barcode(column_data)
     }
-    
+
     if (is.character(barcode_type)) {
-      output[i,2] <- paste(output[i,2], 
+      output[i,2] <- paste(output[i,2],
                            paste(barcode_type, trs("codes")),
                            sep = "\\\n")
-      if(is.numeric(column_data)) {
+      if (is.numeric(column_data)) {
         column_data <- as.character(column_data)
       }
     }
-    
+
     # Add column label (if applicable)
     if (isTRUE(labels.col)) {
       output[i,3] <- label(x[[i]])
       if (is.na(output[i,3]))
         output[i,3] <- ""
     }
-    
+
+    # Data crunching by type starts here ---------------------------------------
+
     # Factors: display a column of levels and a column of frequencies ----------
     if (is.factor(column_data)) {
       output[i,4:7] <- crunch_factor(column_data)
     }
-    
+
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
       output[i,4:7] <- crunch_character(column_data, email_val)
     }
-    
+
     # Logical data -------------------------------------------------------------
     else if (is.logical(column_data)) {
       output[i,4:7] <- crunch_logical(column_data)
     }
-    
+
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
       output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
-    
+
     # Time/date data -----------------------------------------------------------
     else if (inherits(column_data, c("Date", "POSIXct", "difftime"))) {
       output[i,4:7] <- crunch_time_date(column_data)
     }
-    
+
     # Data does not fit in previous categories ---------------------------------
     else {
       output[i,4:7] <- crunch_other(column_data)
     }
-    
+
+    # Data crunching by type ends here -----------------------------------------
+
+    # Valid (non-missing) data, frequency and proportion -----------------------
     output[i,8] <-
-      paste0(n_valid, "\\\n(", round(n_valid / n_tot * 100, round.digits), "%)")
+      paste0(format_number(n_valid, round.digits = 0), "\\\n(",
+             format_number(n_valid / n_tot * 100, round.digits = 1, nsmall = 1),
+             "%)")
+    
+    # Missing data, frequency and proportion -----------------------------------
     output[i,9] <-
-      paste0(n_miss,  "\\\n(", round(n_miss  / n_tot * 100, round.digits), "%)")
+      paste0(format_number(n_miss, round.digits = 0), "\\\n(",
+             format_number(n_miss / n_tot * 100, round.digits = 1, nsmall = 1),
+             "%)")
+
   }
-  
+
   # Prepare output object ------------------------------------------------------
   if (!isTRUE(varnumbers)) {
     output$no <- NULL
   }
-  
+
   if (!isTRUE(labels.col)) {
     output$label <- NULL
   }
-  
+
   if (!isTRUE(graph.col)) {
     output$graph <- NULL
     output$text.graph <- NULL
   }
-  
+
   if (!isTRUE(valid.col)) {
     output$valid <- NULL
   }
-  
+
   if (!isTRUE(na.col)) {
     output$missing <- NULL
   }
-  
+
   # apply translations to colnames
   for (i in seq_along(output)) {
     if (colnames(output)[i] == "text.graph")
       next
     colnames(output)[i] <- trs(colnames(output)[i])
   }
-  
+
   # Set output attributes
   class(output) <- c("summarytools", class(output))
   attr(output, "st_type") <- "dfSummary"
   attr(output, "date") <- Sys.Date()
   attr(output, "fn_call") <- match.call()
-  
+
   data_info <-
     list(Data.frame       = parse_info$df_name,
          Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
                                    parse_info$df_label, NA),
-         Dimensions       = paste(n_tot, "x", ncol(x)),
+         Dimensions       = c(n_tot, ncol(x)),
          Duplicates       = n_tot - n_distinct(x),
          Group            = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_group, NA),
-         by_first         = ifelse("by_group" %in% names(parse_info), 
+         by_first         = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_first, NA),
-         by_last          = ifelse("by_group" %in% names(parse_info), 
+         by_last          = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_last , NA))
-  
+
   attr(output, "data_info") <- data_info[!is.na(data_info)]
-  
+
   format_info <- list(style          = style,
                       round.digits   = round.digits,
                       plain.ascii    = plain.ascii,
@@ -488,16 +536,16 @@ dfSummary <- function(x,
                       split.cells    = split.cells,
                       split.tables   = split.tables,
                       col.widths     = col.widths)
-  
+
   attr(output, "format_info") <- format_info[!is.na(format_info)]
-  
+
   attr(output, "user_fmt") <- list(... = ...)
-  
+
   attr(output, "lang") <- st_options("lang")
-  
+
   if (exists("png_message"))
     attr(output, "png_message") <- TRUE
-  
+
   if (clear_null_device) {
     try(dev.off(), silent = TRUE)
   }
@@ -506,7 +554,7 @@ dfSummary <- function(x,
 
 #' @keywords internal
 crunch_factor <- function(column_data, email_val) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
@@ -515,88 +563,93 @@ crunch_factor <- function(column_data, email_val) {
 
   column_data <- ws_to_symbol(column_data)
 
-  levels(column_data)[levels(column_data) == ""] <- 
+  levels(column_data)[levels(column_data) == ""] <-
     paste0("(", trs("empty.str"), ")")
-    
-  max.string.width    <- parent.frame()$max.string.width
-  max.distinct.values <- parent.frame()$max.distinct.values
-  graph.magnif        <- parent.frame()$graph.magnif
-  round.digits        <- parent.frame()$round.digits
-  n_valid             <- parent.frame()$n_valid
-    
+
+  pf <- parent.frame()
+  max.string.width    <- pf$max.string.width
+  max.distinct.values <- pf$max.distinct.values
+  graph.magnif        <- pf$graph.magnif
+  round.digits        <- pf$round.digits
+  n_valid             <- pf$n_valid
+  
   n_levels <- nlevels(column_data)
   counts   <- table(column_data, useNA = "no")
   props    <- prop.table(counts)
-  
+
   if (n_levels == 0 && n_valid == 0) {
     outlist[[1]] <- trs("no.levels.defined")
     outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
-    
+
   } else if (n_valid == 0) {
     outlist[[1]] <- paste0(1:n_levels,"\\. ", levels(column_data),
                            collapse = "\\\n")
     outlist[[2]] <- trs("all.nas")
     outlist[[3]] <- ""
     outlist[[4]] <- ""
-    
+
   } else if (n_levels <= max.distinct.values + 1) {
     outlist[[1]] <- paste0(seq_along(counts),"\\. ",
                            substr(levels(column_data), 1, max.string.width),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    # counts_props <- align_numbers_dfs(counts, round(props, 3))
+    counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
+    if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       if (isTRUE(st_options("use.x11"))) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
       }
-      if (isTRUE(parent.frame()$store_imgs)) {
+      if (isTRUE(pf$store_imgs)) {
         png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     }
-    
+
   } else {
-    
+
     # more levels than allowed by max.distinct.values
     n_extra_levels <- n_levels - max.distinct.values
-    
+
     outlist[[1]] <-
       paste0(1:max.distinct.values,"\\. ",
              substr(levels(column_data), 1,
                     max.string.width)[1:max.distinct.values],
-             collapse="\\\n")
-    
+             collapse = "\\\n")
+
     outlist[[1]] <- paste(outlist[[1]],
-                          paste("[", n_extra_levels, trs("others"), "]"),
-                          sep="\\\n")
-    
+                          paste("[", format_number(n_extra_levels, 
+                                                   round.digits = 0),
+                                trs("others"), "]"),
+                          sep = "\\\n")
+
     counts_props <- align_numbers_dfs(
       c(counts[1:max.distinct.values],
         sum(counts[(max.distinct.values + 1):length(counts)])),
       c(props[1:max.distinct.values],
-        round(sum(props[(max.distinct.values + 1):length(props)]),
-              round.digits + 2))
+        #round(sum(props[(max.distinct.values + 1):length(props)]), 3))
+        sum(props[(max.distinct.values + 1):length(props)]))
     )
-    
+
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-    
-    if (isTRUE(parent.frame()$graph.col) &&
-        any(!is.na(column_data))) {
+
+    if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       # Prepare data for bar plot
       tmp_data <- column_data
       levels(tmp_data)[max.distinct.values + 1] <-
-        paste("[", n_extra_levels, trs("others"), "]")
+        paste("[", format_number(n_extra_levels, round.digits = 0),
+              trs("others"), "]")
       tmp_data[which(as.numeric(tmp_data) > max.distinct.values)] <-
-        paste("[", n_extra_levels, trs("others"), "]")
+        paste("[", format_number(n_extra_levels, round.digits = 0),
+              trs("others"), "]")
       levels(tmp_data)[(max.distinct.values + 2):n_levels] <- NA
       if (isTRUE(st_options("use.x11"))) {
         outlist[[3]] <- encode_graph(table(tmp_data), "barplot", graph.magnif)
       }
-      if (isTRUE(parent.frame()$store_imgs)) {
+      if (isTRUE(pf$store_imgs)) {
         png_loc <- encode_graph(table(tmp_data), "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
@@ -604,7 +657,7 @@ crunch_factor <- function(column_data, email_val) {
       }
     }
   }
-  
+
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -614,86 +667,94 @@ crunch_factor <- function(column_data, email_val) {
 #' @keywords internal
 #' @importFrom dplyr n_distinct
 crunch_character <- function(column_data, email_val) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
+
+  pf <- parent.frame()
+  max.string.width    <- pf$max.string.width
+  max.distinct.values <- pf$max.distinct.values
+  graph.magnif        <- pf$graph.magnif
+  round.digits        <- pf$round.digits
+  n_valid             <- pf$n_valid
   
-  max.string.width    <- parent.frame()$max.string.width
-  max.distinct.values <- parent.frame()$max.distinct.values
-  graph.magnif        <- parent.frame()$graph.magnif
-  round.digits        <- parent.frame()$round.digits
-  n_valid             <- parent.frame()$n_valid
-  
-  if (isTRUE(parent.frame()$trim.strings)) {
+  if (isTRUE(pf$trim.strings)) {
     column_data <- trimws(column_data)
   }
-  
+
   n_empty <- sum(column_data == "", na.rm = TRUE)
-  
-  if (n_empty == parent.frame()$n_tot) {
+
+  if (n_empty == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str"), "\n")
-  } else if (parent.frame()$n_miss == parent.frame()$n_tot) {
+  } else if (pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
-  } else if (n_empty + parent.frame()$n_miss == parent.frame()$n_tot) {
+  } else if (n_empty + pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.empty.str.nas"), "\n")
   } else if (!identical(email_val, FALSE)) {
-    
-    outlist[[1]] <- 
+
+    outlist[[1]] <-
       paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
-    
+
     dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
-    prop.dups <- round(dups / n_valid, round.digits + 2)
+    
+    # TODO: Check if rounding is relevant here
+    prop.dups <- round(dups / n_valid, 3)
+
     counts_props <- align_numbers_dfs(
-      c(email_val, dups), 
-      c(round(prop.table(email_val), round.digits + 2), prop.dups)
+      c(email_val, dups),
+      #c(round(prop.table(email_val), 3), prop.dups)
+      c(prop.table(email_val), prop.dups)
     )
-    
+
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-    
-    if (isTRUE(parent.frame()$graph.col) && any(!is.na(column_data))) {
+
+    if (isTRUE(pf$graph.col) && any(!is.na(column_data))) {
       if (isTRUE(st_options("use.x11"))) {
-        outlist[[3]] <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+        outlist[[3]] <- encode_graph(c(email_val, dups), "barplot", graph.magnif,
                                      emails = TRUE)
       }
-      if (isTRUE(parent.frame()$store_imgs)) {
-        png_loc <- encode_graph(c(email_val, dups), "barplot", graph.magnif, 
+      if (isTRUE(pf$store_imgs)) {
+        png_loc <- encode_graph(c(email_val, dups), "barplot", graph.magnif,
                                 pandoc = TRUE, emails = TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
-        outlist[[4]] <- txtbarplot(c(prop.table(email_val), prop.dups), 
+        outlist[[4]] <- txtbarplot(c(prop.table(email_val), prop.dups),
                                    emails = TRUE)
       }
     }
 
   } else {
-    
+
     counts <- table(column_data, useNA = "no")
-    
-    # Replace empty strings with "(Empty string)" or the corresponding translation
-    names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), names(counts))
-    
-    # Replace white-space-only strings with as many middle-dot symbols to make them visible in 
-    # the output table
+
+    # Replace empty strings with "(Empty string)" or the corresponding
+    #  translation
+    names(counts) <- sub("^$", paste0("(", trs("empty.str"), ")"), 
+                         names(counts))
+
+    # Replace white-space-only strings with as many middle-dot symbols to make
+    # them visible in the output table
     names(counts) <- ws_to_symbol(names(counts))
-    
+
     props <- prop.table(counts)
-    
+
     if (length(counts) <= max.distinct.values + 1) {
       # Report all frequencies when allowed by max.distinct.values
       outlist[[1]] <- paste0(seq_along(counts), "\\. ",
                              substr(names(counts), 1, max.string.width),
                              collapse = "\\\n")
-      counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+      #counts_props <- align_numbers_dfs(counts, round(props, 3))
+      counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-      if (isTRUE(parent.frame()$graph.col) &&
+      if (isTRUE(pf$graph.col) &&
           any(!is.na(column_data))) {
         if (isTRUE(st_options("use.x11"))) {
           outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
         }
-        if (isTRUE(parent.frame()$store_imgs)) {
+        if (isTRUE(pf$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
@@ -705,24 +766,28 @@ crunch_character <- function(column_data, email_val) {
       counts <- sort(counts, decreasing = TRUE)
       props <- sort(props, decreasing = TRUE)
       n_extra_values <- length(counts) - max.distinct.values
+      
+      # Build list of most frequent values 
       outlist[[1]] <- paste0(
         paste0(1:max.distinct.values,"\\. ",
                substr(names(counts), 1,
                       max.string.width)[1:max.distinct.values],
-               collapse="\\\n"),
-        paste("\\\n[", n_extra_values, trs("others"), "]")
+               collapse = "\\\n"),
+        paste("\\\n[", format_number(n_extra_values, round.digits = 0),
+              trs("others"), "]")
       )
+      
+      # Prepare data for building frequency cell with numbers + proportions
       counts_props <- align_numbers_dfs(
         c(counts[1:max.distinct.values],
           sum(counts[(max.distinct.values + 1):length(counts)])),
         c(props[1:max.distinct.values],
-          round(sum(props[(max.distinct.values + 1):length(props)]),
-                round.digits + 2))
+          sum(props[(max.distinct.values + 1):length(props)]))
       )
-      
+
       outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-      
-      if (isTRUE(parent.frame()$graph.col) &&
+
+      if (isTRUE(pf$graph.col) &&
           any(!is.na(column_data))) {
         # Prepare data for bar plot
         counts[max.distinct.values + 1] <-
@@ -732,17 +797,17 @@ crunch_character <- function(column_data, email_val) {
         counts <- counts[1:(max.distinct.values + 1)]
         if (isTRUE(st_options("use.x11"))) {
           outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
-        }        
-        if (isTRUE(parent.frame()$store_imgs)) {
+        }
+        if (isTRUE(pf$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txtbarplot(prop.table(counts))
         }
-      } 
+      }
     }
   }
-  
+
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -751,33 +816,35 @@ crunch_character <- function(column_data, email_val) {
 
 #' @keywords internal
 crunch_logical <- function(column_data) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-  
-  graph.magnif        <- parent.frame()$graph.magnif
-  round.digits        <- parent.frame()$round.digits
-  
-  if (parent.frame()$n_miss == parent.frame()$n_tot) {
+
+  pf <- parent.frame()
+  graph.magnif        <- pf$graph.magnif
+  round.digits        <- pf$round.digits
+
+  if (pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n") # \n to circumvent pander bug
   } else {
-    
+
     counts <- table(column_data, useNA = "no")
     props <- prop.table(counts)
-    
+
     outlist[[1]] <- paste0(seq_along(counts), "\\. ", names(counts),
                            collapse = "\\\n")
-    counts_props <- align_numbers_dfs(counts, round(props, round.digits + 2))
+    #counts_props <- align_numbers_dfs(counts, round(props, 3))
+    counts_props <- align_numbers_dfs(counts, props)
     outlist[[2]] <- paste0("\\", counts_props, collapse = "\\\n")
-    if (isTRUE(parent.frame()$graph.col) &&
+    if (isTRUE(pf$graph.col) &&
         any(!is.na(column_data))) {
       if (isTRUE(st_options("use.x11"))) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
       }
-      if (isTRUE(parent.frame()$store_imgs)) {
+      if (isTRUE(pf$store_imgs)) {
         png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
@@ -785,7 +852,7 @@ crunch_logical <- function(column_data) {
       }
     }
   }
-  
+
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -796,24 +863,27 @@ crunch_logical <- function(column_data) {
 #' @importFrom stats IQR median ftable sd
 #' @keywords internal
 crunch_numeric <- function(column_data, is_barcode) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
+
+  pf <- parent.frame()
+  max.distinct.values <- pf$max.distinct.values
+  graph.magnif        <- pf$graph.magnif
+  round.digits        <- pf$round.digits
   
-  max.distinct.values <- parent.frame()$max.distinct.values
-  graph.magnif        <- parent.frame()$graph.magnif
-  round.digits        <- parent.frame()$round.digits
-  
-  if (parent.frame()$n_miss == parent.frame()$n_tot) {
+  if (pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
     counts <- table(column_data, useNA = "no")
     min_val <- min(column_data, na.rm = TRUE)
     max_val <- max(column_data, na.rm = TRUE)
-    
+
+    # Stats cell
+    # Check number of distinct values & presence of bar code data
     if (length(counts) == 1) {
       outlist[[1]] <- paste(1, trs("distinct.value"))
     } else {
@@ -831,33 +901,36 @@ crunch_numeric <- function(column_data, is_barcode) {
         maxchars <- max(nchar(c(trs("min"), trs("max"), trs("mean"))))
         outlist[[1]] <- paste0(
           trs("min"), strrep(" ", maxchars - nchar(trs("min"))), " : ",
-          round(min_val, round.digits - 1), "\\\n",
+          round(min_val, round.digits), "\\\n",
           trs("mean"), strrep(" ", maxchars - nchar(trs("mean"))), " : ",
-          round(mean(column_data, na.rm = TRUE), round.digits - 1), "\\\n",
+          round(mean(column_data, na.rm = TRUE), round.digits), "\\\n",
           trs("max"), strrep(" ", maxchars - nchar(trs("max"))), " : ",
-          round(max_val, round.digits - 1)
+          round(max_val, round.digits)
         )
       } else {
         outlist[[1]] <- paste(
           trs("mean"), paste0(" (", trs("sd"), ") : "),
-          round(mean(column_data, na.rm = TRUE), round.digits - 1),
-          " (", round(sd(column_data, na.rm = TRUE), round.digits - 1), ")\\\n",
+          format_number(mean(column_data, na.rm = TRUE), round.digits), " (",
+          format_number(sd(column_data, na.rm = TRUE), round.digits), ")\\\n",
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
-          ":\\\n", round(min_val, round.digits - 1),
-          " < ", round(median(column_data, na.rm = TRUE), round.digits - 1),
-          " < ", round(max_val, round.digits - 1), "\\\n",
+          ":\\\n", format_number(min_val, round.digits),
+          " < ", format_number(median(column_data, na.rm = TRUE), round.digits),
+          " < ", format_number(max_val, round.digits), "\\\n",
           paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          round(IQR(column_data, na.rm = TRUE), round.digits - 1),
-          " (", round(sd(column_data, na.rm = TRUE) /
-                        mean(column_data, na.rm = TRUE),
-                      round.digits - 1), ")", collapse="", sep="")
+          format_number(IQR(column_data, na.rm = TRUE), round.digits),
+          " (", format_number(sd(column_data, na.rm = TRUE) /
+                                mean(column_data, na.rm = TRUE),
+                              round.digits), ")", collapse = "", sep = "")
       }
     }
-    
+
+    # Frequencies cell
+
+    # Initialize variable indicating if an extra line is required, when
+    # frequencies are displayed for rounded values
     extra_space <- FALSE
-    
-    # Values columns
-    # for "ts" objects, display n distinct & start / end
+
+    # With timeseries (ts) objects, display n distinct, start & end
     if (inherits(column_data, "ts")) {
       maxchars <- max(nchar(c(trs("start"), trs("end"))))
       outlist[[2]] <-
@@ -871,71 +944,95 @@ crunch_numeric <- function(column_data, is_barcode) {
               paste(sprintf("%02d", end(column_data)),
                     collapse = "-"))
     }
-    
-    # In specific circumstances, display most common values
+
+    # Display most common values in following circumstances:
+    # 1. Number of distinct values is allowed by max.distinct.values 
+    # AND one of the following is true
+    # a. All values are whole numbers
+    # b. Once rounding applied, number of unique values is unchanged
     else if (
       length(counts) <= max.distinct.values &&
       (all(column_data %% 1 == 0, na.rm = TRUE) ||
-       identical(names(column_data), "0") ||
-       all(abs(as.numeric(names(counts[-which(names(counts) == "0")]))) >=
-           10^-round.digits))) {
-      
-      props <- round(prop.table(counts), round.digits + 2)
-      counts_props <- align_numbers_dfs(counts, props)
-      
+       length(counts) == length(unique(round(column_data, round.digits + 1))))
+      ) {
+
       rounded_names <- 
-        trimws(format(
-          round(as.numeric(names(counts)), round.digits),
-          nsmall = round.digits * !all(floor(column_data) == column_data, na.rm = TRUE)
-        ))
-      
+        format_number(as.numeric(names(counts)), 
+                      round.digits = round.digits + 1,
+                      nsmall = (round.digits + (round.digits == 1)) * 
+                        !all(floor(column_data) == column_data, na.rm = TRUE)
+        )
+        # The last multiplication above causes the function to show
+        # the preferred "final" column in the frequencies cell, rather than
+        # those shown in the "rounded" column:
+        # 
+        #    number  rounded   final       Actual cell
+        # --------------------------       ------------------
+        # 1.0600778   1.0600    1.06  ==>  0.86!: 267 (26.7%)
+        # 1.0500121   1.0500    1.05  ==>  1.04!: 249 (24.9%) 
+        # 1.0400007   1.0400    1.04  ==>  1.05!: 324 (32.4%)
+        # 0.8600902   0.8600    0.86  ==>  1.06!: 160 (16.0%)
+        # 
+        # Also, when round.digits = 1 (default), we allow an 
+        # additional digit, for practical reasons. Based on
+        # experience, keeping an additional digit is preferable --
+        # this avoids having to set round.digits to 2, affecting
+        # all statistics, which is an overkill in most cases.
+
+      # Variable used for padding
       maxchars <- max(nchar(rounded_names))
-      
-      outlist[[2]]  <-
+
+      props <- prop.table(counts)
+      counts_props <- align_numbers_dfs(counts, props)
+
+      outlist[[2]] <-
         paste(
           paste0(rounded_names, strrep(" ", maxchars - nchar(rounded_names)),
-                 ifelse(as.numeric(names(counts)) != as.numeric(rounded_names),
+                 ifelse(as.numeric(names(counts)) != 
+                          round(as.numeric(names(counts)), round.digits + 1),
                         "!", " ")),
           counts_props, sep = ": ", collapse = "\\\n"
         )
-      
-      if (any(as.numeric(names(counts)) != as.numeric(rounded_names))) {
+
+      # Add "! rounded" when relevant 
+      if (grepl("!", outlist[[2]])) {
         extra_space <- TRUE
         outlist[[2]] <- paste(outlist[[2]], paste("!", trs("rounded")),
                               sep = "\\\n")
       }
-      
+
     } else {
       # Do not display specific values - only the number of distinct values
-      outlist[[2]] <- paste(length(counts), trs("distinct.values"))
-      
+      outlist[[2]] <- paste(format_number(length(counts), round.digits = 0),
+                            trs("distinct.values"))
+
       # Check for integer sequences
-      if (parent.frame()$n_miss == 0 &&
+      if (pf$n_miss == 0 &&
           all(is.integer(column_data)) &&
           length(column_data) == max_val - min_val + 1) {
         res <- try(isTRUE(all.equal(column_data, min_val:max_val)) ||
                      isTRUE(all.equal(column_data, max_val:min_val)),
                    silent = TRUE)
         if (isTRUE(res)) {
-          outlist[[2]] <- paste(outlist[[2]], 
+          outlist[[2]] <- paste(outlist[[2]],
                                 paste0("(", trs("int.sequence"), ")"),
                                 sep = "\\\n")
         }
       }
     }
-    
-    if (isTRUE(parent.frame()$graph.col)) {
+
+    if (isTRUE(pf$graph.col)) {
       if (length(counts) <= max.distinct.values) {
         if (isTRUE(st_options("use.x11"))) {
           outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
         }
-        if (isTRUE(parent.frame()$store_imgs)) {
+        if (isTRUE(pf$store_imgs)) {
           png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txtbarplot(prop.table(counts))
         }
-        
+
         if (isTRUE(extra_space)) {
           if (isTRUE(st_options("use.x11"))) {
             outlist[[3]] <- paste0(outlist[[3]], "\n\n")
@@ -946,7 +1043,7 @@ crunch_numeric <- function(column_data, is_barcode) {
         if (isTRUE(st_options("use.x11"))) {
           outlist[[3]] <- encode_graph(column_data, "histogram", graph.magnif)
         }
-        if (isTRUE(parent.frame()$store_imgs)) {
+        if (isTRUE(pf$store_imgs)) {
           png_loc <- encode_graph(column_data, "histogram", graph.magnif, TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
@@ -955,7 +1052,7 @@ crunch_numeric <- function(column_data, is_barcode) {
       }
     }
   }
-  
+
   outlist[[1]] <- enc2utf8(outlist[[1]])
   outlist[[2]] <- enc2utf8(outlist[[2]])
   outlist[[3]] <- enc2utf8(outlist[[3]])
@@ -965,73 +1062,83 @@ crunch_numeric <- function(column_data, is_barcode) {
 #' @importFrom lubridate as.period interval
 #' @keywords internal
 crunch_time_date <- function(column_data) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-  
-  #max.string.width    <- parent.frame()$max.string.width
-  max.distinct.values <- parent.frame()$max.distinct.values
-  graph.magnif        <- parent.frame()$graph.magnif
-  round.digits        <- parent.frame()$round.digits
-  
-  if (parent.frame()$n_miss == parent.frame()$n_tot) {
+
+  pf <- parent.frame()
+  max.distinct.values <- pf$max.distinct.values
+  graph.magnif        <- pf$graph.magnif
+  round.digits        <- pf$round.digits
+
+  if (pf$n_miss == pf$n_tot) {
     outlist[[1]] <- paste0(trs("all.nas"), "\n")
   } else {
-    
+
     counts <- table(column_data, useNA = "no")
-    
+
     # Report all frequencies when allowed by max.distinct.values
     if (length(counts) <= max.distinct.values) {
       outlist[[1]] <- paste0(seq_along(counts),". ", names(counts),
-                             collapse="\\\n")
-      props <- round(prop.table(counts), round.digits + 2)
+                             collapse = "\\\n")
+      props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste(counts_props, collapse = "\\\n")
       if (isTRUE(st_options("use.x11"))) {
         outlist[[3]] <- encode_graph(counts, "barplot", graph.magnif)
       }
-      if (isTRUE(parent.frame()$store_imgs)) {
+      if (isTRUE(pf$store_imgs)) {
         png_loc <- encode_graph(counts, "barplot", graph.magnif, TRUE)
         outlist[[4]] <- paste0("![](", png_loc, ")")
       } else {
         outlist[[4]] <- txtbarplot(prop.table(counts))
       }
     } else {
-      
+
       if (inherits(column_data, what = "difftime")) {
-        
+
         outlist[[1]] <- paste0(
-          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), na.rm = TRUE), "\\\n",
-          tolower(trs("med.short")), " : ", median(as.numeric(column_data), na.rm = TRUE), "\\\n",
-          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), na.rm = TRUE)
+          tolower(trs("min")), " : ", tmin <- min(as.numeric(column_data), 
+                                                  na.rm = TRUE), "\\\n",
+          tolower(trs("med.short")), " : ", median(as.numeric(column_data), 
+                                                   na.rm = TRUE), "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(as.numeric(column_data), 
+                                                  na.rm = TRUE)
         )
-        
-        if ("units" %in% names(attributes(column_data))) {        
-          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", units(column_data))
+
+        if ("units" %in% names(attributes(column_data))) {
+          outlist[[1]] <- paste0(outlist[[1]], "\\\n", "units : ", 
+                                 units(column_data))
         }
-        
+
       } else {
         outlist[[1]] <- paste0(
-          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE), "\\\n",
-          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), "\\\n",
+          tolower(trs("min")), " : ", tmin <- min(column_data, na.rm = TRUE),
+          "\\\n",
+          tolower(trs("med.short")), " : ", median(column_data, na.rm = TRUE),
+          "\\\n",
+          tolower(trs("max")), " : ", tmax <- max(column_data, na.rm = TRUE), 
+          "\\\n",
           "range : ", sub(pattern = " 0H 0M 0S", replacement = "",
-                          x = round(as.period(interval(tmin, tmax)),round.digits))
+                          x = round(as.period(interval(tmin, tmax)), 
+                                    round.digits))
         )
       }
-      
+
       outlist[[2]] <- paste(length(counts), trs("distinct.values"))
-      
-      if (isTRUE(parent.frame()$graph.col)) {
+
+      if (isTRUE(pf$graph.col)) {
         tmp <- as.numeric(column_data)[!is.na(column_data)]
         if (isTRUE(st_options("use.x11"))) {
-          outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif)
+          outlist[[3]] <- encode_graph(tmp - mean(tmp), "histogram", 
+                                       graph.magnif)
         }
-        if (isTRUE(parent.frame()$store_imgs)) {
-          png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif, TRUE)
+        if (isTRUE(pf$store_imgs)) {
+          png_loc <- encode_graph(tmp - mean(tmp), "histogram", graph.magnif,
+                                  TRUE)
           outlist[[4]] <- paste0("![](", png_loc, ")")
         } else {
           outlist[[4]] <- txthist(tmp - mean(tmp))
@@ -1044,34 +1151,35 @@ crunch_time_date <- function(column_data) {
 
 #' @keywords internal
 crunch_other <- function(column_data) {
-  
+
   outlist <- list()
   outlist[[1]] <- ""
   outlist[[2]] <- ""
   outlist[[3]] <- ""
   outlist[[4]] <- ""
-  
-  max.distinct.values <- parent.frame()$max.distinct.values
-  round.digits        <- parent.frame()$round.digits
-  
+
+  pf <- parent.frame()
+  max.distinct.values <- pf$max.distinct.values
+  round.digits        <- pf$round.digits
+
   if (!is.list(column_data)) {
     counts <- table(column_data, useNA = "no")
 
-    if (parent.frame()$n_miss == parent.frame()$n_tot) {
+    if (pf$n_miss == pf$n_tot) {
       outlist[[1]] <- paste0(trs("all.nas"), "\n")
-      
+
     } else if (length(counts) <= max.distinct.values) {
-      props <- round(prop.table(counts), round.digits + 2)
+      props <- round(prop.table(counts), 3)
       counts_props <- align_numbers_dfs(counts, props)
       outlist[[2]] <- paste0(counts_props, collapse = "\\\n")
-      
+
     } else {
       outlist[[2]] <- paste(as.character(length(unique(column_data))),
                             trs("distinct.values"))
     }
   } else {
     # column is a list
-    if (parent.frame()$n_miss == parent.frame()$n_tot) {
+    if (pf$n_miss == pf$n_tot) {
       outlist[[1]] <- paste0(trs("all.nas"), "\n")
     } else {
       # Get attributes for first non-na value
@@ -1080,8 +1188,8 @@ crunch_other <- function(column_data) {
           next
         # get class and length of single value
         outlist[[1]] <- paste0("Object class(es):", "\\\n",
-                               paste(class(column_data[[v]]), collapse = ", "), "\\\n",
-                               "Length: ", length(column_data[[v]]))
+                               paste(class(column_data[[v]]), collapse = ", "),
+                               "\\\n", "Length: ", length(column_data[[v]]))
         tmp_distinct <- try(paste(as.character(length(unique(column_data))),
                                   trs("distinct.values")), silent = TRUE)
         if (!inherits(tmp_distinct, "try-error")) {
@@ -1091,62 +1199,96 @@ crunch_other <- function(column_data) {
       }
     }
   }
-  
+
   return(outlist)
 }
 
 # Utility functions ------------------------------------------------------------
+
+#' @keywords internal
+format_number <- function(x, round.digits, ...) {
+  
+  n <- 1
+  repeat {
+    fmtArgs <- parent.frame(n)$fmtArgs
+    if (is.null(fmtArgs) && n < sys.nframe())
+      n <- n + 1
+    else
+      break
+  }
+  
+  # Allow over-riding of formatting attributes - for now this is only to allow
+  # nsmall = 1, so that proportions always use one decimal. 
+  dotArgs <- list(...)
+  for (f in names(dotArgs)) {
+    fmtArgs[f] <- dotArgs[f]
+  }
+  
+  # If we have digits + scientific = TRUE, we don't want to round
+  if ("digits" %in% names(fmtArgs) && isTRUE(fmtArgs$scientific)) {
+    return(do.call(format, append(fmtArgs, x = quote(x))))
+  } else {
+    x <- round(x, round.digits)
+    return(do.call(format, append(fmtArgs, x = quote(x))))
+  }
+}
+
+
 #' @keywords internal
 align_numbers_dfs <- function(counts, props) {
-  maxchar_cnt <- nchar(as.character(max(counts)))
-  maxchar_pct <- nchar(sprintf(paste0("%.",parent.frame()$round.digits - 1, "f"), 
-                               max(props*100)))
-  paste(sprintf(paste0("%", maxchar_cnt, "i"), counts),
-        sprintf(paste0("(%", maxchar_pct, ".", parent.frame()$round.digits - 1,
-                       "f%%)"), props*100))
+  
+  # New version
+  counts   <- format_number(counts, round.digits = parent.frame()$round.digits)
+  props    <- format_number(props * 100, round.digits = 1, nsmall = 1)
+  pad_cnt  <- max(nchar(counts)) - nchar(counts)
+  pad_pct  <- max(nchar(props)) - nchar(props)
+  retval   <- paste(paste0(strrep(" ", pad_cnt), counts),
+                    paste0("(", strrep(" ", pad_pct), props, "%)"))
+  retval
 }
 
 #' @importFrom base64enc base64encode
 #' @importFrom graphics barplot hist par text plot.new
 #' @importFrom grDevices dev.off nclass.Sturges png
-#' @importFrom magick image_read image_trim image_border image_write 
+#' @importFrom magick image_read image_trim image_border image_write
 #'             image_transparent
 #' @keywords internal
-encode_graph <- function(data, graph_type, graph.magnif = 1, 
+encode_graph <- function(data, graph_type, graph.magnif = 1,
                          pandoc = FALSE, emails = FALSE) {
   devtype <- switch(.st_env$sysname,
                     Windows = "windows",
                     Linux   = "Xlib",
                     Darwin  = "quartz")
-    
+
   if (graph_type == "histogram") {
-    rc <- try(png(png_loc <- tempfile(fileext = ".png"), 
+    rc <- try(png(png_loc <- tempfile(fileext = ".png"),
                   width = 150 * graph.magnif,
                   height = 110 * graph.magnif,
                   units = "px", bg = "transparent",
                   type = devtype, antialias = "none"), silent = TRUE)
-    
+
     # If it fails, fallback on default device type
     if (!is.null(rc)) {
-      png(png_loc <- tempfile(fileext = ".png"), 
+      png(png_loc <- tempfile(fileext = ".png"),
           width = 150 * graph.magnif,
           height = 110 * graph.magnif,
-          units = "px", bg = "transparent", 
+          units = "px", bg = "transparent",
           antialias = "none")
     }
-    
+
     mar <- par("mar" = c(0.03, 0.02, 0.03, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- data[!is.na(data)]
-    
+
     # Correction for vectors of infinitesimal range
     if (diff(range(data)) < 1e-301) {
       e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
       e <- min(as.numeric(e), 1e308)
       data <- data * e
     }
-    
-    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250), min.n = 1)
+
+    breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
+                       min.n = 1)
     cl <- try(suppressWarnings(hist(data, freq = FALSE, breaks = breaks_x,
                                     axes = FALSE, xlab = NULL, ylab = NULL,
                                     main = NULL, col = "grey94",
@@ -1156,32 +1298,32 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
       plot.new()
       text("Graph Not Available", x = 0.5, y = 0.5, cex = 1)
     }
-    
+
     dev.off()
     ii <- image_read(png_loc)
     ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
-    
+
   } else if (graph_type == "barplot") {
-    
-    rc <- try(png(png_loc <- tempfile(fileext = ".png"), 
+
+    rc <- try(png(png_loc <- tempfile(fileext = ".png"),
                   width = 150 * graph.magnif,
-                  height = 25.5 * length(data) * graph.magnif, 
+                  height = 25.5 * length(data) * graph.magnif,
                   units = "px", bg = "transparent",
                   type = devtype, antialias = "none"), silent = TRUE)
-    
+
     # If it fails, fallback on default device type
     if (!is.null(rc)) {
-      png(png_loc <- tempfile(fileext = ".png"), 
+      png(png_loc <- tempfile(fileext = ".png"),
           width = 150 * graph.magnif,
-          height = 25.55 * length(data) * graph.magnif, 
+          height = 25.55 * length(data) * graph.magnif,
           units = "px", bg = "transparent",
           antialias = "none")
     }
-    
+
     mar <- par("mar" = c(0.07, 0.02, 0.07, 0.02)) # bottom, left, top, right
     on.exit(par(mar), add = TRUE)
     data <- rev(data)
-    
+
     if (isTRUE(emails)) {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
               col = c("grey30", "grey94", "grey94"), border = "grey65",
@@ -1191,15 +1333,15 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
               col = "grey94", border = "grey65", horiz = TRUE,
               xlim = c(0, sum(data)))
     }
-    
+
     dev.off()
     ii <- image_read(png_loc)
     ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
   }
-  
+
   if (isTRUE(pandoc)) {
     png_path <- generate_png_path(parent.frame(2)$tmp.img.dir)
-    image_write(image_transparent(ii, 'white'), 
+    image_write(image_transparent(ii, 'white'),
                 path = png_path)
     return(png_path)
   } else {
@@ -1229,8 +1371,8 @@ txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
   widths <- props * maxwidth
   outstr <- character(0)
   for (i in seq_along(widths)) {
-    outstr <- paste(outstr, 
-                    paste0(rep(x = ifelse(isTRUE(emails) && i == length(widths), 
+    outstr <- paste(outstr,
+                    paste0(rep(x = ifelse(isTRUE(emails) && i == length(widths),
                                           "D", "I"), times = widths[i]),
                            collapse = ""),
                     sep = " \\ \n")
@@ -1243,21 +1385,21 @@ txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
 #' @keywords internal
 txthist <- function(data) {
   data <- data[!is.na(data)]
-  
+
   # Correction for vectors of infinitesimal range
   if (diff(range(data)) < 1e-301) {
     e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
     e <- min(as.numeric(e), 1e308)
     data <- data * e
   }
-  
+
   breaks_x <- pretty(range(data), n = nclass.Sturges(data), min.n = 1)
   if (length(breaks_x) <= 10) {
     counts <- hist(data, breaks = breaks_x, plot = FALSE)$counts
   } else {
     counts <- as.vector(table(cut(data, breaks = 10)))
   }
-  
+
   # make counts top at 10
   counts <- matrix(round(counts / max(counts) * 10), nrow = 1, byrow = TRUE)
   graph <- matrix(data = "", nrow = 6, ncol = length(counts))
@@ -1276,7 +1418,7 @@ txthist <- function(data) {
     counts <- matrix(apply(X = counts - 2, MARGIN = 2, FUN = max, 0),
                      nrow = 1, byrow = TRUE)
   }
-  
+
   graphlines <- character()
   for (ro in seq_len(nrow(graph))) {
     graphlines[ro] <-  trimws(paste(graph[ro,], collapse = ""), "right")
@@ -1288,20 +1430,20 @@ txthist <- function(data) {
 detect_email <- function(x) {
 
   email_regex <- "\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>"
-  
+
   if (length(x) > 200) {
     x_sample <- na.omit(sample(x, size = 200, replace = FALSE))
   } else {
     x_sample <- na.omit(x)
   }
-  
+
   if (length(x_sample) == 0) {
     return(FALSE)
   }
-  
+
   pct_email <- sum(grepl(email_regex, x_sample, ignore.case = TRUE)) /
     length(x_sample)
-  
+
   if (pct_email >= .8) {
     valid <- sum(grepl(email_regex, x, ignore.case = TRUE), na.rm = TRUE)
     invalid <- parent.frame()$n_valid - valid
@@ -1315,42 +1457,42 @@ detect_email <- function(x) {
 #' @importFrom stats na.omit
 #' @keywords internal
 detect_barcode <- function(x) {
-  
+
   # Check that all strings contain numbers
   # ref: https://rosettacode.org/wiki/Determine_if_a_string_is_numeric#R
   if (!all(suppressWarnings(!is.na(as.numeric(x))))) {
     return(FALSE)
   }
-  
+
   # Check for negatives and non-integers
-  if (min(x, na.rm = TRUE) < 0 || any(floor(as.numeric(x)) != as.numeric(x), 
+  if (min(x, na.rm = TRUE) < 0 || any(floor(as.numeric(x)) != as.numeric(x),
                                       na.rm = TRUE)) {
     return(FALSE)
   }
-  
-  # check that all lengths are equal on a sample of 50 values, and that this length
-  # is compatible with one of the EAN/UPC/ITC specifications
+
+  # check that all lengths are equal on a sample of 50 values, and that this 
+  # length is compatible with one of the EAN/UPC/ITC specifications
   x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
-  if (length(x_samp) < 3 || 
+  if (length(x_samp) < 3 ||
       (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
   }
-  
+
   type <- switch(as.character(len),
                  "8"  = "EAN-8",
                  "12" = "UPC",
                  "13" = "EAN-13",
                  "14" = "ITF-14")
-  
+
   x_pad      <- paste0(strrep("0", 14-len), x_samp)
   vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
   weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
   sums       <- mapply(weighted, FUN = sum)
-  
+
   if (any(sums %% 10 != 0, na.rm = TRUE)) {
     return(FALSE)
   }
-  
+
   return(type)
 }

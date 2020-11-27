@@ -6,8 +6,8 @@
 \usage{
 \method{print}{summarytools}(x, method = "pander", file = "",
    append = FALSE, report.title = NA, table.classes = NA,
-   bootstrap.css = st_options('bootstrap.css'), 
-   custom.css = st_options('custom.css'), silent = FALSE, 
+   bootstrap.css = st_options('bootstrap.css'),
+   custom.css = st_options('custom.css'), silent = FALSE,
    footnote = st_options('footnote'), max.tbl.height = Inf,
    collapse = 0, escape.pipe = st_options("escape.pipe"), \dots)
 }
@@ -35,7 +35,7 @@ tables. All \emph{Bootstrap css} classes can be used. It also allows
 user-defined classes (see custom.css parameter). See \emph{details}
 section. \code{NA} by default.}
 
-\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit 
+\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit
 \emph{Bootstrap css}. \code{TRUE} by default. To change this default value
 globally, see \code{\link{st_options}}.}
 
@@ -56,7 +56,7 @@ value globally, see \code{\link{st_options}}.}
 \item{max.tbl.height}{Maximum table height (in pixels) allowed in rendered
 \code{dfSummary()} tables. When this argument is used, results will show up
 in a \code{<div>} with the specified height and a scroll bar. Intended
-to be used in \emph{Rmd} documents. Has no effect when \code{method} is 
+to be used in \emph{Rmd} documents. Has no effect when \code{method} is
 \dQuote{pander}. \code{Inf} by default.}
 
 \item{collapse}{Numeric. \code{0} by default. Set to \code{1} to make
@@ -87,7 +87,7 @@ Plain ascii and \emph{rmarkdown} tables are generated via
   for a list of all available \emph{pander} options.
 
 The following additional arguments can be used to override
-  formatting attributes stored in the object to be printed. Refer to the 
+  formatting attributes stored in the object to be printed. Refer to the
   function's documentation for details on these arguments.
    \itemize{
      \item \code{style}

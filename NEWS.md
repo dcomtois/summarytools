@@ -25,6 +25,7 @@
    + Improved performance by optimizing barcode detection and blank character
      replacements, which are the two main bottlenecks 
    + Fixed a bug with barcode detection 
+   + Changed default value of round.numbers to 1 (which was de facto applied)
    + Made slight adjustments to the html graphs appearance 
    + Improved alignment of Freq cell when numerical values are shown
    + Replaced "!" with "*" for rounded-values notice 
