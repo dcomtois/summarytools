@@ -326,7 +326,7 @@ print.summarytools <- function(x,
   format_info <- format_info[which(!duplicated(names(format_info),
                                                fromLast = TRUE))]
 
-  # For parameters that were not explicit, we get their value from
+  # For parameters that were not explicit, get their value from
   # st_options().
   list_fmt_elements <- c("style", "plain.ascii", "round.digits", "headings",
                          "display.labels")
@@ -977,8 +977,7 @@ print_ctable <- function(x, method) {
     
       if ("Weights" %in% names(data_info)) {
         counts_fmted <- do.call(
-          format, append(format_args,
-                         list(x = counts[ ,colnum]))
+          format, append(format_args, list(x = counts[ ,colnum]))
           )
       } else {
         counts_fmted <- do.call(
@@ -1054,21 +1053,42 @@ print_ctable <- function(x, method) {
 
     if ("chisq" %in% names(attributes(x))) {
       main_sect %+=% paste(
-        capture.output(pander::pander(attr(x, "chisq"))),
+        capture.output(
+          pander::pander(
+            c(format(attr(x, "chisq")["Chi.squared"], 
+                     decimal.mark = format_args$decimal.mark),
+              format(attr(x, "chisq")["df"]),
+              format(attr(x, "chisq")["p.value"], 
+                     decimal.mark = format_args$decimal.mark)
+            )
+          )
+        ),
         collapse = "\n"
       )
     }
-
+    
     if ("OR" %in% names(attributes(x))) {
       main_sect %+=% paste(
-        capture.output(pander::pander(format(attr(x, "OR"), digits = 2, nsmall = 2))),
+        capture.output(
+          pander::pander(
+            #do.call(format, append(format_args, list(x = attr(x, "OR"))))
+            format(attr(x, "OR"), digits = 2, nsmall = 2, 
+                   decimal.mark = format_args$decimal.mark),
+          )
+        ),
         collapse = "\n"
       )
     }
-
+    
     if ("RR" %in% names(attributes(x))) {
       main_sect %+=% paste(
-        capture.output(pander::pander(format(attr(x, "RR"), digits = 2, nsmall = 2))),
+        capture.output(
+          pander::pander(
+            #do.call(format, append(format_args, list(x = attr(x, "RR"))))
+            format(attr(x, "RR"), digits = 2, nsmall = 2,
+                   decimal.mark = format_args$decimal.mark)
+          )
+        ),
         collapse = "\n"
       )
     }
@@ -1197,34 +1217,51 @@ print_ctable <- function(x, method) {
 
       if ("chisq" %in% names(attributes(x))) {
         chisq <- attr(x, "chisq")
-        stats_str <- paste0(stats_str,
-                            "<em><strong>&nbsp;&#935;<sup>2</sup></strong> = ",
-                            sub("^0\\.", ".", sprintf("%.4f", chisq[[1]])),
-                            "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
-                            "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ",
-                            sub("^0\\.", ".", sprintf("%.4f", chisq[[3]])), "</em><br/>
+        stats_str <- paste0(
+          stats_str,
+          "<em><strong>&nbsp;&#935;<sup>2</sup></strong> = ",
+          sub("^0\\.", format_args$decimal.mark, sprintf("%.4f", chisq[[1]])),
+          "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
+          "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ",
+          sub("^0\\.", format_args$decimal.mark,
+          sprintf("%.4f", chisq[[3]])), "</em><br/>
                             ")
       }
 
       if ("OR" %in% names(attributes(x))) {
         OR <- attr(x, "OR")
-        stats_str <- paste0(stats_str,
-                            "<em><strong>O.R. </strong>(", attr(x, "OR-level")*100, "% C.I.) = <strong>",
-                            format(OR[[1]], digits = 2, nsmall = 2), "</strong>&nbsp;&nbsp;(",
-                            format(OR[[2]], digits = 2, nsmall = 2), " - ",
-                            format(OR[[3]], digits = 2, nsmall = 2), ")</em><br/>
-                            ")
+        stats_str <- paste0(
+          stats_str,
+          "<em><strong>O.R. </strong>(", 
+          attr(x, "OR-level")*100, "% C.I.) = <strong>",
+          format(OR[[1]], digits = 2, nsmall = 2,
+                 decimal.mark = format_args$decimal.mark), 
+          "</strong>&nbsp;&nbsp;(",
+          format(OR[[2]], digits = 2, nsmall = 2,
+                 decimal.mark = format_args$decimal.mark),
+          " - ",
+          format(OR[[3]], digits = 2, nsmall = 2,
+                 decimal.mark = format_args$decimal.mark),
+          ")</em><br/>
+        ")
       }
 
       if ("RR" %in% names(attributes(x))) {
         RR <- attr(x, "RR")
-        stats_str <- paste0(stats_str,
-                            "<em><strong>R.R. </strong>(", attr(x, "RR-level")*100, "% C.I.) = <strong>",
-                            format(RR[[1]], digits = 2, nsmall = 2), "</strong>&nbsp;&nbsp;(",
-                            format(RR[[2]], digits = 2, nsmall = 2), " - ",
-                            format(RR[[3]], digits = 2, nsmall = 2), ")</em>")
+        stats_str <- paste0(
+          stats_str,
+          "<em><strong>R.R. </strong>(",
+          attr(x, "RR-level")*100, "% C.I.) = <strong>",
+          format(RR[[1]], digits = 2, nsmall = 2, 
+                 decimal.mark = format_args$decimal.mark), 
+          "</strong>&nbsp;&nbsp;(",
+          format(RR[[2]], digits = 2, nsmall = 2,
+                 decimal.mark = format_args$decimal.mark), 
+          " - ",
+          format(RR[[3]], digits = 2, nsmall = 2,
+                 decimal.mark = format_args$decimal.mark), 
+          ")</em>")
       }
-
     }
 
     cross_table_html <-
