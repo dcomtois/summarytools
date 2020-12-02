@@ -147,7 +147,7 @@ CRAN versions are stable but are not updated as often as the GitHub versions.
 install.packages("summarytools")
 ```
 
-## 1.5 Latest Features (v0.9.7)
+## 1.5 Latest Features (versions 0.9.7 and 0.9.8)
 
   - Performance and formatting improvements  
   - The `stview()` function which ensures the package's own `view()` method  
