@@ -1,7 +1,11 @@
-# summarytools 0.9.7 (2020-12-06)
+# summarytools 0.9.8 (2020-12-05)
 
-This version was made available through gradual improvements on GitHub over the
-course of year 2020.
+ - See changes listed under 0.9.7 for changes since last CRAN release (0.9.6)
+
+# summarytools 0.9.7 (2020-05-21)
+
+_GitHub-only_ release - this was a constantly evolving version to be eventually
+released as 0.9.8 on CRAN when it reached maturity.
 
  - Added shortcut function `stview()` pointing to
    `summarytools::view()`. This avoids potential conflicts with
