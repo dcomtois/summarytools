@@ -62,7 +62,9 @@ etudiant
 etudiants
 examens
 facteur
+facto
 faisant
+favicon
 Feitsma
 Fille
 fivenum
@@ -118,6 +120,7 @@ Nom
 nombre
 Nombre
 nrow
+nsmall
 numerique
 Numerique
 Oui
@@ -184,6 +187,7 @@ texte
 tibble
 tibbles
 Tibbles
+tidyverse
 tmp
 tomber
 TOpdf
