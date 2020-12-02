@@ -1,4 +1,7 @@
-# summarytools 0.9.7 (2020-05-21)
+# summarytools 0.9.7 (2020-12-06)
+
+This version was made available through gradual improvements on GitHub over the
+course of year 2020.
 
  - Added shortcut function `stview()` pointing to
    `summarytools::view()`. This avoids potential conflicts with
@@ -11,7 +14,7 @@
    + decimal.mark, big.mark, small.mark
    + nsmall, digits
    + scientific
-   + big.interval, small.interval
+   + big.interval, small.interval (limited support)
  - Fixed a bug arising when an object created using a language other
    than the active one (`st_options("lang")`) was displayed 
  - Improved string encoding behavior

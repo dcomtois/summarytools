@@ -9,7 +9,7 @@ tb(x, order = 1, na.rm = FALSE, drop.var.col = FALSE)
 \arguments{
 \item{x}{a freq() or descr() output object.}
 
-\item{order}{Integer. Useful for grouped results produced with 
+\item{order}{Integer. Useful for grouped results produced with
 \code{\link{stby}} or \code{dplyr::group_by}. When set to \code{1}
  (default), the ordering is done using the grouping variables first. When
  set to \code{2}, the ordering is first determined by the \code{variable}
@@ -19,8 +19,8 @@ tb(x, order = 1, na.rm = FALSE, drop.var.col = FALSE)
  sort order.}
 
 \item{na.rm}{Logical. For \code{\link{freq}} objects, remove \code{<NA>} rows
-(or \code{(Missing)} rows if \code{NA} values were made explicit with 
-\code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}} 
+(or \code{(Missing)} rows if \code{NA} values were made explicit with
+\code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}}
 objects.}
 
 \item{drop.var.col}{Logical. For \code{\link{descr}} objects, drop the
@@ -29,7 +29,7 @@ produced for a single variable; for multiple variables, this argument
 is ignored. \code{FALSE} by default.}
 }
 \value{
-A \code{\link[tibble]{tibble}} which is constructed following the 
+A \code{\link[tibble]{tibble}} which is constructed following the
 \emph{tidy} principles.
 }
 \description{
