@@ -170,8 +170,6 @@ freq <- function(x,
     outlist  <- list()
     gr_ks    <- map_groups(group_keys(x))
     gr_inds  <- attr(x, "groups")$.rows
-    #ana_var  <- ifelse("var" %in% names(match.call()), var, 
-    #                   setdiff(colnames(x), group_vars(x)))
 
     if ("weights" %in% names(match.call())) {
       weights_str <- deparse(substitute(weights))
@@ -313,7 +311,7 @@ freq <- function(x,
     }
     
     # if x is a data.frame with 1 column, extract this column as x
-    if (!is.null(ncol(x)) && ncol(x)==1) {
+    if (!is.null(ncol(x)) && ncol(x) == 1) {
       varname <- colnames(x)
       x <- x[[1]]
     }
