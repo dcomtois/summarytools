@@ -138,7 +138,7 @@ print(descr(exams), headings = FALSE)
 
 }
 \references{
-\href{http://rstudio.com}{RStudio}
+\href{https://rstudio.com}{RStudio}
 \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
 \href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
 \href{https://getbootstrap.com/}{Bootstrap Cascading Stylesheets}
