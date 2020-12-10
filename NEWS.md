@@ -35,6 +35,7 @@ released as 0.9.8 on CRAN when it reached maturity.
      replacements, which are the two main bottlenecks 
    + Fixed a bug with barcode detection 
    + Changed default value of round.numbers to 1 (which was de facto applied)
+   + round.numbers doesn't affect proportions - only 1 decimal is shown, always
    + Made slight adjustments to the html graphs appearance 
    + Improved alignment of Freq cell when numerical values are shown
    + Replaced "!" with "*" for rounded-values notice 
