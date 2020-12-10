@@ -114,7 +114,7 @@
 #' \href{http://rstudio.com}{RStudio}
 #' \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
 #' \href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
-#' \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
+#' \href{https://getbootstrap.com/}{Bootstrap Cascading Stylesheets}
 #'
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #'
