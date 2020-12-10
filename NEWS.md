@@ -1,6 +1,8 @@
-# summarytools 0.9.8 (2020-12-05)
+# summarytools 0.9.8 (2020-12-10)
 
- - See changes listed under 0.9.7 for changes since last CRAN release (0.9.6)
+Version 0.9.8 is essentially the CRAN release of the 0.9.7 _GitHub-Only_ release
+which saw gradual changes being implemented over the course of several months.
+See changes listed under 0.9.7 for changes since last CRAN release (0.9.6)
 
 # summarytools 0.9.7 (2020-05-21)
 
@@ -49,6 +51,13 @@ released as 0.9.8 on CRAN when it reached maturity.
    compatibility is preserved for now)
    + levels --> level
    + names --> name
+ - Three global options (set via `st_options()` were added:
+   + dfSummary.style ("multiline" by default; can also be set to "grid")
+   + freq.cumul (TRUE by default; set to FALSE to hide cumulative proportions)
+   + freq.ignore.threshold (25 by default; when feeding `freq()` a whole data
+     frame, this number determines how many distinct values are allowed for
+     numerical variables. Above that number, the variable will be ignored)
+
 
 # summarytools 0.9.6 (2020-03-01)
 
