@@ -1234,7 +1234,24 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-# <a id="sponsors"></a>14. Sponsors
+# 14. Conclusion
+
+The package comes with no guarantees. It is a work in progress and
+feedback is always welcome. Please open an [issue on
+GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
+bug or wish to submit a feature request.
+
+### Stay Up to Date, and Get Involved!
+
+For a preview of what’s coming in the next release, have a look at the
+[development
+branch](https://github.com/dcomtois/summarytools/tree/dev-current).
+
+So far, I’ve worked a lot on my own on this project. Now I need your
+help to make it more of a collective effort. Check out the Wiki and
+don’t hesitate to post in the Discussions section.
+
+# <a id="sponsors"></a>15. Sponsors
 
 A big thanks to people who made donations!
 
@@ -1247,19 +1264,3 @@ If you find **summarytools** useful and want to support its development,
 please consider making a small donation using the *PayPal* button.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
-\# 15. Conclusion
-
-The package comes with no guarantees. It is a work in progress and
-feedback is always welcome. Please open an [issue on
-GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
-bug or wish to submit a feature request.
-
-### Stay Up to Date
-
-Check out the [GitHub project’s
-page](https://github.com/dcomtois/summarytools); from there you can see
-the latest updates and also submit feature requests.
-
-For a preview of what’s coming in the next release, have a look at the
-[development
-branch](https://github.com/dcomtois/summarytools/tree/dev-current).
