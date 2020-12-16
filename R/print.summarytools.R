@@ -111,10 +111,10 @@
 #' @method print summarytools
 #'
 #' @references
-#' \href{http://rstudio.com}{RStudio}
-#' \href{https://github.com/dcomtois/summarytools}{Summarytools on GitHub}
+#' \href{https://rstudio.com/}{RStudio}
+#' \href{https://github.com/dcomtois/summarytools/}{Summarytools on GitHub}
 #' \href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
-#' \href{http://getbootstrap.com/css/#tables}{Bootstrap Cascading Stylesheets}
+#' \href{https://getbootstrap.com/}{Bootstrap Cascading Stylesheets}
 #'
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #'
@@ -227,7 +227,7 @@ print.summarytools <- function(x,
   # Parameter validation -------------------------------------------------------
   mc <- match.call()
   errmsg <- check_args_print(mc)
-
+  
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
   }
@@ -709,7 +709,7 @@ print_freq <- function(x, method) {
     x <- do.call(format, append(format_args, x = quote(x)))
 
     if (!"Weights" %in% names(data_info)) {
-      x[ ,1] <- sub(paste0(format_info$decimal.mark, "0+$"), "", x[ ,1])
+      x[ ,1] <- sub(paste0("\\", format_info$decimal.mark, "0+$"), "", x[ ,1])
     }
 
     x[is_na_x] <- format_info$missing
@@ -1220,12 +1220,12 @@ print_ctable <- function(x, method) {
         stats_str <- paste0(
           stats_str,
           "<em><strong>&nbsp;&#935;<sup>2</sup></strong> = ",
-          sub("^0\\.", format_args$decimal.mark, sprintf("%.4f", chisq[[1]])),
+          sub("\\.", format_args$decimal.mark, sprintf("%.4f", chisq[[1]])),
           "&nbsp;&nbsp;&nbsp;<strong>df</strong> = ", chisq[[2]],
           "&nbsp;&nbsp;&nbsp;<strong>p</strong> = ",
           sub("^0\\.", format_args$decimal.mark,
-          sprintf("%.4f", chisq[[3]])), "</em><br/>
-                            ")
+          sprintf("%.4f", chisq[[3]])), "</em><br/>"
+        )
       }
 
       if ("OR" %in% names(attributes(x))) {
@@ -1825,7 +1825,7 @@ build_heading_pander <- function() {
   head1  <- NA # Main title (e.g. "Data Frame Summary")
   head2  <- NA # The data frame, the variable, or the 2 variables for ctable
   head3  <- NA # Additional elements (includes Variable exceptionnaly when
-             # headings = FALSE and by() or lapply() were used
+               # headings = FALSE and by() or lapply() were used
 
   add_markup <- function(str, h = 0) {
     if (!isTRUE(format_info$plain.ascii)) {
