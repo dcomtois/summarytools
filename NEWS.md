@@ -1,5 +1,12 @@
 # summarytools 0.9.8 (2020-12-10)
 
+ - In `dfSummary()`:
+   + Grouping variable(s) now excluded by default from results when using
+     `stby()` or `dpyr::group_by()`. To keep them, use `keep.grp.vars = TRUE`.
+   
+
+# summarytools 0.9.8 (2020-12-10)
+
 Version 0.9.8 is essentially the CRAN release of the 0.9.7 _GitHub-Only_ release
 which saw gradual changes being implemented over the course of several months.
 See changes listed under 0.9.7 for changes since last CRAN release (0.9.6)
@@ -62,14 +69,14 @@ released as 0.9.8 on CRAN when it reached maturity.
 
 # summarytools 0.9.6 (2020-03-01)
 
- - In ctable():
+ - In `ctable()`:
    + Added Odds Ratio and Risk Ratio (aka Relative Risk) 
      statistics with 95% C.I.'s
    + Fixed issue with chi-square statistic not reporting
      appropriate values
    + Fixed html alignment of statistics below the table
      (now centering based on table width as it should)
- - In dfSummary(), fixed an issue arising when a very
+ - In `dfSummary()`, fixed an issue arising when a very
    large range of numeric values exists in a column
 
 # summarytools 0.9.5 (2020-02-10)

@@ -102,6 +102,7 @@ The following additional arguments can be used to override
      \item \code{valid.col}     (\code{\link{dfSummary}} objects)
      \item \code{na.col}        (\code{\link{dfSummary}} objects)
      \item \code{col.widths}    (\code{\link{dfSummary}} objects)
+     \item \code{keep.grp.vars} (\code{\link{dfSummary}} objects)
      \item \code{split.tables}
      \item \code{report.nas}    (\code{\link{freq}} objects)
      \item \code{display.type}  (\code{\link{freq}} objects)
