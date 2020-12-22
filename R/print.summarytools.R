@@ -83,6 +83,7 @@
 #'      \item \code{valid.col}     (\code{\link{dfSummary}} objects)
 #'      \item \code{na.col}        (\code{\link{dfSummary}} objects)
 #'      \item \code{col.widths}    (\code{\link{dfSummary}} objects)
+#'      \item \code{keep.grp.vars} (\code{\link{dfSummary}} objects)
 #'      \item \code{split.tables}
 #'      \item \code{report.nas}    (\code{\link{freq}} objects)
 #'      \item \code{display.type}  (\code{\link{freq}} objects)
@@ -1582,6 +1583,15 @@ print_dfs <- function(x, method) {
       "na.col" %in% names(format_info) &&
       !isTRUE(format_info$na.col)) {
     x <- x[ ,-which(names(x) == trs("missing"))]
+  }
+  
+  # Remove grouping variable rows when appropriate
+  if ("keep.grp.vars" %in% names(format_info) &&
+      !isTRUE(format_info$keep.grp.vars) &&
+      "by_var" %in% names(data_info)) {
+    x <- x[-grep(paste0("\\b", data_info$by_var, "\\b", collapse = "|"), 
+                 x$Variable),]
+    row.names(x) <- NULL
   }
 
   # print_dfSummary - pander method --------------------------------------------
