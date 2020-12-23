@@ -58,6 +58,7 @@
 #'   \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{ctable}}. \code{TRUE} by default.
+#' @param ctable.round.digits Numeric. Defaults to \code{1}.
 #' @param descr.stats Character. Corresponds to the \code{stats} parameter of
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
@@ -149,6 +150,7 @@ st_options <- function(option                 = NULL,
                        freq.silent            = FALSE,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE,
+                       ctable.round.digits    = 1,
                        descr.stats            = "all",
                        descr.transpose        = FALSE,
                        descr.silent           = FALSE,
@@ -220,6 +222,7 @@ st_options <- function(option                 = NULL,
                    "freq.silent"            = FALSE,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
+                   "ctable.round.digits"    = 1,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
                    "descr.silent"           = FALSE,

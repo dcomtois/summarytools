@@ -4,60 +4,61 @@
 #' row, column, or total proportions, as well as marginal sums.
 #'
 #' @param x First categorical variable - values will appear as row names.
-#' @param y Second categorical variable - values will appear in as column names.
+#' @param y Second categorical variable - values will appear as column names.
 #' @param prop Proportions to display;  \dQuote{r} for \emph{rows} (default),
 #'   \dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} 
-#'   for \emph{none}. This option can be set globally; see 
-#'   \code{\link{st_options}}.
+#'   for \emph{none}. This option can be set globally with
+#'   \code{\link{st_options}}, option \code{ctable.prop}.  
 #' @param useNA Argument passed on to \code{\link[base]{table}}; One of 
 #'    \dQuote{ifany} (default), \dQuote{no}, or \dQuote{always}.
-#' @param totals Logical. Should row and column totals be displayed? Defaults to
-#'   \code{TRUE}. To change this default value globally, see
-#'   \code{\link{st_options}}.
+#' @param totals Logical. Show row and column totals. Defaults to
+#'   \code{TRUE}. To change this default value globally use
+#'   \code{\link{st_options}}, option option \code{ctable.totals}
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or 
-#'   \dQuote{rmarkdown}. This option can be set globally; 
-#'   see \code{\link{st_options}}.
-#' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}. To change this default value globally, see 
+#'   output table. One of \dQuote{simple} (default), \dQuote{grid}, or 
+#'   \dQuote{rmarkdown}. This option can be set globally with 
 #'   \code{\link{st_options}}.
-#' @param justify String indicating alignment of columns; one of \dQuote{l} 
+#' @param round.digits Number of significant digits to display. Defaults to
+#'   \code{1}. To change this default value globally, use 
+#'   \code{\link{st_options}}, option \code{ctable.round.digits}.
+#' @param justify String indicating alignment of columns. One of \dQuote{l} 
 #'   (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.
-#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
-#'   \code{TRUE}, no markup characters will be used (useful when printing
+#' @param plain.ascii Logical. Used by \code{\link[pander]{pander}}; when
+#'   \code{TRUE}, no markup characters are generated (useful when printing
 #'   to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
 #'   in which case it will be set to \code{FALSE} automatically. To change the 
 #'   default value globally, use \code{\link{st_options}}.
 #' @param headings Logical. Set to \code{FALSE} to omit heading section. Can be
-#'   set globally via \code{\link{st_options}}.
-#' @param display.labels Logical. Should variable / data frame label be 
-#'   displayed in the title section? Default is \code{TRUE}. To change this
-#'   default value globally, use \code{\link{st_options}}.
-#' @param split.tables Pander argument that specifies how many characters wide a
-#'   table can be. \code{Inf} by default.
-#' @param dnn Names to be used in output table. Vector of two strings; By 
-#'   default, the character values for arguments x and y are used.
+#'   set globally with \code{\link{st_options}}.
+#' @param display.labels Logical. Display data frame label in the heading 
+#'   section? Defaults to \code{TRUE}. Can be changed globally with
+#'   \code{\link{st_options}}.
+#' @param split.tables Numeric. Pander argument that specifies how many
+#'   characters wide a table can be. \code{Inf} by default.
+#' @param dnn Character vector. Variable names to be used in output table. Useful
+#'   if automatically generated values do not correspond to the desired results.
 #' @param chisq Logical. Display chisq statistic along with p-value.
 #' @param OR Logical or numeric. Display odds ratio with the specified confidence 
 #'   level (typically .95). Can be set to \code{TRUE}, in which case 95% confidence
-#'   interval is given. Confidence intervals are calculated using Wald's method
-#'   (normal approximation).
+#'   interval is given. Calculated using Wald's method (normal approximation).
 #' @param RR Logical or numeric. Display risk ratio (also called relative risk) 
-#'   with the specified confidence level (typically .95). Can be set to \code{TRUE}, 
-#'   in which case 95% confidence interval is given. confidence intervals are
-#'   calculated using Wald's method (normal approximation).
-#' @param weights Vector of weights; must be of the same length as \code{x}.
-#' @param rescale.weights Logical parameter. When set to \code{TRUE}, the total
-#'   count will be the same as the unweighted \code{x}. \code{FALSE} by default.
-#' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
+#'   with the specified confidence level (typically .95). Can be set to
+#'   \code{TRUE}, in which case 95% confidence interval is given. Calculated 
+#'   using Wald's method (normal approximation).
+#' @param weights Numeric. Vector of weights; must be of the same length as
+#'   \code{x}.
+#' @param rescale.weights Logical. When \code{TRUE}, total count equals
+#'   \code{nrow(x)}. \code{FALSE} by default.
+#' @param \dots Additional arguments passed to \code{\link[pander]{pander}} or
+#'   \code{\link[pander]{format}}.
 #'
 #' @return A frequency table of classes \code{matrix} and \code{summarytools} 
 #'   with added attributes used by \link{print} method.
 #'
 #' @details Rmarkdown does not, to this day, support multi-header tables. 
 #'   Therefore, until such support is available, the recommended way to display 
-#'   cross-tables in .Rmd documents is to use `method=render` with the `print()`
-#'   or `view()` functions. See package vignettes for examples.
+#'   cross-tables in .Rmd documents is to use `method=render` with `print()`
+#'   or `view() / stview()`. See package vignettes for examples.
 #'
 #' @examples
 #' data("tobacco")
@@ -101,7 +102,7 @@ ctable <- function(x,
                    useNA           = "ifany",
                    totals          = st_options("ctable.totals"),
                    style           = st_options("style"),
-                   round.digits    = 1,
+                   round.digits    = st_options("ctable.round.digits"),
                    justify         = "right",
                    plain.ascii     = st_options("plain.ascii"),
                    headings        = st_options("headings"),

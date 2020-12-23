@@ -24,6 +24,7 @@ st_options(
   freq.silent = FALSE,
   ctable.prop = "r",
   ctable.totals = TRUE,
+  ctable.round.digits = 1,
   descr.stats = "all",
   descr.transpose = FALSE,
   descr.silent = FALSE,
@@ -113,6 +114,8 @@ whole data frame as main argument. Defaults to \code{25}.}
 
 \item{ctable.totals}{Logical. Corresponds to the \code{totals} parameter of
 \code{\link{ctable}}. \code{TRUE} by default.}
+
+\item{ctable.round.digits}{Numeric. Defaults to \code{1}.}
 
 \item{descr.stats}{Character. Corresponds to the \code{stats} parameter of
 \code{\link{descr}}. Defaults to \dQuote{all}.}

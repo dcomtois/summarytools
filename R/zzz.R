@@ -48,6 +48,7 @@ utils::globalVariables(c("."))
                  "freq.silent"            = FALSE,
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
+                 "ctable.round.digits"    = 1,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
                  "descr.silent"           = FALSE,
