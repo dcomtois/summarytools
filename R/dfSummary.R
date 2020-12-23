@@ -7,28 +7,27 @@
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display. Defaults to
 #'   \code{1}.
-#' @param varnumbers Logical. Should the first column contain variable number?
-#'   Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
+#' @param varnumbers Logical. Show variable numbers in the first column.
+#'   Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 #'   functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
 #'   column is only shown if at least one column has a defined label. This
-#'   option can also be set globally; see \code{\link{st_options}}, option
+#'   option can also be set globally qirh \code{\link{st_options}}, option
 #'   \dQuote{dfSummary.labels.col}.
 #' @param valid.col Logical. Include column indicating count and proportion of
 #'   valid (non-missing) values. \code{TRUE} by default, but can be set
-#'   globally; see \code{\link{st_options}}, option
-#'   \dQuote{dfSummary.valid.col}.
+#'   globally with \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.
 #' @param na.col Logical. Include column indicating count and proportion of
-#'   missing (NA) values. \code{TRUE} by default, but can be set globally; see
+#'   missing (NA) values. \code{TRUE} by default, but can be set globally with
 #'   \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
 #' @param graph.col Logical. Display barplots / histograms column in \emph{html}
-#'   reports. \code{TRUE} by default, but can be set globally; see
+#'   reports. \code{TRUE} by default, but can be set globally with
 #'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.
 #' @param graph.magnif Numeric. Magnification factor, useful if the graphs show
 #'   up too large (then use a value < 1) or too small (use a value > 1). Must be
-#'   positive. Default to \code{1}. Can be set globally; see
+#'   positive. Default to \code{1}. Can be set globally with
 #'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.magnif}.
 #' @param style Style to be used by \code{\link[pander]{pander}} when rendering
 #'   output table. Defaults to \dQuote{multiline}. The only other valid option
@@ -68,6 +67,10 @@
 #' @param tmp.img.dir Character. Directory used to store temporary images when
 #'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 #'   `style = "grid"`. See \emph{Details}.
+#' @param keep.grp.vars Logical. When using \code{\link[dplyr]{group_by}},
+#'   include rows corresponding to grouping variable(s) from output. \code{FALSE}
+#'   by default. When \code{FALSE}, variable numbers will be adjusted to reflect
+#'   the ordering in the full data frame.
 #' @param silent Logical. Hide console messages. \code{FALSE} by default. To
 #'   change this value globally, see \code{\link{st_options}}.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
@@ -91,7 +94,9 @@
 #'       of distinct values if their number is not greater than
 #'       \code{max.distinct.values}.}
 #'     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-#'       barplot for factors and character variables.} \item{Valid}{Number and
+#'       barplot for factors and character variables.} 
+#'     \item{Graph}{An html encoded graph, either barplot or histogram.}
+#'     \item{Valid}{Number and
 #'       proportion of valid values.}
 #'     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 #'
@@ -174,6 +179,7 @@ dfSummary <- function(x,
                       split.cells      = 40,
                       split.tables     = Inf,
                       tmp.img.dir      = st_options('tmp.img.dir'),
+                      keep.grp.vars    = FALSE,
                       silent           = st_options('dfSummary.silent'),
                       ...) {
 
@@ -198,8 +204,13 @@ dfSummary <- function(x,
     outlist <- list()
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
     g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
+    
+    # Extract grouping variable names
+    # g_vars  <- setdiff(names(attr(x, "group")), ".rows")
+    # g_vars_pos <- which(colnames(x) %in% g_vars)
+    
     for (g in seq_along(g_ks)) {
-      outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]], ]),
+      outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]],]),
                                 round.digits        = round.digits,
                                 varnumbers          = varnumbers,
                                 labels.col          = labels.col,
@@ -219,6 +230,7 @@ dfSummary <- function(x,
                                 split.cells         = split.cells,
                                 split.tables        = split.tables,
                                 tmp.img.dir         = tmp.img.dir,
+                                keep.grp.vars       = keep.grp.vars,
                                 silent              = silent,
                                 ...                 = ...)
 
@@ -245,6 +257,8 @@ dfSummary <- function(x,
       attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
       attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+      attr(outlist[[g]], "format_info")$keep.grp.vars <- keep.grp.vars
+      
     }
     class(outlist) <- "stby"
     return(outlist)
@@ -519,13 +533,15 @@ dfSummary <- function(x,
          Duplicates       = n_tot - n_distinct(x),
          Group            = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_group, NA),
+         by_var           = unlist(ifelse("by_var" %in% names(parse_info),
+                                          parse_info["by_var"], NA)),
          by_first         = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_first, NA),
          by_last          = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_last , NA))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
-
+  
   format_info <- list(style          = style,
                       round.digits   = round.digits,
                       plain.ascii    = plain.ascii,
@@ -535,8 +551,10 @@ dfSummary <- function(x,
                       labels.col     = labels.col,
                       split.cells    = split.cells,
                       split.tables   = split.tables,
-                      col.widths     = col.widths)
-
+                      col.widths     = col.widths,
+                      keep.grp.vars  = ifelse("by_var" %in% names(parse_info),
+                                              keep.grp.vars, NA))
+  
   attr(output, "format_info") <- format_info[!is.na(format_info)]
 
   attr(output, "user_fmt") <- list(... = ...)
@@ -1485,7 +1503,7 @@ detect_barcode <- function(x) {
                  "13" = "EAN-13",
                  "14" = "ITF-14")
 
-  x_pad      <- paste0(strrep("0", 14-len), x_samp)
+  x_pad      <- paste0(strrep("0", 14 - len), x_samp)
   vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
   weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
   sums       <- mapply(weighted, FUN = sum)

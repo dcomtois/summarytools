@@ -25,6 +25,7 @@ dfSummary(
   split.cells = 40,
   split.tables = Inf,
   tmp.img.dir = st_options("tmp.img.dir"),
+  keep.grp.vars = FALSE,
   silent = st_options("dfSummary.silent"),
   ...
 )
@@ -35,33 +36,32 @@ dfSummary(
 \item{round.digits}{Number of significant digits to display. Defaults to
 \code{1}.}
 
-\item{varnumbers}{Logical. Should the first column contain variable number?
-Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
+\item{varnumbers}{Logical. Show variable numbers in the first column.
+Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 option \dQuote{dfSummary.varnumbers}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
 column is only shown if at least one column has a defined label. This
-option can also be set globally; see \code{\link{st_options}}, option
+option can also be set globally qirh \code{\link{st_options}}, option
 \dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
 valid (non-missing) values. \code{TRUE} by default, but can be set
-globally; see \code{\link{st_options}}, option
-\dQuote{dfSummary.valid.col}.}
+globally with \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.}
 
 \item{na.col}{Logical. Include column indicating count and proportion of
-missing (NA) values. \code{TRUE} by default, but can be set globally; see
+missing (NA) values. \code{TRUE} by default, but can be set globally with
 \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.}
 
 \item{graph.col}{Logical. Display barplots / histograms column in \emph{html}
-reports. \code{TRUE} by default, but can be set globally; see
+reports. \code{TRUE} by default, but can be set globally with
 \code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.}
 
 \item{graph.magnif}{Numeric. Magnification factor, useful if the graphs show
 up too large (then use a value < 1) or too small (use a value > 1). Must be
-positive. Default to \code{1}. Can be set globally; see
+positive. Default to \code{1}. Can be set globally with
 \code{\link{st_options}}, option \dQuote{dfSummary.graph.magnif}.}
 
 \item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
@@ -114,6 +114,11 @@ of a table. Keeping the default value (\code{Inf}) is recommended.}
 rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 `style = "grid"`. See \emph{Details}.}
 
+\item{keep.grp.vars}{Logical. When using \code{\link[dplyr]{group_by}},
+include rows corresponding to grouping variable(s) from output. \code{FALSE}
+by default. When \code{FALSE}, variable numbers will be adjusted to reflect
+the ordering in the full data frame.}
+
 \item{silent}{Logical. Hide console messages. \code{FALSE} by default. To
 change this value globally, see \code{\link{st_options}}.}
 
@@ -139,7 +144,9 @@ A data frame with additional class \code{summarytools} containing as
       of distinct values if their number is not greater than
       \code{max.distinct.values}.}
     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-      barplot for factors and character variables.} \item{Valid}{Number and
+      barplot for factors and character variables.} 
+    \item{Graph}{An html encoded graph, either barplot or histogram.}
+    \item{Valid}{Number and
       proportion of valid values.}
     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 }
