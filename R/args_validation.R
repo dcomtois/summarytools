@@ -210,7 +210,7 @@ check_args <- function(mc, dotArgs) {
     
     if ("prop" %in% names(mc)) {
       prop <- tolower(substr(pf$prop, 1, 1))
-      if(!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {
+      if (!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {
         errmsg %+=% "'prop' must be one of 't', 'r', 'c', or 'n'"
       }
       if (nchar(prop > 1)) {

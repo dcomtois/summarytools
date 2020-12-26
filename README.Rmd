@@ -570,21 +570,21 @@ The following options can be set with `st_options()`:
 | --------------------------: | --------: | :---------------------------------------------- |
 | style <sup>(1)</sup>          | “simple”  | Set to “rmarkdown” in .Rmd documents            |
 | plain.ascii                 |    TRUE   | Set to FALSE in .Rmd documents                  |
-| round.digits                |       2   | Number of decimals to show                      |
+| round.digits <sup>(2)</sup> |       2   | Number of decimals to show                      |
 | headings                    |    TRUE   | Formerly “omit.headings”                        |
 | footnote                    | “default” | Customize or set to NA to omit                  |
 | display.labels              |    TRUE   | Show variable / data frame labels in headings   |
-| bootstrap.css <sup>(2)</sup> |    TRUE   | Include Bootstrap 4 CSS in *html* output files  |
+| bootstrap.css <sup>(3)</sup> |    TRUE   | Include Bootstrap 4 CSS in *html* output files  |
 | custom.css                  |      NA   | Path to your own CSS file                       |
 | escape.pipe                 |   FALSE   | Useful for some Pandoc conversions              |
-| char.split <sup>(3)</sup>   |      12   | Threshold for line-wrapping in column headings  |
+| char.split <sup>(4)</sup>   |      12   | Threshold for line-wrapping in column headings  |
 | subtitle.emphasis           |    TRUE   | Controls headings formatting                    |
 | lang                        |   “en”    | Language (always 2-letter, lowercase)           |
 
-1. Applies to `freq()`, `ctable()` and `descr()`; `dfSummary()` has its own 
-  style option (see section 7.2)
-2. Set to FALSE in Shiny apps  
-3. Affects only *html* outputs for `descr()` and `ctable()`  
+1. Does not apply to `dfSummary()`, which has its own style option (see section 7.2)  
+2. Does not apply to `ctable()`, which has its own `round.digits` option (see section 7.2)  
+3. Set to FALSE in _Shiny_ apps  
+4. Affects only *html* outputs for `descr()` and `ctable()`  
 
 ## 7.2 Function-Specific Options
 
@@ -597,6 +597,7 @@ The following options can be set with `st_options()`:
 | freq.silent            |     FALSE   | Hide console messages                    |
 | ctable.prop            |       “r”   | Display **r**ow proportions by default   |
 | ctable.totals          |      TRUE   | Show marginal totals                     |
+| ctable.round.digits    |         1   | Number of decimals to show in `ctable()` |
 | descr.stats            |      “all”  | “fivenum”, “common” or vector of stats   |
 | descr.transpose        |     FALSE   | Display stats in columns instead of rows |
 | descr.silent           |     FALSE   | Hide console messages                    |
@@ -659,7 +660,7 @@ function arguments also apply, even though they are not reproduced here.
 | split.tables <sup>(*)</sup> |   x    |   x    |   x   |     x     |
 | caption <sup>(*)</sup>      |   x    |   x    |   x   |     x     |
 
-(*) These are **pander options**
+(*) _pander_ options
 
 ## 8.2 Overriding Heading Contents
 

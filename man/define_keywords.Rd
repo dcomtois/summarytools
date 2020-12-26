@@ -7,22 +7,22 @@
 define_keywords(...)
 }
 \arguments{
-\item{\dots}{one or more pairs of keywords and their new values see 
-\emph{Details}.}
+\item{\dots}{One or more pairs of keywords and their new values see 
+\emph{Details} for the complete list of existing keywords.}
 }
 \description{
-As an alternative to \code{\link{use_custom_lang}}, this allows temporarily
-modifying the keywords used in the outputs.
+As an alternative to \code{\link{use_custom_lang}}, this function allows
+temporarily modifying the pre-defined terms in the outputs.
 }
 \details{
-On systems with GUI capabilities, a window will pop-up, allowing
-the modification of the \emph{custom} column. The changes will be
-active as long as the package is loaded. A dialog will show up prompting
-the user to save the modified set of keywords in a custom csv language file.
+On systems with GUI capabilities, a window will pop-up when calling 
+\code{define_keywords()} without any parameters, allowing the modification 
+of the \emph{custom} column. The changes will be active as long as the
+package is loaded. When the edit window is closed, a dialog will pop up,
+prompting the user to save the modified set of keywords in a custom csv
+language file that can later be used with \code{\link{use_custom_lang}}.
 
-Here is the full list of modifiable keywords. Check out the 
-\emph{language_template.csv} file in the package's \emph{includes} 
-  directory.
+Here is the full list of modifiable keywords.
   
 \describe{
   \item{title.freq}{main heading for \code{freq()}}
@@ -103,9 +103,16 @@ Here is the full list of modifiable keywords. Check out the
   \item{date.fmt}{footnote - date format (see \code{\link{strptime}})}
 }
 }
+\note{
+Setting a keyword starting with \dQuote{title.} to NA or to empty
+string causes the main title to disappear altogether, which might be
+desired in some circumstances (when generating a table of contents, for
+instance).
+}
 \examples{
 \dontrun{
 define_keywords(n = "Nb. Obs.")
 } 
+
 }
 \keyword{utilities}

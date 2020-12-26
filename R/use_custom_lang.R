@@ -53,5 +53,5 @@ use_custom_lang <- function(file) {
   
   .st_env$custom_lang <- tr
   st_options(lang = "custom")
-  message("Operation successful")
+  # message("Operation successful")
 }
