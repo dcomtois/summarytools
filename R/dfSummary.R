@@ -1420,8 +1420,8 @@ txthist <- function(data) {
 
   # make counts top at 10
   counts <- matrix(round(counts / max(counts) * 10), nrow = 1, byrow = TRUE)
-  graph <- matrix(data = "", nrow = 6, ncol = length(counts))
-  for (ro in 6:1) {
+  graph <- matrix(data = "", nrow = 5, ncol = length(counts))
+  for (ro in 5:1) {
     for (co in seq_along(counts)) {
       if (counts[co] > 1) {
         graph[ro,co] <- ": "
