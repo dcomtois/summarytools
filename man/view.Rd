@@ -75,6 +75,10 @@ Future versions might provide alternate collapsing options.}
 and \code{file} argument is supplied if the intent is to generate a text
 file that can be converted to other formats using \emph{Pandoc}. Can be
 set globally with \code{\link{st_options}}.}
+
+\item{...}{Additional arguments used to override attributes stored in the
+object, or to change formatting via \code{\link[base]{format}} or 
+\code{\link[pander]{pander}}. See \emph{Details}.}
 }
 \description{
 Visualize results in RStudio's Viewer or in Web Browser

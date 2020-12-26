@@ -513,8 +513,11 @@ There is no direct way to create a *PDF* file with **summarytools**. One option 
 to generate an *html* file and convert it to *PDF* using [Pandoc](https://pandoc.org)
 or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives better results
 than Pandoc with `dfSummary()` output). Another option is to create an *Rmd* document
-using *PDF* as the output format, but with a caveat: displaying graphs with `dfSummary()`
-will cause vertical misalignment (we hope to resolve this issue in a future version).
+using *PDF* as the output format, but with a caveat: displaying \emph{png} graphs
+with `dfSummary()` will cause vertical misalignment. We certainly hope to be able
+resolve this issue in a future version; in the meantime, using the text graphs
+is still a viable option, if you don't mind a little bit of \emph{ascii art}! To
+achieve this, simply omit the \emph{tmp.img.dir} argument.
 
 ## 6.1 Appending Output Files
 

@@ -60,13 +60,14 @@
 #'   file that can be converted to other formats using \emph{Pandoc}. Can be
 #'   set globally with \code{\link{st_options}}.
 #' @param \dots Additional arguments used to override attributes stored in the
-#'   object, or to change formatting via \link[base]{format}} or 
-#'   \link[pander]{pander}}. See \emph{Details}.
+#'   object, or to change formatting via \code{\link[base]{format}} or 
+#'   \code{\link[pander]{pander}}. See \emph{Details}.
 #'
 #' @return \code{NULL} when \code{method="pander"}; A file path returned
 #'   invisibly when \code{method="viewer"} or \code{"browser"}. In the
-#'   latter case, the file path is also passed to \link[base]{shell.exec}}, 
-#'   causing the document to be opened in default Web browser.
+#'   latter case, the file path is also passed to 
+#'   \code{\link[base]{shell.exec}}, causing the document to be opened in
+#'   default Web browser.
 #'
 #' @details
 #'   \code{Ascii} and \emph{markdown} tables are generated using

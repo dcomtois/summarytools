@@ -72,9 +72,17 @@ Future versions might provide alternate collapsing options.}
 and \code{file} argument is supplied if the intent is to generate a text
 file that can be converted to other formats using \emph{Pandoc}. Can be
 set globally with \code{\link{st_options}}.}
+
+\item{\dots}{Additional arguments used to override attributes stored in the
+object, or to change formatting via \code{\link[base]{format}} or 
+\code{\link[pander]{pander}}. See \emph{Details}.}
 }
 \value{
-
+\code{NULL} when \code{method="pander"}; A file path returned
+  invisibly when \code{method="viewer"} or \code{"browser"}. In the
+  latter case, the file path is also passed to 
+  \code{\link[base]{shell.exec}}, causing the document to be opened in
+  default Web browser.
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in
