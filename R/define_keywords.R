@@ -163,6 +163,9 @@ define_keywords <- function(...) {
         stop("'", it, "' is not a recognized keyword; see ?define_keywords ",
              "for a list of valid keywords")
       }
+      if (inherits(mc[[it]], "call")) {
+        mc[[it]] <- eval(mc[[it]], parent.frame())
+      } 
       tr$custom[tr$item == it] <- mc[[it]]
     }
   }
@@ -184,7 +187,7 @@ define_keywords <- function(...) {
         tcltk_error <- TRUE
       } else {
         if (resp == "yes") {
-          while(!filename_ok) {
+          while (!filename_ok) {
             filename <- tclvalue(
               tkgetSaveFile(initialfile = "custom_lang.csv", 
                             initialdir = "~",
