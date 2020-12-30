@@ -1,38 +1,38 @@
 #' Data frame Summary
 #'
-#' Summary of a data frame consisting of: variable names, labels if any, factor
-#' levels, frequencies and/or numerical summary statistics, and valid/missing
-#' observation counts.
+#' Summary of a data frame consisting of: variable names and types, labels if
+#' any, factor levels, frequencies and/or numerical summary statistics, 
+#' barplots/histograms, and valid/missing observation counts and proportions.
 #'
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}.
+#'   \code{1}. Does not affect proportions, which always show \code{1} digit. 
 #' @param varnumbers Logical. Show variable numbers in the first column.
 #'   Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-#'   functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
-#'   column is only shown if at least one column has a defined label. This
-#'   option can also be set globally qirh \code{\link{st_options}}, option
+#'   functions, among others) will be displayed. \code{TRUE} by default, but
+#'   the \emph{labels} column is only shown if a label exists for at least one
+#'   column. Can be set globally with \code{\link{st_options}}, option
 #'   \dQuote{dfSummary.labels.col}.
 #' @param valid.col Logical. Include column indicating count and proportion of
-#'   valid (non-missing) values. \code{TRUE} by default, but can be set
+#'   valid (non-missing) values. \code{TRUE} by default; can be set
 #'   globally with \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.
 #' @param na.col Logical. Include column indicating count and proportion of
-#'   missing (NA) values. \code{TRUE} by default, but can be set globally with
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
-#' @param graph.col Logical. Display barplots / histograms column in \emph{html}
-#'   reports. \code{TRUE} by default, but can be set globally with
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.
-#' @param graph.magnif Numeric. Magnification factor, useful if the graphs show
-#'   up too large (then use a value < 1) or too small (use a value > 1). Must be
-#'   positive. Default to \code{1}. Can be set globally with
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.magnif}.
-#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table. Defaults to \dQuote{multiline}. The only other valid option
-#'   is \dQuote{grid}. Style \dQuote{simple} is not supported for this
-#'   particular function, and \dQuote{rmarkdown} will fallback to
+#'   missing (\code{NA}) values. \code{TRUE} by default; can be set globally
+#'   with \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
+#' @param graph.col Logical. Display barplots/histograms column. \code{TRUE}
+#'   by default; can be set globally with \code{\link{st_options}}, 
+#'   option \dQuote{dfSummary.graph.col}.
+#' @param graph.magnif Numeric. Magnification factor for graphs column. Useful
+#'   if the graphs show up too large (then use a value such as .75) or too small
+#'   (use a value such as \code{1.25}). Must be positive. Defaults to \code{1}.
+#'   Can be set globally with \code{\link{st_options}}, option
+#'   \dQuote{dfSummary.graph.magnif}.
+#' @param style Character. Argument used by \code{\link[pander]{pander}}.
+#'   Defaults to \dQuote{multiline}. The only other valid option
+#'   is \dQuote{grid}. Style \dQuote{rmarkdown} will fallback to
 #'   \dQuote{multiline}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing to
@@ -1420,8 +1420,8 @@ txthist <- function(data) {
 
   # make counts top at 10
   counts <- matrix(round(counts / max(counts) * 10), nrow = 1, byrow = TRUE)
-  graph <- matrix(data = "", nrow = 6, ncol = length(counts))
-  for (ro in 6:1) {
+  graph <- matrix(data = "", nrow = 5, ncol = length(counts))
+  for (ro in 5:1) {
     for (co in seq_along(counts)) {
       if (counts[co] > 1) {
         graph[ro,co] <- ": "

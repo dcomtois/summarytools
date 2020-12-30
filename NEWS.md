@@ -1,9 +1,17 @@
-# summarytools 0.9.8 (2020-12-10)
+# summarytools 0.9.9 (2020-12-10)
 
  - In `dfSummary()`:
-   + Grouping variable(s) now excluded by default from results when using
-     `stby()` or `dpyr::group_by()`. To keep them, use `keep.grp.vars = TRUE`.
-   
+   + Grouping variable(s) are now excluded from results when using
+     `stby()` or `dpyr::group_by()`. Use `keep.grp.vars = TRUE` to replicate
+     previous versions' behavior.
+   + Removed an extra (empty) line in text graphs
+ - The `ctable.round.digits` was added to the list of `st_options()`; there
+   is already a global `round.digits` option, but since it uses `2` as default
+   and that `1` is a more sensible value for `ctable()`, it seemed appropriate
+   to make a distinct option.
+- `print.summarytools()` now removes titles from headings when keyword 
+  "title.function" is set to NA or empty string. 
+ - Documentation for most functions has been reviewed and improved.
 
 # summarytools 0.9.8 (2020-12-10)
 

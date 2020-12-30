@@ -12,109 +12,112 @@
    collapse = 0, escape.pipe = st_options("escape.pipe"), \dots)
 }
 \arguments{
-\item{x}{A summarytools object that was generated with \code{\link{freq}},
-\code{\link{descr}}, \code{\link{ctable}} or \code{\link{dfSummary}}.}
+\item{x}{A \emph{summarytools} object, created by one of the four core
+functions (\code{\link{freq}}, \code{\link{descr}}, \code{\link{ctable}},
+or \code{\link{dfSummary}}).}
 
-\item{method}{One of \dQuote{pander}, \dQuote{viewer}, \dQuote{browser}, or
-\dQuote{render}. For \code{print()}, default is \dQuote{pander}; for
-\code{view()}, default is \dQuote{viewer}. If \dQuote{viewer} is used
-outside \emph{RStudio}, \dQuote{browser} will be used instead. Use
-\dQuote{render} if function is called from an Rmd document.}
+\item{method}{Character. One of \dQuote{pander}, \dQuote{viewer}, 
+\dQuote{browser}, or \dQuote{render}. Default value for the \code{print()}
+method is \dQuote{pander}; for \code{view()}/\code{stview()}, default is
+\dQuote{viewer} if session is running in \emph{RStudio}, \dQuote{browser}
+otherwise. The main use for \dQuote{render} is in Rmarkdown documents.}
 
-\item{file}{File name to write output to. Defaults to \dQuote{}.}
+\item{file}{Character. File name to write output to. Defaults to \dQuote{}.}
 
-\item{append}{Logical. When \code{file} argument is supplied, this indicates
-whether to append output to existing file. \code{FALSE} by default.}
+\item{append}{Logical. Append output to existing file (specified using the
+\emph{file} argument). \code{FALSE} by default.}
 
-\item{report.title}{For \emph{html} reports, this goes into the
-\code{<title>} tag. Defaults to \code{NA}, in which case \code{<title>}
-will be generic.}
+\item{report.title}{Character. For \emph{html} reports, this goes into the
+\code{<title>} tag. When left to \code{NA} (default), the first line of the
+heading section is used (\emph{e.g.}: \dQuote{Data Frame Summary}).}
 
-\item{table.classes}{Character.  Additional classes to assign to output
-tables. All \emph{Bootstrap css} classes can be used. It also allows
-user-defined classes (see custom.css parameter). See \emph{details}
-section. \code{NA} by default.}
+\item{table.classes}{Character. Additional \emph{html} classes to assign to
+output tables. \emph{Bootstrap css} classes can be used. User-defined
+classes (see the \emph{custom.css} argument) are also specified here. See
+\emph{details} section. \code{NA} by default.}
 
-\item{bootstrap.css}{Logical. Set to \code{FALSE} to omit
-\emph{Bootstrap css}. \code{TRUE} by default. To change this default value
-globally, see \code{\link{st_options}}.}
-
-\item{custom.css}{Path to a user-defined \emph{.css} file. Classes defined in
-this file can be used in the \code{table.classes} parameter. \code{NA} by
-default. To change this default value globally, see
+\item{bootstrap.css}{Logical. When generating an \emph{html} document, 
+include the \dQuote{\emph{includes/stylesheets/bootstrap.min.css"}} file
+content inside a \code{<style type="text/css">} tag in the document's
+\code{<head>}. \code{TRUE} by default. Can be set globally with 
 \code{\link{st_options}}.}
 
-\item{silent}{Hide console messages (such as ignored variables or \code{NaN}
-to \code{NA} transformations).}
+\item{custom.css}{Character. Path to a custom \emph{.css} file. Classes
+defined in this must also appear in the \code{table.classes} parameter
+in order to be applied to the table(s). Can be set globally with
+\code{\link{st_options}}. \code{NA} by default.}
 
-\item{footnote}{footnote in \emph{html} output. When set to \dQuote{default},
-this is the package name and version, R version, and current date). Has no
-effect when \code{method} is \dQuote{pander}. Set to \dQuote{default},
-provide your own text, or set to \code{NA} to omit. To change this default
-value globally, see \code{\link{st_options}}.}
+\item{silent}{Logical. Set to \code{TRUE} to hide console messages 
+(\emph{e.g.}: ignored variables or \code{NaN} to \code{NA}
+transformations). \code{FALSE} by default.}
 
-\item{max.tbl.height}{Maximum table height (in pixels) allowed in rendered
-\code{dfSummary()} tables. When this argument is used, results will show up
-in a \code{<div>} with the specified height and a scroll bar. Intended
-to be used in \emph{Rmd} documents. Has no effect when \code{method} is
-\dQuote{pander}. \code{Inf} by default.}
+\item{footnote}{Character. Text to display just after \emph{html} output
+tables. The default value (\dQuote{\emph{default}}) produces a two-line
+footnote indicating the package's name and version, the R version, and
+the current date. Has no effect on \emph{ascii} or \emph{markdown}
+content. Can contain standard \emph{html} tags. Set to \code{NA} to omit.
+Can be set globally with \code{\link{st_options}}.}
+
+\item{max.tbl.height}{Numeric. Maximum table height \emph{in pixels} allowed
+in rendered \code{dfSummary()} tables. When this argument is used, results 
+will show up in a \code{<div>} with the specified height and a scroll bar.
+Intended to be used in \emph{Rmd} documents with \code{method = "render"}.
+\code{Inf} by default.}
 
 \item{collapse}{Numeric. \code{0} by default. Set to \code{1} to make
 \code{freq()} sections collapsible (when clicking on the variable name).
 Future versions might provide alternate collapsing options.}
 
-\item{escape.pipe}{Logical. Set to \code{TRUE} when using \code{style='grid'}
+\item{escape.pipe}{Logical. Set to \code{TRUE} when \code{style="grid"}
 and \code{file} argument is supplied if the intent is to generate a text
-file that can be converted to other formats using \emph{Pandoc}. To change
-this default value globally, see \code{\link{st_options}}.}
+file that can be converted to other formats using \emph{Pandoc}. Can be
+set globally with \code{\link{st_options}}.}
 
-\item{\dots}{Additional arguments can be used to override parameters stored
-as attributes in the object being printed. See \emph{Details} section.}
+\item{\dots}{Additional arguments used to override attributes stored in the
+object, or to change formatting via \code{\link[base]{format}} or 
+\code{\link[pander]{pander}}. See \emph{Details}.}
 }
 \value{
-\code{NULL} when \code{method="pander"}; a file path (returned
-  invisibly) when \code{method="viewer"} or \code{method="browser"}. In the
-  latter case, the file path is also passed to \code{shell.exec} so the
-  document is opened in default Web Browser.
+\code{NULL} when \code{method="pander"}; A file path returned
+  invisibly when \code{method="viewer"} or \code{"browser"}. In the
+  latter case, the file path is also passed to 
+  \code{\link[base]{shell.exec}}, causing the document to be opened in
+  default Web browser.
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in
  \emph{RStudio}'s Viewer, or write content to file.
 }
 \details{
-Plain ascii and \emph{rmarkdown} tables are generated via
-  \code{\link[pander]{pander}}. See \emph{References} section
-  for a list of all available \emph{pander} options.
+\code{Ascii} and \emph{markdown} tables are generated using
+  \code{\link[pander]{pander}}. 
 
-The following additional arguments can be used to override
-  formatting attributes stored in the object to be printed. Refer to the
-  function's documentation for details on these arguments.
+The following arguments can be used to override formatting attributes stored
+in the object:
    \itemize{
      \item \code{style}
-     \item \code{round.digits} (except for \code{\link{dfSummary}} objects)
+     \item \code{round.digits} (except for \emph{dfSummary} objects)
      \item \code{plain.ascii}
      \item \code{justify}
+     \item \code{split.tables}
      \item \code{headings}
      \item \code{display.labels}
-     \item \code{varnumbers}    (\code{\link{dfSummary}} objects)
-     \item \code{labels.col}    (\code{\link{dfSummary}} objects)
-     \item \code{graph.col}     (\code{\link{dfSummary}} objects)
-     \item \code{valid.col}     (\code{\link{dfSummary}} objects)
-     \item \code{na.col}        (\code{\link{dfSummary}} objects)
-     \item \code{col.widths}    (\code{\link{dfSummary}} objects)
-     \item \code{keep.grp.vars} (\code{\link{dfSummary}} objects)
-     \item \code{split.tables}
-     \item \code{report.nas}    (\code{\link{freq}} objects)
-     \item \code{display.type}  (\code{\link{freq}} objects)
-     \item \code{missing}       (\code{\link{freq}} objects)
-     \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}}
-     objects)
-     \item \code{caption}       (\code{\link{freq}} and \code{\link{ctable}}
-     objects)
+     \item \code{varnumbers}    (\code{\link{dfSummary}} objects only)
+     \item \code{labels.col}    (\code{\link{dfSummary}} objects only)
+     \item \code{graph.col}     (\code{\link{dfSummary}} objects only)
+     \item \code{valid.col}     (\code{\link{dfSummary}} objects only)
+     \item \code{na.col}        (\code{\link{dfSummary}} objects only)
+     \item \code{col.widths}    (\code{\link{dfSummary}} objects only)
+     \item \code{keep.grp.vars} (\code{\link{dfSummary}} objects only)
+     \item \code{report.nas}    (\code{\link{freq}} objects only)
+     \item \code{display.type}  (\code{\link{freq}} objects only)
+     \item \code{missing}       (\code{\link{freq}} objects only)
+     \item \code{totals}        (\code{\link{freq}} and \code{\link{ctable}} objects)
+     \item \code{caption}       (\code{\link{freq}} and \code{\link{ctable}} objects)
    }
 
-The following additional arguments can be used to override
-  heading elements to be printed:
+The following arguments can be used to override heading elements:
+
    \itemize{
      \item \code{Data.frame}
      \item \code{Data.frame.label}
@@ -122,10 +125,10 @@ The following additional arguments can be used to override
      \item \code{Variable.label}
      \item \code{Group}
      \item \code{date}
-     \item \code{Weights} (\code{\link{freq}} & \code{\link{descr}} objects)
-     \item \code{Data.type} (\code{\link{freq}} objects)
-     \item \code{Row.variable} (\code{\link{ctable}} objects)
-     \item \code{Col.variable} (\code{\link{ctable}} objects)
+     \item \code{Weights}   (\code{\link{freq}} & \code{\link{descr}} objects)
+     \item \code{Data.type} (\code{\link{freq}} objects only)
+     \item \code{Row.variable} (\code{\link{ctable}} objects only)
+     \item \code{Col.variable} (\code{\link{ctable}} objects only)
    }
 }
 \examples{
@@ -141,8 +144,8 @@ print(descr(exams), headings = FALSE)
 \references{
 \href{https://rstudio.com/}{RStudio}
 \href{https://github.com/dcomtois/summarytools/}{Summarytools on GitHub}
-\href{http://rapporter.github.io/pander/#general-options}{List of pander options on GitHub}
-\href{https://getbootstrap.com/}{Bootstrap Cascading Stylesheets}
+\href{http://rapporter.github.io/pander/#general-options/}{List of pander options}
+\href{https://getbootstrap.com/docs/4.3/getting-started/introduction/}{Bootstrap Cascading Stylesheets}
 }
 \seealso{
 \code{\link[pander]{pander}}
