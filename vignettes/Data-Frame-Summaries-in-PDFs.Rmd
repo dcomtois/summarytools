@@ -14,13 +14,17 @@ papersize: letter
 knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = TRUE)
 ```
 
-Yes, at last it's settled. I put this off until now because I thought it would require a *Pandoc Lua filter*, and I was too busy with other things. But as I learned a bit more about \LaTeX, I figured a \`simple' `\renewcommand`, combined with a few other hacks, should do the trick. And it did. It does.
+Yes, at last. It's not perfect but it's workable. I put this off for a long
+time, as I thought it would absolutely require a *Pandoc Lua filter*, and I was
+just too busy with other things. As I learn a bit more about \LaTeX, I now
+realize that a "simple" `\renewcommand` does the trick.
 
 So here it is, starting with the *YAML* section.
 
 ## I. YAML Header
 
-There is a *tex* file to include. For the *xelatex* engine, it's not mandatory, but there are several advantages to it, so I use it systematically.
+There is a *tex* file to include. For the *xelatex* engine, it's not mandatory,
+but there are several advantages to it, and I now use it systematically.
 
       ---
       title: "Data Frame Summaries in PDF's"
@@ -33,7 +37,7 @@ There is a *tex* file to include. For the *xelatex* engine, it's not mandatory, 
 
 ## II. Included Preamble *Tex* File
 
-This is the \LaTeX code in *fig-align.tex*:
+This is the \LaTeX  content that you'll need to copy in your own *fig-align.tex*:
 
       \usepackage{graphicx}
       \usepackage[export]{adjustbox}
@@ -61,4 +65,8 @@ dfSummary(tobacco)
 
 ### Closing Remarks
 
-Since we redefined the command \`"\\includegraphics"\`, all images included using "\`!\\[\\](some-image.png)\`" will be impacted. In some cases this will likely be problematic. Eventually we will find a more robust solution without such undesired side-effects. If you are well versed in \LaTeX and think you could solve this, by all means get in touch with me.
+Since we redefined the command `includegraphics`, all images included using
+`[](some-image.png)` will be impacted. In some cases this will likely be
+problematic. Eventually we will find a more robust solution without such
+undesired side-effects. If you are well versed in \LaTeX  and think you can
+solve this, by all means get in touch with me.
