@@ -22,6 +22,7 @@ type                 ,heading label (freq)                                      
 logical              ,heading value for type (freq)                                 ,Mantıksal
 character            ,heading value for type (freq)                                 ,Karakter
 numeric              ,heading value for type (freq)                                 ,Sayısal
+integer               ,heading value for type (freq)                                ,Tamsayı
 factor               ,heading value for type (freq)                                 ,Faktör
 factor.ordered       ,heading value for type (freq)                                 ,Sıralı Faktör
 date                 ,heading value for type (freq)                                 ,Tarih

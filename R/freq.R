@@ -531,10 +531,13 @@ freq <- function(x,
       Data.type <- trs("logical")
     } else if ("character" %in% class(x)) {
       Data.type <- trs("character")
+    } else if ("integer" %in% class(x)) {
+      Data.type <- trs("integer")
     } else if ("numeric" %in% class(x)) {
       Data.type <- trs("numeric")
     } else {
-      Data.type <- NA
+      Data.type <- ifelse(mode(x) %in% rownames(.keywords_context),
+                          trs(mode(x)), mode(x))
     }
     
     data_info <-
