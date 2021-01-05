@@ -22,6 +22,7 @@ type                  ,heading label (freq)                                     
 logical               ,heading value for type (freq)                                 ,булевая переменная
 character             ,heading value for type (freq)                                 ,символ
 numeric               ,heading value for type (freq)                                 ,число
+integer               ,heading value for type (freq)                                 ,целое число
 factor                ,heading value for type (freq)                                 ,склейка
 factor.ordered        ,heading value for type (freq)                                 ,упорядоченная склейка
 date                  ,heading value for type (freq)                                 ,дата

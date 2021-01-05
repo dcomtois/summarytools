@@ -22,6 +22,7 @@ type                  ,heading label (freq)                                     
 logical               ,heading value for type (freq)                                 ,Lógico
 character             ,heading value for type (freq)                                 ,Caractere
 numeric               ,heading value for type (freq)                                 ,Numérico
+integer               ,heading value for type (freq)                                 ,Inteiro
 factor                ,heading value for type (freq)                                 ,Fator
 factor.ordered        ,heading value for type (freq)                                 ,Fator ordenado
 date                  ,heading value for type (freq)                                 ,Data
