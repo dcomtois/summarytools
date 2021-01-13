@@ -397,11 +397,16 @@ ctable <- function(x,
     Data.type.x <- trs("logical")
   } else if ("character" %in% class(x)) {
     Data.type.x <- trs("character")
+  } else if ("integer" %in% class(x)) {
+    Data.type.x <- trs("integer")
   } else if ("numeric" %in% class(x)) {
     Data.type.x <- trs("numeric")
   } else {
-    Data.type.x <- NA
-  }
+    Data.type.x <- ifelse(mode(x) %in% rownames(.keywords_context),
+                          trs(mode(x)), mode(x))
+  }  
+  
+  
 
   # Determine data "type" for y, in a non-strict way
   if (all(c("ordered", "factor") %in% class(y))) {
@@ -416,11 +421,14 @@ ctable <- function(x,
     Data.type.y <- trs("logical")
   } else if ("character" %in% class(y)) {
     Data.type.y <- trs("character")
+  } else if ("integer" %in% class(y)) {
+    Data.type.y <- trs("integer")
   } else if ("numeric" %in% class(y)) {
     Data.type.y <- trs("numeric")
   } else {
-    Data.type.y <- NA
-  }
+    Data.type.y <- ifelse(mode(y) %in% rownames(.keywords_context),
+                          trs(mode(y)), mode(y))
+  }  
   
   # Store dataframe name in a variable since this will be used in
   # several places in next step
