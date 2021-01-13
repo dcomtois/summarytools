@@ -917,13 +917,9 @@ print_ctable <- function(x, method) {
   format_args <- attr(x, "format_args")
   pander_args <- attr(x, "pander_args")
 
-  # Use format() on the table's row names when numeric
-  temp_rownames     <- suppressWarnings(as.numeric(rownames(x[[1]])))
-  temp_rownames_nas <- which(is.na(temp_rownames))
-
   # Use format() on row names when x is numeric
-  if (data_info$Data.type.x == trs("numeric")) {
-    temp_rownames <- suppressWarnings(as.numeric(rownames(x)))
+  if (data_info$Data.type.x %in% c(trs("numeric"), trs("integer"))) {
+    temp_rownames <- suppressWarnings(as.numeric(rownames(x[[1]])))
     temp_rownames_nas <- which(is.na(temp_rownames))
     
     # Check if all row names are integers (if so, decimals will be removed)
@@ -931,25 +927,33 @@ print_ctable <- function(x, method) {
                             na.rm = TRUE)
     
     if (rownames_are_int) {
-      temp_rownames <- do.call(format, append(format_args,
-                                              list(x = quote(temp_rownames))))
-      temp_rownames <- sub(paste0("^(.+)\\", format_info$decimal.mark,
-                                  "(0(0|\\D)*$)"),
-                           "\\1", temp_rownames)
+      format_args_tmp <- format_args
+      format_args_tmp$digits <- 0
+      format_args_tmp$nsmall <- 0
     } else {
-      temp_rownames <- format(rownames(x), justify = format_args$justify)
+      # Make sure no decimals are lost b/c of format options
+      format_args_tmp <- format_args
+      format_args_tmp$digits <- max(
+        nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames)),
+        na.rm = TRUE
+      )
+      format_args_tmp$nsmall <- format_args_tmp$digits
     }
-    temp_rownames[temp_rownames_nas] <- rownames(x)[temp_rownames_nas]
-    row.names(x) <- temp_rownames
+    
+    temp_rownames <- do.call(
+      format,
+      append(format_args_tmp, list(x = quote(temp_rownames)))
+    )
+    
+    # Replace non-numeric names by original values
+    temp_rownames[temp_rownames_nas] <- rownames(x[[1]])[temp_rownames_nas]
+    row.names(x[[1]]) <- temp_rownames
+    row.names(x[[2]]) <- temp_rownames
   }
   
-  # Use format() on col names when numeric
-  temp_colnames     <- suppressWarnings(as.numeric(colnames(x[[1]])))
-  temp_colnames_nas <- which(is.na(temp_colnames))
-  
-  # Use format() on row names when x is numeric
-  if (data_info$Data.type.y == trs("numeric")) {
-    temp_colnames <- suppressWarnings(as.numeric(colnames(x)))
+  # Use format() on col names when y is numeric
+  if (data_info$Data.type.y %in% c(trs("numeric"), trs("integer"))) {
+    temp_colnames <- suppressWarnings(as.numeric(colnames(x[[1]])))
     temp_colnames_nas <- which(is.na(temp_colnames))
     
     # Check if all row names are integers (if so, decimals will be removed)
@@ -957,16 +961,27 @@ print_ctable <- function(x, method) {
                             na.rm = TRUE)
     
     if (colnames_are_int) {
-      temp_colnames <- do.call(format, append(format_args,
-                                              list(x = quote(temp_colnames))))
-      temp_colnames <- sub(paste0("^(.+)\\", format_info$decimal.mark,
-                                  "(0(0|\\D)*$)"),
-                           "\\1", temp_colnames)
+      format_args_tmp <- format_args
+      format_args_tmp$digits <- 0
+      format_args_tmp$nsmall <- 0
     } else {
-      temp_colnames <- format(colnames(x), justify = format_args$justify)
+      format_args_tmp <- format_args
+      format_args_tmp$digits <- max(
+        nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames)),
+        na.rm = TRUE
+      )
+      format_args_tmp$nsmall <- format_args_tmp$digits
     }
-    temp_colnames[temp_colnames_nas] <- colnames(x)[temp_colnames_nas]
-    row.names(x) <- temp_colnames
+    
+    temp_colnames <- do.call(
+      format,
+      append(format_args_tmp, list(x = quote(temp_colnames)))
+    )
+    
+    # Replace non-numeric names with original values    
+    temp_colnames[temp_colnames_nas] <- colnames(x[[1]])[temp_colnames_nas]
+    colnames(x[[1]]) <- temp_colnames
+    colnames(x[[2]]) <- temp_colnames
   }
   
 
@@ -988,15 +1003,15 @@ print_ctable <- function(x, method) {
       props_fmted  <- do.call(
         format, 
         append(format_args, list(x = props[ ,colnum] * 100))
-        #list(x = quote(props[,colnum]*100))))
-        )
+      )
       
       return(
         paste0(
           pad(counts_fmted, max(nchar(counts_fmted))),
           " (",
           pad(props_fmted, max(nchar(props_fmted))),
-          "%)")
+          "%)"
+        )
       )
     })
 
