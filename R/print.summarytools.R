@@ -406,8 +406,8 @@ print.summarytools <- function(x,
 
   # Put modified attributes back into x
   attr(x, "format_info") <- format_info
-  format_args <- format_info[which(names(format_info) %in%
-                                     names(formals(format.default)))]
+  format_args <- 
+    format_info[which(names(format_info) %in% names(formals(format.default)))]
   format_args$justify <- sub("center", "centre", format_args$justify)
   attr(x, "format_args") <- format_args
 
@@ -417,8 +417,9 @@ print.summarytools <- function(x,
                           "style", "caption", "justify", "missing",
                           "split.tables", "split.cells", "keep.line.breaks"))],
     attr(x, "user_fmt"))
-  attr(x, "pander_args") <- pander_args[which(!duplicated(names(pander_args),
-                                                          fromLast = TRUE))]
+  
+  attr(x, "pander_args") <-
+    pander_args[which(!duplicated(names(pander_args), fromLast = TRUE))]
 
   # Build default footnote
   if (method %in% c("browser", "viewer", "render") && footnote == "default") {
@@ -1629,7 +1630,7 @@ print_dfs <- function(x, method) {
     }
 
     # Check that style is not "simple" or "rmarkdown"
-    if (isTRUE(pander_args$style == "simple")) {
+    if (isTRUE(pander_args$style %in% c("simple", "rmarkdown"))) {
       pander_args$style <- "multiline"
     }
 

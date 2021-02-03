@@ -50,8 +50,8 @@ check_args <- function(mc, dotArgs) {
   if ("style" %in% names(mc)) {
     if (caller %in% c("freq", "descr", "ctable")) {
       if (!isTRUE(test_choice(pf$style, 
-                              c("simple", "grid", "rmarkdown")))) {
-        errmsg %+=% "'style' must be one of 'simple', 'grid', or 'rmarkdown'"
+                              c("simple", "grid", "rmarkdown", "jira")))) {
+        errmsg %+=% "'style' must be one of 'simple', 'grid', 'rmarkdown', or 'jira'"
       }
     }
   }
@@ -523,9 +523,9 @@ check_args_st_options <- function(mc) {
   
   if ("style" %in% names(mc)) {
     if (!isTRUE(test_choice(pf$style, 
-                            c("simple", "grid", "rmarkdown")))) {
-      errmsg %+=% paste("'style' must be one of 'simple', 'grid', or 'markdown';",
-                        "See documentation for details")
+                            c("simple", "grid", "rmarkdown", "jira")))) {
+      errmsg %+=% paste("'style' must be one of 'simple', 'grid', 'markdown', ",
+                        "or 'jira'; See documentation for details")
     }
   }
   

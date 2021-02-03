@@ -14,16 +14,16 @@
 #'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
-#' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when
-#'   using \strong{summarytools} with a rendering tool such as \code{knitr} or
-#'   when creating rmarkdown output files to be converted with Pandoc. Note 
-#'   however that its value will automatically be set to \code{FALSE} whenever
-#'   \code{style} is set to \dQuote{rmarkdown}).
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
+#'   \code{TRUE}, no markup characters will be used (useful when printing to
+#'   console). \code{TRUE} by default, but when \code{style = 'rmarkdown'},
+#'   it is automatically set to \code{FALSE}. To override this behavior,
+#'   \code{plain.ascii = TRUE} must be specified in the function call.
 #' @param round.digits Numeric. Defaults to \code{2}.
 #' @param headings Logical. Set to \code{FALSE} to remove all headings from
 #'   outputs. Only the tables will be printed out, except when \code{\link{by}}
 #'   or \code{\link{lapply}} are used. In that case, the variable or the group
-#'   will still appear before the tables. \code{FALSE} by default.
+#'   will still appear before each table. \code{TRUE} by default.
 #' @param footnote Character. When the default value \dQuote{default} is used,
 #'   the package name & version, as well as the R version number are displayed
 #'   below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 

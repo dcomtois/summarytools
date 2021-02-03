@@ -26,8 +26,9 @@ descr(
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
-\item{var}{Unquoted expression referring to a specific column in x. Provides
-support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.}
+\item{var}{Unquoted expression referring to a specific column in \code{x}.
+Provides support for piped function calls (e.g.
+\code{my_df \%>\% descr(my_var)}.}
 
 \item{stats}{Character. Which stats to produce. Either \dQuote{all} (default),
 \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
@@ -41,19 +42,21 @@ support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.}
 Defaults to \code{TRUE}.}
 
 \item{round.digits}{Numeric. Number of significant digits to display. 
-Defaults to \code{2}; can be set globally with \code{\link{st_options}}.}
+Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.}
 
-\item{transpose}{Logical. Makes variables appears as columns, and stats as
+\item{transpose}{Logical. Make variables appears as columns, and stats as
 rows. Defaults to \code{FALSE}. Can be set globally with
 \code{\link{st_options}}, option \dQuote{descr.transpose}.}
 
-\item{order}{Character. One of \dQuote{sort} (or simply \dQuote{s}), 
-\dQuote{preserve} (or \dQuote{p}), or a vector of all variable names
-in the desired order. Defaults to \dQuote{sort}.}
+\item{order}{Character. When analysing more than one variable, this parameter
+determines how to order variables. Valid values are \dQuote{sort} (or
+simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
+containing all variable names in the desired order. Defaults to
+\dQuote{sort}.}
 
-\item{style}{Character. Style to be used by \code{\link[pander]{pander}}.
-One of \dQuote{simple} (default), \dQuote{grid}, or
-\dQuote{rmarkdown}. Can be set globally with \code{\link{st_options}}.}
+\item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
+of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+\dQuote{jira}. Can be set globally with \code{\link{st_options}}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
 \code{TRUE} (default), no markup characters will be used (useful when

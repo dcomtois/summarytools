@@ -922,7 +922,7 @@ arguments also apply, even though they are not reproduced here.
 | split.tables <sup>(\*)</sup> |  x   |   x    |   x   |     x     |
 |      caption <sup>(\*)</sup> |  x   |   x    |   x   |     x     |
 
-(\*) These are **pander options**
+(\*) *pander* options
 
 ## 8.2 Overriding Heading Contents
 
@@ -1261,7 +1261,8 @@ A big thanks to people who made donations!
 -   Ashirwad Barnwal  
 -   David Thomas  
 -   Peter Nilsson  
--   Ross Dunne
+-   Ross Dunne  
+-   Igor Rubets
 
 If you find **summarytools** useful and want to support its development,
 please consider making a small donation using the *PayPal* button.
