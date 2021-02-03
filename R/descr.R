@@ -5,8 +5,9 @@
 #' available when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
-#' @param var Unquoted expression referring to a specific column in x. Provides
-#'   support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.    
+#' @param var Unquoted expression referring to a specific column in \code{x}.
+#'   Provides support for piped function calls (e.g.
+#'   \code{my_df \%>\% descr(my_var)}.    
 #' @param stats Character. Which stats to produce. Either \dQuote{all} (default),
 #'   \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
@@ -17,16 +18,18 @@
 #' @param na.rm Logical. Argument to be passed to statistical functions. 
 #'   Defaults to \code{TRUE}.
 #' @param round.digits Numeric. Number of significant digits to display. 
-#'   Defaults to \code{2}; can be set globally with \code{\link{st_options}}.
-#' @param transpose Logical. Makes variables appears as columns, and stats as
+#'   Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.
+#' @param transpose Logical. Make variables appears as columns, and stats as
 #'   rows. Defaults to \code{FALSE}. Can be set globally with
 #'   \code{\link{st_options}}, option \dQuote{descr.transpose}.
-#' @param order Character. One of \dQuote{sort} (or simply \dQuote{s}), 
-#'   \dQuote{preserve} (or \dQuote{p}), or a vector of all variable names
-#'   in the desired order. Defaults to \dQuote{sort}.
-#' @param style Character. Style to be used by \code{\link[pander]{pander}}.
-#'   One of \dQuote{simple} (default), \dQuote{grid}, or
-#'   \dQuote{rmarkdown}. Can be set globally with \code{\link{st_options}}.
+#' @param order Character. When analysing more than one variable, this parameter
+#'   determines how to order variables. Valid values are \dQuote{sort} (or
+#'   simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
+#'   containing all variable names in the desired order. Defaults to
+#'   \dQuote{sort}.
+#' @param style Character. Style to be used by \code{\link[pander]{pander}}. One
+#'   of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+#'   \dQuote{jira}. Can be set globally with \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE} (default), no markup characters will be used (useful when
 #'   printing to console). If \code{style = 'rmarkdown'} is specified, value
@@ -538,11 +541,11 @@ descr <- function(x,
   }
   
   # Set class/attributes
-  class(output)              <- c("summarytools", class(output))
-  attr(output, "st_type")    <- "descr"
-  attr(output, "date")       <- Sys.Date()
-  attr(output, "fn_call")    <- match.call()
-  attr(output, "stats")      <- stats
+  class(output)            <- c("summarytools", class(output))
+  attr(output, "st_type")  <- "descr"
+  attr(output, "date")     <- Sys.Date()
+  attr(output, "fn_call")  <- match.call()
+  attr(output, "stats")    <- stats
   data_info <-
     list(
       Data.frame       = ifelse("df_name" %in% names(parse_info), 

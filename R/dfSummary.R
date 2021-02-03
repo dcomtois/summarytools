@@ -68,8 +68,8 @@
 #'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 #'   `style = "grid"`. See \emph{Details}.
 #' @param keep.grp.vars Logical. When using \code{\link[dplyr]{group_by}},
-#'   include rows corresponding to grouping variable(s) from output. \code{FALSE}
-#'   by default. When \code{FALSE}, variable numbers will be adjusted to reflect
+#'   keep rows corresponding to grouping variable(s) in output table.
+#'   When \code{FALSE} (default), variable numbers still reflect the
 #'   the ordering in the full data frame.
 #' @param silent Logical. Hide console messages. \code{FALSE} by default. To
 #'   change this value globally, see \code{\link{st_options}}.
@@ -142,11 +142,12 @@
 #'
 #' \dontrun{
 #'
-#' # Show in Viewer or browser (view: no capital V!)
+#' # Show in Viewer or browser - no capital V in view(); stview() is also
+#' # available in case of conflicts with other packages)
 #' view(dfSummary(iris))
 #'
 #' # Rmarkdown-ready
-#' dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
+#' dfSummary(tobacco, style = "grid", plain.ascii = FALSE,
 #'           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
 #'
 #' # Using group_by()

@@ -46,8 +46,8 @@ weights are used.}
 \code{ctable.totals}.}
 
 \item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
-of \dQuote{simple} (default), \dQuote{grid}, or \dQuote{rmarkdown}. Can be
-set globally with \code{\link{st_options}}.}
+of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+\dQuote{jira}. Can be set globally with \code{\link{st_options}}.}
 
 \item{round.digits}{Numeric. Number of significant digits to keep. Defaults
 to \code{1}. To change this default value, use \code{\link{st_options}},

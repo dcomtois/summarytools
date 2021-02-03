@@ -958,6 +958,7 @@ A big thanks to people who made donations!
 - David Thomas  
 - Peter Nilsson  
 - Ross Dunne  
+- Igor Rubets  
 
 If you find **summarytools** useful and want to support its
 development, please consider making a small donation using the *PayPal*
