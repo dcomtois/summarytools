@@ -1609,7 +1609,7 @@ print_dfs <- function(x, method) {
       !isTRUE(format_info$keep.grp.vars) &&
       "by_var" %in% names(data_info)) {
     x <- x[-grep(paste0("\\b", data_info$by_var, "\\b", collapse = "|"), 
-                 x$Variable),]
+                 x[[trs("variable")]]),]
     row.names(x) <- NULL
   }
 
