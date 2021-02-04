@@ -513,7 +513,7 @@ dfSummary <- function(x,
 
   data_info <-
     list(Data.frame       = parse_info$df_name,
-         Dataf.rame.label = ifelse("df_label" %in% names(parse_info),
+         Data.frame.label = ifelse("df_label" %in% names(parse_info),
                                    parse_info$df_label, NA),
          Dimensions       = c(n_tot, ncol(x)),
          Duplicates       = n_tot - n_distinct(x),
