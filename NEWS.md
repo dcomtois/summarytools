@@ -1,18 +1,23 @@
 # summarytools 0.9.9 (2021-02-04)
 
+ - Style "jira" has been added to reflect pander's support for it. 
+ - Documentation has been reviewed and improved. 
  - In `dfSummary()`:
+   + When generating a `dfSummary()` in Rmarkdown using `method = "render"`,
+     it is possible to set `tmp.img.dir = NA`. The latter must be defined 
+     only when `method = "pander"` (default) and `style = "grid"`.
    + Grouping variable(s) are now excluded from results when using
      `stby()` or `dpyr::group_by()`. Use `keep.grp.vars = TRUE` to replicate
      previous versions' behavior.
    + Removed an extra (empty) line in text graphs
- - The `ctable.round.digits` was added to the list of `st_options()`; there
+ - In `ctable()` and `freq()`:
+   + Added compatibility for integers
+ - The `ctable.round.digits` was added to the list of `st_options()` (there
    is already a global `round.digits` option, but since it uses `2` as default
    and that `1` is a more sensible value for `ctable()`, it seemed appropriate
-   to add this as a distinct option.
+   to add this as a distinct option).
  - `print.summarytools()` now removes titles from headings when keyword 
-  "title.function" is set to NA or empty string. 
- - Style "jira" has been added to reflect pander's support for it. 
- - Documentation for most functions has been reviewed and improved. 
+   "title.function" is set to NA or empty string. 
 
 # summarytools 0.9.8 (2020-12-10)
 

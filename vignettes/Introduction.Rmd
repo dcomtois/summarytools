@@ -716,7 +716,9 @@ To successfully include **summarytools** functions in *Shiny* apps,
 **Example** (results not shown)
 
 ```{r, eval=FALSE}
-print(dfSummary(somedata, varnumbers = FALSE, valid.col = FALSE, 
+print(dfSummary(somedata, 
+                varnumbers = FALSE, 
+                valid.col = FALSE, 
                 graph.magnif = 0.8), 
       method = 'render',
       headings = FALSE,
@@ -732,46 +734,34 @@ needed in order to display the *png* graphs properly:
 
   1 - `plain.ascii` must be set to FALSE  
   2 - `style` must be set to "grid"  
-  3 - `tmp.img.dir` must be defined  
+  3 - `tmp.img.dir` must be defined and be at most 5 characters wide  
 
-Why the third element? Although *R* makes it really easy to 
-create temporary files and directories, they do have long pathnames,
-especially on Windows. Unfortunately, Pandoc determines the final
-(rendered) column widths by counting characters in a cell, 
-even if those characters are paths pointing to images.
+Note that as of version 0.9.9, **setting `tmp.img.dir` is no longer required**
+**when using `method = "render"` and can be left to `NA`**. It is only 
+necessary to define it when a transitory markdown table must be created, as
+shown below. Note how narrow the *Graph* column is -- this is actually required, 
+since the width of the rendered column is determined by the number of characters
+in the cell, rather than the width of the image itself:
 
-At this time, there seems to be only one solution around this problem:
-cut down on characters in image paths. So instead of this:
 ```
-+-----------+---------------------------------------------------------------------+---------+
-| Variable  | Graph                                                               | Valid   |
-+===========+=====================================================================+=========+
-| gender\   | ![](C:/Users/johnny/AppData/Local/Temp/RtmpYRgetx/file5aa44d71.png) | 978\    |
-| [factor]  |                                                                     | (97.8%) |
-+----+---------------+------------------------------------------------------------+---------+
-```
-
-...we aim for this:
-```
-+---------------+----------------------+---------+
-| Variable      | Graph                | Valid   |
-+===============+======================+=========+
-| gender\       | ![](/tmp/ds0001.png) | 978\    |
-| [factor]      |                      | (97.8%) |
-+---------------+----------------------+---------+
++---------------+--------|----------------------+---------+
+| Variable      | stats  |  Graph               | Valid   |
++===============+========|======================+=========+
+| age\          |  ...   | ![](/tmp/ds0001.png) | 978\    |
+| [numeric]     |  ...   |                      | (97.8%) |
++---------------+--------+----------------------+---------+
 ```
 
 CRAN policies are really strict when it comes to writing content in 
 the user directories, or anywhere outside *R's temporary zone* (for good 
-reasons). So the users need to set this location themselves,
+reasons). So users need to set this temporary location themselves,
 therefore consenting to having content written outside 
 *R*'s predefined temporary zone.
 
 On Mac OS and Linux, using "/tmp" makes a lot of sense: it's a short path,
 and it's self-cleaning. On Windows, there is no such convenient directory, so
 we need to pick one -- be it absolute ("/tmp") or relative ("img",
-or simply "."). Two things are to be kept in mind: it needs to be short
-(5 characters max) and it needs to be cleaned up manually.
+or simply ".").
 
 <br/>
 
@@ -827,9 +817,22 @@ you should always have this *csv* file handy for future use.
 
 Sometimes, all you might want to do is change just a few keywords -- for instance,
 you could prefer using "N" instead of "Freq" in the title row of `freq()` tables. 
-For this, use `define_keywords()`. Calling this function without any arguments will
+Or you might need to generate a document with several `dfSummary()` tables,
+with customized headings (replacing the generic "Data Frame Summary").
+
+For this, use `define_keywords()`. 
+
+```{r}
+define_keywords(title.freq = "Types of Iris Flowers")
+freq(iris$Species)
+```
+
+See `?define_keywords` for a list of all customizable strings in the package.
+
+Calling this function without any arguments will
 bring up, on systems that support graphical devices (the vast majority, that is),
-an editable window allowing to modify only the desired item(s).
+an editable window allowing to modify only the desired item(s). 
+
 
 <img src="define_keywords.png" width=95% style="border:1;border-color:grey" />
 
