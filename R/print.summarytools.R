@@ -283,7 +283,7 @@ print.summarytools <- function(x,
                          names(dotArgs), ignore.case = TRUE)
         if (length(elem_ind) > 0) {
           elem_ind_last <- tail(elem_ind, 1) # take last if more than one match
-          # Display message if arugment not spelled exactly as supposed
+          # Display message if argument not spelled exactly as supposed
           if (names(dotArgs)[elem_ind_last] != data_info_element) {
             message("Argument ", data_info_element, " misspelled as ",
                     names(dotArgs)[elem_ind_last])
@@ -2092,12 +2092,26 @@ build_heading_pander <- function() {
                                c(Duplicates       = trs("duplicates"))))
   }
 
-  if (!is.na(head1))
+  if (!is.na(head1) &&
+      length(setdiff(unique(strsplit(head1, "")[[1]]), c(" ", "\r", "\n")))) {
     head1 <- enc2native(head1)
-  if (!is.na(head2))
+  } else {
+    head1 <- NA
+  }
+  
+  if (!is.na(head2) &&
+      length(setdiff(unique(strsplit(head2, "")[[1]]), c(" ", "\r", "\n")))) {
     head2 <- enc2native(head2)
-  if (!is.na(head3))
+  } else {
+    head2 <- NA
+  }
+  
+  if (!is.na(head3) &&
+      length(setdiff(unique(strsplit(head3, "")[[1]]), c(" ", "\r", "\n")))) {
     head3 <- enc2native(head3)
+  } else {
+    head3 <- NA
+  }
 
   tmp <- list(head1, head2, head3)
   return(tmp[which(!is.na(tmp))])
