@@ -679,8 +679,8 @@ check_args_st_options <- function(mc) {
     errmsg %+=% "'dfSummary.silent' must be either TRUE or FALSE"
   }  
   
-  if ("tmp.img.dir" %in% names(mc) &&
-      (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
+  if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
+       (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
        nchar(pf$tmp.img.dir) > 5)) {
     errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
   }

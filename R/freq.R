@@ -335,9 +335,9 @@ freq <- function(x,
     # End of arguments validation ----------------------------------------------
     
     # When style = "rmarkdown", make plain.ascii FALSE unless explicit
-    if (style == "rmarkdown" && !isTRUE(plain.ascii) && 
+    if (style == "rmarkdown" && isTRUE(plain.ascii) && 
         !("plain.ascii" %in% (names(match.call())))) {
-      if (isFALSE(st_options("freq.silent"))) {
+      if (!isTRUE(st_options("freq.silent"))) {
         message("setting plain.ascii to FALSE")
       }
       plain.ascii <- FALSE
