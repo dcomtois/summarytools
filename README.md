@@ -204,6 +204,8 @@ Random_numbers <- sample(c(5e3, 5e4, 5e5), size = 1e4, replace = TRUE, prob = c(
 freq(Random_numbers, big.mark = ",", cumul = FALSE, headings = FALSE)
 ```
 
+    ## setting plain.ascii to FALSE
+
 |                |   Freq | % Valid | % Total |
 |---------------:|-------:|--------:|--------:|
 |      **5,000** |  1,237 |   12.37 |   12.37 |
@@ -216,6 +218,8 @@ freq(Random_numbers, big.mark = ",", cumul = FALSE, headings = FALSE)
 # We can also use format() arguments with print / view
 print(freq(Random_numbers, cumul = FALSE, headings = FALSE), big.mark = " ", decimal.mark = ".")
 ```
+
+    ## setting plain.ascii to FALSE
 
 |                |   Freq | % Valid | % Total |
 |---------------:|-------:|--------:|--------:|
@@ -241,6 +245,8 @@ resulting table:
 freq(iris$Species, report.nas = FALSE, headings = FALSE)
 ```
 
+    ## setting plain.ascii to FALSE
+
 |                | Freq |      % | % Cum. |
 |---------------:|-----:|-------:|-------:|
 |     **setosa** |   50 |  33.33 |  33.33 |
@@ -261,6 +267,8 @@ produced:
 freq(iris$Species, report.nas = FALSE, totals = FALSE, 
      cumul = FALSE, headings = FALSE)
 ```
+
+    ## setting plain.ascii to FALSE
 
 |                | Freq |     % |
 |---------------:|-----:|------:|
@@ -310,6 +318,8 @@ done:
 ``` r
 freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
 ```
+
+    ## setting plain.ascii to FALSE
 
 |                  | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -676,6 +686,8 @@ iris %>% descr(stats = "common") %>% tb()
 iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
 ```
 
+    ## setting plain.ascii to FALSE
+
 ``` small
 ## # A tibble: 3 x 3
 ##   Species     freq   pct
@@ -952,6 +964,8 @@ attributes, as well as one heading attribute.
 (age_stats <- freq(tobacco$age.gr)) 
 ```
 
+    ## setting plain.ascii to FALSE
+
 ### Frequencies
 
 **tobacco$age.gr**  
@@ -1107,6 +1121,8 @@ All output from the core functions will now use that language:
 ``` r
 freq(iris$Species)
 ```
+
+    ## setting plain.ascii to FALSE
 
 ### Tableau de fréquences
 
