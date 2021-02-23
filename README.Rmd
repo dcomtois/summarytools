@@ -1,6 +1,7 @@
 ---
 output: 
   github_document
+always_allow_html: true
 ---
 
 # summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="145" /></a>
@@ -23,6 +24,7 @@ st_options(plain.ascii = FALSE,
            subtitle.emphasis = FALSE,
            dfSummary.silent = TRUE,
            descr.silent = TRUE)
+library(kableExtra)
 ```
 
 The following vignettes complement this page:
@@ -32,15 +34,29 @@ The following vignettes complement this page:
 
 # 1. Overview
 
-**summarytools** is a an [*R*](https://www.r-project.org) package for data cleaning, exploring, 
-and simple reporting. At its core reside the following four functions:
-| Function | Description |
-|---------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------|
-| <a href="#freq">`freq()`</a> | **Frequency Tables** featuring counts, proportions, as well as missing data information |
-| <a href="#ctable">`ctable()`</a> | **Cross-Tabulations** (joint frequencies) between pairs of discrete variables featuring marginal sums as well as row, column or total proportions |
-| <a href="#descr">`descr()`</a> | **Descriptive (Univariate) Statistics** for numerical data featuring common measures of central tendency and dispersion |
-| <a href="#dfsummary">`dfSummary()`</a> | Extensive **Data Frame Summaries** featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts. Very useful to quickly detect anomalies and identify trends at a glance |
+**summarytools** is a an [*R*](https://www.r-project.org) package for data
+cleaning, exploring, and simple reporting. At its core reside the following 
+four functions:
 
+```{r, results='asis', echo=FALSE}
+txt <- data.frame(
+  Function = 
+    c('<a href="#freq">freq()</a>',
+      '<a href="#ctable">ctable()</a>',
+      '<a href="#descr">descr()</a>',
+      '<a href="#dfsummary">dfSummary()</a>'),
+  Description = 
+    c("**Frequency Tables** featuring counts, proportions, cumulative statistics as well as missing data reporting",
+      "**Cross-Tabulations** (joint frequencies) between pairs of discrete/categorical variables featuring marginal sums as well as row, column or total proportions",
+      "**Descriptive (Univariate) Statistics** for numerical data, featuring common measures of central tendency and dispersion",
+      "Extensive **Data Frame Summaries** featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts and proportions. Very useful to quickly detect anomalies and identify trends at a glance")
+)
+
+kable(txt, format = "html", escape = FALSE, align = c('r', 'l')) %>%
+  kable_classic(full_width = FALSE, position = "left") %>%
+  column_spec(1, extra_css = "vertical-align:top") %>%
+  column_spec(2, extra_css = "vertical-align:top")
+```
 
 ## 1.1 Motivation
 
@@ -274,10 +290,14 @@ categorical variables *smoker* and *diseased*.
 ```{r, eval = FALSE}
 print(ctable(x = tobacco$smoker, 
              y = tobacco$diseased, 
-             prop = "r"),           # Show row proportions
+             prop = "r"),       # Show row proportions
       method = "render")
 ```
-<img src="img/ctable-with-row-props.png" style="border:0"/>
+
+<img src="img/ctable-row-proportions.png" width=50% style="border:0"/>
+  
+<sup>\(*\)</sup> *This is actually an image, since GitHub doesn't allow 
+the _CSS_ necessary to make this table appear as it should. The same remark applies to `ctable()` results that follow.*
 
 ### 2.2.1 Row, Column or Total Proportions
 
@@ -299,7 +319,8 @@ with(tobacco,
            method = "render")
 )
 ```
-<img src="img/ctable-barebones-2.png" style="border:0"/>
+
+<img src="img/ctable-minimal.png" width=25% style="border:0"/>
 
 ### 2.2.3 Chi-Square (&#120536;<sup>2</sup>), Odds Ratio and Risk Ratio
 
@@ -323,7 +344,8 @@ tobacco %$%  # Acts like with(tobacco, ...)
          headings = FALSE) %>%
   print(method = "render")
 ```
-<img src="img/ctable-chisq.png" style="border:0"  width=500px/>
+
+<img src="img/ctable-statistics.png" width=55% style="border:0">
 
 
 ## <a id="descr"></a>2.3 Descriptive Statistics With descr()
@@ -375,7 +397,7 @@ or its twin `stview()` in case of name conflicts:
 view(dfSummary(iris))
 ```
 
-![dfSummary Output displayed in RStudio's viewer](img/dfSummary_in_RStudio_Viewer.png)
+![dfSummary Output displayed in RStudio's viewer](img/dfSummary-in-RStudio-Viewer.png)
 
 ### 2.4.1 Using dfSummary() in Rmarkdown Documents
 
@@ -493,11 +515,13 @@ When generating `freq()` or `descr()` tables, it is possible to turn the
 results into "tidy" tables with the use of the `tb()` function (think of
 *tb* as a diminutive for *tibble*). For example:
 
-```{r, results='markup'}
+```{r, results='asis'}
 library(magrittr)
 iris %>%
   descr(stats = "common") %>%
-  tb()
+  tb() %>%
+  kable()
+
 iris$Species %>% 
   freq(cumul = FALSE, report.nas = FALSE) %>% 
   tb()
@@ -547,17 +571,26 @@ turning `freq()` and `descr()` objects into simple tables that any
 package can work with. Here is an example using **kableExtra**:
 
 ```{r, eval=FALSE}
+# As usual, we need to set the chunk option results to 'asis'
 library(kableExtra)
-library(magrittr)
 stby(data    = iris, 
      INDICES = iris$Species, 
      FUN     = descr, 
      stats   = "fivenum") %>%
   tb(order = 3) %>%
-  kable(format = "html", digits = 2) %>%
+  kable(format = "html") %>%
   collapse_rows(columns = 1, valign = "top")
 ```
-![tb-kableExtra](img/tb-kableExtra.png)
+<img src="img/descr-kableExtra.png" width=40% style="border:0">
+
+To explore some of the possibilities offered by the excellent 
+[**kableExtra**](https://CRAN.R-project.org/package=kableExtra) package, have a look at some of its vignettes:
+
+```{r, eval=FALSE}
+vignette("awesome_table_in_html", package = "kableExtra")
+vignette("awesome_table_in_pdf", package = "kableExtra")
+```
+
 
 # 6. Redirecting Output to Files
 
@@ -688,7 +721,7 @@ function arguments also apply, even though they are not reproduced here.
 | split.tables <sup>(*)</sup> |   x    |   x    |   x   |     x     |
 | caption <sup>(*)</sup>      |   x    |   x    |   x   |     x     |
 
-(*) _pander_ options
+(\*) _pander_ options
 
 ## 8.2 Overriding Heading Contents
 
@@ -726,9 +759,25 @@ print(age_stats,
 
 ## 8.3 Order of Priority for Parameters / Options
 
-1.  `print()` or `view()` parameters have precedence (overriding feature)  
-2.  `freq() / ctable() / descr() / dfSummary()` parameters come second  
+- If the argument is explicitly supplied in the function call, it will have
+  precedence over any stored value for the parameter (stored values are the 
+  ones that are written to the object's attributes when using a core function,
+  or the default stored in the summarytools global options list). 
+
+- If the core function and the print/view functions are called together and
+  have conflicting values for a parameter, it is always the print/view 
+  arguments that win.
+
+- The stored defaults (modified with st_options() or left as they are when
+  loading the package) will be applied if the parameter values cannot be found
+  in the function calls.
+  
+To put it a bit mot schematically:
+
+1. `print()` or `view()` parameters have precedence (overriding feature)  
+2. `freq() / ctable() / descr() / dfSummary()` parameters come second  
 3.  Global options set with `st_options()` come third and act as default 
+
 
 # 9. Fine-Tuning Looks with CSS
 
@@ -895,12 +944,13 @@ blank).
 
 See `?define_keywords` for a list of all customizable strings in the package.
 
-Calling `define_keywords()` without any arguments will bring up, on systems that 
-support graphical devices (the vast majority, that is), an editable window allowing 
-to modify only the desired item(s). 
+### Calling `define_keywords()` Without any Arguments
 
+This will bring up, on systems that support graphical devices (the vast
+majority, that is), an editable window allowing to modify only the desired
+item(s). 
 
-<img src="img/define_keywords.png" width=95% style="border:2px;border-color:grey" />
+<img src="img/define-keywords.png" width=95% style="border:2px;border-color:grey" />
 
 After closing the edit window, you will be able to save your new 
 "custom language" to a *csv* file that you can later reuse by calling
