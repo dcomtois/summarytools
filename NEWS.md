@@ -1,3 +1,10 @@
+# summarytools 0.9.9 (2021-03-18)
+
+- Fixed name issues in `freq()` and `ctable()` when data
+  is of type integer 
+- Fixed typo in attribute name Dataf.rame.label  
+
+
 # summarytools 0.9.8 (2020-12-10)
 
 Version 0.9.8 is essentially the CRAN release of the 0.9.7 _GitHub-Only_ release
