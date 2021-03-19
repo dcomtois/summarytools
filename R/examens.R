@@ -1,4 +1,4 @@
-#' Bulletin de Notes (Donnees simulees)
+#' Bulletin de notes (donnees simulees)
 #'
 #' Jeu de donnees simulees contenant les notes de 30 etudiants, avec les 
 #' colonnes suivantes:

@@ -2,8 +2,7 @@
 
 - Fixed name issues in `freq()` and `ctable()` when data
   is of type integer 
-- Fixed typo in attribute name Dataf.rame.label  
-
+- Fixed typo in attribute name "Dataf.rame.label"  
 
 # summarytools 0.9.8 (2020-12-10)
 
