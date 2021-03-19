@@ -3,7 +3,7 @@
 \docType{data}
 \name{tabagisme}
 \alias{tabagisme}
-\title{Usage du Tabac et etat de Sante (Donnees simulees)}
+\title{Usage du tabac et etat de sante (Donnees simulees)}
 \format{
 Un data frame de 1000 rangees et 9 colonnes
 }
