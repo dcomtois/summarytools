@@ -523,7 +523,7 @@ print.summarytools <- function(x,
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
-                  "includes/scripts/jquery-3.4.0.slim.min.js",
+                  "includes/scripts/jquery-3.6.0.slim.min.js",
                   package = "summarytools"
                 )),
               if (collapse)
@@ -532,16 +532,16 @@ print.summarytools <- function(x,
                   package = "summarytools"
                 )),
               if (isTRUE(bootstrap.css))
-                includeCss(system.file(
+                includeCSS(system.file(
                   "includes/stylesheets/bootstrap.min.css",
                   package = "summarytools"
                 )),
-              includeCss(system.file(
+              includeCSS(system.file(
                 "includes/stylesheets/summarytools.css",
                 package = "summarytools"
               )),
               if (!is.na(custom.css))
-                includeCss(path = custom.css)
+                includeCSS(path = custom.css)
             ),
             res)
 
@@ -551,10 +551,10 @@ print.summarytools <- function(x,
           tags$div(
             class = "container st-container",
             tags$head(
-              includeCss(system.file(package = "summarytools",
+              includeCSS(system.file(package = "summarytools",
                                      "includes/stylesheets/summarytools.css")),
               if (!is.na(custom.css))
-                includeCss(path = custom.css)
+                includeCSS(path = custom.css)
             ),
             res)
       }
