@@ -142,3 +142,7 @@ map_groups <- function(gk) {
 pad <- function(string, width) {
   paste0(strrep(" ", max(0, width - nchar(string))), string)
 }
+
+pctvalid <- function(x, round.digits = 1) {
+  round(sum(!is.na(x)) / length(x) * 100, round.digits)
+}
