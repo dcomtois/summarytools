@@ -365,7 +365,7 @@ ctable <- function(x,
         attr(output, "OR-level") <- OR
       }
       
-      if (!is.na(RR)) {
+      if (!isFALSE(RR)) {
         rr <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
           (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
         se <- sqrt(sum(1/freq_table_min[1], 

@@ -232,12 +232,12 @@ check_args <- function(mc, dotArgs) {
       errmsg %+=% "'dnn' must be a character vector of 2 distinct values"
     }
     
-    if ("OR" %in% names(mc)) {
+    if ("OR" %in% names(mc) && !isFALSE(pf$OR)) {
       if (isTRUE(pf$OR)) {
         pf$OR <- .95
       } else {
-        if (!test_number(pf$OR, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'OR' must be a number between .5 and .999"
+        if (!test_number(pf$OR, na.ok = FALSE, lower = .5, upper = .999)) {
+          errmsg %+=% "'OR' must be TRUE, FALSE, or a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
@@ -246,12 +246,12 @@ check_args <- function(mc, dotArgs) {
       }
     }
     
-    if ("RR" %in% names(mc)) {
+    if ("RR" %in% names(mc) && !isFALSE(pf$RR)) {
       if (isTRUE(pf$RR)) {
         pf$RR <- .95
       } else {
-        if (!test_number(pf$RR, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'RR' must be a number between .5 and .999"
+        if (!test_number(pf$RR, na.ok = FALSE, lower = .5, upper = .999)) {
+          errmsg %+=% "'RR' must be TRUE/FALSE or a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
