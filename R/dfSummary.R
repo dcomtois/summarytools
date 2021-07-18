@@ -405,44 +405,53 @@ dfSummary <- function(x,
   for (i in seq_len(ncol(x))) {
 
     # extract column data
-    column_data <- x[[i]]
 
-    # Add column number
-    output[i,1] <- i
+    column_data <- x[[i]]
 
     # Calculate valid vs missing data info
     n_miss <- sum(is.na(column_data))
-    n_valid <- n_tot - n_miss
+    n_valid <- ifelse(is.list(column_data),
+                              sum(!is.na(column_data)),
+                              n_tot - n_miss)
+    
+    
+    # Build content for first 3 columns of output data frame
+    #   Column 1: Variable number
+    #   Column 2: Variable name and class
+    #   Column 3: Label
 
-    # Add column name and class
+    output[i,1] <- i
+
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
 
-    # Check if column contains emails
-    if (is.character(column_data)) {
-      email_val <- detect_email(column_data)
-    } else {
-      email_val <- FALSE
-    }
-
-    if (!identical(email_val, FALSE)) {
-      output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
-    }
-
-    # Add UPC/EAN info if applicable
-    if (is.factor(column_data)) {
-      barcode_type <- detect_barcode(as.character(column_data))
-    } else {
-      barcode_type <- detect_barcode(column_data)
-    }
-
-    if (is.character(barcode_type)) {
-      output[i,2] <- paste(output[i,2],
-                           paste(barcode_type, trs("codes")),
-                           sep = "\\\n")
-      if (is.numeric(column_data)) {
-        column_data <- as.character(column_data)
+    if (!is.list(column_data)) {
+      # Check if column contains emails
+      if (is.character(column_data)) {
+        email_val <- detect_email(column_data)
+      } else {
+        email_val <- FALSE
+      }
+  
+      if (!identical(email_val, FALSE)) {
+        output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
+      }
+  
+      # Add UPC/EAN info if applicable
+      if (is.factor(column_data)) {
+        barcode_type <- detect_barcode(as.character(column_data))
+      } else {
+        barcode_type <- detect_barcode(column_data)
+      }
+  
+      if (is.character(barcode_type)) {
+        output[i,2] <- paste(output[i,2],
+                             paste(barcode_type, trs("codes")),
+                             sep = "\\\n")
+        if (is.numeric(column_data)) {
+          column_data <- as.character(column_data)
+        }
       }
     }
 
@@ -454,51 +463,80 @@ dfSummary <- function(x,
     }
 
     # Data crunching by type starts here ---------------------------------------
+    # Column 4: Stats / Values
+    # Column 5: Freqs / % of Valid
+    # Column 6: Graph (png)
+    # Column 7: Graph (ascii)
+    # Column 8: Valid count & pct.
+    # Column 9: NA    count & pct. 
 
+    # Deal with lists first -- they are treated differently, not as "deeply"
+    # analyzed, for now
+    if (is.list(column_data)) {
+      # 4th column: names of intra-objects
+      output[i, 4] <- paste0(1:length(column_data),"\\. ", names(column_data),
+                             collapse = "\\\n")
+      # 5th column: Types and % valid of intra-objects
+      output[i, 5] <- paste0(vapply(X = column_data, 
+                                    FUN = class, 
+                                    FUN.VALUE = " "),
+                             "  (",
+                             format(vapply(X = column_data,
+                                    FUN = pctvalid,
+                                    FUN.VALUE = 1),
+                                    nsmall = 1
+                             ),
+                             "% ", trs("valid"),
+                             collapse = ")\\\n")
+      output[i, 6] <- ""
+      output[i, 7] <- ""
+    }
+    
     # Factors: display a column of levels and a column of frequencies ----------
-    if (is.factor(column_data)) {
-      output[i,4:7] <- crunch_factor(column_data)
+    else if (is.factor(column_data)) {
+      output[i, 4:7] <- crunch_factor(column_data)
     }
 
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
-      output[i,4:7] <- crunch_character(column_data, email_val)
+      output[i, 4:7] <- crunch_character(column_data, email_val)
     }
 
     # Logical data -------------------------------------------------------------
     else if (is.logical(column_data)) {
-      output[i,4:7] <- crunch_logical(column_data)
+      output[i, 4:7] <- crunch_logical(column_data)
     }
 
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
-      output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
+      output[i, 4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
 
     # Time/date data -----------------------------------------------------------
     else if (inherits(column_data, c("Date", "POSIXct", "difftime"))) {
-      output[i,4:7] <- crunch_time_date(column_data)
+      output[i, 4:7] <- crunch_time_date(column_data)
     }
 
     # Data does not fit in previous categories ---------------------------------
     else {
-      output[i,4:7] <- crunch_other(column_data)
+      output[i, 4:7] <- crunch_other(column_data)
     }
 
     # Data crunching by type ends here -----------------------------------------
 
     # Valid (non-missing) data, frequency and proportion -----------------------
-    output[i,8] <-
+    output[i, 8] <-
       paste0(format_number(n_valid, round.digits = 0), "\\\n(",
-             format_number(n_valid / n_tot * 100, round.digits = 1, nsmall = 1),
+             format_number(n_valid / (n_valid + n_miss) * 100, 
+                           round.digits = 1, nsmall = 1),
              "%)")
     
     # Missing data, frequency and proportion -----------------------------------
-    output[i,9] <-
+    output[i, 9] <-
       paste0(format_number(n_miss, round.digits = 0), "\\\n(",
-             format_number(n_miss / n_tot * 100, round.digits = 1, nsmall = 1),
+             format_number(n_miss / (n_valid + n_miss) * 100,
+                           round.digits = 1, nsmall = 1),
              "%)")
-
   }
 
   # Prepare output object ------------------------------------------------------
@@ -997,10 +1035,10 @@ crunch_numeric <- function(column_data, is_barcode) {
         # 
         #    number  rounded   final       Actual cell
         # --------------------------       ------------------
-        # 1.0600778   1.0600    1.06  ==>  0.86!: 267 (26.7%)
-        # 1.0500121   1.0500    1.05  ==>  1.04!: 249 (24.9%) 
-        # 1.0400007   1.0400    1.04  ==>  1.05!: 324 (32.4%)
-        # 0.8600902   0.8600    0.86  ==>  1.06!: 160 (16.0%)
+        # 1.0600778   1.0600    1.06  ==>  1.06!: 160 (16.0%)
+        # 1.0500121   1.0500    1.05  ==>  1.05!: 324 (32.4%) 
+        # 1.0400007   1.0400    1.04  ==>  1.04!: 249 (24.9%)
+        # 0.8600902   0.8600    0.86  ==>  0.86!: 267 (26.7%)
         # 
         # Also, when round.digits = 1 (default), we allow an 
         # additional digit, for practical reasons. Based on
