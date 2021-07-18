@@ -953,7 +953,9 @@ print_ctable <- function(x, method) {
     # Replace non-numeric names by original values
     temp_rownames[temp_rownames_nas] <- rownames(x[[1]])[temp_rownames_nas]
     row.names(x[[1]]) <- temp_rownames
-    row.names(x[[2]]) <- temp_rownames
+    if (!is.null(x[[2]])) {
+      row.names(x[[2]]) <- temp_rownames
+    }
   }
   
   # Use format() on col names when y is numeric
@@ -986,7 +988,9 @@ print_ctable <- function(x, method) {
     # Replace non-numeric names with original values    
     temp_colnames[temp_colnames_nas] <- colnames(x[[1]])[temp_colnames_nas]
     colnames(x[[1]]) <- temp_colnames
-    colnames(x[[2]]) <- temp_colnames
+    if (!is.null(x[[2]])) {
+      colnames(x[[2]]) <- temp_colnames
+    }
   }
   
 
