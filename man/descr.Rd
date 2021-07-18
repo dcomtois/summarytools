@@ -48,7 +48,7 @@ Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.}
 rows. Defaults to \code{FALSE}. Can be set globally with
 \code{\link{st_options}}, option \dQuote{descr.transpose}.}
 
-\item{order}{Character. When analysing more than one variable, this parameter
+\item{order}{Character. When analyzing more than one variable, this parameter
 determines how to order variables. Valid values are \dQuote{sort} (or
 simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
 containing all variable names in the desired order. Defaults to

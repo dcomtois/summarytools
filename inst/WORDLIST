@@ -9,6 +9,7 @@ asis
 autour
 avec
 barcode
+Barnwal
 basee
 behaviour
 BMI
@@ -19,6 +20,8 @@ centrees
 chacun
 chaque
 chisq
+CI
+CI's
 cigs
 colonnes
 comtois
@@ -27,6 +30,7 @@ corporelle
 css
 csv
 ctable
+cumul
 customizable
 cv
 d'age
@@ -91,6 +95,7 @@ Indice
 intervenir
 iqr
 Jeu
+jira
 jour
 kableExtra
 knitr
@@ -102,6 +107,7 @@ labelled
 lang
 le
 les
+Lua
 magick
 Magick
 magnif
@@ -115,6 +121,7 @@ moyenne
 na
 nas
 nbr
+Nilsson
 niveaux
 Nom
 nombre
@@ -137,6 +144,7 @@ png
 Poids
 ponderation
 POSIXt
+pre
 probabilite
 programmatically
 px
@@ -147,6 +155,7 @@ rangees
 rapportools
 Rdoc
 README
+README.Rmd
 results’
 RGui
 rmarkdown
@@ -156,6 +165,7 @@ Roxygen
 RStudio
 RStudio’s
 ru
+Rubets
 samp
 Sante
 SAS’s
@@ -183,6 +193,7 @@ sys
 Tabac
 tabagisme
 tbl
+tex
 texte
 tibble
 tibbles
@@ -204,6 +215,7 @@ virginica
 wgts
 wkhtmltopdf
 yaml
+xelatex
 Xenial
 xquartz
 XQuartz

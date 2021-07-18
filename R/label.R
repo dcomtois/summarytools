@@ -35,7 +35,7 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 
   if (is.atomic(x)) {
     lbl <- attr(x, which = "label", exact = TRUE)
-    if (is.null(lbl)){
+    if (is.null(lbl)) {
       if (isTRUE(fallback)) {
         lbl <- tail(as.character(substitute(x)), 1)
       } else {
@@ -124,11 +124,11 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 #' Dominic Comtois, \email{dominic.comtois@@gmail.com},
 #' @export
 unlabel <- function(x) {
-  if(is.list(x)) {
-    for(i in seq_along(x)) {
+  if (is.list(x)) {
+    for (i in seq_along(x)) {
       class(x[[i]]) <- setdiff(class(x[[i]]), "labelled")
     }
-    for(i in seq_along(x)) {
+    for (i in seq_along(x)) {
       attr(x[[i]],"label") <- NULL
     }
   }

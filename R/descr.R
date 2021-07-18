@@ -22,7 +22,7 @@
 #' @param transpose Logical. Make variables appears as columns, and stats as
 #'   rows. Defaults to \code{FALSE}. Can be set globally with
 #'   \code{\link{st_options}}, option \dQuote{descr.transpose}.
-#' @param order Character. When analysing more than one variable, this parameter
+#' @param order Character. When analyzing more than one variable, this parameter
 #'   determines how to order variables. Valid values are \dQuote{sort} (or
 #'   simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
 #'   containing all variable names in the desired order. Defaults to

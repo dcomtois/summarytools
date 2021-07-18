@@ -24,7 +24,7 @@ These are the four core functions:
   \item{ctable}{Cross-tabulations for pairs of categorical variables -- 
   accepting both numerical and character vectors, as well as factors.
   Choose between \emph{Total}, \emph{Columns} or \emph{Rows} proportions,
-  and optionaly display chi-square statistic (with corresponding p-value), 
+  and optionnaly display chi-square statistic (with corresponding p-value), 
   odds ratio, as well as risk ratio with flexible confidence intervals.}
 }
 

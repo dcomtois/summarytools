@@ -46,7 +46,7 @@ use_custom_lang <- function(file) {
     stop("invalid 'file' argument class: ", class(file))
   }
   
-  if (nrow(tr) == ncol(summarytools:::.translations)) {
+  if (nrow(tr) == ncol(.translations)) {
     items <- tr$item
     tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
     colnames(tr) <- items
