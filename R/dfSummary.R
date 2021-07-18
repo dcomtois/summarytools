@@ -70,7 +70,8 @@
 #' @param keep.grp.vars Logical. When using \code{\link[dplyr]{group_by}},
 #'   keep rows corresponding to grouping variable(s) in output table.
 #'   When \code{FALSE} (default), variable numbers still reflect the
-#'   the ordering in the full data frame.
+#'   the ordering in the full data frame (in other words, some numbers will
+#'   be skipped in the variable number column).
 #' @param silent Logical. Hide console messages. \code{FALSE} by default. To
 #'   change this value globally, see \code{\link{st_options}}.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
@@ -100,27 +101,34 @@
 #'       proportion of valid values.}
 #'     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 #'
-#' @details The default \code{plain.ascii = TRUE} option is there to make
-#'   results appear cleaner in the console. When used in a context of
-#'   \emph{rmarkdown} rendering, set this option to \code{FALSE}.
+#' @details The default value \code{plain.ascii = TRUE} is intended to
+#'   facilitate interactive data exploration. When using the package for
+#'   reporting with \emph{rmarkdown}, make sure to set this option to
+#'   \code{FALSE}.
 #'
-#'   When the \code{trim.strings} is set to \code{TRUE}, trimming is done
-#'   \emph{before} calculating frequencies, so those will be impacted
-#'   accordingly.
-#'
+#'   When \code{trim.strings} is set to \code{TRUE}, trimming is done
+#'   \strong{\emph{before} calculating frequencies}, be aware that those will
+#'   be impacted accordingly.
+#'   
 #'   Specifying \code{tmp.img.dir} allows producing results consistent with
 #'   pandoc styling while also showing \emph{png} graphs. Due to the fact that
 #'   in Pandoc, column widths are determined by the length of cell contents
-#'   \strong{even if said content is merely a link to an image}, we cannot
-#'   use the standard R temporary directory to store the images. We need a
-#'   shorter path; on Mac OS and Linux, using \dQuote{/tmp} is a sensible
-#'   choice, since this directory is cleaned up automatically on a regular
-#'   basis. On Windows however, there is no such convenient directory and the
-#'   user will have to choose a directory and cleanup the temporary images
-#'   manually after the document has been rendered. Providing a relative path
-#'   such as \dQuote{img} is recommended. The maximum length for this parameter
-#'   is set to 5 characters. It can be set globally using
-#'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
+#'   \strong{even if said content is merely a link to an image}, using standard
+#'   R temporary directory to store the images would cause columns to be
+#'   exceedingly wide. \strong{A shorter path is needed.} On Mac OS and Linux,
+#'   using \dQuote{/tmp} is a sensible choice, since this directory is cleaned
+#'   up automatically on a regular basis. On Windows however, there is no such
+#'   convenient directory, so the user has to choose a directory and cleanup the
+#'   temporary images manually after the document has been rendered. Providing
+#'   a relative path such as \dQuote{img}, omitting \dQuote{./}, is recommended.
+#'   The maximum length for this parameter is set to 5 characters. It can be set
+#'   globally with \code{\link{st_options}} (\emph{e.g.:}
+#'   \code{st_options(tmp.img.dir = ".")}.
+#'
+#' @note Several packages provide functions for defining \emph{variable labels},
+#'   \pkg{summarytools} being one of them. Some packages (\emph{Hmisc} in
+#'   particular) employ special classes for labelled objects, but
+#'   \pkg{summarytools} doesn't use nor look for any such classes.
 #'
 #' @examples
 #'
@@ -129,10 +137,10 @@
 #' st_options(use.x11 = FALSE)
 #' dfSummary(tobacco)
 #'
-#' # Exclude some columns
+#' # Exclude some of the columns to reduce table width
 #' dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
 #'
-#' # Limit number of categories to be displayed for factors / categorical data
+#' # Limit number of categories to be displayed for categorical data
 #' dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 #'
 #' # Using stby()
@@ -154,6 +162,8 @@
 #' tobacco %>% group_by(gender) %>% dfSummary()
 #' }
 #'
+#' @seealso \code{\link{label}}, \code{\link{print.summarytools}}
+#' 
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
@@ -1300,11 +1310,11 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     data <- data[!is.na(data)]
 
     # Correction for vectors of infinitesimal range
-    if (diff(range(data)) < 1e-301) {
-      e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
-      e <- min(as.numeric(e), 1e308)
-      data <- data * e
-    }
+    # if (diff(range(data)) < 1e-301) {
+    #   e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
+    #   e <- min(as.numeric(e), 1e308)
+    #   data <- data * e
+    # }
 
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
                        min.n = 1)
@@ -1350,7 +1360,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     } else {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
               col = "grey94", border = "grey65", horiz = TRUE,
-              xlim = c(0, sum(data)))
+              xlim = c(0, max(data)))
     }
 
     dev.off()

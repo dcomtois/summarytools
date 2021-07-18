@@ -156,7 +156,7 @@ freq(iris$Species,
      headings   = FALSE)
 ```
 
-### 2.1.3 Producing Multiple Frequency Tables At Once
+### 2.1.3 <a id="multiple-freq-tables"></a>Producing Multiple Frequency Tables At Once
 
 To generate frequency tables for all variables in a data frame, one could,
 for instance, use `lapply()`. However, this is not required since `freq()`
@@ -354,6 +354,9 @@ dfSummary(tobacco,
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
 *Rmarkdown* documents, **except for _html_ rendering**. The 
 explanation for this can be found [further below](#tmp-img-dir). 
+
+Some users reported repeated X11 warnings; those can be avoided by using the
+following chunk declaration: `{r chunk_name, results="asis", warning=FALSE}`.
 
 ### 2.4.2 Advanced Features
 
@@ -606,7 +609,7 @@ The following options can be set with `st_options()`:
 | tmp.img.dir <sup>(2)</sup>|        NA   | Directory to store [temporary images](#tmp-img-dir) |
 | use.x11 <sup>(3)</sup>    |      TRUE   | Allow creation of Base64-encoded graphs  |
 
-1. See section 2.1.4 for details  
+1. See <a href="#multiple-freq-tables">section 2.1.3</a> for details  
 2. Applies to `dfSummary()` only  
 3. Set to FALSE in text-only environments  
 

@@ -1,4 +1,4 @@
-#' Usage du Tabac et etat de Sante (Donnees simulees)
+#' Usage du tabac et etat de sante (donnees simulees)
 #'
 #' Jeu de donnees simulees de 1000 sujets, avec les
 #' colonnes suivantes:

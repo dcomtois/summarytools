@@ -170,6 +170,8 @@ check_args <- function(mc, dotArgs) {
             pf$rows <- pf$rows[-wrong_ind]
           }
         } 
+      } else if (length(pf$rows) > 0 && max(table(pf$rows)) > 1) {
+        warning("one or more elements in the rows argument appears more than once")
       }
     }
   }
@@ -483,7 +485,7 @@ check_args_print <- function(mc) {
     if (attr(pf$x, "format_info")$style %in% c("simple", "multiline")) {
       pf$dotArgs %+=% list(style = newstyle)
       if (isTRUE(tmp_msg_flag)) {
-        message("Setting 'plain.ascii' to FALSE and Changing style to '",
+        message("Setting 'plain.ascii' to FALSE and changing style to '",
                 newstyle, "' for improved markdown compatibility")
       } else {
         message("Changing style to '", newstyle, 
@@ -493,6 +495,11 @@ check_args_print <- function(mc) {
       message("Setting 'plain.ascii' to FALSE for improved markdown ",
               "compatibility")
     }
+  }
+  
+  if (pf$file != "" && identical(pf$method, "render")) {
+    message('To write content to a file, use method="pander", or ',
+            'method="browser", or leave method unspecified')
   }
   
   if (is.na(pf$footnote)) {

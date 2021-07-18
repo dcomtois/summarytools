@@ -60,6 +60,8 @@
 #'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
 #'   explicit in the function call).
 #'
+#' @note The data type represents the \code{\link[base]{class}} in most cases. 
+#'
 #' @examples
 #' data(tobacco)
 #' freq(tobacco$gender)
@@ -110,6 +112,7 @@
 #' @export
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct group_keys group_vars
+#' @importFrom lubridate is.Date
 freq <- function(x,
                  var             = NULL,
                  round.digits    = st_options("round.digits"),
@@ -320,7 +323,7 @@ freq <- function(x,
     
     if (!is.atomic(x)) {
       x <- try(as.vector(x), silent = TRUE)
-      if (inherits(x, "try-error") || !is.atomic(x)) {
+      if (inherits(x, "try-error") || (!is.atomic(x) && !is.Date(x))) {
         errmsg %+=% "argument x must be a vector or a factor"
       }
     }

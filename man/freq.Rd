@@ -106,6 +106,9 @@ The default \code{plain.ascii = TRUE} option is there to make
   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
   explicit in the function call).
 }
+\note{
+The data type represents the \code{\link[base]{class}} in most cases.
+}
 \examples{
 data(tobacco)
 freq(tobacco$gender)

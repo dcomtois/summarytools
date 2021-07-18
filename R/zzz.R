@@ -75,7 +75,7 @@ utils::globalVariables(c("."))
   pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
   should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
   
-  if(isTRUE(should_update))
+  if (isTRUE(should_update))
     packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
                           "install_github('rapporter/pander')")
 }

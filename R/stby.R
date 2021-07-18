@@ -30,7 +30,7 @@ stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
 #' @method stby data.frame
 #' @keywords utilities
 #' @export
-stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
+stby.data.frame <- function(data, INDICES, FUN, ..., simplify = TRUE) {
   if (identical(FUN, summarytools::freq) && ncol(data) > 1) {
     stop("when using freq() with stby(), only one variable may be analysed")
   }
@@ -49,7 +49,7 @@ stby.data.frame <- function (data, INDICES, FUN, ..., simplify = TRUE) {
 
 #' @method stby default
 #' @export
-stby.default <- function (data, INDICES, FUN, ..., simplify = TRUE) {
+stby.default <- function(data, INDICES, FUN, ..., simplify = TRUE) {
   dd <- as.data.frame(data)
   if (length(dim(data))) 
     by(dd, INDICES, FUN, ..., simplify = simplify)

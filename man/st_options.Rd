@@ -76,7 +76,7 @@ provide a custom string. Applies only to \emph{html} outputs.}
 \item{display.labels}{Logical. \code{TRUE} by default. Set to \code{FALSE} to
 omit data frame and variable labels in the headings section.}
 
-\item{bootstrap.css}{Logical. Specifies whether to Include 
+\item{bootstrap.css}{Logical. Specifies whether to include 
 \emph{Bootstrap css} in \emph{html} reports' \emph{head} section.
 Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
 method inside a \code{shiny} app to avoid interacting with the app's 

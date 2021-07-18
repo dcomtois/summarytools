@@ -225,7 +225,7 @@ print.summarytools <- function(x,
       !grepl(pattern = tempdir(), x = file, fixed = TRUE) &&
       method == "pander") {
     method <- "browser"
-    message("Switching method to 'browser'")
+    # message("Switching method to 'browser'")
   }
 
   # Parameter validation -------------------------------------------------------

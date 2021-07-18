@@ -78,22 +78,16 @@ that I ultimately realized would benefit a lot of people who are looking for
 the same thing I was seeking in the first place. 
 
 ### Support *summarytools*' Development With a Small Donation
-Some package developers and maintainers get paid to do exactly that. They
-may also work in teams. _This is not my case_. Seeing the package grow
-in popularity was and still is in itself a rewarding experience, but I won't
-lie; keeping up with the maintenance, feature requests and other features
-I have in mind takes more time than I can afford.
+If **summarytools** helps you get things done, please consider making a 
+donation. In doing so, you'll help me feel useful, but more importantly
+contribute to the package's development and help other people like you 
+who benefit from its current and *future features*. I regularly receive feature
+requests, and when I receive donations, I set aside some time to work on them,
+making summarytools even more relevant for data scientists, students
+and researchers around the world. And no matter how small the amount is,
+I always appreciate the gesture.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
-
-So if you find **summarytools** useful and want to support its development,
-please consider making a small donation using the *PayPal* button. 
-In exchange, on top of contributing to the package and helping out other
-data scientists, students and researchers, you'll get:
-
- - My sincere gratitude  
- - Your name listed in the <a href="#sponsors">Sponsors section</a> of this page  
- - My personal commitment to dedicate more time to the package's development  
 
 
 ## 1.2 Redirecting Output
@@ -1044,9 +1038,15 @@ A big thanks to people who made donations!
 - Peter Nilsson  
 - Ross Dunne  
 - Igor Rubets  
+- Joerg Sahlmann  
 
-If you find **summarytools** useful and want to support its
-development, please consider making a small donation using the *PayPal*
-button.
+If **summarytools** helps you get your work done, please consider making a
+donation. In doing so, you'll help me feel useful, but more importantly
+contribute to the package's development and help other people like you 
+who benefit from its current and *future features*. I regularly receive feature
+requests, and when I receive donations, I set aside some time to work on them,
+making summarytools even more relevant for data scientists, students
+and researchers around the world. And no matter how small the amount is,
+I always appreciate the gesture.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a> 
