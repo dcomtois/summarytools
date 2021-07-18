@@ -46,10 +46,37 @@ use_custom_lang <- function(file) {
     stop("invalid 'file' argument class: ", class(file))
   }
   
-  items <- tr$item
-  tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
-  colnames(tr) <- items
-  rownames(tr) <- "custom"
+  if (nrow(tr) == ncol(summarytools:::.translations)) {
+    items <- tr$item
+    tr <- as.data.frame(t(tr$custom), stringsAsFactors = FALSE)
+    colnames(tr) <- items
+    rownames(tr) <- "custom"
+  } 
+  
+  # Check contents
+  expected <- ncol(.translations)
+  tmp <- tr[,intersect(colnames(.translations), colnames(tr))]
+  tmp <- tmp[,!is.na(tmp[1,])]
+  nb_in   <- ncol(tmp)
+  nb_blank <- sum(as.character(tmp[1,]) == "")
+  cols_missing <- setdiff(colnames(.translations), colnames(tmp))
+  pct_actual <- round((nb_in - nb_blank) * 100 / expected)
+  
+  if (pct_actual < 60) {
+    warning("input file contains only ", pct_actual, "% of translated terms; ",
+            "English will be used for missing terms")
+  } else if (pct_actual < 100) {
+    message("no translation found for the following term(s) ; English will be ",
+    "used as fall-back values:\n    ", 
+            paste(cols_missing, sQuote(.translations[1,cols_missing]),
+                                 sep = " : ", collapse = "\n    "))
+  }
+  
+  if (nb_in < expected) {
+    tr <- .translations["en",]
+    tr[,colnames(tmp)] <- tmp[1,]
+    rownames(tr) <- "custom"
+  }
   
   .st_env$custom_lang <- tr
   st_options(lang = "custom")
