@@ -2,8 +2,11 @@
 title: "Introduction to summarytools"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette: 
+output:
+  html_document:
+    fig_caption: false
+    toc: true
+    toc_depth: 1
     css: 
     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
                         package = "rmarkdown")
@@ -15,6 +18,26 @@ vignette: >
   %\VignetteDepends{magrittr}
   %\VignetteDepends{forcats}
 ---
+
+<!--output: 
+  rmarkdown::html_vignette: 
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
+                        package = "rmarkdown")
+
+
+  html_document:
+    fig_caption: false
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
+                        package = "rmarkdown")
+
+-->
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -32,6 +55,8 @@ st_options(plain.ascii = FALSE,
 ```{r, echo=FALSE}
 st_css()
 ```
+
+<a id="s-1"></a>  
 
 # 1. Overview
 
@@ -112,10 +137,24 @@ Results can be
      output, and user-defined classes can be added at will  
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#s-1">&#171; Overview1</a> |
+<a href="#header">ToC</a> |
+<a href="#s-3">Grouped Statistics Using stby() &#187;</a>  
+</div>
+<br/>
+<a id="s-2"></a>  
 
-# 2. The Four Core Functions 
+# 2. The Four Core Functions  
 
-## <a id="freq"></a>2.1 Frequency Tables With freq()
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+</div>
+
+<a id="freq"></a>
+
+## 2.1 Frequency Tables With freq()  
 
 The `freq()` function generates frequency tables with counts,
 proportions, as well as missing data information. 
@@ -156,7 +195,9 @@ freq(iris$Species,
      headings   = FALSE)
 ```
 
-### 2.1.3 <a id="multiple-freq-tables"></a>Producing Multiple Frequency Tables At Once
+<a id="multiple-freq-tables"></a>  
+
+### 2.1.3 Producing Multiple Frequency Tables At Once  
 
 To generate frequency tables for all variables in a data frame, one could,
 for instance, use `lapply()`. However, this is not required since `freq()`
@@ -217,7 +258,14 @@ frequency table (results not shown).
 view(freq(tobacco), collapse = TRUE)
 ```
 
-## <a id="ctable"></a>2.2 Cross-Tabulations with ctable()
+<br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+</div>
+<a id="ctable"></a>
+
+## 2.2 Cross-Tabulations with ctable()  
 
 `ctable()` generates cross-tabulations (joint frequencies) for
 pairs of categorical variables. 
@@ -283,8 +331,13 @@ tobacco %$%  # Acts like with(tobacco, ...)
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+</div>
+<a id="descr"></a>  
 
-## <a id="descr"></a>2.3 Descriptive Statistics With descr()
+## 2.3 Descriptive Statistics With descr()  
 
 `descr()` generates descriptive / univariate statistics, *i.e.* common central
 tendency statistics and measures of dispersion. It accepts single
@@ -317,8 +370,13 @@ st_options(descr.stats = "common")
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+</div>
+<a id="dfsummary"></a>  
 
-## <a id="dfsummary"></a>2.4 Data Frame Summaries With dfSummary() 
+## 2.4 Data Frame Summaries With dfSummary()  
 
 `dfSummary()` creates a summary table with statistics, frequencies and graphs
 for all variables in a data frame. The information displayed is
@@ -351,6 +409,7 @@ dfSummary(tobacco,
 ```
 <img src="dfSummary_md.png" width=100%/>
 
+
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
 *Rmarkdown* documents, **except for _html_ rendering**. The 
 explanation for this can be found [further below](#tmp-img-dir). 
@@ -379,6 +438,16 @@ dfs$Variable <- NULL # This deletes the "Variable" column
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-2">&#171; The Four Core Functions</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-4">Grouped Statistics Using group_by() &#187;</a>  
+</div>
+<br/><br/>
+<a id="s-3"></a>  
 
 # 3. Grouped Statistics Using stby() 
 
@@ -425,6 +494,16 @@ with(tobacco,
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-3">&#171; Grouped Statistics Using dplyr::group_by()</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-5">Creating Tidy Tables With tb() &#187;</a>
+<br/><br/>  
+</div>
+<a id="s-4"></a>  
 
 # 4. Grouped Statistics Using dplyr::group_by()
 
@@ -451,6 +530,14 @@ tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-4">&#171; Grouped Statistics Using dplyr::group_by()</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-6">Redirecting Output to Files &#187;</a><br/>  
+</div><a id="s-5"></a>  
 
 # 5. Creating Tidy Tables With tb()
 
@@ -525,6 +612,16 @@ stby(data    = iris,
 ```
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-5">&#171; Creating Tidy Tables With tb()</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-7">Global Options &#187;</a>
+<br/><br/>  
+</div><a id="s-6"></a>  
+
 
 # 6. Redirecting Output to Files
 
@@ -556,6 +653,16 @@ tables in a single file. It is a quick alternative to creating an *Rmd*
 document.
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-6">&#171; Redirecting Output to Files</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-8">Overriding Formatting Attributes &#187;</a>
+<br/><br/>  
+</div><a id="s-7"></a>  
+
 
 # 7. Global options
 
@@ -622,6 +729,17 @@ st_options('round.digits')        # Display the value of a specific option
 st_options(style = 'rmarkdown',   # Set the value of one or several options
            footnote = NA)         # Turn off the footnote for all html output
 ```
+
+<br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-7">&#171; Overriding Formatting Attributes</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-9">Fine-Tuning Looks with CSS &#187;</a>
+<br/><br/>  
+</div><a id="s-8"></a>  
 
 # 8. Overriding Formatting Attributes
 
@@ -699,7 +817,17 @@ print(age_stats,
 2.  `freq() / ctable() / descr() / dfSummary()` parameters come second  
 3.  Global options set with `st_options()` come third and act as default 
 
+
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-8">&#171; Overriding Formatting Attributes</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-10">Creating <em>Shiny</em> Apps &#187;</a>
+<br/><br/>  
+</div><a id="s-9"></a>  
 
 # 9. Fine-Tuning Looks with CSS
 
@@ -731,6 +859,16 @@ print(dfSummary(tobacco),
 ```
 
 <br/>
+<br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-9">&#171; Fine-Tuning Looks with CSS</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-11">dfSummary Graphs in R Markdown &#187;</a>
+<br/><br/>  
+</div><a id="s-10"></a>  
 
 # 10. Creating *Shiny* apps
 
@@ -757,9 +895,21 @@ print(dfSummary(somedata,
       headings = FALSE,
       bootstrap.css = FALSE)
 ```
-<br/>
 
-# 11. Graphs in Markdown dfSummaries {#tmp-img-dir}
+
+<br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-10">&#171; Creating <em>Shiny</em> Apps</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-12">Translations &#187;</a>
+<br/><br/>  
+</div>
+<a id="s-11"></a>  
+
+# 11. dfSummary Graphs in R Markdown {#tmp-img-dir}
 
 When using `dfSummary()` in an *Rmd* document using *markdown*
 styling (as opposed to *html* rendering), three elements are
@@ -794,7 +944,17 @@ On Mac OS and Linux, using "/tmp" makes a lot of sense: it's a short path, and i
 self-cleaning. On Windows, there is no such convenient directory, so we need to pick one -- 
 be it absolute ("/tmp") or relative ("img", or simply ".").
 
+
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-11">&#171; dfSummary Graphs in R Markdown apps</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-13">This Vignette's Setup &#187;</a>  
+<br/>  
+</div><a id="s-12"></a>  
 
 # 12. Translations
 
@@ -884,8 +1044,17 @@ After closing the edit window, you will be able to save your new
 `use_custom_lang()`.
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-12">&#171; Translations</a> | 
+<a href="#header">ToC</a> | 
+<a href="#s-14">Conclusion &#187;</a><br/>  
+</div><a id="s-13"></a>  
+<a id="setup"></a>  
 
-# 13. <a id="setup"></a>This Vignette's Setup
+# 13. This Vignette's Setup  
 
 Knowing how this vignette is configured can help users get started with
 using **summarytools** in *Rmarkdown* documents.
@@ -931,7 +1100,18 @@ using `print()` or `view()` with the `file` argument. But in
 ## st_css()
 ## ```
 ```
-<br/> 
+
+<br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
+<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
+<br/>
+<a href="#s-13">&#171; This Vignette's Setup</a> | 
+<a href="#header">ToC</a>
+<br/><br/>  
+</div>
+<a id="s-14"></a>  
+
 
 # 14. Conclusion
 
@@ -949,3 +1129,6 @@ For a preview of what's coming in the next release, have a look at the
 [development branch](https://github.com/dcomtois/summarytools/tree/dev-current).
 
 <br/>
+<div style="width:100%; margin:0 auto; text-align:center">
+<a href="#header">ToC</a>  
+</div>

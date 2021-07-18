@@ -55,14 +55,16 @@ quickly get satisfying results in *Rmarkdown* documents.
 
 ## Contents
 
-**Tips for the Four Core Functions
-- [freq()](#freq)
-- [ctable()](#ctable)  
+#### Tips for the Four Core Functions  
+- [freq()](#freq)  
+- [ctable()](#ctable)    
 - [descr()](#descr)  
 - [dfSummary()](#dfsummary)  
 
-** Other Relevant Information
-- [This vignette's setup](#vignSetup)
+#### Other Relevant Information
+- [Using Other Formatting Packages](#packages)  
+- [Including dfSummaries in PDF documents](#dfspdf)  
+- [This vignette's setup](#vignSetup)  
 
 
 --------------------------------------------------------------------------------
@@ -72,13 +74,13 @@ quickly get satisfying results in *Rmarkdown* documents.
 `freq()` is best used with `style = 'rmarkdown'; html rendering is also 
 possible.
 
-## Rmarkdown Style
+## Rmarkdown Style for freq()
 ```{r}
 freq(tobacco$gender, style = 'rmarkdown')
 ```
 
 
-## HTML Rendering
+## HTML Rendering for freq()
 ```{r}
 print(freq(tobacco$gender), method = 'render')
 ```
@@ -92,7 +94,7 @@ example is provided further below.
 
 # ctable() {#ctable}
 
-## Rmarkdown Style
+## Rmarkdown Style for ctable()
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
 (yet), but the result is getting close to acceptable. This, however, is not
@@ -102,7 +104,7 @@ true for all themes. That is why the rendering method is preferred.
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
 ```
 
-## HTML Rendering
+## HTML Rendering for ctable()
 
 For best results, use this method.
 
@@ -118,12 +120,12 @@ print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
 `descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is 
 also supported.
 
-## Rmarkdown Style
+## Rmarkdown Style for descr()
 ```{r}
 descr(tobacco, style = 'rmarkdown')
 ```
 
-## HTML Rendering
+## HTML Rendering for descr()
 
 We'll use table.classes = 'st-small' to show how it affects the table's size,
 compared to the `freq()` table rendered earlier.
@@ -138,7 +140,7 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 # dfSummary() {#dfsummary}
 
-## Grid Style
+## Grid Style for dfSummary()
 
 Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
@@ -150,7 +152,7 @@ dfSummary(tobacco, style = 'grid', graph.magnif = 0.75,
 
 <img src="dfSummary_md.png" width=100%/>
 
-## HTML Rendering
+## HTML Rendering for dfSummary()
 
 This method also works really well, and not having to 
 specify the `tmp.img.dir` parameter is a plus.
@@ -170,15 +172,17 @@ print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75),
       max.tbl.height = 300, method = "render")
 ```
 
-Some users reported repeated X11 warnings; those can be avoided by using the
-following chunk declaration: `{r chunk_name, results="asis", warning=FALSE}`.
+#### Avoiding X11 Warnings
+
+Some users reported getting repeated X11 warnings; those can easily be avoided
+by using the following chunk expression: `{r, results="asis", warning=FALSE}`.
 
 
 <a href="#top">Back to top</a>
 
 --------------------------------------------------------------------------------
 
-## Using Other Formatting Packages
+## <a id="packages"></a>Using Other Formatting Packages
 
 As explained in the introductory vignette, `tb()` can be used to convert
 **summarytools** objects created with `freq()` and `descr()` to simple
@@ -202,6 +206,93 @@ stby(iris, iris$Species, descr, stats = "fivenum") %>%
   kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
+
+--------------------------------------------------------------------------------
+
+## <a id="dfspdf"></a>Including dfSummaries in pdf documents
+
+Here is a recipe for including fully formatted data frame summaries in pdf
+documents. There is some work involved, but following the instructions given
+here should give the expected results.
+
+There are basically two parts to this: first, you must create a preamble *tex*
+file. Second, you must indicate in the YAML section of your document where to
+find this file.
+
+#### Included Preamble *Tex* File
+
+This is the \LaTeX  content that you'll need to put in your own *fig-align.tex*:
+
+```
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{letltxmacro}
+\LetLtxMacro{\OldIncludegraphics}{\includegraphics}
+\renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
+  {\OldIncludegraphics[valign=t,#1]{#2}}}
+```
+
+The name of the file is arbitrary -- you can use whatever name you want. Its 
+location is also up to you. I suggest you put it in the same location as your
+*Rmd* file.
+
+Along with the `graph.magnif` parameter for `dfSummary(), you might need to
+adjust the 0.5 value used as raisebox parameter in the preamble.
+
+#### The YAML Section
+
+Your document should start with a YAML header like this one, supposing the
+preamble *tex* file is in the same location as your *Rmd* document :
+
+```
+---
+title: "My PDF With Data Frame Summaries"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    includes:
+      in_header: ./fig-valign.tex
+---
+```
+
+The *xelatex* engine option is not mandatory, but there are several advantages
+to it. I use it systematically and recommend you do the same.
+
+#### R Code
+
+Here is an example setup chunk:
+
+````
+```{r, message=FALSE}`r ''`  
+library(summarytools)
+st_options(
+  plain.ascii = FALSE, 
+  style = "rmarkdown",
+  dfSummary.style = "grid",
+  dfSummary.valid.col = FALSE,
+  dfSummary.graph.magnif = .52,
+  subtitle.emphasis = FALSE,
+  tmp.img.dir = "/tmp"
+)
+```
+````
+
+And here is a chunk actually creating the summary:
+
+````
+```{r, results='asis', message=FALSE}`r ''`  
+define_keywords(title.dfSummary = "Data Frame Summary in PDF Format")
+dfSummary(tobacco)
+```
+````
+
+#### Remarks
+
+Since we redefined the $\LaTeX$ command `includegraphics`, all images included using
+`[](some-image.png)` will be impacted. In some cases this will likely be
+problematic. Eventually we will find a more robust solution without such
+undesired side-effects. If you are well versed in $\LaTeX$  and think you can
+solve this problem, please get in touch.
 
 --------------------------------------------------------------------------------
 
