@@ -98,6 +98,8 @@ view <- function(x,
     
     attr(xx, "st_type")   <- "descr"
     attr(xx, "date")      <- attr(x[[1]], "date")
+    attr(xx, "fn_call")   <- attr(x[[1]], "fn_call")
+    attr(xx, "stats")     <- attr(x[[1]], "stats")
     attr(xx, "data_info") <- attr(x[[1]], "data_info")
     
     attr(xx, "data_info")$by_var_special <- 
