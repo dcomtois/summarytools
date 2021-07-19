@@ -1452,7 +1452,9 @@ txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
 #' @keywords internal
 txthist <- function(data) {
   data <- data[!is.na(data)]
-
+  if (is.infinite(max(abs(data)))) {
+    return('')
+  }
   # Correction for vectors of infinitesimal range
   if (diff(range(data)) < 1e-301) {
     e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
