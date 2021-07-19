@@ -523,7 +523,7 @@ print.summarytools <- function(x,
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
-                  "includes/scripts/jquery-3.6.0.slim.min.js",
+                  "includes/scripts/jquery-3.4.0.slim.min.js",
                   package = "summarytools"
                 )),
               if (collapse)

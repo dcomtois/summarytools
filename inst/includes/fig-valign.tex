@@ -1,8 +1,0 @@
-\usepackage{graphicx}
-\usepackage[export]{adjustbox}
-
-% redefine \includegraphics as described here:
-% https://tex.stackexchange.com/questions/79724/resize-all-images-in-latex-to-a-percentage-width
-\usepackage{letltxmacro}
-\LetLtxMacro{\OldIncludegraphics}{\includegraphics}
-\renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}{\OldIncludegraphics[valign=t,#1]{#2}}}

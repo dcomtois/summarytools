@@ -13,3 +13,6 @@
 ^tests$
 ^COPYING$
 ^inst/WORDLIST$
+vignettes/*.R
+vignettes/*.html
+inst/includes/fig-align.tex

@@ -5,10 +5,8 @@ Meta
 summarytools.Rproj
 .Rproj.user
 TODO.txt
-tests/output
-tests/img
-tests/date_dirs.Rdata
-tests/other
+tests/*
 img/ds*.png
 vignettes/img/
 notes/
+vignettes/*.R
