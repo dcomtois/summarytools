@@ -1,13 +1,17 @@
 ---
-title: "Recommendations for Using summarytools With Rmarkdown"
+title: "Recommendations for R Markdown"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette: 
+  html_document:
+    fig_caption: false
+    toc: true
+    toc_depth: 1
     css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
+                        package = "rmarkdown")
 vignette: >
-  %\VignetteIndexEntry{Recommendations for Rmarkdown}
+  %\VignetteIndexEntry{Recommendations for R Markdown}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{magrittr}
   %\VignetteEncoding{UTF-8}
@@ -32,12 +36,14 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
            footnote          = NA,          # Keeping the results minimalistic
            subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
                                             # For other themes, using TRUE might be preferable.
-st_css()
+st_css(main = TRUE, global = TRUE)
 ```
 
-## Introduction
+# 1. Introduction
 
-This document mainly contains examples using recommended styles for *Rmarkdown* documents. 
+This document mainly contains examples showing how best to make use of
+**summarytools** in *Rmarkdown* documents. 
+
 Available styles in _summarytools_ are directly linked to `pander`'s:  
 
 - _simple_ (default)  
@@ -53,34 +59,22 @@ Starting with `freq()`, we'll review the recommended methods and styles to
 quickly get satisfying results in *Rmarkdown* documents.
 
 
-## Contents
-
-#### Tips for the Four Core Functions  
-- [freq()](#freq)  
-- [ctable()](#ctable)    
-- [descr()](#descr)  
-- [dfSummary()](#dfsummary)  
-
-#### Other Relevant Information
-- [Using Other Formatting Packages](#packages)  
-- [Including dfSummaries in PDF documents](#dfspdf)  
-- [This vignette's setup](#vignSetup)  
-
+## 1.1 Contents
 
 --------------------------------------------------------------------------------
 
-# freq()
+# 1. Using freq() in R Markdown
 
 `freq()` is best used with `style = 'rmarkdown'; html rendering is also 
 possible.
 
-## Rmarkdown Style for freq()
+## 1.1 Rmarkdown Style for freq()  
 ```{r}
 freq(tobacco$gender, style = 'rmarkdown')
 ```
 
 
-## HTML Rendering for freq()
+## 1.2 HTML Rendering for freq()  
 ```{r}
 print(freq(tobacco$gender), method = 'render')
 ```
@@ -92,9 +86,9 @@ example is provided further below.
 
 <a href="#top">Back to top</a>
 
-# ctable() {#ctable}
+# 2. Using ctable() in R Markdown 
 
-## Rmarkdown Style for ctable()
+## 2.1 Rmarkdown Style for ctable()  
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
 (yet), but the result is getting close to acceptable. This, however, is not
@@ -104,7 +98,7 @@ true for all themes. That is why the rendering method is preferred.
 ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
 ```
 
-## HTML Rendering for ctable()
+## 2.2 HTML Rendering for ctable()  
 
 For best results, use this method.
 
@@ -116,16 +110,16 @@ print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
  
 <a href="#top">Back to top</a>
  
-# descr() {#descr}
+# 3. Using descr() in R Markdown 
 `descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is 
 also supported.
 
-## Rmarkdown Style for descr()
+## 3.1 Rmarkdown Style for descr()  
 ```{r}
 descr(tobacco, style = 'rmarkdown')
 ```
 
-## HTML Rendering for descr()
+## 3.2 HTML Rendering for descr()  
 
 We'll use table.classes = 'st-small' to show how it affects the table's size,
 compared to the `freq()` table rendered earlier.
@@ -138,37 +132,51 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 <a href="#top">Back to top</a>
 
-# dfSummary() {#dfsummary}
+# 4. Using dfSummary() in R Markdown 
 
-## Grid Style for dfSummary()
+To get optimal results, whichever method you choose, it is always best to
+omit at least 1, and if possible 2 columns from the output. Also, pick
+carefully the value of the `graph.magnig` parameter.
+
+## 4.1 Grid Style for dfSummary() 
 
 Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
 
 ```{r dfs_grid, eval=FALSE}
-dfSummary(tobacco, style = 'grid', graph.magnif = 0.75, 
-          valid.col = FALSE, tmp.img.dir = "/tmp")
+dfSummary(tobacco, 
+          style        = 'grid',
+          graph.magnif = 0.75, 
+          valid.col    = FALSE,
+          tmp.img.dir  = "/tmp")
 ```
 
 <img src="dfSummary_md.png" width=100%/>
 
-## HTML Rendering for dfSummary()
+### 4.2 HTML Rendering for dfSummary()  
 
 This method also works really well, and not having to 
 specify the `tmp.img.dir` parameter is a plus.
 
 ```{r}
-print(dfSummary(tobacco, graph.magnif = 0.75), method = 'render')
+print(dfSummary(tobacco, 
+                varnumbers   = FALSE, 
+                valid.col    = FALSE, 
+                graph.magnif = 0.75),
+      method = 'render')
 ```
 
-### Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
+## 4.3 Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
 
 For data frames containing numerous variables, we can use the `max.tbl.height`
 argument to wrap the results in a scrollable window having the specified
 height, in pixels. For instance:
 
 ```{r}
-print(dfSummary(tobacco, valid.col = FALSE, graph.magnif = 0.75), 
+print(dfSummary(tobacco, 
+                varnumbers   = FALSE,
+                na.col       = FALSE,
+                graph.magnif = 0.75), 
       max.tbl.height = 300, method = "render")
 ```
 
@@ -182,7 +190,8 @@ by using the following chunk expression: `{r, results="asis", warning=FALSE}`.
 
 --------------------------------------------------------------------------------
 
-## <a id="packages"></a>Using Other Formatting Packages
+
+# 5. Using Other Formatting Packages  
 
 As explained in the introductory vignette, `tb()` can be used to convert
 **summarytools** objects created with `freq()` and `descr()` to simple
@@ -207,9 +216,12 @@ stby(iris, iris$Species, descr, stats = "fivenum") %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 
+<a href="#top">Back to top</a>
+
 --------------------------------------------------------------------------------
 
-## <a id="dfspdf"></a>Including dfSummaries in pdf documents
+
+# 6. Including dfSummaries in PDF Documents 
 
 Here is a recipe for including fully formatted data frame summaries in pdf
 documents. There is some work involved, but following the instructions given
@@ -219,10 +231,11 @@ There are basically two parts to this: first, you must create a preamble *tex*
 file. Second, you must indicate in the YAML section of your document where to
 find this file.
 
-#### Included Preamble *Tex* File
+### Included Preamble *Tex* File
 
 This is the \LaTeX  content that you'll need to put in your own *fig-align.tex*:
 
+````
 ```
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
@@ -231,7 +244,8 @@ This is the \LaTeX  content that you'll need to put in your own *fig-align.tex*:
 \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
   {\OldIncludegraphics[valign=t,#1]{#2}}}
 ```
-
+````
+ 
 The name of the file is arbitrary -- you can use whatever name you want. Its 
 location is also up to you. I suggest you put it in the same location as your
 *Rmd* file.
@@ -239,7 +253,7 @@ location is also up to you. I suggest you put it in the same location as your
 Along with the `graph.magnif` parameter for `dfSummary(), you might need to
 adjust the 0.5 value used as raisebox parameter in the preamble.
 
-#### The YAML Section
+### The YAML Section
 
 Your document should start with a YAML header like this one, supposing the
 preamble *tex* file is in the same location as your *Rmd* document :
@@ -258,7 +272,7 @@ output:
 The *xelatex* engine option is not mandatory, but there are several advantages
 to it. I use it systematically and recommend you do the same.
 
-#### R Code
+### R Code
 
 Here is an example setup chunk:
 
@@ -286,7 +300,7 @@ dfSummary(tobacco)
 ```
 ````
 
-#### Remarks
+### Remarks
 
 Since we redefined the $\LaTeX$ command `includegraphics`, all images included using
 `[](some-image.png)` will be impacted. In some cases this will likely be
@@ -296,7 +310,7 @@ solve this problem, please get in touch.
 
 --------------------------------------------------------------------------------
 
-## <a id="vignSetup"></a>This Vignette's Setup
+# 7. This Vignette's Setup  
 
 This vignette uses theme `rmarkdown::html_vignette`. Its **yaml** section
 looks like this:
@@ -320,13 +334,15 @@ looks like this:
 The following **summarytools global options** have been set. More of them can
 be useful, but this is a good starting point.
 ```{r, eval=FALSE}
-st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it
+st_options(bootstrap.css     = FALSE,       # Already part of the theme 
            plain.ascii       = FALSE,       # One of the essential settings
            style             = "rmarkdown", # Idem.
-           dfSummary.silent  = TRUE,        # Suppresses messages about temporary files
-           footnote          = NA,          # Keeping the results minimalistic
-           subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
-                                            # For other themes, using TRUE might be preferable.
+           dfSummary.silent  = TRUE,        # Hides redundant messages 
+           footnote          = NA,          # Keeping the results minimal
+           subtitle.emphasis = FALSE)       # For the vignette theme, this
+                                            # gives better results. For 
+                                            # other themes, using TRUE might
+                                            # be preferable.
 ```
 
 Also, the following **knitr chunk options** were set this way:
@@ -338,16 +354,20 @@ opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 Finally, **summarytools' CSS** has been included in the following manner, with
 chunk option `echo = FALSE`:
 ```{r, eval=FALSE}
-st_css()
+st_css(main = TRUE, global = TRUE)
 ```
 
 <a href="#top">Back to top</a>
 
 --------------------------------------------------------------------------------
 
-## Final Notes
+# 8. Final Notes  
 
 This is by no way a definitive guide; depending on the themes you use, 
 you could find that other settings yield better results. If you are looking
 to create a _Word_ or a _PDF_ document, you might want to try different
-combinations of options.
+combinations of options. If you find problems with the recommended settings or
+if you find better combinations, you are welcome to 
+[open an issue on GitHub](https://github.com/dcomtois/summarytools/issues)
+to suggest modifications or make a pull request with your own improvements to
+this vignette.
