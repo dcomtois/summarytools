@@ -80,9 +80,9 @@ object, or to change formatting via \code{\link[base]{format}} or
 \value{
 \code{NULL} when \code{method="pander"}; A file path returned
   invisibly when \code{method="viewer"} or \code{"browser"}. In the
-  latter case, the file path is also passed to 
-  \code{\link[base]{shell.exec}}, causing the document to be opened in
-  default Web browser.
+  latter case, the file path is also passed to \code{shell.exec} 
+  (\emph{Windows}) or \code{\link{system}} (\emph{*nix}), causing
+  the document to be opened in default Web browser.
 }
 \description{
 Display \code{summarytools} objects in the console, in Web Browser or in

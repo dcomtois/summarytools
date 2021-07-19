@@ -65,9 +65,9 @@
 #'
 #' @return \code{NULL} when \code{method="pander"}; A file path returned
 #'   invisibly when \code{method="viewer"} or \code{"browser"}. In the
-#'   latter case, the file path is also passed to 
-#'   \code{\link[base]{shell.exec}}, causing the document to be opened in
-#'   default Web browser.
+#'   latter case, the file path is also passed to \code{shell.exec} 
+#'   (\emph{Windows}) or \code{\link{system}} (\emph{*nix}), causing
+#'   the document to be opened in default Web browser.
 #'
 #' @details
 #'   \code{Ascii} and \emph{markdown} tables are generated using
