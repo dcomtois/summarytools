@@ -3,26 +3,24 @@
 #' Displays weighted or unweighted frequencies, including <NA> counts and
 #' proportions.
 #'
-#' @param x Factor or vector, or data frame when \emph{var} is also provided, 
-#'   usually in a piped call.
-#' @param var Unquoted expression referring to a specific column in x. Provides
-#'   support for piped function calls (e.g. \code{df \%>\% freq(some_var)}.    
-#' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{2} and can be set globally; see \code{\link{st_options}}.
-#' @param order Ordering of rows in frequency table; \dQuote{name} (default for
-#'   non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
+#' @param x Factor, vector, or data frame.
+#' @param var Optional unquoted variable name. Provides support for piped
+#'   function calls (e.g. \code{my_df \%>\% freq(my_var)}). 
+#' @param round.digits Numeric. Number of significant digits to display. 
+#'   Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.
+#' @param order Character. Ordering of rows in frequency table; \dQuote{name}
+#'   (default for non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
 #'   most frequent to less frequent). To invert the order, place a minus sign
 #'   before or after the word. \dQuote{-freq} will thus display the items
 #'   starting from the lowest in frequency to the highest, and so forth.
-#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
-#'   \dQuote{rmarkdown} This option can be set globally; see
-#'   \code{\link{st_options}}.
+#' @param style Character. Style to be used by \code{\link[pander]{pander}}. One
+#'   of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+#'   \dQuote{jira}. Can be set globally with \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing to
 #'   console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'}, in
-#'   which case it will be set to \code{FALSE} automatically. To change the
-#'   default value globally, see \code{\link{st_options}}.
+#'   which case it will be set to \code{FALSE} automatically. Can be set
+#'   globally with \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns. By default
 #'   (\dQuote{default}), \dQuote{right} is used for text tables and
 #'   \dQuote{center} is used for \emph{html} tables. You can force it to one of
@@ -61,6 +59,8 @@
 #'   problems, this option is automatically set to \code{FALSE} whenever
 #'   \code{style = "rmarkdown"} (unless \code{plain.ascii = TRUE} is made
 #'   explicit in the function call).
+#'
+#' @note The data type represents the \code{\link[base]{class}} in most cases. 
 #'
 #' @examples
 #' data(tobacco)
@@ -112,6 +112,7 @@
 #' @export
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct group_keys group_vars
+#' @importFrom lubridate is.Date
 freq <- function(x,
                  var             = NULL,
                  round.digits    = st_options("round.digits"),
@@ -322,7 +323,7 @@ freq <- function(x,
     
     if (!is.atomic(x)) {
       x <- try(as.vector(x), silent = TRUE)
-      if (inherits(x, "try-error") || !is.atomic(x)) {
+      if (inherits(x, "try-error") || (!is.atomic(x) && !is.Date(x))) {
         errmsg %+=% "argument x must be a vector or a factor"
       }
     }
@@ -337,8 +338,11 @@ freq <- function(x,
     # End of arguments validation ----------------------------------------------
     
     # When style = "rmarkdown", make plain.ascii FALSE unless explicit
-    if (style %in% c("grid", "rmarkdown") && 
+    if (style == "rmarkdown" && isTRUE(plain.ascii) && 
         !("plain.ascii" %in% (names(match.call())))) {
+      if (!isTRUE(st_options("freq.silent"))) {
+        message("setting plain.ascii to FALSE")
+      }
       plain.ascii <- FALSE
     }
     

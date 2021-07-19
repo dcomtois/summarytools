@@ -17,16 +17,17 @@
 #' @aliases view stview
 #' 
 #' @details 
-#' Creates \emph{html} outputs and opens them in the Viewer, in a browser or
-#' renders the \emph{html} code appropriate for \emph{Rmarkdown} documents. 
+#' Creates \emph{html} outputs and displays them in \emph{RStudio}'s viewer, in
+#' a browser, or renders the \emph{html} code in \emph{Rmarkdown} documents. 
 #'
-#' For objects of class \dQuote{summarytools}, this function is simply
-#' a wrapper around \code{\link{print.summarytools}} with \emph{method} set to
-#' \dQuote{viewer}.
+#' For objects of class \dQuote{\emph{summarytools}}, this function is simply
+#' a wrapper around \code{\link{print.summarytools}} with
+#' \code{method = "viewer"}.
 #'  
-#' Objects of class \dQuote{by} or \dQuote{list} are dispatched to the present
-#' function, as it can manage multiple objects, whereas 
-#' \code{\link{print.summarytools}} can only manage one object at a time. 
+#' Objects of class \dQuote{\emph{by}}, \dQuote{\emph{stby}}, or 
+#' \dQuote{\emph{list}} are dispatched to the present function, as it can
+#' manage multiple objects, whereas \code{\link{print.summarytools}} can only
+#' manage one object at a time. 
 #'  
 #' @export
 view <- function(x, 
@@ -97,6 +98,8 @@ view <- function(x,
     
     attr(xx, "st_type")   <- "descr"
     attr(xx, "date")      <- attr(x[[1]], "date")
+    attr(xx, "fn_call")   <- attr(x[[1]], "fn_call")
+    attr(xx, "stats")     <- attr(x[[1]], "stats")
     attr(xx, "data_info") <- attr(x[[1]], "data_info")
     
     attr(xx, "data_info")$by_var_special <- 

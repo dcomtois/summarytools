@@ -22,16 +22,63 @@ fancier table stylings.
 # 1. Overview
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for
-data exploration and simple reporting.
+data cleaning, exploring, and simple reporting. At its core reside the
+following four functions:
 
-**Four functions** are at its core:
-
-|                               Function | Description                                                                                                                                                                                                                                                                                       |
-|---------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|           <a href="#freq">`freq()`</a> | **Frequency Tables** featuring counts, proportions, as well as missing data information                                                                                                                                                                                                           |
-|       <a href="#ctable">`ctable()`</a> | **Cross-Tabulations** (joint frequencies) between pairs of discrete variables featuring marginal sums as well as row, column or total proportions                                                                                                                                                 |
-|         <a href="#descr">`descr()`</a> | **Descriptive (Univariate) Statistics** for numerical data featuring common measures of central tendency and dispersion                                                                                                                                                                           |
-| <a href="#dfsummary">`dfSummary()`</a> | Extensive **Data Frame Summaries** featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts. Very useful to quickly detect anomalies and identify trends at a glance |
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:right;">
+Function
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;vertical-align:top">
+<a href="#freq">freq()</a>
+</td>
+<td style="text-align:left;vertical-align:top">
+**Frequency Tables** featuring counts, proportions, cumulative
+statistics as well as missing data reporting
+</td>
+</tr>
+<tr>
+<td style="text-align:right;vertical-align:top">
+<a href="#ctable">ctable()</a>
+</td>
+<td style="text-align:left;vertical-align:top">
+**Cross-Tabulations** (joint frequencies) between pairs of
+discrete/categorical variables featuring marginal sums as well as row,
+column or total proportions
+</td>
+</tr>
+<tr>
+<td style="text-align:right;vertical-align:top">
+<a href="#descr">descr()</a>
+</td>
+<td style="text-align:left;vertical-align:top">
+**Descriptive (Univariate) Statistics** for numerical data, featuring
+common measures of central tendency and dispersion
+</td>
+</tr>
+<tr>
+<td style="text-align:right;vertical-align:top">
+<a href="#dfsummary">dfSummary()</a>
+</td>
+<td style="text-align:left;vertical-align:top">
+Extensive **Data Frame Summaries** featuring type-specific information
+for all variables in a data frame: univariate statistics and/or
+frequency distributions, bar charts or histograms, as well as missing
+data counts and proportions. Very useful to quickly detect anomalies and
+identify trends at a glance
+</td>
+</tr>
+</tbody>
+</table>
 
 ## 1.1 Motivation
 
@@ -42,7 +89,7 @@ The package was developed with the following objectives in mind:
     such as SAS, SPSS, and Stata
 -   Offer flexibility in terms of output format & content  
 -   Integrate well with commonly used software & tools for reporting
-    ([the RStudio IDE](https://rstudio.com/products/rstudio/),
+    (the [RStudio](https://rstudio.com/products/rstudio/) IDE,
     [Rmarkdown](https://rmarkdown.rstudio.com/), and
     [knitr](https://yihui.org/knitr/)) while also allowing for
     standalone, simple report generation from any R interface
@@ -73,42 +120,46 @@ out other data scientists, students and researchers, you’ll get:
 -   My personal commitment to dedicate more time to the package’s
     development
 
-## 1.2 Redirecting Outputs
+## 1.2 Redirecting Output
 
 Results can be
 
 -   Displayed in the *R* console as plain text  
 -   Rendered as *html* and shown in a Web browser or in RStudio’s Viewer
     pane
--   Written to, or appended to plain text, *markdown*, or *html* files
+-   Written / appended to plain text, *markdown*, or *html* files
 
 ## 1.3 Other Characteristics
 
--   **Pipe-Friendly**:
-    -   The `%>%` and `%$%` operators from the
-        [magrittr](https://cran.r-project.org/package=magrittr) package
-        are supported  
-    -   The `%>>%` operator from the
-        [pipeR](https://cran.r-project.org/package=pipeR) package is
-        also supported  
+-   **Weights-enabled**: `freq()`, `ctable()` and `descr()` all support
+    sampling weights  
 -   **Multilingual**:
     -   Built-in translations exist for French, Portuguese, Spanish,
         Russian and Turkish  
     -   Users can easily add custom translations or modify existing sets
         of translations as needed  
--   **Weights-enabled**: except for `dfSummary()`, all core functions
-    support sampling weights
--   **Flexible**:
-    -   Default values for most function arguments can be modified using
-        `st_options()`; this simplifies coding and minimizes redundancy
+-   **Flexible and extensible**:
+    -   The built-in features to support alternate languages can also be
+        used to customize outputs – heading elements as well as keywords
+        in the output tables themselves can be adapted to one’s
+        preferences  
+    -   **Pipe operators** from
+        [magrittr](https://cran.r-project.org/package=magrittr) (`%>%`,
+        `%$%`) and [pipeR](https://cran.r-project.org/package=pipeR)
+        (`%>>%`) are fully supported  
+    -   Default values for a good number of function parameters can be
+        modified using `st_options()` to minimize redundancy  
+    -   **By-group processing** is easily achieved using the
+        package’s`stby()` function (a slightly modified version of
+        `by()`), but `dplyr::group_by()` is also supported  
     -   [**Pander options**](http://rapporter.github.io/pander/) can be
-        used for text / markdown tables
-    -   Base R’s `format()` parameters are supported; this is especially
-        useful to set thousands separators, among several other
-        possibilities
-    -   [**Bootstrap CSS**](https://getbootstrap.com/) used by default
-        with *html* outputs, and user-defined classes can be added at
-        will
+        used to customize or enhance plain text and markdown tables  
+    -   Base R’s `format()` parameters are also supported; this can be
+        used to set thousands separator or modify the decimal separator,
+        among several other possibilities  
+    -   [**Bootstrap CSS**](https://getbootstrap.com/) is used by
+        default with *html* output, and user-defined classes can be
+        added at will
 
 ## 1.4 Installing summarytools
 
@@ -132,9 +183,9 @@ This is the recommended method, as some minor fixes and improvements are
 regularly added.
 
 ``` r
-install.packages("remotes") # Using devtools is also possible
+install.packages("remotes")        # Using devtools is also possible
 library(remotes)
-install_github("rapporter/pander") # Necessary for optimal results!
+install_github("rapporter/pander") # Strongly recommended
 install_github("dcomtois/summarytools")
 ```
 
@@ -186,66 +237,16 @@ specified. However, since we have defined them globally for this
 document using `st_options()`, they are redundant and will be omitted
 from hereon.
 
-### 2.1.1 Formatting Numbers With `format()`’s Arguments
+### 2.1.1 Ignoring Missing Data
 
-As of version 0.9.8, it is possible to use base R’s
-[`format()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/format)
-parameters when calling `freq()` or any other core function. Some of the
-most useful are **big.mark**, which inserts thousands separators, and
-**decimal.mark**, which allows using commas instead of dots as decimal
-separator (useful in several locales). Note that decimal marks can also
-be set globally with the R option *OutDec* (*e.g.*
-`options(OutDec = ",")`). The formatting is applied in the heading
-section as well as in the results tables:
-
-``` r
-set.seed(2835)
-Random_numbers <- sample(c(5e3, 5e4, 5e5), size = 1e4, replace = TRUE, prob = c(.12, .36, .52))
-freq(Random_numbers, big.mark = ",", cumul = FALSE, headings = FALSE)
-```
-
-    ## setting plain.ascii to FALSE
-
-|                |   Freq | % Valid | % Total |
-|---------------:|-------:|--------:|--------:|
-|      **5,000** |  1,237 |   12.37 |   12.37 |
-|     **50,000** |  3,605 |   36.05 |   36.05 |
-|    **500,000** |  5,158 |   51.58 |   51.58 |
-| **&lt;NA&gt;** |      0 |         |    0.00 |
-|      **Total** | 10,000 |  100.00 |  100.00 |
-
-``` r
-# We can also use format() arguments with print / view
-print(freq(Random_numbers, cumul = FALSE, headings = FALSE), big.mark = " ", decimal.mark = ".")
-```
-
-    ## setting plain.ascii to FALSE
-
-|                |   Freq | % Valid | % Total |
-|---------------:|-------:|--------:|--------:|
-|      **5 000** |  1 237 |   12.37 |   12.37 |
-|     **50 000** |  3 605 |   36.05 |   36.05 |
-|    **500 000** |  5 158 |   51.58 |   51.58 |
-| **&lt;NA&gt;** |      0 |         |    0.00 |
-|      **Total** | 10 000 |  100.00 |  100.00 |
-
-### 2.1.2 Ignoring Missing Data
-
-The `report.nas` argument can be set to `FALSE` in order to ignore
-missing values (*NA*’s). Doing so has the following effects on the
-resulting table:
-
-1.  The **&lt;NA&gt;** row is omitted  
-2.  The **% Total** and **% Total Cum.** (cumulative) columns are also
-    omitted  
-3.  The **% Valid** column simply becomes **%**  
-4.  The **% Valid Cum.** column simply becomes **% Cum.**
+One of **summarytools**’ main purposes is to help cleaning and preparing
+data for further analysis. But in some circumstances, we don’t need (or
+already have) that information. Using `report.nas = FALSE` makes the
+output table smaller by one row and two columns:
 
 ``` r
 freq(iris$Species, report.nas = FALSE, headings = FALSE)
 ```
-
-    ## setting plain.ascii to FALSE
 
 |                | Freq |      % | % Cum. |
 |---------------:|-----:|-------:|-------:|
@@ -255,20 +256,20 @@ freq(iris$Species, report.nas = FALSE, headings = FALSE)
 |      **Total** |  150 | 100.00 | 100.00 |
 
 Note that the `headings = FALSE` parameter suppresses the heading
-section. (The heading section consists of a title, as well as various
-metadata elements: object names, labels, by-groups, and so on.
+section.
 
-### 2.1.3 Minimal Frequency Tables
+### 2.1.2 Minimal Frequency Tables
 
 By “switching off” all optional elements, a much simpler table will be
 produced:
 
 ``` r
-freq(iris$Species, report.nas = FALSE, totals = FALSE, 
-     cumul = FALSE, headings = FALSE)
+freq(iris$Species, 
+     report.nas = FALSE, 
+     totals     = FALSE, 
+     cumul      = FALSE, 
+     headings   = FALSE)
 ```
-
-    ## setting plain.ascii to FALSE
 
 |                | Freq |     % |
 |---------------:|-----:|------:|
@@ -276,11 +277,11 @@ freq(iris$Species, report.nas = FALSE, totals = FALSE,
 | **versicolor** |   50 | 33.33 |
 |  **virginica** |   50 | 33.33 |
 
-### 2.1.4 Multiple Frequency Tables
+### 2.1.3 Producing Multiple Frequency Tables At Once
 
 To generate frequency tables for all variables in a data frame, one
-*could* use `lapply()`. However, this is not required since `freq()`
-handles whole data frames, too:
+could, for instance, use `lapply()`. However, this is not required since
+`freq()` handles data frames, too:
 
 ``` r
 freq(tobacco)
@@ -295,7 +296,7 @@ using `st_options()`; for example, to change it to 10, we’d use
 included in the package. Another simulated data frame is included:
 *exams*. Both have French versions (*tabagisme*, *examens*).
 
-### 2.1.5 Subsetting (Filtering) Frequency Tables
+### 2.1.4 Subsetting (Filtering) Frequency Tables
 
 The `rows` parameter allows subsetting frequency tables; we can use this
 parameter in different ways:
@@ -303,23 +304,23 @@ parameter in different ways:
 -   To filter rows by their order of appearance, we use a numerical
     vector; `rows = 1:10` will show the frequencies for the first 10
     values only
--   To filter rows by name, we can use
+-   To filter rows by name, we can use either
     -   a character vector specifying the exact row names we wish to
         keep in the results  
-    -   a single character string which will be used as a regular
-        expression to select the matching column(s); see `?regex` for
-        more information on regular expressions
+    -   a single character string, which will be used as a regular
+        expression (see `?regex` for more information on this topic)
 
-Used in combination with the `order` argument, the subsetting feature
-can be quite practical. For a character variable containing a large
-number of distinct values, showing only the most frequent is easily
-done:
+#### Showing The Most Common Values
+
+By combining the `order` and `rows` parameters, we can easily filter the
+results to show, for example, the 5 most common values in a vector:
 
 ``` r
-freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
+freq(tobacco$disease, 
+     order    = "freq",
+     rows     = 1:5,
+     headings = FALSE)
 ```
-
-    ## setting plain.ascii to FALSE
 
 |                  | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
 |-----------------:|-----:|--------:|-------------:|--------:|-------------:|
@@ -335,14 +336,14 @@ freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
 Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
 get results ranked from lowest to highest in frequency.
 
-To account for the frequencies of unshown values, the “**(Other)**” row
-is automatically added.
+**Important!!** To account for the frequencies of unshown values, the
+“**(Other)**” row is automatically added.
 
-### 2.1.6 Collapsible Sections
+### 2.1.5 Collapsible Sections
 
 When generating *html* results, use the `collapse = TRUE` argument with
-`print()` or `view()` to get collapsible sections; clicking on the
-variable name in the heading section will collapse / reveal the
+`print()` or `view()` / `stview()` to get collapsible sections; clicking
+on the variable name in the heading section will collapse / reveal the
 frequency table (results not shown).
 
 ``` r
@@ -358,15 +359,21 @@ Since *markdown* does not support multiline table headings (but does
 accept *html* code), we’ll use the *html* rendering feature for this
 section.
 
-Using the *tobacco* data frame, we’ll cross-tabulate the two categorical
-variables *smoker* and *diseased*.
+Using the *tobacco* simulated data frame, we’ll cross-tabulate the two
+categorical variables *smoker* and *diseased*.
 
 ``` r
-print(ctable(x = tobacco$smoker, y = tobacco$diseased, prop = "r"),
+print(ctable(x = tobacco$smoker, 
+             y = tobacco$diseased, 
+             prop = "r"),       # Show row proportions
       method = "render")
 ```
 
-<img src="img/ctable-with-row-props.png" style="border:0"/>
+<img src="img/ctable-row-proportions.png" width=50% style="border:0"/>
+
+<sup>\*</sup> *This is actually an image, since GitHub doesn’t allow the
+*CSS* necessary to make this table appear as it should. The same remark
+applies to `ctable()` results that follow.*
 
 ### 2.2.1 Row, Column or Total Proportions
 
@@ -380,20 +387,24 @@ By “switching off” all optional features, we get a simple “2 x 2” table:
 
 ``` r
 with(tobacco, 
-     print(ctable(x = smoker, y = diseased, prop = 'n',
-                  totals = FALSE, headings = FALSE),
-           method = "render"))
+     print(ctable(x = smoker, 
+                  y = diseased, 
+                  prop     = 'n',
+                  totals   = FALSE, 
+                  headings = FALSE),
+           method = "render")
+)
 ```
 
-<img src="img/ctable-barebones-2.png" style="border:0"/>
+<img src="img/ctable-minimal.png" width=25% style="border:0"/>
 
 ### 2.2.3 Chi-Square (𝛘<sup>2</sup>), Odds Ratio and Risk Ratio
 
 To display the chi-square statistic, set `chisq = TRUE`. For *2 x 2*
 tables, use `OR` and `RR` to show odds ratio and risk ratio (also called
 relative risk), respectively. Those can be set to `TRUE`, in which case
-95% confidence intervals will be shown; to use alternate confidence
-levels, use for example `OR = .90`.
+95% confidence intervals are shown; to use alternate confidence levels,
+use for example `OR = .90`. \#\#\#\# Using Pipes
 
 To show how pipes can be used with **summarytools**, we’ll use
 **magrittr**’s `%$%` and `%>%` operators:
@@ -401,13 +412,15 @@ To show how pipes can be used with **summarytools**, we’ll use
 ``` r
 library(magrittr)
 tobacco %$%  # Acts like with(tobacco, ...)
-  ctable(smoker, diseased,
-         chisq = TRUE, OR = TRUE, RR = TRUE,
+  ctable(x = smoker, y = diseased,
+         chisq = TRUE,
+         OR    = TRUE,
+         RR    = TRUE,
          headings = FALSE) %>%
   print(method = "render")
 ```
 
-<img src="img/ctable-chisq.png" style="border:0"  width=500px/>
+<img src="img/ctable-statistics.png" width=55% style="border:0">
 
 ## <a id="descr"></a>2.3 Descriptive Statistics With descr()
 
@@ -449,7 +462,10 @@ Results can be transposed by using `transpose = TRUE`, and statistics
 can be selected using the `stats` argument:
 
 ``` r
-descr(iris, stats = c("mean", "sd"), transpose = TRUE, headings = FALSE)
+descr(iris,
+      stats     = c("mean", "sd"),
+      transpose = TRUE,
+      headings  = FALSE)
 ```
 
 |                  | Mean | Std.Dev |
@@ -461,7 +477,14 @@ descr(iris, stats = c("mean", "sd"), transpose = TRUE, headings = FALSE)
 
 See `?descr` for a list of all available statistics. Special values
 “all”, “fivenum”, and “common” are also valid values for the `stats`
-argument. The default value is “all”.
+argument. The default value is “all”, but it can be modified using
+`st_options()`:
+
+``` r
+st_options(descr.stats = "common")
+```
+
+<br/>
 
 ## <a id="dfsummary"></a>2.4 Data Frame Summaries With dfSummary()
 
@@ -472,14 +495,14 @@ according to the number of distinct values.
 
 To see the results in RStudio’s Viewer (or in the default Web browser if
 working in another IDE or from a terminal window), we use the `view()`
-function:
+function, or its twin `stview()` in case of name conflicts:
 
 ``` r
 view(dfSummary(iris))
 ```
 
 ![dfSummary Output displayed in RStudio’s
-viewer](img/dfSummary_in_RStudio_Viewer.png)
+viewer](img/dfSummary-in-RStudio-Viewer.png)
 
 ### 2.4.1 Using dfSummary() in Rmarkdown Documents
 
@@ -489,21 +512,25 @@ good idea to exclude a column or two to avoid margin overflow. Since the
 them.
 
 ``` r
-dfSummary(tobacco, plain.ascii = FALSE, style = "grid", 
-          graph.magnif = 0.75, valid.col = FALSE, tmp.img.dir = "/tmp")
+dfSummary(tobacco, 
+          plain.ascii  = FALSE, 
+          style        = "grid", 
+          graph.magnif = 0.75, 
+          valid.col    = FALSE,
+          tmp.img.dir = "/tmp")
 ```
 
 ![dfSummary-md](img/dfSummary_md.png)
 
 **The `tmp.img.dir` parameter is mandatory** when generating
-*dfSummaries* in *Rmarkdown* documents, except for *html* rendering. The
-explanation for this can be found [further below](#tmp-img-dir).
+*dfSummaries* in *Rmarkdown* documents, **except for *html* rendering**.
+The explanation for this can be found [further below](#tmp-img-dir).
 
 ### 2.4.2 Advanced Features
 
 The `dfSummary()` function also
 
--   Reports the number of duplicate records in the heading section  
+-   Reports the number of duplicate records, in the heading section  
 -   Detects UPC/EAN codes (barcode numbers) and doesn’t calculate
     irrelevant statistics for them  
 -   Detects email addresses and reports counts of valid, invalid and
@@ -529,7 +556,9 @@ would `by()`:
 ``` r
 (iris_stats_by_species <- stby(data = iris, 
                                INDICES = iris$Species, 
-                               FUN = descr, stats = "common", transpose = TRUE))
+                               FUN       = descr, 
+                               stats     = "common", 
+                               transpose = TRUE))
 ```
 
     ## Non-numerical variable(s) ignored: Species
@@ -574,8 +603,10 @@ When used to produce split-group statistics for a single variable,
 a series of one-column tables.
 
 ``` r
-with(tobacco, stby(data = BMI, INDICES = age.gr, 
-                   FUN = descr, stats = c("mean", "sd", "min", "med", "max")))
+with(tobacco, stby(data    = BMI, 
+                   INDICES = age.gr, 
+                   FUN     = descr,
+                   stats   = c("mean", "sd", "min", "med", "max")))
 ```
 
 ### Descriptive Statistics
@@ -598,13 +629,15 @@ The syntax is a little trickier for this combination, so here is an
 example (results not shown):
 
 ``` r
-stby(list(x = tobacco$smoker, y = tobacco$diseased), 
-     INDICES = tobacco$gender, FUN = ctable)
+stby(data    = list(x = tobacco$smoker, y = tobacco$diseased), 
+     INDICES = tobacco$gender, 
+     FUN     = ctable)
 
 # or equivalently
 with(tobacco, 
-     stby(list(x = smoker, y = diseased), 
-          INDICES = gender, FUN = ctable))
+     stby(data    = list(x = smoker, y = diseased), 
+          INDICES = gender, 
+          FUN     = ctable))
 ```
 
 # 4. Grouped Statistics Using dplyr::group\_by()
@@ -620,7 +653,9 @@ this advice, we get:
 ``` r
 library(dplyr)
 tobacco$gender %<>% forcats::fct_explicit_na()
-tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
+tobacco %>% 
+  group_by(gender) %>% 
+  descr(stats = "fivenum")
 ```
 
     ## Non-numerical variable(s) ignored: age.gr, smoker, diseased, disease
@@ -669,33 +704,159 @@ results into “tidy” tables with the use of the `tb()` function (think of
 
 ``` r
 library(magrittr)
-iris %>% descr(stats = "common") %>% tb()
+iris %>%
+  descr(stats = "common") %>%
+  tb() %>%
+  kable()
 ```
 
-``` small
-## # A tibble: 4 x 8
-##   variable      mean    sd   min   med   max n.valid pct.valid
-##   <chr>        <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>     <dbl>
-## 1 Petal.Length  3.76 1.77    1    4.35   6.9     150       100
-## 2 Petal.Width   1.20 0.762   0.1  1.3    2.5     150       100
-## 3 Sepal.Length  5.84 0.828   4.3  5.8    7.9     150       100
-## 4 Sepal.Width   3.06 0.436   2    3      4.4     150       100
-```
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+med
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+n.valid
+</th>
+<th style="text-align:right;">
+pct.valid
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Petal.Length
+</td>
+<td style="text-align:right;">
+3.758000
+</td>
+<td style="text-align:right;">
+1.7652982
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+4.35
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Petal.Width
+</td>
+<td style="text-align:right;">
+1.199333
+</td>
+<td style="text-align:right;">
+0.7622377
+</td>
+<td style="text-align:right;">
+0.1
+</td>
+<td style="text-align:right;">
+1.30
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sepal.Length
+</td>
+<td style="text-align:right;">
+5.843333
+</td>
+<td style="text-align:right;">
+0.8280661
+</td>
+<td style="text-align:right;">
+4.3
+</td>
+<td style="text-align:right;">
+5.80
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sepal.Width
+</td>
+<td style="text-align:right;">
+3.057333
+</td>
+<td style="text-align:right;">
+0.4358663
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+3.00
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+</tbody>
+</table>
 
 ``` r
-iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
+iris$Species %>% 
+  freq(cumul = FALSE, report.nas = FALSE) %>% 
+  tb()
 ```
 
-    ## setting plain.ascii to FALSE
+# A tibble: 3 x 3
 
-``` small
-## # A tibble: 3 x 3
-##   Species     freq   pct
-##   <fct>      <dbl> <dbl>
-## 1 setosa        50  33.3
-## 2 versicolor    50  33.3
-## 3 virginica     50  33.3
-```
+Species freq pct <fct> <dbl> <dbl> 1 setosa 50 33.3 2 versicolor 50 33.3
+3 virginica 50 33.3
 
 By definition, no total rows are part of *tidy* tables, and the row
 names are converted to a regular column. Note that for displaying
@@ -708,8 +869,11 @@ Here are some examples showing how lists created using `stby()` or
 `group_by()` can be transformed into *tidy tibbles*.
 
 ``` r
-grouped_descr <- stby(data = exams, INDICES = exams$gender, 
-                      FUN = descr, stats = "common")
+grouped_descr <- stby(data    = exams,
+                      INDICES = exams$gender, 
+                      FUN     = descr,
+                      stats   = "common")
+
 grouped_descr %>% tb()
 ```
 
@@ -793,22 +957,34 @@ and `descr()` objects into simple tables that any package can work with.
 Here is an example using **kableExtra**:
 
 ``` r
+# As usual, we need to set the chunk option results to 'asis'
 library(kableExtra)
-library(magrittr)
-stby(iris, iris$Species, descr, stats = "fivenum") %>%
+stby(data    = iris, 
+     INDICES = iris$Species, 
+     FUN     = descr, 
+     stats   = "fivenum") %>%
   tb(order = 3) %>%
-  kable(format = "html", digits = 2) %>%
+  kable(format = "html") %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 
-![tb-kableExtra](img/tb-kableExtra.png)
+<img src="img/descr-kableExtra.png" width=40% style="border:0">
+
+To explore some of the possibilities offered by the excellent
+[**kableExtra**](https://CRAN.R-project.org/package=kableExtra) package,
+have a look at some of its vignettes:
+
+``` r
+vignette("awesome_table_in_html", package = "kableExtra")
+vignette("awesome_table_in_pdf", package = "kableExtra")
+```
 
 # 6. Redirecting Output to Files
 
-Using the `file` argument with `print()` or `view()`, we can write
-outputs to a file, be it *html*, *Rmd*, *md*, or just plain text
-(*txt*). The file extension is used to determine the type of content to
-write out.
+Using the `file` argument with `print()` or `view()` / `stview()`, we
+can write outputs to a file, be it *html*, *Rmd*, *md*, or just plain
+text (*txt*). The file extension is used by the package to determine the
+type of content to write out.
 
 ``` r
 view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
@@ -822,10 +998,9 @@ option is to generate an *html* file and convert it to *PDF* using
 [Pandoc](https://pandoc.org) or
 [WK&lt;html&gt;TOpdf](https://wkhtmltopdf.org/index.html) (the latter
 gives better results than Pandoc with `dfSummary()` output). Another
-option is to create an *Rmd* document using *PDF* as the output format,
-but with a caveat: displaying graphs with `dfSummary()` will cause
-vertical misalignment (we hope to resolve this issue in a future
-version).
+option is to create an *Rmd* document using *PDF* as the output format.
+See `vignette("Recommendations-rmarkdown", package = "summarytools")`
+for the details on how to proceed.
 
 ## 6.1 Appending Output Files
 
@@ -844,21 +1019,23 @@ The following options can be set with `st_options()`:
 |-----------------------------:|----------:|:-----------------------------------------------|
 |         style <sup>(1)</sup> |  “simple” | Set to “rmarkdown” in .Rmd documents           |
 |                  plain.ascii |      TRUE | Set to FALSE in .Rmd documents                 |
-|                 round.digits |         2 | Number of decimals to show                     |
+|  round.digits <sup>(2)</sup> |         2 | Number of decimals to show                     |
 |                     headings |      TRUE | Formerly “omit.headings”                       |
 |                     footnote | “default” | Customize or set to NA to omit                 |
 |               display.labels |      TRUE | Show variable / data frame labels in headings  |
-| bootstrap.css <sup>(2)</sup> |      TRUE | Include Bootstrap 4 CSS in *html* output files |
+| bootstrap.css <sup>(3)</sup> |      TRUE | Include Bootstrap 4 CSS in *html* output files |
 |                   custom.css |        NA | Path to your own CSS file                      |
 |                  escape.pipe |     FALSE | Useful for some Pandoc conversions             |
-|    char.split <sup>(3)</sup> |        12 | Threshold for line-wrapping in column headings |
+|    char.split <sup>(4)</sup> |        12 | Threshold for line-wrapping in column headings |
 |            subtitle.emphasis |      TRUE | Controls headings formatting                   |
 |                         lang |      “en” | Language (always 2-letter, lowercase)          |
 
-1.  Applies to `freq()`, `ctable()` and `descr()`; `dfSummary()` has its
-    own style option (see section 7.2)
-2.  Set to FALSE in Shiny apps  
-3.  Affects only *html* outputs for `descr()` and `ctable()`
+1.  Does not apply to `dfSummary()`, which has its own style option (see
+    section 7.2)  
+2.  Does not apply to `ctable()`, which has its own `round.digits`
+    option (see section 7.2)  
+3.  Set to FALSE in *Shiny* apps  
+4.  Affects only *html* outputs for `descr()` and `ctable()`
 
 ## 7.2 Function-Specific Options
 
@@ -871,6 +1048,7 @@ The following options can be set with `st_options()`:
 |                          freq.silent |       FALSE | Hide console messages                               |
 |                          ctable.prop |         “r” | Display **r**ow proportions by default              |
 |                        ctable.totals |        TRUE | Show marginal totals                                |
+|                  ctable.round.digits |           1 | Number of decimals to show in `ctable()`            |
 |                          descr.stats |       “all” | “fivenum”, “common” or vector of stats              |
 |                      descr.transpose |       FALSE | Display stats in columns instead of rows            |
 |                         descr.silent |       FALSE | Hide console messages                               |
@@ -931,7 +1109,7 @@ arguments also apply, even though they are not reproduced here.
 | split.tables <sup>(\*)</sup> |  x   |   x    |   x   |     x     |
 |      caption <sup>(\*)</sup> |  x   |   x    |   x   |     x     |
 
-(\*) These are **pander options**
+(\*) *pander* options
 
 ## 8.2 Overriding Heading Contents
 
@@ -955,13 +1133,11 @@ following arguments with `print()` or `view()`:
 
 In the following example, we will create and display a `freq()` object,
 and then display it again, this time overriding three of its formatting
-attributes, as well as one heading attribute.
+attributes, as well as one of its heading attributes.
 
 ``` r
 (age_stats <- freq(tobacco$age.gr)) 
 ```
-
-    ## setting plain.ascii to FALSE
 
 ### Frequencies
 
@@ -978,7 +1154,10 @@ attributes, as well as one heading attribute.
 |      **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 ``` r
-print(age_stats, report.nas = FALSE, totals = FALSE, display.type = FALSE,
+print(age_stats,
+      report.nas     = FALSE, 
+      totals         = FALSE, 
+      display.type   = FALSE,
       Variable.label = "Age Group")
 ```
 
@@ -995,6 +1174,22 @@ print(age_stats, report.nas = FALSE, totals = FALSE, display.type = FALSE,
 |  **71 +** |  159 | 16.31 | 100.00 |
 
 ## 8.3 Order of Priority for Parameters / Options
+
+-   If the argument is explicitly supplied in the function call, it will
+    have precedence over any stored value for the parameter (stored
+    values are the ones that are written to the object’s attributes when
+    using a core function, or the default stored in the summarytools
+    global options list).
+
+-   If the core function and the print/view functions are called
+    together and have conflicting values for a parameter, it is always
+    the print/view arguments that win.
+
+-   The stored defaults (modified with st\_options() or left as they are
+    when loading the package) will be applied if the parameter values
+    cannot be found in the function calls.
+
+To put it a bit mot schematically:
 
 1.  `print()` or `view()` parameters have precedence (overriding
     feature)  
@@ -1025,8 +1220,10 @@ Then we use `print()`’s `custom.css` argument to specify to location of
 our newly created *CSS* file (results not shown):
 
 ``` r
-print(dfSummary(tobacco), custom.css = 'path/to/custom.css', 
-      table.classes = 'tiny-text', file = "tiny-tobacco-dfSummary.html")
+print(dfSummary(tobacco),
+      custom.css    = 'path/to/custom.css', 
+      table.classes = 'tiny-text',
+      file          = "tiny-tobacco-dfSummary.html")
 ```
 
 # 10. Creating *Shiny* apps
@@ -1047,9 +1244,11 @@ To successfully include **summarytools** functions in *Shiny* apps,
 **Example** (results not shown)
 
 ``` r
-print(dfSummary(somedata, varnumbers = FALSE, valid.col = FALSE, 
+print(dfSummary(somedata, 
+                varnumbers   = FALSE, 
+                valid.col    = FALSE, 
                 graph.magnif = 0.8), 
-      method = 'render',
+      method   = 'render',
       headings = FALSE,
       bootstrap.css = FALSE)
 ```
@@ -1062,44 +1261,33 @@ display the *png* graphs properly:
 
 1 - `plain.ascii` must be set to FALSE  
 2 - `style` must be set to “grid”  
-3 - `tmp.img.dir` must be defined
+3 - `tmp.img.dir` must be defined and be at most 5 characters wide
 
-Why the third element? Although *R* makes it really easy to create
-temporary files and directories, they do have long pathnames, especially
-on Windows. Unfortunately, Pandoc determines the final (rendered) column
-widths by counting characters in a cell, even if those characters are
-paths pointing to images.
+Note that as of version 0.9.9, **setting `tmp.img.dir` is no longer
+required** **when using `method = "render"` and can be left to `NA`**.
+It is only necessary to define it when a transitory markdown table must
+be created, as shown below. Note how narrow the *Graph* column is – this
+is actually required, since the width of the rendered column is
+determined by the number of characters in the cell, rather than the
+width of the image itself:
 
-At this time, there seems to be only one solution around this problem:
-cut down on characters in image paths. So instead of this:
-
-    +-----------+---------------------------------------------------------------------+---------+
-    | Variable  | Graph                                                               | Valid   |
-    +===========+=====================================================================+=========+
-    | gender\   | ![](C:/Users/johnny/AppData/Local/Temp/RtmpYRgetx/file5aa44d71.png) | 978\    |
-    | [factor]  |                                                                     | (97.8%) |
-    +----+---------------+------------------------------------------------------------+---------+
-
-…we aim for this:
-
-    +---------------+----------------------+---------+
-    | Variable      | Graph                | Valid   |
-    +===============+======================+=========+
-    | gender\       | ![](/tmp/ds0001.png) | 978\    |
-    | [factor]      |                      | (97.8%) |
-    +---------------+----------------------+---------+
+    +---------------+--------|----------------------+---------+
+    | Variable      | stats  |  Graph               | Valid   |
+    +===============+========|======================+=========+
+    | age\          |  ...   | ![](/tmp/ds0001.png) | 978\    |
+    | [numeric]     |  ...   |                      | (97.8%) |
+    +---------------+--------+----------------------+---------+
 
 CRAN policies are really strict when it comes to writing content in the
 user directories, or anywhere outside *R’s temporary zone* (for good
-reasons). So the users need to set this location themselves, therefore
-consenting to having content written outside *R*’s predefined temporary
-zone.
+reasons). So users need to set this temporary location themselves,
+therefore consenting to having content written outside *R*’s predefined
+temporary zone.
 
 On Mac OS and Linux, using “/tmp” makes a lot of sense: it’s a short
 path, and it’s self-cleaning. On Windows, there is no such convenient
 directory, so we need to pick one – be it absolute (“/tmp”) or relative
-(“img”, or simply “.”). Two things are to be kept in mind: it needs to
-be short (5 characters max) and it needs to be cleaned up manually.
+(“img”, or simply “.”).
 
 # 12. Translations
 
@@ -1118,8 +1306,6 @@ All output from the core functions will now use that language:
 ``` r
 freq(iris$Species)
 ```
-
-    ## setting plain.ascii to FALSE
 
 ### Tableau de fréquences
 
@@ -1168,25 +1354,66 @@ you should always have this *csv* file handy for future use.
 
 Sometimes, all you might want to do is change just a few keywords – for
 instance, you could prefer using “N” instead of “Freq” in the title row
-of `freq()` tables. For this, use `define_keywords()`. Calling this
-function without any arguments will bring up, on systems that support
-graphical devices (the vast majority, that is), an editable window
-allowing to modify only the desired item(s).
-
-<img src="img/define_keywords.png" width=95% style="border:2px;border-color:grey" />
-
-After closing the edit window, you will be able to export the resulting
-“custom language” into a *csv* file that you can reuse in the future by
-calling `use_custom_lang()`.
-
-It is also possible to programmatically define one or several keywords
-using `define_keywords()`. For instance:
+of `freq()` tables. Or you might need to generate a document with
+several `dfSummary()` tables, with customized headings (replacing the
+generic “Data Frame Summary”). For this, use `define_keywords()`.
 
 ``` r
-define_keywords(freq = "N")
+define_keywords(title.freq = "Types of Iris Flowers")
+freq(iris$Species)
 ```
 
-See `?define_keywords` for more details.
+### Types of Iris Flowers
+
+**iris$Species**  
+**Type:** Facteur
+
+|                | Fréq. | % Valide | % Valide cum. | % Total | % Total cum. |
+|---------------:|------:|---------:|--------------:|--------:|-------------:|
+|     **setosa** |    50 |    33.33 |         33.33 |   33.33 |        33.33 |
+| **versicolor** |    50 |    33.33 |         66.67 |   33.33 |        66.67 |
+|  **virginica** |    50 |    33.33 |        100.00 |   33.33 |       100.00 |
+| **&lt;NA&gt;** |     0 |          |               |    0.00 |       100.00 |
+|      **Total** |   150 |   100.00 |        100.00 |  100.00 |       100.00 |
+
+You could further customize the headings by adding arguments to the
+`print()` function:
+
+``` r
+define_keywords(title.freq = "Types and Counts, Iris Flowers")
+define_keywords(freq = "N") # Changes the "Freq" table heading
+print(freq(iris$Species, display.type = FALSE),
+      Variable = "")
+```
+
+### Types and Counts, Iris Flowers
+
+|                |   N | % Valide | % Valide cum. | % Total | % Total cum. |
+|---------------:|----:|---------:|--------------:|--------:|-------------:|
+|     **setosa** |  50 |    33.33 |         33.33 |   33.33 |        33.33 |
+| **versicolor** |  50 |    33.33 |         66.67 |   33.33 |        66.67 |
+|  **virginica** |  50 |    33.33 |        100.00 |   33.33 |       100.00 |
+| **&lt;NA&gt;** |   0 |          |               |    0.00 |       100.00 |
+|      **Total** | 150 |   100.00 |        100.00 |  100.00 |       100.00 |
+
+By using the empty string, we ensure that in the output heading, the
+line normally used for printing the variable name will be entirely
+deleted (as opposed to left blank).
+
+See `?define_keywords` for a list of all customizable strings in the
+package.
+
+### Calling `define_keywords()` Without any Arguments
+
+This will bring up, on systems that support graphical devices (the vast
+majority, that is), an editable window allowing to modify only the
+desired item(s).
+
+<img src="img/define-keywords.png" width=95% style="border:2px;border-color:grey" />
+
+After closing the edit window, you will be able to save your new “custom
+language” to a *csv* file that you can later reuse by calling
+`use_custom_lang()`.
 
 # 13. Additional Software Installations
 

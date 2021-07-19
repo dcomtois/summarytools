@@ -20,9 +20,10 @@ Delete temporary files created when using generic print method with
 \code{method='browser'} or \code{method='viewer'}, or when calling
 \code{view()} function.
 }
-\details{
-All temporary files are deleted automatically when R session is ended. This
-function is thus an overkill in most circumstances.
+\note{
+Given that all temporary files are deleted automatically when an R
+session is ended, this function is an overkill in most circumstances. It 
+could however be useful in server-type setups.
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com>}

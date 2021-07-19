@@ -92,10 +92,11 @@ ws_to_symbol <- function(x) {
 trs <- function(item, l = st_options("lang")) {
   l <- force(l)
   if (l != "custom") {
-    .translations[l,item]
+    val <- .translations[l,item]
   } else {
-    .st_env$custom_lang["custom", item]
+    val <- .st_env$custom_lang["custom", item]
   }
+  ifelse(is.na(val), "", val)
 }
 
 
@@ -113,33 +114,16 @@ count_empty <- function(x, count.nas = TRUE) {
   n
 }
 
-# Redefine htmltools's includeCSS but use collapse = "\n"
-#' @importFrom htmltools tags HTML
-#' @keywords internal
-includeCss <- function(path, ...) {
-  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
-  args <- list(...)
-  if (is.null(args$type)) 
-    args$type <- "text/css"
-  return(do.call(tags$style, c(list(HTML(paste8(lines, collapse = "\n"))), 
-                               args)))
-}
-
-# Redefine htmltools's includeScript but use collapse = "\n"
-#' @importFrom htmltools tags HTML
-#' @keywords internal
-includeScript <- function(path, ...) {
-  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
-  return(tags$script(HTML(paste8(lines, collapse = "\n")), ...))
-}
-
-
 # Clone of htmltools:::paste8
 #' @keywords internal
 paste8 <- function(..., sep = " ", collapse = NULL) {
-  args <- c(lapply(list(...), enc2utf8), 
-            list(sep = if (is.null(sep)) sep else enc2utf8(sep), 
-                 collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)))
+  args <- c(
+    lapply(list(...), enc2utf8), 
+    list(
+      sep = if (is.null(sep)) sep else enc2utf8(sep), 
+      collapse = if (is.null(collapse)) collapse else enc2utf8(collapse)
+    )
+  )
   do.call(paste, args)
 }
 
@@ -157,4 +141,8 @@ map_groups <- function(gk) {
 
 pad <- function(string, width) {
   paste0(strrep(" ", max(0, width - nchar(string))), string)
+}
+
+pctvalid <- function(x, round.digits = 1) {
+  round(sum(!is.na(x)) / length(x) * 100, round.digits)
 }

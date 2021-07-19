@@ -14,23 +14,23 @@
 #'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
-#' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when
-#'   using \strong{summarytools} with a rendering tool such as \code{knitr} or
-#'   when creating rmarkdown output files to be converted with Pandoc. Note 
-#'   however that its value will automatically be set to \code{FALSE} whenever
-#'   \code{style} is set to \dQuote{rmarkdown}).
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
+#'   \code{TRUE}, no markup characters will be used (useful when printing to
+#'   console). \code{TRUE} by default, but when \code{style = 'rmarkdown'},
+#'   it is automatically set to \code{FALSE}. To override this behavior,
+#'   \code{plain.ascii = TRUE} must be specified in the function call.
 #' @param round.digits Numeric. Defaults to \code{2}.
 #' @param headings Logical. Set to \code{FALSE} to remove all headings from
 #'   outputs. Only the tables will be printed out, except when \code{\link{by}}
 #'   or \code{\link{lapply}} are used. In that case, the variable or the group
-#'   will still appear before the tables. \code{FALSE} by default.
+#'   will still appear before each table. \code{TRUE} by default.
 #' @param footnote Character. When the default value \dQuote{default} is used,
 #'   the package name & version, as well as the R version number are displayed
 #'   below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 
 #'   provide a custom string. Applies only to \emph{html} outputs.
 #' @param display.labels Logical. \code{TRUE} by default. Set to \code{FALSE} to
 #'   omit data frame and variable labels in the headings section.
-#' @param bootstrap.css Logical. Specifies whether to Include 
+#' @param bootstrap.css Logical. Specifies whether to include 
 #'   \emph{Bootstrap css} in \emph{html} reports' \emph{head} section.
 #'   Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
 #'   method inside a \code{shiny} app to avoid interacting with the app's 
@@ -58,6 +58,7 @@
 #'   \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{ctable}}. \code{TRUE} by default.
+#' @param ctable.round.digits Numeric. Defaults to \code{1}.
 #' @param descr.stats Character. Corresponds to the \code{stats} parameter of
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
@@ -149,6 +150,7 @@ st_options <- function(option                 = NULL,
                        freq.silent            = FALSE,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE,
+                       ctable.round.digits    = 1,
                        descr.stats            = "all",
                        descr.transpose        = FALSE,
                        descr.silent           = FALSE,
@@ -220,6 +222,7 @@ st_options <- function(option                 = NULL,
                    "freq.silent"            = FALSE,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
+                   "ctable.round.digits"    = 1,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
                    "descr.silent"           = FALSE,

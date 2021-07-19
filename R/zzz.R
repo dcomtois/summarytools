@@ -18,15 +18,6 @@
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 
-# list of all arguments passed internally - this is used to
-# differentiate between pander arguments and other types of arguments
-.st_env$internal_args <- 
-  c("col.widths", "collapse", "cumul", "display.labels",
-    "display.type", "graph.col", "group.only", "headings",
-    "labels.col", "max.tbl.height", "na.col", "report.nas",
-    "round.digits", "totals", "valid.col", "var.only",
-    "varnumbers")
-
 # summarytools global options
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
@@ -48,6 +39,7 @@ utils::globalVariables(c("."))
                  "freq.silent"            = FALSE,
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
+                 "ctable.round.digits"    = 1,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
                  "descr.silent"           = FALSE,
@@ -83,7 +75,7 @@ utils::globalVariables(c("."))
   pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
   should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
   
-  if(isTRUE(should_update))
+  if (isTRUE(should_update))
     packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
                           "install_github('rapporter/pander')")
 }

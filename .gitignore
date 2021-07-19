@@ -9,3 +9,4 @@ tests/*
 img/ds*.png
 vignettes/*.R
 notes/
+vignettes/*.R

@@ -26,7 +26,7 @@ print.list <- function(x,
                        collapse      = 0,
                        escape.pipe   = st_options("escape.pipe"),
                        ...) {
-  
+
   if (inherits(x[[1]], "summarytools")) {
     
     view(x,

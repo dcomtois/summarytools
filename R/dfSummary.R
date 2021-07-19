@@ -1,39 +1,38 @@
 #' Data frame Summary
 #'
-#' Summary of a data frame consisting of: variable names, labels if any, factor
-#' levels, frequencies and/or numerical summary statistics, and valid/missing
-#' observation counts.
+#' Summary of a data frame consisting of: variable names and types, labels if
+#' any, factor levels, frequencies and/or numerical summary statistics, 
+#' barplots/histograms, and valid/missing observation counts and proportions.
 #'
 #' @param x A data frame.
 #' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{1}.
-#' @param varnumbers Logical. Should the first column contain variable number?
-#'   Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
+#'   \code{1}. Does not affect proportions, which always show \code{1} digit. 
+#' @param varnumbers Logical. Show variable numbers in the first column.
+#'   Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-#'   functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
-#'   column is only shown if at least one column has a defined label. This
-#'   option can also be set globally; see \code{\link{st_options}}, option
+#'   functions, among others) will be displayed. \code{TRUE} by default, but
+#'   the \emph{labels} column is only shown if a label exists for at least one
+#'   column. Can be set globally with \code{\link{st_options}}, option
 #'   \dQuote{dfSummary.labels.col}.
 #' @param valid.col Logical. Include column indicating count and proportion of
-#'   valid (non-missing) values. \code{TRUE} by default, but can be set
-#'   globally; see \code{\link{st_options}}, option
-#'   \dQuote{dfSummary.valid.col}.
+#'   valid (non-missing) values. \code{TRUE} by default; can be set
+#'   globally with \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.
 #' @param na.col Logical. Include column indicating count and proportion of
-#'   missing (NA) values. \code{TRUE} by default, but can be set globally; see
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
-#' @param graph.col Logical. Display barplots / histograms column in \emph{html}
-#'   reports. \code{TRUE} by default, but can be set globally; see
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.
-#' @param graph.magnif Numeric. Magnification factor, useful if the graphs show
-#'   up too large (then use a value < 1) or too small (use a value > 1). Must be
-#'   positive. Default to \code{1}. Can be set globally; see
-#'   \code{\link{st_options}}, option \dQuote{dfSummary.graph.magnif}.
-#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table. Defaults to \dQuote{multiline}. The only other valid option
-#'   is \dQuote{grid}. Style \dQuote{simple} is not supported for this
-#'   particular function, and \dQuote{rmarkdown} will fallback to
+#'   missing (\code{NA}) values. \code{TRUE} by default; can be set globally
+#'   with \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.
+#' @param graph.col Logical. Display barplots/histograms column. \code{TRUE}
+#'   by default; can be set globally with \code{\link{st_options}}, 
+#'   option \dQuote{dfSummary.graph.col}.
+#' @param graph.magnif Numeric. Magnification factor for graphs column. Useful
+#'   if the graphs show up too large (then use a value such as .75) or too small
+#'   (use a value such as \code{1.25}). Must be positive. Defaults to \code{1}.
+#'   Can be set globally with \code{\link{st_options}}, option
+#'   \dQuote{dfSummary.graph.magnif}.
+#' @param style Character. Argument used by \code{\link[pander]{pander}}.
+#'   Defaults to \dQuote{multiline}. The only other valid option
+#'   is \dQuote{grid}. Style \dQuote{rmarkdown} will fallback to
 #'   \dQuote{multiline}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
 #'   \code{TRUE}, no markup characters will be used (useful when printing to
@@ -68,6 +67,11 @@
 #' @param tmp.img.dir Character. Directory used to store temporary images when
 #'   rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 #'   `style = "grid"`. See \emph{Details}.
+#' @param keep.grp.vars Logical. When using \code{\link[dplyr]{group_by}},
+#'   keep rows corresponding to grouping variable(s) in output table.
+#'   When \code{FALSE} (default), variable numbers still reflect the
+#'   the ordering in the full data frame (in other words, some numbers will
+#'   be skipped in the variable number column).
 #' @param silent Logical. Hide console messages. \code{FALSE} by default. To
 #'   change this value globally, see \code{\link{st_options}}.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
@@ -91,31 +95,40 @@
 #'       of distinct values if their number is not greater than
 #'       \code{max.distinct.values}.}
 #'     \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-#'       barplot for factors and character variables.} \item{Valid}{Number and
+#'       barplot for factors and character variables.} 
+#'     \item{Graph}{An html encoded graph, either barplot or histogram.}
+#'     \item{Valid}{Number and
 #'       proportion of valid values.}
 #'     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
 #'
-#' @details The default \code{plain.ascii = TRUE} option is there to make
-#'   results appear cleaner in the console. When used in a context of
-#'   \emph{rmarkdown} rendering, set this option to \code{FALSE}.
+#' @details The default value \code{plain.ascii = TRUE} is intended to
+#'   facilitate interactive data exploration. When using the package for
+#'   reporting with \emph{rmarkdown}, make sure to set this option to
+#'   \code{FALSE}.
 #'
-#'   When the \code{trim.strings} is set to \code{TRUE}, trimming is done
-#'   \emph{before} calculating frequencies, so those will be impacted
-#'   accordingly.
-#'
+#'   When \code{trim.strings} is set to \code{TRUE}, trimming is done
+#'   \strong{\emph{before} calculating frequencies}, be aware that those will
+#'   be impacted accordingly.
+#'   
 #'   Specifying \code{tmp.img.dir} allows producing results consistent with
 #'   pandoc styling while also showing \emph{png} graphs. Due to the fact that
 #'   in Pandoc, column widths are determined by the length of cell contents
-#'   \strong{even if said content is merely a link to an image}, we cannot
-#'   use the standard R temporary directory to store the images. We need a
-#'   shorter path; on Mac OS and Linux, using \dQuote{/tmp} is a sensible
-#'   choice, since this directory is cleaned up automatically on a regular
-#'   basis. On Windows however, there is no such convenient directory and the
-#'   user will have to choose a directory and cleanup the temporary images
-#'   manually after the document has been rendered. Providing a relative path
-#'   such as \dQuote{img} is recommended. The maximum length for this parameter
-#'   is set to 5 characters. It can be set globally using
-#'   \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
+#'   \strong{even if said content is merely a link to an image}, using standard
+#'   R temporary directory to store the images would cause columns to be
+#'   exceedingly wide. \strong{A shorter path is needed.} On Mac OS and Linux,
+#'   using \dQuote{/tmp} is a sensible choice, since this directory is cleaned
+#'   up automatically on a regular basis. On Windows however, there is no such
+#'   convenient directory, so the user has to choose a directory and cleanup the
+#'   temporary images manually after the document has been rendered. Providing
+#'   a relative path such as \dQuote{img}, omitting \dQuote{./}, is recommended.
+#'   The maximum length for this parameter is set to 5 characters. It can be set
+#'   globally with \code{\link{st_options}} (\emph{e.g.:}
+#'   \code{st_options(tmp.img.dir = ".")}.
+#'
+#' @note Several packages provide functions for defining \emph{variable labels},
+#'   \pkg{summarytools} being one of them. Some packages (\emph{Hmisc} in
+#'   particular) employ special classes for labelled objects, but
+#'   \pkg{summarytools} doesn't use nor look for any such classes.
 #'
 #' @examples
 #'
@@ -124,10 +137,10 @@
 #' st_options(use.x11 = FALSE)
 #' dfSummary(tobacco)
 #'
-#' # Exclude some columns
+#' # Exclude some of the columns to reduce table width
 #' dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
 #'
-#' # Limit number of categories to be displayed for factors / categorical data
+#' # Limit number of categories to be displayed for categorical data
 #' dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 #'
 #' # Using stby()
@@ -137,17 +150,20 @@
 #'
 #' \dontrun{
 #'
-#' # Show in Viewer or browser (view: no capital V!)
+#' # Show in Viewer or browser - no capital V in view(); stview() is also
+#' # available in case of conflicts with other packages)
 #' view(dfSummary(iris))
 #'
 #' # Rmarkdown-ready
-#' dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
+#' dfSummary(tobacco, style = "grid", plain.ascii = FALSE,
 #'           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
 #'
 #' # Using group_by()
 #' tobacco %>% group_by(gender) %>% dfSummary()
 #' }
 #'
+#' @seealso \code{\link{label}}, \code{\link{print.summarytools}}
+#' 
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
@@ -174,6 +190,7 @@ dfSummary <- function(x,
                       split.cells      = 40,
                       split.tables     = Inf,
                       tmp.img.dir      = st_options('tmp.img.dir'),
+                      keep.grp.vars    = FALSE,
                       silent           = st_options('dfSummary.silent'),
                       ...) {
 
@@ -198,8 +215,13 @@ dfSummary <- function(x,
     outlist <- list()
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
     g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
+    
+    # Extract grouping variable names
+    # g_vars  <- setdiff(names(attr(x, "group")), ".rows")
+    # g_vars_pos <- which(colnames(x) %in% g_vars)
+    
     for (g in seq_along(g_ks)) {
-      outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]], ]),
+      outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]],]),
                                 round.digits        = round.digits,
                                 varnumbers          = varnumbers,
                                 labels.col          = labels.col,
@@ -219,6 +241,7 @@ dfSummary <- function(x,
                                 split.cells         = split.cells,
                                 split.tables        = split.tables,
                                 tmp.img.dir         = tmp.img.dir,
+                                keep.grp.vars       = keep.grp.vars,
                                 silent              = silent,
                                 ...                 = ...)
 
@@ -245,6 +268,8 @@ dfSummary <- function(x,
       attr(outlist[[g]], "data_info")$Group    <- g_ks[g]
       attr(outlist[[g]], "data_info")$by_first <- g == 1
       attr(outlist[[g]], "data_info")$by_last  <- g == length(g_ks)
+      attr(outlist[[g]], "format_info")$keep.grp.vars <- keep.grp.vars
+      
     }
     class(outlist) <- "stby"
     return(outlist)
@@ -380,44 +405,53 @@ dfSummary <- function(x,
   for (i in seq_len(ncol(x))) {
 
     # extract column data
-    column_data <- x[[i]]
 
-    # Add column number
-    output[i,1] <- i
+    column_data <- x[[i]]
 
     # Calculate valid vs missing data info
     n_miss <- sum(is.na(column_data))
-    n_valid <- n_tot - n_miss
+    n_valid <- ifelse(is.list(column_data),
+                              sum(!is.na(column_data)),
+                              n_tot - n_miss)
+    
+    
+    # Build content for first 3 columns of output data frame
+    #   Column 1: Variable number
+    #   Column 2: Variable name and class
+    #   Column 3: Label
 
-    # Add column name and class
+    output[i,1] <- i
+
     output[i,2] <- paste0(names(x)[i], "\\\n[",
                           paste(class(column_data), collapse = ", "),
                           "]")
 
-    # Check if column contains emails
-    if (is.character(column_data)) {
-      email_val <- detect_email(column_data)
-    } else {
-      email_val <- FALSE
-    }
-
-    if (!identical(email_val, FALSE)) {
-      output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
-    }
-
-    # Add UPC/EAN info if applicable
-    if (is.factor(column_data)) {
-      barcode_type <- detect_barcode(as.character(column_data))
-    } else {
-      barcode_type <- detect_barcode(column_data)
-    }
-
-    if (is.character(barcode_type)) {
-      output[i,2] <- paste(output[i,2],
-                           paste(barcode_type, trs("codes")),
-                           sep = "\\\n")
-      if (is.numeric(column_data)) {
-        column_data <- as.character(column_data)
+    if (!is.list(column_data)) {
+      # Check if column contains emails
+      if (is.character(column_data)) {
+        email_val <- detect_email(column_data)
+      } else {
+        email_val <- FALSE
+      }
+  
+      if (!identical(email_val, FALSE)) {
+        output[i,2] <- paste(output[i,2], trs("emails"), sep = "\\\n")
+      }
+  
+      # Add UPC/EAN info if applicable
+      if (is.factor(column_data)) {
+        barcode_type <- detect_barcode(as.character(column_data))
+      } else {
+        barcode_type <- detect_barcode(column_data)
+      }
+  
+      if (is.character(barcode_type)) {
+        output[i,2] <- paste(output[i,2],
+                             paste(barcode_type, trs("codes")),
+                             sep = "\\\n")
+        if (is.numeric(column_data)) {
+          column_data <- as.character(column_data)
+        }
       }
     }
 
@@ -429,51 +463,80 @@ dfSummary <- function(x,
     }
 
     # Data crunching by type starts here ---------------------------------------
+    # Column 4: Stats / Values
+    # Column 5: Freqs / % of Valid
+    # Column 6: Graph (png)
+    # Column 7: Graph (ascii)
+    # Column 8: Valid count & pct.
+    # Column 9: NA    count & pct. 
 
+    # Deal with lists first -- they are treated differently, not as "deeply"
+    # analyzed, for now
+    if (is.list(column_data)) {
+      # 4th column: names of intra-objects
+      output[i, 4] <- paste0(1:length(column_data),"\\. ", names(column_data),
+                             collapse = "\\\n")
+      # 5th column: Types and % valid of intra-objects
+      output[i, 5] <- paste0(vapply(X = column_data, 
+                                    FUN = class, 
+                                    FUN.VALUE = " "),
+                             "  (",
+                             format(vapply(X = column_data,
+                                    FUN = pctvalid,
+                                    FUN.VALUE = 1),
+                                    nsmall = 1
+                             ),
+                             "% ", trs("valid"),
+                             collapse = ")\\\n")
+      output[i, 6] <- ""
+      output[i, 7] <- ""
+    }
+    
     # Factors: display a column of levels and a column of frequencies ----------
-    if (is.factor(column_data)) {
-      output[i,4:7] <- crunch_factor(column_data)
+    else if (is.factor(column_data)) {
+      output[i, 4:7] <- crunch_factor(column_data)
     }
 
     # Character data: display frequencies whenever possible --------------------
     else if (is.character(column_data)) {
-      output[i,4:7] <- crunch_character(column_data, email_val)
+      output[i, 4:7] <- crunch_character(column_data, email_val)
     }
 
     # Logical data -------------------------------------------------------------
     else if (is.logical(column_data)) {
-      output[i,4:7] <- crunch_logical(column_data)
+      output[i, 4:7] <- crunch_logical(column_data)
     }
 
     # Numeric data, display a column of descriptive stats + column of freqs ----
     else if (is.numeric(column_data)) {
-      output[i,4:7] <- crunch_numeric(column_data, is.character(barcode_type))
+      output[i, 4:7] <- crunch_numeric(column_data, is.character(barcode_type))
     }
 
     # Time/date data -----------------------------------------------------------
     else if (inherits(column_data, c("Date", "POSIXct", "difftime"))) {
-      output[i,4:7] <- crunch_time_date(column_data)
+      output[i, 4:7] <- crunch_time_date(column_data)
     }
 
     # Data does not fit in previous categories ---------------------------------
     else {
-      output[i,4:7] <- crunch_other(column_data)
+      output[i, 4:7] <- crunch_other(column_data)
     }
 
     # Data crunching by type ends here -----------------------------------------
 
     # Valid (non-missing) data, frequency and proportion -----------------------
-    output[i,8] <-
+    output[i, 8] <-
       paste0(format_number(n_valid, round.digits = 0), "\\\n(",
-             format_number(n_valid / n_tot * 100, round.digits = 1, nsmall = 1),
+             format_number(n_valid / (n_valid + n_miss) * 100, 
+                           round.digits = 1, nsmall = 1),
              "%)")
     
     # Missing data, frequency and proportion -----------------------------------
-    output[i,9] <-
+    output[i, 9] <-
       paste0(format_number(n_miss, round.digits = 0), "\\\n(",
-             format_number(n_miss / n_tot * 100, round.digits = 1, nsmall = 1),
+             format_number(n_miss / (n_valid + n_miss) * 100,
+                           round.digits = 1, nsmall = 1),
              "%)")
-
   }
 
   # Prepare output object ------------------------------------------------------
@@ -519,13 +582,15 @@ dfSummary <- function(x,
          Duplicates       = n_tot - n_distinct(x),
          Group            = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_group, NA),
+         by_var           = unlist(ifelse("by_var" %in% names(parse_info),
+                                          parse_info["by_var"], NA)),
          by_first         = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_first, NA),
          by_last          = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_last , NA))
 
   attr(output, "data_info") <- data_info[!is.na(data_info)]
-
+  
   format_info <- list(style          = style,
                       round.digits   = round.digits,
                       plain.ascii    = plain.ascii,
@@ -535,8 +600,10 @@ dfSummary <- function(x,
                       labels.col     = labels.col,
                       split.cells    = split.cells,
                       split.tables   = split.tables,
-                      col.widths     = col.widths)
-
+                      col.widths     = col.widths,
+                      keep.grp.vars  = ifelse("by_var" %in% names(parse_info),
+                                              keep.grp.vars, NA))
+  
   attr(output, "format_info") <- format_info[!is.na(format_info)]
 
   attr(output, "user_fmt") <- list(... = ...)
@@ -968,10 +1035,10 @@ crunch_numeric <- function(column_data, is_barcode) {
         # 
         #    number  rounded   final       Actual cell
         # --------------------------       ------------------
-        # 1.0600778   1.0600    1.06  ==>  0.86!: 267 (26.7%)
-        # 1.0500121   1.0500    1.05  ==>  1.04!: 249 (24.9%) 
-        # 1.0400007   1.0400    1.04  ==>  1.05!: 324 (32.4%)
-        # 0.8600902   0.8600    0.86  ==>  1.06!: 160 (16.0%)
+        # 1.0600778   1.0600    1.06  ==>  1.06!: 160 (16.0%)
+        # 1.0500121   1.0500    1.05  ==>  1.05!: 324 (32.4%) 
+        # 1.0400007   1.0400    1.04  ==>  1.04!: 249 (24.9%)
+        # 0.8600902   0.8600    0.86  ==>  0.86!: 267 (26.7%)
         # 
         # Also, when round.digits = 1 (default), we allow an 
         # additional digit, for practical reasons. Based on
@@ -1281,11 +1348,11 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     data <- data[!is.na(data)]
 
     # Correction for vectors of infinitesimal range
-    if (diff(range(data)) < 1e-301) {
-      e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
-      e <- min(as.numeric(e), 1e308)
-      data <- data * e
-    }
+    # if (diff(range(data)) < 1e-301) {
+    #   e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
+    #   e <- min(as.numeric(e), 1e308)
+    #   data <- data * e
+    # }
 
     breaks_x <- pretty(range(data), n = min(nclass.Sturges(data), 250),
                        min.n = 1)
@@ -1331,7 +1398,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     } else {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
               col = "grey94", border = "grey65", horiz = TRUE,
-              xlim = c(0, sum(data)))
+              xlim = c(0, max(data)))
     }
 
     dev.off()
@@ -1385,7 +1452,9 @@ txtbarplot <- function(props, maxwidth = 20, emails = FALSE) {
 #' @keywords internal
 txthist <- function(data) {
   data <- data[!is.na(data)]
-
+  if (is.infinite(max(abs(data)))) {
+    return('')
+  }
   # Correction for vectors of infinitesimal range
   if (diff(range(data)) < 1e-301) {
     e <- paste0('1e',sub(".+e-(.+)", "\\1", min(data)))
@@ -1402,8 +1471,8 @@ txthist <- function(data) {
 
   # make counts top at 10
   counts <- matrix(round(counts / max(counts) * 10), nrow = 1, byrow = TRUE)
-  graph <- matrix(data = "", nrow = 6, ncol = length(counts))
-  for (ro in 6:1) {
+  graph <- matrix(data = "", nrow = 5, ncol = length(counts))
+  for (ro in 5:1) {
     for (co in seq_along(counts)) {
       if (counts[co] > 1) {
         graph[ro,co] <- ": "
@@ -1485,7 +1554,7 @@ detect_barcode <- function(x) {
                  "13" = "EAN-13",
                  "14" = "ITF-14")
 
-  x_pad      <- paste0(strrep("0", 14-len), x_samp)
+  x_pad      <- paste0(strrep("0", 14 - len), x_samp)
   vect_code  <- lapply(strsplit(x_pad,""), as.numeric)
   weighted   <- lapply(vect_code, FUN = function(x) x * c(3,1))
   sums       <- mapply(weighted, FUN = sum)

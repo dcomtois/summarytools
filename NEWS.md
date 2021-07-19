@@ -1,8 +1,44 @@
-# summarytools 0.9.9 (2021-03-18)
+# summarytools 1.0.0 (2021-07-19)
+ - Updated Bootstrap version from 4.3 to 4.6  
+ - Heading elements are now omitted when their defined keyword is set to
+   " " (empty string)
+ - Added features making saving and loading custom languages easier  
+ - In `dfSummary()`:  
+   + `tmp.img.dir` can be left to `NA` when `style = "grid"`  
+   + Fixed typo in attribute name `Dataf.rame.label`  
+   + Removal of grouping variables now works with all languages  
+   + Basic support for list-type columns  
+   + Fixed error with graphs when `Inf` present -- no histograms are shown
+     for now, but a future version might offer a compromise... stay tuned!
+ - In `ctable()`:  
+   + Fixed row/column names not always displaying properly    
+   + Fixed risk ratios showing when only odds ratios should  
+   + Fixed error when `prop="none"` with integer data  
+ - In `descr():  
+   + Fixed headings being shown when `headings=FALSE` (when using `stby()`
+     or `dplyr::group_by()`) 
+   
+   
+   
+# summarytools 0.9.9 (2021-02-04)
 
-- Fixed name issues in `freq()` and `ctable()` when data
-  is of type integer 
-- Fixed typo in attribute name "Dataf.rame.label"  
+ - Style "jira" has been added to reflect pander's support for it. 
+ - Documentation has been reviewed and improved. 
+ - In `dfSummary()`:
+   + When generating a `dfSummary()` in Rmarkdown using `method = "render"`,
+     it is possible to set `tmp.img.dir = NA`. It must still be defined 
+     (not as `NA`) when `method = "pander"` and `style = "grid"`.
+   + Grouping variable(s) are now excluded from results when using
+     `stby()` or `dpyr::group_by()`. Use `keep.grp.vars = TRUE` to replicate
+     previous behavior.
+   + Removed an extra (empty) line in text graphs
+ - In `ctable()` and `freq()`:
+   + Fixed bug with integers
+ - The `ctable.round.digits` was added to the list of `st_options()` (there
+   is already a global `round.digits` option, but it uses `2` as default,
+   while `1` is a more sensible value for `ctable()`.
+ - `print.summarytools()` now removes titles from headings when keyword 
+   "title.function" is set to `NA` or empty string. 
 
 # summarytools 0.9.8 (2020-12-10)
 
@@ -68,14 +104,14 @@ released as 0.9.8 on CRAN when it reached maturity.
 
 # summarytools 0.9.6 (2020-03-01)
 
- - In ctable():
+ - In `ctable()`:
    + Added Odds Ratio and Risk Ratio (aka Relative Risk) 
      statistics with 95% C.I.'s
    + Fixed issue with chi-square statistic not reporting
      appropriate values
    + Fixed html alignment of statistics below the table
      (now centering based on table width as it should)
- - In dfSummary(), fixed an issue arising when a very
+ - In `dfSummary()`, fixed an issue arising when a very
    large range of numeric values exists in a column
 
 # summarytools 0.9.5 (2020-02-10)
