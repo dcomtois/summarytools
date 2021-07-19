@@ -25,12 +25,12 @@ tags. \code{TRUE} by default.}
 \item{\dots}{Character. Path to additional \emph{css} file(s) to include.}
 }
 \description{
-Generates the \emph{css} needed by \strong{summarytools} in \emph{Rmarkdown} 
-documents.
+Generates the \emph{css} needed by \strong{summarytools} in 
+\emph{R Markdown} documents.
 }
 \details{
 Typically the function is called right after the initial setup chunk
-  of an \emph{Rmarkdown} document, in a chunk having options
+  of an \emph{R Markdown} document, in a chunk having options
   \code{echo=FALSE} and \code{results="asis"}.
 }
 \author{

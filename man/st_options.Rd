@@ -126,7 +126,7 @@ of \code{\link{descr}}. \code{FALSE} by default.}
 \item{descr.silent}{Logical. Hide console messages. \code{FALSE} by default.}
 
 \item{dfSummary.style}{Character. \dQuote{multiline} by default. Set to 
-\dQuote{grid} for \emph{Rmarkdown} documents.}
+\dQuote{grid} for \emph{R Markdown} documents.}
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
 variable numbers in the first column. Defaults to \code{TRUE}.}

@@ -29,7 +29,7 @@ library(kableExtra)
 
 The following vignettes complement this page:
 
-[Recommendations for Using summarytools With Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
+[Recommendations for R Markdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 [Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html) -- Contents similar to this page (minus installation instructions), with fancier table stylings.
 
 # 1. Overview
@@ -67,10 +67,10 @@ The package was developed with the following objectives in mind:
    SAS, SPSS, and Stata 
  - Offer flexibility in terms of output format & content  
  - Integrate well with commonly used software & tools for reporting
-   (the [RStudio](https://rstudio.com/products/rstudio/) IDE,
-   [Rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.org/knitr/))
-   while also allowing for standalone, simple report generation from any R
-   interface
+   (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
+   [R Markdown](https://rmarkdown.rstudio.com/), and 
+   [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
+   simple report generation from any R interface
 
 On a more personal level, I simply wish to share with the R community and
 the scientific community at large the functions I first developed for myself,
@@ -393,9 +393,9 @@ view(dfSummary(iris))
 
 ![dfSummary Output displayed in RStudio's viewer](img/dfSummary-in-RStudio-Viewer.png)
 
-### 2.4.1 Using dfSummary() in Rmarkdown Documents
+### 2.4.1 Using dfSummary() in R Markdown Documents
 
-When using `dfSummary()` in *Rmarkdown* documents, it is generally a good 
+When using `dfSummary()` in *R Markdown* documents, it is generally a good 
 idea to exclude a column or two to avoid margin overflow. Since the *Valid*
 and *Missing* columns are redundant, we can drop either one of them.
 
@@ -411,7 +411,7 @@ dfSummary(tobacco,
 ![dfSummary-md](img/dfSummary_md.png)
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
-*Rmarkdown* documents, **except for _html_ rendering**. The 
+*R Markdown* documents, **except for _html_ rendering**. The 
 explanation for this can be found [further below](#tmp-img-dir). 
 
 ### 2.4.2 Advanced Features
@@ -523,7 +523,7 @@ iris$Species %>%
 
 By definition, no total rows are part of *tidy* tables, and the row
 names are converted to a regular column. Note that for displaying
-*tibbles* using *Rmarkdown*, the **knitr** chunk option 'results'
+*tibbles* using *rmarkdown*, the **knitr** chunk option 'results'
 should be set to "markup" instead of "asis".
 
 ## 5.1 Tidy Split-Group Statistics

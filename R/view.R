@@ -18,7 +18,7 @@
 #' 
 #' @details 
 #' Creates \emph{html} outputs and displays them in \emph{RStudio}'s viewer, in
-#' a browser, or renders the \emph{html} code in \emph{Rmarkdown} documents. 
+#' a browser, or renders the \emph{html} code in \emph{R Markdown} documents. 
 #'
 #' For objects of class \dQuote{\emph{summarytools}}, this function is simply
 #' a wrapper around \code{\link{print.summarytools}} with

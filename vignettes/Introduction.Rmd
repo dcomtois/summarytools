@@ -77,10 +77,10 @@ The package was developed with the following objectives in mind:
    SAS, SPSS, and Stata 
  - Offer flexibility in terms of output format & content  
  - Integrate well with commonly used software & tools for reporting
-   (the [RStudio](https://rstudio.com/products/rstudio/) IDE,
-   [Rmarkdown](https://rmarkdown.rstudio.com/), and [knitr](https://yihui.org/knitr/))
-   while also allowing for standalone, simple report generation from any R
-   interface
+   (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
+   [Rmarkdown](https://rmarkdown.rstudio.com/), and 
+   [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
+   simple report generation from any R interface
 
 ## 1.2 Redirecting Output
 
@@ -373,9 +373,9 @@ view(dfSummary(iris))
 
 <img src="dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
 
-### 2.4.1 Using dfSummary() in Rmarkdown Documents
+### 2.4.1 Using dfSummary() in R Markdown Documents
 
-When using `dfSummary()` in *Rmarkdown* documents, it is generally a good 
+When using `dfSummary()` in *R Markdown* documents, it is generally a good 
 idea to exclude a column or two to avoid margin overflow. Since the *Valid*
 and *Missing* columns are redundant, we can drop either one of them.
 
@@ -391,7 +391,7 @@ dfSummary(tobacco,
 
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
-*Rmarkdown* documents, **except for _html_ rendering**. The 
+*R Markdown* documents, **except for _html_ rendering**. The 
 explanation for this can be found [further below](#tmp-img-dir). 
 
 Some users reported repeated X11 warnings; those can be avoided by using the
@@ -538,7 +538,7 @@ iris$Species %>%
 
 By definition, no total rows are part of *tidy* tables, and the row
 names are converted to a regular column. Note that for displaying
-*tibbles* using *Rmarkdown*, the **knitr** chunk option 'results'
+*tibbles* using *rmarkdown*, the **knitr** chunk option 'results'
 should be set to "markup" instead of "asis".
 
 ## 5.1 Tidy Split-Group Statistics
@@ -1080,7 +1080,7 @@ The *output* element is the one that matters:
 
 The needed CSS is automatically added to *html* files created
 using `print()` or `view()` with the `file` argument. But in
-*Rmarkdown* documents, this needs to be done explicitly:
+*R Markdown* documents, this needs to be done explicitly:
 
 ```
 ## ```{r, echo=FALSE}

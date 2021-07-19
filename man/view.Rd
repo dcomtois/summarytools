@@ -23,7 +23,8 @@ or \code{\link{dfSummary}}).}
 \dQuote{browser}, or \dQuote{render}. Default value for the \code{print()}
 method is \dQuote{pander}; for \code{view()}/\code{stview()}, default is
 \dQuote{viewer} if session is running in \emph{RStudio}, \dQuote{browser}
-otherwise. The main use for \dQuote{render} is in Rmarkdown documents.}
+otherwise. The main use for \dQuote{render} is in \emph{R Markdown}
+documents.}
 
 \item{file}{Character. File name to write output to. Defaults to \dQuote{}.}
 
@@ -85,7 +86,7 @@ Visualize results in RStudio's Viewer or in Web Browser
 }
 \details{
 Creates \emph{html} outputs and displays them in \emph{RStudio}'s viewer, in
-a browser, or renders the \emph{html} code in \emph{Rmarkdown} documents. 
+a browser, or renders the \emph{html} code in \emph{R Markdown} documents. 
 
 For objects of class \dQuote{\emph{summarytools}}, this function is simply
 a wrapper around \code{\link{print.summarytools}} with

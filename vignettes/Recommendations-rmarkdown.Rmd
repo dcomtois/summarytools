@@ -13,8 +13,9 @@ output:
 vignette: >
   %\VignetteIndexEntry{Recommendations for R Markdown}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteDepends{magrittr}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{magrittr}
+  %\VignetteDepends{kableExtra}
 ---
 
 ```{r, include=FALSE}
@@ -25,7 +26,6 @@ opts_chunk$set(comment = NA,
                echo    = TRUE,
                results = 'asis')
 library(summarytools)
-st_options(lang = "en")
 ```
 
 ```{r, echo=FALSE}
@@ -42,7 +42,7 @@ st_css(main = TRUE, global = TRUE)
 # 1. Introduction
 
 This document mainly contains examples showing how best to make use of
-**summarytools** in *Rmarkdown* documents. 
+**summarytools** in *R Markdown* documents. 
 
 Available styles in _summarytools_ are directly linked to `pander`'s:  
 
@@ -56,7 +56,7 @@ For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_
 style is recommended. For `dfSummary()`, _grid_ is recommended.
  
 Starting with `freq()`, we'll review the recommended methods and styles to 
-quickly get satisfying results in *Rmarkdown* documents.
+quickly get satisfying results in *R Markdown* documents.
 
 
 ## 1.1 Contents
@@ -166,7 +166,7 @@ print(dfSummary(tobacco,
       method = 'render')
 ```
 
-## 4.3 Managing Lengthy dfSummary() Outputs in Rmarkdown Documents
+## 4.3 Managing Lengthy dfSummary() Outputs in R Markdown Documents
 
 For data frames containing numerous variables, we can use the `max.tbl.height`
 argument to wrap the results in a scrollable window having the specified
@@ -228,7 +228,7 @@ documents. There is some work involved, but following the instructions given
 here should give the expected results.
 
 There are basically two parts to this: first, you must create a preamble *tex*
-file. Second, you must indicate in the YAML section of your document where to
+file. Second, you must indicate in the *YAML* section of your document where to
 find this file.
 
 ### Included Preamble *Tex* File
@@ -255,7 +255,7 @@ adjust the 0.5 value used as raisebox parameter in the preamble.
 
 ### The YAML Section
 
-Your document should start with a YAML header like this one, supposing the
+Your document should start with a *YAML* header like this one, supposing the
 preamble *tex* file is in the same location as your *Rmd* document :
 
 ```
@@ -312,12 +312,12 @@ solve this problem, please get in touch.
 
 # 7. This Vignette's Setup  
 
-This vignette uses theme `rmarkdown::html_vignette`. Its **yaml** section
+This vignette uses theme `rmarkdown::html_vignette`. Its *YAML* section
 looks like this:
 
 ```
 # ---
-# title: "Recommendations for Using summarytools With Rmarkdown"
+# title: "Recommendations for R Markdown"
 # author: "Dominic Comtois"
 # date: "`r Sys.Date()`"
 # output: 
@@ -325,7 +325,7 @@ looks like this:
 #     css: 
 #     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 # vignette: >
-#   %\VignetteIndexEntry{Recommendations for Rmarkdown}
+#   %\VignetteIndexEntry{Recommendations for R Markdown}
 #   %\VignetteEngine{knitr::rmarkdown}
 #   %\VignetteEncoding{UTF-8}
 # ---

@@ -10,3 +10,4 @@ img/ds*.png
 vignettes/*.R
 notes/
 vignettes/*.R
+inst/doc

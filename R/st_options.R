@@ -65,7 +65,7 @@
 #'   of \code{\link{descr}}. \code{FALSE} by default.
 #' @param descr.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
-#'   \dQuote{grid} for \emph{Rmarkdown} documents.
+#'   \dQuote{grid} for \emph{R Markdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display

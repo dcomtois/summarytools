@@ -20,7 +20,8 @@ or \code{\link{dfSummary}}).}
 \dQuote{browser}, or \dQuote{render}. Default value for the \code{print()}
 method is \dQuote{pander}; for \code{view()}/\code{stview()}, default is
 \dQuote{viewer} if session is running in \emph{RStudio}, \dQuote{browser}
-otherwise. The main use for \dQuote{render} is in Rmarkdown documents.}
+otherwise. The main use for \dQuote{render} is in \emph{R Markdown}
+documents.}
 
 \item{file}{Character. File name to write output to. Defaults to \dQuote{}.}
 
@@ -142,7 +143,7 @@ print(descr(exams), headings = FALSE)
 
 }
 \references{
-\href{https://rstudio.com/}{RStudio}
+\href{https://www.rstudio.com/}{RStudio}
 \href{https://github.com/dcomtois/summarytools/}{Summarytools on GitHub}
 \href{http://rapporter.github.io/pander/#general-options/}{List of pander options}
 \href{https://getbootstrap.com/docs/4.3/getting-started/introduction/}{Bootstrap Cascading Stylesheets}
