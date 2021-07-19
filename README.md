@@ -3,17 +3,16 @@
 
 <!-- badges -->
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-[![Rdoc](http://www.rdocumentation.org/badges/version/summarytools)](http://www.rdocumentation.org/packages/summarytools)
 <span
 class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button" /></a></span>
 
 The following vignettes complement this page:
 
-[Recommendations for Using summarytools With
-Rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
+[Recommendations for R
+Markdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)  
 [Introduction to
 summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)
 – Contents similar to this page (minus installation instructions), with
@@ -89,8 +88,8 @@ The package was developed with the following objectives in mind:
     such as SAS, SPSS, and Stata
 -   Offer flexibility in terms of output format & content  
 -   Integrate well with commonly used software & tools for reporting
-    (the [RStudio](https://rstudio.com/products/rstudio/) IDE,
-    [Rmarkdown](https://rmarkdown.rstudio.com/), and
+    (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE, [R
+    Markdown](https://rmarkdown.rstudio.com/), and
     [knitr](https://yihui.org/knitr/)) while also allowing for
     standalone, simple report generation from any R interface
 
@@ -101,24 +100,16 @@ are looking for the same thing I was seeking in the first place.
 
 ### Support *summarytools*’ Development With a Small Donation
 
-Some package developers and maintainers get paid to do exactly that.
-They may also work in teams. *This is not my case*. Seeing the package
-grow in popularity was and still is in itself a rewarding experience,
-but I won’t lie; keeping up with the maintenance, feature requests and
-other features I have in mind takes more time than I can afford.
+If **summarytools** helps you get things done, please consider making a
+donation. In doing so, you’ll help me feel useful, but more importantly
+contribute to the package’s development and help other people like you
+who benefit from its current and *future features*. I regularly receive
+feature requests, and when I receive donations, I set aside some time to
+work on them, making summarytools even more relevant for data
+scientists, students and researchers around the world. And no matter how
+small the amount is, I always appreciate the gesture.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
-
-So if you find **summarytools** useful and want to support its
-development, please consider making a small donation using the *PayPal*
-button. In exchange, on top of contributing to the package and helping
-out other data scientists, students and researchers, you’ll get:
-
--   My sincere gratitude  
--   Your name listed in the <a href="#sponsors">Sponsors section</a> of
-    this page  
--   My personal commitment to dedicate more time to the package’s
-    development
 
 ## 1.2 Redirecting Output
 
@@ -229,7 +220,7 @@ freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 |     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
 | **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
 |  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
-| **&lt;NA&gt;** |    0 |         |              |    0.00 |       100.00 |
+|      **\<NA>** |    0 |         |              |    0.00 |       100.00 |
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 In this first example, the `plain.ascii` and `style` arguments were
@@ -330,7 +321,7 @@ freq(tobacco$disease,
 |        **Heart** |   20 |    9.01 |        50.00 |    2.00 |        11.10 |
 |    **Pulmonary** |   20 |    9.01 |        59.01 |    2.00 |        13.10 |
 |      **(Other)** |   91 |   40.99 |       100.00 |    9.10 |        22.20 |
-|   **&lt;NA&gt;** |  778 |         |              |   77.80 |       100.00 |
+|        **\<NA>** |  778 |         |              |   77.80 |       100.00 |
 |        **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
@@ -404,7 +395,7 @@ To display the chi-square statistic, set `chisq = TRUE`. For *2 x 2*
 tables, use `OR` and `RR` to show odds ratio and risk ratio (also called
 relative risk), respectively. Those can be set to `TRUE`, in which case
 95% confidence intervals are shown; to use alternate confidence levels,
-use for example `OR = .90`. \#\#\#\# Using Pipes
+use for example `OR = .90`. #### Using Pipes
 
 To show how pipes can be used with **summarytools**, we’ll use
 **magrittr**’s `%$%` and `%>%` operators:
@@ -504,9 +495,9 @@ view(dfSummary(iris))
 ![dfSummary Output displayed in RStudio’s
 viewer](img/dfSummary-in-RStudio-Viewer.png)
 
-### 2.4.1 Using dfSummary() in Rmarkdown Documents
+### 2.4.1 Using dfSummary() in R Markdown Documents
 
-When using `dfSummary()` in *Rmarkdown* documents, it is generally a
+When using `dfSummary()` in *R Markdown* documents, it is generally a
 good idea to exclude a column or two to avoid margin overflow. Since the
 *Valid* and *Missing* columns are redundant, we can drop either one of
 them.
@@ -523,8 +514,9 @@ dfSummary(tobacco,
 ![dfSummary-md](img/dfSummary_md.png)
 
 **The `tmp.img.dir` parameter is mandatory** when generating
-*dfSummaries* in *Rmarkdown* documents, **except for *html* rendering**.
-The explanation for this can be found [further below](#tmp-img-dir).
+*dfSummaries* in *R Markdown* documents, **except for *html*
+rendering**. The explanation for this can be found [further
+below](#tmp-img-dir).
 
 ### 2.4.2 Advanced Features
 
@@ -640,7 +632,7 @@ with(tobacco,
           FUN     = ctable))
 ```
 
-# 4. Grouped Statistics Using dplyr::group\_by()
+# 4. Grouped Statistics Using dplyr::group_by()
 
 To create grouped statistics with `freq()`, `descr()` or `dfSummary()`,
 it is possible to use **dplyr**’s `group_by()` as an alternative to
@@ -860,7 +852,7 @@ Species freq pct <fct> <dbl> <dbl> 1 setosa 50 33.3 2 versicolor 50 33.3
 
 By definition, no total rows are part of *tidy* tables, and the row
 names are converted to a regular column. Note that for displaying
-*tibbles* using *Rmarkdown*, the **knitr** chunk option ‘results’ should
+*tibbles* using *rmarkdown*, the **knitr** chunk option ‘results’ should
 be set to “markup” instead of “asis”.
 
 ## 5.1 Tidy Split-Group Statistics
@@ -996,11 +988,11 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 There is no direct way to create a *PDF* file with **summarytools**. One
 option is to generate an *html* file and convert it to *PDF* using
 [Pandoc](https://pandoc.org) or
-[WK&lt;html&gt;TOpdf](https://wkhtmltopdf.org/index.html) (the latter
-gives better results than Pandoc with `dfSummary()` output). Another
-option is to create an *Rmd* document using *PDF* as the output format.
-See `vignette("Recommendations-rmarkdown", package = "summarytools")`
-for the details on how to proceed.
+[WK\<html>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives
+better results than Pandoc with `dfSummary()` output). Another option is
+to create an *Rmd* document using *PDF* as the output format. See
+`vignette("Recommendations-rmarkdown", package = "summarytools")` for
+the details on how to proceed.
 
 ## 6.1 Appending Output Files
 
@@ -1144,14 +1136,14 @@ attributes, as well as one of its heading attributes.
 **tobacco$age.gr**  
 **Type:** Factor
 
-|                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|---------------:|-----:|--------:|-------------:|--------:|-------------:|
-|      **18-34** |  258 |   26.46 |        26.46 |   25.80 |        25.80 |
-|      **35-50** |  241 |   24.72 |        51.18 |   24.10 |        49.90 |
-|      **51-70** |  317 |   32.51 |        83.69 |   31.70 |        81.60 |
-|       **71 +** |  159 |   16.31 |       100.00 |   15.90 |        97.50 |
-| **&lt;NA&gt;** |   25 |         |              |    2.50 |       100.00 |
-|      **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
+|           | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
+|----------:|-----:|--------:|-------------:|--------:|-------------:|
+| **18-34** |  258 |   26.46 |        26.46 |   25.80 |        25.80 |
+| **35-50** |  241 |   24.72 |        51.18 |   24.10 |        49.90 |
+| **51-70** |  317 |   32.51 |        83.69 |   31.70 |        81.60 |
+|  **71 +** |  159 |   16.31 |       100.00 |   15.90 |        97.50 |
+| **\<NA>** |   25 |         |              |    2.50 |       100.00 |
+| **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 ``` r
 print(age_stats,
@@ -1185,7 +1177,7 @@ print(age_stats,
     together and have conflicting values for a parameter, it is always
     the print/view arguments that win.
 
--   The stored defaults (modified with st\_options() or left as they are
+-   The stored defaults (modified with st_options() or left as they are
     when loading the package) will be applied if the parameter values
     cannot be found in the function calls.
 
@@ -1317,7 +1309,7 @@ freq(iris$Species)
 |     **setosa** |    50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |    50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |    50 |    33.33 |        100.00 |   33.33 |       100.00 |
-| **&lt;NA&gt;** |     0 |          |               |    0.00 |       100.00 |
+|      **\<NA>** |     0 |          |               |    0.00 |       100.00 |
 |      **Total** |   150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 ## 12.1 Non-UTF-8 Locales
@@ -1373,7 +1365,7 @@ freq(iris$Species)
 |     **setosa** |    50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |    50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |    50 |    33.33 |        100.00 |   33.33 |       100.00 |
-| **&lt;NA&gt;** |     0 |          |               |    0.00 |       100.00 |
+|      **\<NA>** |     0 |          |               |    0.00 |       100.00 |
 |      **Total** |   150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 You could further customize the headings by adding arguments to the
@@ -1393,7 +1385,7 @@ print(freq(iris$Species, display.type = FALSE),
 |     **setosa** |  50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |  50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |  50 |    33.33 |        100.00 |   33.33 |       100.00 |
-| **&lt;NA&gt;** |   0 |          |               |    0.00 |       100.00 |
+|      **\<NA>** |   0 |          |               |    0.00 |       100.00 |
 |      **Total** | 150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 By using the empty string, we ensure that in the output heading, the
@@ -1502,9 +1494,16 @@ A big thanks to people who made donations!
 -   David Thomas  
 -   Peter Nilsson  
 -   Ross Dunne  
--   Igor Rubets
+-   Igor Rubets  
+-   Joerg Sahlmann
 
-If you find **summarytools** useful and want to support its development,
-please consider making a small donation using the *PayPal* button.
+If **summarytools** helps you get your work done, please consider making
+a donation. In doing so, you’ll help me feel useful, but more
+importantly contribute to the package’s development and help other
+people like you who benefit from its current and *future features*. I
+regularly receive feature requests, and when I receive donations, I set
+aside some time to work on them, making summarytools even more relevant
+for data scientists, students and researchers around the world. And no
+matter how small the amount is, I always appreciate the gesture.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
