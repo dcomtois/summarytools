@@ -8,7 +8,8 @@
    + Fixed typo in attribute name `Dataf.rame.label`  
    + Removal of grouping variables now works with all languages  
    + Basic support for list-type columns  
-   + Fixed error with graphs when `Inf` present  
+   + Fixed error with graphs when `Inf` present -- no histograms are shown
+     for now, but a future version might offer a compromise... stay tuned!
  - In `ctable()`:  
    + Fixed row/column names not always displaying properly    
    + Fixed risk ratios showing when only odds ratios should  
