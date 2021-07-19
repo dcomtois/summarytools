@@ -53,7 +53,7 @@ st_options(plain.ascii = FALSE,
 ```
 
 ```{r, echo=FALSE}
-st_css()
+st_css(main = TRUE, global = TRUE)
 ```
 
 <a id="s-1"></a>  
@@ -138,9 +138,9 @@ Results can be
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
-<a href="#s-1">&#171; Overview1</a> |
-<a href="#header">ToC</a> |
-<a href="#s-3">Grouped Statistics Using stby() &#187;</a>  
+<a href="#s-1">&#171; 1. Overview</a> |
+<a href="#header">< ToC ></a> |
+<a href="#s-3">3. Grouped Statistics : stby() &#187;</a>  
 </div>
 <br/>
 <a id="s-2"></a>  
@@ -442,9 +442,9 @@ dfs$Variable <- NULL # This deletes the "Variable" column
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-2">&#171; The Four Core Functions</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-4">Grouped Statistics Using group_by() &#187;</a>  
+<a href="#s-2">&#171; 2. The Four Core Functions</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-4">4. Grouped Statistics - group_by() &#187;</a>  
 </div>
 <br/><br/>
 <a id="s-3"></a>  
@@ -498,9 +498,9 @@ with(tobacco,
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-3">&#171; Grouped Statistics Using dplyr::group_by()</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-5">Creating Tidy Tables With tb() &#187;</a>
+<a href="#s-3">&#171; 3. Grouped Statistics : group_by()</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-5">5. Tidy Tables : tb() &#187;</a>
 <br/><br/>  
 </div>
 <a id="s-4"></a>  
@@ -534,12 +534,12 @@ tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-4">&#171; Grouped Statistics Using dplyr::group_by()</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-6">Redirecting Output to Files &#187;</a><br/>  
+<a href="#s-4">&#171; 4. Grouped Statistics : group_by()</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-6">6. Directing Output to Files &#187;</a><br/>  
 </div><a id="s-5"></a>  
 
-# 5. Creating Tidy Tables With tb()
+# 5. Tidy Tables : tb()
 
 When generating `freq()` or `descr()` tables, it is possible to turn the
 results into "tidy" tables with the use of the `tb()` function (think of
@@ -616,14 +616,14 @@ stby(data    = iris,
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-5">&#171; Creating Tidy Tables With tb()</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-7">Global Options &#187;</a>
+<a href="#s-5">&#171; 5. Tidy Tables : tb()</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-7">7. Global Options &#187;</a>
 <br/><br/>  
 </div><a id="s-6"></a>  
 
 
-# 6. Redirecting Output to Files
+# 6. Directing Output to Files
 
 Using the `file` argument with `print()` or `view()` / `stview()`, we can
 write outputs to a file, be it *html*, *Rmd*, *md*, or just plain text
@@ -657,9 +657,9 @@ document.
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-6">&#171; Redirecting Output to Files</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-8">Overriding Formatting Attributes &#187;</a>
+<a href="#s-6">&#171; 6. Directing Output to Files</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-8">8. Format Attributes &#187;</a>
 <br/><br/>  
 </div><a id="s-7"></a>  
 
@@ -735,13 +735,13 @@ st_options(style = 'rmarkdown',   # Set the value of one or several options
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-7">&#171; Overriding Formatting Attributes</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-9">Fine-Tuning Looks with CSS &#187;</a>
+<a href="#s-7">&#171; 7. Global Options</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-9">9. Fine-Tuning Looks : CSS &#187;</a>
 <br/><br/>  
 </div><a id="s-8"></a>  
 
-# 8. Overriding Formatting Attributes
+# 8. Format Attributes
 
 When a **summarytools** object is created, its formatting attributes are
 stored within it. However, we can override most of them when using
@@ -823,13 +823,13 @@ print(age_stats,
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-8">&#171; Overriding Formatting Attributes</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-10">Creating <em>Shiny</em> Apps &#187;</a>
+<a href="#s-8">&#171; 8. Format Attributes</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-10">10. <em>Shiny</em> Apps &#187;</a>
 <br/><br/>  
 </div><a id="s-9"></a>  
 
-# 9. Fine-Tuning Looks with CSS
+# 9. Fine-Tuning Looks : CSS
 
 When creating *html* reports, both [Bootstrap](https://getbootstrap.com/)'s 
 *CSS* and *summarytools.css* are included by default. For greater control
@@ -864,13 +864,13 @@ print(dfSummary(tobacco),
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-9">&#171; Fine-Tuning Looks with CSS</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-11">dfSummary Graphs in R Markdown &#187;</a>
+<a href="#s-9">&#171; 9. Fine-Tuning Looks : CSS</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-11">11. Graphs in R Markdown &#187;</a>
 <br/><br/>  
 </div><a id="s-10"></a>  
 
-# 10. Creating *Shiny* apps
+# 10. *Shiny* apps
 
 To successfully include **summarytools** functions in *Shiny* apps,
 
@@ -902,14 +902,14 @@ print(dfSummary(somedata,
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-10">&#171; Creating <em>Shiny</em> Apps</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-12">Translations &#187;</a>
+<a href="#s-10">&#171; 10. <em>Shiny</em> Apps</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-12">12. Languages & Term Customization &#187;</a>
 <br/><br/>  
 </div>
 <a id="s-11"></a>  
 
-# 11. dfSummary Graphs in R Markdown {#tmp-img-dir}
+# 11. Graphs in R Markdown {#tmp-img-dir}
 
 When using `dfSummary()` in an *Rmd* document using *markdown*
 styling (as opposed to *html* rendering), three elements are
@@ -950,13 +950,13 @@ be it absolute ("/tmp") or relative ("img", or simply ".").
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-11">&#171; dfSummary Graphs in R Markdown apps</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-13">This Vignette's Setup &#187;</a>  
+<a href="#s-11">&#171; 11. Graphs in R Markdown</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-13">13. Vignette Setup &#187;</a>  
 <br/>  
 </div><a id="s-12"></a>  
 
-# 12. Translations
+# 12. Languages & Term Customization
 
 Thanks to the *R* community's efforts, the following languages can be used,
 in addition to English (default):
@@ -969,7 +969,7 @@ To switch languages, simply use
 st_options(lang = "fr")
 ```
 
-All output from the core functions will now use that language:
+All output from the core functions now use that language:
 
 ```{r}
 freq(iris$Species)
@@ -994,74 +994,81 @@ Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
 
-## 12.2 Defining and Using Custom Translations
+## 12.2 Defining and Using Customized Terms
 
 Using the function `use_custom_lang()`, it is possible to add your own set of 
-translations. To achieve this, get the 
+translations or more personalized terminology. To achieve this, get the 
 [csv template](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
-customize the +/- 70 items, and call `use_custom_lang()`, giving it as
-sole argument the path to the edited *csv* template. Note that such
-custom translations will not persist across R sessions. This means that
-you should always have this *csv* file handy for future use.
+customize one, many or all of the +/- 70 terms, and call `use_custom_lang()`,
+giving it as sole argument the path to the edited *csv* template. Note that such
+custom language settings will not persist across R sessions. This means that
+you should always have this *csv* file handy for future use. 
 
-## 12.3 Defining Specific Keywords
+## 12.3 Defining Selected Keywords
 
-Sometimes, all you might want to do is change just a few keywords -- for instance,
-you could prefer using "N" instead of "Freq" in the title row of `freq()` tables. 
-Or you might need to generate a document with several `dfSummary()` tables,
-with customized headings (replacing the generic "Data Frame Summary").
+Sometimes, all you might want to do is change just a few keywords -- for
+instance, you might prefer using "N" over "Freq" in the title row of `freq()`
+tables. Or you might need to generate a document with several `dfSummary()` 
+tables, each having their own title.
 
-For this, use `define_keywords()`. 
+For this, we can use `define_keywords()` to replacing the generic "Data Frame
+Summary" with whatever is needed.
+
 
 ```{r}
 define_keywords(title.freq = "Types of Iris Flowers")
 freq(iris$Species)
 ```
 
-You could further customize the headings by adding arguments to the `print()`
-function. Note the use of an empty string to override the value of `Variable`:
+## 12.4 Power-Tweaking Headings 
+
+We can further customize the headings by adding arguments to the `print()`
+function. Here, we use an empty string to override the value of `Variable`:
+
 ```{r}
 define_keywords(title.freq = "Types and Counts, Iris Flowers")
-define_keywords(freq = "N") # Changes the "Freq" table heading
-print(freq(iris$Species, display.type = FALSE),
-      Variable = "")
+define_keywords(freq = "N")   # "Freq" becomes "N" in table heading
+print(
+  freq(iris$Species,
+       display.type = FALSE), # Variable type won't be displayed...
+  Variable = ""               # and neither will the variable name
+  ) 
 ```
 
-By using the empty string, we ensure that in the output heading, the line normally 
-used for printing the variable name will be entirely deleted (as opposed to left 
-blank).
+By using the empty string, we caused the line normally used for printing the
+variable name to disappear altogether (as opposed to being left blank).
 
-See `?define_keywords` for a list of all customizable strings in the package.
+See `?define_keywords` for a list of all customizable terms in the package.
 
 Calling `define_keywords()` without any arguments will bring up, on systems that 
-support graphical devices (the vast majority, that is), an editable window allowing 
-to modify only the desired item(s). 
+support graphical devices (the vast majority, that is), a window from which 
+we can edit all the terms we want. 
 
 <img src="define_keywords.png" width=95% style="border:1;border-color:grey" />
 
 After closing the edit window, you will be able to save your new 
-"custom language" to a *csv* file that you can later reuse by calling
-`use_custom_lang()`.
+"custom language" to a *csv* file that you can later use by calling
+`use_custom_lang("path-to-custom-language-file.csv")`.
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-12">&#171; Translations</a> | 
-<a href="#header">ToC</a> | 
-<a href="#s-14">Conclusion &#187;</a><br/>  
+<a href="#s-12">&#171; 12. Translations & Term Customization</a> | 
+<a href="#header">< ToC ></a> | 
+<a href="#s-14">14. Conclusion &#187;</a><br/>  
 </div><a id="s-13"></a>  
 <a id="setup"></a>  
 
-# 13. This Vignette's Setup  
+# 13. Vignette Setup  
 
-Knowing how this vignette is configured can help users get started with
-using **summarytools** in *Rmarkdown* documents.
+Knowing how this vignette is configured can help you get started with
+using **summarytools** in *R Markdown* documents.
 
-### The yaml Section
+### The YAML Section
 
-The *output* element is the one what matters:
+The *output* element is the one that matters:
 
 ```
 ## ---
@@ -1097,7 +1104,7 @@ using `print()` or `view()` with the `file` argument. But in
 
 ```
 ## ```{r, echo=FALSE}
-## st_css()
+## st_css(main = TRUE, global = TRUE)
 ## ```
 ```
 
@@ -1106,8 +1113,8 @@ using `print()` or `view()` with the `file` argument. But in
 <a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
-<a href="#s-13">&#171; This Vignette's Setup</a> | 
-<a href="#header">ToC</a>
+<a href="#s-13">&#171; 13. Vignette Setup</a> | 
+<a href="#header">< ToC ></a>
 <br/><br/>  
 </div>
 <a id="s-14"></a>  
@@ -1130,5 +1137,5 @@ For a preview of what's coming in the next release, have a look at the
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
-<a href="#header">ToC</a>  
+<a href="#header">< ToC ></a>  
 </div>
