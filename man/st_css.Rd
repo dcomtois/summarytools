@@ -26,11 +26,11 @@ tags. \code{TRUE} by default.}
 }
 \description{
 Generates the \emph{css} needed by \strong{summarytools} in 
-\emph{R Markdown} documents.
+\emph{R markdown} documents.
 }
 \details{
 Typically the function is called right after the initial setup chunk
-  of an \emph{R Markdown} document, in a chunk having options
+  of an \emph{R markdown} document, in a chunk having options
   \code{echo=FALSE} and \code{results="asis"}.
 }
 \author{

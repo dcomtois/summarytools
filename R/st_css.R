@@ -1,7 +1,7 @@
 #' Include \strong{summarytools}' \emph{css} Into Active Document
 #'
 #' Generates the \emph{css} needed by \strong{summarytools} in 
-#' \emph{R Markdown} documents.
+#' \emph{R markdown} documents.
 #'
 #' @param main Logical. Include \emph{summarytools.css} file. \code{TRUE} by
 #'   default. Affects only \strong{summarytools} objects.
@@ -17,7 +17,7 @@
 #' @param \dots Character. Path to additional \emph{css} file(s) to include.
 #'
 #' @details Typically the function is called right after the initial setup chunk
-#'   of an \emph{R Markdown} document, in a chunk having options
+#'   of an \emph{R markdown} document, in a chunk having options
 #'   \code{echo=FALSE} and \code{results="asis"}.
 #'   
 #' @keywords utilities

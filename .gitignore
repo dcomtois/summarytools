@@ -8,6 +8,8 @@ TODO.txt
 tests/*
 img/ds*.png
 vignettes/*.R
+vignettes/vignette.css
 notes/
-vignettes/*.R
 inst/doc
+/doc/
+/Meta/

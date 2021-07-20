@@ -16,3 +16,4 @@
 vignettes/*.R
 vignettes/*.html
 inst/includes/fig-align.tex
+^doc$

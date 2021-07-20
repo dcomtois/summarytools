@@ -7,9 +7,7 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
-                        package = "rmarkdown")
+    css: vignette.css
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,7 +19,10 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(comment = NA, prompt = FALSE, cache = FALSE, results = 'asis')
+opts_chunk$set(comment = NA,
+               prompt = FALSE,
+               cache = FALSE,
+               results = 'asis')
 library(kableExtra)
 library(summarytools)
 library(magrittr)

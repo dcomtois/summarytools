@@ -7,9 +7,7 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
-                        package = "rmarkdown")
+    css: vignette.css
 vignette: >
   %\VignetteIndexEntry{Recommendations for R Markdown}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +16,8 @@ vignette: >
   %\VignetteDepends{kableExtra}
 ---
 
-```{r, include=FALSE}
+
+```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, 
                prompt  = FALSE,
@@ -26,9 +25,6 @@ opts_chunk$set(comment = NA,
                echo    = TRUE,
                results = 'asis')
 library(summarytools)
-```
-
-```{r, echo=FALSE}
 st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it
            plain.ascii       = FALSE,       # One of the essential settings
            style             = "rmarkdown", # Idem.
@@ -36,6 +32,9 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
            footnote          = NA,          # Keeping the results minimalistic
            subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
                                             # For other themes, using TRUE might be preferable.
+```
+
+```{r, echo=FALSE}
 st_css(main = TRUE, global = TRUE)
 ```
 
@@ -321,18 +320,27 @@ looks like this:
 # author: "Dominic Comtois"
 # date: "`r Sys.Date()`"
 # output: 
-#   rmarkdown::html_vignette: 
-#     css: 
-#     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+#   html_document:
+#     fig_caption: false
+#     toc: true
+#     toc_depth: 1
+#     css: vignette.css
 # vignette: >
 #   %\VignetteIndexEntry{Recommendations for R Markdown}
 #   %\VignetteEngine{knitr::rmarkdown}
 #   %\VignetteEncoding{UTF-8}
+#   %\VignetteDepends{magrittr}
+#   %\VignetteDepends{kableExtra}
 # ---
 ```
 
-The following **summarytools global options** have been set. More of them can
-be useful, but this is a good starting point.
+The *vignette.css* file is copied from the installed **rmarkdown** package's
+*templates/html_vignette/resources* directory.
+
+The following **global options** for **summarytools** have been set. Other
+options might also be useful to optimize content, but this is a good place
+to start from.
+
 ```{r, eval=FALSE}
 st_options(bootstrap.css     = FALSE,       # Already part of the theme 
            plain.ascii       = FALSE,       # One of the essential settings

@@ -86,7 +86,7 @@ Visualize results in RStudio's Viewer or in Web Browser
 }
 \details{
 Creates \emph{html} outputs and displays them in \emph{RStudio}'s viewer, in
-a browser, or renders the \emph{html} code in \emph{R Markdown} documents. 
+a browser, or renders the \emph{html} code in \emph{R markdown} documents. 
 
 For objects of class \dQuote{\emph{summarytools}}, this function is simply
 a wrapper around \code{\link{print.summarytools}} with
