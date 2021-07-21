@@ -1,21 +1,21 @@
 ---
-title: "Recommendations for R Markdown"
+title: "Summarytools in R Markdown Documents"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
-output: 
+output:
   html_document:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: vignette.css
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
-  %\VignetteIndexEntry{Recommendations for R Markdown}
+  %\VignetteIndexEntry{Summarytools in R Markdown Documents}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{magrittr}
   %\VignetteDepends{kableExtra}
+  %\VignetteDepends{magrittr}
 ---
-
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -29,7 +29,8 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
            plain.ascii       = FALSE,       # One of the essential settings
            style             = "rmarkdown", # Idem.
            dfSummary.silent  = TRUE,        # Suppresses messages about temporary files
-           footnote          = NA,          # Keeping the results minimalistic
+           footnote          = NA,          # Keeping the results minimalist
+           descr.silent      = TRUE,        # To avoid messages when building / checking
            subtitle.emphasis = FALSE)       # For the vignette theme, this gives better results.
                                             # For other themes, using TRUE might be preferable.
 ```
@@ -40,40 +41,111 @@ st_css(main = TRUE, global = TRUE)
 
 # 1. Introduction
 
-This document mainly contains examples showing how best to make use of
-**summarytools** in *R Markdown* documents. 
+This document mainly contains examples showing how best to use
+**summarytools** in *R Markdown* documents. For a more in-depth view
+of the package's features, please see the 
+[Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html) vignette. 
 
-Available styles in _summarytools_ are directly linked to `pander`'s:  
+Before going into the examples, a bit of theory is in order.
 
-- _simple_ (default)  
-- _rmarkdown_  
-- _grid_  
-- _multiline_  
-- _jira_  
+## 1.1 Methods vs Styles 
+
+Every time we display **summarytools** objects with `print()`, `view()`,
+or `stview()`, we pick -- explicitly or not -- one of several display methods.
+Possible display methods are: *pander*, *render*, *viewer*, and *browser*. 
+
+**Disambiguation**  
+
+To avoid any confusion, allow me a small digression on the word *method*. 
+It is a broad term which is also used in the OOP (object oriented programming) 
+lexicon to describe a special kind of function that is linked to a specific 
+class of objects. In R, the `print()` function is called a *generic* function.
+It is generic because it takes and handles many type of objects as an input.
+According to the class (or classes) of the object, it will dispatch the object
+to the particular *print method* dedicated to its class. In that sense, the
+`print.summarytools()` function *is itself a method*: objects of class
+"summarytools" are being dispatched to it by the
+**generic `print()` function**.
+
+In this document, when we use the term *method*, we are **not** referring to
+this concept. Rather, it refers to the *display method*, which is one of the
+parameters for `print.summarytools()`, `view()`, and `stview()`. Furthermore,
+since methods *viewer* and *browser* are mostly meant for interactive work
+and rely on the same underlying code than *render*, we will assume for the 
+purpose of this document that there are really only two methods: *pander* and
+*render*.
+
+### Only the *pander* Method Uses Styles  
+
+The *pander* method is used by default when results are automatically printed 
+to the console, or when we use `print()` without specifying its *method* argument. (In fact, when doing interactive work, we very rarely need to call
+the print function with an explicit `method = "pander"` argument.
+
+In these circumstances, the *style* parameter is communicated to 
+[**pander**](https://CRAN.R-project.org/package=pander).
+
+When we use any of the *viewer*, *browser*, or *render* methods, the 
+package rather uses **htmltools** to generate results; any specified *style*
+would be ignored.
+
+### summarytools Styles Are *pander* Styles
+
+Available styles are the ones supported by
+[**pander**]( https://CRAN.R-project.org/package=pander): 
+
+- simple (default, used mainly in R console)  
+- rmarkdown (used by all core functions except `dfSummary()`)  
+- grid (mainly used with `dfSummary()`)  
+- multiline (can be used with `dfSummary()` if you want ASCII graphs only)  
+- jira (not thoroughly tested)  
+
+
+## 1.2 General Guidelines  
+
+**Always specify results='asis'** in your chunk options, or add
+`opts_chunk$set(results = 'asis')` to your setup chunk at the top of your
+document.
+
+Also, **don't forget to specify `plain.ascii = FALSE`** in all function calls
+using the *pander* method, or include `st_options(plain.ascii = FALSE)` in
+your setup chunk.  
+
+Another trick to keep in mind is to add chunk options `message = FALSE` and/or
+`warning = FALSE`, in case you get repeated messages or warnings.  
+
+The following table indicates which method / style is better suited for each 
+**summarytools** function in the context of R Markdown documents:
+
+| Function    | render method | pander method | pander style |
+|:------------|:-------------:|:-------------:|:-------------|
+| freq()      | &#10003;      | &#10003;      | rmarkdown    |
+| ctable()    | &#10003;      | Sub-optimal   | rmarkdown    |
+| descr()     | &#10003;      | &#10003;      | rmarkdown    |
+| dfSummary() | &#10003;      | &#10003;      | grid         |
+
+**Recommended Style When Using *pander* method** 
+
+For `freq()`, `descr()`, and `ctable()`, _rmarkdown_ style is recommended.
+For `dfSummary()`, _grid_ is recommended. Note that 'multiline' can also
+be used, but only ASCII graphs will be displayed.
  
-For `freq()`, `descr()` (and `ctable()`, although with caveats), _rmarkdown_ 
-style is recommended. For `dfSummary()`, _grid_ is recommended.
- 
-Starting with `freq()`, we'll review the recommended methods and styles to 
+Starting with `freq()`, we'll now review the recommended methods and styles to 
 quickly get satisfying results in *R Markdown* documents.
 
 
-## 1.1 Contents
-
 --------------------------------------------------------------------------------
 
-# 1. Using freq() in R Markdown
+# 2. Using freq() in R Markdown
 
 `freq()` is best used with `style = 'rmarkdown'; html rendering is also 
 possible.
 
-## 1.1 Rmarkdown Style for freq()  
+## 2.1 Rmarkdown Style for freq()  
 ```{r}
-freq(tobacco$gender, style = 'rmarkdown')
+freq(tobacco$gender, plain.ascii = FALSE, style = 'rmarkdown')
 ```
 
-
-## 1.2 HTML Rendering for freq()  
+## 2.2 HTML Rendering for freq()  
 ```{r}
 print(freq(tobacco$gender), method = 'render')
 ```
@@ -85,19 +157,23 @@ example is provided further below.
 
 <a href="#top">Back to top</a>
 
-# 2. Using ctable() in R Markdown 
+# 3. Using ctable() in R Markdown 
 
-## 2.1 Rmarkdown Style for ctable()  
+## 3.1 Rmarkdown Style for ctable()  
 
 Tables with heading spanning over 2 rows are not fully supported in markdown 
 (yet), but the result is getting close to acceptable. This, however, is not
 true for all themes. That is why the rendering method is preferred.
 
 ```{r}
-ctable(tobacco$gender, tobacco$smoker, style = 'rmarkdown')
+ctable(tobacco$gender, 
+       tobacco$smoker,
+       plain.ascii = FALSE, 
+       style = 'rmarkdown')
 ```
 
-## 2.2 HTML Rendering for ctable()  
+
+## 3.2 HTML Rendering for ctable()  
 
 For best results, use this method.
 
@@ -109,21 +185,23 @@ print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
  
 <a href="#top">Back to top</a>
  
-# 3. Using descr() in R Markdown 
-`descr()` is also best used with `style = 'rmarkdown'`, and HTML rendering is 
-also supported.
+# 4. Using descr() in R Markdown 
+`descr()` gives good results with both `style = 'rmarkdown'` and HTML rendering.
 
-## 3.1 Rmarkdown Style for descr()  
+## 4.1 Rmarkdown Style for descr()  
 ```{r}
-descr(tobacco, style = 'rmarkdown')
+descr(tobacco, plain.ascii = FALSE, style = 'rmarkdown')
 ```
 
-## 3.2 HTML Rendering for descr()  
+## 4.2 HTML Rendering for descr()  
 
 We'll use table.classes = 'st-small' to show how it affects the table's size,
 compared to the `freq()` table rendered earlier.
 
-```{r}
+We'll also use `message = FALSE` as chunk option to avoid the message saying
+that non-numerical variables have been ignored.
+
+```{r, message=FALSE}
 print(descr(tobacco), method = 'render', table.classes = 'st-small')
 ```
  
@@ -131,21 +209,27 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 <a href="#top">Back to top</a>
 
-# 4. Using dfSummary() in R Markdown 
+# 5. Using dfSummary() in R Markdown 
 
 To get optimal results, whichever method you choose, it is always best to
 omit at least 1, and if possible 2 columns from the output. Also, pick
 carefully the value of the `graph.magnig` parameter.
 
-## 4.1 Grid Style for dfSummary() 
+## 5.1 Grid Style for dfSummary() 
 
 Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
+(Note that to avoid problems when uploading the package, the following is
+an imagine, not the actual rendering from this piece of code. This is because
+CRAN doesn't allow the writing in /tmp or any other directory, except in R's
+temp directory, for good reasons.)
 
 ```{r dfs_grid, eval=FALSE}
 dfSummary(tobacco, 
+          plain.ascii  = FALSE,
           style        = 'grid',
-          graph.magnif = 0.75, 
+          graph.magnif = 0.75,
+          varnumbers = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
 ```
@@ -154,14 +238,14 @@ dfSummary(tobacco,
 
 ### 4.2 HTML Rendering for dfSummary()  
 
-This method also works really well, and not having to 
-specify the `tmp.img.dir` parameter is a plus.
+This method works really well, and not having to specify the `tmp.img.dir`
+parameter is a plus.
 
 ```{r}
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE, 
                 valid.col    = FALSE, 
-                graph.magnif = 0.75),
+                graph.magnif = 0.77),
       method = 'render')
 ```
 
@@ -169,13 +253,13 @@ print(dfSummary(tobacco,
 
 For data frames containing numerous variables, we can use the `max.tbl.height`
 argument to wrap the results in a scrollable window having the specified
-height, in pixels. For instance:
+height, in pixels. 
 
 ```{r}
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE,
-                na.col       = FALSE,
-                graph.magnif = 0.75), 
+                valid.col    = FALSE,
+                graph.magnif = 0.79), 
       max.tbl.height = 300, method = "render")
 ```
 
@@ -365,7 +449,6 @@ chunk option `echo = FALSE`:
 st_css(main = TRUE, global = TRUE)
 ```
 
-<a href="#top">Back to top</a>
 
 --------------------------------------------------------------------------------
 
@@ -379,3 +462,6 @@ if you find better combinations, you are welcome to
 [open an issue on GitHub](https://github.com/dcomtois/summarytools/issues)
 to suggest modifications or make a pull request with your own improvements to
 this vignette.
+
+
+<a href="#top">Back to top</a>

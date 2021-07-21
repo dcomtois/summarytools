@@ -6,6 +6,7 @@ Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com",
   role = c("aut", "cre"))
 Author: Dominic Comtois [aut, cre]
 Maintainer: Dominic Comtois <dominic.comtois@gmail.com>
+Language: en-US
 Description: Data frame summaries, cross-tabulations,
   weight-enabled frequency tables and common descriptive
   (univariate) statistics in concise tables available in a

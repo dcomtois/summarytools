@@ -1,9 +1,10 @@
-# summarytools 1.0.0 (2021-07-19)
- - Updated Bootstrap version from 4.3 to 4.6  
+# summarytools 1.0.0 (2021-07-21)
  - Heading elements are now omitted when their defined keyword is set to
    " " (empty string)
- - Added features making saving and loading custom languages easier  
+ - Added features making saving and loading custom languages more practical  
  - In `dfSummary()`:  
+   + Improved horizontal alignment between the values, their frequencies and 
+     their bar chart  
    + `tmp.img.dir` can be left to `NA` when `style = "grid"`  
    + Fixed typo in attribute name `Dataf.rame.label`  
    + Removal of grouping variables now works with all languages  
@@ -11,14 +12,12 @@
    + Fixed error with graphs when `Inf` present -- no histograms are shown
      for now, but a future version might offer a compromise... stay tuned!
  - In `ctable()`:  
-   + Fixed row/column names not always displaying properly    
+   + Fixed row/column names not always properly displayed   
    + Fixed risk ratios showing when only odds ratios should  
    + Fixed error when `prop="none"` with integer data  
  - In `descr():  
    + Fixed headings being shown when `headings=FALSE` (when using `stby()`
      or `dplyr::group_by()`) 
-   
-   
    
 # summarytools 0.9.9 (2021-02-04)
 

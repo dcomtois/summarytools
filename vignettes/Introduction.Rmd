@@ -7,7 +7,8 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: vignette.css
+    css:
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEngine{knitr::rmarkdown}
@@ -328,6 +329,14 @@ are ignored, with a message to that effect.
 ```{r}
 descr(iris)
 ```
+
+To turn off the variable-type messages, use `silent = TRUE`. It is possible to
+set that option globally, so we won't see them from hereon:
+
+```{r}
+st_options(descr.silent = TRUE)
+```
+
 
 ### 2.3.1 Transposing and Selecting Statistics
 
@@ -730,9 +739,9 @@ stored within it. However, we can override most of them when using
 
 ## 8.1 Overriding Function-Specific Arguments
 
-This table indicates what arguments can be used with `print()`
+The following table indicates what arguments can be used with `print()`
 or `view()` to override formatting attributes. Base R's `format()`
-function arguments also apply, even though they are not reproduced here.
+function arguments can also be used (although they are not listed here).
 
 
 | Argument                    | freq   | ctable | descr | dfSummary |
@@ -798,6 +807,23 @@ print(age_stats,
 2.  `freq() / ctable() / descr() / dfSummary()` parameters come second  
 3.  Global options set with `st_options()` come third and act as default 
 
+
+The logic for the evaluation of the various parameter values can be summarized
+as follows:
+
+- If an argument is explicitly supplied in the function call, it will have
+  precedence over any stored value for the parameter (stored values are the 
+  ones that are written to the object's attributes when using a core 
+  function, as well as the ones stored in **summarytools**' global options
+  list). 
+
+- If both a core function and the print or view function are called at once and
+  have conflicting parameter values, print/view has precedence (they always
+  win the arguments).
+
+- The stored defaults (modified with st_options() or left as they are when
+  loading the package) will be applied if the parameter values cannot be
+  found in the function calls.
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
@@ -975,7 +1001,7 @@ Sys.setlocale("LC_CTYPE", "")
 st_options(lang = "en")
 ```
 
-## 12.2 Defining and Using Customized Terms
+## 12.2 Defining and Using Custom Terms
 
 Using the function `use_custom_lang()`, it is possible to add your own set of 
 translations or more personalized terminology. To achieve this, get the 
@@ -987,28 +1013,48 @@ you should always have this *csv* file handy for future use.
 
 ## 12.3 Defining Selected Keywords
 
-Sometimes, all you might want to do is change just a few keywords -- for
-instance, you might prefer using "N" over "Freq" in the title row of `freq()`
-tables. Or you might need to generate a document with several `dfSummary()` 
-tables, each having their own title.
+The `define_keywords()` makes it easy to change just one or a few terms.
+For instance, you might prefer using "N" or "Count" rather than "Freq" in the
+title row of `freq()` tables. Or you might want to generate a document which
+uses the tables' titles as heading sections.
 
-For this, we can use `define_keywords()` to replacing the generic "Data Frame
-Summary" with whatever is needed.
+For this, we can call `define_keywords()` and feed it the term(s) we wish
+to modify (which can themselves be stored in predefined variables). Here,
+the terms we need to change are `freq.title` and `freq` :
 
 
 ```{r}
-define_keywords(title.freq = "Types of Iris Flowers")
+section_title <- "**Species of Iris**"
+define_keywords(title.freq = section_title,
+                freq = "N")
 freq(iris$Species)
 ```
 
+Calling `define_keywords()` without any arguments will bring up, on systems
+that support graphical devices (the vast majority, that is), a window from
+which we can edit all the terms we want. 
+
+<img src="define_keywords.png" width=95% style="border:1;border-color:grey" />
+
+After closing the edit window, a pop-up window gives the option to save our
+newly created "custom language" to a *csv* file (even though we changed just
+a few keywords, the package considers the terms as a whole). We can later
+reload into memory the custom language file by calling
+`use_custom_lang("path-to-custom-language-file.csv")`.
+
+See `?define_keywords` for a list of all customizable terms in the package.
+
+To revert all changes to the terms, we can simply use 
+`st_options(lang = "en")`.
+
 ## 12.4 Power-Tweaking Headings 
 
-We can further customize the headings by adding arguments to the `print()`
-function. Here, we use an empty string to override the value of `Variable`:
+It is possible to further customize the headings by adding arguments to the
+`print()` function. Here, we use an empty string to override the value of 
+`Variable`; this causes the second line of the heading to disappear altogether.
 
 ```{r}
 define_keywords(title.freq = "Types and Counts, Iris Flowers")
-define_keywords(freq = "N")   # "Freq" becomes "N" in table heading
 print(
   freq(iris$Species,
        display.type = FALSE), # Variable type won't be displayed...
@@ -1016,20 +1062,7 @@ print(
   ) 
 ```
 
-By using the empty string, we caused the line normally used for printing the
-variable name to disappear altogether (as opposed to being left blank).
 
-See `?define_keywords` for a list of all customizable terms in the package.
-
-Calling `define_keywords()` without any arguments will bring up, on systems that 
-support graphical devices (the vast majority, that is), a window from which 
-we can edit all the terms we want. 
-
-<img src="define_keywords.png" width=95% style="border:1;border-color:grey" />
-
-After closing the edit window, you will be able to save your new 
-"custom language" to a *csv* file that you can later use by calling
-`use_custom_lang("path-to-custom-language-file.csv")`.
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">

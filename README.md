@@ -3,7 +3,7 @@
 
 <!-- badges -->
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 <span
@@ -189,15 +189,18 @@ versions.
 install.packages("summarytools")
 ```
 
-## 1.5 Latest Features (versions 0.9.7 and 0.9.8)
+## 1.5 Latest Features (version 1.0.0)
 
--   Performance and formatting improvements  
--   The `stview()` function which ensures the package’s own `view()`
-    method  
-    is used (avoiding potential conflicts with other packages’ versions
-    of that method)  
--   Several other features (see NEWS.md or try
-    `news(package="summarytools"`))
+-   Heading elements are now omitted when corresponding defined keyword
+    is set to " " (empty string), making headings even more flexible
+-   Improved functionality for customized terms and translations (see
+    the [Intro
+    vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)
+    for details)  
+-   `dfSummary()` tables are better aligned horizontally
+    (categories &gt;&gt; counts &gt;&gt; charts)  
+-   `dfSummary()` now handles list-type columns as well as *Inf* values
+-   Introductory vignette is easier to navigate
 
 # 2. The Four Core Functions
 
@@ -220,7 +223,7 @@ freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 |     **setosa** |   50 |   33.33 |        33.33 |   33.33 |        33.33 |
 | **versicolor** |   50 |   33.33 |        66.67 |   33.33 |        66.67 |
 |  **virginica** |   50 |   33.33 |       100.00 |   33.33 |       100.00 |
-|      **\<NA>** |    0 |         |              |    0.00 |       100.00 |
+| **&lt;NA&gt;** |    0 |         |              |    0.00 |       100.00 |
 |      **Total** |  150 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 In this first example, the `plain.ascii` and `style` arguments were
@@ -321,7 +324,7 @@ freq(tobacco$disease,
 |        **Heart** |   20 |    9.01 |        50.00 |    2.00 |        11.10 |
 |    **Pulmonary** |   20 |    9.01 |        59.01 |    2.00 |        13.10 |
 |      **(Other)** |   91 |   40.99 |       100.00 |    9.10 |        22.20 |
-|        **\<NA>** |  778 |         |              |   77.80 |       100.00 |
+|   **&lt;NA&gt;** |  778 |         |              |   77.80 |       100.00 |
 |        **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
@@ -395,7 +398,7 @@ To display the chi-square statistic, set `chisq = TRUE`. For *2 x 2*
 tables, use `OR` and `RR` to show odds ratio and risk ratio (also called
 relative risk), respectively. Those can be set to `TRUE`, in which case
 95% confidence intervals are shown; to use alternate confidence levels,
-use for example `OR = .90`. #### Using Pipes
+use for example `OR = .90`. \#\#\#\# Using Pipes
 
 To show how pipes can be used with **summarytools**, we’ll use
 **magrittr**’s `%$%` and `%>%` operators:
@@ -632,7 +635,7 @@ with(tobacco,
           FUN     = ctable))
 ```
 
-# 4. Grouped Statistics Using dplyr::group_by()
+# 4. Grouped Statistics Using dplyr::group\_by()
 
 To create grouped statistics with `freq()`, `descr()` or `dfSummary()`,
 it is possible to use **dplyr**’s `group_by()` as an alternative to
@@ -988,11 +991,11 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 There is no direct way to create a *PDF* file with **summarytools**. One
 option is to generate an *html* file and convert it to *PDF* using
 [Pandoc](https://pandoc.org) or
-[WK\<html>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives
-better results than Pandoc with `dfSummary()` output). Another option is
-to create an *Rmd* document using *PDF* as the output format. See
-`vignette("Recommendations-rmarkdown", package = "summarytools")` for
-the details on how to proceed.
+[WK&lt;html&gt;TOpdf](https://wkhtmltopdf.org/index.html) (the latter
+gives better results than Pandoc with `dfSummary()` output). Another
+option is to create an *Rmd* document using *PDF* as the output format.
+See `vignette("Recommendations-rmarkdown", package = "summarytools")`
+for the details on how to proceed.
 
 ## 6.1 Appending Output Files
 
@@ -1136,14 +1139,14 @@ attributes, as well as one of its heading attributes.
 **tobacco$age.gr**  
 **Type:** Factor
 
-|           | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
-|----------:|-----:|--------:|-------------:|--------:|-------------:|
-| **18-34** |  258 |   26.46 |        26.46 |   25.80 |        25.80 |
-| **35-50** |  241 |   24.72 |        51.18 |   24.10 |        49.90 |
-| **51-70** |  317 |   32.51 |        83.69 |   31.70 |        81.60 |
-|  **71 +** |  159 |   16.31 |       100.00 |   15.90 |        97.50 |
-| **\<NA>** |   25 |         |              |    2.50 |       100.00 |
-| **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
+|                | Freq | % Valid | % Valid Cum. | % Total | % Total Cum. |
+|---------------:|-----:|--------:|-------------:|--------:|-------------:|
+|      **18-34** |  258 |   26.46 |        26.46 |   25.80 |        25.80 |
+|      **35-50** |  241 |   24.72 |        51.18 |   24.10 |        49.90 |
+|      **51-70** |  317 |   32.51 |        83.69 |   31.70 |        81.60 |
+|       **71 +** |  159 |   16.31 |       100.00 |   15.90 |        97.50 |
+| **&lt;NA&gt;** |   25 |         |              |    2.50 |       100.00 |
+|      **Total** | 1000 |  100.00 |       100.00 |  100.00 |       100.00 |
 
 ``` r
 print(age_stats,
@@ -1177,7 +1180,7 @@ print(age_stats,
     together and have conflicting values for a parameter, it is always
     the print/view arguments that win.
 
--   The stored defaults (modified with st_options() or left as they are
+-   The stored defaults (modified with st\_options() or left as they are
     when loading the package) will be applied if the parameter values
     cannot be found in the function calls.
 
@@ -1309,7 +1312,7 @@ freq(iris$Species)
 |     **setosa** |    50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |    50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |    50 |    33.33 |        100.00 |   33.33 |       100.00 |
-|      **\<NA>** |     0 |          |               |    0.00 |       100.00 |
+| **&lt;NA&gt;** |     0 |          |               |    0.00 |       100.00 |
 |      **Total** |   150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 ## 12.1 Non-UTF-8 Locales
@@ -1365,7 +1368,7 @@ freq(iris$Species)
 |     **setosa** |    50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |    50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |    50 |    33.33 |        100.00 |   33.33 |       100.00 |
-|      **\<NA>** |     0 |          |               |    0.00 |       100.00 |
+| **&lt;NA&gt;** |     0 |          |               |    0.00 |       100.00 |
 |      **Total** |   150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 You could further customize the headings by adding arguments to the
@@ -1385,7 +1388,7 @@ print(freq(iris$Species, display.type = FALSE),
 |     **setosa** |  50 |    33.33 |         33.33 |   33.33 |        33.33 |
 | **versicolor** |  50 |    33.33 |         66.67 |   33.33 |        66.67 |
 |  **virginica** |  50 |    33.33 |        100.00 |   33.33 |       100.00 |
-|      **\<NA>** |   0 |          |               |    0.00 |       100.00 |
+| **&lt;NA&gt;** |   0 |          |               |    0.00 |       100.00 |
 |      **Total** | 150 |   100.00 |        100.00 |  100.00 |       100.00 |
 
 By using the empty string, we ensure that in the output heading, the

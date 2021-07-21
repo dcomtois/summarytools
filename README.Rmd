@@ -76,7 +76,8 @@ the scientific community at large the functions I first developed for myself,
 that I ultimately realized would benefit a lot of people who are looking for
 the same thing I was seeking in the first place. 
 
-### Support *summarytools*' Development With a Small Donation
+### Support *summarytools*' Development 
+
 If **summarytools** helps you get things done, please consider making a 
 donation. In doing so, you'll help me feel useful, but more importantly
 contribute to the package's development and help other people like you 
@@ -159,13 +160,16 @@ CRAN versions are stable but are not updated as often as the GitHub versions.
 install.packages("summarytools")
 ```
 
-## 1.5 Latest Features (versions 0.9.7 and 0.9.8)
+## 1.5 Latest Features (version 1.0.0) 
 
-  - Performance and formatting improvements  
-  - The `stview()` function which ensures the package's own `view()` method  
-    is used (avoiding potential conflicts with other packages' versions of
-    that method)  
-  - Several other features (see NEWS.md or try `news(package="summarytools"`))  
+ - Heading elements are now omitted when corresponding defined keyword is set
+   to " " (empty string), making headings even more flexible 
+ - Improved functionality for customized terms and translations (see the
+  [Intro vignette](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html) for details)  
+ - `dfSummary()` tables are better aligned horizontally (categories >> counts >>
+   charts)  
+ - `dfSummary()` now handles list-type columns as well as *Inf* values 
+ - Introductory vignette is easier to navigate 
  
 # 2. The Four Core Functions 
 

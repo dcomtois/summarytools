@@ -144,7 +144,7 @@ A data frame with additional class \code{summarytools} containing as
       column. For numerical vectors, number of distinct values, or frequency
       of distinct values if their number is not greater than
       \code{max.distinct.values}.}
-    \item{Text Graph}{An ascii histogram for numerical variables, and ascii
+    \item{Text Graph}{An ASCII histogram for numerical variables, and ASCII
       barplot for factors and character variables.} 
     \item{Graph}{An html encoded graph, either barplot or histogram.}
     \item{Valid}{Number and
