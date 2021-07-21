@@ -169,7 +169,7 @@ define_keywords <- function(..., ask = FALSE, file = NA) {
         stop("'", it, "' is not a recognized keyword; see ?define_keywords ",
              "for a list of valid keywords")
       }
-      if (inherits(mc[[it]], "call")) {
+      if (inherits(mc[[it]], c("call", "name"))) {
        mc[[it]] <- eval(mc[[it]], parent.frame())
       } 
       tr$custom[ind] <- mc[[it]]

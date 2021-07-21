@@ -1487,10 +1487,52 @@ print_dfs <- function(x, method) {
             "parameter to activate png graphs")
   }
 
-  # make_tbl_cell --------------------------------------------------------------
+  # make_vals_cell -------------------------------------------------------------
+  # Function to split lines of the values cell into table rows and return
+  # the table which will become the td (cell content). By doing this, we make
+  # sure its content is well aligned with the freqs cell since it has the same
+  # number of rows. If we don't do this, free text with line breaks will
+  # sometimes use more or less vertical space than a table with the same
+  # number of rows as it has line breaks.
+  make_vals_cell <- function(cell) {
+  
+    if (!grepl("\\n", cell)) {
+      return(HTML(paste0('<td align="left">', cell, '</td>')))
+    }
+    
+    rows <- strsplit(cell, "\\n")[[1]]
+    rows <- gsub("\\\\$", "", rows)
+    
+    # replace the "<" in "min < med < max:" line for the lte (<=) html code 
+    mmmstr <- tolower(paste0("^", trs("min"), " < ", 
+                             trs("med.short"), " < ",
+                             trs("max"), ":$"))
+    if (any(grepl(mmmstr, rows)) && grep(mmmstr, rows) == 2) {
+      rows[2] <- gsub("<", "&le;", rows[2])
+      rows[3] <- gsub("<", "&le;", rows[3]) # alternative to &le; is &#8828;
+    }
+
+    cell <- 
+      paste0(
+        paste0(
+          '<tr style="background-color:transparent">',
+          '<td style="padding:0;margin:0;border:0" align="left">'
+        ), #padding:0 5px 0 7px
+        rows,
+        '</td></tr>',
+        collapse = "")
+
+    return(HTML(
+      paste0('<td align="left" style="padding:8;vertical-align:middle">',
+             '<table style="border-collapse:collapse;border:none;margin:0">',
+             cell, '</table></td>')
+    ))
+  }
+  
+  # make_freq_cell -------------------------------------------------------------
   # Function to align the freqs / proportions in html outputs
-  # A table is built to fit in a single cell of the final table
-  make_tbl_cell <- function(cell) {
+  # A table is built to fit in a single cell in the final table
+  make_freq_cell <- function(cell) {
 
     if (identical(cell, conv_non_ascii(trs("all.nas")))) {
       return(HTML(paste0('<td align="left">', cell, '</td>')))
@@ -1573,8 +1615,8 @@ print_dfs <- function(x, method) {
     return(
       HTML(
         paste0(
-          '<td align="left" style="padding:0;vertical-align:middle"><table ',
-          'style="border-collapse:collapse;border:none;margin:0">',
+          '<td align="left" style="padding:0;vertical-align:middle">',
+          '<table style="border-collapse:collapse;border:none;margin:0">',
           cell, '</table></td>'
           )
         )
@@ -1752,14 +1794,15 @@ print_dfs <- function(x, method) {
           table_row %+=% list(
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
-        } else if (colnames(x)[co] %in% c(trs("variable"),
-                                          trs("stats.values"))) {
-          cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
+        } else if (colnames(x)[co] == trs("variable")){
           cell <- gsub("[ \t]{2,}", " ", cell)
           table_row %+=% list(
             tags$td(HTML(conv_non_ascii(cell)), align = "left")
           )
-        } else if (colnames(x)[co] == trs("freqs.pct.valid")) {
+        } else if (colnames(x)[co] == trs("stats.values")) {
+          cell <- gsub("(\\d+)\\\\\\.", "\\1.", cell)
+          table_row %+=% list(make_vals_cell(conv_non_ascii(cell)))
+        }  else if (colnames(x)[co] == trs("freqs.pct.valid")) {
           if (grepl(paste0("(",trs("distinct.value"), "|",
                            trs("distinct.values"), ")"), cell) || cell == "") {
             table_row %+=% list(
@@ -1767,14 +1810,13 @@ print_dfs <- function(x, method) {
                       style = "vertical-align:middle")
             )
           } else {
-            table_row %+=% list(make_tbl_cell(conv_non_ascii(cell)))
-            #table_row %+=% list(make_tbl_cell(cell))
+            table_row %+=% list(make_freq_cell(conv_non_ascii(cell)))
           }
         } else if (colnames(x)[co] == trs("graph")) {
           table_row %+=% list(
             tags$td(HTML(cell), align = "left",
                     style = paste0("vertical-align:middle;padding:0;",
-                                   "background-color:transparent"))
+                                   "background-color:transparent;"))
           )
         }
       }
