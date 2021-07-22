@@ -20,3 +20,10 @@ Used internally (not exported) to apply all relevant formatting. It is
 documented here only because it can be used when setting the 
 \code{dfSummary.custom.1} and  \code{dfSummary.custom.1} options.
 }
+\examples{
+
+\dontrun{
+format_number(IQR(column_data, na.rm = TRUE), round.digits)
+format_number(IQR(column_data, na.rm = TRUE), decimal.mark = ",")
+}
+}

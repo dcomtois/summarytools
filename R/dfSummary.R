@@ -1289,8 +1289,12 @@ crunch_other <- function(column_data) {
 #' @param ... Any other formatting instruction that is compatible with 
 #'  \code{\link{format}}.
 #'  
-#' @example 
-#' \dontrun{format_number(IQR(column_data, na.rm = TRUE), round.digits)} 
+#' @examples 
+#' 
+#' \dontrun{
+#' format_number(IQR(column_data, na.rm = TRUE), round.digits)
+#' format_number(IQR(column_data, na.rm = TRUE), decimal.mark = ",")
+#' }
 format_number <- function(x, round.digits, ...) {
   
   n <- 1

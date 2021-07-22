@@ -124,6 +124,34 @@
 #'   used (see \emph{Examples}). 
 #'   
 #' @examples
+#' 
+#' # show all summarytools global options
+#' st_options()
+#' 
+#' # show a specific option
+#' st_options("round.digits")
+#' 
+#' # show two (or more) options
+#' st_options(c("plain.ascii", "style", "footnote"))
+#' 
+#' \dontrun{
+#' # set one option
+#' st_options(plain.ascii = FALSE)
+#' 
+#' # set one options, legacy way
+#' st_options("plain.ascii", FALSE)
+#' 
+#' # set several options
+#' st_options(plain.ascii = FALSE,
+#'            style       = "rmarkdown",
+#'            footnote    = NA)
+#'
+#' # reset all
+#' st_options('reset')
+#' # ... or
+#' st_options(0)
+#' 
+#' # Define custom dfSummary stats
 #' st_options(dfSummary.custom.1 = expression(
 #'   paste(
 #'     "Q1 - Q3 :",
@@ -144,39 +172,15 @@
 #' 
 #' # Set back to default value
 #' st_options(dfSummary.custom.1 = "default")
-#' 
+#' }
+#'  
 #' @note 
 #' To learn more about summarytools options, see the 
 #' \href{https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html}{Introduction vignette}.
 #' 
 #' @keywords utilities
 #' 
-#' @examples \dontrun{
-#' # show all summarytools global options
-#' st_options()
 #' 
-#' # show a specific option
-#' st_options("round.digits")
-#' 
-#' # show two (or more) options
-#' st_options(c("plain.ascii", "style", "footnote"))
-#' 
-#' # set one option
-#' st_options(plain.ascii = FALSE)
-#' 
-#' # set one options, legacy way
-#' st_options("plain.ascii", FALSE)
-#' 
-#' # set several options
-#' st_options(plain.ascii = FALSE,
-#'            style       = "rmarkdown",
-#'            footnote    = NA)
-#'
-#' # reset all
-#' st_options('reset')
-#' # ... or
-#' st_options(0)
-#' }
 #' @export
 st_options <- function(option                 = NULL,
                        value                  = NULL,

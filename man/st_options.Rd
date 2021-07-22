@@ -214,6 +214,34 @@ To learn more about summarytools options, see the
 \href{https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html}{Introduction vignette}.
 }
 \examples{
+
+# show all summarytools global options
+st_options()
+
+# show a specific option
+st_options("round.digits")
+
+# show two (or more) options
+st_options(c("plain.ascii", "style", "footnote"))
+
+\dontrun{
+# set one option
+st_options(plain.ascii = FALSE)
+
+# set one options, legacy way
+st_options("plain.ascii", FALSE)
+
+# set several options
+st_options(plain.ascii = FALSE,
+           style       = "rmarkdown",
+           footnote    = NA)
+
+# reset all
+st_options('reset')
+# ... or
+st_options(0)
+
+# Define custom dfSummary stats
 st_options(dfSummary.custom.1 = expression(
   paste(
     "Q1 - Q3 :",
@@ -234,32 +262,7 @@ dfSummary(iris)
 
 # Set back to default value
 st_options(dfSummary.custom.1 = "default")
-
-\dontrun{
-# show all summarytools global options
-st_options()
-
-# show a specific option
-st_options("round.digits")
-
-# show two (or more) options
-st_options(c("plain.ascii", "style", "footnote"))
-
-# set one option
-st_options(plain.ascii = FALSE)
-
-# set one options, legacy way
-st_options("plain.ascii", FALSE)
-
-# set several options
-st_options(plain.ascii = FALSE,
-           style       = "rmarkdown",
-           footnote    = NA)
-
-# reset all
-st_options('reset')
-# ... or
-st_options(0)
 }
+ 
 }
 \keyword{utilities}
