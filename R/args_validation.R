@@ -684,7 +684,20 @@ check_args_st_options <- function(mc) {
       !isTRUE(test_logical(pf$dfSummary.silent,
                            len = 1, any.missing = FALSE))) {
     errmsg %+=% "'dfSummary.silent' must be either TRUE or FALSE"
-  }  
+  }
+  
+  if ("dfSummary.custom.1" %in% names(mc) &&
+      !isTRUE(is.expression(pf$dfSummary.custom.1)) &&
+      !is.na(pf$dfSummary.custom.1) && 
+      !pf$dfSummary.custom.1 %in% c("default", "reset")) {
+    errmsg %+=% "'dfSummary.custom.1' must be an expression, NA, or 'default'"
+  }
+
+  if ("dfSummary.custom.2" %in% names(mc) &&
+      !isTRUE(is.expression(pf$dfSummary.custom.2)) &&
+      !is.na(pf$dfSummary.custom.2))  {
+    errmsg %+=% "'dfSummary.custom.2' must be an expression, or NA"
+  }
   
   if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
        (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
@@ -704,6 +717,12 @@ check_args_st_options <- function(mc) {
                        paste(rownames(.translations), collapse = ", "))
   }
 
+  if ("option" %in% names(mc) && 
+      grepl("dfSummary.custom", pf$option) && "value" %in% names(mc)) {
+    errmsg %+=% paste0("'dfSummary.custom expressions must be defined using ",
+                       "syntax st_options(dfSummary.custom.1 = expression(...)")
+  }
+  
   if ("use.x11" %in% names(mc) &&
       !isTRUE(test_logical(pf$use.x11, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'use.x11' must be either TRUE or FALSE"

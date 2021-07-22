@@ -982,12 +982,13 @@ crunch_numeric <- function(column_data, is_barcode) {
           tolower(paste(trs("min"), "<", trs("med.short"), "<", trs("max"))),
           ":\\\n", format_number(min_val, round.digits),
           " < ", format_number(median(column_data, na.rm = TRUE), round.digits),
-          " < ", format_number(max_val, round.digits), "\\\n",
-          paste0(trs("iqr"), " (", trs("cv"), ") : "),
-          format_number(IQR(column_data, na.rm = TRUE), round.digits),
-          " (", format_number(sd(column_data, na.rm = TRUE) /
-                                mean(column_data, na.rm = TRUE),
-                              round.digits), ")", collapse = "", sep = "")
+          " < ", format_number(max_val, round.digits),
+          if (is.expression(st_options("dfSummary.custom.1")))
+            paste0("\\\n", eval(st_options("dfSummary.custom.1"))),
+          if (is.expression(st_options("dfSummary.custom.2")))
+            paste0("\\\n", eval(st_options("dfSummary.custom.2"))),
+          collapse = "", sep = ""
+        )
       }
     }
 

@@ -140,7 +140,7 @@ st_options <- function(option                 = NULL,
                        footnote               = "default",
                        display.labels         = TRUE,
                        bootstrap.css          = TRUE,
-                       custom.css             = NA,
+                       custom.css             = NA_character_,
                        escape.pipe            = FALSE,
                        char.split             = 12,
                        freq.cumul             = TRUE,
@@ -162,7 +162,26 @@ st_options <- function(option                 = NULL,
                        dfSummary.graph.col    = TRUE,
                        dfSummary.graph.magnif = 1,
                        dfSummary.silent       = FALSE,
-                       tmp.img.dir            = NA,
+                       dfSummary.custom.1     = 
+                         expression(
+                           paste(
+                             paste0(
+                               trs("iqr"), " (", trs("cv"), ") : "
+                             ),
+                             format_number(
+                               IQR(column_data, na.rm = TRUE), round.digits
+                             ),
+                             " (",
+                             format_number(
+                               sd(column_data, na.rm = TRUE) /
+                                 mean(column_data, na.rm = TRUE), round.digits
+                             ),
+                             ")",
+                             collapse = "", sep = ""
+                           )
+                         ),
+                       dfSummary.custom.2     = NA,
+                       tmp.img.dir            = NA_character_,
                        subtitle.emphasis      = TRUE,
                        lang                   = "en",
                        use.x11                = TRUE) {
@@ -212,7 +231,7 @@ st_options <- function(option                 = NULL,
                    "footnote"               = "default",
                    "display.labels"         = TRUE,
                    "bootstrap.css"          = TRUE,
-                   "custom.css"             = NA,
+                   "custom.css"             = NA_character_,
                    "escape.pipe"            = FALSE,
                    "char.split"             = 12,
                    "freq.cumul"             = TRUE,
@@ -234,6 +253,25 @@ st_options <- function(option                 = NULL,
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
                    "dfSummary.silent"       = FALSE,
+                   "dfSummary.custom.1"     = 
+                     expression(
+                       paste(
+                         paste0(
+                           trs("iqr"), " (", trs("cv"), ") : "
+                         ),
+                         format_number(
+                           IQR(column_data, na.rm = TRUE), round.digits
+                         ),
+                         " (",
+                         format_number(
+                           sd(column_data, na.rm = TRUE) /
+                             mean(column_data, na.rm = TRUE), round.digits
+                         ),
+                         ")",
+                         collapse = "", sep = ""
+                       )
+                     ),
+                   "dfSummary.custom.2"     = NA,
                    "tmp.img.dir"            = NA_character_,
                    "subtitle.emphasis"      = TRUE,
                    "lang"                   = "en",
@@ -260,9 +298,44 @@ st_options <- function(option                 = NULL,
   }
   
   # Regular way of setting options    
-  for (o in setdiff(names(mc), c("", "option", "value"))) {
+  for (o in setdiff(names(mc), c("", "option", "value",
+                                 "dfSummary.custom.1", "dfSummary.custom.2"))) {
     allOpts[[o]] <- get(o)
   }
+  
+  if ("dfSummary.custom.1" %in% names(mc)) {
+    val <- get("dfSummary.custom.1")
+    if (is.expression(val) || is.na(val)) {
+      allOpts[["dfSummary.custom.1"]] <- val
+    } else if (val %in% c("default", "reset")) {
+      allOpts[["dfSummary.custom.1"]] <-
+        expression(
+          paste(
+            paste0(
+              trs("iqr"), " (", trs("cv"), ") : "
+            ),
+            format_number(
+              IQR(column_data, na.rm = TRUE), round.digits
+            ),
+            " (",
+            format_number(
+              sd(column_data, na.rm = TRUE) /
+                mean(column_data, na.rm = TRUE), round.digits
+            ),
+            ")",
+            collapse = "", sep = ""
+          )
+        )
+    }
+  }
+    
+  if ("dfSummary.custom.2" %in% names(mc)) {
+    val <- get("dfSummary.custom.2")
+    if (is.expression(val) || is.na(val)) {
+      allOpts[["dfSummary.custom.2"]] <- val
+    }
+  }
+  
   options("summarytools" = allOpts)
   
   return(invisible())

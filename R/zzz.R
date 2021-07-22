@@ -51,6 +51,25 @@ utils::globalVariables(c("."))
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
                  "dfSummary.silent"       = FALSE,
+                 "dfSummary.custom.1"     = 
+                   expression(
+                     paste(
+                       paste0(
+                         trs("iqr"), " (", trs("cv"), ") : "
+                       ),
+                       format_number(
+                         IQR(column_data, na.rm = TRUE), round.digits
+                       ),
+                       " (",
+                       format_number(
+                         sd(column_data, na.rm = TRUE) /
+                           mean(column_data, na.rm = TRUE), round.digits
+                       ),
+                       ")",
+                       collapse = "", sep = ""
+                     )
+                   ),
+                 "dfSummary.custom.2"     = NA,
                  "tmp.img.dir"            = NA_character_,
                  "subtitle.emphasis"      = TRUE,
                  "lang"                   = "en",
