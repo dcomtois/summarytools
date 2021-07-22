@@ -99,7 +99,8 @@
 #'     \item{Graph}{An html encoded graph, either barplot or histogram.}
 #'     \item{Valid}{Number and
 #'       proportion of valid values.}
-#'     \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
+#'     \item{Missing}{Number and proportion of missing (NA and NAN) values.} 
+#'     }
 #'
 #' @details The default value \code{plain.ascii = TRUE} is intended to
 #'   facilitate interactive data exploration. When using the package for
@@ -125,6 +126,10 @@
 #'   globally with \code{\link{st_options}} (\emph{e.g.:}
 #'   \code{st_options(tmp.img.dir = ".")}.
 #'
+#'   It is possible to \strong{control which statistics are shown} in the 
+#'   \emph{Stats / Values} column. For this, see the \emph{Details} and
+#'   \emph{Examples} sections of \code{\link{st_options}}.
+#'    
 #' @note Several packages provide functions for defining \emph{variable labels},
 #'   \pkg{summarytools} being one of them. Some packages (\emph{Hmisc} in
 #'   particular) employ special classes for labelled objects, but
@@ -1272,8 +1277,20 @@ crunch_other <- function(column_data) {
 }
 
 # Utility functions ------------------------------------------------------------
-
-#' @keywords internal
+#' format_number
+#'
+#' Used internally (not exported) to apply all relevant formatting. It is 
+#' documented here only because it can be used when setting the 
+#' \code{dfSummary.custom.1} and  \code{dfSummary.custom.1} options.
+#'
+#' @param x A numerical value to be formatted.
+#' @param round.digits Numerical. Number of decimals to show. Used to define 
+#'   both \code{digits} and \code{nsmall} when calling \code{\link{format}}. 
+#' @param ... Any other formatting instruction that is compatible with 
+#'  \code{\link{format}}.
+#'  
+#' @example 
+#' \dontrun{format_number(IQR(column_data, na.rm = TRUE), round.digits)} 
 format_number <- function(x, round.digits, ...) {
   
   n <- 1

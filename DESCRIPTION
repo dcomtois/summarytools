@@ -17,6 +17,7 @@ Imports:
   base64enc,
   checkmate,
   dplyr,
+  formatR,
   grDevices,
   htmltools,
   lubridate,

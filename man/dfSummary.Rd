@@ -149,7 +149,8 @@ A data frame with additional class \code{summarytools} containing as
     \item{Graph}{An html encoded graph, either barplot or histogram.}
     \item{Valid}{Number and
       proportion of valid values.}
-    \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
+    \item{Missing}{Number and proportion of missing (NA and NAN) values.} 
+    }
 }
 \description{
 Summary of a data frame consisting of: variable names and types, labels if
@@ -180,6 +181,10 @@ The default value \code{plain.ascii = TRUE} is intended to
   The maximum length for this parameter is set to 5 characters. It can be set
   globally with \code{\link{st_options}} (\emph{e.g.:}
   \code{st_options(tmp.img.dir = ".")}.
+
+  It is possible to \strong{control which statistics are shown} in the 
+  \emph{Stats / Values} column. For this, see the \emph{Details} and
+  \emph{Examples} sections of \code{\link{st_options}}.
 }
 \note{
 Several packages provide functions for defining \emph{variable labels},

@@ -31,7 +31,7 @@ Provides support for piped function calls (e.g.
 \code{my_df \%>\% descr(my_var)}.}
 
 \item{stats}{Character. Which stats to produce. Either \dQuote{all} (default),
-\dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
+\dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},

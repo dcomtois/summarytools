@@ -84,6 +84,18 @@
 #'   \code{1}.
 #' @param dfSummary.silent Logical. Hide console messages. \code{FALSE} by 
 #'   default.
+#' @param dfSummary.custom.1 Expression. First of two optional expressions
+#'   which once evaluated will populate lines 3+ of the `Stats / Values` 
+#'   cell when column data is numerical and has more distinct values than 
+#'   allowed by the \code{max.distinct.values} parameter. By default, it
+#'   contains the expression which generates the `IQR (CV) : ...` line. To reset it back to
+#'   this default value, use \code{st_options(dfSummary.custom.1 = "default")}.
+#'   See \emph{Details} and \emph{Examples} sections for more.
+#' @param dfSummary.custom.2 Expression. Second the two optional expressions
+#'   which once evaluated will populate lines 3+ of the `Stats / Values` 
+#'   cell when the column data is numerical and has more distinct values than 
+#'   allowed by the `max.distinct.values` parameter. \code{NA} by default.
+#'   See \emph{Details} and \emph{Examples} sections for more.
 #' @param tmp.img.dir Character. Directory used to store temporary images. See
 #'   \emph{Details} section of \code{\link{dfSummary}}. \code{NA} by default.
 #' @param subtitle.emphasis Logical. Controls the formatting of the 
@@ -99,8 +111,43 @@
 #'   \code{\link{dfSummary}}  tries to generate \emph{html} 
 #'   \dQuote{Base64-encoded} graphs.
 #' 
-#' @details To learn more about summarytools options, see the 
-#' \href{https://github.com/dcomtois/summarytools}{project's GitHub page}.
+#' @details The \code{dfSummary.custom.1} and \code{dfSummary.custom.2} options
+#'   must be defined as expressions. In the expression, use the
+#'   \code{culumn_data} variable name to refer to data. Assume the type to be
+#'   numerical (real or integer). The expression must paste together both the
+#'   labels (short name for the statistic(s) being displayed) and the 
+#'   statistics themselves. Although \code{\link[base]{round}} can be used, a
+#'   better alternative is to call the internal \code{\link{format_number}},
+#'   which uses \code{\link[base]{format}} to apply all relevant formatting
+#'   that is active within the call to \code{\link{dfSummary}}. For keywords
+#'   having a translated term, the \code{trs()} internal function can be
+#'   used (see \emph{Examples}). 
+#'   
+#' @examples
+#' st_options(dfSummary.custom.1 = expression(
+#'   paste(
+#'     "Q1 - Q3 :",
+#'     format_number(
+#'       quantile(column_data, probs = .25, type = 2, 
+#'                names = FALSE, na.rm = TRUE), round.digits
+#'     ),
+#'     "-",
+#'     format_number(
+#'       quantile(column_data, probs = .75, type = 2, 
+#'                names = FALSE, na.rm = TRUE), round.digits
+#'     ),
+#'     collapse = ""
+#'   )
+#' ))
+#' 
+#' dfSummary(iris)
+#' 
+#' # Set back to default value
+#' st_options(dfSummary.custom.1 = "default")
+#' 
+#' @note 
+#' To learn more about summarytools options, see the 
+#' \href{https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html}{Introduction vignette}.
 #' 
 #' @keywords utilities
 #' 
