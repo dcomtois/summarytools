@@ -1416,7 +1416,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     } else {
       barplot(data, names.arg = "", axes = FALSE, space = 0.22, #0.21,
               col = "grey94", border = "grey65", horiz = TRUE,
-              xlim = c(0, max(data)))
+              xlim = c(0, sum(data)))
     }
 
     dev.off()
