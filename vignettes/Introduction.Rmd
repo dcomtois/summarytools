@@ -3,19 +3,19 @@ title: "Introduction to summarytools"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    fig_caption: false
-    toc: true
+  html_document: 
+    toc: yes
     toc_depth: 1
-    css:
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    css: C:/R/lib-user/4.1/rmarkdown/rmarkdown/templates/html_vignette/resources/vignette.css
+    keep_md: yes
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{kableExtra}
   %\VignetteDepends{magrittr}
   %\VignetteDepends{forcats}
+  %\VignetteDepends{formatR}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, include=FALSE}
@@ -53,15 +53,19 @@ txt <- data.frame(
       '<a href="#descr">descr()</a>',
       '<a href="#dfsummary">dfSummary()</a>'),
   Description = 
-    c("**Frequency Tables** featuring counts, proportions, cumulative statistics as well as missing data reporting",
-      paste("**Cross-Tabulations** (joint frequencies) between pairs of discrete/categorical variables,",
-            "featuring marginal sums as well as row, column or total proportions"),
-      paste("**Descriptive (Univariate) Statistics** for numerical data, featuring common measures of",
-            "central tendency and dispersion"),
-      paste("Extensive **Data Frame Summaries** featuring type-specific information for all variables",
-            "in a data frame: univariate statistics and/or frequency distributions, bar charts or",
-            "histograms, as well as missing data counts and proportions. Very useful to quickly",
-            "detect anomalies and identify trends at a glance"))
+    c(paste("**Frequency Tables** featuring counts, proportions, cumulative",
+             "statistics as well as missing data reporting"),
+      paste("**Cross-Tabulations** (joint frequencies) between pairs",
+            "of discrete/categorical variables, featuring marginal sums",
+            "as well as row, column or total proportions"),
+      paste("**Descriptive (Univariate) Statistics** for numerical data, featuring",
+            "common measures of central tendency and dispersion"),
+      paste("Extensive **Data Frame Summaries** featuring type-specific",
+            "information for all variables in a data frame: univariate",
+            "statistics and/or frequency distributions, bar charts or",
+            "histograms, as well as missing data counts and proportions.",
+            "Very useful to quickly, detect anomalies and identify trends",
+            "at a glance"))
 )
 
 kable(txt, format = "html", escape = FALSE, align = c('r', 'l')) %>%
@@ -106,7 +110,7 @@ Results can be
      themselves can be adapted to one's preferences  
    + **Pipe operators** from [magrittr](https://cran.r-project.org/package=magrittr)
      (`%>%`, `%$%`) and [pipeR](https://cran.r-project.org/package=pipeR) (`%>>%`)
-     are fully supported
+     are fully supported  
    + Default values for a good number of function parameters can be modified
      using `st_options()` to minimize redundancy  
    + **By-group processing** is easily achieved using the package's`stby()` function 
@@ -122,24 +126,18 @@ Results can be
 <div style="width:100%; margin:0 auto; text-align:center">
 <a href="#s-1">&#171; 1. Overview</a> |
 <a href="#header">< ToC ></a> |
-<a href="#s-3">3. Grouped Statistics : stby() &#187;</a>  
+<a href="#s-3">3. Grouped Statistics : stby() &#187;</a> 
 </div>
-<br/>
+<br/><br/>
 <a id="s-2"></a>  
 
 # 2. The Four Core Functions  
 
-<div style="width:100%; margin:0 auto; text-align:center">
-<a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | 
-<a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
-</div>
-
-<a id="freq"></a>
-
+<a id="freq"></a> 
 ## 2.1 Frequency Tables With freq()  
 
 The `freq()` function generates frequency tables with counts,
-proportions, as well as missing data information. 
+proportions, as well as missing data information.
 
 ```{r}
 freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
@@ -163,7 +161,7 @@ one row and two columns:
 freq(iris$Species, report.nas = FALSE, headings = FALSE)
 ```
 
-Note that the `headings = FALSE` parameter suppresses the heading section.
+Note that the `headings = FALSE` parameter suppresses the heading section. 
 
 ### 2.1.2 Minimal Frequency Tables
 
@@ -397,6 +395,7 @@ dfSummary(tobacco,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
 ```
+
 <img src="dfSummary_md.png" width=100%/>
 
 
@@ -407,15 +406,83 @@ explanation for this can be found [further below](#tmp-img-dir).
 Some users reported repeated X11 warnings; those can be avoided by using the
 following chunk declaration: `{r chunk_name, results="asis", warning=FALSE}`.
 
-### 2.4.2 Advanced Features
+### 2.4.2 Optionnal Statistics
+
+This feature has been requested several times since the package was
+released. Introduced in version 1.0.0, it provides control over which
+statistics to shown in the *Stats/Values* column. Namely, the third row,
+which displays `IQR (CV) : ... (...)`, can be modified to show any available
+statistics in R. An additional "slot" (unused by default) is also made
+available. To use this feature, define `dfSummary.custom.1` and/or
+`dfSummary.custom.2` using `st_options()` in the following way, encapsulating
+the code in an `expression()`:
+
+
+```{r}
+st_options(
+  dfSummary.custom.1 = 
+    expression(
+      paste(
+        "Q1 - Q3 :",
+        round(
+          quantile(column_data, probs = .25, type = 2, 
+                   names = FALSE, na.rm = TRUE), digits = 1
+        ), " - ",
+        round(
+          quantile(column_data, probs = .75, type = 2, 
+                   names = FALSE, na.rm = TRUE), digits = 1
+        )
+      )
+    )
+)
+
+dfSummary(iris[1], 
+          na.col      = FALSE,
+          style       = "multiline",
+          plain.ascii = FALSE,
+          headings    = FALSE)
+```
+
+
+If we had defined `dfSummary.custom.2` instead of `dfSummary.custom.1`,
+a fourth row would have been added under the default `IQR (CV) : ...` row.
+
+Note that instead of `round()`, it is possible to use the internal 
+`format_number()`, which ensures the number is formatted according to all
+specified arguments (rounding digits, decimal mark and thousands mark, etc.).
+The internal variable `rounding.digits` which contains the value of
+`st_options("round.digits")` can also be used. This is how the
+default `IQR (CV) : ...` is defined -- here we set the first custom stat back
+to its default value and then display its definition (`formatR::tidy_source()`
+is used to format / indent the expression):
+
+```{r, results='markup'}
+library(formatR)
+st_options(dfSummary.custom.1 = "default")
+formatR::tidy_source(
+  text   = deparse(st_options("dfSummary.custom.1")),
+  indent = 2,
+  args.newline = TRUE,
+)
+```
+
+Don't forget to specify `na.rm = TRUE` for all functions that have this
+parameter.
+
+### 2.4.3 Other Notable Features
 
 The `dfSummary()` function also
 
- - Reports the number of duplicate records, in the heading section  
+ - Reports the number of duplicate records in the heading section  
  - Detects UPC/EAN codes (barcode numbers) and doesn't calculate irrelevant
    statistics for them  
  - Detects email addresses and reports counts of valid, invalid and
    duplicate addresses  
+ - Allows the display of "windowed" results by using the `max.tbl.height`
+   parameter; This is especially convenient if the analyzed data frame has
+   numerous variables; see 
+   `vignette("summarytools-in-rmarkdown", package = "summarytools")` for
+   more details
 
 ### 2.4.3 Excluding Columns
 
@@ -434,7 +501,7 @@ dfs$Variable <- NULL # This deletes the "Variable" column
 <br/>
 <a href="#s-2">&#171; 2. The Four Core Functions</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-4">4. Grouped Statistics - group_by() &#187;</a>  
+<a href="#s-4">4. Grouped Statistics - group_by() &#187;</a> 
 </div>
 <br/><br/>
 <a id="s-3"></a>  
@@ -526,8 +593,11 @@ tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 <br/>
 <a href="#s-4">&#171; 4. Grouped Statistics : group_by()</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-6">6. Directing Output to Files &#187;</a><br/>  
-</div><a id="s-5"></a>  
+<a href="#s-6">6. Directing Output to Files &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-5"></a>  
+
 
 # 5. Tidy Tables : tb()
 
@@ -608,9 +678,10 @@ stby(data    = iris,
 <br/>
 <a href="#s-5">&#171; 5. Tidy Tables : tb()</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-7">7. Global Options &#187;</a>
-<br/><br/>  
-</div><a id="s-6"></a>  
+<a href="#s-7">7. Global Options &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-6"></a>  
 
 
 # 6. Directing Output to Files
@@ -632,7 +703,7 @@ to generate an *html* file and convert it to *PDF* using [Pandoc](https://pandoc
 or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives better results
 than Pandoc with `dfSummary()` output). Another option is to create an *Rmd* document
 using *PDF* as the output format. See 
-`vignette("Recommendations-rmarkdown", package = "summarytools")` for the details
+`vignette("summarytools-in-rmarkdown", package = "summarytools")` for the details
 on how to proceed.
 
 ## 6.1 Appending Output Files
@@ -649,9 +720,10 @@ document.
 <br/>
 <a href="#s-6">&#171; 6. Directing Output to Files</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-8">8. Format Attributes &#187;</a>
-<br/><br/>  
-</div><a id="s-7"></a>  
+<a href="#s-8">8. Format Attributes &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-7"></a>  
 
 
 # 7. Global options
@@ -727,9 +799,10 @@ st_options(style = 'rmarkdown',   # Set the value of one or several options
 <br/>
 <a href="#s-7">&#171; 7. Global Options</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-9">9. Fine-Tuning Looks : CSS &#187;</a>
-<br/><br/>  
-</div><a id="s-8"></a>  
+<a href="#s-9">9. Fine-Tuning Looks : CSS &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-8"></a>  
 
 # 8. Format Attributes
 
@@ -832,9 +905,10 @@ as follows:
 <br/>
 <a href="#s-8">&#171; 8. Format Attributes</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-10">10. <em>Shiny</em> Apps &#187;</a>
-<br/><br/>  
-</div><a id="s-9"></a>  
+<a href="#s-10">10. <em>Shiny</em> Apps &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-9"></a>  
 
 # 9. Fine-Tuning Looks : CSS
 
@@ -873,9 +947,10 @@ print(dfSummary(tobacco),
 <br/>
 <a href="#s-9">&#171; 9. Fine-Tuning Looks : CSS</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-11">11. Graphs in R Markdown &#187;</a>
-<br/><br/>  
-</div><a id="s-10"></a>  
+<a href="#s-11">11. Graphs in R Markdown &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-10"></a>  
 
 # 10. *Shiny* apps
 
@@ -911,9 +986,9 @@ print(dfSummary(somedata,
 <br/>
 <a href="#s-10">&#171; 10. <em>Shiny</em> Apps</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-12">12. Languages & Term Customization &#187;</a>
-<br/><br/>  
+<a href="#s-12">12. Languages & Term Customization &#187;</a> 
 </div>
+<br/><br/>
 <a id="s-11"></a>  
 
 # 11. Graphs in R Markdown {#tmp-img-dir}
@@ -959,9 +1034,10 @@ be it absolute ("/tmp") or relative ("img", or simply ".").
 <br/>
 <a href="#s-11">&#171; 11. Graphs in R Markdown</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-13">13. Vignette Setup &#187;</a>  
-<br/>  
-</div><a id="s-12"></a>  
+<a href="#s-13">13. Vignette Setup &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-12"></a>  
 
 # 12. Languages & Term Customization
 
@@ -1071,9 +1147,10 @@ print(
 <br/>
 <a href="#s-12">&#171; 12. Translations & Term Customization</a> | 
 <a href="#header">< ToC ></a> | 
-<a href="#s-14">14. Conclusion &#187;</a><br/>  
-</div><a id="s-13"></a>  
-<a id="setup"></a>  
+<a href="#s-14">14. Conclusion &#187;</a> 
+</div>
+<br/><br/>
+<a id="s-13"></a><a id="setup"></a>  
 
 # 13. Vignette Setup  
 
@@ -1128,11 +1205,10 @@ using `print()` or `view()` with the `file` argument. But in
 <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a>
 <br/>
 <a href="#s-13">&#171; 13. Vignette Setup</a> | 
-<a href="#header">< ToC ></a>
-<br/><br/>  
+<a href="#header">< ToC ></a> 
 </div>
+<br/><br/>
 <a id="s-14"></a>  
-
 
 # 14. Conclusion
 

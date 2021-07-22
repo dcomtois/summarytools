@@ -97,7 +97,7 @@ Available styles are the ones supported by
 - rmarkdown (used by all core functions except `dfSummary()`)  
 - grid (mainly used with `dfSummary()`)  
 - multiline (can be used with `dfSummary()` if you want ASCII graphs only)  
-- jira (not thoroughly tested)  
+- jira (recent addition, not thoroughly tested)  
 
 
 ## 1.2 General Guidelines  
@@ -245,7 +245,7 @@ parameter is a plus.
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE, 
                 valid.col    = FALSE, 
-                graph.magnif = 0.77),
+                graph.magnif = 0.76),
       method = 'render')
 ```
 
@@ -259,7 +259,7 @@ height, in pixels.
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE,
                 valid.col    = FALSE,
-                graph.magnif = 0.79), 
+                graph.magnif = 0.76), 
       max.tbl.height = 300, method = "render")
 ```
 
@@ -400,7 +400,7 @@ looks like this:
 
 ```
 # ---
-# title: "Recommendations for R Markdown"
+# title: "Summarytools in R Markdown Documents"
 # author: "Dominic Comtois"
 # date: "`r Sys.Date()`"
 # output: 
@@ -410,7 +410,7 @@ looks like this:
 #     toc_depth: 1
 #     css: vignette.css
 # vignette: >
-#   %\VignetteIndexEntry{Recommendations for R Markdown}
+#   %\VignetteIndexEntry{Summarytools in R Markdown Documents}
 #   %\VignetteEngine{knitr::rmarkdown}
 #   %\VignetteEncoding{UTF-8}
 #   %\VignetteDepends{magrittr}
@@ -420,6 +420,8 @@ looks like this:
 
 The *vignette.css* file is copied from the installed **rmarkdown** package's
 *templates/html_vignette/resources* directory.
+ 
+**Global Options**
 
 The following **global options** for **summarytools** have been set. Other
 options might also be useful to optimize content, but this is a good place

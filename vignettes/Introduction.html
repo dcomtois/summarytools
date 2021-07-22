@@ -11,7 +11,7 @@
 
 <meta name="author" content="Dominic Comtois" />
 
-<meta name="date" content="2021-07-21" />
+<meta name="date" content="2021-07-22" />
 
 <title>Introduction to summarytools</title>
 
@@ -170,7 +170,7 @@ pre code {
 
 <h1 class="title toc-ignore">Introduction to summarytools</h1>
 <h4 class="author">Dominic Comtois</h4>
-<h4 class="date">2021-07-21</h4>
+<h4 class="date">2021-07-22</h4>
 
 </div>
 
@@ -240,7 +240,7 @@ Description
 <a href="#dfsummary">dfSummary()</a>
 </td>
 <td style="text-align:left;vertical-align:top">
-Extensive <strong>Data Frame Summaries</strong> featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts and proportions. Very useful to quickly detect anomalies and identify trends at a glance
+Extensive <strong>Data Frame Summaries</strong> featuring type-specific information for all variables in a data frame: univariate statistics and/or frequency distributions, bar charts or histograms, as well as missing data counts and proportions. Very useful to quickly, detect anomalies and identify trends at a glance
 </td>
 </tr>
 </tbody>
@@ -281,7 +281,8 @@ Extensive <strong>Data Frame Summaries</strong> featuring type-specific informat
 <ul>
 <li>The built-in features to support alternate languages can also be used to customize outputs – heading elements as well as keywords in the output tables themselves can be adapted to one’s preferences<br />
 </li>
-<li><strong>Pipe operators</strong> from <a href="https://cran.r-project.org/package=magrittr">magrittr</a> (<code>%&gt;%</code>, <code>%$%</code>) and <a href="https://cran.r-project.org/package=pipeR">pipeR</a> (<code>%&gt;&gt;%</code>) are fully supported</li>
+<li><strong>Pipe operators</strong> from <a href="https://cran.r-project.org/package=magrittr">magrittr</a> (<code>%&gt;%</code>, <code>%$%</code>) and <a href="https://cran.r-project.org/package=pipeR">pipeR</a> (<code>%&gt;&gt;%</code>) are fully supported<br />
+</li>
 <li>Default values for a good number of function parameters can be modified using <code>st_options()</code> to minimize redundancy<br />
 </li>
 <li><strong>By-group processing</strong> is easily achieved using the package’s<code>stby()</code> function (a slightly modified version of <code>by()</code>), but <code>dplyr::group_by()</code> is also supported<br />
@@ -297,17 +298,12 @@ Extensive <strong>Data Frame Summaries</strong> featuring type-specific informat
 <div style="width:100%; margin:0 auto; text-align:center">
 <p><a href="#s-1">« 1. Overview</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-3">3. Grouped Statistics : stby() »</a></p>
 </div>
-<p><br /> <a id="s-2"></a></p>
+<p><br /><br /> <a id="s-2"></a></p>
 </div>
 </div>
 <div id="the-four-core-functions" class="section level1">
 <h1>2. The Four Core Functions</h1>
-<div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a></p>
-</div>
-<p><a id="freq"></a></p>
-<div id="frequency-tables-with-freq" class="section level2">
-<h2>2.1 Frequency Tables With freq()</h2>
+<p><a id="freq"></a> ## 2.1 Frequency Tables With freq()</p>
 <p>The <code>freq()</code> function generates frequency tables with counts, proportions, as well as missing data information.</p>
 <pre class="r"><code>freq(iris$Species, plain.ascii = FALSE, style = &quot;rmarkdown&quot;)</code></pre>
 <div id="frequencies" class="section level3">
@@ -566,7 +562,6 @@ Extensive <strong>Data Frame Summaries</strong> featuring type-specific informat
 <p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a></p>
 </div>
 <p><a id="ctable"></a></p>
-</div>
 </div>
 <div id="cross-tabulations-with-ctable" class="section level2">
 <h2>2.2 Cross-Tabulations with ctable()</h2>
@@ -1009,15 +1004,110 @@ tobacco %$%  # Acts like with(tobacco, ...)
 <p><strong>The <code>tmp.img.dir</code> parameter is mandatory</strong> when generating <em>dfSummaries</em> in <em>R Markdown</em> documents, <strong>except for <em>html</em> rendering</strong>. The explanation for this can be found <a href="#tmp-img-dir">further below</a>.</p>
 <p>Some users reported repeated X11 warnings; those can be avoided by using the following chunk declaration: <code>{r chunk_name, results=&quot;asis&quot;, warning=FALSE}</code>.</p>
 </div>
-<div id="advanced-features" class="section level3">
-<h3>2.4.2 Advanced Features</h3>
+<div id="optionnal-statistics" class="section level3">
+<h3>2.4.2 Optionnal Statistics</h3>
+<p>This feature has been requested several times since the package was released. Introduced in version 1.0.0, it provides control over which statistics to shown in the <em>Stats/Values</em> column. Namely, the third row, which displays <code>IQR (CV) : ... (...)</code>, can be modified to show any available statistics in R. An additional “slot” (unused by default) is also made available. To use this feature, define <code>dfSummary.custom.1</code> and/or <code>dfSummary.custom.2</code> using <code>st_options()</code> in the following way, encapsulating the code in an <code>expression()</code>:</p>
+<pre class="r"><code>st_options(
+  dfSummary.custom.1 = 
+    expression(
+      paste(
+        &quot;Q1 - Q3 :&quot;,
+        round(
+          quantile(column_data, probs = .25, type = 2, 
+                   names = FALSE, na.rm = TRUE), digits = 1
+        ), &quot; - &quot;,
+        round(
+          quantile(column_data, probs = .75, type = 2, 
+                   names = FALSE, na.rm = TRUE), digits = 1
+        )
+      )
+    )
+)
+
+dfSummary(iris[1], 
+          na.col      = FALSE,
+          style       = &quot;multiline&quot;,
+          plain.ascii = FALSE,
+          headings    = FALSE)</code></pre>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="16%" />
+<col width="26%" />
+<col width="21%" />
+<col width="18%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">No</th>
+<th align="left">Variable</th>
+<th align="left">Stats / Values</th>
+<th align="left">Freqs (% of Valid)</th>
+<th align="left">Graph</th>
+<th align="left">Valid</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Sepal.Length<br />
+[numeric]</td>
+<td align="left">Mean (sd) : 5.8 (0.8)<br />
+min &lt; med &lt; max:<br />
+4.3 &lt; 5.8 &lt; 7.9<br />
+Q1 - Q3 : 5.1 - 6.4</td>
+<td align="left">35 distinct values</td>
+<td align="left">  . . : :<br />
+  : : : :<br />
+  : : : : :<br />
+  : : : : :<br />
+: : : : : : : :</td>
+<td align="left">150<br />
+(100.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>If we had defined <code>dfSummary.custom.2</code> instead of <code>dfSummary.custom.1</code>, a fourth row would have been added under the default <code>IQR (CV) : ...</code> row.</p>
+<p>Note that instead of <code>round()</code>, it is possible to use the internal <code>format_number()</code>, which ensures the number is formatted according to all specified arguments (rounding digits, decimal mark and thousands mark, etc.). The internal variable <code>rounding.digits</code> which contains the value of <code>st_options(&quot;round.digits&quot;)</code> can also be used. This is how the default <code>IQR (CV) : ...</code> is defined – here we set the first custom stat back to its default value and then display its definition (<code>formatR::tidy_source()</code> is used to format / indent the expression):</p>
+<pre class="r"><code>library(formatR)
+st_options(dfSummary.custom.1 = &quot;default&quot;)
+formatR::tidy_source(
+  text   = deparse(st_options(&quot;dfSummary.custom.1&quot;)),
+  indent = 2,
+  args.newline = TRUE,
+)</code></pre>
+<pre><code>expression(
+  paste(
+    paste0(
+      trs(&quot;iqr&quot;),
+      &quot; (&quot;, trs(&quot;cv&quot;),
+      &quot;) : &quot;
+    ),
+    format_number(
+      IQR(column_data, na.rm = TRUE),
+      round.digits
+    ),
+    &quot; (&quot;, format_number(
+      sd(column_data, na.rm = TRUE)/mean(column_data, na.rm = TRUE),
+      round.digits
+    ),
+    &quot;)&quot;, collapse = &quot;&quot;, sep = &quot;&quot;
+  )
+)</code></pre>
+<p>Don’t forget to specify <code>na.rm = TRUE</code> for all functions that have this parameter.</p>
+</div>
+<div id="other-notable-features" class="section level3">
+<h3>2.4.3 Other Notable Features</h3>
 <p>The <code>dfSummary()</code> function also</p>
 <ul>
-<li>Reports the number of duplicate records, in the heading section<br />
+<li>Reports the number of duplicate records in the heading section<br />
 </li>
 <li>Detects UPC/EAN codes (barcode numbers) and doesn’t calculate irrelevant statistics for them<br />
 </li>
-<li>Detects email addresses and reports counts of valid, invalid and duplicate addresses</li>
+<li>Detects email addresses and reports counts of valid, invalid and duplicate addresses<br />
+</li>
+<li>Allows the display of “windowed” results by using the <code>max.tbl.height</code> parameter; This is especially convenient if the analyzed data frame has numerous variables; see <code>vignette(&quot;summarytools-in-rmarkdown&quot;, package = &quot;summarytools&quot;)</code> for more details</li>
 </ul>
 </div>
 <div id="excluding-columns" class="section level3">
@@ -1465,9 +1555,9 @@ tobacco %&gt;%
 </table>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-4">« 4. Grouped Statistics : group_by()</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-6">6. Directing Output to Files »</a><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-4">« 4. Grouped Statistics : group_by()</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-6">6. Directing Output to Files »</a></p>
 </div>
-<p><a id="s-5"></a></p>
+<p><br /><br /> <a id="s-5"></a></p>
 </div>
 </div>
 <div id="tidy-tables-tb" class="section level1">
@@ -1873,9 +1963,9 @@ virginica
 </table>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-5">« 5. Tidy Tables : tb()</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-7">7. Global Options »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-5">« 5. Tidy Tables : tb()</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-7">7. Global Options »</a></p>
 </div>
-<p><a id="s-6"></a></p>
+<p><br /><br /> <a id="s-6"></a></p>
 </div>
 </div>
 <div id="directing-output-to-files" class="section level1">
@@ -1884,15 +1974,15 @@ virginica
 <pre class="r"><code>view(iris_stats_by_species, file = &quot;~/iris_stats_by_species.html&quot;)
 view(iris_stats_by_species, file = &quot;~/iris_stats_by_species.md&quot;)</code></pre>
 <p><strong>A Note About <em>PDF</em> documents</strong></p>
-<p>There is no direct way to create a <em>PDF</em> file with <strong>summarytools</strong>. One option is to generate an <em>html</em> file and convert it to <em>PDF</em> using <a href="https://pandoc.org">Pandoc</a> or <a href="https://wkhtmltopdf.org/index.html">WK&lt;html&gt;TOpdf</a> (the latter gives better results than Pandoc with <code>dfSummary()</code> output). Another option is to create an <em>Rmd</em> document using <em>PDF</em> as the output format. See <code>vignette(&quot;Recommendations-rmarkdown&quot;, package = &quot;summarytools&quot;)</code> for the details on how to proceed.</p>
+<p>There is no direct way to create a <em>PDF</em> file with <strong>summarytools</strong>. One option is to generate an <em>html</em> file and convert it to <em>PDF</em> using <a href="https://pandoc.org">Pandoc</a> or <a href="https://wkhtmltopdf.org/index.html">WK&lt;html&gt;TOpdf</a> (the latter gives better results than Pandoc with <code>dfSummary()</code> output). Another option is to create an <em>Rmd</em> document using <em>PDF</em> as the output format. See <code>vignette(&quot;summarytools-in-rmarkdown&quot;, package = &quot;summarytools&quot;)</code> for the details on how to proceed.</p>
 <div id="appending-output-files" class="section level2">
 <h2>6.1 Appending Output Files</h2>
 <p>The <code>append</code> argument allows adding content to existing files generated by <strong>summarytools</strong>. This is useful if we wish to include several statistical tables in a single file. It is a quick alternative to creating an <em>Rmd</em> document.</p>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-6">« 6. Directing Output to Files</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-8">8. Format Attributes »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-6">« 6. Directing Output to Files</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-8">8. Format Attributes »</a></p>
 </div>
-<p><a id="s-7"></a></p>
+<p><br /><br /> <a id="s-7"></a></p>
 </div>
 </div>
 <div id="global-options" class="section level1">
@@ -2113,9 +2203,9 @@ st_options(style = &#39;rmarkdown&#39;,   # Set the value of one or several opti
            footnote = NA)         # Turn off the footnote for all html output</code></pre>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-7">« 7. Global Options</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-9">9. Fine-Tuning Looks : CSS »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-7">« 7. Global Options</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-9">9. Fine-Tuning Looks : CSS »</a></p>
 </div>
-<p><a id="s-8"></a></p>
+<p><br /><br /> <a id="s-8"></a></p>
 </div>
 </div>
 <div id="format-attributes" class="section level1">
@@ -2487,9 +2577,9 @@ st_options(style = &#39;rmarkdown&#39;,   # Set the value of one or several opti
 </ul>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-8">« 8. Format Attributes</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-10">10. <em>Shiny</em> Apps »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-8">« 8. Format Attributes</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-10">10. <em>Shiny</em> Apps »</a></p>
 </div>
-<p><a id="s-9"></a></p>
+<p><br /><br /> <a id="s-9"></a></p>
 </div>
 </div>
 <div id="fine-tuning-looks-css" class="section level1">
@@ -2508,9 +2598,9 @@ st_options(style = &#39;rmarkdown&#39;,   # Set the value of one or several opti
       file          = &quot;tiny-tobacco-dfSummary.html&quot;)</code></pre>
 <br /> <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-9">« 9. Fine-Tuning Looks : CSS</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-11">11. Graphs in R Markdown »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-9">« 9. Fine-Tuning Looks : CSS</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-11">11. Graphs in R Markdown »</a></p>
 </div>
-<p><a id="s-10"></a></p>
+<p><br /><br /> <a id="s-10"></a></p>
 </div>
 </div>
 <div id="shiny-apps" class="section level1">
@@ -2539,9 +2629,9 @@ st_options(style = &#39;rmarkdown&#39;,   # Set the value of one or several opti
       bootstrap.css = FALSE)</code></pre>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-10">« 10. <em>Shiny</em> Apps</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-12">12. Languages &amp; Term Customization »</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-10">« 10. <em>Shiny</em> Apps</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-12">12. Languages &amp; Term Customization »</a></p>
 </div>
-<p><a id="s-11"></a></p>
+<p><br /><br /> <a id="s-11"></a></p>
 </div>
 <div id="tmp-img-dir" class="section level1">
 <h1>11. Graphs in R Markdown</h1>
@@ -2560,10 +2650,9 @@ st_options(style = &#39;rmarkdown&#39;,   # Set the value of one or several opti
 <p>On Mac OS and Linux, using “/tmp” makes a lot of sense: it’s a short path, and it’s self-cleaning. On Windows, there is no such convenient directory, so we need to pick one – be it absolute (“/tmp”) or relative (“img”, or simply “.”).</p>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-11">« 11. Graphs in R Markdown</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-13">13. Vignette Setup »</a><br />
-<br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-11">« 11. Graphs in R Markdown</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-13">13. Vignette Setup »</a></p>
 </div>
-<p><a id="s-12"></a></p>
+<p><br /><br /> <a id="s-12"></a></p>
 </div>
 <div id="languages-term-customization" class="section level1">
 <h1>12. Languages &amp; Term Customization</h1>
@@ -2784,10 +2873,9 @@ print(
 </table>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-12">« 12. Translations &amp; Term Customization</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-14">14. Conclusion »</a><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-12">« 12. Translations &amp; Term Customization</a> | <a href="#header">&lt; ToC &gt;</a> | <a href="#s-14">14. Conclusion »</a></p>
 </div>
-<p><a id="s-13"></a><br />
-<a id="setup"></a></p>
+<p><br /><br /> <a id="s-13"></a><a id="setup"></a></p>
 </div>
 </div>
 </div>
@@ -2827,9 +2915,9 @@ print(
 ## ```</code></pre>
 <br />
 <div style="width:100%; margin:0 auto; text-align:center">
-<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-13">« 13. Vignette Setup</a> | <a href="#header">&lt; ToC &gt;</a> <br /><br /></p>
+<p><a href="#freq">2.1 freq</a> | <a href="#ctable">2.2 ctable</a> | <a href="#descr">2.3 descr</a> | <a href="#dfsummary">2.4 dfSummary</a> <br /> <a href="#s-13">« 13. Vignette Setup</a> | <a href="#header">&lt; ToC &gt;</a></p>
 </div>
-<p><a id="s-14"></a></p>
+<p><br /><br /> <a id="s-14"></a></p>
 </div>
 </div>
 <div id="conclusion" class="section level1">

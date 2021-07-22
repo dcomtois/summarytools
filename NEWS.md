@@ -1,16 +1,20 @@
-# summarytools 1.0.0 (2021-07-21)
- - Heading elements are now omitted when their defined keyword is set to
-   " " (empty string)
- - Added features making saving and loading custom languages more practical  
+# summarytools 1.0.0 (2021-07-22)
  - In `dfSummary()`:  
-   + Improved horizontal alignment between the values, their frequencies and 
-     their bar chart  
+   + It is now possible to control which statistics to show in the
+     *Freqs / Values* column
+   + In *html* outputs, the horizontal alignment between cells is
+     improved (it is less likely to have discrepancies in alignment
+     between categorical variables' values, their frequencies and
+     their bar chart) 
    + `tmp.img.dir` can be left to `NA` when `style = "grid"`  
    + Fixed typo in attribute name `Dataf.rame.label`  
    + Removal of grouping variables now works with all languages  
    + Basic support for list-type columns  
    + Fixed error with graphs when `Inf` present -- no histograms are shown
      for now, but a future version might offer a compromise... stay tuned!
+ - Heading elements are now omitted when their defined keyword is set to
+   " " (empty string)
+ - Added features making saving and loading custom languages more practical  
  - In `ctable()`:  
    + Fixed row/column names not always properly displayed   
    + Fixed risk ratios showing when only odds ratios should  
