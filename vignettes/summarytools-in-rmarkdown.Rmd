@@ -228,7 +228,7 @@ temp directory, for good reasons.)
 dfSummary(tobacco, 
           plain.ascii  = FALSE,
           style        = 'grid',
-          graph.magnif = 0.75,
+          graph.magnif = 0.84,
           varnumbers = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
