@@ -254,7 +254,8 @@ st_options <- function(option                 = NULL,
   
   # Querying one or several
   if (length(mc) == 2 && "option" %in% names(mc) && 
-      option != "reset" && option != 0) {
+      !identical(option, "reset") && !identical(option, 0)
+      && !identical(option, 0L)) {
     # Check that option is among the existing ones
     for (o in option) {
       if (!o %in% c(names(allOpts), 0)) {

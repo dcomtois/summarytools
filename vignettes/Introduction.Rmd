@@ -3,11 +3,12 @@ title: "Introduction to summarytools"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output:
-  html_document: 
-    toc: yes
+  html_document:
+    fig_caption: false
+    toc: true
     toc_depth: 1
-    css: C:/R/lib-user/4.1/rmarkdown/rmarkdown/templates/html_vignette/resources/vignette.css
-    keep_md: yes
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEncoding{UTF-8}
