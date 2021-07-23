@@ -718,7 +718,7 @@ check_args_st_options <- function(mc) {
   }
 
   if ("option" %in% names(mc) && 
-      grepl("dfSummary.custom", pf$option) && "value" %in% names(mc)) {
+      any(grepl("dfSummary.custom", pf$option)) && "value" %in% names(mc)) {
     errmsg %+=% paste0("'dfSummary.custom expressions must be defined using ",
                        "syntax st_options(dfSummary.custom.1 = expression(...)")
   }
