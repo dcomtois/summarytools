@@ -1,4 +1,4 @@
-# summarytools 1.0.0 (2021-07-22)
+# summarytools 1.0.0 (2021-07-23)
  - In `dfSummary()`:  
    + It is now possible to control which statistics to show in the
      *Freqs / Values* column

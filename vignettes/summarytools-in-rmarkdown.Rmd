@@ -44,7 +44,7 @@ st_css(main = TRUE, global = TRUE)
 This document mainly contains examples showing how best to use
 **summarytools** in *R Markdown* documents. For a more in-depth view
 of the package's features, please see the 
-[Introduction to summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html) vignette. 
+[Introduction to summarytools](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html) vignette. 
 
 Before going into the examples, a bit of theory is in order.
 
@@ -228,7 +228,7 @@ temp directory, for good reasons.)
 dfSummary(tobacco, 
           plain.ascii  = FALSE,
           style        = 'grid',
-          graph.magnif = 0.84,
+          graph.magnif = 0.85,
           varnumbers = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")

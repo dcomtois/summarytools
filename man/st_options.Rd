@@ -211,7 +211,7 @@ The \code{dfSummary.custom.1} and \code{dfSummary.custom.2} options
 }
 \note{
 To learn more about summarytools options, see the 
-\href{https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html}{Introduction vignette}.
+\href{https://cran.r-project.org/package=summarytools/vignettes/Introduction.html}{Introduction vignette}.
 }
 \examples{
 

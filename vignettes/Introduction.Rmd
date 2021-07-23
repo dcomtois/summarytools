@@ -407,7 +407,7 @@ explanation for this can be found [further below](#tmp-img-dir).
 Some users reported repeated X11 warnings; those can be avoided by using the
 following chunk declaration: `{r chunk_name, results="asis", warning=FALSE}`.
 
-### 2.4.2 Optionnal Statistics
+### 2.4.2 Optional Statistics
 
 This feature has been requested several times since the package was
 released. Introduced in version 1.0.0, it provides control over which
