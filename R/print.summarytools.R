@@ -1339,7 +1339,8 @@ print_descr <- function(x, method) {
      "ignored" %in% names(attributes(x)) &&
      !isTRUE(format_info$group.only) &&
      (!"by_first" %in% names(data_info) ||
-      isTRUE(as.logical(data_info$by_first)))) {
+      (isTRUE(as.logical(data_info$by_first)))) &&
+       !isTRUE(st_options("descr.silent"))) {
         message("Non-numerical variable(s) ignored: ",
             paste(attr(x, "ignored"), collapse = ", "))
   }
