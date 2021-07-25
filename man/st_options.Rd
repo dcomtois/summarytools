@@ -210,8 +210,8 @@ The \code{dfSummary.custom.1} and \code{dfSummary.custom.2} options
   used (see \emph{Examples}).
 }
 \note{
-To learn more about summarytools options, see the 
-\href{https://cran.r-project.org/package=summarytools/vignettes/Introduction.html}{Introduction vignette}.
+To learn more about summarytools options, see
+\code{vignette("introduction", "summarytools")}.
 }
 \examples{
 

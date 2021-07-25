@@ -7,8 +7,8 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: 
-    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    css: vignette.css
+    #- !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
   %\VignetteIndexEntry{Summarytools in R Markdown Documents}
   %\VignetteEngine{knitr::rmarkdown}
@@ -43,10 +43,9 @@ st_css(main = TRUE, global = TRUE)
 
 This document mainly contains examples showing how best to use
 **summarytools** in *R Markdown* documents. For a more in-depth view
-of the package's features, please see the 
-[Introduction to summarytools](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html) vignette. 
-
-Before going into the examples, a bit of theory is in order.
+of the package's features, please see `vignette("introduction", "summarytools")` 
+- the online version can be found 
+[here](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html). 
 
 ## 1.1 Methods vs Styles 
 
@@ -54,9 +53,10 @@ Every time we display **summarytools** objects with `print()`, `view()`,
 or `stview()`, we pick -- explicitly or not -- one of several display methods.
 Possible display methods are: *pander*, *render*, *viewer*, and *browser*. 
 
+:::infobox
 **Disambiguation**  
 
-To avoid any confusion, allow me a small digression on the word *method*. 
+To avoid any confusion, here is a small digression on the word *method*. 
 It is a broad term which is also used in the OOP (object oriented programming) 
 lexicon to describe a special kind of function that is linked to a specific 
 class of objects. In R, the `print()` function is called a *generic* function.
@@ -66,32 +66,34 @@ to the particular *print method* dedicated to its class. In that sense, the
 `print.summarytools()` function *is itself a method*: objects of class
 "summarytools" are being dispatched to it by the
 **generic `print()` function**.
+:::
 
-In this document, when we use the term *method*, we are **not** referring to
-this concept. Rather, it refers to the *display method*, which is one of the
-parameters for `print.summarytools()`, `view()`, and `stview()`. Furthermore,
-since methods *viewer* and *browser* are mostly meant for interactive work
-and rely on the same underlying code than *render*, we will assume for the 
-purpose of this document that there are really only two methods: *pander* and
-*render*.
+In this document, the term *method* refers to the *display* method -- **not**
+the *OOP* concept. It is one of the parameters for `print.summarytools()`,
+`view()`, and `stview()`. Since methods *viewer* and *browser* are mostly
+meant for interactive work and rely on the same underlying code as *render*,
+we will assume for the purpose of this document that there are really only two
+methods: *pander* and *render*.
 
 ### Only the *pander* Method Uses Styles  
 
 The *pander* method is used by default when results are automatically printed 
-to the console, or when we use `print()` without specifying its *method* argument. (In fact, when doing interactive work, we very rarely need to call
-the print function with an explicit `method = "pander"` argument.
+to the console, or when we use `print()` without an explicit `method`
+argument. 
 
-In these circumstances, the *style* parameter is communicated to 
-[**pander**](https://CRAN.R-project.org/package=pander).
+The *style* parameter is communicated to **pander** (see `?pander::pander`
+or visit its [GitHub page](https://github.com/Rapporter/pander) to learn more
+on this very useful package).
 
+:::infobox
 When we use any of the *viewer*, *browser*, or *render* methods, the 
 package rather uses **htmltools** to generate results; any specified *style*
 would be ignored.
+:::
 
-### summarytools Styles Are *pander* Styles
+### **summarytools** Styles are **pander** Styles
 
-Available styles are the ones supported by
-[**pander**]( https://CRAN.R-project.org/package=pander): 
+Available styles are the ones supported by **pander**: 
 
 - simple (default, used mainly in R console)  
 - rmarkdown (used by all core functions except `dfSummary()`)  
@@ -102,16 +104,24 @@ Available styles are the ones supported by
 
 ## 1.2 General Guidelines  
 
-**Always specify results='asis'** in your chunk options, or add
-`opts_chunk$set(results = 'asis')` to your setup chunk at the top of your
-document.
+**Always** set **results='asis'** either explicitly on a chunk-by-chunk bases
+or by including `opts_chunk$set(results = 'asis')` in your setup chunk.
 
-Also, **don't forget to specify `plain.ascii = FALSE`** in all function calls
-using the *pander* method, or include `st_options(plain.ascii = FALSE)` in
+Also, don't forget to specify **`plain.ascii = FALSE`** in all function calls
+using the *pander* method. It is advised to set this option, as well as the 
+`style` option in the setup chunk:
+
+```{r, eval=FALSE}
+st_options(plain.ascii = FALSE, style = "rmarkdown")
+```
+
+or include `st_options(plain.ascii = FALSE)` in
 your setup chunk.  
 
-Another trick to keep in mind is to add chunk options `message = FALSE` and/or
-`warning = FALSE`, in case you get repeated messages or warnings.  
+:::infobox
+If you get repeated, unhelpful warnings, use chunk options `message = FALSE` 
+and/or `warning = FALSE`.
+:::
 
 The following table indicates which method / style is better suited for each 
 **summarytools** function in the context of R Markdown documents:
@@ -130,8 +140,7 @@ For `dfSummary()`, _grid_ is recommended. Note that 'multiline' can also
 be used, but only ASCII graphs will be displayed.
  
 Starting with `freq()`, we'll now review the recommended methods and styles to 
-quickly get satisfying results in *R Markdown* documents.
-
+get satisfying results in *R Markdown* documents. 
 
 --------------------------------------------------------------------------------
 
@@ -140,18 +149,28 @@ quickly get satisfying results in *R Markdown* documents.
 `freq()` is best used with `style = 'rmarkdown'; html rendering is also 
 possible.
 
-## 2.1 Rmarkdown Style for freq()  
+## 2.1 Pander Style for freq()
+
+With `method="pander"`, "rmarkdown" is the easy winner.
+
 ```{r}
 freq(tobacco$gender, plain.ascii = FALSE, style = 'rmarkdown')
 ```
 
 ## 2.2 HTML Rendering for freq()  
+
+There are rarely any problems when using the *render* method to display
+`freq()` results.
+
 ```{r}
 print(freq(tobacco$gender), method = 'render')
 ```
 
-If you find the table too large, you can use `table.classes = 'st-small'` - an 
-example is provided further below.
+If you find the table too large, you can use `table.classes = 'st-small'`:
+
+```{r, message=FALSE}
+print(descr(tobacco), method = 'render', table.classes = 'st-small')
+```
 
 --------------------------------------------------------------------------------
 

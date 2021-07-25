@@ -4,98 +4,104 @@ output:
 always_allow_html: true
 ---
 
-<!-- # summarytools <a href='https://github.com/dcomtois/summarytools'><img src='img/logo.png' align="right" height="145" /></a> -->
-
 <!-- badges -->
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
 [![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button" /></a></span>
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button"/></a></span>
 
 ```{r knitr-setup, include=FALSE}
 library(knitr)
 opts_chunk$set(echo = TRUE, results = 'asis', class.output = "small")
-# library(summarytools)
-# st_options(plain.ascii = FALSE,
-#            style = "rmarkdown",
-#            footnote = NA,
-#            subtitle.emphasis = FALSE,
-#            dfSummary.silent = TRUE,
-#            descr.silent = TRUE)
-# library(kableExtra)
+library(summarytools)
+st_options(plain.ascii = FALSE,
+           style = "rmarkdown",
+           footnote = NA,
+           subtitle.emphasis = FALSE,
+           dfSummary.silent = TRUE,
+           dfSummary.style = "grid",
+           descr.silent = TRUE)
+library(kableExtra)
 ```
 
-![package-design-image](img/summarytools-tabletop.png)
-<a id="op"></a>  
-# Summarytools v.1 is out!
+![package-design-image3](img/st-banner-fuzzy.png)
+
+# Summarytools 1.0 is out!
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for data
-cleaning, exploring, and simple reporting. The package was developed with 
-the following objectives in mind:
+cleaning, exploring, and simple reporting. The package was developed with the
+following objectives in mind:
 
- - Provide a coherent set of easy-to-use descriptive functions that are
-   akin to those included in commercial statistical software suites such as
-   SAS, SPSS, and Stata 
- - Offer flexibility in terms of output format & content  
- - Integrate well with commonly used software & tools for reporting
-   (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
-   [Rmarkdown](https://rmarkdown.rstudio.com/), and 
-   [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
-   simple report generation from any R interface
+-   Provide a coherent set of easy-to-use descriptive functions that are akin to
+    those included in commercial statistical software suites such as SAS, SPSS,
+    and Stata
+-   Offer flexibility in terms of output format & content  
+-   Integrate well with commonly used software & tools for reporting (the
+    [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
+    [Rmarkdown](https://rmarkdown.rstudio.com/), and
+    [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
+    simple report generation from any R interface
 
-On a more personal level, I simply wish to share with the R community and
-the scientific community at large the functions I first developed for myself,
-that I ultimately realized would benefit a lot of people who are looking for
-the same thing I was seeking in the first place. 
+On a more personal level, I simply wish to share with the R community and the
+scientific community at large the functions I first developed for myself, that I
+ultimately realized would benefit a lot of people who are looking for the same
+thing I was seeking in the first place.
 
-## Support *summarytools*' Development 
+## Support *summarytools*' Development
 
-If **summarytools** helps you get things done, please consider making a 
+If **summarytools** helps you get things done, please consider making a
 donation. By doing so now, you'll help me feel useful, but more importantly
-contribute to the package's development and help other people like you 
-who benefit from its current and *future features*. I regularly receive feature
+contribute to the package's development and help other people like you who
+benefit from its current and *future features*. I regularly receive feature
 requests, and when I receive donations, I set aside some time to work on them,
-making summarytools even more relevant for data scientists, students
-and researchers around the world. No matter how small the amount is,
-I always appreciate the gesture. A list of sponsors can be found [further 
+making summarytools even more relevant for data scientists, students and
+researchers around the world. No matter how small the amount is, I always
+appreciate the gesture. A list of sponsors can be found [further
 below](#sponsors).
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
 
-# Package Documentation 
+# Package Documentation
 
 The bulk of the technical documentation can now be found in the following
 vignettes:
 
-**[Introduction to summarytools](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/vignettes/Introduction.html)  |  [CRAN version](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html)**  
-**[Summarytools in R Markdown](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/vignettes/summarytools-in-rmarkdown.html)  |  [CRAN Version](https://cran.r-project.org/packages=summarytools/vignettes/summarytools-in-rmarkdown.html)**  
-**[PDF Manual](https://cran.r-project.org/web/packages/summarytools/summarytools.pdf)** (automatically generated by CRAN)  
+[**Introduction to
+summarytools**](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/vignettes/Introduction.html)
+**\| [CRAN
+version](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html)**  
+[**Summarytools in R
+Markdown**](https://htmlpreview.github.io/?https://github.com/dcomtois/summarytools/blob/master/vignettes/summarytools-in-rmarkdown.html)
+**\| [CRAN
+Version](https://cran.r-project.org/packages=summarytools/vignettes/summarytools-in-rmarkdown.html)**  
+[**PDF
+Manual**](https://cran.r-project.org/web/packages/summarytools/summarytools.pdf)
+(automatically generated by CRAN)
 
 # Installing summarytools
 
 ### Required Software
 
-Additional software is used by **summarytools** for fine-tuning
-graphics as well as offering interactive functionality. If you are installing
-**summarytools** for the first time, click on the relevant link to get
-OS-specific instructions. On Windows, no additional software is
-required.
+Additional software is used by **summarytools** for fine-tuning graphics as well
+as offering interactive functionality. If you are installing **summarytools**
+for the first time, click on the relevant link to get OS-specific instructions.
+On Windows, no additional software is required.
 
 <a href="#required-mac-os">Mac OS X</a>  
 <a href="#required-debian">Ubuntu / Debian / Mint</a>  
 <a href="#required--older-ubuntu">Older Ubuntu (14 and 16)</a>  
 <a href="#required-fedora">Fedora / Red Hat / CentOS</a>  
-<a href="#required-solaris">Solaris</a>  
+<a href="#required-solaris">Solaris</a>
 
 ### Installing From GitHub
 
-This method has the advantage of benefiting from  minor fixes and improvements
+This method has the advantage of benefiting from minor fixes and improvements
 that are added between CRAN releases. Its main drawback is that you won't be
-noticed when a new version is available. You can either check this page
-from time to time, or best, use a package that checks for package updates
-on various repositories, such as [dtupdate](https://github.com/hrbrmstr/dtupdate)
-and [Drat](https://dirk.eddelbuettel.com/code/drat.html). 
+noticed when a new version is available. You can either check this page from
+time to time, or best, use a package that checks for package updates on various
+repositories, such as [dtupdate](https://github.com/hrbrmstr/dtupdate) and
+[Drat](https://dirk.eddelbuettel.com/code/drat.html).
 
 ```{r, eval=FALSE}
 install.packages("remotes")        # Using devtools is also possible
@@ -106,122 +112,114 @@ install_github("dcomtois/summarytools", build_vignettes = TRUE)
 
 ### Installing From CRAN
 
-CRAN versions are stable but are not updated as often as the GitHub versions.
-On the plus side, they can be easier to install on some systems.
+CRAN versions are stable but are not updated as often as the GitHub versions. On
+the plus side, they can be easier to install on some systems.
 
 ```{r, eval=FALSE}
 install.packages("summarytools")
 ```
 
-# What's New in This Version 
+# Latest Changes
 
- - In `dfSummary()`:  
-   + It is now possible to control which statistics to show in the
-     *Freqs / Values* column 
- - `dfSummary()` tables are better aligned horizontally (categories >> counts >>
-   charts)  
-   + In *html* outputs, tables are better aligned horizontally (categories >>
-     counts >> charts); it is now less likely to see misalignment -- if there
-     is, it is likely fixable by changing the `graph.magnif` parameter's value 
-   + List-type columns and `Inf` values are now handles correctly 
- - Selected heading elements can be totally omitted by one of two ways 
-   + Setting their *value* to "" (empty string) in the `print()` or
-     `view()` functions (in `?print.summarytools`, refer to list of arguments
-     that can be used to override heading elements)  
-   + Using define_keywords() and setting the *heading's label* to ""  
- - Improved functionality for customized terms and translations (see the
-  [Intro vignette](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html) for details)  
- - Introductory vignette is easier to navigate  
- - Glitches were fixed in outputs for `descr()` and `ctable()`
- 
- For more details, see `news(package = "summarytools")`.
+-   In `dfSummary()`:
 
+    -   It is now possible to control which statistics to show in the *Freqs /
+        Values* column (see `help("st_options", "summarytools")` for examples)  
+    -   In *html* outputs, tables are better aligned horizontally
+        (categories \>\> counts \>\> charts); if misalignment occurs, adjusting
+        `graph.magnif` should resolve it
+    -   List-type columns and `Inf` values are handled properly
+
+-   In `descr()` and `ctable()` several display glitches were corrected
+
+-   Selected heading elements can be totally omitted on an individual basis
+
+-   Improved functionality for customized terms / translations
+
+For more details, see `vignette("introduction", "summarytools")` as well as
+`news(package = "summarytools")`.
 
 # Additional Software Installations
 
 ### <a id="required-mac-os"></a>Required Software on Mac OS
 
-**[Magick++](https://imagemagick.org/Magick++/)**
+[**Magick++**](https://imagemagick.org/Magick++/)
 
 Open a terminal window and enter the following:
 
-  `brew install imagemagick@6`
+`brew install imagemagick@6`
 
-If you do not have **brew** installed, simply enter this command
-in the terminal:
+If you do not have **brew** installed, simply enter this command in the
+terminal:
 
-  `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-**[XQuartz](https://www.xquartz.org/)** 
+[**XQuartz**](https://www.xquartz.org/)
 
 If you're using Mac OS X version 10.8 (Mountain Lion) or more recent versions,
-you'll need to download the _.dmg_ image from [xquartz.org](https://www.xquartz.org/) 
-and add it to your Applications folder.
+you'll need to download the *.dmg* image from
+[xquartz.org](https://www.xquartz.org/) and add it to your Applications folder.
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
 
-**[Magick++](https://imagemagick.org/Magick++/)**  
+[**Magick++**](https://imagemagick.org/Magick++/)  
 `sudo apt install libmagick++-dev`
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
+
 This applies only if you are using Ubuntu Trusty (14.04) or Xenial (16.04).
 
-**[Magick++](https://imagemagick.org/Magick++/)**  
-  
-```
-sudo add-apt-repository -y ppa:opencpu/imagemagick
-sudo apt-get update
-sudo apt-get install -y libmagick++-dev
-```
+[**Magick++**](https://imagemagick.org/Magick++/)
+
+    sudo add-apt-repository -y ppa:opencpu/imagemagick
+    sudo apt-get update
+    sudo apt-get install -y libmagick++-dev
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
 
-**[Magick++](https://imagemagick.org/Magick++/)**  
+[**Magick++**](https://imagemagick.org/Magick++/)  
 `sudo yum install ImageMagick-c++-devel`
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
 ### <a id="required-solaris"></a>Required Software for Solaris
 
-**[Magick++](https://imagemagick.org/Magick++/)**  
-```
-pkgadd -d http://get.opencsw.org/now
-/opt/csw/bin/pkgutil -U
-/opt/csw/bin/pkgutil -y -i imagemagick 
-/usr/sbin/pkgchk -L CSWimagemagick
-```
+[**Magick++**](https://imagemagick.org/Magick++/)
+
+    pkgadd -d http://get.opencsw.org/now
+    /opt/csw/bin/pkgutil -U
+    /opt/csw/bin/pkgutil -y -i imagemagick 
+    /usr/sbin/pkgchk -L CSWimagemagick
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-
-# <a id="sponsors"></a>Sponsors 
+# <a id="sponsors"></a>Sponsors
 
 A big thanks to the following people who made donations:
 
-- Ashirwad Barnwal  
-- David Thomas  
-- Peter Nilsson  
-- Ross Dunne  
-- Igor Rubets  
-- Joerg Sahlmann  
+-   Ashirwad Barnwal  
+-   David Thomas  
+-   Peter Nilsson  
+-   Ross Dunne  
+-   Igor Rubets  
+-   Joerg Sahlmann
 
 **summarytools** is the result of **many** hours of work. If you find the
-package brings value to your work, please take a moment to make a small 
+package brings value to your work, please take a moment to make a small
 donation. Just a few dollars goes a long way in making me feel motivated and
 happy to continue bringing my modest contribution to the world of Science.
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img width=210 height=40 src="img/paypal-blue.svg"></a> 
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
 
-
-The package comes with no guarantees. It is a work in progress and
-feedback is always welcome. Please open an
-[issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
-bug or wish to submit a feature request.
+The package comes with no guarantees. It is a work in progress and feedback is
+always welcome. Please open an [issue on
+GitHub](https://github.com/dcomtois/summarytools/issues) if you find a bug or
+wish to submit a feature request.
 
 <a href="#top">Back to top</a>

@@ -175,8 +175,8 @@
 #' }
 #'  
 #' @note 
-#' To learn more about summarytools options, see the 
-#' \href{https://cran.r-project.org/package=summarytools/vignettes/Introduction.html}{Introduction vignette}.
+#' To learn more about summarytools options, see
+#' \code{vignette("introduction", "summarytools")}.
 #' 
 #' @keywords utilities
 #' 

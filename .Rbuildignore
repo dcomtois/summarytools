@@ -15,6 +15,5 @@
 ^inst/WORDLIST$
 vignettes/*.R
 vignettes/*.html
-vignettes/vignette.css
 inst/includes/fig-align.tex
 ^doc$
