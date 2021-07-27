@@ -8,7 +8,7 @@ output:
     toc: true
     toc_depth: 1
     css: assets/vignette.css
-#    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    df_print: default
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
   %\VignetteEncoding{UTF-8}
@@ -172,7 +172,9 @@ table smaller by one row and two columns:
 freq(iris$Species, report.nas = FALSE, headings = FALSE)
 ```
 
-Note that the `headings = FALSE` parameter suppresses the heading section. 
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>The `headings = FALSE` parameter suppresses the heading section.
+</td></tr></table>
 
 ## 2.2 Simplest Expression 
 
@@ -187,7 +189,7 @@ freq(iris$Species,
 ```
 
 While the output is much simplified, the syntax is not; I blame it on
-Tesler's [law of conservation of complexity](https://en.wikipedia.org/wiki/Law_of_conservation_of_complexity).
+Tesler's [law of conservation of complexity](https://en.wikipedia.org/wiki/Law_of_conservation_of_complexity)!
 Thankfully, `st_options()` is there to accommodate everyone's preferences (see
 [section on package options](#st-options)).
 
@@ -208,9 +210,11 @@ than 25 distinct values are ignored. This threshold of
 25 can be changed by using `st_options()`; for example, to change it to 10,
 we'd use `st_options(freq.ignore.threshold = 10)`.
 
-**Note**: the *tobacco* data frame contains simulated data and is
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>The *tobacco* data frame contains simulated data and is
 included in the package. Another simulated data frame is included: *exams*.
-Both have French versions (*tabagisme*, *examens*).
+Both have French versions (*tabagisme*, *examens*).</td></tr></table>
+
 
 ## 2.4 Subsetting (Filtering) Frequency Tables
 
@@ -242,8 +246,7 @@ Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
 get results ranked from lowest to highest in frequency. 
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
-<td>Notice the "**(Other)**" row, which is automatically generated.</td></tr></table>
-
+<td>Notice the "**(Other)**" row, which is automatically generated.</td></tr></table> 
 
 ## 2.5 Collapsible Sections
 
@@ -316,7 +319,8 @@ be set to `TRUE`, in which case 95% confidence intervals are
 shown; to use different confidence levels, use for example `OR = .90`. 
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
-<td>Using pipes makes it easier to generate `ctable()` results.</td></tr></table>
+<td>Using pipes generally makes it easier to generate `ctable()` results.</td>
+</tr></table>
 
 
 ```{r}
@@ -407,7 +411,9 @@ view(dfSummary(iris))
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
 <td> Be careful to use `view()` and not `View()`. If you use the latter, results
-will be shown in the data viewer. Also, be mindful of the order in which
+will be shown in the data viewer. 
+
+Also, be mindful of the order in which
 the packages are loaded. Some packages redefine `view()` to point to `View()`;
 loading **summarytools** *after* these packages will ensure its own `view()`
 works properly. Otherwise, `stview()` is always there as a foolproof 
@@ -430,10 +436,12 @@ dfSummary(tobacco,
 ```
 
 <img src="assets/dfSummary_md.png" width=100%/> 
+<br/>
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
 *R Markdown* documents, except for _html_ rendering. The 
 explanation for this can be found [further below](#tmp-img-dir). 
+
 
 <table><tr><td>![](assets/exclamation-diamond.svg)</td>
 <td>Some users reported repeated X11 warnings; those can be avoided by setting
@@ -729,7 +737,7 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 ```
 
-**A Note About *PDF* documents**
+**A Note on *PDF* documents**
 
 There is no direct way to create a *PDF* file with **summarytools**. One option is
 to generate an *html* file and convert it to *PDF* using [Pandoc](https://pandoc.org)
@@ -777,10 +785,10 @@ The following options can be set globally with `st_options()`:
 | subtitle.emphasis             |    TRUE   | Controls headings formatting                    |
 | lang                          |   “en”    | Language (always 2-letter, lowercase)           |
 
-1. Does not apply to `dfSummary()`, which has its own style option (see next table)  
-2. Does not apply to `ctable()`, which has its own `round.digits` option (see next table)  
-3. Set to `FALSE` in _Shiny_ apps  
-4. Affects only *html* outputs for `descr()` and `ctable()`  
+^1^ Does not apply to `dfSummary()`, which has its own style option (see next table)  
+^2^ Does not apply to `ctable()`, which has its own `round.digits` option (see next table)  
+^3^ Set to `FALSE` in _Shiny_ apps  
+^4^ Affects only *html* outputs for `descr()` and `ctable()`  
 
 ## 10.2 Function-Specific Options
 
@@ -808,10 +816,10 @@ The following options can be set globally with `st_options()`:
 | tmp.img.dir <sup>(2)</sup>|        NA   | Directory to store [temporary images](#tmp-img-dir) |
 | use.x11 <sup>(3)</sup>    |      TRUE   | Allow creation of Base64-encoded graphs  |
 
-1. See <a href="#multiple-freq-tables">section 2.3</a> for details  
-2. Applies to `dfSummary()` only  
-3. Set to FALSE in text-only environments  
-
+^1^ See <a href="#multiple-freq-tables">section 2.3</a> for details  
+^2^ Applies to `dfSummary()` only  
+^3^ Set to FALSE in text-only environments  
+<br/><br/>
 
 **Examples**
 
@@ -1175,30 +1183,29 @@ using **summarytools** in *R Markdown* documents.
 The *output* element is the one that matters:
 
 ```
-## ---
-## output: 
-##   rmarkdown::html_vignette: 
-##     css: 
-##     - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", 
-##                         package = "rmarkdown")
-## ---
+---
+output: 
+ rmarkdown::html_vignette: 
+   css:
+   - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+---
 ```
 
 ## 16.2 The Setup Chunk
 
+````
+```{r setup, include=FALSE}`r ''` 
+library(knitr)
+opts_chunk$set(results = 'asis',     # Can also be set at chunk level
+              comment = NA,
+              prompt  = FALSE,
+              cache   = FALSE)
+library(summarytools)
+st_options(plain.ascii = FALSE,       # Always use in Rmd documents
+           style       = "rmarkdown", # Always use in Rmd documents
+           subtitle.emphasis = FALSE) # Improves layout w/ some themes
 ```
-## ```{r setup, include=FALSE}
-## library(knitr)
-## opts_chunk$set(results = 'asis',       # Can also be set at the chunk-level
-##                comment = NA,
-##                prompt  = FALSE,
-##                cache   = FALSE)
-## library(summarytools)
-## st_options(plain.ascii = FALSE,        # Always use this option in Rmd documents
-##            style       = "rmarkdown",  # Always use this option in Rmd documents
-##            subtitle.emphasis = FALSE)  # Improves layout with some rmardown themes
-## ```
-```
+````
 
 ## 16.3 Including **summarytools**' CSS
 
@@ -1208,11 +1215,11 @@ using `print()` or `view()` with the `file` argument. But in
 setup chunk just after the YAML header (or following a first
 setup chunk specifying **knitr** and **summarytools** options):
 
+````
+```{r, echo=FALSE}`r ''` 
+st_css(main = TRUE, global = TRUE)
 ```
-## ```{r, echo=FALSE}
-## st_css(main = TRUE, global = TRUE)
-## ```
-```
+````
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">

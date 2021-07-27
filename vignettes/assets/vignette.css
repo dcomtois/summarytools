@@ -7,10 +7,10 @@ body {
   padding-right: 2em;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.45;
 }
 
-/* Start Edits DC */
+/* Start Edit DC */
 .infobox {
   padding: .8em;
   margin: 10px;
@@ -18,7 +18,7 @@ body {
   border-radius: 5px;
   background: #f5f5f5 5px center/3em no-repeat;
 }
-/* End Edits DC */
+/* End Edit DC */
 
 #TOC {
   clear: both;
@@ -79,7 +79,7 @@ table thead, table tr.even {
 }
 
 p {
-  margin: 0.5em 0;
+  margin: 0.8em 0 0.6em 0; /* Edited DC */
 }
 
 blockquote {

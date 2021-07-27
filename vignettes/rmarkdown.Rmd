@@ -4,7 +4,8 @@ author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output:
   html_document: 
-    toc: yes
+    fig_caption: false
+    toc: true
     toc_depth: 1
     css: assets/vignette.css
     df_print: default
