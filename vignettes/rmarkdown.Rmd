@@ -3,12 +3,10 @@ title: "Summarytools in R Markdown Documents"
 author: "Dominic Comtois"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-
+  html_document: 
     toc: yes
     toc_depth: 1
     css: assets/vignette.css
-    keep_md: yes
     df_print: default
 vignette: >
   %\VignetteIndexEntry{Summarytools in R Markdown Documents}
@@ -459,17 +457,27 @@ looks like this:
 #   %\VignetteDepends{kableExtra}
 # ---
 ```
+<br> 
 
 The *vignette.css* file is copied from the installed **rmarkdown** package's
-*templates/html_vignette/resources* directory.
+'templates/html_vignette/resources' directory.
  
-**Global Options**
+ 
+### Global Options
 
-The following **global options** for **summarytools** have been set. Other
-options might also be useful to optimize content, but this is a good place
-to start from.
+The following **global options** for **knitr** and **summarytools** have been
+set. Other options might also be useful to optimize content, but this is a good
+place to start from.
 
-```{r, eval=FALSE}
+````
+```{r setup, include=FALSE}`r ''`
+library(knitr)
+opts_chunk$set(comment=NA, 
+               prompt=FALSE,
+               cache=FALSE,
+               echo=TRUE,
+               results='asis')
+
 st_options(bootstrap.css     = FALSE,       # Already part of the theme 
            plain.ascii       = FALSE,       # One of the essential settings
            style             = "rmarkdown", # Idem.
@@ -480,19 +488,15 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme
                                             # other themes, using TRUE might
                                             # be preferable.
 ```
+````
+ 
+Finally, **summarytools CSS** has been included in the following manner:
 
-Also, the following **knitr chunk options** were set this way:
-```{r, eval=FALSE}
-library(knitr)
-opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
-```
-
-Finally, **summarytools' CSS** has been included in the following manner, with
-chunk option `echo = FALSE`:
-```{r, eval=FALSE}
+````
+```{r, echo=FALSE}`r ''`
 st_css(main = TRUE, global = TRUE)
 ```
-
+````
 
 --------------------------------------------------------------------------------
 
