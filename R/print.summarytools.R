@@ -1335,13 +1335,24 @@ print_descr <- function(x, method) {
   format_args <- attr(x, "format_args")
   pander_args <- attr(x, "pander_args")
 
-  if (!isTRUE(parent.frame()$silent) &&
-     "ignored" %in% names(attributes(x)) &&
-     !isTRUE(format_info$group.only) &&
-     (!"by_first" %in% names(data_info) ||
-      (isTRUE(as.logical(data_info$by_first)))) &&
-       !isTRUE(st_options("descr.silent"))) {
-        message("Non-numerical variable(s) ignored: ",
+  # determine whether to display message re: ignored variables
+  display_msg <- FALSE
+  if ("ignored" %in% names(attributes(x)) &&
+      (("by_first" %in% names(data_info) && isTRUE(data_info$by_first)) ||
+       !"by_first" %in% names(data_info))) {
+    if ("silent" %in% names(parent.frame())) {
+      if (!isTRUE(parent.frame()$silent)) {
+        display_msg <- TRUE
+      }
+    } else {
+      if (!isTRUE(st_options("descr.silent"))) {
+        display_msg <- TRUE
+      }
+    }
+  }
+  
+  if (display_msg) {
+    message("Non-numerical variable(s) ignored: ",
             paste(attr(x, "ignored"), collapse = ", "))
   }
 

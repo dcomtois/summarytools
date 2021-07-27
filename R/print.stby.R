@@ -25,16 +25,24 @@ print.stby <- function(x,
                        footnote      = st_options("footnote"), 
                        escape.pipe   = st_options("escape.pipe"),
                        ...) {
-    view(x,
-         method        = method,
-         file          = file,
-         append        = append,
-         report.title  = report.title,
-         table.classes = table.classes,
-         bootstrap.css = bootstrap.css,
-         custom.css    = custom.css,
-         silent        = silent,
-         footnote      = footnote,
-         escape.pipe   = escape.pipe,
-         ...)
+  
+  if (!"silent" %in% names(match.call())) {
+    silent <- switch(attr(x[[1]], "st_type"),
+                     descr     = st_options("descr.silent"),
+                     dfSummary = st_options("dfSummary.silent"),
+                     FALSE)
+  }
+  
+  view(x,
+       method        = method,
+       file          = file,
+       append        = append,
+       report.title  = report.title,
+       table.classes = table.classes,
+       bootstrap.css = bootstrap.css,
+       custom.css    = custom.css,
+       silent        = silent,
+       footnote      = footnote,
+       escape.pipe   = escape.pipe,
+       ...)
 }
