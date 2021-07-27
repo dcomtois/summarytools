@@ -1828,7 +1828,7 @@ print_dfs <- function(x, method) {
           table_row %+=% list(
             tags$td(HTML(cell), align = "left",
                     style = paste0("vertical-align:middle;padding:0;",
-                                   "background-color:transparent;"))
+                                   "background-color:none;"))
           )
         }
       }
