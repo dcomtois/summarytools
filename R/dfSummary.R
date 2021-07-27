@@ -1437,7 +1437,7 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     image_write(image_transparent(ii, 'white'), png_loc)
     img_txt <- base64encode(readBin(con = png_loc, what = "raw",
                                     n = file.info(png_loc)[["size"]]))
-    return(paste0('<img style="border:none;background-color:none;',
+    return(paste0('<img style="border:none;background-color:transparent;',
                   'padding:0;max-width:max-content;" src="data:image/png;base64, ', img_txt, '">'))
   }
 }
