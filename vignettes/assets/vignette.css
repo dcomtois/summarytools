@@ -30,7 +30,7 @@ body {
 
   background-color: #f6f6f6;
   font-size: 13px;
-  line-height: 1.3;
+  line-height: 1.7;
 }
 
   #TOC .toctitle {
@@ -49,7 +49,7 @@ body {
     margin-left: -2em;
   }
   #TOC li {
-    line-height: 16px;
+    line-height: 20px;
   }
 
 table {

@@ -514,8 +514,10 @@ formatR::tidy_source(
 )
 ```
 
-Don't forget to specify `na.rm = TRUE` for all functions that have this
-parameter.
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>Don't forget to specify `na.rm = TRUE` for all functions that use this
+parameter (most of base R functions do).</td></tr></table>
+
 
 ## 5.3 Other Notable Features
 
@@ -662,8 +664,8 @@ By definition, no total rows are part of *tidy* tables, and the row
 names are converted to a regular column. 
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
-<td>When displaying *tibbles* using *rmarkdown*, the **knitr** chunk option
-'results' should be set to "markup" instead of "asis".</td></tr></table>
+<td>When displaying *tibbles* using **rmarkdown**, the **knitr** chunk option
+`results` should be set to 'markup' instead of 'asis'.</td></tr></table>
 
 
 ## 8.1 Tidy Split-Group Statistics
@@ -737,12 +739,13 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
 view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 ```
 
-**A Note on *PDF* documents**
+**A Note on *PDF*  documents**
 
-There is no direct way to create a *PDF* file with **summarytools**. One option is
-to generate an *html* file and convert it to *PDF* using [Pandoc](https://pandoc.org)
-or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives better results
-than Pandoc with `dfSummary()` output). 
+There is no direct way to create a *PDF* file with **summarytools**. One
+option is to generate an *html* file and convert it to *PDF* using 
+[Pandoc](https://pandoc.org) or
+[WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives
+better results than *Pandoc* with `dfSummary()` output). 
 
 Another option is to create an *Rmd* document using *PDF* as the output
 format. See `vignette("rmarkdown", package = "summarytools")` for the details
@@ -819,9 +822,9 @@ The following options can be set globally with `st_options()`:
 ^1^ See <a href="#multiple-freq-tables">section 2.3</a> for details  
 ^2^ Applies to `dfSummary()` only  
 ^3^ Set to FALSE in text-only environments  
-<br/><br/>
 
-**Examples**
+
+### Examples 
 
 ```{r, eval=FALSE}
 st_options()                      # Display all global options values
@@ -870,10 +873,10 @@ function arguments can also be used (although they are not listed here).
 | report.nas                  |   x    |        |       |           |
 | display.type                |   x    |        |       |           |
 | missing                     |   x    |        |       |           |
-| split.tables <sup>(*)</sup> |   x    |   x    |   x   |     x     |
-| caption <sup>(*)</sup>      |   x    |   x    |   x   |     x     |
+| split.tables <sup>(1)</sup> |   x    |   x    |   x   |     x     |
+| caption <sup>(1)</sup>      |   x    |   x    |   x   |     x     |
 
-(*) _pander_ options
+^1^ _pander_ options
 
 ## 11.2 Overriding Heading Contents
 
@@ -996,7 +999,7 @@ To successfully include **summarytools** functions in *Shiny* apps,
  - if `col.widths` or `graph.magnig` do not seem to work, try using them as
    parameters for `print()` rather than `dfSummary()` 
 
-**Example** (results not shown)
+### Example (results not shown)
 
 ```{r, eval=FALSE}
 print(dfSummary(somedata, 
