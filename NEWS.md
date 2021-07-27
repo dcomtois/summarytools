@@ -26,6 +26,10 @@
      string 
  - Improved functionality for customized terms / translations (see
    `vignette("introduction", "summarytools")` for details) 
+ - `fix-valign.tex` is now in the *includes* directory for use with
+   *R Markdown* when creating *pdf* documents with `dfSummary()` outputs -
+   see `vignette("rmarkdown", )
+   
  - Navigation links and table of contents were added to introductory vignette,
    making it is easier to navigate 
 

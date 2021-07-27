@@ -117,7 +117,7 @@ Results can be
      as needed 
  - **Flexible and extensible**: 
    + The built-in features used to support alternate languages provide a way to
-     modify a great number of terms used in ouputs (headings and tables) 
+     modify a great number of terms used in outputs (headings and tables) 
    + **Pipe operators** from
      [magrittr](https://cran.r-project.org/package=magrittr) (`%>%`, `%$%`) and
      [pipeR](https://cran.r-project.org/package=pipeR) (`%>>%`) are fully
@@ -188,7 +188,7 @@ freq(iris$Species,
 
 While the output is much simplified, the syntax is not; I blame it on
 Tesler's [law of conservation of complexity](https://en.wikipedia.org/wiki/Law_of_conservation_of_complexity).
-Thankfully, `st_options()` is there to accomodate everyone's preferences (see
+Thankfully, `st_options()` is there to accommodate everyone's preferences (see
 [section on package options](#st-options)).
 
 <a id="multiple-freq-tables"></a>  
@@ -197,7 +197,7 @@ Thankfully, `st_options()` is there to accomodate everyone's preferences (see
 
 To generate frequency tables for all variables in a data frame, we *could*
 (and in the earliest versions, *needed* to) use `lapply()`. However, this
-is not required since `freq()` accpts data frames as the main argument:
+is not required since `freq()` accepts data frames as the main argument:
 
 ```{r, eval=FALSE}
 freq(tobacco)
