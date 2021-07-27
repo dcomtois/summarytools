@@ -1,28 +1,34 @@
-# summarytools 1.0.0 (2021-07-23)
+# summarytools 1.0.0 (2021-07-27)
+
  - In `dfSummary()`:  
    + It is now possible to control which statistics to show in the
-     *Freqs / Values* column
-   + In *html* outputs, the horizontal alignment between cells is
-     improved (it is less likely to have discrepancies in alignment
-     between categorical variables' values, their frequencies and
-     their bar chart) 
+     *Freqs / Values* column (see `help("st_options", "summarytools")`
+     for examples)   
+   + In *html* outputs, tables are better aligned horizontally (categories >>
+     counts >> charts); if misalignment occurs, adjusting `graph.magnif` should
+     resolve it 
+   + List-type columns and `Inf` values no longer generate errors 
    + `tmp.img.dir` can be left to `NA` when `style = "grid"`  
-   + Fixed typo in attribute name `Dataf.rame.label`  
-   + Removal of grouping variables now works with all languages  
-   + Basic support for list-type columns  
-   + Fixed error with graphs when `Inf` present -- no histograms are shown
-     for now, but a future version might offer a compromise... stay tuned!
- - Heading elements are now omitted when their defined keyword is set to
-   " " (empty string)
- - Added features making saving and loading custom languages more practical  
+   + Fixed typo in attribute name `Dataf.rame.label` 
+   + Removal of grouping variables is now consistent across all languages 
+ - In `descr()`:  
+   + Fixed headings being shown even if `headings=FALSE` (when using
+    `stby()` or `dplyr::group_by()`) 
  - In `ctable()`:  
    + Fixed row/column names not always properly displayed   
    + Fixed risk ratios showing when only odds ratios should  
    + Fixed error when `prop="none"` with integer data  
- - In `descr():  
-   + Fixed headings being shown when `headings=FALSE` (when using `stby()`
-     or `dplyr::group_by()`) 
-   
+ - Selected heading elements can be totally omitted by one of two ways: 
+   + Setting their *value* to empty string using `print()` or
+     `view()` parameters (in `?print.summarytools`, refer to list of arguments
+     that can be used to override heading elements)  
+   + Using `define_keywords()` and setting the *heading's label* to empty
+     string 
+ - Improved functionality for customized terms / translations (see
+   `vignette("introduction", "summarytools")` for details) 
+ - Navigation links and table of contents were added to introductory vignette,
+   making it is easier to navigate 
+
 # summarytools 0.9.9 (2021-02-04)
 
  - Style "jira" has been added to reflect pander's support for it. 

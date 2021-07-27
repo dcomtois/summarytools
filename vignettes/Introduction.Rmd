@@ -7,7 +7,7 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: vignette.css
+    css: assets/vignette.css
 #    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
   %\VignetteIndexEntry{Introduction to summarytools}
@@ -142,7 +142,7 @@ Results can be
 <a href="#s-3">3. Cross-Tabulations: ctable() >></a> 
 </div>
 <br/><br/>
-<a id="s-2"></a>  
+<a id="s-2"></a><a id="freq"></a>  
 
 # 2. Frequency Tables: freq()  
  
@@ -241,10 +241,9 @@ freq(tobacco$disease,
 Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
 get results ranked from lowest to highest in frequency. 
 
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>Notice the "**(Other)**" row, which is automatically generated.</td></tr></table>
 
-:::infobox
-Notice the "**(Other)**" row, which is automatically generated.
-:::
 
 ## 2.5 Collapsible Sections
 
@@ -316,9 +315,9 @@ risk ratio (also called relative risk), respectively. Those can
 be set to `TRUE`, in which case 95% confidence intervals are
 shown; to use different confidence levels, use for example `OR = .90`. 
 
-:::infobox
-Using pipes makes it easier to generate `ctable()` results.
-:::
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>Using pipes makes it easier to generate `ctable()` results.</td></tr></table>
+
 
 ```{r}
 library(magrittr)
@@ -373,9 +372,8 @@ descr(iris,
 ```
 
 See `?descr` for a list of all available statistics. Special values 
-“all”, “fivenum”, and “common” are also valid values for the `stats`
-argument. The default value is “all”, and it can be modified using
-`st_options()`:
+“all”, “fivenum”, and “common” are also valid. The default value is “all”, 
+and it can be modified using `st_options()`:
 
 ```{r, eval=FALSE}
 st_options(descr.stats = "common")
@@ -405,7 +403,16 @@ or its twin `stview()` in case of name conflicts:
 view(dfSummary(iris))
 ```
 
-<img src="dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
+<img src="assets/dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
+
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td> Be careful to use `view()` and not `View()`. If you use the latter, results
+will be shown in the data viewer. Also, be mindful of the order in which
+the packages are loaded. Some packages redefine `view()` to point to `View()`;
+loading **summarytools** *after* these packages will ensure its own `view()`
+works properly. Otherwise, `stview()` is always there as a foolproof 
+alternative.</td></tr></table>
+
 
 ## 5.1 Using dfSummary() in R Markdown Documents
 
@@ -422,21 +429,24 @@ dfSummary(tobacco,
           tmp.img.dir  = "/tmp")
 ```
 
-<img src="dfSummary_md.png" width=100%/> 
+<img src="assets/dfSummary_md.png" width=100%/> 
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
 *R Markdown* documents, except for _html_ rendering. The 
 explanation for this can be found [further below](#tmp-img-dir). 
 
-Some users reported repeated X11 warnings; those can be avoided by using the
-`warning` chunk option: `{r chunk_name, results="asis", warning=FALSE}`.
+<table><tr><td>![](assets/exclamation-diamond.svg)</td>
+<td>Some users reported repeated X11 warnings; those can be avoided by setting
+the `warning` chunk option to `FALSE`: `{r chunk_name, results="asis", warning=FALSE}`. 
+</td></tr></table> 
+
 
 ## 5.2 Optional Statistics
 
 This feature has been requested several times since the package was
 released. Introduced in version 1.0.0, it provides control over which
 statistics to shown in the *Stats/Values* column. Namely, the third row,
-which displays `IQR (CV) : ... (...)`, can be modified to show any available
+which displays `IQR (CV)`, can be modified to show any available
 statistics in R. An additional "slot" (unused by default) is also made
 available. To use this feature, define `dfSummary.custom.1` and/or
 `dfSummary.custom.2` using `st_options()` in the following way, encapsulating
@@ -474,15 +484,15 @@ print(
 ```
 
 
-If we had defined `dfSummary.custom.2` instead of `dfSummary.custom.1`,
-a fourth row would have been added under the default `IQR (CV) : ...` row.
+If we had used `dfSummary.custom.2` instead of `dfSummary.custom.1`,
+a fourth row would have been added under the default `IQR (CV)` row.
 
 Note that instead of `round()`, it is possible to use the internal 
 `format_number()`, which ensures the number is formatted according to all
 specified arguments (rounding digits, decimal mark and thousands mark, etc.).
-The internal variable `rounding.digits` which contains the value of
+The internal variable `round.digits` which contains the value of
 `st_options("round.digits")` can also be used. This is how the
-default `IQR (CV) : ...` is defined -- here we set the first custom stat back
+default `IQR (CV)` is defined -- here we set the first custom stat back
 to its default value and then display its definition (`formatR::tidy_source()`
 is used to format / indent the expression):
 
@@ -507,12 +517,14 @@ The `dfSummary()` function also
  - Detects UPC/EAN codes (barcode numbers) and doesn't calculate irrelevant
    statistics for them  
  - Detects email addresses and reports counts of valid, invalid and
-   duplicate addresses  
+   duplicate addresses; note that the proportions of valid and invalid
+   sum up to 100%; the duplicates proportion is calculated independently,
+   which is why in the bar chart (*html* version), the bar for this
+   category is shown with a different color 
  - Allows the display of "windowed" results by using the `max.tbl.height`
    parameter; This is especially convenient if the analyzed data frame has
    numerous variables; see 
-   `vignette("summarytools-in-rmarkdown", package = "summarytools")` for
-   more details
+   `vignette("rmarkdown", package = "summarytools")` for more details
 
 ## 5.4 Excluding Columns
 
@@ -639,9 +651,12 @@ iris$Species %>%
 ```
 
 By definition, no total rows are part of *tidy* tables, and the row
-names are converted to a regular column. Note that for displaying
-*tibbles* using *rmarkdown*, the **knitr** chunk option 'results'
-should be set to "markup" instead of "asis".
+names are converted to a regular column. 
+
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>When displaying *tibbles* using *rmarkdown*, the **knitr** chunk option
+'results' should be set to "markup" instead of "asis".</td></tr></table>
+
 
 ## 8.1 Tidy Split-Group Statistics
 
@@ -719,9 +734,10 @@ view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 There is no direct way to create a *PDF* file with **summarytools**. One option is
 to generate an *html* file and convert it to *PDF* using [Pandoc](https://pandoc.org)
 or [WK\<html\>TOpdf](https://wkhtmltopdf.org/index.html) (the latter gives better results
-than Pandoc with `dfSummary()` output). Another option is to create an *Rmd* document
-using *PDF* as the output format. See 
-`vignette("summarytools-in-rmarkdown", package = "summarytools")` for the details
+than Pandoc with `dfSummary()` output). 
+
+Another option is to create an *Rmd* document using *PDF* as the output
+format. See `vignette("rmarkdown", package = "summarytools")` for the details
 on how to proceed.
 
 ## 9.1 Appending Output Files
@@ -742,7 +758,7 @@ document.
 
 # 10. Package Options
 
-The following options can be set with `st_options()`:
+The following options can be set globally with `st_options()`:
 
 ## 10.1 General Options
 
@@ -903,11 +919,11 @@ as follows:
 
 - If both a core function and the print or view function are called at once and
   have conflicting parameter values, print/view has precedence (they always
-  win the arguments).
+  win the argument!).
 
-- The stored defaults (modified with st_options() or left as they are when
-  loading the package) will be applied if the parameter values cannot be
-  found in the function calls.
+- if the parameter values cannot be found in the function calls, the stored
+  defaults (modified with `st_options()` or left as they are when
+  loading the package) will be applied.
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
@@ -963,12 +979,14 @@ To successfully include **summarytools** functions in *Shiny* apps,
  - use *html* rendering  
  - set `bootstrap.css = FALSE` to avoid interacting with the app's layout  
  - set `headings = FALSE` in case problems arise  
- - adjust graph sizes with `print()`'s `graph.magnif` parameter or
-   with the `dfSummary.graph.magnif` global option  
- - if `dfSummary()` tables are too wide, omit a column or two (`valid.col` and `varnumbers`,
-   for instance)  
- - if the results are still unsatisfactory, set column widths manually with `print()`'s
-   `col.widths` parameter  
+ - adjust graph sizes with the `graph.magnif` parameter or with the
+   `dfSummary.graph.magnif` global option  
+ - if `dfSummary()` tables are too wide, omit a column or two (`valid.col` and 
+   `varnumbers`, for instance)  
+ - if the results are still unsatisfactory, set column widths manually with 
+   the `col.widths` parameter  
+ - if `col.widths` or `graph.magnig` do not seem to work, try using them as
+   parameters for `print()` rather than `dfSummary()` 
 
 **Example** (results not shown)
 
@@ -1002,7 +1020,7 @@ needed in order to display the *png* graphs properly:
   3 - `tmp.img.dir` must be defined and be at most 5 characters wide  
 
 Note that as of version 0.9.9, **setting `tmp.img.dir` is no longer required**
-**when using `method = "render"` and can be left to `NA`**. It is only 
+**when using `method = "render"`** and can be left to `NA`. It is only 
 necessary to define it when a transitory markdown table must be created, as
 shown below. Note how narrow the *Graph* column is -- this is actually required, 
 since the width of the rendered column is determined by the number of characters
@@ -1017,14 +1035,15 @@ in the cell, rather than the width of the image itself:
 +---------------+--------+----------------------+---------+
 ```
 
-CRAN policies are really strict when it comes to writing content in the user directories,
-or anywhere outside *R's temporary zone* (for good reasons). So users need to set this
-temporary location themselves, therefore consenting to having content written outside 
-*R*'s predefined temporary zone.
+CRAN policies are really strict when it comes to writing content in the user 
+directories, or anywhere outside *R's temporary zone* (for good reasons). So
+users need to set this temporary location themselves, therefore consenting to
+having content written outside *R*'s predefined temporary zone.
 
-On Mac OS and Linux, using "/tmp" makes a lot of sense: it's a short path, and it's 
-self-cleaning. On Windows, there is no such convenient directory, so we need to pick one -- 
-be it absolute ("/tmp") or relative ("img", or simply ".").
+On Mac OS and Linux, using "/tmp" makes a lot of sense: it's a short path,
+and the directory is purged automatically. On Windows, there is no such
+convenient directory, so we need to pick one -- be it absolute ("/tmp") or
+relative ("img", or simply ".").
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
@@ -1039,8 +1058,12 @@ be it absolute ("/tmp") or relative ("img", or simply ".").
 
 Thanks to the *R* community's efforts, the following languages can be used,
 in addition to English (default):
-French (*fr*), Portuguese (*pt*), Russian (*ru*), Spanish (*es*),
-and Turkish (*tr*).
+
+ * French (*fr*) 
+ * Portuguese (*pt*) 
+ * Russian (*ru*) 
+ * Spanish (*es*) 
+ * Turkish (*tr*) 
 
 To switch languages, simply use 
 
@@ -1048,7 +1071,7 @@ To switch languages, simply use
 st_options(lang = "fr")
 ```
 
-All output from the core functions now use that language:
+All output from the core functions will now use that language:
 
 ```{r}
 freq(iris$Species)
@@ -1056,17 +1079,17 @@ freq(iris$Species)
 
 ## 15.1 Non-UTF-8 Locales
 
-On most Windows systems, it will be necessary to change the `LC_CTYPE` element of the
-locale settings if the character set is not included in the system's default locale. 
-For instance, in order to get good results with the Russian language in a "latin1"
-environment, we need to do the following:
+On most Windows systems, it is necessary to change the `LC_CTYPE` element of
+the locale settings if the character set is not included in the system's
+default locale. For instance, in order to get good results with the Russian
+language in a "latin1" environment, use the following settings:
 
 ```{r, eval = FALSE}
 Sys.setlocale("LC_CTYPE", "russian")
 st_options(lang = 'ru')
 ```
 
-Then to go back to default settings:
+To go back to default settings...
 
 ```{r, eval=FALSE}
 Sys.setlocale("LC_CTYPE", "")
@@ -1076,23 +1099,23 @@ st_options(lang = "en")
 ## 15.2 Defining and Using Custom Terms
 
 Using the function `use_custom_lang()`, it is possible to add your own set of 
-translations or more personalized terminology. To achieve this, get the 
+translations or personalized terms. To achieve this, get the 
 [csv template](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
 customize one, many or all of the +/- 70 terms, and call `use_custom_lang()`,
 giving it as sole argument the path to the edited *csv* template. Note that such
 custom language settings will not persist across R sessions. This means that
 you should always have this *csv* file handy for future use. 
 
-## 15.3 Defining Selected Keywords
+## 15.3 Defining Only Specific Keywords
 
 The `define_keywords()` makes it easy to change just one or a few terms.
 For instance, you might prefer using "N" or "Count" rather than "Freq" in the
 title row of `freq()` tables. Or you might want to generate a document which
 uses the tables' titles as heading sections.
 
-For this, we can call `define_keywords()` and feed it the term(s) we wish
+For this, call `define_keywords()` and feed it the term(s) you wish
 to modify (which can themselves be stored in predefined variables). Here,
-the terms we need to change are `freq.title` and `freq` :
+the terms we need to change are `freq.title` and `freq`:
 
 
 ```{r}
@@ -1106,18 +1129,17 @@ Calling `define_keywords()` without any arguments will bring up, on systems
 that support graphical devices (the vast majority, that is), a window from
 which we can edit all the terms we want. 
 
-<img src="define_keywords.png" width=95% style="border:1;border-color:grey" />
+<img src="assets/define_keywords.png" width=95% style="border:1;border-color:grey" />
 
-After closing the edit window, a pop-up window gives the option to save our
-newly created "custom language" to a *csv* file (even though we changed just
+After closing the edit window, a dialogue box gives the option to save the
+newly created custom language to a *csv* file (even though we changed just
 a few keywords, the package considers the terms as a whole). We can later
 reload into memory the custom language file by calling
 `use_custom_lang("path-to-custom-language-file.csv")`.
 
 See `?define_keywords` for a list of all customizable terms in the package.
 
-To revert all changes to the terms, we can simply use 
-`st_options(lang = "en")`.
+To revert all changes, we can simply use `st_options(lang = "en")`. 
 
 ## 15.4 Power-Tweaking Headings 
 
@@ -1182,7 +1204,9 @@ The *output* element is the one that matters:
 
 The needed CSS is automatically added to *html* files created
 using `print()` or `view()` with the `file` argument. But in
-*R Markdown* documents, this needs to be done explicitly:
+*R Markdown* documents, this needs to be done explicitly in a
+setup chunk just after the YAML header (or following a first
+setup chunk specifying **knitr** and **summarytools** options):
 
 ```
 ## ```{r, echo=FALSE}

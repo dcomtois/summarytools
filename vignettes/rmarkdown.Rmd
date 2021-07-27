@@ -7,7 +7,7 @@ output:
     fig_caption: false
     toc: true
     toc_depth: 1
-    css: vignette.css
+    css: assets/vignette.css
     #- !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
 vignette: >
   %\VignetteIndexEntry{Summarytools in R Markdown Documents}
@@ -85,13 +85,13 @@ The *style* parameter is communicated to **pander** (see `?pander::pander`
 or visit its [GitHub page](https://github.com/Rapporter/pander) to learn more
 on this very useful package).
 
-:::infobox
-When we use any of the *viewer*, *browser*, or *render* methods, the 
-package rather uses **htmltools** to generate results; any specified *style*
-would be ignored.
-:::
+<table><tr><td>![](assets/lightbulb.svg)</td>
+<td>When we use any of the *viewer*, *browser*, or *render* methods, the 
+package rather uses **htmltools** to generate results; any specified *styles*
+are thus ignored.
+</td></tr></table> 
 
-### **summarytools** Styles are **pander** Styles
+### **summarytools** styles are **pander** styles
 
 Available styles are the ones supported by **pander**: 
 
@@ -118,10 +118,10 @@ st_options(plain.ascii = FALSE, style = "rmarkdown")
 or include `st_options(plain.ascii = FALSE)` in
 your setup chunk.  
 
-:::infobox
-If you get repeated, unhelpful warnings, use chunk options `message = FALSE` 
+<table><tr><td>![](assets/exclamation-diamond.svg)</td>
+<td>If you get repeated, unhelpful warnings, use chunk options `message = FALSE` 
 and/or `warning = FALSE`.
-:::
+</td></tr></table> 
 
 The following table indicates which method / style is better suited for each 
 **summarytools** function in the context of R Markdown documents:
@@ -253,7 +253,7 @@ dfSummary(tobacco,
           tmp.img.dir  = "/tmp")
 ```
 
-<img src="dfSummary_md.png" width=100%/>
+<img src="assets/dfSummary_md.png" width=100%/>
 
 ### 4.2 HTML Rendering for dfSummary()  
 
@@ -279,14 +279,16 @@ print(dfSummary(tobacco,
                 varnumbers   = FALSE,
                 valid.col    = FALSE,
                 graph.magnif = 0.76), 
-      max.tbl.height = 300, method = "render")
+      max.tbl.height = 300,
+      method = "render")
 ```
 
-#### Avoiding X11 Warnings
 
-Some users reported getting repeated X11 warnings; those can easily be avoided
-by using the following chunk expression: `{r, results="asis", warning=FALSE}`.
-
+<table><tr><td>![](assets/exclamation-diamond.svg)</td>
+<td>Some users reported getting repeated X11 warnings; those can easily be
+avoided by using the following chunk expression:
+`{r, results="asis", warning=FALSE}`.
+</td></tr></table> 
 
 <a href="#top">Back to top</a>
 
@@ -338,14 +340,12 @@ find this file.
 This is the \LaTeX  content that you'll need to put in your own *fig-align.tex*:
 
 ````
-```
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
 \usepackage{letltxmacro}
 \LetLtxMacro{\OldIncludegraphics}{\includegraphics}
 \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
   {\OldIncludegraphics[valign=t,#1]{#2}}}
-```
 ````
  
 The name of the file is arbitrary -- you can use whatever name you want. Its 
@@ -427,7 +427,7 @@ looks like this:
 #     fig_caption: false
 #     toc: true
 #     toc_depth: 1
-#     css: vignette.css
+#     css: assets/vignette.css
 # vignette: >
 #   %\VignetteIndexEntry{Summarytools in R Markdown Documents}
 #   %\VignetteEngine{knitr::rmarkdown}
