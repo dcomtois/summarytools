@@ -13,7 +13,7 @@
 ^tests$
 ^COPYING$
 ^inst/WORDLIST$
-vignettes/*.R
-vignettes/*.html
+vignettes/*.R$
+vignettes/*.html$
 ^doc$
 ^misc$
