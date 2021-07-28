@@ -1,0 +1,73 @@
+---
+title: "Data Frame Summaries in PDF's"
+author: Dominic Comtois
+date: 2020-12-29
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    includes:
+      in_header: ./fig-valign.tex
+papersize: letter
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = TRUE)
+```
+
+Yes, at last. It's not perfect but it's workable. I put this off for a long
+time, as I thought it would absolutely require a *Pandoc Lua filter*, and I was
+just too busy with other things. As I learn a bit more about \LaTeX, I now
+realize that a "simple" `\renewcommand` does the trick.
+
+So here it is, starting with the *YAML* section.
+
+## I. YAML Header
+
+There is a *tex* file to include. For the *xelatex* engine, it's not mandatory,
+but there are several advantages to it, and I now use it systematically.
+
+      ---
+      title: "Data Frame Summaries in PDF's"
+      output: 
+        pdf_document: 
+          latex_engine: xelatex
+          includes:
+            in_header: ./fig-valign.tex
+      ---
+
+## II. Included Preamble *Tex* File
+
+This is the \LaTeX  content that you'll need to copy in your own *fig-valign.tex*:
+
+      \usepackage{graphicx}
+      \usepackage[export]{adjustbox}
+      \usepackage{letltxmacro}
+      \LetLtxMacro{\OldIncludegraphics}{\includegraphics}
+      \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
+        {\OldIncludegraphics[valign=t,#1]{#2}}}
+
+## III. R Code
+
+```{r, message=FALSE}
+library(summarytools)
+st_options(
+  plain.ascii = FALSE, 
+  style = "rmarkdown",
+  dfSummary.style = "grid",
+  dfSummary.valid.col = FALSE,
+  dfSummary.graph.magnif = .52,
+  subtitle.emphasis = FALSE,
+  tmp.img.dir = "/tmp"
+)
+
+define_keywords(title.dfSummary = "Data Frame Summary in PDF Format")
+dfSummary(tobacco)
+```
+
+### Closing Remarks
+
+Since we redefined the command `includegraphics`, all images included using
+`[](some-image.png)` will be impacted. In some cases this will likely be
+problematic. Eventually we will find a more robust solution without such
+undesired side-effects. If you are well versed in \LaTeX  and think you can
+solve this, by all means get in touch with me.
