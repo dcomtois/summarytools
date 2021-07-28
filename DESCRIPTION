@@ -17,7 +17,6 @@ Imports:
   base64enc,
   checkmate,
   dplyr,
-  formatR,
   grDevices,
   htmltools,
   lubridate,
@@ -34,6 +33,7 @@ Imports:
   utils
 Suggests:
   forcats,
+  formatR,
   kableExtra,
   knitr,
   magrittr,
