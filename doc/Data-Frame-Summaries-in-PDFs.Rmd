@@ -1,73 +1,203 @@
 ---
 title: "Data Frame Summaries in PDF's"
 author: Dominic Comtois
-date: 2020-12-29
-output: 
+date: "`r Sys.Date()`"
+output:
   pdf_document: 
     latex_engine: xelatex
     includes:
-      in_header: ./fig-valign.tex
+      in_header: include-header.tex
+    keep_tex: yes
 papersize: letter
 ---
 
-```{r setup, include=FALSE}
+\definecolor{MidnightBlue}{HTML}{2E74B5}
+
+```{r setup1, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = TRUE)
+library(summarytools)
+st_options(
+  plain.ascii            = FALSE, 
+  style                  = "rmarkdown", # For other summarytools objects in pdf doc 
+  subtitle.emphasis      = FALSE,
+  dfSummary.style        = "grid",
+  dfSummary.graph.magnif = .5,
+  dfSummary.valid.col    = FALSE,
+  dfSummary.silent       = TRUE,   # Hide messages in output doc 
+  tmp.img.dir            = "/tmp"  # Recommended for Linux/OS X;
+                                   # For Windows, using "img" is
+                                   # a good habit 
+)
 ```
 
-Yes, at last. It's not perfect but it's workable. I put this off for a long
-time, as I thought it would absolutely require a *Pandoc Lua filter*, and I was
-just too busy with other things. As I learn a bit more about \LaTeX, I now
-realize that a "simple" `\renewcommand` does the trick.
+Here are the instructions for setting up [\color{MidnightBlue}{\emph{R
+Markdown}}](https://rmarkdown.rstudio.com/) documents in order to generate *pdf*
+documents with [\color{MidnightBlue}{data frame
+summaries}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html#data-frame-summaries-dfsummary)
+(`summarytools::dfSummary()`) that use *png* images.
 
-So here it is, starting with the *YAML* section.
+# 1. The Graphics Problem {#problem}
 
-## I. YAML Header
+```{r}
+dfSummary(iris[5], headings = FALSE)
+```
 
-There is a *tex* file to include. For the *xelatex* engine, it's not mandatory,
-but there are several advantages to it, and I now use it systematically.
+Although generating *html* or *Word* documents from *Rmd*'s containing
+`dfSummary()` outputs is a smooth and painless process, there is a major problem
+when it comes to generating *pdf*'s. The graphs, instead of being vertically
+centered, appear as though they were sitting on top of all the other cells'
+content.
 
-      ---
-      title: "Data Frame Summaries in PDF's"
-      output: 
-        pdf_document: 
-          latex_engine: xelatex
-          includes:
-            in_header: ./fig-valign.tex
-      ---
+\input{include-renew-cmd.tex}
 
-## II. Included Preamble *Tex* File
+# 2. The Solution
 
-This is the \LaTeX  content that you'll need to copy in your own *fig-valign.tex*:
+To correct this issue, we need to redefine the `\includegraphics` command. If
+this breaks some other parts of your document[^1], see
+[\color{MidnightBlue}{section 2.3}](#robust).
 
-      \usepackage{graphicx}
-      \usepackage[export]{adjustbox}
-      \usepackage{letltxmacro}
-      \LetLtxMacro{\OldIncludegraphics}{\includegraphics}
-      \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
-        {\OldIncludegraphics[valign=t,#1]{#2}}}
+[^1]: There must be a *law of conservation of brokenness* sitting somewhere
+    waiting to be formalized (although one could argue that this is merely a
+    corollary to [Murphy's law](https://en.wikipedia.org/wiki/Murphy%27s_law))
 
-## III. R Code
+## 2.1 YAML Header
+
+        ---
+        title: "My Own Private PDF"
+        output: 
+          pdf_document: 
+            latex_engine: xelatex
+            includes:
+              in_header: 
+              - !expr system.file("includes/fig-valign.tex",
+                                  package = "summarytools")
+        ---
+
+The solution presented here requires that some *tex* code be included in the
+YAML section of the Rmd document. You can use your own *tex* file, or use the
+one that is part of the package as of version 1.0 (July 2021). and include it in
+from the YAML section using `system.file()`.
+
+The `latex_engine: xelatex` part is not mandatory for the solution to work. But
+there are several advantages to using it; I use it systematically and see only
+advantages to it, so I can only advise you do the same.
+
+### Using Your Own *tex* File
+
+If you prefer including your own *tex* file, here is what it should (minimally)
+contain:
+
+        \usepackage{graphicx}
+        \usepackage[export]{adjustbox}
+        \usepackage{letltxmacro}
+        \LetLtxMacro{\OldIncludegraphics}{\includegraphics}
+        \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
+          {\OldIncludegraphics[valign=t,#1]{#2}}}
+
+### Modified YAML Section
+
+Supposing you choose to keep the name `fig-valign.tex`, your YAML section should
+now look something like this:
+
+        ---
+        title: "My Own Private PDF"
+        output: 
+          pdf_document: 
+            latex_engine: xelatex
+            includes:
+              in_header: fig-valign.tex
+        ---
+
+The *tex* file's name is entirely up to you; `fig-valign.tex` is the name used
+for the one in **summarytools**' `includes` directory, but it has no special
+meaning whatsoever.
+
+## 2.2 Example
+
+Here is a setup chunk which reproduces what has been used for this document,
+followed by a call to `dfSummary()`:
 
 ```{r, message=FALSE}
 library(summarytools)
 st_options(
-  plain.ascii = FALSE, 
-  style = "rmarkdown",
-  dfSummary.style = "grid",
-  dfSummary.valid.col = FALSE,
-  dfSummary.graph.magnif = .52,
-  subtitle.emphasis = FALSE,
-  tmp.img.dir = "/tmp"
+  plain.ascii            = FALSE, 
+  subtitle.emphasis      = FALSE,
+  style                  = "rmarkdown", # For any other summarytools objects 
+  dfSummary.style        = "grid",
+  dfSummary.graph.magnif = .5,
+  dfSummary.valid.col    = FALSE,
+  tmp.img.dir            = "/tmp"  # Recommended for Linux/OS X;
+                                   # For Windows, using "img" is
+                                   # a good habit 
 )
 
-define_keywords(title.dfSummary = "Data Frame Summary in PDF Format")
-dfSummary(tobacco)
+define_keywords(title.dfSummary = "Data Frame Summary in PDF Document")
+dfSummary(iris)
 ```
+
+## 2.3 A More Robust Solution {#robust}
+
+If redefining the `\includegraphics` command causes problems elsewhere in your
+document, following these instructions should take care of it[^2].
+
+[^2]: File names and locations are suggestions only; adapt the instructions to
+    your own needs.
+
+1.  Split the contents of `fig-valign.tex` into two files in your *Rmd*
+    document's directory:
+
+    i.  `load-pkgs.tex` -- contains only the first three lines (the
+        `\usepackage` commands only)
+
+    ii. `renew-cmd.tex` -- contains the remaining lines, which store the
+        existing `\includegraphics` command as a macro and redefine it.
+
+2.  Include the first file with YAML (`\\` indicates line feed):\
+    `output: \\ pdf-document: \\ includes: \\ in_header: load-pkgs.tex`
+
+3.  Before the `dfSummary()` chunk(s), paste this *tex* command, also on a new
+    line:
+
+        \input{renew-cmd.tex}
+
+4.  After the chunk(s), set the `\includegraphics` back to its original value
+    using the following command on a new line:
+
+        \let\includegraphics\OldIncludegraphics
+
+### Proof That `includegraphics` Is Restored to Original
+
+\let\includegraphics\OldIncludegraphics
+
+At this stage, the `\let\includegraphics\OldIncludegraphics` *tex* command has
+been executed.
+
+```{r}
+dfSummary(iris[5], headings = FALSE)
+```
+
+If the operation of restoring the command worked, the results should be back to
+being misaligned, just as they were in the
+[\color{MidnightBlue}{very first section}](#problem).
 
 ### Closing Remarks
 
-Since we redefined the command `includegraphics`, all images included using
-`[](some-image.png)` will be impacted. In some cases this will likely be
-problematic. Eventually we will find a more robust solution without such
-undesired side-effects. If you are well versed in \LaTeX  and think you can
-solve this, by all means get in touch with me.
+If you are a \LaTeX  guru and can think of a simpler solution, please do let me
+know either by opening an
+[\color{MidnightBlue}{issue}](https://github.com/dcomtois/summarytools/issues)
+or by sending me an email; my address is available in the
+[\color{MidnightBlue}{package's GitHub
+page}](https://github.com/dcomtois/summarytools) as well as in the
+[\color{MidnightBlue}{package's auto-generated pdf manual}](https://cran.r-project.org/web/packages/summarytools/summarytools.pdf).
+
+Useful links:
+
+1.  [\color{MidnightBlue}{Introduction to summarytools}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
+    (package vignette)
+2.  [\color{MidnightBlue}{Summarytools in R Markdown Documents}](https://cran.r-project.org/web/packages/summarytools/vignettes/rmarkdown.html)
+    (package vignette)
+3.  [\color{MidnightBlue}{Custom Statistics in dfSummary}](https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/doc/Custom-Statistics-in-dfSummary.pdf)
+    (supplemental documentation)
+4.  [\color{MidnightBlue}{This StackOverflow question}](https://stackoverflow.com/questions/5845887/how-do-i-use-renewcommand-to-get-back-my-greek-letters)
+    provides an additional example of how to revert a renewed command back to
+    its original value.
