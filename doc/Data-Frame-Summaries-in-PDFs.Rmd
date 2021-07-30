@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output:
   pdf_document: 
     latex_engine: xelatex
+    extra_dependencies: xcolor
     includes:
       in_header: include-header.tex
     keep_tex: yes
@@ -14,19 +15,17 @@ papersize: letter
 \definecolor{MidnightBlue}{HTML}{2E74B5}
 
 ```{r setup1, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = FALSE)
 library(summarytools)
 st_options(
   plain.ascii            = FALSE, 
-  style                  = "rmarkdown", # For other summarytools objects in pdf doc 
+  style                  = "rmarkdown", 
   subtitle.emphasis      = FALSE,
   dfSummary.style        = "grid",
   dfSummary.graph.magnif = .5,
   dfSummary.valid.col    = FALSE,
-  dfSummary.silent       = TRUE,   # Hide messages in output doc 
-  tmp.img.dir            = "/tmp"  # Recommended for Linux/OS X;
-                                   # For Windows, using "img" is
-                                   # a good habit 
+  dfSummary.silent       = TRUE, 
+  tmp.img.dir            = "img"
 )
 ```
 
