@@ -2,17 +2,20 @@
 title: "Custom Statistics in dfSummary"
 output:
   pdf_document: 
+    highlight: espresso
     latex_engine: xelatex
     includes:
       in_header: 
       - !expr system.file("includes/fig-valign.tex", package = "summarytools")
-  html_document: 
-    df_print: default
 ---
 
+\definecolor{MidnightBlue}{HTML}{2E74B5}
+
 This document shows how to customize the content of the *Stats / Values* column
-in `summarytools::dfSummary()`. This feature was introduced in version 1.0.0,
-July 2021.
+in [\color{MidnightBlue}{data frame
+summaries}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html#data-frame-summaries-dfsummary)
+(`summarytools::dfSummary()`) `summarytools::dfSummary()`. This feature was
+introduced in version 1.0.0, July 2021.
 
 This feature request [came
 up](https://github.com/dcomtois/summarytools/issues/33) several
@@ -34,14 +37,16 @@ they are before making any changes.
 
 First let's set things up:
 
-```{r}
+```{r, message=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, 
                prompt  = FALSE,
                cache   = FALSE,
                echo    = TRUE,
                results = 'asis')
-suppressPackageStartupMessages(library(summarytools))
+#knit_theme$set("edit-kwrite")
+# https://rclickhandbuch.files.wordpress.com/2014/09/knitrthemesoverview.pdf
+library(summarytools)
 st_options(plain.ascii     = FALSE,
            headings        = FALSE,
            footnote        = NA,
@@ -147,3 +152,12 @@ dfSummary(iris_subset, graph.magnif = .65)
 
 Don't forget to set `na.rm = TRUE` whenever necessary. Otherwise, just use your
 imagination!
+
+Useful links:
+
+1.  [\color{MidnightBlue}{Introduction to summarytools}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
+    (package vignette)
+2.  [\color{MidnightBlue}{Summarytools in R Markdown Documents}](https://cran.r-project.org/web/packages/summarytools/vignettes/rmarkdown.html)
+    (package vignette)
+3.  [\color{MidnightBlue}{Data Frame Summaries in PDF's}](https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/doc/Data-Frame-Summaries-in-PDFs.pdf)
+    (supplemental documentation)
