@@ -102,7 +102,7 @@ Results can be
  
 **When creating _R Markdown_ documents**, make sure to 
 
-  - Use chunk option`result="asis"`
+  - Use chunk option `results="asis"`
   - Une the function argument `plain.ascii=FALSE` 
   - Set the *style* parameter to "rmarkdown", or "grid" for `dfSummary()`
 
@@ -125,12 +125,12 @@ Results can be
    + Default values for a good number of function parameters can be modified
      using `st_options()` to minimize redundancy in function calls 
    + **By-group processing** is easily achieved using the package's `stby()`
-     function which is a slightly modified version of base `base::by()`, but
+     function which is a slightly modified version of `base::by()`, but
      `dplyr::group_by()` is also supported 
    + [**Pander options**](http://rapporter.github.io/pander/) can be used to
      customize or enhance plain text and markdown tables 
    + Base R's `format()` parameters are also supported; this can be used to set
-     thousands separator or modify the decimal separator, among several other
+     thousands separator or modify the decimal separator, among other
      possibilities (see `help("format")`)
    + [**Bootstrap CSS**](https://getbootstrap.com/) is used by default with
      *html* output, and user-defined classes can be added at will 
