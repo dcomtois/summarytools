@@ -22,6 +22,7 @@ type                  ,heading label (freq)                                     
 logical               ,heading value for type (freq)                                 ,Logical
 character             ,heading value for type (freq)                                 ,Character
 numeric               ,heading value for type (freq)                                 ,Numeric
+integer               ,heading value for type (freq)                                 ,Integer
 factor                ,heading value for type (freq)                                 ,Factor
 factor.ordered        ,heading value for type (freq)                                 ,Ordered Factor
 date                  ,heading value for type (freq)                                 ,Date
@@ -60,11 +61,13 @@ missing               ,column name (dfSummary)                                  
 distinct.value        ,cell content (dfSummary) - singular form                      ,distinct value
 distinct.values       ,cell content (dfSummary) - plural form                        ,distinct values
 all.nas               ,cell content (dfSummary) - column has only NA's               ,All NA's
+empty.str             ,cell content (freq) - column has values equal to ""           ,Empty string
 all.empty.str         ,cell content (dfSummary) - column has only empty str's        ,All empty strings
 all.empty.str.nas     ,cell content (dfSummary) - col. has only NA's and empty str's ,All empty strings / NA's
 no.levels.defined     ,cell content (dfSummary) - factor has no levels defined       ,No levels defined
 int.sequence          ,cell content (dfSummary)                                      ,Integer sequence
 rounded               ,cell content (dfSummary) - note appearing in Stats/Values     ,rounded
+other                 ,cell content (freq) - used w/ rows arg (filtered out values)  ,(Other)
 others                ,cell content (dfSummary) - nbr of values not displayed        ,others
 codes                 ,cell content (dfSummary) - When UPC codes are detected        ,codes
 mode                  ,cell content (dfSummary) - mode = most frequent value         ,mode
