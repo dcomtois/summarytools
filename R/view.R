@@ -128,7 +128,7 @@ view <- function(x,
                        escape.pipe   = escape.pipe,
                        ...)
     
-  } else if (inherits(x = x, what = c("stby", "by")) &&
+  } else if (inherits(x = x, what = c("stby", "by", "array")) &&
              attr(x[[1]], "st_type") %in% 
                c("freq", "ctable", "descr", "dfSummary")) {
     
