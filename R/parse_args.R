@@ -595,7 +595,7 @@ parse_args <- function(sys_calls,
         upd_output("var_name",  NA_character_)
         upd_output("var_label", NA_character_)
       } else {
-        parse_data_str(deparse(calls$fun[[var]]))
+        parse_data_str(deparse1(calls$fun[[var]]))
       }
     } else if (is.atomic(obj2)) {
       if (length(calls$fun[[var]]) == 1) {
