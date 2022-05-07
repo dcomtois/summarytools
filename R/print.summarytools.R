@@ -402,7 +402,7 @@ print.summarytools <- function(x,
   }
 
   if (!"digits" %in% names(format_info)) {
-    format_info$digits <- format_info$round.digits
+    format_info$digits <- max(c(1, format_info$round.digits))
   }
 
   # Put modified attributes back into x
@@ -934,13 +934,13 @@ print_ctable <- function(x, method) {
     
     if (rownames_are_int) {
       format_args_tmp <- format_args
-      format_args_tmp$digits <- 0
+      format_args_tmp$digits <- 1
       format_args_tmp$nsmall <- 0
     } else {
       # Make sure no decimals are lost b/c of format options
       format_args_tmp <- format_args
       format_args_tmp$digits <- max(
-        nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames)),
+        c(1, nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames))),
         na.rm = TRUE
       )
       format_args_tmp$nsmall <- format_args_tmp$digits
@@ -970,12 +970,12 @@ print_ctable <- function(x, method) {
     
     if (colnames_are_int) {
       format_args_tmp <- format_args
-      format_args_tmp$digits <- 0
+      format_args_tmp$digits <- 1
       format_args_tmp$nsmall <- 0
     } else {
       format_args_tmp <- format_args
       format_args_tmp$digits <- max(
-        nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames)),
+        c(1, nchar(sub(".+\\.(.*)0*", "\\1", temp_rownames))),
         na.rm = TRUE
       )
       format_args_tmp$nsmall <- format_args_tmp$digits
@@ -2459,4 +2459,3 @@ build_heading_html <- function(format_info, data_info, method, div_id = NA) {
   tmp <- list(head1, head2, head3)
   return(tmp[which(!is.na(tmp))])
 }
-
