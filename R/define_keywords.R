@@ -1,20 +1,24 @@
 #' Modify Keywords Used In Outputs
 #'
-#' As an alternative to \code{\link{use_custom_lang}}, this allows temporarily
-#' modifying the keywords used in the outputs.
+#' As an alternative to \code{\link{use_custom_lang}}, this function allows
+#' temporarily modifying the pre-defined terms in the outputs.
 #'
-#' @param \dots one or more pairs of keywords and their new values see 
-#' \emph{Details}.
+#' @param \dots One or more pairs of keywords and their new values see 
+#' \emph{Details} for the complete list of existing keywords.
+#' @param ask Logical. When `TRUE` (default), a dialog box comes up to ask
+#'   whether to save the edited values in a csv file for later use.
+#' @param file Character. Path and name of custom language file to be saved.
+#'   This comma delimited file can be reused by calling
+#'   \code{\link{use_custom_lang}}.
 #'
-#' @details
-#' On systems with GUI capabilities, a window will pop-up, allowing
-#' the modification of the \emph{custom} column. The changes will be
-#' active as long as the package is loaded. A dialog will show up prompting
-#' the user to save the modified set of keywords in a custom csv language file.
+#' @details On systems with GUI capabilities, a window will pop-up when calling 
+#' \code{define_keywords()} without any parameters, allowing the modification 
+#' of the \emph{custom} column. The changes will be active as long as the
+#' package is loaded. When the edit window is closed, a dialog will pop up,
+#' prompting the user to save the modified set of keywords in a custom csv
+#' language file that can later be used with \code{\link{use_custom_lang}}.
 #' 
-#' Here is the full list of modifiable keywords. Check out the 
-#' \emph{language_template.csv} file in the package's \emph{includes} 
-#'   directory.
+#' Here is the full list of modifiable keywords.
 #'   
 #' \describe{
 #'   \item{title.freq}{main heading for \code{freq()}}
@@ -94,24 +98,31 @@
 #'   \item{version}{footnote content}
 #'   \item{date.fmt}{footnote - date format (see \code{\link{strptime}})}
 #' }
-#'   
+#' 
+#' @note Setting a keyword starting with \dQuote{title.} to NA or to empty
+#' string causes the main title to disappear altogether, which might be
+#' desired in some circumstances (when generating a table of contents, for
+#' instance).
+#' 
 #' @examples 
 #' \dontrun{
 #' define_keywords(n = "Nb. Obs.")
 #' } 
+#' 
 #' @keywords utilities
 #' @importFrom utils read.delim edit write.csv
 #' @importFrom tcltk tclvalue tk_messageBox tkgetSaveFile
 #' @importFrom checkmate check_path_for_output
 #' @export
-define_keywords <- function(...) {
+define_keywords <- function(..., ask = TRUE, file = NA) {
   mc <- match.call()
-  if (length(mc) == 1 && !isTRUE(interactive())) {
+  kw <- names(mc[setdiff(names(mc), names(formals()))])[-1]
+  if (length(kw) == 0 && !isTRUE(interactive())) {
     stop("R session not interactive; use arguments to define keywords, ",
          "or see ?use_custom_lang to use an external file to define all ",
          "keywords at once")
   }
-  if (length(mc) == 1 && isFALSE(capabilities("tcltk"))) {
+  if (length(kw) == 0 && isFALSE(capabilities("tcltk"))) {
     message("Window dialogs not allowed; use arguments to ",
             "redefine specific keywords (see ?define_keywords), or turn to the ",
             "use_custom_lang() function which allows redefining all keywords at ",
@@ -133,7 +144,7 @@ define_keywords <- function(...) {
   tr <- tr[,c(3,1,2)]
   colnames(tr)[2] <- "custom"
   
-  if (length(mc) == 1) {
+  if (length(kw) == 0) {
     message("Instructions: \n  - Modify entries in the second column only \n",
             "  - leave column names unchanged\n",
             "  - expanding the window reveals context information stored in ",
@@ -141,7 +152,7 @@ define_keywords <- function(...) {
             "  - Close the editing window when finished")
     tr.copy <- tr
     tr <- try(edit(tr), silent = TRUE)
-    if (class(tr) == "try-error") {
+    if (inherits(x = tr, "try-error")) {
       stop("Window dialogs not allowed; use arguments to ",
            "redefine specific keywords (see ?define_keywords), or turn to the ",
            "use_custom_lang() function which allows redefining all keywords at ",
@@ -152,85 +163,102 @@ define_keywords <- function(...) {
       return(invisible())
     }
   } else {
-    for (it in names(mc[-1])) {
+    for (it in kw) {
       ind <- which(tr$item == it)
       if (length(ind) == 0) {
-        stop("'", it, "' is not a recognized keyword; see ?define_keywords ",
-             "for a list of valid keywords")
+        message("'", it, "' is not a recognized keyword; see ?define_keywords ",
+                "for a list of valid keywords")
+        next
       }
-      tr$custom[tr$item == it] <- mc[[it]]
+      if (inherits(mc[[it]], c("call", "name"))) {
+       mc[[it]] <- eval(mc[[it]], parent.frame())
+      }
+      tr$custom[ind] <- mc[[it]]
     }
   }
 
   use_custom_lang(tr)
-  
-  filename <- ""
-  filename_ok <- FALSE
-  
-  if (interactive() && length(mc) == 1) {
+
+  if (!is.na(file)) {
+    filename <- normalizePath(file, mustWork = FALSE)
+    if (isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
+    write.csv(x = tr,
+              file = filename,
+              row.names = FALSE, 
+              fileEncoding = "utf-8")
+    message("Custom language file written: ", filename)
+    } else {
+      warning("file name or path invalid")
+    }
+  } else if (isTRUE(ask)) {
+    filename <- ""
+    filename_ok <- FALSE
     
-    if (isTRUE(capabilities("tcltk"))) {
-      # tcltk capabilities: yes
-      resp <- try(tk_messageBox(type = "yesno", 
-                                message = "Export language file for later use?",
-                                caption = "Keywords Successfully Updated"),
-                  silent = TRUE)
-      if (class(resp) == "try-error") {
-        tcltk_error <- TRUE
-      } else {
-        if (resp == "yes") {
-          while(!filename_ok) {
-            filename <- tclvalue(
-              tkgetSaveFile(initialfile = "custom_lang.csv", 
-                            initialdir = "~",
-                            filetypes = "{{csv files} {*.csv}}")
-            )
-            
-            if (filename != "") {
-              filename <- sub("(.csv)+$", "\\1", paste0(filename, ".csv"))
-              filename <- normalizePath(filename, mustWork = FALSE)
-              if (!isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
-                rv <- tk_messageBox(
-                  type = "okcancel", 
-                  message = "Invalid file name or location"
-                )
-                if (rv == "cancel") {
-                  filename <- ""
+    if (interactive() && length(kw) == 1) {
+      
+      if (isTRUE(capabilities("tcltk")) && isTRUE(ask)) {
+        # tcltk capabilities: yes
+        resp <- try(tk_messageBox(type = "yesno", 
+                                  message = "Export language file for later use?",
+                                  caption = "Keywords Successfully Updated"),
+                    silent = TRUE)
+        if (class(resp) == "try-error") {
+          tcltk_error <- TRUE
+        } else {
+          if (resp == "yes") {
+            while (!filename_ok) {
+              filename <- tclvalue(
+                tkgetSaveFile(initialfile = "custom_lang.csv", 
+                              initialdir = "~",
+                              filetypes = "{{csv files} {*.csv}}")
+              )
+              
+              if (filename != "") {
+                filename <- sub("(.csv)+$", "\\1", paste0(filename, ".csv"))
+                filename <- normalizePath(filename, mustWork = FALSE)
+                if (!isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
+                  rv <- tk_messageBox(
+                    type = "okcancel", 
+                    message = "Invalid file name or location"
+                  )
+                  if (rv == "cancel") {
+                    filename <- ""
+                    filename_ok <- TRUE
+                  }
+                } else {
+                  # Filename is valid
                   filename_ok <- TRUE
                 }
               } else {
-                # Filename is valid
+                # dialog "Save as..." was cancelled
                 filename_ok <- TRUE
               }
-            } else {
-              # dialog "Save as..." was cancelled
-              filename_ok <- TRUE
             }
           }
         }
       }
-    }
-
-    # tcltk capabilities: no, or attempt failed
-    if (isFALSE(capabilities("tcltk")) || exists("tcltk_error")) {
-      resp <- " "
-      while (!resp %in% c("Y", "N", "")) {
-        resp <- toupper(
-          readline(prompt = "Export language file for later use? [y/N] ")
-        )
-      }
       
-      if (resp == "Y") {
-        while (!filename_ok) {
-          filename <- readline(prompt = "Full path to csv file (ESC to cancel): ")
-          # Remove surrounding quotes if any
-          filename <- sub('^"(.+)"$|^\'(.+)\'$', "\\1\\2", filename)
-          if (filename != "" && 
-              (!isTRUE(check_path_for_output(filename, overwrite = TRUE)) || 
-               !grepl("\\.csv$", filename))) {
-            message("Invalid file location or extension (must be .csv)")
-          } else {
-            filename_ok <- TRUE # filename either "" or valid
+      # tcltk capabilities: no, or attempt failed
+      if (isFALSE(capabilities("tcltk")) || exists("tcltk_error")) {
+        resp <- " "
+        while (!resp %in% c("Y", "N", "")) {
+          resp <- toupper(
+            readline(prompt = "Export language file for later use? [y/N] ")
+          )
+        }
+        
+        if (resp == "Y") {
+          while (!filename_ok) {
+            filename <- readline(prompt = "Full path to csv file (ESC to cancel): ")
+            # Remove surrounding quotes if any
+            filename <- sub('^"(.+)"$|^\'(.+)\'$', "\\1\\2", filename)
+            if (filename != "" && 
+                (!isTRUE(check_path_for_output(filename, overwrite = TRUE)) || 
+                 !grepl("\\.csv$", filename))) {
+              message("Invalid file location or extension (must be .csv)")
+            } else {
+              filename_ok <- TRUE # filename either "" or valid
+            }
           }
         }
       }
@@ -243,4 +271,3 @@ define_keywords <- function(...) {
     }
   }
 }
-

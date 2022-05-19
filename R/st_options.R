@@ -14,23 +14,23 @@
 #'   \code{st_options(plain.ascii = FALSE)}.
 #' @param style Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 #'   or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.
-#' @param plain.ascii Logical. \code{TRUE} by default. Set to \code{FALSE} when
-#'   using \strong{summarytools} with a rendering tool such as \code{knitr} or
-#'   when creating rmarkdown output files to be converted with Pandoc. Note 
-#'   however that its value will automatically be set to \code{FALSE} whenever
-#'   \code{style} is set to \dQuote{rmarkdown}).
+#' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
+#'   \code{TRUE}, no markup characters will be used (useful when printing to
+#'   console). \code{TRUE} by default, but when \code{style = 'rmarkdown'},
+#'   it is automatically set to \code{FALSE}. To override this behavior,
+#'   \code{plain.ascii = TRUE} must be specified in the function call.
 #' @param round.digits Numeric. Defaults to \code{2}.
 #' @param headings Logical. Set to \code{FALSE} to remove all headings from
 #'   outputs. Only the tables will be printed out, except when \code{\link{by}}
 #'   or \code{\link{lapply}} are used. In that case, the variable or the group
-#'   will still appear before the tables. \code{FALSE} by default.
+#'   will still appear before each table. \code{TRUE} by default.
 #' @param footnote Character. When the default value \dQuote{default} is used,
 #'   the package name & version, as well as the R version number are displayed
 #'   below \emph{html} outputs. Set no \code{NA} to omit the footnote, or 
 #'   provide a custom string. Applies only to \emph{html} outputs.
 #' @param display.labels Logical. \code{TRUE} by default. Set to \code{FALSE} to
 #'   omit data frame and variable labels in the headings section.
-#' @param bootstrap.css Logical. Specifies whether to Include 
+#' @param bootstrap.css Logical. Specifies whether to include 
 #'   \emph{Bootstrap css} in \emph{html} reports' \emph{head} section.
 #'   Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
 #'   method inside a \code{shiny} app to avoid interacting with the app's 
@@ -58,13 +58,14 @@
 #'   \code{\link{ctable}}. Defaults to \dQuote{r} (\emph{r}ow).
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{ctable}}. \code{TRUE} by default.
+#' @param ctable.round.digits Numeric. Defaults to \code{1}.
 #' @param descr.stats Character. Corresponds to the \code{stats} parameter of
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
 #'   of \code{\link{descr}}. \code{FALSE} by default.
 #' @param descr.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
-#'   \dQuote{grid} for \emph{Rmarkdown} documents.
+#'   \dQuote{grid} for \emph{R Markdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
@@ -83,6 +84,18 @@
 #'   \code{1}.
 #' @param dfSummary.silent Logical. Hide console messages. \code{FALSE} by 
 #'   default.
+#' @param dfSummary.custom.1 Expression. First of two optional expressions
+#'   which once evaluated will populate lines 3+ of the `Stats / Values` 
+#'   cell when column data is numerical and has more distinct values than 
+#'   allowed by the \code{max.distinct.values} parameter. By default, it
+#'   contains the expression which generates the `IQR (CV) : ...` line. To reset it back to
+#'   this default value, use \code{st_options(dfSummary.custom.1 = "default")}.
+#'   See \emph{Details} and \emph{Examples} sections for more.
+#' @param dfSummary.custom.2 Expression. Second the two optional expressions
+#'   which once evaluated will populate lines 3+ of the `Stats / Values` 
+#'   cell when the column data is numerical and has more distinct values than 
+#'   allowed by the `max.distinct.values` parameter. \code{NA} by default.
+#'   See \emph{Details} and \emph{Examples} sections for more.
 #' @param tmp.img.dir Character. Directory used to store temporary images. See
 #'   \emph{Details} section of \code{\link{dfSummary}}. \code{NA} by default.
 #' @param subtitle.emphasis Logical. Controls the formatting of the 
@@ -98,12 +111,20 @@
 #'   \code{\link{dfSummary}}  tries to generate \emph{html} 
 #'   \dQuote{Base64-encoded} graphs.
 #' 
-#' @details To learn more about summarytools options, see the 
-#' \href{https://github.com/dcomtois/summarytools}{project's GitHub page}.
+#' @details The \code{dfSummary.custom.1} and \code{dfSummary.custom.2} options
+#'   must be defined as expressions. In the expression, use the
+#'   \code{culumn_data} variable name to refer to data. Assume the type to be
+#'   numerical (real or integer). The expression must paste together both the
+#'   labels (short name for the statistic(s) being displayed) and the 
+#'   statistics themselves. Although \code{\link[base]{round}} can be used, a
+#'   better alternative is to call the internal \code{\link{format_number}},
+#'   which uses \code{\link[base]{format}} to apply all relevant formatting
+#'   that is active within the call to \code{\link{dfSummary}}. For keywords
+#'   having a translated term, the \code{trs()} internal function can be
+#'   used (see \emph{Examples}). 
+#'   
+#' @examples
 #' 
-#' @keywords utilities
-#' 
-#' @examples \dontrun{
 #' # show all summarytools global options
 #' st_options()
 #' 
@@ -113,6 +134,7 @@
 #' # show two (or more) options
 #' st_options(c("plain.ascii", "style", "footnote"))
 #' 
+#' \dontrun{
 #' # set one option
 #' st_options(plain.ascii = FALSE)
 #' 
@@ -128,7 +150,37 @@
 #' st_options('reset')
 #' # ... or
 #' st_options(0)
+#' 
+#' # Define custom dfSummary stats
+#' st_options(dfSummary.custom.1 = expression(
+#'   paste(
+#'     "Q1 - Q3 :",
+#'     format_number(
+#'       quantile(column_data, probs = .25, type = 2, 
+#'                names = FALSE, na.rm = TRUE), round.digits
+#'     ),
+#'     "-",
+#'     format_number(
+#'       quantile(column_data, probs = .75, type = 2, 
+#'                names = FALSE, na.rm = TRUE), round.digits
+#'     ),
+#'     collapse = ""
+#'   )
+#' ))
+#' 
+#' dfSummary(iris)
+#' 
+#' # Set back to default value
+#' st_options(dfSummary.custom.1 = "default")
 #' }
+#'  
+#' @note 
+#' To learn more about summarytools options, see
+#' \code{vignette("introduction", "summarytools")}.
+#' 
+#' @keywords utilities
+#' 
+#' 
 #' @export
 st_options <- function(option                 = NULL,
                        value                  = NULL,
@@ -139,7 +191,7 @@ st_options <- function(option                 = NULL,
                        footnote               = "default",
                        display.labels         = TRUE,
                        bootstrap.css          = TRUE,
-                       custom.css             = NA,
+                       custom.css             = NA_character_,
                        escape.pipe            = FALSE,
                        char.split             = 12,
                        freq.cumul             = TRUE,
@@ -149,6 +201,7 @@ st_options <- function(option                 = NULL,
                        freq.silent            = FALSE,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE,
+                       ctable.round.digits    = 1,
                        descr.stats            = "all",
                        descr.transpose        = FALSE,
                        descr.silent           = FALSE,
@@ -160,7 +213,26 @@ st_options <- function(option                 = NULL,
                        dfSummary.graph.col    = TRUE,
                        dfSummary.graph.magnif = 1,
                        dfSummary.silent       = FALSE,
-                       tmp.img.dir            = NA,
+                       dfSummary.custom.1     = 
+                         expression(
+                           paste(
+                             paste0(
+                               trs("iqr"), " (", trs("cv"), ") : "
+                             ),
+                             format_number(
+                               IQR(column_data, na.rm = TRUE), round.digits
+                             ),
+                             " (",
+                             format_number(
+                               sd(column_data, na.rm = TRUE) /
+                                 mean(column_data, na.rm = TRUE), round.digits
+                             ),
+                             ")",
+                             collapse = "", sep = ""
+                           )
+                         ),
+                       dfSummary.custom.2     = NA,
+                       tmp.img.dir            = NA_character_,
                        subtitle.emphasis      = TRUE,
                        lang                   = "en",
                        use.x11                = TRUE) {
@@ -182,7 +254,8 @@ st_options <- function(option                 = NULL,
   
   # Querying one or several
   if (length(mc) == 2 && "option" %in% names(mc) && 
-      option != "reset" && option != 0) {
+      !identical(option, "reset") && !identical(option, 0)
+      && !identical(option, 0L)) {
     # Check that option is among the existing ones
     for (o in option) {
       if (!o %in% c(names(allOpts), 0)) {
@@ -210,7 +283,7 @@ st_options <- function(option                 = NULL,
                    "footnote"               = "default",
                    "display.labels"         = TRUE,
                    "bootstrap.css"          = TRUE,
-                   "custom.css"             = NA,
+                   "custom.css"             = NA_character_,
                    "escape.pipe"            = FALSE,
                    "char.split"             = 12,
                    "freq.cumul"             = TRUE,
@@ -220,6 +293,7 @@ st_options <- function(option                 = NULL,
                    "freq.silent"            = FALSE,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
+                   "ctable.round.digits"    = 1,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
                    "descr.silent"           = FALSE,
@@ -231,6 +305,25 @@ st_options <- function(option                 = NULL,
                    "dfSummary.na.col"       = TRUE,
                    "dfSummary.graph.magnif" = 1,
                    "dfSummary.silent"       = FALSE,
+                   "dfSummary.custom.1"     = 
+                     expression(
+                       paste(
+                         paste0(
+                           trs("iqr"), " (", trs("cv"), ") : "
+                         ),
+                         format_number(
+                           IQR(column_data, na.rm = TRUE), round.digits
+                         ),
+                         " (",
+                         format_number(
+                           sd(column_data, na.rm = TRUE) /
+                             mean(column_data, na.rm = TRUE), round.digits
+                         ),
+                         ")",
+                         collapse = "", sep = ""
+                       )
+                     ),
+                   "dfSummary.custom.2"     = NA,
                    "tmp.img.dir"            = NA_character_,
                    "subtitle.emphasis"      = TRUE,
                    "lang"                   = "en",
@@ -257,9 +350,44 @@ st_options <- function(option                 = NULL,
   }
   
   # Regular way of setting options    
-  for (o in setdiff(names(mc), c("", "option", "value"))) {
+  for (o in setdiff(names(mc), c("", "option", "value",
+                                 "dfSummary.custom.1", "dfSummary.custom.2"))) {
     allOpts[[o]] <- get(o)
   }
+  
+  if ("dfSummary.custom.1" %in% names(mc)) {
+    val <- get("dfSummary.custom.1")
+    if (is.expression(val) || is.na(val)) {
+      allOpts[["dfSummary.custom.1"]] <- val
+    } else if (val %in% c("default", "reset")) {
+      allOpts[["dfSummary.custom.1"]] <-
+        expression(
+          paste(
+            paste0(
+              trs("iqr"), " (", trs("cv"), ") : "
+            ),
+            format_number(
+              IQR(column_data, na.rm = TRUE), round.digits
+            ),
+            " (",
+            format_number(
+              sd(column_data, na.rm = TRUE) /
+                mean(column_data, na.rm = TRUE), round.digits
+            ),
+            ")",
+            collapse = "", sep = ""
+          )
+        )
+    }
+  }
+    
+  if ("dfSummary.custom.2" %in% names(mc)) {
+    val <- get("dfSummary.custom.2")
+    if (is.expression(val) || is.na(val)) {
+      allOpts[["dfSummary.custom.2"]] <- val
+    }
+  }
+  
   options("summarytools" = allOpts)
   
   return(invisible())

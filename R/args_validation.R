@@ -50,8 +50,8 @@ check_args <- function(mc, dotArgs) {
   if ("style" %in% names(mc)) {
     if (caller %in% c("freq", "descr", "ctable")) {
       if (!isTRUE(test_choice(pf$style, 
-                              c("simple", "grid", "rmarkdown")))) {
-        errmsg %+=% "'style' must be one of 'simple', 'grid', or 'rmarkdown'"
+                              c("simple", "grid", "rmarkdown", "jira")))) {
+        errmsg %+=% "'style' must be one of 'simple', 'grid', 'rmarkdown', or 'jira'"
       }
     }
   }
@@ -170,6 +170,8 @@ check_args <- function(mc, dotArgs) {
             pf$rows <- pf$rows[-wrong_ind]
           }
         } 
+      } else if (length(pf$rows) > 0 && max(table(pf$rows)) > 1) {
+        warning("one or more elements in the rows argument appears more than once")
       }
     }
   }
@@ -210,7 +212,7 @@ check_args <- function(mc, dotArgs) {
     
     if ("prop" %in% names(mc)) {
       prop <- tolower(substr(pf$prop, 1, 1))
-      if(!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {
+      if (!isTRUE(test_choice(prop, c("t", "r", "c", "n")))) {
         errmsg %+=% "'prop' must be one of 't', 'r', 'c', or 'n'"
       }
       if (nchar(prop > 1)) {
@@ -230,12 +232,12 @@ check_args <- function(mc, dotArgs) {
       errmsg %+=% "'dnn' must be a character vector of 2 distinct values"
     }
     
-    if ("OR" %in% names(mc)) {
+    if ("OR" %in% names(mc) && !isFALSE(pf$OR)) {
       if (isTRUE(pf$OR)) {
         pf$OR <- .95
       } else {
-        if (!test_number(pf$OR, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'OR' must be a number between .5 and .999"
+        if (!test_number(pf$OR, na.ok = FALSE, lower = .5, upper = .999)) {
+          errmsg %+=% "'OR' must be TRUE, FALSE, or a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
@@ -244,12 +246,12 @@ check_args <- function(mc, dotArgs) {
       }
     }
     
-    if ("RR" %in% names(mc)) {
+    if ("RR" %in% names(mc) && !isFALSE(pf$RR)) {
       if (isTRUE(pf$RR)) {
         pf$RR <- .95
       } else {
-        if (!test_number(pf$RR, na.ok = TRUE, lower = .5, upper = .999)) {
-          errmsg %+=% "'RR' must be a number between .5 and .999"
+        if (!test_number(pf$RR, na.ok = FALSE, lower = .5, upper = .999)) {
+          errmsg %+=% "'RR' must be TRUE/FALSE or a number between .5 and .999"
         }
         if (length(as.numeric(na.omit(unique(pf$x)))) != 2 ||
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
@@ -483,7 +485,7 @@ check_args_print <- function(mc) {
     if (attr(pf$x, "format_info")$style %in% c("simple", "multiline")) {
       pf$dotArgs %+=% list(style = newstyle)
       if (isTRUE(tmp_msg_flag)) {
-        message("Setting 'plain.ascii' to FALSE and Changing style to '",
+        message("Setting 'plain.ascii' to FALSE and changing style to '",
                 newstyle, "' for improved markdown compatibility")
       } else {
         message("Changing style to '", newstyle, 
@@ -493,6 +495,11 @@ check_args_print <- function(mc) {
       message("Setting 'plain.ascii' to FALSE for improved markdown ",
               "compatibility")
     }
+  }
+  
+  if (pf$file != "" && identical(pf$method, "render")) {
+    message('To write content to a file, use method="pander", or ',
+            'method="browser", or leave method unspecified')
   }
   
   if (is.na(pf$footnote)) {
@@ -523,9 +530,9 @@ check_args_st_options <- function(mc) {
   
   if ("style" %in% names(mc)) {
     if (!isTRUE(test_choice(pf$style, 
-                            c("simple", "grid", "rmarkdown")))) {
-      errmsg %+=% paste("'style' must be one of 'simple', 'grid', or 'markdown';",
-                        "See documentation for details")
+                            c("simple", "grid", "rmarkdown", "jira")))) {
+      errmsg %+=% paste("'style' must be one of 'simple', 'grid', 'markdown', ",
+                        "or 'jira'; See documentation for details")
     }
   }
   
@@ -677,10 +684,23 @@ check_args_st_options <- function(mc) {
       !isTRUE(test_logical(pf$dfSummary.silent,
                            len = 1, any.missing = FALSE))) {
     errmsg %+=% "'dfSummary.silent' must be either TRUE or FALSE"
-  }  
+  }
   
-  if ("tmp.img.dir" %in% names(mc) &&
-      (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
+  if ("dfSummary.custom.1" %in% names(mc) &&
+      !isTRUE(is.expression(pf$dfSummary.custom.1)) &&
+      !is.na(pf$dfSummary.custom.1) && 
+      !pf$dfSummary.custom.1 %in% c("default", "reset")) {
+    errmsg %+=% "'dfSummary.custom.1' must be an expression, NA, or 'default'"
+  }
+
+  if ("dfSummary.custom.2" %in% names(mc) &&
+      !isTRUE(is.expression(pf$dfSummary.custom.2)) &&
+      !is.na(pf$dfSummary.custom.2))  {
+    errmsg %+=% "'dfSummary.custom.2' must be an expression, or NA"
+  }
+  
+  if ("tmp.img.dir" %in% names(mc) && !is.na(pf$tmp.img.dir) &&
+       (!isTRUE(test_character(pf$tmp.img.dir, min.chars = 1, len = 1)) ||
        nchar(pf$tmp.img.dir) > 5)) {
     errmsg %+=% "'tmp.img.dir' must have at least 1 and at most 5 characters"
   }
@@ -697,6 +717,12 @@ check_args_st_options <- function(mc) {
                        paste(rownames(.translations), collapse = ", "))
   }
 
+  if ("option" %in% names(mc) && 
+      any(grepl("dfSummary.custom", pf$option)) && "value" %in% names(mc)) {
+    errmsg %+=% paste0("'dfSummary.custom expressions must be defined using ",
+                       "syntax st_options(dfSummary.custom.1 = expression(...)")
+  }
+  
   if ("use.x11" %in% names(mc) &&
       !isTRUE(test_logical(pf$use.x11, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'use.x11' must be either TRUE or FALSE"

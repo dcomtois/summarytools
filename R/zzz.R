@@ -18,15 +18,6 @@
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 
-# list of all arguments passed internally - this is used to
-# differentiate between pander arguments and other types of arguments
-.st_env$internal_args <- 
-  c("col.widths", "collapse", "cumul", "display.labels",
-    "display.type", "graph.col", "group.only", "headings",
-    "labels.col", "max.tbl.height", "na.col", "report.nas",
-    "round.digits", "totals", "valid.col", "var.only",
-    "varnumbers")
-
 # summarytools global options
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
@@ -48,6 +39,7 @@ utils::globalVariables(c("."))
                  "freq.silent"            = FALSE,
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
+                 "ctable.round.digits"    = 1,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
                  "descr.silent"           = FALSE,
@@ -59,6 +51,25 @@ utils::globalVariables(c("."))
                  "dfSummary.na.col"       = TRUE,
                  "dfSummary.graph.magnif" = 1,
                  "dfSummary.silent"       = FALSE,
+                 "dfSummary.custom.1"     = 
+                   expression(
+                     paste(
+                       paste0(
+                         trs("iqr"), " (", trs("cv"), ") : "
+                       ),
+                       format_number(
+                         IQR(column_data, na.rm = TRUE), round.digits
+                       ),
+                       " (",
+                       format_number(
+                         sd(column_data, na.rm = TRUE) /
+                           mean(column_data, na.rm = TRUE), round.digits
+                       ),
+                       ")",
+                       collapse = "", sep = ""
+                     )
+                   ),
+                 "dfSummary.custom.2"     = NA,
                  "tmp.img.dir"            = NA_character_,
                  "subtitle.emphasis"      = TRUE,
                  "lang"                   = "en",
@@ -83,7 +94,7 @@ utils::globalVariables(c("."))
   pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
   should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
   
-  if(isTRUE(should_update))
+  if (isTRUE(should_update))
     packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
                           "install_github('rapporter/pander')")
 }

@@ -11,7 +11,7 @@ ctable(
   useNA = "ifany",
   totals = st_options("ctable.totals"),
   style = st_options("style"),
-  round.digits = 1,
+  round.digits = st_options("ctable.round.digits"),
   justify = "right",
   plain.ascii = st_options("plain.ascii"),
   headings = st_options("headings"),
@@ -29,83 +29,92 @@ ctable(
 \arguments{
 \item{x}{First categorical variable - values will appear as row names.}
 
-\item{y}{Second categorical variable - values will appear in as column names.}
+\item{y}{Second categorical variable - values will appear as column names.}
 
-\item{prop}{Proportions to display;  \dQuote{r} for \emph{rows} (default),
-\dQuote{c} for \emph{columns}, \dQuote{t} for \emph{total}, or \dQuote{n} 
-for \emph{none}. This option can be set globally; see 
-\code{\link{st_options}}.}
+\item{prop}{Character. Indicates which proportions to show: \dQuote{r} 
+(rows, default), \dQuote{c} (columns), \dQuote{t} (total), or \dQuote{n}
+(none). Default value can be changed using \code{\link{st_options}},
+option \code{ctable.prop}.}
 
-\item{useNA}{Argument passed on to \code{\link[base]{table}}; One of 
-\dQuote{ifany} (default), \dQuote{no}, or \dQuote{always}.}
+\item{useNA}{Character. One of \dQuote{ifany} (default), \dQuote{no}, or 
+\dQuote{always}. This argument is passed on \sQuote{as is} to 
+\code{\link[base]{table}}, or adapted for \code{\link[stats]{xtabs}} when
+weights are used.}
 
-\item{totals}{Logical. Should row and column totals be displayed? Defaults to
-\code{TRUE}. To change this default value globally, see
-\code{\link{st_options}}.}
+\item{totals}{Logical. Show row and column totals. Defaults to
+\code{TRUE} but can be set globally with \code{\link{st_options}}, option 
+\code{ctable.totals}.}
 
-\item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table; One of \dQuote{simple} (default), \dQuote{grid}, or 
-\dQuote{rmarkdown}. This option can be set globally; 
-see \code{\link{st_options}}.}
+\item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
+of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+\dQuote{jira}. Can be set globally with \code{\link{st_options}}.}
 
-\item{round.digits}{Number of significant digits to display. Defaults to
-\code{1}. To change this default value globally, see 
-\code{\link{st_options}}.}
+\item{round.digits}{Numeric. Number of significant digits to keep. Defaults
+to \code{1}. To change this default value, use \code{\link{st_options}},
+option \code{ctable.round.digits}.}
 
-\item{justify}{String indicating alignment of columns; one of \dQuote{l} 
-(left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{r}.}
+\item{justify}{Character. Horizontal alignment; one of \dQuote{l} (left),
+\dQuote{c} (center), or \dQuote{r} (right, default).}
 
-\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
-\code{TRUE}, no markup characters will be used (useful when printing
+\item{plain.ascii}{Logical. Used by \code{\link[pander]{pander}}; when
+\code{TRUE}, no markup characters are generated (useful when printing
 to console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'},
-in which case it will be set to \code{FALSE} automatically. To change the 
+in which case it is set to \code{FALSE} automatically. To change the 
 default value globally, use \code{\link{st_options}}.}
 
-\item{headings}{Logical. Set to \code{FALSE} to omit heading section. Can be
-set globally via \code{\link{st_options}}.}
+\item{headings}{Logical. Show heading section. \code{TRUE} by default; can be
+set globally with \code{\link{st_options}}.}
 
-\item{display.labels}{Logical. Should variable / data frame label be 
-displayed in the title section? Default is \code{TRUE}. To change this
-default value globally, use \code{\link{st_options}}.}
+\item{display.labels}{Logical. Display data frame label in the heading 
+section. \code{TRUE} by default, can be changed globally with
+\code{\link{st_options}}.}
 
-\item{split.tables}{Pander argument that specifies how many characters wide a
-table can be. \code{Inf} by default.}
+\item{split.tables}{Numeric. \code{\link[pander]{pander}} argument that 
+specifies how many characters wide a table can be. \code{Inf} by default.}
 
-\item{dnn}{Names to be used in output table. Vector of two strings; By 
-default, the character values for arguments x and y are used.}
+\item{dnn}{Character vector. Variable names to be used in output table. In
+most cases, setting this parameter is not required as the names are 
+automatically generated.}
 
-\item{chisq}{Logical. Display chisq statistic along with p-value.}
+\item{chisq}{Logical. Display chi-square statistic along with p-value.}
 
-\item{OR}{Logical or numeric. Display odds ratio with the specified confidence 
-level (typically .95). Can be set to \code{TRUE}, in which case 95% confidence
-interval is given. Confidence intervals are calculated using Wald's method
-(normal approximation).}
+\item{OR}{Logical or numeric. Set to \code{TRUE} to show odds ratio with 95%
+confidence interval, or specify confidence level explicitly (\emph{e.g.},
+\code{.90}). CI's are calculated using Wald's method of normal approximation.}
 
-\item{RR}{Logical or numeric. Display risk ratio (also called relative risk) 
-with the specified confidence level (typically .95). Can be set to \code{TRUE}, 
-in which case 95% confidence interval is given. confidence intervals are
-calculated using Wald's method (normal approximation).}
+\item{RR}{Logical or numeric. Set to \code{TRUE} to show risk ratio (also
+called \emph{relative risk} with 95% confidence interval, or specify
+confidence level explicitly (\emph{e.g.} \code{.90}). CI's are 
+calculated using Wald's method of normal approximation.}
 
-\item{weights}{Vector of weights; must be of the same length as \code{x}.}
+\item{weights}{Numeric. Vector of weights; must have the same length as
+\code{x}.}
 
-\item{rescale.weights}{Logical parameter. When set to \code{TRUE}, the total
-count will be the same as the unweighted \code{x}. \code{FALSE} by default.}
+\item{rescale.weights}{Logical. When \code{TRUE}, a global constant is
+applied so that the sum of counts equals \code{nrow(x)}. \code{FALSE} by
+default.}
 
-\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
+\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}} or
+\code{\link[base]{format}}.}
 }
 \value{
-A frequency table of classes \code{matrix} and \code{summarytools} 
-  with added attributes used by \link{print} method.
+A list containing two matrices, \emph{cross_table} and 
+  \emph{proportions}. The \emph{print} method takes care of assembling 
+  figures from those matrices into a single table. The returned object is
+  of classes \dQuote{\emph{summarytools}} and \dQuote{\emph{list}}, unless 
+  \code{\link[summarytools]{stby}} is used, in which case we have an
+  object of class \dQuote{\emph{stby}}.
 }
 \description{
-Cross-tabulation for a pair of categorical variables (or factors) with either
-row, column, or total proportions, as well as marginal sums.
+Cross-tabulation for a pair of categorical variables with either
+row, column, or total proportions, as well as marginal sums. Works with
+numeric, character, as well as factor variables.
 }
-\details{
-Rmarkdown does not, to this day, support multi-header tables. 
-  Therefore, until such support is available, the recommended way to display 
-  cross-tables in .Rmd documents is to use `method=render` with the `print()`
-  or `view()` functions. See package vignettes for examples.
+\note{
+Markdown does not fully support multi-header tables;
+  until such support is available, the recommended way to display 
+  cross-tables in .Rmd documents is to use `method=render`. See package
+  vignettes for examples.
 }
 \examples{
 data("tobacco")
@@ -122,7 +131,8 @@ with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n
                      OR = TRUE, RR = TRUE))
 
 # Grouped cross-tabulations
-with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
+with(tobacco, stby(data = list(x = smoker, y = diseased), 
+                   INDICES = gender, FUN = ctable))
 
 
 \dontrun{

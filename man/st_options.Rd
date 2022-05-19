@@ -14,7 +14,7 @@ st_options(
   footnote = "default",
   display.labels = TRUE,
   bootstrap.css = TRUE,
-  custom.css = NA,
+  custom.css = NA_character_,
   escape.pipe = FALSE,
   char.split = 12,
   freq.cumul = TRUE,
@@ -24,6 +24,7 @@ st_options(
   freq.silent = FALSE,
   ctable.prop = "r",
   ctable.totals = TRUE,
+  ctable.round.digits = 1,
   descr.stats = "all",
   descr.transpose = FALSE,
   descr.silent = FALSE,
@@ -35,7 +36,12 @@ st_options(
   dfSummary.graph.col = TRUE,
   dfSummary.graph.magnif = 1,
   dfSummary.silent = FALSE,
-  tmp.img.dir = NA,
+  dfSummary.custom.1 = expression(paste(paste0(trs("iqr"), " (", trs("cv"), ") : "),
+    format_number(IQR(column_data, na.rm = TRUE), round.digits), " (",
+    format_number(sd(column_data, na.rm = TRUE)/mean(column_data, na.rm = TRUE),
+    round.digits), ")", collapse = "", sep = "")),
+  dfSummary.custom.2 = NA,
+  tmp.img.dir = NA_character_,
   subtitle.emphasis = TRUE,
   lang = "en",
   use.x11 = TRUE
@@ -54,18 +60,18 @@ be set via their own parameter. That is, instead of
 \item{style}{Character. One of \dQuote{simple} (default), \dQuote{rmarkdown},
 or \dQuote{grid}. Does not apply to \code{\link{dfSummary}}.}
 
-\item{plain.ascii}{Logical. \code{TRUE} by default. Set to \code{FALSE} when
-using \strong{summarytools} with a rendering tool such as \code{knitr} or
-when creating rmarkdown output files to be converted with Pandoc. Note 
-however that its value will automatically be set to \code{FALSE} whenever
-\code{style} is set to \dQuote{rmarkdown}).}
+\item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
+\code{TRUE}, no markup characters will be used (useful when printing to
+console). \code{TRUE} by default, but when \code{style = 'rmarkdown'},
+it is automatically set to \code{FALSE}. To override this behavior,
+\code{plain.ascii = TRUE} must be specified in the function call.}
 
 \item{round.digits}{Numeric. Defaults to \code{2}.}
 
 \item{headings}{Logical. Set to \code{FALSE} to remove all headings from
 outputs. Only the tables will be printed out, except when \code{\link{by}}
 or \code{\link{lapply}} are used. In that case, the variable or the group
-will still appear before the tables. \code{FALSE} by default.}
+will still appear before each table. \code{TRUE} by default.}
 
 \item{footnote}{Character. When the default value \dQuote{default} is used,
 the package name & version, as well as the R version number are displayed
@@ -75,7 +81,7 @@ provide a custom string. Applies only to \emph{html} outputs.}
 \item{display.labels}{Logical. \code{TRUE} by default. Set to \code{FALSE} to
 omit data frame and variable labels in the headings section.}
 
-\item{bootstrap.css}{Logical. Specifies whether to Include 
+\item{bootstrap.css}{Logical. Specifies whether to include 
 \emph{Bootstrap css} in \emph{html} reports' \emph{head} section.
 Defaults to \code{TRUE}. Set to \code{FALSE} when using the \dQuote{render}
 method inside a \code{shiny} app to avoid interacting with the app's 
@@ -114,6 +120,8 @@ whole data frame as main argument. Defaults to \code{25}.}
 \item{ctable.totals}{Logical. Corresponds to the \code{totals} parameter of
 \code{\link{ctable}}. \code{TRUE} by default.}
 
+\item{ctable.round.digits}{Numeric. Defaults to \code{1}.}
+
 \item{descr.stats}{Character. Corresponds to the \code{stats} parameter of
 \code{\link{descr}}. Defaults to \dQuote{all}.}
 
@@ -123,7 +131,7 @@ of \code{\link{descr}}. \code{FALSE} by default.}
 \item{descr.silent}{Logical. Hide console messages. \code{FALSE} by default.}
 
 \item{dfSummary.style}{Character. \dQuote{multiline} by default. Set to 
-\dQuote{grid} for \emph{Rmarkdown} documents.}
+\dQuote{grid} for \emph{R Markdown} documents.}
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
 variable numbers in the first column. Defaults to \code{TRUE}.}
@@ -150,6 +158,20 @@ default.}
 \item{dfSummary.silent}{Logical. Hide console messages. \code{FALSE} by 
 default.}
 
+\item{dfSummary.custom.1}{Expression. First of two optional expressions
+which once evaluated will populate lines 3+ of the `Stats / Values` 
+cell when column data is numerical and has more distinct values than 
+allowed by the \code{max.distinct.values} parameter. By default, it
+contains the expression which generates the `IQR (CV) : ...` line. To reset it back to
+this default value, use \code{st_options(dfSummary.custom.1 = "default")}.
+See \emph{Details} and \emph{Examples} sections for more.}
+
+\item{dfSummary.custom.2}{Expression. Second the two optional expressions
+which once evaluated will populate lines 3+ of the `Stats / Values` 
+cell when the column data is numerical and has more distinct values than 
+allowed by the `max.distinct.values` parameter. \code{NA} by default.
+See \emph{Details} and \emph{Examples} sections for more.}
+
 \item{tmp.img.dir}{Character. Directory used to store temporary images. See
 \emph{Details} section of \code{\link{dfSummary}}. \code{NA} by default.}
 
@@ -175,11 +197,24 @@ option(s) in a character vector as sole argument. To \strong{reset} all
 options, use single unnamed argument \sQuote{reset} or \code{0}.
 }
 \details{
-To learn more about summarytools options, see the 
-\href{https://github.com/dcomtois/summarytools}{project's GitHub page}.
+The \code{dfSummary.custom.1} and \code{dfSummary.custom.2} options
+  must be defined as expressions. In the expression, use the
+  \code{culumn_data} variable name to refer to data. Assume the type to be
+  numerical (real or integer). The expression must paste together both the
+  labels (short name for the statistic(s) being displayed) and the 
+  statistics themselves. Although \code{\link[base]{round}} can be used, a
+  better alternative is to call the internal \code{\link{format_number}},
+  which uses \code{\link[base]{format}} to apply all relevant formatting
+  that is active within the call to \code{\link{dfSummary}}. For keywords
+  having a translated term, the \code{trs()} internal function can be
+  used (see \emph{Examples}).
+}
+\note{
+To learn more about summarytools options, see
+\code{vignette("introduction", "summarytools")}.
 }
 \examples{
-\dontrun{
+
 # show all summarytools global options
 st_options()
 
@@ -189,6 +224,7 @@ st_options("round.digits")
 # show two (or more) options
 st_options(c("plain.ascii", "style", "footnote"))
 
+\dontrun{
 # set one option
 st_options(plain.ascii = FALSE)
 
@@ -204,6 +240,29 @@ st_options(plain.ascii = FALSE,
 st_options('reset')
 # ... or
 st_options(0)
+
+# Define custom dfSummary stats
+st_options(dfSummary.custom.1 = expression(
+  paste(
+    "Q1 - Q3 :",
+    format_number(
+      quantile(column_data, probs = .25, type = 2, 
+               names = FALSE, na.rm = TRUE), round.digits
+    ),
+    "-",
+    format_number(
+      quantile(column_data, probs = .75, type = 2, 
+               names = FALSE, na.rm = TRUE), round.digits
+    ),
+    collapse = ""
+  )
+))
+
+dfSummary(iris)
+
+# Set back to default value
+st_options(dfSummary.custom.1 = "default")
 }
+ 
 }
 \keyword{utilities}

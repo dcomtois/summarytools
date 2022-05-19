@@ -6,7 +6,7 @@
 \usage{
 dfSummary(
   x,
-  round.digits = st_options("round.digits"),
+  round.digits = 1,
   varnumbers = st_options("dfSummary.varnumbers"),
   labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
@@ -25,6 +25,7 @@ dfSummary(
   split.cells = 40,
   split.tables = Inf,
   tmp.img.dir = st_options("tmp.img.dir"),
+  keep.grp.vars = FALSE,
   silent = st_options("dfSummary.silent"),
   ...
 )
@@ -33,41 +34,40 @@ dfSummary(
 \item{x}{A data frame.}
 
 \item{round.digits}{Number of significant digits to display. Defaults to
-\code{2} and can be set globally; see \code{\link{st_options}}.}
+\code{1}. Does not affect proportions, which always show \code{1} digit.}
 
-\item{varnumbers}{Logical. Should the first column contain variable number?
-Defaults to \code{TRUE}. Can be set globally; see \code{\link{st_options}},
+\item{varnumbers}{Logical. Show variable numbers in the first column.
+Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 option \dQuote{dfSummary.varnumbers}.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
-functions) will be displayed. \code{TRUE} by default, but the \emph{labels}
-column is only shown if at least one column has a defined label. This
-option can also be set globally; see \code{\link{st_options}}, option 
+functions, among others) will be displayed. \code{TRUE} by default, but
+the \emph{labels} column is only shown if a label exists for at least one
+column. Can be set globally with \code{\link{st_options}}, option
 \dQuote{dfSummary.labels.col}.}
 
 \item{valid.col}{Logical. Include column indicating count and proportion of
-valid (non-missing) values. \code{TRUE} by default, but can be set
-globally; see \code{\link{st_options}}, option
-\dQuote{dfSummary.valid.col}.}
+valid (non-missing) values. \code{TRUE} by default; can be set
+globally with \code{\link{st_options}}, option \dQuote{dfSummary.valid.col}.}
 
 \item{na.col}{Logical. Include column indicating count and proportion of
-missing (NA) values. \code{TRUE} by default, but can be set globally; see
-\code{\link{st_options}}, option \dQuote{dfSummary.na.col}.}
+missing (\code{NA}) values. \code{TRUE} by default; can be set globally
+with \code{\link{st_options}}, option \dQuote{dfSummary.na.col}.}
 
-\item{graph.col}{Logical. Display barplots / histograms column in \emph{html}
-reports. \code{TRUE} by default, but can be set globally; see
-\code{\link{st_options}}, option \dQuote{dfSummary.graph.col}.}
+\item{graph.col}{Logical. Display barplots/histograms column. \code{TRUE}
+by default; can be set globally with \code{\link{st_options}}, 
+option \dQuote{dfSummary.graph.col}.}
 
-\item{graph.magnif}{Numeric. Magnification factor, useful if the graphs show
-up too large (then use a value < 1) or too small (use a value > 1). Must be
-positive. Default to \code{1}. Can be set globally; see
-\code{\link{st_options}}, option \dQuote{dfSummary.graph.magnif}.}
+\item{graph.magnif}{Numeric. Magnification factor for graphs column. Useful
+if the graphs show up too large (then use a value such as .75) or too small
+(use a value such as \code{1.25}). Must be positive. Defaults to \code{1}.
+Can be set globally with \code{\link{st_options}}, option
+\dQuote{dfSummary.graph.magnif}.}
 
-\item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table. Defaults to \dQuote{multiline}. The only other valid option
-is \dQuote{grid}. Style \dQuote{simple} is not supported for this
-particular function, and \dQuote{rmarkdown} will fallback to
+\item{style}{Character. Argument used by \code{\link[pander]{pander}}.
+Defaults to \dQuote{multiline}. The only other valid option
+is \dQuote{grid}. Style \dQuote{rmarkdown} will fallback to
 \dQuote{multiline}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
@@ -81,7 +81,7 @@ markdown rendering. To change the default value globally, see
 
 \item{col.widths}{Numeric or character. Vector of column widths. If numeric,
 values are assumed to be numbers of pixels. Otherwise, any CSS-supported
-units can be used. \code{NA} by default, meaning widths are calculated 
+units can be used. \code{NA} by default, meaning widths are calculated
 automatically.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit headings. To change this
@@ -111,10 +111,16 @@ Defaults to \code{40}.}
 of a table. Keeping the default value (\code{Inf}) is recommended.}
 
 \item{tmp.img.dir}{Character. Directory used to store temporary images when
-rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and 
+rendering dfSummary() with `method = "pander"`, `plain.ascii = TRUE` and
 `style = "grid"`. See \emph{Details}.}
 
-\item{silent}{Logical. Hide console messages. \code{FALSE} by default. To 
+\item{keep.grp.vars}{Logical. When using \code{\link[dplyr]{group_by}},
+keep rows corresponding to grouping variable(s) in output table.
+When \code{FALSE} (default), variable numbers still reflect the
+the ordering in the full data frame (in other words, some numbers will
+be skipped in the variable number column).}
+
+\item{silent}{Logical. Hide console messages. \code{FALSE} by default. To
 change this value globally, see \code{\link{st_options}}.}
 
 \item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
@@ -138,38 +144,53 @@ A data frame with additional class \code{summarytools} containing as
       column. For numerical vectors, number of distinct values, or frequency
       of distinct values if their number is not greater than
       \code{max.distinct.values}.}
-    \item{Text Graph}{An ascii histogram for numerical variables, and ascii
-      barplot for factors and character variables.} \item{Valid}{Number and
+    \item{Text Graph}{An ASCII histogram for numerical variables, and ASCII
+      barplot for factors and character variables.} 
+    \item{Graph}{An html encoded graph, either barplot or histogram.}
+    \item{Valid}{Number and
       proportion of valid values.}
-    \item{Missing}{Number and proportion of missing (NA and NAN) values.} }
+    \item{Missing}{Number and proportion of missing (NA and NAN) values.} 
+    }
 }
 \description{
-Summary of a data frame consisting of: variable names, labels if any, factor
-levels, frequencies and/or numerical summary statistics, and valid/missing
-observation counts.
+Summary of a data frame consisting of: variable names and types, labels if
+any, factor levels, frequencies and/or numerical summary statistics, 
+barplots/histograms, and valid/missing observation counts and proportions.
 }
 \details{
-The default \code{plain.ascii = TRUE} option is there to make
-  results appear cleaner in the console. When used in a context of
-  \emph{rmarkdown} rendering, set this option to \code{FALSE}.
+The default value \code{plain.ascii = TRUE} is intended to
+  facilitate interactive data exploration. When using the package for
+  reporting with \emph{rmarkdown}, make sure to set this option to
+  \code{FALSE}.
 
-  When the \code{trim.strings} is set to \code{TRUE}, trimming is done
-  \emph{before} calculating frequencies, so those will be impacted
-  accordingly.
-
+  When \code{trim.strings} is set to \code{TRUE}, trimming is done
+  \strong{\emph{before} calculating frequencies}, be aware that those will
+  be impacted accordingly.
+  
   Specifying \code{tmp.img.dir} allows producing results consistent with
   pandoc styling while also showing \emph{png} graphs. Due to the fact that
   in Pandoc, column widths are determined by the length of cell contents
-  \strong{even if said content is merely a link to an image}, we cannot
-  use the standard R temporary directory to store the images. We need a
-  shorter path; on Mac OS and Linux, using \dQuote{/tmp} is a sensible
-  choice, since this directory is cleaned up automatically on a regular
-  basis. On Windows however, there is no such convenient directory and the
-  user will have to choose a directory and cleanup the temporary images
-  manually after the document has been rendered. Providing a relative path
-  such as \dQuote{img} is recommended. The maximum length for this parameter
-  is set to 5 characters. It can be set globally using 
-  \code{\link{st_options}}; for example: \code{st_options(tmp.img.dir = ".")}.
+  \strong{even if said content is merely a link to an image}, using standard
+  R temporary directory to store the images would cause columns to be
+  exceedingly wide. \strong{A shorter path is needed.} On Mac OS and Linux,
+  using \dQuote{/tmp} is a sensible choice, since this directory is cleaned
+  up automatically on a regular basis. On Windows however, there is no such
+  convenient directory, so the user has to choose a directory and cleanup the
+  temporary images manually after the document has been rendered. Providing
+  a relative path such as \dQuote{img}, omitting \dQuote{./}, is recommended.
+  The maximum length for this parameter is set to 5 characters. It can be set
+  globally with \code{\link{st_options}} (\emph{e.g.:}
+  \code{st_options(tmp.img.dir = ".")}.
+
+  It is possible to \strong{control which statistics are shown} in the 
+  \emph{Stats / Values} column. For this, see the \emph{Details} and
+  \emph{Examples} sections of \code{\link{st_options}}.
+}
+\note{
+Several packages provide functions for defining \emph{variable labels},
+  \pkg{summarytools} being one of them. Some packages (\emph{Hmisc} in
+  particular) employ special classes for labelled objects, but
+  \pkg{summarytools} doesn't use nor look for any such classes.
 }
 \examples{
 
@@ -178,10 +199,10 @@ saved_x11_option <- st_options("use.x11")
 st_options(use.x11 = FALSE)
 dfSummary(tobacco)
 
-# Exclude some columns
+# Exclude some of the columns to reduce table width
 dfSummary(tobacco, varnumbers = FALSE, valid.col = FALSE)
 
-# Limit number of categories to be displayed for factors / categorical data
+# Limit number of categories to be displayed for categorical data
 dfSummary(tobacco, max.distinct.values = 5, style = "grid")
 
 # Using stby()
@@ -191,17 +212,21 @@ st_options(use.x11 = saved_x11_option)
 
 \dontrun{
 
-# Show in Viewer or browser (view: no capital V!)
+# Show in Viewer or browser - no capital V in view(); stview() is also
+# available in case of conflicts with other packages)
 view(dfSummary(iris))
 
 # Rmarkdown-ready
-dfSummary(tobacco, style = "rmarkdown", plain.ascii = TRUE,
+dfSummary(tobacco, style = "grid", plain.ascii = FALSE,
           varnumbers = FALSE, valid.col = FALSE, tmp.img.dir = "./img")
 
 # Using group_by()
 tobacco \%>\% group_by(gender) \%>\% dfSummary()
 }
 
+}
+\seealso{
+\code{\link{label}}, \code{\link{print.summarytools}}
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com}

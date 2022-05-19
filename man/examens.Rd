@@ -3,7 +3,7 @@
 \docType{data}
 \name{examens}
 \alias{examens}
-\title{Bulletin de Notes (Donne simulees)}
+\title{Bulletin de notes (donnees simulees)}
 \format{
 Un data frame de 30 rangees et 8 colonnes
 }

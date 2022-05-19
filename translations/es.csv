@@ -22,6 +22,7 @@ type                  ,heading label (freq)                                     
 logical               ,heading value for type (freq)                                 ,Booleana
 character             ,heading value for type (freq)                                 ,Alfahnumérico
 numeric               ,heading value for type (freq)                                 ,Numérico
+integer               ,heading value for type (freq)                                 ,Entero
 factor                ,heading value for type (freq)                                 ,Factor
 factor.ordered        ,heading value for type (freq)                                 ,Factor ordenado
 date                  ,heading value for type (freq)                                 ,Fecha

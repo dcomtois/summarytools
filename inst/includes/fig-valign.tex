@@ -1,0 +1,14 @@
+% Use this file as a preamble to create pdf's with dfSummaries.
+% One possible way if to use it directly in the YAML section:
+% output: 
+%   pdf_document: 
+%     latex_engine: xelatex
+%     includes:
+%       in_header: 
+%       - !expr system.file("includes/fig-valign.tex", package = "summarytools")
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{letltxmacro}
+\LetLtxMacro{\OldIncludegraphics}{\includegraphics}
+\renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
+  {\OldIncludegraphics[valign=t,#1]{#2}}}

@@ -26,68 +26,71 @@ descr(
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
-\item{var}{Unquoted expression referring to a specific column in x. Provides
-support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.}
+\item{var}{Unquoted expression referring to a specific column in \code{x}.
+Provides support for piped function calls (e.g.
+\code{my_df \%>\% descr(my_var)}.}
 
-\item{stats}{Which stats to produce. Either \dQuote{all} (default),
-\dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
+\item{stats}{Character. Which stats to produce. Either \dQuote{all} (default),
+\dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-\dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via
-\code{\link{st_options}} (\dQuote{descr.stats}).}
+\dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally via
+\code{\link{st_options}}, option \dQuote{descr.stats}.}
 
-\item{na.rm}{Argument to be passed to statistical functions. Defaults to
-\code{TRUE}. Can be set globally; see \code{\link{st_options}}.}
+\item{na.rm}{Logical. Argument to be passed to statistical functions. 
+Defaults to \code{TRUE}.}
 
-\item{round.digits}{Number of significant digits to display. Defaults to
-\code{2}, and can be set globally (see \code{\link{st_options}}).}
+\item{round.digits}{Numeric. Number of significant digits to display. 
+Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.}
 
-\item{transpose}{Logical. Makes variables appears as columns, and stats as
-rows. Defaults to \code{FALSE}. To change this default value, see
-\code{\link{st_options}} (option \dQuote{descr.transpose}).}
+\item{transpose}{Logical. Make variables appears as columns, and stats as
+rows. Defaults to \code{FALSE}. Can be set globally with
+\code{\link{st_options}}, option \dQuote{descr.transpose}.}
 
-\item{order}{Character. One of \dQuote{sort} (or simply \dQuote{s}), 
-\dQuote{preserve} (or \dQuote{p}), or a vector of all variable names
-in the desired order. Defaults to \dQuote{sort}.}
+\item{order}{Character. When analyzing more than one variable, this parameter
+determines how to order variables. Valid values are \dQuote{sort} (or
+simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
+containing all variable names in the desired order. Defaults to
+\dQuote{sort}.}
 
-\item{style}{Style to be used by \code{\link[pander]{pander}} when rendering
-output table; One of \dQuote{simple} (default), \dQuote{grid}, or
-\dQuote{rmarkdown} This option can be set globally; see
-\code{\link{st_options}}.}
+\item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
+of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+\dQuote{jira}. Can be set globally with \code{\link{st_options}}.}
 
 \item{plain.ascii}{Logical. \code{\link[pander]{pander}} argument; when
-\code{TRUE}, no markup characters will be used (useful when printing to
-console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'}, in
-which case it will be set to \code{FALSE} automatically. To change the
-default value globally, see \code{\link{st_options}}.}
+\code{TRUE} (default), no markup characters will be used (useful when
+printing to console). If \code{style = 'rmarkdown'} is specified, value
+is set to \code{FALSE} automatically. Can be set globally using
+\code{\link{st_options}}.}
 
-\item{justify}{Alignment of numbers in cells; \dQuote{l} for left, \dQuote{c}
-for center, or \dQuote{r} for right (default). Has no effect on \emph{html}
-tables.}
+\item{justify}{Character. Alignment of numbers in cells; \dQuote{l} for left,
+\dQuote{c} for center, or \dQuote{r} for right (default). Has no effect on 
+\emph{html} tables.}
 
 \item{headings}{Logical. Set to \code{FALSE} to omit heading section. Can be
 set globally via \code{\link{st_options}}. \code{TRUE} by default.}
 
-\item{display.labels}{Logical. Should variable / data frame labels be
-displayed in the title section?  Default is \code{TRUE}. To change this
-default value globally, see \code{\link{st_options}}.}
+\item{display.labels}{Logical. Show variable / data frame labels in heading
+section. Defaults to \code{TRUE}. Can be set globally with
+\code{\link{st_options}}.}
 
-\item{split.tables}{Pander argument that specifies how many characters wide a
-table can be. \code{100} by default.}
+\item{split.tables}{Character. \code{\link[pander]{pander}} argument that
+specifies how many characters wide a table can be. \code{100} by default.}
 
-\item{weights}{Vector of weights having same length as x. \code{NA} (default)
-indicates that no weights are used.}
+\item{weights}{Numeric. Vector of weights having same length as \emph{x}.
+\code{NA} (default) indicates that no weights are used.}
 
-\item{rescale.weights}{Logical. When set to \code{TRUE}, the total count will
-be the same as the unweighted \code{x}. \code{FALSE} by default.}
+\item{rescale.weights}{Logical. When set to \code{TRUE}, a global constant is
+apply to make the total count equal \code{nrow(x)}. \code{FALSE} by default.}
 
-\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}}.}
+\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}} or
+\code{\link[base]{format}}.}
 }
 \value{
-An object having classes \code{matrix} and \code{summarytools}
-  containing the statistics, with extra attributes used by \link{print}
-  method.
+An object having classes \dQuote{\emph{matrix}} and
+  \dQuote{\emph{summarytools}} containing the statistics, with extra
+  attributes used by \code{\link{print}} method and \link{view} function.
 }
 \description{
 Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 

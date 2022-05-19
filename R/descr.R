@@ -5,53 +5,56 @@
 #' available when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
-#' @param var Unquoted expression referring to a specific column in x. Provides
-#'   support for piped function calls (e.g. \code{df \%>\% descr(some_var)}.    
-#' @param stats Which stats to produce. Either \dQuote{all} (default),
-#'   \dQuote{fivenum}, \dQuote{common} (see Details), or a selection of :
+#' @param var Unquoted expression referring to a specific column in \code{x}.
+#'   Provides support for piped function calls (e.g.
+#'   \code{my_df \%>\% descr(my_var)}.    
+#' @param stats Character. Which stats to produce. Either \dQuote{all} (default),
+#'   \dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 #'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 #'   \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-#'   \dQuote{n.valid}, and \dQuote{pct.valid}. This can be set globally via
-#'   \code{\link{st_options}} (\dQuote{descr.stats}).
-#' @param na.rm Argument to be passed to statistical functions. Defaults to
-#'   \code{TRUE}. Can be set globally; see \code{\link{st_options}}.
-#' @param round.digits Number of significant digits to display. Defaults to
-#'   \code{2}, and can be set globally (see \code{\link{st_options}}).
-#' @param transpose Logical. Makes variables appears as columns, and stats as
-#'   rows. Defaults to \code{FALSE}. To change this default value, see
-#'   \code{\link{st_options}} (option \dQuote{descr.transpose}).
-#' @param order Character. One of \dQuote{sort} (or simply \dQuote{s}), 
-#'   \dQuote{preserve} (or \dQuote{p}), or a vector of all variable names
-#'   in the desired order. Defaults to \dQuote{sort}.
-#' @param style Style to be used by \code{\link[pander]{pander}} when rendering
-#'   output table; One of \dQuote{simple} (default), \dQuote{grid}, or
-#'   \dQuote{rmarkdown} This option can be set globally; see
-#'   \code{\link{st_options}}.
+#'   \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally via
+#'   \code{\link{st_options}}, option \dQuote{descr.stats}.
+#' @param na.rm Logical. Argument to be passed to statistical functions. 
+#'   Defaults to \code{TRUE}.
+#' @param round.digits Numeric. Number of significant digits to display. 
+#'   Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.
+#' @param transpose Logical. Make variables appears as columns, and stats as
+#'   rows. Defaults to \code{FALSE}. Can be set globally with
+#'   \code{\link{st_options}}, option \dQuote{descr.transpose}.
+#' @param order Character. When analyzing more than one variable, this parameter
+#'   determines how to order variables. Valid values are \dQuote{sort} (or
+#'   simply \dQuote{s}), \dQuote{preserve} (or \dQuote{p}), or a vector
+#'   containing all variable names in the desired order. Defaults to
+#'   \dQuote{sort}.
+#' @param style Character. Style to be used by \code{\link[pander]{pander}}. One
+#'   of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
+#'   \dQuote{jira}. Can be set globally with \code{\link{st_options}}.
 #' @param plain.ascii Logical. \code{\link[pander]{pander}} argument; when
-#'   \code{TRUE}, no markup characters will be used (useful when printing to
-#'   console). Defaults to \code{TRUE} unless \code{style = 'rmarkdown'}, in
-#'   which case it will be set to \code{FALSE} automatically. To change the
-#'   default value globally, see \code{\link{st_options}}.
-#' @param justify Alignment of numbers in cells; \dQuote{l} for left, \dQuote{c}
-#'   for center, or \dQuote{r} for right (default). Has no effect on \emph{html}
-#'   tables.
+#'   \code{TRUE} (default), no markup characters will be used (useful when
+#'   printing to console). If \code{style = 'rmarkdown'} is specified, value
+#'   is set to \code{FALSE} automatically. Can be set globally using
+#'   \code{\link{st_options}}.
+#' @param justify Character. Alignment of numbers in cells; \dQuote{l} for left,
+#'   \dQuote{c} for center, or \dQuote{r} for right (default). Has no effect on 
+#'   \emph{html} tables.
 #' @param headings Logical. Set to \code{FALSE} to omit heading section. Can be
 #'   set globally via \code{\link{st_options}}. \code{TRUE} by default.
-#' @param display.labels Logical. Should variable / data frame labels be
-#'   displayed in the title section?  Default is \code{TRUE}. To change this
-#'   default value globally, see \code{\link{st_options}}.
-#' @param split.tables Pander argument that specifies how many characters wide a
-#'   table can be. \code{100} by default.
-#' @param weights Vector of weights having same length as x. \code{NA} (default)
-#'   indicates that no weights are used.
-#' @param rescale.weights Logical. When set to \code{TRUE}, the total count will
-#'   be the same as the unweighted \code{x}. \code{FALSE} by default.
-#' @param \dots Additional arguments passed to \code{\link[pander]{pander}}.
+#' @param display.labels Logical. Show variable / data frame labels in heading
+#'   section. Defaults to \code{TRUE}. Can be set globally with
+#'   \code{\link{st_options}}.
+#' @param split.tables Character. \code{\link[pander]{pander}} argument that
+#'   specifies how many characters wide a table can be. \code{100} by default.
+#' @param weights Numeric. Vector of weights having same length as \emph{x}.
+#'   \code{NA} (default) indicates that no weights are used.
+#' @param rescale.weights Logical. When set to \code{TRUE}, a global constant is
+#'   apply to make the total count equal \code{nrow(x)}. \code{FALSE} by default.
+#' @param \dots Additional arguments passed to \code{\link[pander]{pander}} or
+#'   \code{\link[base]{format}}.
 #'
-#' @return An object having classes \code{matrix} and \code{summarytools}
-#'   containing the statistics, with extra attributes used by \link{print}
-#'   method.
+#' @return An object having classes \dQuote{\emph{matrix}} and
+#'   \dQuote{\emph{summarytools}} containing the statistics, with extra
+#'   attributes used by \code{\link{print}} method and \link{view} function.
 #'
 #' @examples
 #' data("exams")
@@ -538,11 +541,11 @@ descr <- function(x,
   }
   
   # Set class/attributes
-  class(output)              <- c("summarytools", class(output))
-  attr(output, "st_type")    <- "descr"
-  attr(output, "date")       <- Sys.Date()
-  attr(output, "fn_call")    <- match.call()
-  attr(output, "stats")      <- stats
+  class(output)            <- c("summarytools", class(output))
+  attr(output, "st_type")  <- "descr"
+  attr(output, "date")     <- Sys.Date()
+  attr(output, "fn_call")  <- match.call()
+  attr(output, "stats")    <- stats
   data_info <-
     list(
       Data.frame       = ifelse("df_name" %in% names(parse_info), 

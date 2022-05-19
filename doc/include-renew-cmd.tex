@@ -1,0 +1,3 @@
+\LetLtxMacro{\OldIncludegraphics}{\includegraphics}
+\renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
+  {\OldIncludegraphics[valign=t,#1]{#2}}}
