@@ -26,7 +26,7 @@
 #'
 #' @keywords internal misc
 #'
-#' @author Dominic Comtois, \email{dominic.comtois@@gmail.com>}
+#' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #'
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head

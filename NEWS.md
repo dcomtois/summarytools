@@ -1,3 +1,6 @@
+# summarytools 1.0.1 (2022-05-19)
+ - This version only includes minors fixes requested by CRAN.
+
 # summarytools 1.0.0 (2021-07-27)
 
  - In `dfSummary()`:  

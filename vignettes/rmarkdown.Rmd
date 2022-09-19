@@ -45,7 +45,7 @@ This document mainly contains examples showing how best to use
 **summarytools** in *R Markdown* documents. For a more in-depth view
 of the package's features, please see `vignette("introduction", "summarytools")` 
 - the online version can be found 
-[here](https://cran.r-project.org/package=summarytools/vignettes/Introduction.html). 
+[here](https://cran.r-project.org/package=summarytools/vignettes/introduction.html). 
 
 ## 1.1 Methods vs Styles 
 

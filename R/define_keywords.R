@@ -152,7 +152,7 @@ define_keywords <- function(..., ask = FALSE, file = NA) {
             "  - Close the editing window when finished")
     tr.copy <- tr
     tr <- try(edit(tr), silent = TRUE)
-    if (class(tr) == "try-error") {
+    if (inherits(tr, "try-error")) {
       stop("Window dialogs not allowed; use arguments to ",
            "redefine specific keywords (see ?define_keywords), or turn to the ",
            "use_custom_lang() function which allows redefining all keywords at ",
@@ -202,7 +202,7 @@ define_keywords <- function(..., ask = FALSE, file = NA) {
                                   message = "Export language file for later use?",
                                   caption = "Keywords Successfully Updated"),
                     silent = TRUE)
-        if (class(resp) == "try-error") {
+        if (inherits(resp, "try-error")) {
           tcltk_error <- TRUE
         } else {
           if (resp == "yes") {
