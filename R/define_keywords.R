@@ -152,7 +152,7 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
             "  - Close the editing window when finished")
     tr.copy <- tr
     tr <- try(edit(tr), silent = TRUE)
-    if (inherits(x = tr, "try-error")) {
+    if (inherits(tr, "try-error")) {
       stop("Window dialogs not allowed; use arguments to ",
            "redefine specific keywords (see ?define_keywords), or turn to the ",
            "use_custom_lang() function which allows redefining all keywords at ",
