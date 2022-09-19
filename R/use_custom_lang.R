@@ -25,7 +25,7 @@ use_custom_lang <- function(file) {
       file <- try(tclvalue(tkgetOpenFile(initialdir = "~",
                                          filetypes = "{{csv files} {*.csv}}")),
                   silent = TRUE)
-      if (class(file) == "try-error") {
+      if (inherits(file, "try-error")) {
         stop("Window dialog not permitted; 'file' argument must be specified")
       }
       if (file == "") {

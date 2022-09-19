@@ -49,7 +49,7 @@ grouping information (when by() is used) are returned by the function which
 tries various methods to get this information.
 }
 \author{
-Dominic Comtois, \email{dominic.comtois@gmail.com>}
+Dominic Comtois, \email{dominic.comtois@gmail.com}
 }
 \keyword{internal}
 \keyword{misc}

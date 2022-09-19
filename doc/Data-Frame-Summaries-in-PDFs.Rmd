@@ -3,12 +3,11 @@ title: "Data Frame Summaries in PDF's"
 author: Dominic Comtois
 date: "`r Sys.Date()`"
 output:
-  pdf_document: 
+  pdf_document:
+    highlight: tango
     latex_engine: xelatex
-    extra_dependencies: xcolor
     includes:
       in_header: include-header.tex
-    keep_tex: yes
 papersize: letter
 ---
 
@@ -16,6 +15,7 @@ papersize: letter
 
 ```{r setup1, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, results = "asis", cache = FALSE)
+
 library(summarytools)
 st_options(
   plain.ascii            = FALSE, 
@@ -33,53 +33,57 @@ Here are the instructions for setting up [\color{MidnightBlue}{\emph{R
 Markdown}}](https://rmarkdown.rstudio.com/) documents in order to generate *pdf*
 documents with [\color{MidnightBlue}{data frame
 summaries}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html#data-frame-summaries-dfsummary)
-(`summarytools::dfSummary()`) that use *png* images.
+(`summarytools::dfSummary()`) that contain images.
 
-# 1. The Graphics Problem {#problem}
-
-```{r}
-dfSummary(iris[5], headings = FALSE)
-```
+# 1. The Graphics Alignment Problem {#problem}
 
 Although generating *html* or *Word* documents from *Rmd*'s containing
 `dfSummary()` outputs is a smooth and painless process, there is a major problem
 when it comes to generating *pdf*'s. The graphs, instead of being vertically
 centered, appear as though they were sitting on top of all the other cells'
-content.
+content:
+
+```{r}
+dfSummary(iris[3:5], headings = FALSE)
+```
 
 \input{include-renew-cmd.tex}
 
 # 2. The Solution
 
-To correct this issue, we need to redefine the `\includegraphics` command. If
-this breaks some other parts of your document[^1], see
-[\color{MidnightBlue}{section 2.3}](#robust).
+To correct this issue, we need to redefine the `\includegraphics` command. This
+can be done in multiple ways, but the simplest is to include in your document's
+header a *tex* file which is designed to do just that. It can be achieved by
+configuring the YAML section as follows.
 
-[^1]: There must be a *law of conservation of brokenness* sitting somewhere
-    waiting to be formalized (although one could argue that this is merely a
-    corollary to [Murphy's law](https://en.wikipedia.org/wiki/Murphy%27s_law))
-
-## 2.1 YAML Header
+## 2.1 The YAML Section
 
         ---
         title: "My Own Private PDF"
-        output: 
-          pdf_document: 
+        output:
+          pdf_document:
+            highlight: tango
             latex_engine: xelatex
             includes:
               in_header: 
               - !expr system.file("includes/fig-valign.tex",
                                   package = "summarytools")
+        papersize: letter
         ---
 
 The solution presented here requires that some *tex* code be included in the
 YAML section of the Rmd document. You can use your own *tex* file, or use the
-one that is part of the package as of version 1.0 (July 2021). and include it in
-from the YAML section using `system.file()`.
+one that is part of the package as of version 1.0.0 (July 2021). and include it
+in from the YAML section using `system.file()`.
 
 The `latex_engine: xelatex` part is not mandatory for the solution to work. But
 there are several advantages to using it; I use it systematically and see only
 advantages to it, so I can only advise you do the same.
+
+This solution is not perfect; if your *pdf* document relies on the use of
+`\includegraphics` in other sections, you might notice newly *mis*aligned
+images. Thankfully, there is a way to go around this (see
+[\color{MidnightBlue}{section 2.3}](#robust)).
 
 ### Using Your Own *tex* File
 
@@ -93,54 +97,50 @@ contain:
         \renewcommand{\includegraphics}[2][]{\raisebox{0.5\height}%
           {\OldIncludegraphics[valign=t,#1]{#2}}}
 
-### Modified YAML Section
-
-Supposing you choose to keep the name `fig-valign.tex`, your YAML section should
-now look something like this:
-
-        ---
-        title: "My Own Private PDF"
-        output: 
-          pdf_document: 
-            latex_engine: xelatex
-            includes:
-              in_header: fig-valign.tex
-        ---
-
-The *tex* file's name is entirely up to you; `fig-valign.tex` is the name used
-for the one in **summarytools**' `includes` directory, but it has no special
-meaning whatsoever.
+The only impact on your YAML section will be the `in_header:` attribute which
+will need to point to this file, using an absolute or relative path. If the file
+is kept in the same directory as your *Rmd* document, you'll use
+`in_header: fig-align.tex` (supposing you use that file name).
 
 ## 2.2 Example
 
-Here is a setup chunk which reproduces what has been used for this document,
-followed by a call to `dfSummary()`:
+Here is a setup chunk, followed by a call to `dfSummary()`.
 
-```{r, message=FALSE}
+```{r, eval=FALSE}
 library(summarytools)
 st_options(
   plain.ascii            = FALSE, 
   subtitle.emphasis      = FALSE,
-  style                  = "rmarkdown", # For any other summarytools objects 
+  style                  = "rmarkdown", # For other summarytools objects (freq, descr...)
   dfSummary.style        = "grid",
   dfSummary.graph.magnif = .5,
   dfSummary.valid.col    = FALSE,
-  tmp.img.dir            = "/tmp"  # Recommended for Linux/OS X;
-                                   # For Windows, using "img" is
-                                   # a good habit 
+  tmp.img.dir            = "/tmp"  # Recommended on Linux/OS X; On 
+                                   # Windows, "img" is suggested 
 )
-
-define_keywords(title.dfSummary = "Data Frame Summary in PDF Document")
-dfSummary(iris)
 ```
 
-## 2.3 A More Robust Solution {#robust}
+ 
+
+Now that the setup is done, we can generate the results.
+
+ 
+
+```{r}
+define_keywords(title.dfSummary = "Data Frame Summary in PDF Document")
+dfSummary(iris[3:5])
+```
+
+# 3. A More Robust Solution
 
 If redefining the `\includegraphics` command causes problems elsewhere in your
-document, following these instructions should take care of it[^2].
+document[^1], following these instructions should take care of it (file names
+and location are suggestions only):
 
-[^2]: File names and locations are suggestions only; adapt the instructions to
-    your own needs.
+[^1]: There must be a *law of conservation of brokenness* sitting somewhere
+    waiting to be discovered (although one could argue that it is merely a
+    corollary to
+    [\color{MidnightBlue}{Murphy's law}](https://en.wikipedia.org/wiki/Murphy%27s_law))
 
 1.  Split the contents of `fig-valign.tex` into two files in your *Rmd*
     document's directory:
@@ -149,20 +149,21 @@ document, following these instructions should take care of it[^2].
         `\usepackage` commands only)
 
     ii. `renew-cmd.tex` -- contains the remaining lines, which store the
-        existing `\includegraphics` command as a macro and redefine it.
+        existing `\includegraphics` command as a macro and redefine it
 
-2.  Include the first file with YAML (`\\` indicates line feed):\
-    `output: \\ pdf-document: \\ includes: \\ in_header: load-pkgs.tex`
+2.  Include the first file in the YAML section (`in_header: load-pkgs.tex`)
 
-3.  Before the `dfSummary()` chunk(s), paste this *tex* command, also on a new
-    line:
+3.  Before the `dfSummary()` chunk(s), paste this *tex* command on a new line:
 
         \input{renew-cmd.tex}
 
 4.  After the chunk(s), set the `\includegraphics` back to its original value
-    using the following command on a new line:
+    using the following command (also on a new line):
 
         \let\includegraphics\OldIncludegraphics
+
+You might need to repeat steps 3 and 4 several times if your document alternates
+between `dfSummary()` tables and other content with images.
 
 ### Proof That `includegraphics` Is Restored to Original
 
@@ -170,6 +171,8 @@ document, following these instructions should take care of it[^2].
 
 At this stage, the `\let\includegraphics\OldIncludegraphics` *tex* command has
 been executed.
+
+ 
 
 ```{r}
 dfSummary(iris[5], headings = FALSE)
@@ -179,23 +182,28 @@ If the operation of restoring the command worked, the results should be back to
 being misaligned, just as they were in the
 [\color{MidnightBlue}{very first section}](#problem).
 
-### Closing Remarks
+## Closing Remarks
 
 If you are a \LaTeX  guru and can think of a simpler solution, please do let me
 know either by opening an
 [\color{MidnightBlue}{issue}](https://github.com/dcomtois/summarytools/issues)
-or by sending me an email; my address is available in the
+or by sending me an email[^2]. my address is available in the
 [\color{MidnightBlue}{package's GitHub
 page}](https://github.com/dcomtois/summarytools) as well as in the
 [\color{MidnightBlue}{package's auto-generated pdf manual}](https://cran.r-project.org/web/packages/summarytools/summarytools.pdf).
 
-Useful links:
+[^2]: My email address is available in the
+    [\color{MidnightBlue}{package's GitHub
+    page}](https://github.com/dcomtois/summarytools) as well as in the
+    [\color{MidnightBlue}{package's auto-generated pdf manual}](https://cran.r-project.org/web/packages/summarytools/summarytools.pdf).
+
+## Useful links:
 
 1.  [\color{MidnightBlue}{Introduction to summarytools}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
     (package vignette)
 2.  [\color{MidnightBlue}{Summarytools in R Markdown Documents}](https://cran.r-project.org/web/packages/summarytools/vignettes/rmarkdown.html)
     (package vignette)
-3.  [\color{MidnightBlue}{Custom Statistics in dfSummary}](https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/doc/Custom-Statistics-in-dfSummary.pdf)
+3.  [\color{MidnightBlue}{Custom Statistics in dfSummary}](https://raw.githubusercontent.com/dcomtois/summarytools/master/doc/Custom-Statistics-in-dfSummary.pdf)
     (supplemental documentation)
 4.  [\color{MidnightBlue}{This StackOverflow question}](https://stackoverflow.com/questions/5845887/how-do-i-use-renewcommand-to-get-back-my-greek-letters)
     provides an additional example of how to revert a renewed command back to

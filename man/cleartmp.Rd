@@ -26,6 +26,6 @@ session is ended, this function is an overkill in most circumstances. It
 could however be useful in server-type setups.
 }
 \author{
-Dominic Comtois, \email{dominic.comtois@gmail.com>}
+Dominic Comtois, \email{dominic.comtois@gmail.com}
 }
 \keyword{IO}

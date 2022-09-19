@@ -1,9 +1,12 @@
 ---
 title: "Custom Statistics in dfSummary"
+author: Dominic Comtois
+date: "`r Sys.Date()`"
 output:
   pdf_document: 
-    highlight: espresso
+    highlight: tango
     latex_engine: xelatex
+    extra_dependencies: xcolor
     includes:
       in_header: 
       - !expr system.file("includes/fig-valign.tex", package = "summarytools")
@@ -11,46 +14,50 @@ output:
 
 \definecolor{MidnightBlue}{HTML}{2E74B5}
 
-This document shows how to customize the content of the *Stats / Values* column
-in [\color{MidnightBlue}{data frame
-summaries}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html#data-frame-summaries-dfsummary)
-(`summarytools::dfSummary()`) `summarytools::dfSummary()`. This feature was
-introduced in version 1.0.0, July 2021.
-
-This feature request [came
-up](https://github.com/dcomtois/summarytools/issues/33) several
-[times](https://github.com/dcomtois/summarytools/issues/74) in a form or
-another, mostly on GitHub.
-
-### How it works
-
-Two new options were created: `dfSummary.custom.1` and `dfSummary.custom.2`. The
-first one has a predefined value -- it is the one that makes up the fourth row
-of the cell (showing IQR and CV). The second one is set to `NA` by default. If
-both options are defined (non-`NA`), the cell will now span on 5 lines rather
-than 4, provided there are no additional line breaks occurring.
-
-### Baseline
-
-We'll use the first column of *iris* for this demo. So let's see the results as
-they are before making any changes.
-
-First let's set things up:
-
-```{r, message=FALSE}
+```{r, include=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, 
                prompt  = FALSE,
                cache   = FALSE,
                echo    = TRUE,
                results = 'asis')
-#knit_theme$set("edit-kwrite")
-# https://rclickhandbuch.files.wordpress.com/2014/09/knitrthemesoverview.pdf
+library(summarytools)
+```
+
+This document shows how to customize the content of the *Stats / Values* column
+in [\color{MidnightBlue}{data frame
+summaries}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html#data-frame-summaries-dfsummary)
+generated using `summarytools::dfSummary()`. This feature was introduced in
+version 1.0.0 of
+[**summarytools**](https://CRAN.R-project.org/package=summarytools)as a response
+to a feature request that came up several times, in a
+[\color{MidnightBlue}{form}](https://github.com/dcomtois/summarytools/issues/33)
+or
+[\color{MidnightBlue}{another}](https://github.com/dcomtois/summarytools/issues/74).
+
+## How it works
+
+Two new options were created: `dfSummary.custom.1` and `dfSummary.custom.2`. The
+first one has a predefined value -- it is the one that makes up the fourth row
+of the cell (showing IQR and CV). The second one is set to `NA` by default. If
+both options are defined (non-`NA`), the cell will now show 5 lines rather than
+4, provided there are no additional line feed occurring within the cell, be it
+by design or by an "overflow" of one of the custom lines.
+
+### Setup & Baseline
+
+We'll use the first column of *iris* to show results as they are before making
+any changes. But first, a little bit of setting-up:
+
+\vspace{8pt}
+
+```{r}
 library(summarytools)
 st_options(plain.ascii     = FALSE,
            headings        = FALSE,
            footnote        = NA,
            round.digits    = 1,
+           style           = "rmarkdown", # For freq(), descr(), & ctable()
            dfSummary.varnumbers   = FALSE,
            dfSummary.valid.col    = FALSE,
            dfSummary.silent       = TRUE,
@@ -58,34 +65,30 @@ st_options(plain.ascii     = FALSE,
            tmp.img.dir            = "img")
 ```
 
-```{r, echo=FALSE}
-#st_css()
+Now let's show the default output: \vspace{8pt}
 
-```
-
-And then show the baseline:
-
-```{r, results='asis'}
+```{r}
 iris_subset <- iris[1]
 dfSummary(iris_subset, graph.magnif = .45)
 ```
 
-## Example 1 - Removing the IQR (CV) line
+## Example 1 : Removing *IQR (CV)*
 
-Setting the first option to `NA` will do just that:
+Setting `dfSummary.custom.1` to `NA` will remove the last line in *Stats /
+Values*: \vspace{8pt}
 
 ```{r}
 st_options(dfSummary.custom.1 = NA)
-dfSummary(iris_subset, graph.magnif = .35)
+dfSummary(iris_subset, graph.magnif = .35) # Adjust graph size accordingly
 ```
 
-## Example 2 : Adding Q1 & Q3
+## Example 2 : Adding *Q1* & *Q3*
 
-Here we're going to create the expression that is needed to generate the
-statistics we want; since this bit of is going to be interpreted while looping
-on column data, there are some variables that are available to us. The most
-important is, well, `column_data`. Another one that you might want to use is
-`round.digits`; we have set it to `1` in the initial chunk.
+Here we'll create the expression needed to generate new statistics, *Q1* & *Q3*.
+The expression is evaluated while looping on column data, and we need to refer
+to that data. The variable name to use is, well, `column_data`. Another variable
+you can use is `round.digits` (we've set to `1` in the setup chunk on page 1).
+\vspace{8pt}
 
 ```{r}
 st_options(
@@ -99,7 +102,7 @@ st_options(
                    type = 2, 
                    names = FALSE,
                    na.rm = TRUE),
-          digits = 1
+          digits = round.digits
         ), " - ",
         round(
           quantile(column_data, 
@@ -107,21 +110,29 @@ st_options(
                    type = 2, 
                    names = FALSE,
                    na.rm = TRUE),
-          digits = 1
+          digits = round.digits
         )
       )
     )           
 )
-dfSummary(iris_subset, graph.magnif = .45)
 
+dfSummary(iris_subset, graph.magnif = .45)
 ```
 
-## Example 3: Inserting back the IQR & CV
+## Example 3: Inserting Back *IQR (CV)*
 
-It is always possible to revert the first custom stat to its initial value by
-using `st_options(dfSummary.custom.1 = "default")`. But let's make things a bit
-more interesting by actually showing these under the Q1 & Q3 line that we have
-just defined.
+It is always possible to reset the value of `dfSummary.custom.1` to its initial
+value by using
+
+```{r, eval=FALSE}
+st_options(dfSummary.custom.1 = "default")
+```
+
+But let's make things a bit more interesting by actually showing *IQR (CV)*
+**under** *Q1* & *Q3*. For this, we will use the default expression for
+`dfSummary.custom.1` to define `dfSummary.custom.2`:
+
+\vspace{8pt}
 
 ```{r}
 st_options(
@@ -147,17 +158,42 @@ st_options(
     )
   )
 )
-dfSummary(iris_subset, graph.magnif = .65)
+
+dfSummary(iris[3:5], graph.magnif = .65) # Again, graph size adjusted
 ```
 
-Don't forget to set `na.rm = TRUE` whenever necessary. Otherwise, just use your
-imagination!
+Don't forget to set `na.rm = TRUE` whenever necessary (most base R statistics
+use it with `FALSE` as default).
 
-Useful links:
+## Number Formatting
+
+You may have noticed that instead of `round()`, we used `format_number()`, which
+is a **summarytools** internal function. It applies not only rounding, but all
+relevant formatting attributes as well (*nsmall, decimal.mark, big.mark,
+scientific*,and so on).
+
+## Displaying Formatted Expressions
+
+As shown in the
+[\color{MidnightBlue}{Introduction to summarytools}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
+vignette, the following bit of code can be used to retrieve and format the
+expressions stored in the custom options. To achieve good results, the chunk
+option `results='markup'` was used for this chunk.
+
+```{r, results='markup'}
+st_options(dfSummary.custom.1 = "default")
+formatR::tidy_source(
+  text   = deparse(st_options("dfSummary.custom.1")),
+  indent = 2,
+  args.newline = TRUE
+)
+```
+
+## Useful links
 
 1.  [\color{MidnightBlue}{Introduction to summarytools}](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
     (package vignette)
 2.  [\color{MidnightBlue}{Summarytools in R Markdown Documents}](https://cran.r-project.org/web/packages/summarytools/vignettes/rmarkdown.html)
     (package vignette)
-3.  [\color{MidnightBlue}{Data Frame Summaries in PDF's}](https://raw.githubusercontent.com/dcomtois/summarytools/dev-current/doc/Data-Frame-Summaries-in-PDFs.pdf)
+3.  [\color{MidnightBlue}{Data Frame Summaries in PDF's}](https://raw.githubusercontent.com/dcomtois/summarytools/master/doc/Data-Frame-Summaries-in-PDFs.pdf)
     (supplemental documentation)

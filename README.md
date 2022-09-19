@@ -201,9 +201,7 @@ A big thanks to the following people who made donations:
 
 **summarytools** is the result of **many** hours of work. If you find
 the package brings value to your work, please take a moment to make a
-small donation. Just a few dollars goes a long way in making me feel
-motivated and happy to continue bringing my modest contribution to the
-world of Science.
+small donation.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
 

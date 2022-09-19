@@ -202,7 +202,7 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
                                   message = "Export language file for later use?",
                                   caption = "Keywords Successfully Updated"),
                     silent = TRUE)
-        if (class(resp) == "try-error") {
+        if (inherits(resp, "try-error")) {
           tcltk_error <- TRUE
         } else {
           if (resp == "yes") {
