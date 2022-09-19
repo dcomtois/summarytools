@@ -1,3 +1,6 @@
+# summarytools 1.0.2 (2022-09-20)
+ - This version contains many bug fixes and improvements
+
 # summarytools 1.0.1 (2022-05-19)
  - This version only includes minors fixes requested by CRAN.
 

@@ -112,7 +112,7 @@ install.packages("summarytools")
         *Freqs / Values* column (see
         `help("st_options", "summarytools")` for examples)  
     -   In *html* outputs, tables are better aligned horizontally
-        (categories >\> counts >\> charts); if misalignment occurs,
+        (categories \>\> counts \>\> charts); if misalignment occurs,
         adjusting `graph.magnif` should resolve it
     -   List-type columns and `Inf` values are handled properly
 
@@ -198,6 +198,7 @@ A big thanks to the following people who made donations:
 -   Ross Dunne  
 -   Igor Rubets  
 -   Joerg Sahlmann
+-   Roger Hilfiker
 
 **summarytools** is the result of **many** hours of work. If you find
 the package brings value to your work, please take a moment to make a

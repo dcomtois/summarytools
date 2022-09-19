@@ -201,6 +201,7 @@ A big thanks to the following people who made donations:
 -   Ross Dunne  
 -   Igor Rubets  
 -   Joerg Sahlmann
+-   Roger Hilfiker
 
 **summarytools** is the result of **many** hours of work. If you find the
 package brings value to your work, please take a moment to make a small
