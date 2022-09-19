@@ -9,6 +9,14 @@ on:
 name: R-CMD-check
 
 jobs:
+
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
