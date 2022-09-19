@@ -73,5 +73,12 @@ object, or to change formatting via \code{\link[base]{format}} or
 \code{\link[pander]{pander}}. See \emph{Details}.}
 }
 \description{
-Displays a list comprised of summarytools objects created with \code{lapply}.
+Displays a list comprised of summarytools objects created with
+  \code{\link{lapply}}.
+}
+\details{
+This function is there only for cases where the object to be printed
+  was created with \code{\link{lapply}}, as opposed to the recommended
+  functions for creating grouped results (\code{\link{stby}} and
+  \code{\link[dplyr]{group_by}}).
 }
