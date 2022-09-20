@@ -509,7 +509,7 @@ descr <- function(x,
   
   # Prepare output data -------------------------------------------------------
   # Keep and order required stats from output
-  output <- output[ ,stats]
+  output <- output[ ,stats, drop = FALSE]
   
   # Corrections for special case where nrow = 0
   if (nrow(x.df) == 0) {
@@ -522,7 +522,7 @@ descr <- function(x,
         output[[cn]] <- NA
       }
     }
-  }  
+  }
   
   # Apply translations to colnames
   for (i in seq_along(output)) {
