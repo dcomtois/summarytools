@@ -4,7 +4,11 @@
 #' row, column, or total proportions, as well as marginal sums. Works with
 #' numeric, character, as well as factor variables.
 #'
-#' @param x First categorical variable - values will appear as row names.
+#' @param x Either the first categorical variable - values will appear as row 
+#'   names, or a formula having the form lhs ~ rhs, being both categrical 
+#'   variables, where lhs values will appear as column names and rhs values 
+#'   will appear as row names.
+#' @param data Data frame containing the lhs and rhs variables in the formula.
 #' @param y Second categorical variable - values will appear as column names.
 #' @param prop Character. Indicates which proportions to show: \dQuote{r} 
 #'   (rows, default), \dQuote{c} (columns), \dQuote{t} (total), or \dQuote{n}
@@ -53,8 +57,8 @@
 #' @param rescale.weights Logical. When \code{TRUE}, a global constant is
 #'   applied so that the sum of counts equals \code{nrow(x)}. \code{FALSE} by
 #'   default.
-#' @param \dots Additional arguments passed to \code{\link[pander]{pander}} or
-#'   \code{\link[base]{format}}.
+#' @param \dots Additional arguments passed to \code{\link[pander]{pander}},
+#'   \code{\link[base]{format}} or to default method.
 #'
 #' @return A list containing two matrices, \emph{cross_table} and 
 #'   \emph{proportions}. The \emph{print} method takes care of assembling 
@@ -103,9 +107,32 @@
 #'
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+
+#' @export
+ctable <- function(x, ...){
+  UseMethod("ctable", x)
+} 
+
+## S3 method for class 'formula'
+#' @method ctable formula
+#' @export
+#' @importFrom stats terms
+ctable.formula <- function(x, data, ...){
+  vars <- all.vars(formula)
+  resp <- attr(terms(formula), "response")
+  if(length(vars) > 2 || resp == 0){
+    stop("Formula has not the form y ~ x")
+  }
+  y <- data[[vars[resp]]]
+  x <- data[[vars[-resp]]]
+  ctable.default(x, y, ...)
+}
+
+## Default S3 method
+#' @method ctable default
 #' @export
 #' @importFrom stats addmargins na.omit chisq.test qnorm
-ctable <- function(x, 
+ctable.default <- function(x, 
                    y,
                    prop            = st_options("ctable.prop"),
                    useNA           = "ifany",
