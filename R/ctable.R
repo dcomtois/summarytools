@@ -114,12 +114,14 @@ ctable <- function(x, ...){
 } 
 
 ## S3 method for class 'formula'
+
 #' @method ctable formula
+#' @rdname ctable
 #' @export
 #' @importFrom stats terms
 ctable.formula <- function(x, data, ...){
-  vars <- all.vars(formula)
-  resp <- attr(terms(formula), "response")
+  vars <- all.vars(x)
+  resp <- attr(terms(x), "response")
   if(length(vars) > 2 || resp == 0){
     stop("Formula has not the form y ~ x")
   }
@@ -129,7 +131,9 @@ ctable.formula <- function(x, data, ...){
 }
 
 ## Default S3 method
+
 #' @method ctable default
+#' @rdname ctable
 #' @export
 #' @importFrom stats addmargins na.omit chisq.test qnorm
 ctable.default <- function(x, 
