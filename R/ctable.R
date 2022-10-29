@@ -127,7 +127,7 @@ ctable.formula <- function(x, data, ...){
   }
   y <- data[[vars[resp]]]
   x <- data[[vars[-resp]]]
-  ctable.default(x, y, ...)
+  ctable.default(x, y, dnn = vars[c(2,1)], ...)
 }
 
 ## Default S3 method
