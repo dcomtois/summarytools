@@ -4,8 +4,13 @@
 #' row, column, or total proportions, as well as marginal sums. Works with
 #' numeric, character, as well as factor variables.
 #'
-#' @param x First categorical variable - values will appear as row names.
-#' @param y Second categorical variable - values will appear as column names.
+#' @param x Either the first categorical variable - values will appear as row 
+#'   names, or a formula having the form lhs ~ rhs, being both categrical 
+#'   variables, where lhs values will appear as column names and rhs values 
+#'   will appear as row names.
+#' @param y Either the second categorical variable - values will appear as 
+#'   column names, or a data frame containing the lhs and rhs variables in the 
+#'   formula.
 #' @param prop Character. Indicates which proportions to show: \dQuote{r} 
 #'   (rows, default), \dQuote{c} (columns), \dQuote{t} (total), or \dQuote{n}
 #'   (none). Default value can be changed using \code{\link{st_options}},
@@ -103,6 +108,73 @@
 #'
 #' @keywords classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
+
+#' @export
+ctable <- function(x, 
+                   y,
+                   prop            = st_options("ctable.prop"),
+                   useNA           = "ifany",
+                   totals          = st_options("ctable.totals"),
+                   style           = st_options("style"),
+                   round.digits    = st_options("ctable.round.digits"),
+                   justify         = "right",
+                   plain.ascii     = st_options("plain.ascii"),
+                   headings        = st_options("headings"),
+                   display.labels  = st_options("display.labels"),
+                   split.tables    = Inf,
+                   dnn             = c(substitute(x), substitute(y)),
+                   chisq           = FALSE,
+                   OR              = FALSE,
+                   RR              = FALSE,
+                   weights         = NA,
+                   rescale.weights = FALSE,
+                   ...){
+  UseMethod("ctable", x)
+} 
+
+## S3 method for class 'formula'
+
+#' @method ctable formula
+#' @rdname ctable
+#' @export
+#' @importFrom stats terms
+ctable.formula <- function(x, 
+                   y,
+                   prop            = st_options("ctable.prop"),
+                   useNA           = "ifany",
+                   totals          = st_options("ctable.totals"),
+                   style           = st_options("style"),
+                   round.digits    = st_options("ctable.round.digits"),
+                   justify         = "right",
+                   plain.ascii     = st_options("plain.ascii"),
+                   headings        = st_options("headings"),
+                   display.labels  = st_options("display.labels"),
+                   split.tables    = Inf,
+                   dnn             = c(substitute(x), substitute(y)),
+                   chisq           = FALSE,
+                   OR              = FALSE,
+                   RR              = FALSE,
+                   weights         = NA,
+                   rescale.weights = FALSE,
+                   ...){
+  vars <- all.vars(x)
+  resp <- attr(terms(x), "response")
+  if(length(vars) > 2 || resp == 0){
+    stop("Formula has not the form y ~ x")
+  }
+  data <- y
+  y <- data[[vars[resp]]]
+  x <- data[[vars[-resp]]]
+  ctable.default(x, y, dnn = vars[c(2,1)], prop, useNA, totals, style, 
+                 round.digits, justify, plain.ascii, headings,
+                 display.labels, split.tables, chisq, OR, RR, weights,
+                 rescale.weights, ...)
+}
+
+## Default S3 method
+
+#' @method ctable default
+#' @rdname ctable
 #' @export
 #' @importFrom stats addmargins na.omit chisq.test qnorm
 ctable <- function(x, 
