@@ -2,15 +2,9 @@
 % Please edit documentation in R/ctable.R
 \name{ctable}
 \alias{ctable}
-\alias{ctable.formula}
-\alias{ctable.default}
 \title{Cross-Tabulation}
 \usage{
-ctable(x, ...)
-
-\method{ctable}{formula}(x, data, ...)
-
-\method{ctable}{default}(
+ctable(
   x,
   y,
   prop = st_options("ctable.prop"),
@@ -33,15 +27,7 @@ ctable(x, ...)
 )
 }
 \arguments{
-\item{x}{Either the first categorical variable - values will appear as row 
-names, or a formula having the form lhs ~ rhs, being both categrical 
-variables, where lhs values will appear as column names and rhs values 
-will appear as row names.}
-
-\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}},
-\code{\link[base]{format}} or to default method.}
-
-\item{data}{Data frame containing the lhs and rhs variables in the formula.}
+\item{x}{First categorical variable - values will appear as row names.}
 
 \item{y}{Second categorical variable - values will appear as column names.}
 
@@ -107,6 +93,9 @@ calculated using Wald's method of normal approximation.}
 \item{rescale.weights}{Logical. When \code{TRUE}, a global constant is
 applied so that the sum of counts equals \code{nrow(x)}. \code{FALSE} by
 default.}
+
+\item{\dots}{Additional arguments passed to \code{\link[pander]{pander}} or
+\code{\link[base]{format}}.}
 }
 \value{
 A list containing two matrices, \emph{cross_table} and 

@@ -46,4 +46,4 @@ License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.1.2
