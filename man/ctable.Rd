@@ -2,6 +2,7 @@
 % Please edit documentation in R/ctable.R
 \name{ctable}
 \alias{ctable}
+\alias{ctable.formula}
 \title{Cross-Tabulation}
 \usage{
 ctable(
@@ -25,11 +26,60 @@ ctable(
   rescale.weights = FALSE,
   ...
 )
+
+\method{ctable}{formula}(
+  x,
+  y,
+  prop = st_options("ctable.prop"),
+  useNA = "ifany",
+  totals = st_options("ctable.totals"),
+  style = st_options("style"),
+  round.digits = st_options("ctable.round.digits"),
+  justify = "right",
+  plain.ascii = st_options("plain.ascii"),
+  headings = st_options("headings"),
+  display.labels = st_options("display.labels"),
+  split.tables = Inf,
+  dnn = c(substitute(x), substitute(y)),
+  chisq = FALSE,
+  OR = FALSE,
+  RR = FALSE,
+  weights = NA,
+  rescale.weights = FALSE,
+  ...
+)
+
+\method{ctable}{default}(
+  x,
+  y,
+  prop = st_options("ctable.prop"),
+  useNA = "ifany",
+  totals = st_options("ctable.totals"),
+  style = st_options("style"),
+  round.digits = st_options("ctable.round.digits"),
+  justify = "right",
+  plain.ascii = st_options("plain.ascii"),
+  headings = st_options("headings"),
+  display.labels = st_options("display.labels"),
+  split.tables = Inf,
+  dnn = c(substitute(x), substitute(y)),
+  chisq = FALSE,
+  OR = FALSE,
+  RR = FALSE,
+  weights = NA,
+  rescale.weights = FALSE,
+  ...
+)
 }
 \arguments{
-\item{x}{First categorical variable - values will appear as row names.}
+\item{x}{Either the first categorical variable - values will appear as row 
+names, or a formula having the form lhs ~ rhs, being both categrical 
+variables, where lhs values will appear as column names and rhs values 
+will appear as row names.}
 
-\item{y}{Second categorical variable - values will appear as column names.}
+\item{y}{Either the second categorical variable - values will appear as 
+column names, or a data frame containing the lhs and rhs variables in the 
+formula.}
 
 \item{prop}{Character. Indicates which proportions to show: \dQuote{r} 
 (rows, default), \dQuote{c} (columns), \dQuote{t} (total), or \dQuote{n}
