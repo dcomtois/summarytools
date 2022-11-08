@@ -177,7 +177,7 @@ ctable.formula <- function(x,
 #' @rdname ctable
 #' @export
 #' @importFrom stats addmargins na.omit chisq.test qnorm
-ctable <- function(x, 
+ctable.default <- function(x, 
                    y,
                    prop            = st_options("ctable.prop"),
                    useNA           = "ifany",

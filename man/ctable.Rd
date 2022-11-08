@@ -3,6 +3,7 @@
 \name{ctable}
 \alias{ctable}
 \alias{ctable.formula}
+\alias{ctable.default}
 \title{Cross-Tabulation}
 \usage{
 ctable(
