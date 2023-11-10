@@ -299,6 +299,15 @@ print.summarytools <- function(x,
       }
     }
   }
+  
+  # If ctable's Row.variable and/or Col.variable have been overriden, we 
+  # must redefine the "Row.x.Col" data_info attribute
+  if (length(intersect(x = c("Row.variable", "Col.variable"),
+                       y = overrided_data_info)) > 0) {
+    attr(x, "data_info")$Row.x.Col <- paste(attr(x, "data_info")$Row.variable,
+                                            attr(x, "data_info")$Col.variable,
+                                            sep = " * ")
+  }
 
   # Assume all remaining arguments have to do with formatting. Put everything
   # into a list and eliminate redundant items, keeping only the last one,
