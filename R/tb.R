@@ -51,15 +51,18 @@ tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE) {
     grp_stats <- lapply(x, tb, na.rm = na.rm, drop.var.col = FALSE)
 
     if ("groups" %in% names(attributes(x))) {
-      left_part <- as_tibble(merge(grp_stats[[1]][,1],
-                                   attr(x, "groups"),
-                                   all = TRUE)[,-1])
+      left_part <- as_tibble(
+        merge(grp_stats[[1]][,1], attr(x, "groups"), all = TRUE)[,-1]
+      )
+      
       if (identical(colnames(left_part), "value")) {
         # for special case of descr
         colnames(left_part) <- colnames(attr(x, "group"))
       }
       grp_values <- attr(x, "groups")
+    
     } else {
+      
       null_grs     <- which(vapply(x, is.null, TRUE))
       non_null_grs <- setdiff(seq_along(x), null_grs)
       grp_values   <- as_tibble(expand.grid(attr(x, "dimnames")))[non_null_grs,]
@@ -85,15 +88,17 @@ tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE) {
 
     colnames(output)[1:ncol(left_part)] <-
       sub("(.+)\\$(.+)", "\\2", colnames(output)[1:ncol(left_part)])
-    if (order==1) {
+    if (order == 1) {
     } else if (order %in% 2:3) {
-      output <- output[do.call(what = "order",
-                               args = unname(output[ ,c(nb_gr_var + 1, 1:nb_gr_var)])), ]
+      output <- 
+        output[do.call(what = "order",
+                       args = unname(output[ ,c(nb_gr_var + 1, 1:nb_gr_var)])), ]
       if (order == 3) {
-        output <- output[ ,c(nb_gr_var + 1, 1:(nb_gr_var), (nb_gr_var + 2):ncol(output))]
+        output <- output[ ,c(nb_gr_var + 1,
+                             1:(nb_gr_var),
+                             (nb_gr_var + 2):ncol(output))]
       }
     }
-
 
     if (attr(x[[1]], "st_type") == "freq") {
 

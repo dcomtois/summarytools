@@ -4,7 +4,7 @@
 \alias{define_keywords}
 \title{Modify Keywords Used In Outputs}
 \usage{
-define_keywords(..., ask = FALSE, file = NA)
+define_keywords(..., ask = TRUE, file = NA)
 }
 \arguments{
 \item{\dots}{One or more pairs of keywords and their new values see 

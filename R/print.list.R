@@ -1,6 +1,7 @@
 #' Print Method for Objects of Class \dQuote{list}
 #'
-#' Displays a list comprised of summarytools objects created with \code{lapply}. 
+#' Displays a list comprised of summarytools objects created with
+#'   \code{\link{lapply}}. 
 #'
 #' @usage
 #'  \method{print}{list}(x, method = "pander", file = "", 
@@ -9,6 +10,11 @@
 #'   custom.css = st_options('custom.css'), silent = FALSE, 
 #'   footnote = st_options('footnote'), collapse = 0,
 #'   escape.pipe = st_options('escape.pipe'), \dots)
+#' 
+#' @details This function is there only for cases where the object to be printed
+#'   was created with \code{\link{lapply}}, as opposed to the recommended
+#'   functions for creating grouped results (\code{\link{stby}} and
+#'   \code{\link[dplyr]{group_by}}).
 #' 
 #' @inheritParams print.summarytools
 #' @method print list
@@ -27,7 +33,7 @@ print.list <- function(x,
                        escape.pipe   = st_options("escape.pipe"),
                        ...) {
 
-  if (inherits(x[[1]], "summarytools")) {
+  if (length(x) > 0 && inherits(x[[1]], "summarytools")) {
     
     view(x,
          method        = method,

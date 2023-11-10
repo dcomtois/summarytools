@@ -114,7 +114,7 @@
 #' @importFrom tcltk tclvalue tk_messageBox tkgetSaveFile
 #' @importFrom checkmate check_path_for_output
 #' @export
-define_keywords <- function(..., ask = FALSE, file = NA) {
+define_keywords <- function(..., ask = TRUE, file = NA) {
   mc <- match.call()
   kw <- names(mc[setdiff(names(mc), names(formals()))])[-1]
   if (length(kw) == 0 && !isTRUE(interactive())) {
@@ -166,12 +166,13 @@ define_keywords <- function(..., ask = FALSE, file = NA) {
     for (it in kw) {
       ind <- which(tr$item == it)
       if (length(ind) == 0) {
-        stop("'", it, "' is not a recognized keyword; see ?define_keywords ",
-             "for a list of valid keywords")
+        message("'", it, "' is not a recognized keyword; see ?define_keywords ",
+                "for a list of valid keywords")
+        next
       }
       if (inherits(mc[[it]], c("call", "name"))) {
        mc[[it]] <- eval(mc[[it]], parent.frame())
-      } 
+      }
       tr$custom[ind] <- mc[[it]]
     }
   }
@@ -187,8 +188,7 @@ define_keywords <- function(..., ask = FALSE, file = NA) {
               fileEncoding = "utf-8")
     message("Custom language file written: ", filename)
     } else {
-      warning("file name or path is invalid. Custom language is in effect; ",
-              "call define_keywords() without arguments to save file")
+      warning("file name or path invalid")
     }
   } else if (isTRUE(ask)) {
     filename <- ""

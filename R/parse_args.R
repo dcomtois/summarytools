@@ -244,7 +244,7 @@ parse_args <- function(sys_calls,
       }
     } else if (grepl(re3, str, perl = TRUE)) {
       obj_name <- sub(re3, "\\1", str, perl = TRUE)
-      obj_env <- try(pryr::where(obj_name))
+      obj_env <- try(pryr::where(obj_name), silent = TRUE)
       if (!inherits(obj_env, "try-error")) {
         obj <- get(obj_name, envir = obj_env)
         if (is.data.frame(obj)) {

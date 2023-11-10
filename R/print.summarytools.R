@@ -241,9 +241,9 @@ print.summarytools <- function(x,
   # (thus not taking advantage of print.summarytools() which makes results
   # much cleaner in the console)
   if (method == "pander" &&
-      (identical(deparse(sys.calls()[[sys.nframe() - 1]][2]), "x[[i]]()") ||
+      (identical(deparse(sys.calls()[[max(sys.nframe() - 1, 1)]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]",
-                 x = deparse(sys.calls()[[sys.nframe() - 1]]), fixed = TRUE)))) {
+                 x = deparse(sys.calls()[[max(sys.nframe() - 1, 1)]]), fixed = TRUE)))) {
     message("For best results printing list objects with summarytools, ",
             "use print(x); if by() was used, use stby() instead")
   }
