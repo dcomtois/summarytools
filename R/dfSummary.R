@@ -212,7 +212,7 @@ dfSummary <- function(x,
     
     # Get metadata for heading section
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(),
+      parse_call(sys.calls(), sys.frames(), match.call(),
                  var_name  = FALSE, var_label = FALSE,
                  caller = "dfSummary"),
       silent = TRUE)
@@ -344,7 +344,7 @@ dfSummary <- function(x,
   }
 
   # Get metadata for x ---------------------------------------------------------
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
+  parse_info <- try(parse_call(sys.calls(), sys.frames(), match.call(),
                                var_name = converted_to_df,
                                var_label = converted_to_df,
                                caller = "dfSummary"),

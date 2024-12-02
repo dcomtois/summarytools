@@ -192,7 +192,7 @@ ctable <- function(x,
   # Get x & y metadata from parsing function
   if (isTRUE(flag_by)) {
     parse_info_x <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
+      parse_call(sys.calls(), sys.frames(), match.call(), 
                  var = c("x", "y"), silent = "dnn" %in% names(match.call()),
                  var_label = FALSE, caller = "ctable"),
       silent = TRUE)
@@ -209,7 +209,7 @@ ctable <- function(x,
     }
   } else {
     parse_info_x <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
+      parse_call(sys.calls(), sys.frames(), match.call(), 
                  var = "x", silent = "dnn" %in% names(match.call()),
                  var_label = FALSE, caller = "ctable"),
       silent = TRUE)
@@ -219,7 +219,7 @@ ctable <- function(x,
     }
     
     parse_info_y <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
+      parse_call(sys.calls(), sys.frames(), match.call(), 
                  var = "y", silent = "dnn" %in% names(match.call()),
                  var_label = FALSE, caller = "ctable"),
       silent = TRUE)

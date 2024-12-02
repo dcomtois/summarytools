@@ -163,7 +163,7 @@ freq <- function(x,
     }
     
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
+      parse_call(sys.calls(), sys.frames(), match.call(), 
                  df_name = TRUE, df_label = FALSE, var_name = FALSE,
                  var_label = FALSE, caller = "freq"),
       silent = TRUE)
@@ -238,7 +238,7 @@ freq <- function(x,
            !"var" %in% names(match.call())) {
     
     # Get information about x from parsing function
-    parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
+    parse_info <- try(parse_call(sys.calls(), sys.frames(), match.call(),
                                  silent = TRUE, var_name = FALSE,
                                  var_label = FALSE,
                                  caller = "freq"),
@@ -356,7 +356,7 @@ freq <- function(x,
     
     # Get information about x from parsing function
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(),
+      parse_call(sys.calls(), sys.frames(), match.call(),
                  silent = exists("varname", inherits = FALSE),
                  caller = "freq"),
       silent = TRUE)

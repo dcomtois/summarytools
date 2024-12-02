@@ -134,7 +134,7 @@ descr <- function(x,
     }
     
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(),
+      parse_call(sys.calls(), sys.frames(), match.call(),
                  var_name  = (ncol(x) == 1),
                  var_label = (ncol(x) == 1), caller = "descr"),
       silent = TRUE)
@@ -292,7 +292,7 @@ descr <- function(x,
   
   # Get info about x from parsing function
   parse_info <- try(
-    parse_args(sys.calls(), sys.frames(), match.call(),
+    parse_call(sys.calls(), sys.frames(), match.call(),
                var_name = (ncol(x.df) == 1),
                var_label = (ncol(x.df) == 1), caller = "descr"),
     silent = TRUE)

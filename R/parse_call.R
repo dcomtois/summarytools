@@ -30,7 +30,7 @@
 #'
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head
-parse_args <- function(sys_calls,
+parse_call <- function(sys_calls,
                        sys_frames,
                        match_call, 
                        var       = "x",
