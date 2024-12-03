@@ -24,6 +24,11 @@
 #' @keywords utilities
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
+  if (sum(is.na(INDICES))) {
+    message(paste("NAs detected in grouping variable; consider using",
+                  "dplyr::group_by() or replacing/recoding NA values to avoid",
+                  "inconsistencies in the results"))
+  }
   UseMethod("stby", data)
 }
   
