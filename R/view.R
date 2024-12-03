@@ -107,7 +107,8 @@ view <- function(x,
     attr(xx, "data_info")$Group    <- NULL
     attr(xx, "data_info")$by_first <- NULL
     attr(xx, "data_info")$by_last  <- NULL
-    attr(xx, "data_info")$N.Obs    <- attr(x[[1]], "data_info")$N.Obs
+    attr(xx, "data_info")$N.Obs    <- 
+      sum(sapply(x, function(x) attr(x, "data_info")$N.Obs))
     
     # Remove NA items if any
     attr(xx, "data_info") <- attr(xx,"data_info")[!is.na(attr(xx, "data_info"))]
