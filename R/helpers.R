@@ -35,7 +35,7 @@ unquote <- function(x) {
 conv_non_ascii <- function(...) {
   out <- character()
   for (s in list(...)) {
-    if (is.null(s)) next
+    if (is.null(s) || length(s) == 0) next
     splitted <- unlist(strsplit(s, ""))
     intvalues <- utf8ToInt(enc2utf8(s))
     pos_to_modify_lat <- which(intvalues >=  161 & intvalues <=  255)
