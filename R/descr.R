@@ -412,6 +412,12 @@ descr <- function(x,
     # Weights being used -------------------------------------------------------
     
     weights_string <- deparse(substitute(weights))
+    
+    # Subset weights when called from by()/stby() to match current data subset
+    if (isTRUE(flag_by)) {
+      pf <- parent.frame(2)
+      weights <- weights[pf$X[[pf$i]]]
+    }
 
     if (sum(is.na(weights)) > 0) {
       warning("Missing values on weight variable have been detected and will",
