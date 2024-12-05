@@ -25,9 +25,16 @@
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
   if (sum(is.na(INDICES))) {
-    message(paste("NAs detected in grouping variable; consider using",
-                  "dplyr::group_by() or replacing/recoding NA values to avoid",
-                  "inconsistencies in the results"))
+    mc <- pryr::standardise_call(match.call())
+    caller_fun <- as.character(mc$FUN)
+    if (!isTRUE(st_options(paste(caller_fun, "silent", sep = ".")))) {
+      if (caller_fun %in% c("descr", "freq") && !("weights" %in% names(mc))) {
+        message(paste("NA detected in grouping variable; consider recoding NAs",
+                      "or using dplyr::group_by"))
+      } else {
+      message("NA detected in grouping variable; consider recoding NAs")
+      }
+    }
   }
   UseMethod("stby", data)
 }
