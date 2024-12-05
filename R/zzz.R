@@ -40,6 +40,7 @@ utils::globalVariables(c("."))
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
                  "ctable.round.digits"    = 1,
+                 "ctable.silent"          = FALSE,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
                  "descr.silent"           = FALSE,

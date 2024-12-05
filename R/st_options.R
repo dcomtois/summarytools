@@ -59,6 +59,7 @@
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{ctable}}. \code{TRUE} by default.
 #' @param ctable.round.digits Numeric. Defaults to \code{1}.
+#' @param ctable.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param descr.stats Character. Corresponds to the \code{stats} parameter of
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
@@ -202,6 +203,7 @@ st_options <- function(option                 = NULL,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE,
                        ctable.round.digits    = 1,
+                       ctable.silent          = FALSE,
                        descr.stats            = "all",
                        descr.transpose        = FALSE,
                        descr.silent           = FALSE,
@@ -294,6 +296,7 @@ st_options <- function(option                 = NULL,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
                    "ctable.round.digits"    = 1,
+                   "ctable.silent"          = FALSE,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
                    "descr.silent"           = FALSE,
