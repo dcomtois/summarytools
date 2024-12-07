@@ -245,7 +245,7 @@ print.summarytools <- function(x,
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]",
                  x = deparse(sys.calls()[[sys.nframe() - 1]]), fixed = TRUE)))) {
     message("For best results printing list objects with summarytools, ",
-            "use print(x); if by() was used, use stby() instead")
+            "use stby() instead of by() or *apply()")
   }
 
   # Apply / override parameters - first deal with "meta" information -----------
