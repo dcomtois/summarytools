@@ -1,26 +1,35 @@
 #' Obtain Grouped Statistics With summarytools
 #'
-#' This is essentially the base \code{\link{by}} function, except for the 
-#' class of the returned object.
+#' An adaptation base R's \code{\link{by}} function, designed to
+#' optimize the results' display.
 #'
 #' @usage stby(data, INDICES, FUN, ..., simplify = TRUE)
 #' 
 #' @param data an R object, normally a data frame, possibly a matrix.
 #' @param INDICES a grouping variable or a list of grouping variables,
-#'  each of length nrow(data).
+#'  each of length \code{nrow(data)}.
 #' @param FUN a function to be applied to (usually data-frame) subsets of data.
 #' @param \dots Further arguments to FUN.
 #' @param simplify Logical. Essentially a placeholder to maintain full
 #'  compatibility with base by. For more details, see 
 #'  \code{\link[base]{tapply}}.
 #'
-#' @return An object having classes \dQuote{list} and \dQuote{summarytools}.
+#' @return An object of classes \dQuote{list} and \dQuote{summarytools},
+#'   giving results for each subset.
+#'
+#' @details When the grouping variable(s) contain NA values, the
+#'   corresponding rows of data will be ignored. To circumvent this
+#'   potential drawback, consider using factors with an explicit NA
+#'   level (for instance using
+#'   \code{\link[forcats]{fct_na_value_to_level}}), or using
+#'   \code{dplyr::\link[dplyr]{group_by}}, which creates additional groups
+#'   for NA values.
 #'
 #' @examples
 #' data("tobacco")
 #' with(tobacco, stby(BMI, gender, descr))
 #' 
-#' @seealso \code{\link[base]{by}}, \code{\link[base]{tapply}}
+#' @seealso \code{\link[base]{by}}, \code{\link[dplyr]{group_by}}
 #' @keywords utilities
 #' @export
 stby <- function(data, INDICES, FUN, ..., simplify = TRUE) {
