@@ -88,14 +88,4 @@ utils::globalVariables(c("."))
                           "errors when using dfSummary(), set ",
                           "st_options(use.x11 = FALSE)")
   }
-  
-  # Check if the latest (github) pander is installed;
-  # We can't use version number since the relevant fix is not in an incremented
-  # package version number (still 0.6.3); we use the *Packaged* attribute as a proxy.
-  pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
-  should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
-  
-  if (isTRUE(should_update))
-    packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
-                          "install_github('rapporter/pander')")
 }

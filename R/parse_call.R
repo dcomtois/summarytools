@@ -584,7 +584,7 @@ parse_call <- function(sys_calls,
       return(output)
     }
   }  
-      
+
   if ("fun" %in% names(calls)) {
     calls$fun <- pryr::standardise_call(calls$fun)
     obj2 <- sys_frames[[pos$fun]][[var]]
@@ -594,6 +594,16 @@ parse_call <- function(sys_calls,
         upd_output("df_label",  label(obj2))
         upd_output("var_name",  NA_character_)
         upd_output("var_label", NA_character_)
+      } else if (any(grepl("group_by", calls$fun))) {
+        grby_call <- pryr::standardise_call(calls$fun[[grep("group_by", calls$fun)]])
+        upd_output("df_name", deparse(grby_call$.data))
+        upd_output("df_label", label(obj2))
+        # v_name?
+        vname <- setdiff(all.names(calls$fun), 
+                         c(all.names(grby_call), caller))
+        upd_output("var_name", vname)
+        upd_output("var_label", label(obj2[vname]))
+        
       } else {
         parse_data_str(paste(deparse(calls$fun[[var]]), collapse = " "))
       }

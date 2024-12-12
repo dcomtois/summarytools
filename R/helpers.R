@@ -132,8 +132,13 @@ paste8 <- function(..., sep = " ", collapse = NULL) {
 map_groups <- function(gk) {
   grs <- c()
   for (i in seq_len(nrow(gk))) {
-    gr <- paste(colnames(gk), as.character(unlist(gk[i,])), 
-                sep = " = ", collapse = ", ")
+    # Ensure factors are treated as characters
+    gr <- paste(
+      colnames(gk), 
+      sapply(gk[i, ], as.character),
+      sep = " = ", 
+      collapse = ", "
+    )
     grs <- c(grs, gr)
   }
   grs

@@ -126,11 +126,11 @@ ctable <- function(x,
                    ...) {
 
   # Check for group_by()
-  if (any(grepl("group_by(", deparse(sys.calls()[[1]]), fixed = TRUE))) {
-    stop("ctable() doesn't support group_by(); use stby() instead")
+  if (inherits(x, "grouped_df")) {
+      stop("ctable() does not support group_by(); use stby() instead")
   }
 
-  # Support for by()
+  # Adjustment for by() / syby()
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
     y <- x[[2]]

@@ -334,10 +334,11 @@ descr <- function(x,
       order <- c(order, colnames(x.df)[ind])
     } 
   }
+  
   # No weights being used ------------------------------------------------------
   if (identical(weights, NA)) {
     
-    # Prepare the summarizing functions for dplyr::summarize; there are 3 stats
+    # Prepare the summarizing functions for dplyr::summarise; there are 3 stats
     # that will be calculated later on so to not slow down the function
     dummy <- function(x) NA
     
@@ -385,7 +386,8 @@ descr <- function(x,
       output <- as.data.frame(t(results[ ,-1]))
       colnames(output) <- results$stat
     } else {
-      output <- x.df %>% summarize_all(.funs = summar_funs, na.rm = na.rm) %>%
+      output <- x.df %>% 
+        summarise_all(.funs = summar_funs, na.rm = na.rm) %>%
         as.data.frame
       rownames(output) <- parse_info$var_name
     }

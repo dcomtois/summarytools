@@ -771,8 +771,6 @@ crunch_character <- function(column_data, email_val) {
       paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
 
     dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
-    
-    # TODO: Check if rounding is relevant here
     prop.dups <- round(dups / n_valid, 3)
 
     counts_props <- align_numbers_dfs(
@@ -1286,7 +1284,7 @@ crunch_other <- function(column_data) {
 #' @param x A numerical value to be formatted.
 #' @param round.digits Numerical. Number of decimals to show. Used to define 
 #'   both \code{digits} and \code{nsmall} when calling \code{\link{format}}. 
-#' @param ... Any other formatting instruction that is compatible with 
+#' @param \dots Any other formatting instruction that is compatible with 
 #'  \code{\link{format}}.
 #'  
 #' @examples 
