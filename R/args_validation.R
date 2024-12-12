@@ -114,6 +114,24 @@ check_args <- function(mc, dotArgs) {
       errmsg %+=% "'cumul' must be either TRUE or FALSE"
     }
     
+    if ("na.val" %in% names(mc) && !is.null(pf$na.val)) {
+      if (length(pf$na.val) > 1)
+        errmsg %+=% "'na.val' can only contain one value"
+      if (!is.factor(pf$x))
+        if (isFALSE(st_options("freq.silent")))
+          message("'na.val' only applies to factors & will be ignored")
+      if (anyNA(pf$x) && isFALSE(st_options("freq.silent")))
+        errmsg %+=% "'na.val' only valid in absence of other NA values"
+      if (!isTRUE(test_character(pf$na.val)))
+        errmsg %+=% "'na.val' must be character"
+      if (is.factor(pf$x) && !pf$na.val %in% levels(pf$x)) {
+        pf$na.val <- NULL
+        if (isFALSE(st_options("freq.silent")))
+          message(paste0("'", pf$na.val, "' is not a level of x and ",
+                         "will be ignored"))
+      }
+    }
+    
     if ("order" %in% names(mc)) {
       order <- switch(tolower(substr(sub("[+-]", "", pf$order), 1, 1)),
                       d = "default",

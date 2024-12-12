@@ -17,6 +17,7 @@ freq(
   report.nas = st_options("freq.report.nas"),
   rows = numeric(),
   missing = "",
+  na.val = NULL,
   display.type = TRUE,
   display.labels = st_options("display.labels"),
   headings = st_options("headings"),
@@ -72,7 +73,10 @@ The order given here will be reflected in the resulting table. If a single
 string is used, it will be used as a regular expression to filter row 
 names.}
 
-\item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
+\item{missing}{Text to display in NA cells. Defaults to \dQuote{}.}
+
+\item{na.val}{Character. For factors, consider this value as \code{NA}. Only
+valid if there are no other NA values.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is
 \code{TRUE}.}

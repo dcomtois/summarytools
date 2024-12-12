@@ -9,10 +9,11 @@
 #' @param round.digits Numeric. Number of significant digits to display. 
 #'   Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.
 #' @param order Character. Ordering of rows in frequency table; \dQuote{name}
-#'   (default for non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
-#'   most frequent to less frequent). To invert the order, place a minus sign
-#'   before or after the word. \dQuote{-freq} will thus display the items
-#'   starting from the lowest in frequency to the highest, and so forth.
+#'   (default for non-factors), \dQuote{level} (default for factors), or
+#'   \dQuote{freq} (from most frequent to less frequent). To invert the order,
+#'   place a minus sign before or after the word. \dQuote{-freq} will thus
+#'   display the items starting from the lowest in frequency to the highest,
+#'   and so forth.
 #' @param style Character. Style to be used by \code{\link[pander]{pander}}. One
 #'   of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
 #'   \dQuote{jira}. Can be set globally with \code{\link{st_options}}.
@@ -38,7 +39,9 @@
 #'   The order given here will be reflected in the resulting table. If a single
 #'   string is used, it will be used as a regular expression to filter row 
 #'   names.
-#' @param missing Characters to display in NA cells. Defaults to \dQuote{}.
+#' @param missing Text to display in NA cells. Defaults to \dQuote{}.
+#' @param na.val Character. For factors, consider this value as \code{NA}. Only
+#'   valid if there are no other NA values.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be
@@ -125,6 +128,7 @@ freq <- function(x,
                  report.nas      = st_options("freq.report.nas"),
                  rows            = numeric(),
                  missing         = "",
+                 na.val          = NULL,
                  display.type    = TRUE,
                  display.labels  = st_options("display.labels"),
                  headings        = st_options("headings"),
@@ -193,6 +197,7 @@ freq <- function(x,
                            report.nas      = report.nas,
                            rows            = rows,
                            missing         = missing,
+                           na.val          = na.val,
                            display.type    = display.type,
                            display.labels  = display.labels,
                            headings        = headings,
@@ -272,6 +277,7 @@ freq <- function(x,
              report.nas       = report.nas,
              rows             = rows,
              missing          = missing,
+             na.val           = na.val,
              display.type     = display.type,
              display.labels   = display.labels,
              headings         = headings,
@@ -352,6 +358,12 @@ freq <- function(x,
         message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
       }
       x[is.nan(x)] <- NA
+    }
+    
+    # Replace values ~ na.val by NA
+    if (!is.null(na.val)) {
+      x[which(x == na.val)] <- NA
+      levels(x)[which(levels(x) == na.val)] <- NA
     }
     
     # Get information about x from parsing function
@@ -495,23 +507,9 @@ freq <- function(x,
     rownames(output)[rownames(output) == ""] <- 
       paste0("(", trs("empty.str"), ")")
     
-    # NA's explicited with forcats::fct_explicit_na(): set report.nas to FALSE
-    # unless report.nas was explicit in the function call
-    fn_call <- match.call()
-    
-    if (is.factor(x) && "(Missing)" %in% levels(x)
-        && sum(is.na(x)) == 0 && isTRUE(report.nas)) {
-      if (isFALSE(st_options("freq.silent"))) {
-        message("explicit NA's detected - temporarily setting 'report.nas' to FALSE")
-      }
-      report.nas <- FALSE
-      # hack the fn_call attribute to prevent print method from overriding it 
-      tmp_args <- append(as.list(fn_call)[-1], list(report.nas = FALSE))
-      if (length(tmp_narm <- which(names(tmp_args) == "report.nas")) == 2) {
-        tmp_args <- tmp_args[-tmp_narm[1]]
-      }
-      tmp_args <- append(list(name = "freq"), tmp_args)
-      fn_call  <- do.call(what = "call", args = tmp_args, quote = TRUE)
+    # Change <NA> rowname with na.val if defined
+    if (!is.null(na.val)) {
+      rownames(output)[rownames(output) == "<NA>"] <- na.val 
     }
     
     # Update the output class and attributes -----------------------------------
@@ -519,7 +517,7 @@ freq <- function(x,
     class(output) <- c("summarytools", class(output))
     
     attr(output, "st_type") <- "freq"
-    attr(output, "fn_call") <- fn_call
+    attr(output, "fn_call") <- match.call()
     attr(output, "date")    <- Sys.Date()
     
     # Determine data "type", in a non-strict way
@@ -585,7 +583,8 @@ freq <- function(x,
                                         display.type   = display.type,
                                         display.labels = display.labels,
                                         headings       = headings,
-                                        split.tables   = Inf)
+                                        split.tables   = Inf,
+                                        na.val         = na.val)
     
     attr(output, "user_fmt") <- list(... = ...)
     
