@@ -13,8 +13,8 @@
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 #'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 #'   \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-#'   \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally via
-#'   \code{\link{st_options}}, option \dQuote{descr.stats}.
+#'   \dQuote{n}, \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally
+#'   via \code{\link{st_options}}, option \dQuote{descr.stats}.
 #' @param na.rm Logical. Argument to be passed to statistical functions. 
 #'   Defaults to \code{TRUE}.
 #' @param round.digits Numeric. Number of significant digits to display. 
@@ -251,9 +251,9 @@ descr <- function(x,
   valid_stats <- list(
     no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
                 "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                "n.valid", "pct.valid"),
+                 "n", "n.valid", "pct.valid"),
     wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-             "n.valid", "pct.valid")
+             "n", "n.valid", "pct.valid")
   )
   
   if (identical(stats, "all")) {
@@ -266,7 +266,7 @@ descr <- function(x,
     }
     stats <- c("min", "q1", "med", "q3", "max")
   } else if (identical(stats, "common")) {
-    stats <- c("mean", "sd", "min", "med", "max", "n.valid", "pct.valid")
+    stats <- c("mean", "sd", "min", "med", "max", "n", "n.valid", "pct.valid")
   } else {
     stats <- tolower(stats)
     invalid_stats <- 
@@ -354,23 +354,24 @@ descr <- function(x,
                         ~ rapportools::skewness(., na.rm = na.rm),
                         ~ dummy(.), # placeholder for se.skewnes
                         ~ rapportools::kurtosis(., na.rm = na.rm),
+                        ~ n(), 
                         ~ rapportools::nvalid(., na.rm = na.rm),
                         ~ dummy(.))  # placeholder for pct.valid
     
     fun_names <- c("mean", "sd", "min", "q1", "med", "q3", "max", "mad", "iqr",
-                   "cv", "skewness", "se.skewness", "kurtosis", "n.valid",
-                   "pct.valid")
+                   "cv", "skewness", "se.skewness", "kurtosis", "n",
+                   "n.valid", "pct.valid")
     
     names(summar_funs) <- fun_names
     summar_funs <- summar_funs[which(fun_names %in% stats)]
 
     if (ncol(x.df) > 1) {
       results <- suppressWarnings(
-        x.df %>% summarize_all(.funs = summar_funs) %>%
+        x.df %>% summarise_all(.funs = summar_funs) %>%
           gather("variable", "value") %>%
           separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
           spread("var", "value")
-        )
+      )
       
       if (identical(order, "preserve")) {
         results <- results[ ,c("stat", colnames(x.df))]
@@ -451,6 +452,7 @@ descr <- function(x,
                          max       = numeric(),
                          mad       = numeric(),
                          cv        = numeric(),
+                         n         = numeric(),
                          n.valid   = numeric(),
                          pct.valid = numeric())
     
@@ -461,16 +463,19 @@ descr <- function(x,
     
     for(i in seq_along(x.df)) {
       variable <- as.numeric(x.df[[i]])
-      
+      n <- sum(weights)      
       # Extract number and proportion of missing and valid values
+      
       if (any(c("n.valid", "pct.valid") %in% stats)) {
         n_valid <- sum(weights[which(!is.na(variable))])
-        p_valid <- n_valid / sum(weights)
+        p_valid <- n_valid / n
       } else {
         # calculate n_valid for validation // all missing
         n_valid <- sum(!is.na(variable))
         p_valid <- NA
       }
+      
+      n <- sum(weights)
       
       # Remove missing values from variable and from corresponding weights
       if (isTRUE(na.rm)) {
@@ -497,11 +502,12 @@ descr <- function(x,
           ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, 
                                                    refine = TRUE, 
                                                    na.rm = na.rm), NA),
-          ifelse("max"  %in% stats, max(variable, na.rm = na.rm), NA),
-          ifelse("mad"  %in% stats, weightedMad(variable, weights_tmp, 
+          ifelse("max" %in% stats, max(variable, na.rm = na.rm), NA),
+          ifelse("mad" %in% stats, weightedMad(variable, weights_tmp, 
                                                 refine = TRUE, 
                                                 na.rm = na.rm), NA),
-          ifelse("cv"   %in% stats, variable.sd/variable.mean, NA),
+          ifelse("cv" %in% stats, variable.sd/variable.mean, NA),
+          ifelse("n"  %in% stats, n, NA),
           ifelse("n.valid"   %in% stats, n_valid, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
