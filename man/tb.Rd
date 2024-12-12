@@ -4,7 +4,15 @@
 \alias{tb}
 \title{Convert Summarytools Objects into Tibbles}
 \usage{
-tb(x, order = 1, na.rm = FALSE, drop.var.col = FALSE)
+tb(
+  x,
+  order = 1,
+  na.rm = FALSE,
+  drop.var.col = FALSE,
+  recalculate = TRUE,
+  fct.to.chr = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a freq() or descr() output object.}
@@ -12,21 +20,37 @@ tb(x, order = 1, na.rm = FALSE, drop.var.col = FALSE)
 \item{order}{Integer. Useful for grouped results produced with
 \code{\link{stby}} or \code{dplyr::group_by}. When set to \code{1}
  (default), the ordering is done using the grouping variables first. When
- set to \code{2}, the ordering is first determined by the \code{variable}
- column for \code{\link{descr}} or the column displaying the variable
- values for \code{\link{freq}}. When set to \code{3}, the same ordering
- as with \code{2} is used, but columns are rearranged to reflect this
- sort order.}
+ set to \code{2}, the ordering is done according to the analytical 
+ (not grouping) variable. When set to \code{3}, the same ordering
+ as with \code{2} is used, but the analytical variable is placed in
+ first position.}
 
-\item{na.rm}{Logical. For \code{\link{freq}} objects, remove \code{<NA>} rows
-(or \code{(Missing)} rows if \code{NA} values were made explicit with
-\code{forcats::fct_explicit_na()}. Has no effect on \code{\link{descr}}
-objects.}
+\item{na.rm}{Logical. Affects grouped \code{\link{freq}} objects only.
+Discard rows with \code{NA} values on at least one of the grouping
+variables. \code{FALSE} by default. (To exclude NA values on the main
+variable as well as the \emph{pct_valid} & \emph{pct_valid_cum}, use
+\code{freq()}'s `report.nas` and `cumul` arguments.)}
 
 \item{drop.var.col}{Logical. For \code{\link{descr}} objects, drop the
 \code{variable} column. This is possible only when statistics are
-produced for a single variable; for multiple variables, this argument
-is ignored. \code{FALSE} by default.}
+produced for a single variable; when multiple variables are present,
+this parameter is ignored. \code{FALSE} by default.}
+
+\item{recalculate}{Logical. \strong{TRUE by default}. For grouped
+\code{\link{freq}} results, recalculate percentages to have total
+proportions sum up to 1. Defaults to \code{TRUE}.}
+
+\item{fct.to.chr}{Logical. When grouped objects
+are created with \code{dplyr::\link[dplyr]{group_by}}, the resulting
+tibble will have factor columns when the grouping variable itself is
+a factor. To convert them to character, set this to TRUE. (When
+\code{st_by()} was used, factor grouping variables will come out as
+character.) Note that for factors having an explicit NA level, once
+converted to character, underlying NA values will become actual NAs
+\strong{unless the NA level has a label}.
+\code{FALSE} by default.}
+
+\item{\dots}{For internal use only.}
 }
 \value{
 A \code{\link[tibble]{tibble}} which is constructed following the
@@ -38,9 +62,10 @@ Make a tidy dataset out of freq() or descr() outputs
 \examples{
 
 tb(freq(iris$Species))
-tb(descr(iris))
+tb(descr(iris, stats = "common"))
 
 data("tobacco")
-tb(stby(tobacco, tobacco$gender, descr))
+tb(stby(tobacco, tobacco$gender, descr, stats = "common"))
+tb(stby(tobacco, tobacco$gender, descr, stats = "fivenum"), order=3)
 
 }

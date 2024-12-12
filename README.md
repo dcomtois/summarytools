@@ -2,28 +2,25 @@
 <!-- badges -->
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
-[![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-<span
-class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button"/></a></span>
+[![](https://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button"/></a></span>
 
-![package-design-image3](img/st-banner-fuzzy.png)
-
-# Summarytools 1.0 is out!
+# Summarytools 1.1 is out! <img src="img/logo.png" height="250" alt="package-logo" />
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for
 data cleaning, exploring, and simple reporting. The package was
 developed with the following objectives in mind:
 
--   Provide a coherent set of easy-to-use descriptive functions that are
-    akin to those included in commercial statistical software suites
-    such as SAS, SPSS, and Stata
--   Offer flexibility in terms of output format & content  
--   Integrate well with commonly used software & tools for reporting
-    (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
-    [Rmarkdown](https://rmarkdown.rstudio.com/), and
-    [knitr](https://yihui.org/knitr/)) while also allowing for
-    standalone, simple report generation from any R interface
+- Provide a coherent set of easy-to-use descriptive functions that are
+  akin to those included in commercial statistical software suites such
+  as SAS, SPSS, and Stata
+- Offer flexibility in terms of output format & content  
+- Integrate well with commonly used software & tools for reporting (the
+  [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
+  [Rmarkdown](https://rmarkdown.rstudio.com/), and
+  [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
+  simple report generation from any R interface
 
 On a more personal level, I simply wish to share with the R community
 and the scientific community at large the functions I first developed
@@ -37,7 +34,7 @@ donation. By doing so now, you’ll help me feel useful, but more
 importantly contribute to the package’s development and help other
 people like you who benefit from its current and *future features*. I
 regularly receive feature requests, and when I receive donations, I set
-aside some time to work on them, making summarytools even more relevant
+aside some time to work on them, making **summarytools** more relevant
 for data scientists, students and researchers around the world. No
 matter how small the amount is, I always appreciate the gesture. A list
 of sponsors can be found [further below](#sponsors).
@@ -106,22 +103,22 @@ install.packages("summarytools")
 
 # Latest Changes
 
--   In `dfSummary()`:
+- In `dfSummary()`:
 
-    -   It is now possible to control which statistics to show in the
-        *Freqs / Values* column (see
-        `help("st_options", "summarytools")` for examples)  
-    -   In *html* outputs, tables are better aligned horizontally
-        (categories >\> counts >\> charts); if misalignment occurs,
-        adjusting `graph.magnif` should resolve it
-    -   List-type columns and `Inf` values are handled properly
+  - It is now possible to control which statistics to show in the *Freqs
+    / Values* column (see `help("st_options", "summarytools")` for
+    examples)  
+  - In *html* outputs, tables are better aligned horizontally
+    (categories \>\> counts \>\> charts); if misalignment occurs,
+    adjusting `graph.magnif` should resolve it
+  - List-type columns and `Inf` values are handled properly
 
--   In `descr()` and `ctable()` several display glitches were corrected
+- In `descr()` and `ctable()` several display glitches were corrected
 
--   Selected heading elements can be totally omitted on an individual
-    basis
+- Selected heading elements can be totally omitted on an individual
+  basis
 
--   Improved functionality for customized terms / translations
+- Improved functionality for customized terms / translations
 
 For more details, see `vignette("introduction", "summarytools")` as well
 as `news(package = "summarytools")`.
@@ -192,12 +189,12 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 
 A big thanks to the following people who made donations:
 
--   Ashirwad Barnwal  
--   David Thomas  
--   Peter Nilsson  
--   Ross Dunne  
--   Igor Rubets  
--   Joerg Sahlmann
+- Ashirwad Barnwal  
+- David Thomas  
+- Peter Nilsson  
+- Ross Dunne  
+- Igor Rubets  
+- Joerg Sahlmann
 
 **summarytools** is the result of **many** hours of work. If you find
 the package brings value to your work, please take a moment to make a

@@ -13,10 +13,10 @@ st_options(plain.ascii = FALSE,
            subtitle.emphasis = FALSE,
            lang = "en")
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 st_css(main = TRUE, global = TRUE, bootstrap = FALSE)
 
-## ---- results='asis', echo=FALSE----------------------------------------------
+## ----results='asis', echo=FALSE-----------------------------------------------
 txt <- data.frame(
   Function = 
     c('<a href="#freq"><strong><code>freq()</strong></code></a>',
@@ -39,9 +39,9 @@ txt <- data.frame(
             "at a glance"))
 )
 
-kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
-  kable_paper(full_width = FALSE, position = "left") %>%
-  column_spec(1, extra_css = "vertical-align:top") %>%
+kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) |>
+  kable_paper(full_width = FALSE, position = "left") |>
+  column_spec(1, extra_css = "vertical-align:top") |>
   column_spec(2, extra_css = "vertical-align:top")
 
 ## -----------------------------------------------------------------------------
@@ -57,8 +57,8 @@ freq(iris$Species,
      cumul      = FALSE, 
      headings   = FALSE)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  freq(tobacco)
+## ----eval=FALSE---------------------------------------------------------------
+# freq(tobacco)
 
 ## -----------------------------------------------------------------------------
 freq(tobacco$disease, 
@@ -66,8 +66,8 @@ freq(tobacco$disease,
      rows     = 1:5,
      headings = FALSE)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  view(freq(tobacco), collapse = TRUE)
+## ----eval=FALSE---------------------------------------------------------------
+# view(freq(tobacco), collapse = TRUE)
 
 ## -----------------------------------------------------------------------------
 ctable(x = tobacco$smoker, 
@@ -91,7 +91,7 @@ tobacco %$%  # Acts like with(tobacco, ...)
          chisq = TRUE,
          OR    = TRUE,
          RR    = TRUE,
-         headings = FALSE) %>%
+         headings = FALSE) |>
   print(method = "render")
 
 ## -----------------------------------------------------------------------------
@@ -106,19 +106,19 @@ descr(iris,
       transpose = TRUE,
       headings  = FALSE)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  st_options(descr.stats = "common")
+## ----eval=FALSE---------------------------------------------------------------
+# st_options(descr.stats = "common")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  view(dfSummary(iris))
+## ----eval=FALSE---------------------------------------------------------------
+# view(dfSummary(iris))
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  dfSummary(tobacco,
-#            plain.ascii  = FALSE,
-#            style        = "grid",
-#            graph.magnif = 0.75,
-#            valid.col    = FALSE,
-#            tmp.img.dir  = "/tmp")
+## ----eval=FALSE---------------------------------------------------------------
+# dfSummary(tobacco,
+#           plain.ascii  = FALSE,
+#           style        = "grid",
+#           graph.magnif = 0.75,
+#           valid.col    = FALSE,
+#           tmp.img.dir  = "/tmp")
 
 ## -----------------------------------------------------------------------------
 st_options(
@@ -149,7 +149,7 @@ print(
   method = "render"
 )
 
-## ---- results='markup'--------------------------------------------------------
+## ----results='markup'---------------------------------------------------------
 library(formatR)
 st_options(dfSummary.custom.1 = "default")
 formatR::tidy_source(
@@ -158,9 +158,9 @@ formatR::tidy_source(
   args.newline = TRUE
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  dfs <- dfSummary(iris)
-#  dfs$Variable <- NULL # This deletes the "Variable" column
+## ----eval=FALSE---------------------------------------------------------------
+# dfs <- dfSummary(iris)
+# dfs$Variable <- NULL # This deletes the "Variable" column
 
 ## -----------------------------------------------------------------------------
 (iris_stats_by_species <- stby(data      = iris, 
@@ -177,74 +177,76 @@ with(tobacco,
           stats   = c("mean", "sd", "min", "med", "max"))
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  stby(data    = list(x = tobacco$smoker, y = tobacco$diseased),
-#       INDICES = tobacco$gender,
-#       FUN     = ctable)
-#  
-#  # or equivalently
-#  with(tobacco,
-#       stby(data    = list(x = smoker, y = diseased),
-#            INDICES = gender,
-#            FUN     = ctable))
+## ----eval=FALSE---------------------------------------------------------------
+# stby(data    = list(x = tobacco$smoker, y = tobacco$diseased),
+#      INDICES = tobacco$gender,
+#      FUN     = ctable)
+# 
+# # or equivalently
+# with(tobacco,
+#      stby(data    = list(x = smoker, y = diseased),
+#           INDICES = gender,
+#           FUN     = ctable))
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  library(dplyr)
-#  tobacco$gender %<>% forcats::fct_explicit_na()
-#  tobacco %>%
-#    group_by(gender) %>%
-#    descr(stats = "fivenum")
+## ----eval=FALSE---------------------------------------------------------------
+# library(dplyr)
+# tobacco$gender %<>% forcats::fct_na_value_to_level()
+# tobacco |>
+#   group_by(gender) |>
+#   descr(stats = "fivenum")
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 suppressPackageStartupMessages(library(dplyr))
 library(magrittr)
-tobacco$gender %<>% forcats::fct_explicit_na()
-tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
+tobacco$gender %<>% forcats::fct_na_value_to_level("(Missing)")
+tobacco |> group_by(gender) |> descr(stats = "fivenum")
 
-## ---- results='markup'--------------------------------------------------------
+## ----results='markup'---------------------------------------------------------
 library(magrittr)
-iris %>%
-  descr(stats = "common") %>%
-  tb()
+iris |>
+  descr(stats = "common") |>
+  tb() |>
+  knitr::kable()
 
-iris$Species %>% 
-  freq(cumul = FALSE, report.nas = FALSE) %>% 
-  tb()
+iris$Species |> 
+  freq(cumul = FALSE, report.nas = FALSE) |> 
+  tb() |>
+  knitr::kable()
 
-## ---- results='markup'--------------------------------------------------------
+## ----results='markup'---------------------------------------------------------
 grouped_descr <- stby(data    = exams,
                       INDICES = exams$gender, 
                       FUN     = descr,
                       stats   = "common")
 
-grouped_descr %>% tb()
+grouped_descr |> tb()
 
-## ---- results='markup'--------------------------------------------------------
-grouped_descr %>% tb(order = 2)
+## ----results='markup'---------------------------------------------------------
+grouped_descr |> tb(order = 2)
 
-## ---- results='markup'--------------------------------------------------------
-grouped_descr %>% tb(order = 3)
+## ----results='markup'---------------------------------------------------------
+grouped_descr |> tb(order = 3)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 library(kableExtra)
 library(magrittr)
 stby(data    = iris, 
      INDICES = iris$Species, 
      FUN     = descr, 
-     stats   = "fivenum") %>%
-  tb(order = 3) %>%
-  kable(format = "html", digits = 2) %>%
+     stats   = "fivenum") |>
+  tb(order = 3) |>
+  kable(format = "html", digits = 2) |>
   collapse_rows(columns = 1, valign = "top")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
-#  view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
+## ----eval=FALSE---------------------------------------------------------------
+# view(iris_stats_by_species, file = "~/iris_stats_by_species.html")
+# view(iris_stats_by_species, file = "~/iris_stats_by_species.md")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  st_options()                      # Display all global options values
-#  st_options('round.digits')        # Display the value of a specific option
-#  st_options(style = 'rmarkdown',   # Set the value of one or several options
-#             footnote = NA)         # Turn off the footnote for all html output
+## ----eval=FALSE---------------------------------------------------------------
+# st_options()                      # Display all global options values
+# st_options('round.digits')        # Display the value of a specific option
+# st_options(style = 'rmarkdown',   # Set the value of one or several options
+#            footnote = NA)         # Turn off the footnote for all html output
 
 ## -----------------------------------------------------------------------------
 (age_stats <- freq(tobacco$age.gr)) 
@@ -254,20 +256,20 @@ print(age_stats,
       display.type   = FALSE,
       Variable.label = "Age Group")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  print(dfSummary(tobacco),
-#        custom.css    = 'path/to/custom.css',
-#        table.classes = 'tiny-text',
-#        file          = "tiny-tobacco-dfSummary.html")
+## ----eval=FALSE---------------------------------------------------------------
+# print(dfSummary(tobacco),
+#       custom.css    = 'path/to/custom.css',
+#       table.classes = 'tiny-text',
+#       file          = "tiny-tobacco-dfSummary.html")
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  print(dfSummary(somedata,
-#                  varnumbers   = FALSE,
-#                  valid.col    = FALSE,
-#                  graph.magnif = 0.8),
-#        method   = 'render',
-#        headings = FALSE,
-#        bootstrap.css = FALSE)
+## ----eval=FALSE---------------------------------------------------------------
+# print(dfSummary(somedata,
+#                 varnumbers   = FALSE,
+#                 valid.col    = FALSE,
+#                 graph.magnif = 0.8),
+#       method   = 'render',
+#       headings = FALSE,
+#       bootstrap.css = FALSE)
 
 ## -----------------------------------------------------------------------------
 st_options(lang = "fr")
@@ -275,13 +277,13 @@ st_options(lang = "fr")
 ## -----------------------------------------------------------------------------
 freq(iris$Species)
 
-## ---- eval = FALSE------------------------------------------------------------
-#  Sys.setlocale("LC_CTYPE", "russian")
-#  st_options(lang = 'ru')
+## ----eval = FALSE-------------------------------------------------------------
+# Sys.setlocale("LC_CTYPE", "russian")
+# st_options(lang = 'ru')
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  Sys.setlocale("LC_CTYPE", "")
-#  st_options(lang = "en")
+## ----eval=FALSE---------------------------------------------------------------
+# Sys.setlocale("LC_CTYPE", "")
+# st_options(lang = "en")
 
 ## -----------------------------------------------------------------------------
 section_title <- "**Species of Iris**"

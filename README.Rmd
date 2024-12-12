@@ -7,8 +7,8 @@ always_allow_html: true
 <!-- badges -->
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
-[![](http://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+[![](https://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button"/></a></span>
 
 ```{r knitr-setup, include=FALSE}
@@ -25,9 +25,9 @@ st_options(plain.ascii = FALSE,
 library(kableExtra)
 ```
 
-![package-design-image3](img/st-banner-fuzzy.png)
 
-# Summarytools 1.0 is out!
+
+# Summarytools 1.1 is out! ![package-logo](img/logo.png){width=100px, height=125px}
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for data
 cleaning, exploring, and simple reporting. The package was developed with the
@@ -48,16 +48,14 @@ scientific community at large the functions I first developed for myself, that I
 ultimately realized would benefit a lot of people who are looking for the same
 thing I was seeking in the first place.
 
-## Support *summarytools*' Development
+## Please Support *summarytools*' Development
 
 If **summarytools** helps you get things done, please consider making a
-donation. By doing so now, you'll help me feel useful, but more importantly
-contribute to the package's development and help other people like you who
-benefit from its current and *future features*. I regularly receive feature
-requests, and when I receive donations, I set aside some time to work on them,
-making summarytools even more relevant for data scientists, students and
-researchers around the world. No matter how small the amount is, I always
-appreciate the gesture. A list of sponsors can be found [further
+donation. Many, many hours went into its development, yet very few users
+donate. By donating now, you'll help me not only feel useful, but more
+importantly contribute to the package's development and help other people like
+you benefit from its current and *future features*. No matter the amount,
+I always appreciate the gesture. A list of sponsors can be found [further
 below](#sponsors).
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
@@ -193,7 +191,7 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial (16.04).
 
 # <a id="sponsors"></a>Sponsors
 
-A big thanks to the following people who made donations:
+A big thank you to the following people who made donations:
 
 -   Ashirwad Barnwal  
 -   David Thomas  
@@ -201,10 +199,13 @@ A big thanks to the following people who made donations:
 -   Ross Dunne  
 -   Igor Rubets  
 -   Joerg Sahlmann
+-   Mark Friedman
+-   Roger Hilfiker
+-   Stefano Lav
 
 **summarytools** is the result of **many** hours of work. If you find the
 package brings value to your work, please take a moment to make a small
-donation. 
+donation now.
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
 

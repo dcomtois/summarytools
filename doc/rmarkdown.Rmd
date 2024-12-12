@@ -232,7 +232,7 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 To get optimal results, whichever method you choose, it is always best to
 omit at least 1, and if possible 2 columns from the output. Also, pick
-carefully the value of the `graph.magnig` parameter.
+carefully the value of the `graph.magnif` parameter.
 
 ## 5.1 Grid Style for dfSummary() 
 
@@ -264,7 +264,7 @@ parameter is a plus.
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE, 
                 valid.col    = FALSE, 
-                graph.magnif = 0.76),
+                graph.magnif = 0.85),
       method = 'render')
 ```
 
@@ -278,7 +278,7 @@ height, in pixels.
 print(dfSummary(tobacco, 
                 varnumbers   = FALSE,
                 valid.col    = FALSE,
-                graph.magnif = 0.76), 
+                graph.magnif = 0.85), 
       max.tbl.height = 300,
       method = "render")
 ```
@@ -305,18 +305,18 @@ to process. This is particularly helpful with `stby` objects:
 ```{r}
 library(kableExtra)
 library(magrittr)
-stby(iris, iris$Species, descr, stats = "fivenum") %>%
-  tb() %>%
-  kable(format = "html", digits = 2) %>%
+stby(iris, iris$Species, descr, stats = "fivenum") |>
+  tb() |>
+  kable(format = "html", digits = 2) |>
   collapse_rows(columns = 1, valign = "top")
 ```
 
 Using `tb(order = 3)` flips the order of the grouping variable(s) and the
 reported variable(s):
 ```{r}
-stby(iris, iris$Species, descr, stats = "fivenum") %>%
-  tb(order = 3) %>%
-  kable(format = "html", digits = 2) %>%
+stby(iris, iris$Species, descr, stats = "fivenum") |>
+  tb(order = 3) |>
+  kable(format = "html", digits = 2) |>
   collapse_rows(columns = 1, valign = "top")
 ```
 

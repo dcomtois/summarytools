@@ -4,24 +4,24 @@
 \alias{descr}
 \title{Univariate Statistics for Numerical Data}
 \usage{
-descr(
-  x,
-  var = NULL,
-  stats = st_options("descr.stats"),
-  na.rm = TRUE,
-  round.digits = st_options("round.digits"),
-  transpose = st_options("descr.transpose"),
-  order = "sort",
-  style = st_options("style"),
-  plain.ascii = st_options("plain.ascii"),
-  justify = "r",
-  headings = st_options("headings"),
-  display.labels = st_options("display.labels"),
-  split.tables = 100,
-  weights = NA,
-  rescale.weights = FALSE,
-  ...
-)
+descr(x,
+      var           = NULL, # provides support for pipe operators
+      stats         = ("all", "fivenum", "common", mean", "sd", "min", "q1",
+                       "med", "q3, "max", "mad", "iqr", "cv", "skewness",
+                       "kurtosis", "n", "n.valid", "pct.valid"),
+      na.rm         = TRUE,
+      round.digits  = 2,
+      transpose     = FALSE,
+      order         = c("sort", "preserve"),
+      style         = c("simple", "rmarkdown", "grid", "jira"),
+      plain.ascii   = TRUE,
+      justify       = c("r", "l", "c"),
+      headings      = TRUE,
+      display.labels = TRUE,
+      split.tables  = 100,
+      weights       = NA,
+      rescale.weights = FALSE,
+      ...)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
@@ -35,8 +35,8 @@ Provides support for piped function calls (e.g.
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-\dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally via
-\code{\link{st_options}}, option \dQuote{descr.stats}.}
+\dQuote{n}, \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally
+via \code{\link{st_options}}, option \dQuote{descr.stats}.}
 
 \item{na.rm}{Logical. Argument to be passed to statistical functions. 
 Defaults to \code{TRUE}.}

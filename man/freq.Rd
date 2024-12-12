@@ -36,10 +36,11 @@ function calls (e.g. \code{my_df \%>\% freq(my_var)}).}
 Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.}
 
 \item{order}{Character. Ordering of rows in frequency table; \dQuote{name}
-(default for non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent). To invert the order, place a minus sign
-before or after the word. \dQuote{-freq} will thus display the items
-starting from the lowest in frequency to the highest, and so forth.}
+(default for non-factors), \dQuote{level} (default for factors), or
+\dQuote{freq} (from most frequent to less frequent). To invert the order,
+place a minus sign before or after the word. \dQuote{-freq} will thus
+display the items starting from the lowest in frequency to the highest,
+and so forth.}
 
 \item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
 of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
