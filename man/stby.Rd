@@ -4,35 +4,51 @@
 \alias{stby}
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
-stby(data, INDICES, FUN, ..., simplify = TRUE)
+stby(data, INDICES, FUN, ..., explicit.nas = FALSE, check.nas = !explicit.nas)
 }
 \arguments{
 \item{data}{an R object, normally a data frame, possibly a matrix.}
 
 \item{INDICES}{a grouping variable or a list of grouping variables,
-each of length nrow(data).}
+each of length \code{nrow(data)}.}
 
 \item{FUN}{a function to be applied to (usually data-frame) subsets of data.}
 
 \item{\dots}{Further arguments to FUN.}
 
-\item{simplify}{Logical. Essentially a placeholder to maintain full
-compatibility with base by. For more details, see 
-\code{\link[base]{tapply}}.}
+\item{explicit.nas}{Make NA a valid grouping value in INDICES variable(s).}
+
+\item{check.nas}{Logical. Check for NA values in INDICES. \code{TRUE} by
+default. Ignored if explicit.nas is \code{TRUE}.}
 }
 \value{
-An object having classes \dQuote{list} and \dQuote{summarytools}.
+An object of classes \dQuote{list} and \dQuote{summarytools},
+  giving results for each subset.
 }
 \description{
-This is essentially the base \code{\link{by}} function, except for the 
-class of the returned object.
+An adaptation base R's \code{\link{by}} function, designed to
+optimize the results' display.
+}
+\details{
+When the grouping variable(s) contain NA values, the
+  \code{base::\link[base]{by}} function (as well as summarytools 
+  versions prior to 1.1.0) ignores corresponding groups. Version 1.1.0
+  allows setting \code{explicit.nas = TRUE} to make new groups using
+  NA values on the grouping variable(s), just as
+  \code{dplyr::\link[dplyr]{group_by}} does.
+  
+  When NA values are detected and `explicit.nas = FALSE`, a message is
+  displayed; to disable this message, set `check.nas = FALSE`.
 }
 \examples{
 data("tobacco")
-with(tobacco, stby(BMI, gender, descr))
-
+with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
+with(tobacco, stby(data = smoker, INDICES = gender, explicit.nas = TRUE))
+with(tobacco, stby(data = list(x = smoker, y = diseased),
+                   INDICES = gender, FUN = freq, explicit.nas = TRUE))
+                   
 }
 \seealso{
-\code{\link[base]{by}}, \code{\link[base]{tapply}}
+\code{\link[base]{by}}, \code{\link[dplyr]{group_by}}
 }
 \keyword{utilities}
