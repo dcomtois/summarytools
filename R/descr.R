@@ -156,7 +156,9 @@ descr <- function(x,
                             headings        = headings,
                             display.labels  = display.labels,
                             split.tables    = split.tables,
-                            weights         = weights,
+                            weights         = 
+                              if (identical(weights, NA)) NA else 
+                                weights[gr_inds[[g]]],
                             rescale.weights = rescale.weights,
                             ...             = ...)
       

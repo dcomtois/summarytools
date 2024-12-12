@@ -201,7 +201,8 @@ freq <- function(x,
                            display.type    = display.type,
                            display.labels  = display.labels,
                            headings        = headings,
-                           weights         = weights,
+                           weights         = 
+                              if (identical(weights, NA)) NA else weights[gr_inds[[g]]],
                            rescale.weights = rescale.weights,
                            ...             = ... )
       
