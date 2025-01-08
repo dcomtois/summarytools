@@ -166,7 +166,7 @@ ctable <- function(x,
     }
   }
 
-  errmsg <- c(errmsg, check_args(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...), "ctable"))
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))

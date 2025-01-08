@@ -248,7 +248,6 @@ descr <- function(x,
                       "a data.table; attempted conversion to tibble failed")
   }
   
-  errmsg <- c(errmsg, check_args(match.call(), list(...)))
   
   valid_stats <- list(
     no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
@@ -257,6 +256,7 @@ descr <- function(x,
     wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
              "n", "n.valid", "pct.valid")
   )
+  errmsg <- c(errmsg, check_args(match.call(), list(...), "descr"))
   
   if (identical(stats, "all")) {
     stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]

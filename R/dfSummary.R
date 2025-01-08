@@ -216,7 +216,7 @@ dfSummary <- function(x,
     
     # Get metadata for heading section
     parse_info <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(),
+      parse_call(mc = match.call(),
                  var_name  = FALSE, var_label = FALSE,
                  caller = "dfSummary"),
       silent = TRUE)
@@ -310,7 +310,7 @@ dfSummary <- function(x,
     }
   }
 
-  errmsg <- c(errmsg, check_args(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...), "dfSummary"))
 
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))

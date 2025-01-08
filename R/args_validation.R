@@ -4,24 +4,13 @@
 #' @importFrom dplyr n_distinct
 #' @importFrom stats na.omit
 #' @keywords internal
-check_args <- function(mc, dotArgs) {
+check_args <- function(mc, dotArgs, caller) {
   
-  caller      <- sub(".+::","",as.character(sys.call(-1))[1])
   pf          <- parent.frame()
   errmsg      <- character()
-  caller_orig <- caller
   
-  if (caller == "FUN") {
+  if (mc[[1]] == "FUN" || mc$x == "dd[x, , drop = FALSE]") {
     pf$flag_by <- TRUE
-    # When stby() was called, deduce caller from formals
-    if ("cumul" %in% names(pf))
-      caller <- "freq"
-    else if ("transpose" %in% names(pf))
-      caller <- "descr"
-    else if ("chisq" %in% names(pf))
-      caller <- "ctable"
-    else if ("graph.col" %in% names(pf))
-      caller <- "dfSummary"
   } else {
     pf$flag_by <- FALSE
   }
