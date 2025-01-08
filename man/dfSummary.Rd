@@ -8,6 +8,7 @@ dfSummary(
   x,
   round.digits = 1,
   varnumbers = st_options("dfSummary.varnumbers"),
+  class = st_options("dfSummary.class"),
   labels.col = st_options("dfSummary.labels.col"),
   valid.col = st_options("dfSummary.valid.col"),
   na.col = st_options("dfSummary.na.col"),
@@ -39,6 +40,9 @@ dfSummary(
 \item{varnumbers}{Logical. Show variable numbers in the first column.
 Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 option \dQuote{dfSummary.varnumbers}.}
+
+\item{class}{Logical. Show data classes in \emph{Variable} column.
+\code{TRUE} by default.}
 
 \item{labels.col}{Logical. If \code{TRUE}, variable labels (as defined with
 \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}

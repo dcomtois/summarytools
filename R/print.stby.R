@@ -26,11 +26,12 @@ print.stby <- function(x,
                        escape.pipe   = st_options("escape.pipe"),
                        ...) {
   
+  # Special case of nested lists (by() / stby() used with freq(), 2+ vars)
   if (!"silent" %in% names(match.call())) {
-    silent <- switch(attr(x[[1]], "st_type"),
-                     descr     = st_options("descr.silent"),
-                     dfSummary = st_options("dfSummary.silent"),
-                     FALSE)
+    if (!"st_type" %in% names(attributes(x[[1]])) && is.list(x[[1]]))
+      silent <- st_options(paste0(attr(x[[1]][[1]], "st_type"), ".silent"))
+    else
+      silent <- st_options(paste0(attr(x[[1]], "st_type"), ".silent"))
   }
   
   view(x,

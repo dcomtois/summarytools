@@ -12,7 +12,7 @@ format_number(x, round.digits, ...)
 \item{round.digits}{Numerical. Number of decimals to show. Used to define 
 both \code{digits} and \code{nsmall} when calling \code{\link{format}}.}
 
-\item{...}{Any other formatting instruction that is compatible with 
+\item{\dots}{Any other formatting instruction that is compatible with 
 \code{\link{format}}.}
 }
 \description{

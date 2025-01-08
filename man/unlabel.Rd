@@ -10,8 +10,9 @@ unlabel(x)
 \item{x}{An R object to remove labels from.}
 }
 \description{
-Returns the object with all labels removed. Both the \dQuote{label} attribute
-and \pkg{Hmisc}'s \dQuote{labelled} class are removed.
+Returns the object with all labels removed. The \dQuote{label} attribute
+as well as the \dQuote{labelled} class (used by Hmisc and labelled) are
+cleared.
 }
 \seealso{
 \code{\link{label}}

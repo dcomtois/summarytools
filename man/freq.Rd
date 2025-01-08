@@ -17,6 +17,7 @@ freq(
   report.nas = st_options("freq.report.nas"),
   rows = numeric(),
   missing = "",
+  na.val = NULL,
   display.type = TRUE,
   display.labels = st_options("display.labels"),
   headings = st_options("headings"),
@@ -35,10 +36,11 @@ function calls (e.g. \code{my_df \%>\% freq(my_var)}).}
 Defaults to \code{2}. Can be set globally with \code{\link{st_options}}.}
 
 \item{order}{Character. Ordering of rows in frequency table; \dQuote{name}
-(default for non-factors), \dQuote{level} (default for factors), or \dQuote{freq} (from
-most frequent to less frequent). To invert the order, place a minus sign
-before or after the word. \dQuote{-freq} will thus display the items
-starting from the lowest in frequency to the highest, and so forth.}
+(default for non-factors), \dQuote{level} (default for factors), or
+\dQuote{freq} (from most frequent to less frequent). To invert the order,
+place a minus sign before or after the word. \dQuote{-freq} will thus
+display the items starting from the lowest in frequency to the highest,
+and so forth.}
 
 \item{style}{Character. Style to be used by \code{\link[pander]{pander}}. One
 of \dQuote{simple} (default), \dQuote{grid}, \dQuote{rmarkdown}, or
@@ -72,7 +74,10 @@ The order given here will be reflected in the resulting table. If a single
 string is used, it will be used as a regular expression to filter row 
 names.}
 
-\item{missing}{Characters to display in NA cells. Defaults to \dQuote{}.}
+\item{missing}{Text to display in NA cells. Defaults to \dQuote{}.}
+
+\item{na.val}{Character. For factors, consider this value as \code{NA}.
+Ignored if there are actual NA values.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is
 \code{TRUE}.}

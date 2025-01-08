@@ -10,10 +10,11 @@
 ^TODO.txt$
 ^README.md$
 ^README.Rmd$
-^tests$
+^tests*$
 ^COPYING$
 ^inst/WORDLIST$
 vignettes/*.R$
 vignettes/*.html$
 ^doc$
 ^misc$
+^tests$

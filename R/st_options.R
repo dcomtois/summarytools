@@ -59,6 +59,7 @@
 #' @param ctable.totals Logical. Corresponds to the \code{totals} parameter of
 #'   \code{\link{ctable}}. \code{TRUE} by default.
 #' @param ctable.round.digits Numeric. Defaults to \code{1}.
+#' @param ctable.silent Logical. Hide console messages. \code{FALSE} by default.
 #' @param descr.stats Character. Corresponds to the \code{stats} parameter of
 #'   \code{\link{descr}}. Defaults to \dQuote{all}.
 #' @param descr.transpose Logical. Corresponds to the \code{transpose} parameter
@@ -67,6 +68,9 @@
 #' @param dfSummary.style Character. \dQuote{multiline} by default. Set to 
 #'   \dQuote{grid} for \emph{R Markdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
+#'   variable numbers in the first column. Defaults to \code{TRUE}.
+#' @param dfSummary.class Logical. Show data classes in Name column.
+#'   \code{TRUE} by default.
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
 #'   variable labels Defaults to \code{TRUE}.
@@ -202,11 +206,13 @@ st_options <- function(option                 = NULL,
                        ctable.prop            = "r",
                        ctable.totals          = TRUE,
                        ctable.round.digits    = 1,
+                       ctable.silent          = FALSE,
                        descr.stats            = "all",
                        descr.transpose        = FALSE,
                        descr.silent           = FALSE,
                        dfSummary.style        = "multiline",
                        dfSummary.varnumbers   = TRUE,
+                       dfSummary.class        = TRUE,
                        dfSummary.labels.col   = TRUE,
                        dfSummary.valid.col    = TRUE,
                        dfSummary.na.col       = TRUE,
@@ -294,11 +300,13 @@ st_options <- function(option                 = NULL,
                    "ctable.prop"            = "r",
                    "ctable.totals"          = TRUE,
                    "ctable.round.digits"    = 1,
+                   "ctable.silent"          = FALSE,
                    "descr.stats"            = "all",
                    "descr.transpose"        = FALSE,
                    "descr.silent"           = FALSE,
                    "dfSummary.style"        = "multiline",
                    "dfSummary.varnumbers"   = TRUE,
+                   "dfSummary.class"        = TRUE,
                    "dfSummary.labels.col"   = TRUE,
                    "dfSummary.graph.col"    = TRUE,
                    "dfSummary.valid.col"    = TRUE,

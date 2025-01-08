@@ -126,11 +126,11 @@ ctable <- function(x,
                    ...) {
 
   # Check for group_by()
-  if (any(grepl("group_by(", deparse(sys.calls()[[1]]), fixed = TRUE))) {
-    stop("ctable() doesn't support group_by(); use stby() instead")
+  if (inherits(x, "grouped_df")) {
+     stop("ctable() does not support group_by(); use stby() instead")
   }
 
-  # Support for by()
+  # Adjustment for by() / syby()
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
     y <- x[[2]]
@@ -166,7 +166,7 @@ ctable <- function(x,
     }
   }
 
-  errmsg <- c(errmsg, check_args(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...), "ctable"))
   
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
@@ -192,9 +192,8 @@ ctable <- function(x,
   # Get x & y metadata from parsing function
   if (isTRUE(flag_by)) {
     parse_info_x <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
-                 var = c("x", "y"), silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = c("x", "y"), var_label = FALSE, 
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_x, "try-error")) {
@@ -209,9 +208,8 @@ ctable <- function(x,
     }
   } else {
     parse_info_x <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
-                 var = "x", silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = "x", var_label = FALSE,
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_x, "try-error")) {
@@ -219,9 +217,8 @@ ctable <- function(x,
     }
     
     parse_info_y <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(), 
-                 var = "y", silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = "y", var_label = FALSE,
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_y, "try-error")) {
@@ -346,7 +343,7 @@ ctable <- function(x,
 
   if (isTRUE(chisq)) {
     tmp.chisq <- chisq.test(freq_table_min)
-    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 2), 
                    tmp.chisq$parameter, 
                    p.value = round(tmp.chisq$p.value, 4))
     attr(output, "chisq") <- tmp.chisq
@@ -436,8 +433,7 @@ ctable <- function(x,
   
   # Prepare metadata to be stored as the data_info attribute
   data_info <-
-    list(Data.frame          = ifelse(exists("df_name", inherits = FALSE), 
-                                      df_name, NA),
+    list(Data.frame          = dfn,
          Data.frame.label    = ifelse(exists("df_label", inherits = FALSE),
                                       df_label, NA),
          Row.variable        = x_name,
@@ -459,6 +455,8 @@ ctable <- function(x,
                                                  replacement = "",
                                                  x = weights_string,
                                                  fixed = TRUE))),
+         by_var           = if ("by_group" %in% names(parse_info_x))
+                                   parse_info_x$by_var else NA,
          Group            = ifelse("by_group" %in% names(parse_info_x),
                                    parse_info_x$by_group, NA),
          by_first         = ifelse("by_group" %in% names(parse_info_x), 
@@ -477,9 +475,20 @@ ctable <- function(x,
                                        headings       = headings,
                                        display.labels = display.labels)
   
-  attr(output, "user_fmt") <- list(... = ...)
-
-  attr(output, "lang") <- st_options("lang")
+  # Keep ... arguments that could be relevant for pander of format
+  user_fmt <- list()
+  dotArgs <- list(...)
+  for (i in seq_along(dotArgs)) {
+    if (class(dotArgs[[i]]) %in% 
+        c("character", "numeric", "integer", "logical") &&
+        length(names(dotArgs[1])) == length(dotArgs[[i]]))
+      user_fmt <- append(user_fmt, dotArgs[i])
+  }
   
+  if (length(user_fmt) > 0)
+    attr(output, "user_fmt") <- user_fmt
+  
+  attr(output, "lang") <- st_options("lang")
+
   return(output)
 }

@@ -10,6 +10,8 @@
 #' @param varnumbers Logical. Show variable numbers in the first column.
 #'   Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
+#' @param class Logical. Show data classes in \emph{Variable} column.
+#'   \code{TRUE} by default.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 #'   functions, among others) will be displayed. \code{TRUE} by default, but
@@ -172,12 +174,14 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
+#' @importFrom tibble as_tibble
 #' @importFrom stats start end
 #' @importFrom grDevices dev.list dev.off
 #' @export
 dfSummary <- function(x,
                       round.digits     = 1,
                       varnumbers       = st_options("dfSummary.varnumbers"),
+                      class            = st_options("dfSummary.class"),
                       labels.col       = st_options("dfSummary.labels.col"),
                       valid.col        = st_options("dfSummary.valid.col"),
                       na.col           = st_options("dfSummary.na.col"),
@@ -212,7 +216,7 @@ dfSummary <- function(x,
     
     # Get metadata for heading section
     parse_info <- try(
-      parse_args(sys.calls(), sys.frames(), match.call(),
+      parse_call(mc = match.call(),
                  var_name  = FALSE, var_label = FALSE,
                  caller = "dfSummary"),
       silent = TRUE)
@@ -221,14 +225,11 @@ dfSummary <- function(x,
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
     g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
     
-    # Extract grouping variable names
-    # g_vars  <- setdiff(names(attr(x, "group")), ".rows")
-    # g_vars_pos <- which(colnames(x) %in% g_vars)
-    
     for (g in seq_along(g_ks)) {
       outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]],]),
                                 round.digits        = round.digits,
                                 varnumbers          = varnumbers,
+                                class               = class,
                                 labels.col          = labels.col,
                                 valid.col           = valid.col,
                                 na.col              = na.col,
@@ -248,6 +249,7 @@ dfSummary <- function(x,
                                 tmp.img.dir         = tmp.img.dir,
                                 keep.grp.vars       = keep.grp.vars,
                                 silent              = silent,
+                                skip_parse          = TRUE,
                                 ...                 = ...)
 
       if (!inherits(parse_info, "try-error")) {
@@ -305,7 +307,7 @@ dfSummary <- function(x,
     }
   }
 
-  errmsg <- c(errmsg, check_args(match.call(), list(...)))
+  errmsg <- c(errmsg, check_args(match.call(), list(...), "dfSummary"))
 
   if (length(errmsg) > 0) {
     stop(paste(errmsg, collapse = "\n  "))
@@ -344,16 +346,22 @@ dfSummary <- function(x,
   }
 
   # Get metadata for x ---------------------------------------------------------
-  parse_info <- try(parse_args(sys.calls(), sys.frames(), match.call(),
-                               var_name = converted_to_df,
-                               var_label = converted_to_df,
-                               caller = "dfSummary"),
-                    silent = TRUE)
-
-  if (inherits(parse_info, "try-error")) {
+  if ("skip_parse" %in% names(match.call())) {
     parse_info <- list()
-  }
+  } else {
+    
+    parse_info <- try(
+      parse_call(mc        =  match.call(),
+                 var_name  =  converted_to_df,
+                 var_label =  converted_to_df,
+                 caller    = "dfSummary"),
+      silent = TRUE)
 
+    if (inherits(parse_info, "try-error")) {
+      parse_info <- list()
+    }
+  }
+  
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
     parse_info$df_name <- df_name
   }
@@ -427,10 +435,14 @@ dfSummary <- function(x,
 
     output[i,1] <- i
 
-    output[i,2] <- paste0(names(x)[i], "\\\n[",
-                          paste(class(column_data), collapse = ", "),
-                          "]")
-
+    if (isTRUE(class)) {
+      output[i,2] <- paste0(names(x)[i], "\\\n[",
+                            paste(class(column_data), collapse = ", "),
+                            "]")
+    } else {
+      output[i,2] <- names(x)[i]
+    }
+    
     if (!is.list(column_data)) {
       # Check if column contains emails
       if (is.character(column_data)) {
@@ -585,10 +597,10 @@ dfSummary <- function(x,
                                    parse_info$df_label, NA),
          Dimensions       = c(n_tot, ncol(x)),
          Duplicates       = n_tot - n_distinct(x),
+         by_var           = if ("by_group" %in% names(parse_info))
+                                   parse_info$by_var else NA,
          Group            = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_group, NA),
-         by_var           = unlist(ifelse("by_var" %in% names(parse_info),
-                                          parse_info["by_var"], NA)),
          by_first         = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_first, NA),
          by_last          = ifelse("by_group" %in% names(parse_info),
@@ -611,7 +623,18 @@ dfSummary <- function(x,
   
   attr(output, "format_info") <- format_info[!is.na(format_info)]
 
-  attr(output, "user_fmt") <- list(... = ...)
+  # Keep ... arguments that could be relevant for pander of format
+  user_fmt <- list()
+  dotArgs <- list(...)
+  for (i in seq_along(dotArgs)) {
+    if (class(dotArgs[[i]]) %in% 
+        c("character", "numeric", "integer", "logical") &&
+        length(names(dotArgs[1])) == length(dotArgs[[i]]))
+      user_fmt <- append(user_fmt, dotArgs[i])
+  }
+  
+  if (length(user_fmt))
+    attr(output, "user_fmt") <- user_fmt
 
   attr(output, "lang") <- st_options("lang")
 
@@ -621,6 +644,7 @@ dfSummary <- function(x,
   if (clear_null_device) {
     try(dev.off(), silent = TRUE)
   }
+
   return(output)
 }
 
@@ -771,8 +795,6 @@ crunch_character <- function(column_data, email_val) {
       paste(trs("valid"), trs("invalid"), trs("duplicates"), sep = "\\\n")
 
     dups      <- n_valid - n_distinct(column_data, na.rm = TRUE)
-    
-    # TODO: Check if rounding is relevant here
     prop.dups <- round(dups / n_valid, 3)
 
     counts_props <- align_numbers_dfs(
@@ -1003,7 +1025,7 @@ crunch_numeric <- function(column_data, is_barcode) {
     # frequencies are displayed for rounded values
     extra_space <- FALSE
 
-    # With timeseries (ts) objects, display n distinct, start & end
+    # With time-series (ts) objects, display n distinct, start & end
     if (inherits(column_data, "ts")) {
       maxchars <- max(nchar(c(trs("start"), trs("end"))))
       outlist[[2]] <-
@@ -1286,7 +1308,7 @@ crunch_other <- function(column_data) {
 #' @param x A numerical value to be formatted.
 #' @param round.digits Numerical. Number of decimals to show. Used to define 
 #'   both \code{digits} and \code{nsmall} when calling \code{\link{format}}. 
-#' @param ... Any other formatting instruction that is compatible with 
+#' @param \dots Any other formatting instruction that is compatible with 
 #'  \code{\link{format}}.
 #'  
 #' @examples 
@@ -1565,7 +1587,8 @@ detect_barcode <- function(x) {
   # length is compatible with one of the EAN/UPC/ITC specifications
   x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
   if (length(x_samp) < 3 ||
-      (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
+      (len <- nchar(format(min(x_samp, na.rm = TRUE), scientific = FALSE))) !=
+      nchar(format(max(x, na.rm = TRUE), scientific = FALSE)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
   }

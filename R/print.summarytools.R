@@ -245,7 +245,7 @@ print.summarytools <- function(x,
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]",
                  x = deparse(sys.calls()[[max(sys.nframe() - 1, 1)]]), fixed = TRUE)))) {
     message("For best results printing list objects with summarytools, ",
-            "use print(x); if by() was used, use stby() instead")
+            "use stby() instead of by() or *apply()")
   }
 
   # Apply / override parameters - first deal with "meta" information -----------
@@ -298,6 +298,15 @@ print.summarytools <- function(x,
         }
       }
     }
+  }
+  
+  # If ctable's Row.variable and/or Col.variable have been overriden, we 
+  # must redefine the "Row.x.Col" data_info attribute
+  if (length(intersect(x = c("Row.variable", "Col.variable"),
+                       y = overrided_data_info)) > 0) {
+    attr(x, "data_info")$Row.x.Col <- paste(attr(x, "data_info")$Row.variable,
+                                            attr(x, "data_info")$Col.variable,
+                                            sep = " * ")
   }
 
   # Assume all remaining arguments have to do with formatting. Put everything
@@ -524,7 +533,7 @@ print.summarytools <- function(x,
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
-                  "includes/scripts/jquery-3.4.0.slim.min.js",
+                  "includes/scripts/jquery-3.7.0.slim.min.js",
                   package = "summarytools"
                 )),
               if (collapse)
@@ -720,7 +729,7 @@ print_freq <- function(x, method) {
 
     x[is_na_x] <- format_info$missing
 
-    main_sect %+=%
+    main_sect %+=% 
       paste(
         capture.output(
           do.call(pander, append(pander_args, list(x = quote(x))))
@@ -2095,7 +2104,7 @@ build_heading_pander <- function() {
         head1 <- paste(add_markup(trs("title.descr.weighted"), h = 3), " \n")
       }
     } else {
-      if (trs("title.freq") == "") {
+      if (trs("title.descr") == "") {
         head1 <- NA
       } else {
         head1 <- paste(add_markup(trs("title.descr"), h = 3), " \n")

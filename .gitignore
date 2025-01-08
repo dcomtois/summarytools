@@ -13,3 +13,5 @@ inst/doc
 inst/includes/win_includes
 inst/includes/linux_includes
 /Meta/
+/doc/
+/lua/

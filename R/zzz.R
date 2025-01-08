@@ -1,7 +1,10 @@
 # Initialize vector containing paths to temporary html files generated when 
 # viewing in browser or in RStudio visualization pane. Will be updated whenever
 # print.summarytools() / cleartmp() are called.
-.st_env <- new.env(parent = emptyenv())
+.st_env <- new.env()
+
+# Initialize environment used by parse_call()
+.p <- new.env()
 
 # Determine OS : Windows | Linux | Darwin
 .st_env$sysname <- Sys.info()[["sysname"]]
@@ -9,14 +12,65 @@
 # Initialize vector for tempfiles -- useful for cleartmp()
 .st_env$tmpfiles <- c()
 
-# Initialize list used by view() when printing an object of class "by"
-.st_env$byInfo <- list()
+# Initialise list used to keep track of current process
+.st_env$ps <- list()
 
 # Placeholder for customized translations
 .st_env$custom_lang <- list()
 
+# Predefined stats values for descr
+.st_env$descr.stats <- list(
+  all     = c("mean", "sd", "min", "q1", "med", "q3","max", "mad",
+              "iqr", "cv", "skewness", "se.skewness", "kurtosis",
+              "n.valid", "pct.valid", "n"),
+  common  = c("mean", "sd", "min", "med", "max",
+              "n.valid", "pct.valid", "n"),
+  fivenum = c("min", "q1", "med", "q3", "max")
+)
+
+.st_env$descr.stats.valid <- list(
+  no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+              "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+              "n.valid", "pct.valid", "n"),
+  wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+           "n.valid", "pct.valid", "n")
+)
+
+# most common operators -- used by parse_call()
+.st_env$oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "|>", 
+                  "%!>%", "%$%", "%<>%", "%>%", "%T>%", "%>>%")
+
+# regex used in parse_call
+.st_env$re <-list(
+  # 1) both names are there (df$name, df['name']), etc.
+  two_names = paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?['\"]?",
+                     "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$"),
+  
+  # 2) there is numeric indexing (df[[2]], df[ ,2], df[2])
+  num_index = "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?(\\d+)\\]{1,2}(\\[.+)?$",
+  
+  
+  # 3) fallback solution when only 1 name can be found / second group
+  #    can also be further decomposed if needed
+  fallback_1name = "^([a-zA-Z._][\\w.]*)[$[]*(.*?)$",
+
+
+  # 4) Like re #1 but doesn't match "df$name"
+  two_names_no_doll = paste0("^([\\w.]+)(\\[{1,2})(.*\\,\\s*)?['\"]?",
+                              "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$"),
+
+  # 5) Negative indexing
+  neg_num_index = paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?",
+                          "(-\\d+)\\]{1,2}(\\[.+)?$")
+)
+
+
+
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
+
+# Declare global flag_by variable, (can be declared in check_args)
+# utils::globalVariables(c("flag_by"))
 
 # summarytools global options
 #' @importFrom utils data
@@ -40,11 +94,13 @@ utils::globalVariables(c("."))
                  "ctable.prop"            = "r",
                  "ctable.totals"          = TRUE,
                  "ctable.round.digits"    = 1,
+                 "ctable.silent"          = FALSE,
                  "descr.stats"            = "all",
                  "descr.transpose"        = FALSE,
                  "descr.silent"           = FALSE,
                  "dfSummary.style"        = "multiline",
                  "dfSummary.varnumbers"   = TRUE,
+                 "dfSummary.class"        = TRUE,
                  "dfSummary.labels.col"   = TRUE,
                  "dfSummary.graph.col"    = TRUE,
                  "dfSummary.valid.col"    = TRUE,
@@ -87,14 +143,27 @@ utils::globalVariables(c("."))
                           "errors when using dfSummary(), set ",
                           "st_options(use.x11 = FALSE)")
   }
-  
-  # Check if the latest (github) pander is installed;
-  # We can't use version number since the relevant fix is not in an incremented
-  # package version number (still 0.6.3); we use the *Packaged* attribute as a proxy.
-  pander_pkg_dt <- substr(packageDescription("pander")$Packaged, 1, 10)
-  should_update <- try(pander_pkg_dt <= "2018-11-06", silent = TRUE)
-  
-  if (isTRUE(should_update))
-    packageStartupMessage("For best results, restart R session and update pander using devtools:: or remotes::",
-                          "install_github('rapporter/pander')")
+}
+
+# Define a null coalescing operator if not available
+if (getRversion() < "4.1.0") {
+  if (!requireNamespace("backports", quietly = TRUE) || 
+      !"%||%" %in% getNamespaceExports("backports")) {
+    `%||%` <- function(x, y) {
+      if (is.null(x)) y else x
+    }
+  } else {
+    `%||%` <- backports::`%||%`
+  }
+}
+
+if (getRversion() < "4.4.0") {
+  if (!requireNamespace("backports", quietly = TRUE) || 
+      !"%||%" %in% getNamespaceExports("backports")) {
+    `%||%` <- function(x, y) {
+      if (is.null(x)) y else x
+    }
+  } else {
+    `%||%` <- backports::`%||%`
+  }
 }

@@ -1,7 +1,7 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 1.0.2
+Version: 1.1.0
 Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com", 
   role = c("aut", "cre"))
 Author: Dominic Comtois [aut, cre]
@@ -38,7 +38,8 @@ Suggests:
   knitr,
   magrittr,
   rmarkdown,
-  rstudioapi
+  rstudioapi,
+  backports
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
@@ -46,4 +47,4 @@ License: GPL-2
 URL: https://github.com/dcomtois/summarytools
 BugReports: https://github.com/dcomtois/summarytools/issues
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2

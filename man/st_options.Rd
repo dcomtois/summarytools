@@ -25,11 +25,13 @@ st_options(
   ctable.prop = "r",
   ctable.totals = TRUE,
   ctable.round.digits = 1,
+  ctable.silent = FALSE,
   descr.stats = "all",
   descr.transpose = FALSE,
   descr.silent = FALSE,
   dfSummary.style = "multiline",
   dfSummary.varnumbers = TRUE,
+  dfSummary.class = TRUE,
   dfSummary.labels.col = TRUE,
   dfSummary.valid.col = TRUE,
   dfSummary.na.col = TRUE,
@@ -122,6 +124,8 @@ whole data frame as main argument. Defaults to \code{25}.}
 
 \item{ctable.round.digits}{Numeric. Defaults to \code{1}.}
 
+\item{ctable.silent}{Logical. Hide console messages. \code{FALSE} by default.}
+
 \item{descr.stats}{Character. Corresponds to the \code{stats} parameter of
 \code{\link{descr}}. Defaults to \dQuote{all}.}
 
@@ -134,6 +138,10 @@ of \code{\link{descr}}. \code{FALSE} by default.}
 \dQuote{grid} for \emph{R Markdown} documents.}
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
+variable numbers in the first column. Defaults to \code{TRUE}.}
+
+\item{dfSummary.class}{Logical. Show data classes in Name column.
+\code{TRUE} by default.
 variable numbers in the first column. Defaults to \code{TRUE}.}
 
 \item{dfSummary.labels.col}{Logical. In \code{\link{dfSummary}}, display
