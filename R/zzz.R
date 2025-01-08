@@ -15,6 +15,54 @@
 # Placeholder for customized translations
 .st_env$custom_lang <- list()
 
+# Predefined stats values for descr
+.st_env$descr.stats <- list(
+  all     = c("mean", "sd", "min", "q1", "med", "q3","max", "mad",
+              "iqr", "cv", "skewness", "se.skewness", "kurtosis",
+              "n.valid", "pct.valid", "n"),
+  common  = c("mean", "sd", "min", "med", "max",
+              "n.valid", "pct.valid", "n"),
+  fivenum = c("min", "q1", "med", "q3", "max")
+)
+
+.st_env$descr.stats.valid <- list(
+  no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
+              "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
+              "n.valid", "pct.valid", "n"),
+  wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
+           "n.valid", "pct.valid", "n")
+)
+
+# most common operators -- used by parse_call()
+.st_env$oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "|>", 
+                  "%!>%", "%$%", "%<>%", "%>%", "%T>%", "%>>%")
+
+# regex used in parse_call
+.st_env$re <-list(
+  # 1) both names are there (df$name, df['name']), etc.
+  two_names = paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?['\"]?",
+                     "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$"),
+  
+  # 2) there is numeric indexing (df[[2]], df[ ,2], df[2])
+  num_index = "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?(\\d+)\\]{1,2}(\\[.+)?$",
+  
+  
+  # 3) fallback solution when only 1 name can be found / second group
+  #    can also be further decomposed if needed
+  fallback_1name = "^([a-zA-Z._][\\w.]*)[$[]*(.*?)$",
+
+
+  # 4) Like re #1 but doesn't match "df$name"
+  two_names_no_doll = paste0("^([\\w.]+)(\\[{1,2})(.*\\,\\s*)?['\"]?",
+                              "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$"),
+
+  # 5) Negative indexing
+  neg_num_index = paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?",
+                          "(-\\d+)\\]{1,2}(\\[.+)?$")
+)
+
+
+
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 

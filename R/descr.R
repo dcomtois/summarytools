@@ -248,31 +248,49 @@ descr <- function(x,
                       "a data.table; attempted conversion to tibble failed")
   }
   
-  
-  valid_stats <- list(
-    no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
-                "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                 "n", "n.valid", "pct.valid"),
-    wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-             "n", "n.valid", "pct.valid")
-  )
   errmsg <- c(errmsg, check_args(match.call(), list(...), "descr"))
   
+  # keywords "all", "common", "fivenum" are used alone
   if (identical(stats, "all")) {
-    stats <- valid_stats[[2 - as.numeric(identical(weights, NA))]]
+    stats <- .st_env$descr.stats.valid[[2 - as.numeric(missing(weights))]]
   } else if (identical(stats, "fivenum")) {
-    if (!identical(weights, NA)) {
+    if (!missing(weights)) {
       errmsg %+=% paste("fivenum is not supported when weights are used; valid",
-                        "stats are:", paste(valid_stats$wgts, collapse = ", "))
+                        "stats are:", 
+                        paste(.st_env$descr.stats.valid$wgts, collapse = ", "))
       
     }
-    stats <- c("min", "q1", "med", "q3", "max")
+    stats <- .st_env$descr.stats$fivenum # c("min", "q1", "med", "q3", "max")
   } else if (identical(stats, "common")) {
-    stats <- c("mean", "sd", "min", "med", "max", "n", "n.valid", "pct.valid")
+    stats <- .st_env$descr.stats$common 
   } else {
+    
+    # keywords are used with other stats and/or negative stats like "-min"
     stats <- tolower(stats)
-    invalid_stats <- 
-      setdiff(stats, valid_stats[[2 - as.numeric(identical(weights, NA))]])
+    ind_negat <- grep("^-", stats)
+    stats_negat <- substr(stats[ind_negat], start = 2, stop = 20)
+    
+    if (length(ind_negat))
+      stats <- stats[-ind_negat]
+    
+    # Replace keywords by the actual statistics
+    if ("common" %in% stats)
+      stats <- setdiff(unique(c(.st_env$descr.stats$common, stats)), "common")
+    
+    else if ("fivenum" %in% stats)
+      stats <- setdiff(unique(c(.st_env$descr.stats$fivenum, stats)), "fivenum")
+    
+    else if ("all" %in% stats)
+      stats <- setdiff(unique(c(.st_env$descr.stats$all, stats)), "all")
+    
+    # Remove the stats that had the format "-..."
+    stats <- setdiff(stats, stats_negat)
+    
+    invalid_stats <- setdiff(
+      stats,
+      .st_env$descr.stats.valid[[2 - as.numeric(missing(weights))]]
+      )
+    
     if (length(invalid_stats) > 0) {
       errmsg %+=%
         paste("The following statistics are not recognized, or not allowed: ",
