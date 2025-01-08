@@ -192,9 +192,8 @@ ctable <- function(x,
   # Get x & y metadata from parsing function
   if (isTRUE(flag_by)) {
     parse_info_x <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(), 
-                 var = c("x", "y"), silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = c("x", "y"), var_label = FALSE, 
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_x, "try-error")) {
@@ -209,9 +208,8 @@ ctable <- function(x,
     }
   } else {
     parse_info_x <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(), 
-                 var = "x", silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = "x", var_label = FALSE,
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_x, "try-error")) {
@@ -219,9 +217,8 @@ ctable <- function(x,
     }
     
     parse_info_y <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(), 
-                 var = "y", silent = "dnn" %in% names(match.call()),
-                 var_label = FALSE, caller = "ctable"),
+      parse_call(mc = match.call(), var = "y", var_label = FALSE,
+                 caller = "ctable"),
       silent = TRUE)
     
     if (inherits(parse_info_y, "try-error")) {
@@ -459,6 +456,8 @@ ctable <- function(x,
                                                  replacement = "",
                                                  x = weights_string,
                                                  fixed = TRUE))),
+         by_var           = if ("by_group" %in% names(parse_info_x))
+                                   parse_info_x$by_var else NA,
          Group            = ifelse("by_group" %in% names(parse_info_x),
                                    parse_info_x$by_group, NA),
          by_first         = ifelse("by_group" %in% names(parse_info_x), 

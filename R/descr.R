@@ -293,21 +293,17 @@ descr <- function(x,
   }
   
   # Get info about x from parsing function
-  parse_info <- try(
-    parse_call(sys.calls(), sys.frames(), match.call(),
-               var_name = (ncol(x.df) == 1),
-               var_label = (ncol(x.df) == 1), caller = "descr"),
-    silent = TRUE)
-  
-  if (inherits(parse_info, "try-error")) {
+  if ("skip_parse" %in% names(list(...))) {
     parse_info <- list()
-  }
-
-  if (!"var_name" %in% names(parse_info)) {
-    if (exists("varname")) {
-      parse_info$var_name <- varname
-    } else {
-      parse_info$var_name <- colnames(x.df)
+  } else {
+    parse_info <- try(
+      parse_call(mc        = match.call(),
+                 var_name  = (ncol(xx) == 1), 
+                 var_label = (ncol(xx) == 1), 
+                 caller    = "descr"),
+      silent = TRUE)
+    if (inherits(parse_info, "try-error")) {
+      parse_info <- list()
     }
   }
   

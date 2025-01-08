@@ -253,6 +253,7 @@ dfSummary <- function(x,
                                 tmp.img.dir         = tmp.img.dir,
                                 keep.grp.vars       = keep.grp.vars,
                                 silent              = silent,
+                                skip_parse          = TRUE,
                                 ...                 = ...)
 
       if (!inherits(parse_info, "try-error")) {
@@ -349,16 +350,22 @@ dfSummary <- function(x,
   }
 
   # Get metadata for x ---------------------------------------------------------
-  parse_info <- try(parse_call(sys.calls(), sys.frames(), match.call(),
-                               var_name = converted_to_df,
-                               var_label = converted_to_df,
-                               caller = "dfSummary"),
-                    silent = TRUE)
-
-  if (inherits(parse_info, "try-error")) {
+  if ("skip_parse" %in% names(match.call())) {
     parse_info <- list()
-  }
+  } else {
+    
+    parse_info <- try(
+      parse_call(mc        =  match.call(),
+                 var_name  =  converted_to_df,
+                 var_label =  converted_to_df,
+                 caller    = "dfSummary"),
+      silent = TRUE)
 
+    if (inherits(parse_info, "try-error")) {
+      parse_info <- list()
+    }
+  }
+  
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
     parse_info$df_name <- df_name
   }
@@ -594,10 +601,10 @@ dfSummary <- function(x,
                                    parse_info$df_label, NA),
          Dimensions       = c(n_tot, ncol(x)),
          Duplicates       = n_tot - n_distinct(x),
+         by_var           = if ("by_group" %in% names(parse_info))
+                                   parse_info$by_var else NA,
          Group            = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_group, NA),
-         by_var           = unlist(ifelse("by_var" %in% names(parse_info),
-                                          parse_info["by_var"], NA)),
          by_first         = ifelse("by_group" %in% names(parse_info),
                                    parse_info$by_first, NA),
          by_last          = ifelse("by_group" %in% names(parse_info),

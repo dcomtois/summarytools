@@ -30,74 +30,16 @@
 #'
 #' @importFrom pryr standardise_call where
 #' @importFrom utils head
-parse_call <- function(sys_calls,
-                       sys_frames,
-                       match_call, 
+parse_call <- function(mc,
                        var       = "x",
-                       silent    = FALSE, 
                        df_name   = TRUE,
                        df_label  = TRUE,
                        var_name  = TRUE,
                        var_label = TRUE,
-                       caller = "") {
+                       caller    = "",
+                       silent    = TRUE) {
   
-  upd_output <- function(item, value, force = FALSE) {
-    output <- get("output", envir = fn.env)
-    if (isTRUE(force) || 
-        ((length(output[[item]]) == 0 || is.na(output[[item]])) &&
-          length(value) == 1 && class(value) == class(output[[item]]))) {
-      names(value) <- NULL
-      
-      if (sum(value %in% c(".", NA)) == length(value))
-        value <- NA_character_
-      
-      output[[item]] <- value
-      
-      # Check if output is ready to be returned
-      if (count_empty(output, count.nas = FALSE) == 0) {
-        # Cleanup
-        for (item in intersect(c("var_name", "by_var", "by_group"),
-                                 names(output))) {
-          if (length(output$df_name) == 1 && !is.na(output$df_name)) {
-            
-            re <- paste0("^",output$df_name,  # starts with df_name
-                         "[$[]*['\"]?",       # subsetting chars
-                         "([\\w_.]+)",        # var_name (group 1)
-                         "['\"]?\\]{0,2}",    # closing subsetting char(s)
-                         "(.*)$")             # remainder of expression (gr. 2)
-            output[[item]] <- sub(pattern = re,
-                                  replacement = "\\1\\2", 
-                                  x = output[[item]], perl = TRUE)
-            
-            if (item == "by_group") {
-              output$by_group <- gsub(paste0(output$df_name, "\\$"), "", output$by_group)
-            }
-            
-          }
-          output[[item]] <- gsub("['\"]", "", output[[item]])
-        }
-      
-        empty_elements <- as.numeric(
-          which(vapply(output, function(x) {identical(x, NA_character_) || 
-              length(x) == 0}, TRUE))
-          )
-        
-        if (length(empty_elements) > 0) {
-          output <- output[-empty_elements]
-        }
-        
-        assign("do_return", envir = fn.env, value = TRUE)        
-      }
-    }
-    assign("output", output, envir = fn.env)
-  }
-
-  populate_by_info <- function() {
-    
-    if ("list" %in% all.names(calls$by$INDICES)) {
-      by_var <- character()
-      for (i in seq_len(length(calls$by$INDICES) - 1)) {
-        by_var[i]  <- sub("\\(\\)", "", deparse(calls$by$INDICES[i + 1]))
+  sc <- sys.calls()
       }
     } else {
       by_var <- deparse(calls$by$INDICES)

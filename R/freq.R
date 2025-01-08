@@ -167,9 +167,8 @@ freq <- function(x,
     }
     
     parse_info <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(), 
-                 df_name = TRUE, df_label = FALSE, var_name = FALSE,
-                 var_label = FALSE, caller = "freq"),
+      parse_call(mc = match.call(), df_name = TRUE, df_label = FALSE, 
+                 var_name = FALSE, var_label = FALSE, caller = "freq"),
       silent = TRUE)
     
     outlist  <- list()
@@ -244,9 +243,8 @@ freq <- function(x,
            !"var" %in% names(match.call())) {
     
     # Get information about x from parsing function
-    parse_info <- try(parse_call(sys.calls(), sys.frames(), match.call(),
-                                 silent = TRUE, var_name = FALSE,
-                                 var_label = FALSE,
+    parse_info <- try(parse_call(mc = match.call(), 
+                                 var_name = FALSE, var_label = FALSE,
                                  caller = "freq"),
                       silent = TRUE)
     
@@ -284,7 +282,8 @@ freq <- function(x,
              headings         = headings,
              weights          = weights,
              rescale.weights  = rescale.weights,
-             ...)
+             skip_parse       = TRUE,
+             ...              = ...)
       
       attr(out[[length(out)]], "data_info")$Data.frame <- df_name
       attr(out[[length(out)]], "data_info")$Variable   <- colnames(x)[i]
@@ -368,14 +367,14 @@ freq <- function(x,
     }
     
     # Get information about x from parsing function
-    parse_info <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(),
-                 silent = exists("varname", inherits = FALSE),
-                 caller = "freq"),
-      silent = TRUE)
-    
-    if (inherits(parse_info, "try-error")) {
+    if ("skip_parse" %in% names(list(...))) {
       parse_info <- list()
+    } else {
+      parse_info <- try(parse_call(mc = match.call(), 
+                                   caller = "freq"), silent = TRUE)
+      if (inherits(parse_info, "try-error")) {
+        parse_info <- list()
+      }
     }
     
     if (!("var_name" %in% names(parse_info)) && exists("varname")) {
