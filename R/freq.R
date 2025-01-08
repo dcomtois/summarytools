@@ -586,12 +586,22 @@ freq <- function(x,
                                         headings       = headings,
                                         split.tables   = Inf,
                                         na.val         = na.val)
+
+    # Keep ... arguments that could be relevant for pander of format
+    user_fmt <- list()
+    dotArgs <- list(...)
+    for (i in seq_along(dotArgs)) {
+      if (class(dotArgs[[i]]) %in% 
+          c("character", "numeric", "integer", "logical") &&
+          length(names(dotArgs[1])) == length(dotArgs[[i]]))
+          user_fmt <- append(user_fmt, dotArgs[i])
+    }
     
-    attr(output, "user_fmt") <- list(... = ...)
+    if (length(user_fmt))
+      attr(output, "user_fmt") <- user_fmt
     
     attr(output, "lang") <- st_options("lang")
     
     return(output)
-    
   }
 }

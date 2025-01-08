@@ -477,9 +477,20 @@ ctable <- function(x,
                                        headings       = headings,
                                        display.labels = display.labels)
   
-  attr(output, "user_fmt") <- list(... = ...)
-
-  attr(output, "lang") <- st_options("lang")
+  # Keep ... arguments that could be relevant for pander of format
+  user_fmt <- list()
+  dotArgs <- list(...)
+  for (i in seq_along(dotArgs)) {
+    if (class(dotArgs[[i]]) %in% 
+        c("character", "numeric", "integer", "logical") &&
+        length(names(dotArgs[1])) == length(dotArgs[[i]]))
+      user_fmt <- append(user_fmt, dotArgs[i])
+  }
   
+  if (length(user_fmt) > 0)
+    attr(output, "user_fmt") <- user_fmt
+  
+  attr(output, "lang") <- st_options("lang")
+
   return(output)
 }

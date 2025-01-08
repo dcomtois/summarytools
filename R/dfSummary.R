@@ -620,7 +620,18 @@ dfSummary <- function(x,
   
   attr(output, "format_info") <- format_info[!is.na(format_info)]
 
-  attr(output, "user_fmt") <- list(... = ...)
+  # Keep ... arguments that could be relevant for pander of format
+  user_fmt <- list()
+  dotArgs <- list(...)
+  for (i in seq_along(dotArgs)) {
+    if (class(dotArgs[[i]]) %in% 
+        c("character", "numeric", "integer", "logical") &&
+        length(names(dotArgs[1])) == length(dotArgs[[i]]))
+      user_fmt <- append(user_fmt, dotArgs[i])
+  }
+  
+  if (length(user_fmt))
+    attr(output, "user_fmt") <- user_fmt
 
   attr(output, "lang") <- st_options("lang")
 
@@ -630,6 +641,7 @@ dfSummary <- function(x,
   if (clear_null_device) {
     try(dev.off(), silent = TRUE)
   }
+
   return(output)
 }
 
