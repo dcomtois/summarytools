@@ -38,7 +38,8 @@ Suggests:
   knitr,
   magrittr,
   rmarkdown,
-  rstudioapi
+  rstudioapi,
+  backports
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true

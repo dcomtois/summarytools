@@ -50,6 +50,6 @@ print.list <- function(x,
          ...)
     
   } else {
-    base::print.default(x, ...)
+    NextMethod("print", x, ...)
   }
 }

@@ -1,7 +1,10 @@
 # Initialize vector containing paths to temporary html files generated when 
 # viewing in browser or in RStudio visualization pane. Will be updated whenever
 # print.summarytools() / cleartmp() are called.
-.st_env <- new.env(parent = emptyenv())
+.st_env <- new.env()
+
+# Initialize environment used by parse_call()
+.p <- new.env()
 
 # Determine OS : Windows | Linux | Darwin
 .st_env$sysname <- Sys.info()[["sysname"]]
@@ -9,8 +12,8 @@
 # Initialize vector for tempfiles -- useful for cleartmp()
 .st_env$tmpfiles <- c()
 
-# Initialize list used by view() when printing an object of class "by"
-.st_env$byInfo <- list()
+# Initialise list used to keep track of current process
+.st_env$ps <- list()
 
 # Placeholder for customized translations
 .st_env$custom_lang <- list()
@@ -65,6 +68,9 @@
 
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
+
+# Declare global flag_by variable, (can be declared in check_args)
+# utils::globalVariables(c("flag_by"))
 
 # summarytools global options
 #' @importFrom utils data
@@ -136,5 +142,28 @@ utils::globalVariables(c("."))
     packageStartupMessage("system might not have X11 capabilities; in case of ",
                           "errors when using dfSummary(), set ",
                           "st_options(use.x11 = FALSE)")
+  }
+}
+
+# Define a null coalescing operator if not available
+if (getRversion() < "4.1.0") {
+  if (!requireNamespace("backports", quietly = TRUE) || 
+      !"%||%" %in% getNamespaceExports("backports")) {
+    `%||%` <- function(x, y) {
+      if (is.null(x)) y else x
+    }
+  } else {
+    `%||%` <- backports::`%||%`
+  }
+}
+
+if (getRversion() < "4.4.0") {
+  if (!requireNamespace("backports", quietly = TRUE) || 
+      !"%||%" %in% getNamespaceExports("backports")) {
+    `%||%` <- function(x, y) {
+      if (is.null(x)) y else x
+    }
+  } else {
+    `%||%` <- backports::`%||%`
   }
 }

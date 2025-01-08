@@ -127,7 +127,7 @@ ctable <- function(x,
 
   # Check for group_by()
   if (inherits(x, "grouped_df")) {
-      stop("ctable() does not support group_by(); use stby() instead")
+     stop("ctable() does not support group_by(); use stby() instead")
   }
 
   # Adjustment for by() / syby()
@@ -343,7 +343,7 @@ ctable <- function(x,
 
   if (isTRUE(chisq)) {
     tmp.chisq <- chisq.test(freq_table_min)
-    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 2), 
                    tmp.chisq$parameter, 
                    p.value = round(tmp.chisq$p.value, 4))
     attr(output, "chisq") <- tmp.chisq
@@ -433,8 +433,7 @@ ctable <- function(x,
   
   # Prepare metadata to be stored as the data_info attribute
   data_info <-
-    list(Data.frame          = ifelse(exists("df_name", inherits = FALSE), 
-                                      df_name, NA),
+    list(Data.frame          = dfn,
          Data.frame.label    = ifelse(exists("df_label", inherits = FALSE),
                                       df_label, NA),
          Row.variable        = x_name,

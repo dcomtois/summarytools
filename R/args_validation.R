@@ -104,20 +104,28 @@ check_args <- function(mc, dotArgs, caller) {
     }
     
     if ("na.val" %in% names(mc) && !is.null(pf$na.val)) {
-      if (length(pf$na.val) > 1)
+        varname <- pf$varname %||% "x"
+      if (length(pf$na.val) > 1) {
         errmsg %+=% "'na.val' can only contain one value"
-      if (!is.factor(pf$x))
+      }
+      if (!is.factor(pf$x)) {
         if (isFALSE(st_options("freq.silent")))
-          message("'na.val' only applies to factors & will be ignored")
-      if (anyNA(pf$x) && isFALSE(st_options("freq.silent")))
-        errmsg %+=% "'na.val' only valid in absence of other NA values"
-      if (!isTRUE(test_character(pf$na.val)))
+          message("'na.val' only applies to factors & will be ignored for ",
+                  varname)
+      }
+      if (!isTRUE(test_character(pf$na.val, any.missing = FALSE))) {
         errmsg %+=% "'na.val' must be character"
-      if (is.factor(pf$x) && !pf$na.val %in% levels(pf$x)) {
-        pf$na.val <- NULL
-        if (isFALSE(st_options("freq.silent")))
-          message(paste0("'", pf$na.val, "' is not a level of x and ",
-                         "will be ignored"))
+      }
+      if (is.factor(pf$x)) {
+        if (!pf$na.val %in% levels(pf$x)) {
+          if (isFALSE(st_options("freq.silent")))
+            message(paste0("'", pf$na.val, "' is not a level of ",
+                           varname, " and will be ignored"))
+          pf$na.val <- NULL
+        } else if (anyNA(pf$x)) {
+          errmsg %+=% paste(varname, "contains NA values; 'na.val' is only",
+                            "valid in the absence of actual NA values")
+        }
       }
     }
     
@@ -194,7 +202,7 @@ check_args <- function(mc, dotArgs, caller) {
     if (!identical(pf$weights, NA)) {
       if (is.null(pf$weights)) {
         errmsg %+=% "weights vector not found"
-      } else if (caller_orig != "FUN" && 
+      } else if (isFALSE(pf$flag_by) && 
                  length(pf$weights) != nrow(as.data.frame(pf$x))) {
         errmsg %+=% "weights vector must have same length as 'x'"      
       }
@@ -295,7 +303,7 @@ check_args <- function(mc, dotArgs, caller) {
         }
       } else {
         # order has length > 1 -- all elements must correspond to column names
-        if (length(ind <- which(!pf$order %in% colnames(pf$x.df))) > 0) {
+        if (length(ind <- which(!pf$order %in% colnames(pf$xx))) > 0) {
           errmsg %+=% paste("Following ordering element(s) not recognized:", 
                             paste(pf$order[ind], sep = ", "),
                             collapse = " ")
@@ -303,10 +311,8 @@ check_args <- function(mc, dotArgs, caller) {
       }
     }
     
-    if (!identical(pf$weights, NA)) {
-      if (is.null(pf$weights)) {
-        errmsg %+=% "weights vector not found"
-      } else if (caller_orig != "FUN" && (length(pf$weights) != nrow(pf$x.df))) {
+    if (!is.null(pf$weights)) {
+      if (isFALSE(pf$flag_by) && (length(pf$weights) != nrow(pf$xx))) {
         errmsg %+=% "weights vector must have same length as 'x'"      
       }
     }
@@ -456,14 +462,6 @@ check_args_print <- function(mc) {
      errmsg %+=% "'file' path is not valid - check that directory exists"
   }
   
-  # # Change method to browser when file name was (most likely) provided by user
-  # if (grepl("\\.html$", pf$file, ignore.case = TRUE, perl = TRUE) &&
-  #     !grepl(pattern = tempdir(), x = pf$file, fixed = TRUE) && 
-  #     pf$method == "pander") {
-  #   pf$method <- "browser"
-  #   message("Switching method to 'browser'")
-  # }
-  # 
   if (pf$method == "pander" && !is.na(pf$table.classes)) {
     errmsg %+=% "'table.classes' option does not apply to method 'pander'"
   }
@@ -620,22 +618,23 @@ check_args_st_options <- function(mc) {
     errmsg %+=% "'ctable.totals' must be either TRUE or FALSE"
   }
   
-  if ("descr_stats" %in% names(mc)) {
-    valid_stats <- c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
-                     "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-                     "n.valid", "pct.valid")
+  if ("descr.stats" %in% names(mc)) {
     
-    if (length(pf$descr_stats) == 1 && 
-        !(pf$descr_stats %in% c("fivevnum", "common")) &&
-        !(pf$descr_stats %in% valid_stats)) {
+    # Check for invalid items
+    stats <- tolower(pf$descr.stats)
+    invalid_stats <- setdiff(
+      stats, c(.st_env$descr.stats.valid$no_wgts,
+               paste0("-", .st_env$descr.stats.valid$no_wgts),
+               "all", "common", "fivenum"))
+    
+    if (length(invalid_stats) > 0) {
       errmsg %+=%
-        paste("'descr_stats' value", dQuote(pf$descr_stats), "not recognized;",
-              "allowed values are: ", 
-              paste('"fivenum", "common", or a combination of :',
-                    paste0(dQuote(valid_stats), sep = ", ")))
+        paste("descr.stats: values", 
+              paste(dQuote(invalid_stats), collapse = ", "),
+              "not recognized; see ?descr")
     }
   }
-  
+
   if ("descr.transpose" %in% names(mc) &&
       !isTRUE(test_logical(pf$descr.transpose, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'descr.transpose' must be either TRUE or FALSE"

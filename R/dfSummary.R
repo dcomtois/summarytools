@@ -225,10 +225,6 @@ dfSummary <- function(x,
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
     g_inds  <- attr(x, "groups")$.rows   # Extract rows for current group
     
-    # Extract grouping variable names
-    # g_vars  <- setdiff(names(attr(x, "group")), ".rows")
-    # g_vars_pos <- which(colnames(x) %in% g_vars)
-    
     for (g in seq_along(g_ks)) {
       outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]],]),
                                 round.digits        = round.digits,
@@ -1029,7 +1025,7 @@ crunch_numeric <- function(column_data, is_barcode) {
     # frequencies are displayed for rounded values
     extra_space <- FALSE
 
-    # With timeseries (ts) objects, display n distinct, start & end
+    # With time-series (ts) objects, display n distinct, start & end
     if (inherits(column_data, "ts")) {
       maxchars <- max(nchar(c(trs("start"), trs("end"))))
       outlist[[2]] <-
@@ -1591,7 +1587,8 @@ detect_barcode <- function(x) {
   # length is compatible with one of the EAN/UPC/ITC specifications
   x_samp <- na.omit(sample(x = x, size = min(length(x), 50), replace = FALSE))
   if (length(x_samp) < 3 ||
-      (len <- nchar(min(x_samp, na.rm = TRUE))) != nchar(max(x, na.rm = TRUE)) ||
+      (len <- nchar(format(min(x_samp, na.rm = TRUE), scientific = FALSE))) !=
+      nchar(format(max(x, na.rm = TRUE), scientific = FALSE)) ||
       !len %in% c(8,12,13,14)) {
     return(FALSE)
   }

@@ -1,20 +1,21 @@
 #' Univariate Statistics for Numerical Data
 #'
-#' Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 
-#' skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not 
+#' Calculates mean, sd, min, Q1\*, median, Q3\*, max, MAD, IQR\*, CV, 
+#' skewness\*, SE.skewness\*, and kurtosis\* on numerical vectors. (\*) Not 
 #' available when using sampling weights.
 #'
 #' @param x A numerical vector or a data frame.
 #' @param var Unquoted expression referring to a specific column in \code{x}.
 #'   Provides support for piped function calls (e.g.
-#'   \code{my_df \%>\% descr(my_var)}.    
+#'   \code{my_df |> descr(my_var)}.    
 #' @param stats Character. Which stats to produce. Either \dQuote{all} (default),
 #'   \dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 #'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 #'   \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-#'   \dQuote{n}, \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally
-#'   via \code{\link{st_options}}, option \dQuote{descr.stats}.
+#'   \dQuote{n.valid}, \dQuote{pct.valid}, and \dQuote{n}. Can be set globally
+#'   via \code{\link{st_options}}, option \dQuote{descr.stats}. See 
+#'   \emph{Details}.
 #' @param na.rm Logical. Argument to be passed to statistical functions. 
 #'   Defaults to \code{TRUE}.
 #' @param round.digits Numeric. Number of significant digits to display. 
@@ -46,7 +47,7 @@
 #' @param split.tables Character. \code{\link[pander]{pander}} argument that
 #'   specifies how many characters wide a table can be. \code{100} by default.
 #' @param weights Numeric. Vector of weights having same length as \emph{x}.
-#'   \code{NA} (default) indicates that no weights are used.
+#'   \code{NULL} (default) indicates that no weights are used.
 #' @param rescale.weights Logical. When set to \code{TRUE}, a global constant is
 #'   apply to make the total count equal \code{nrow(x)}. \code{FALSE} by default.
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}} or
@@ -54,18 +55,31 @@
 #'
 #' @return An object having classes \dQuote{\emph{matrix}} and
 #'   \dQuote{\emph{summarytools}} containing the statistics, with extra
-#'   attributes used by \code{\link{print}} method and \link{view} function.
+#'   attributes useful to other functions/methods.
+#'
+#' @details
+#'   Since version 1.1, the \emph{stats} argument can be set in a more flexible
+#'   way; keywords (\emph{all}, \emph{common}, \emph{fivenum}) can be combined
+#'   with single statistics, or their \dQuote{negation}. For instance, using 
+#'   \code{stats = c("all", "-q1", "-q3")} would show
+#'   \strong{all except q1 and q3}.
+#'   
+#'   For further customization, you could redefine any preset in the
+#'   following manner: \code{.st_env$descr.stats$common <- c("mean", "sd", "n")}. 
+#'   \emph{Use caution when modifying \code{.st_env}, and reload the package
+#'   if errors ensue. Changes are temporary and will not persist across
+#'   R sessions.}
 #'
 #' @examples
 #' data("exams")
 #' 
-#' # All stats for all numerical variabls
+#' # All stats (default behavior) for all numerical variables
 #' descr(exams)
 #' 
-#' # Only common statistics
-#' descr(exams, stats = "common")
+#' # Show only "common" statistics, plus "n"
+#' descr(exams, stats = c("common", "n"))
 #' 
-#' # Arbitrary selection of statistics, transposed
+#' # Selection of statistics, transposing the results
 #' descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 #' 
 #' # Rmarkdown-ready
@@ -73,10 +87,10 @@
 #'
 #' # Grouped statistics
 #' data("tobacco")
-#' with(tobacco, stby(BMI, gender, descr))
+#' with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
 #'
-#' # Grouped statistics, transposed
-#' with(tobacco, stby(BMI, age.gr, descr, stats = "common", transpose = TRUE))
+#' # Grouped statistics in tidy table:
+#' with(tobacco, stby(BMI, age.gr, descr, stats = "common")) |> tb()
 #'
 #' \dontrun{
 #' # Show in Viewer (or browser if not in RStudio)
@@ -87,7 +101,6 @@
 #'       file = "descr_exams.html", 
 #'       report.title = "BMI by Age Group",
 #'       footnote = "<b>Schoolyear:</b> 2018-2019<br/><b>Semester:</b> Fall")
-#' 
 #' }
 #'
 #' @keywords univar
@@ -97,7 +110,8 @@
 #' @importFrom rapportools skewness kurtosis nvalid
 #' @importFrom stats IQR mad median sd quantile
 #' @importFrom utils head
-#' @importFrom dplyr %>% as_tibble select starts_with summarize_all group_keys
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr %>% select starts_with summarise_all group_keys n
 #' @importFrom tidyr separate gather spread
 descr <- function(x,
                   var             = NULL,
@@ -112,109 +126,55 @@ descr <- function(x,
                   headings        = st_options("headings"),
                   display.labels  = st_options("display.labels"),
                   split.tables    = 100,
-                  weights         = NA,
+                  weights         = NULL,
                   rescale.weights = FALSE,
                   ...) {
   
-  # handle objects of class "grouped_df" (dplyr::group_by)
-  if (inherits(x, "grouped_df")) {
-    
-    if ("var" %in% names(match.call())) {
-      # var might contain a function call -- such as df %>% descr(na.omit(var1))
-      if (inherits(as.list(match.call()[-1])$var, "call")) {
-        var_obj <- eval(as.list(match.call()[-1])$var, envir = x)
-        varname <- intersect(colnames(x), 
-                             as.character(as.list(match.call()[-1])$var))
-      } else {
-        var_obj <- x[[as.list(match.call()[-1])$var]]
-        varname <- deparse(substitute(var))
-      }
-    } else {
-      var_obj  <- x[ ,setdiff(colnames(x), group_vars(x))]
-    }
-    
-    parse_info <- try(
-      parse_call(sys.calls(), sys.frames(), match.call(),
-                 var_name  = (ncol(x) == 1),
-                 var_label = (ncol(x) == 1), caller = "descr"),
-      silent = TRUE)
+  UseMethod("descr", x)
+}
 
-    outlist  <- list()
-    gr_ks    <- map_groups(group_keys(x))
-    gr_inds  <- attr(x, "groups")$.rows
-    
-    for (g in seq_along(gr_ks)) {
-      outlist[[g]] <- descr(x               = as_tibble(var_obj)[gr_inds[[g]], ],
-                            stats           = stats,
-                            na.rm           = na.rm,
-                            round.digits    = round.digits,
-                            transpose       = transpose,
-                            order           = order,
-                            style           = style,
-                            plain.ascii     = plain.ascii,
-                            justify         = justify,
-                            headings        = headings,
-                            display.labels  = display.labels,
-                            split.tables    = split.tables,
-                            weights         = 
-                              if (identical(weights, NA)) NA else 
-                                weights[gr_inds[[g]]],
-                            rescale.weights = rescale.weights,
-                            ...             = ...)
-      
-      if (!inherits(parse_info, "try-error")) {
-        if (!is.null(parse_info$df_name))
-          attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
-        if (!is.null(parse_info$df_label))
-          attr(outlist[[g]], "data_info")$Data.frame.label <- parse_info$df_label
-        if (!is.null(parse_info$var_name)) {
-          attr(outlist[[g]], "data_info")$Variable <- parse_info$var_name
-        } else if (exists("varname")) {
-          attr(outlist[[g]], "data_info")$Variable <- varname
-          if (identical(colnames(outlist[[g]]), "value"))
-            colnames(outlist[[g]]) <- varname
-          if (identical(rownames(outlist[[g]]), "value"))
-            rownames(outlist[[g]]) <- varname
-        }
-        if (!is.null(parse_info$var_label))
-          attr(outlist[[g]], "data_info")$Variable.label <- parse_info$var_label
-      }
-      
-      attr(outlist[[g]], "data_info")$by_var <- 
-        setdiff(colnames(attr(x, "groups")), ".rows")
-      
-      attr(outlist[[g]], "data_info")$Group    <- gr_ks[g]
-      attr(outlist[[g]], "data_info")$by_first <- g == 1
-      attr(outlist[[g]], "data_info")$by_last  <- g == length(gr_ks)
-    }
-    
-    if (length(group_vars(x)) == 1 && is.null(dim(var_obj))) {
-      names(outlist) <- sub(paste(group_vars(x), "= "), "", gr_ks)
-    } else {
-      names(outlist) <- gr_ks
-    }
-    class(outlist) <- c("stby")
-    attr(outlist, "groups") <- group_keys(x)
-    return(outlist)
-  }
+#' @export
+descr.default <- function(x,
+                          var             = NULL,
+                          stats           = st_options("descr.stats"),
+                          na.rm           = TRUE,
+                          round.digits    = st_options("round.digits"),
+                          transpose       = st_options("descr.transpose"),
+                          order           = "sort",
+                          style           = st_options("style"),
+                          plain.ascii     = st_options("plain.ascii"),
+                          justify         = "r",
+                          headings        = st_options("headings"),
+                          display.labels  = st_options("display.labels"),
+                          split.tables    = 100,
+                          weights         = NULL,
+                          rescale.weights = FALSE,
+                          ...) {
   
-  # When var is provided, discard all other variables
-  if (is.data.frame(x) && ncol(x) > 1 && "var" %in% names(match.call())) {
+  # Initialize flag_by variable that will be set in check_args()
+  flag_by <- logical()
+  
+  # x is data.frame, var is present -------------------------------------
+  if (is.data.frame(x) && #ncol(x) > 1 &&
+      "var" %in% names(match.call()) &&
+      deparse(substitute(var)) != "list()") {
     
     # var might contain a function call -- such as df %>% descr(na.omit(var1))
     if (inherits(as.list(match.call()[-1])$var, "call")) {
-      x_obj   <- eval(as.list(match.call()[-1])$var, envir = x)
-      varname <- intersect(colnames(x),
-                           as.character(as.list(match.call()[-1])$var))
+      xx        <- eval(as.list(match.call()[-1])$var, envir = x)
+      var_names <- intersect(colnames(x),
+                             as.character(as.list(match.call()[-1])$var))
     } else {
-      x_obj   <- x[[as.list(match.call()[-1])$var]]
-      varname <- deparse(substitute(var))
+      #xx        <- x[[as.list(match.call()[-1])$var]]
+      var_names <- deparse(substitute(var))
+      xx        <- x[ , var_names, drop = FALSE]
     }
+  } else if (inherits(x, "data.frame")) {
+    xx <- x
+    var_names <- colnames(x)
   } else {
-    x_obj <- x
-    if (!is.null(colnames(x))) {
-      varname  <- colnames(x)
-    }
+    xx <- as_tibble(x)
+    var_names <- deparse(substitute(x))
   }
   
   # Validate arguments -------------------------------------------------------
@@ -225,25 +185,18 @@ descr <- function(x,
     stop(tmp_x_name, " is either NULL or does not exist")
   }
   
-  if (is.atomic(x_obj) && !is.numeric(x_obj)) {
+  if (ncol(xx) == 1 && !is.numeric(xx[[1]])) {
     errmsg %+=% "'x' must be numeric"
   }
   
-  # make x_obj a tibble
-  if (!inherits(x_obj, "tbl")) {
-    x.df <- as_tibble(x_obj)
-  } else {
-    x.df <- x_obj
-  }
-  
   # Get variable label
-  if (ncol(x.df) == 1) {
-    var_label <- label(x.df[[1]])
+  if (ncol(xx) == 1) {
+    var_label <- label(xx[[1]])
   } else {
     var_label <- NA
   }
   
-  if (!is.data.frame(x.df)) {
+  if (!is.data.frame(xx)) {
     errmsg %+=% paste("'x' must be a numeric vector, a data.frame, a tibble,",
                       "a data.table; attempted conversion to tibble failed")
   }
@@ -326,31 +279,36 @@ descr <- function(x,
   }
   
   # Identify and exclude non-numerical columns from x
-  col_to_remove <- which(!vapply(x.df, is.numeric, logical(1)))
+  col_to_remove <- which(!vapply(xx, is.numeric, logical(1)))
   
   if (length(col_to_remove) > 0) {
-    ignored             <- colnames(x.df)[col_to_remove]
-    x.df                <- x.df[-col_to_remove]
-    order               <- setdiff(order, ignored)
-    parse_info$var_name <- parse_info$var_name[-col_to_remove]
+    ignored    <- colnames(xx)[col_to_remove]
+    xx         <- xx[ , -col_to_remove, drop = FALSE]
+    order      <- setdiff(order, ignored)
+    var_names  <- var_names[-col_to_remove]
+  } else {
+    ignored <- c()
   }
   
-  if (ncol(x.df) == 0) {
+  if (ncol(xx) == 0) {
     stop("no numerical variables found in ", deparse(match.call()$x))
   }
 
   # Verify that the order argument is still valid after column removal
   if (length(order) > 1) {
-    if (length(ind <- which(!colnames(x.df) %in% order)) > 0) {
+    if (length(ind <- which(!colnames(xx) %in% order)) > 0) {
       message("column(s) not specified in 'order' (",
-              paste(colnames(x.df)[ind], collapse = ", "), 
+              paste(colnames(xx)[ind], collapse = ", "), 
               ") will appear at the end of the table")
-      order <- c(order, colnames(x.df)[ind])
+      order <- c(order, colnames(xx)[ind])
     } 
+  } else if (length(order) == 0) {
+    warning("something went wrong with the order argument; using default value")
+    order <- "sort"
   }
   
   # No weights being used ------------------------------------------------------
-  if (identical(weights, NA)) {
+  if (missing(weights)) {
     
     # Prepare the summarizing functions for dplyr::summarise; there are 3 stats
     # that will be calculated later on so to not slow down the function
@@ -382,16 +340,16 @@ descr <- function(x,
     names(summar_funs) <- fun_names
     summar_funs <- summar_funs[which(fun_names %in% stats)]
 
-    if (ncol(x.df) > 1) {
+    if (ncol(xx) > 1) {
       results <- suppressWarnings(
-        x.df %>% summarise_all(.funs = summar_funs) %>%
+        xx %>% summarise_all(.funs = summar_funs) %>%
           gather("variable", "value") %>%
           separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
           spread("var", "value")
       )
       
       if (identical(order, "preserve")) {
-        results <- results[ ,c("stat", colnames(x.df))]
+        results <- results[ ,c("stat", colnames(xx))]
       } else if (length(order) > 1) {
         results <- results[ ,c("stat", order)]
       }
@@ -400,10 +358,10 @@ descr <- function(x,
       output <- as.data.frame(t(results[ ,-1]))
       colnames(output) <- results$stat
     } else {
-      output <- x.df %>% 
+      output <- xx %>% 
         summarise_all(.funs = summar_funs, na.rm = na.rm) %>%
         as.data.frame
-      rownames(output) <- parse_info$var_name
+      rownames(output) <- parse_info$var_name %||% var_names
     }
 
     # Calculate additional stats if needed
@@ -419,7 +377,7 @@ descr <- function(x,
     }
     
     if ("pct.valid" %in% stats) {
-      output$pct.valid <- output$n.valid *100 / nrow(x.df)
+      output$pct.valid <- output$n.valid *100 / nrow(xx)
     }
     
     # Apply corrections where n.valid = 0
@@ -430,7 +388,7 @@ descr <- function(x,
     
     # Weights being used -------------------------------------------------------
     
-    weights_string <- deparse(substitute(weights))
+    weights_name <- deparse(substitute(weights))
     
     # Subset weights when called from by()/stby() to match current data subset
     if (isTRUE(flag_by)) {
@@ -447,18 +405,18 @@ descr <- function(x,
     # If some weights are 0 or negative, delete rows
     zero_wgts <- which(weights <= 0)
     if (length(zero_wgts)) {
-      x.df <- x.df[-zero_wgts, ]
+      xx <- xx[-zero_wgts, ]
       message(length(zero_wgts), " rows with weight <= 0 were deleted")
     }
 
-    # If weights are in x.df, remove them
-    if(length(parse_info$df_name) == 1 && 
-       grepl(parse_info$df_name, weights_string)) {
-      wgts_vname <- sub(paste0(parse_info$df_name, "\\$"), "", weights_string)
-      ind <- which(names(x.df) == wgts_vname)
+    # If weights are in xx, remove them
+    if (length(parse_info$df_name) == 1 && 
+       grepl(parse_info$df_name, weights_name)) {
+      wgts_vname <- sub(paste0(parse_info$df_name, "\\$"), "", weights_name)
+      ind <- which(names(xx) == wgts_vname)
       if (length(ind) == 1) {
-        x.df <- x.df[-ind]
-        parse_info$var_name <- setdiff(parse_info$var_name, wgts_vname)  
+        xx <- xx[-ind]
+        var_names <- setdiff(var_names, wgts_vname)  
       }
     }
     
@@ -476,12 +434,13 @@ descr <- function(x,
     
     # Rescale weights if necessary
     if (rescale.weights) {
-      weights <- weights / sum(weights) * nrow(x.df)
+      weights <- weights / sum(weights) * nrow(xx)
     }
     
-    for(i in seq_along(x.df)) {
-      variable <- as.numeric(x.df[[i]])
-      n <- sum(weights)      
+    n <- sum(weights)      
+    
+    for (i in seq_along(xx)) {
+      variable <- as.numeric(xx[[i]])
       # Extract number and proportion of missing and valid values
       
       if (any(c("n.valid", "pct.valid") %in% stats)) {
@@ -492,8 +451,6 @@ descr <- function(x,
         n_valid <- sum(!is.na(variable))
         p_valid <- NA
       }
-      
-      n <- sum(weights)
       
       # Remove missing values from variable and from corresponding weights
       if (isTRUE(na.rm)) {
@@ -530,7 +487,7 @@ descr <- function(x,
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
     
-    rownames(output) <- parse_info$var_name
+    rownames(output) <- var_names
     
     # Apply corrections where n.valid = 0
     zerows <- which(output$n.valid == 0)
@@ -539,10 +496,10 @@ descr <- function(x,
   
   # Prepare output data -------------------------------------------------------
   # Keep and order required stats from output
-  output <- output[ ,stats, drop = FALSE]
+  output <- output[ , stats, drop = FALSE]
   
   # Corrections for special case where nrow = 0
-  if (nrow(x.df) == 0) {
+  if (nrow(xx) == 0) {
     for (cn in colnames(output)) {
       if (cn == "n.valid") {
         next
@@ -589,11 +546,12 @@ descr <- function(x,
                                   length(parse_info$var_label) == 1,
                                 parse_info$var_label,
                                 ifelse(!is.na(var_label), var_label, NA)),
-      Weights          = ifelse(identical(weights, NA), NA,
+      Weights          = ifelse(is.null(weights), NA,
                                 sub(pattern = paste0(parse_info$df_name, "$"), 
-                                    replacement = "", x = weights_string, 
+                                    replacement = "", x = weights_name, 
                                     fixed = TRUE)),
-      by_var           = NA,
+      by_var           = if ("by_group" %in% names(parse_info))
+                                parse_info$by_var else NA,
       Group            = ifelse("by_group" %in% names(parse_info),
                                 parse_info$by_group, NA),
       by_first         = ifelse("by_group" %in% names(parse_info), 
@@ -601,11 +559,9 @@ descr <- function(x,
       by_last          = ifelse("by_group" %in% names(parse_info), 
                                 parse_info$by_last, NA),
       transposed       = transpose,
-      N.Obs            = nrow(x.df))
-  
-  if ("by_var" %in% names(parse_info)) {
-    data_info$by_var <- parse_info$by_var
-  }
+      N.Obs            = ifelse(is.null(weights), nrow(xx),
+                                round(n, round.digits))
+    )
   
   attr(output, "data_info") <- data_info[!is.na(data_info)]
   
@@ -617,7 +573,7 @@ descr <- function(x,
                                       display.labels = display.labels,
                                       split.tables   = split.tables)
   
-  if (nrow(x.df) == 0) {
+  if (nrow(xx) == 0) {
     attr(output, "format_info") %+=% list(missing = "N/A")
   }
   
@@ -636,8 +592,166 @@ descr <- function(x,
   
   attr(output, "lang") <- st_options("lang")
   
-  if (exists("ignored"))
+  if (!is.null(ignored))
     attr(output, "ignored") <- ignored
   
   return(output)
+}
+
+#' @export
+descr.grouped_df <- function(x,
+                             var             = NULL,
+                             stats           = st_options("descr.stats"),
+                             na.rm           = TRUE,
+                             round.digits    = st_options("round.digits"),
+                             transpose       = st_options("descr.transpose"),
+                             order           = "sort",
+                             style           = st_options("style"),
+                             plain.ascii     = st_options("plain.ascii"),
+                             justify         = "r",
+                             headings        = st_options("headings"),
+                             display.labels  = st_options("display.labels"),
+                             split.tables    = 100,
+                             weights         = NULL,
+                             rescale.weights = FALSE,
+                             ...) {
+  
+  var_names  <- NA_character_
+  #var_label <- NA_character_
+  
+  if ("var" %in% names(match.call())) {
+    xx <- as_tibble(eval(substitute(var), envir = x))
+    var_names <- deparse(substitute(var))
+  } else if (inherits(x, "data.frame")) {
+    xx <- x
+    #xx <- x[ ,setdiff(colnames(x), group_vars(x)), drop = FALSE]
+    var_names <- setdiff(colnames(x), group_vars(x))
+  } else {
+    xx <- as_tibble(x)
+  }
+    # whole data frame is to be descr'ed
+    #xx <- x[ ,setdiff(colnames(x), group_vars(x)), drop = FALSE]
+    #}
+  
+  # Check for weights
+  if (missing(weights)) {
+    weights_all <- NULL
+    weights_name <- NULL
+    weights_vname <- NULL
+    weights_in_x <- FALSE
+  } else {
+    weights_name <- deparse(substitute(weights))
+    if (exists(weights_name)) {
+      weights_all <- eval(weights_name)
+    } else if (weights_name %in% colnames(x)) {
+      weights_all <- x[[weights_name]]
+      weights_in_x <- TRUE
+    } else {
+      weights_all <- force(weights)
+      weights_in_x <- FALSE
+    }
+    # If weights are in xx, remove name from var_names
+    weights_vname <- sub(".+\\$", "", weights_name)
+    weights_ind   <- which(names(xx) == weights_vname)
+    if (length(weights_ind) == 1) {
+      #xx <- xx[-ind]
+      #parse_info$var_name <- setdiff(parse_info$var_name, wgts_vname)  
+      var_names <- setdiff(var_names, weights_vname)  
+    }
+  }
+
+  parse_info <- try(
+    parse_call(mc = match.call(),
+               var_name  = (ncol(xx) == 1),
+               var_label = (ncol(xx) == 1),
+               caller = "descr"),
+    silent = TRUE)
+  
+  
+  if (inherits(parse_info, "try-error"))
+    parse_info <- list()
+  
+  # Prepare for iterations
+  outlist  <- list()
+  gr_ks    <- map_groups(group_keys(x))
+  gr_inds  <- attr(x, "groups")$.rows
+  groups   <- group_keys(x)
+  gr_var_ind <- which(colnames(xx) %in% group_vars(x))
+  
+  for (g in seq_along(gr_ks)) {
+    
+    if (is.null(weights_all)) {
+      weights_gr  <- NULL # NA
+      weights_ind <- numeric()
+    } else {
+      weights_gr <- weights_all[gr_inds[[g]]]
+      weights_ind <- which(colnames(xx) == weights_vname)
+    }
+    
+    neg_ind <- c(weights_ind, gr_var_ind)
+    if (length(neg_ind))
+      x_expr <- quote(xx[gr_inds[[g]], -neg_ind])
+    else
+      x_expr <- quote(xx[gr_inds[[g]], ])
+    
+    #if (length(weights_ind))
+    #  xx <- xx[,-weights_ind]
+    dotArgs <- list(...)
+    
+    args_list <- c(list(x               = x_expr, 
+                        stats           = stats,
+                        na.rm           = na.rm,
+                        round.digits    = round.digits,
+                        transpose       = transpose,
+                        order           = order,
+                        style           = style,
+                        plain.ascii     = plain.ascii,
+                        justify         = justify,
+                        headings        = headings,
+                        display.labels  = display.labels,
+                        split.tables    = split.tables,
+                        weights         = weights_gr,
+                        rescale.weights = rescale.weights,
+                        skip_parse      = TRUE),
+                   dotArgs)
+    
+    if (missing(weights)) {
+      args_list$weights <- NULL
+      args_list$rescale.weights <- NULL
+    }
+
+    outlist[[g]] <- do.call("descr", args_list)
+      
+    # Build data_info attribute
+    data_info <- list(
+      Data.frame       = parse_info$df_name,
+      Data.frame.label = parse_info$df_label,
+      Variable         = parse_info$var_name,
+      Variable.label   = parse_info$var_label,
+      Weights          = weights_vname,
+      by_var           = group_vars(x),
+      Group            = gr_ks[g],
+      by_first         = (g == 1),
+      by_last          = (g == length(gr_ks)),
+      transposed       = transpose,
+      N.Obs            = length(gr_inds[[g]])
+    )
+    
+    attr(outlist[[g]], "data_info") <-
+      data_info[which(sapply(data_info, function(x) !is.null(x)))]
+    
+    if (identical("value", dimnames(outlist[[g]])[[2 - as.numeric(transpose)]]))
+      dimnames(outlist[[g]])[[2 - as.numeric(transpose)]] <- parse_info$var_name
+  }
+  
+  if (length(group_vars(x)) == 1 && ncol(xx) == 1) {
+    names(outlist) <- sub(paste(group_vars(x), "= "), "", gr_ks)
+  } else {
+    names(outlist) <- gr_ks
+  }
+  class(outlist) <- c("stby")
+  attr(outlist, "groups") <- group_keys(x)
+  
+  #.e_reset()	
+  return(outlist)
 }

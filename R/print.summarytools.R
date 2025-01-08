@@ -241,9 +241,9 @@ print.summarytools <- function(x,
   # (thus not taking advantage of print.summarytools() which makes results
   # much cleaner in the console)
   if (method == "pander" &&
-      (identical(deparse(sys.calls()[[sys.nframe() - 1]][2]), "x[[i]]()") ||
+      (identical(deparse(sys.calls()[[max(sys.nframe() - 1, 1)]][2]), "x[[i]]()") ||
        any(grepl(pattern = "fn_call = FUN(x = X[[i]]",
-                 x = deparse(sys.calls()[[sys.nframe() - 1]]), fixed = TRUE)))) {
+                 x = deparse(sys.calls()[[max(sys.nframe() - 1, 1)]]), fixed = TRUE)))) {
     message("For best results printing list objects with summarytools, ",
             "use stby() instead of by() or *apply()")
   }
@@ -533,7 +533,7 @@ print.summarytools <- function(x,
               tags$title(HTML(conv_non_ascii(report.title))),
               if (collapse)
                 includeScript(system.file(
-                  "includes/scripts/jquery-3.4.0.slim.min.js",
+                  "includes/scripts/jquery-3.7.0.slim.min.js",
                   package = "summarytools"
                 )),
               if (collapse)
@@ -729,7 +729,7 @@ print_freq <- function(x, method) {
 
     x[is_na_x] <- format_info$missing
 
-    main_sect %+=%
+    main_sect %+=% 
       paste(
         capture.output(
           do.call(pander, append(pander_args, list(x = quote(x))))
@@ -2104,7 +2104,7 @@ build_heading_pander <- function() {
         head1 <- paste(add_markup(trs("title.descr.weighted"), h = 3), " \n")
       }
     } else {
-      if (trs("title.freq") == "") {
+      if (trs("title.descr") == "") {
         head1 <- NA
       } else {
         head1 <- paste(add_markup(trs("title.descr"), h = 3), " \n")

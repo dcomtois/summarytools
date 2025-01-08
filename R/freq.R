@@ -40,8 +40,8 @@
 #'   string is used, it will be used as a regular expression to filter row 
 #'   names.
 #' @param missing Text to display in NA cells. Defaults to \dQuote{}.
-#' @param na.val Character. For factors, consider this value as \code{NA}. Only
-#'   valid if there are no other NA values.
+#' @param na.val Character. For factors, consider this value as \code{NA}.
+#'   Ignored if there are actual NA values.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be
@@ -116,6 +116,7 @@
 #' @importFrom stats xtabs
 #' @importFrom dplyr n_distinct group_keys group_vars
 #' @importFrom lubridate is.Date
+#' @importFrom checkmate anyNaN
 freq <- function(x,
                  var             = NULL,
                  round.digits    = st_options("round.digits"),
@@ -136,9 +137,12 @@ freq <- function(x,
                  rescale.weights = FALSE,
                  ...) {
 
-  # Initialize flag_by variable that will be set in the args validation function
+  # Initialize flag_by variable that will be set in check_args()
   flag_by <- logical()
   
+  if (is.call(x))
+    x <- eval(x, parent.frame())
+
   # handle objects of class "grouped_df" (dplyr::group_by)
   if (inherits(x, "grouped_df")) {
     
@@ -155,8 +159,7 @@ freq <- function(x,
     } else {
       if (ncol(x) > ncol(group_keys(x)) + 1) {
         stop("when using group_by() with freq(), only one categorical variable ",
-             "may be analyzed; the number of grouping variables however is not ",
-             "limited by any technical constraints")
+             "may be analyzed")
       } else if (ncol(x) < ncol(group_keys(x)) + 1) {
         stop("the number of variables passed to freq() must equal the number ",
              "of grouping variables + 1")
@@ -165,7 +168,7 @@ freq <- function(x,
       var_obj <- x[[setdiff(colnames(x), group_vars(x))]]
       varname <- setdiff(colnames(x), group_vars(x))
     }
-    
+
     parse_info <- try(
       parse_call(mc = match.call(), df_name = TRUE, df_label = FALSE, 
                  var_name = FALSE, var_label = FALSE, caller = "freq"),
@@ -175,14 +178,28 @@ freq <- function(x,
     gr_ks    <- map_groups(group_keys(x))
     gr_inds  <- attr(x, "groups")$.rows
 
-    if ("weights" %in% names(match.call())) {
-      weights_str <- deparse(substitute(weights))
-      weights_all <- parent.frame()$.[[weights_str]]
+    # Check for weights
+    if (missing(weights)) {
+      weights_all <- NULL
+      weights_name <- NULL
+    } else {
+      weights_name <- deparse(substitute(weights))
+      if (exists(weights_name)) {
+        weights_all <- eval(weights_name)
+      } else if (weights_name %in% names(x)) {
+        #weights_all <- get(weights_name, envir = as.environment(x))
+        weights_all <- x[[weights_name]]
+      } else {
+        weights_all <- force(weights)
+      }
     }
     
     for (g in seq_along(gr_ks)) {
-      if ("weights" %in% names(match.call())) {
-        weights <- weights_all[gr_inds[[g]]]
+      
+      if (!is.null(weights_all)) {
+        weights_gr <- weights_all[gr_inds[[g]]]
+      } else {
+        weights_gr <- NA
       }
       
       outlist[[g]] <- freq(x               = var_obj[gr_inds[[g]]],
@@ -200,21 +217,21 @@ freq <- function(x,
                            display.type    = display.type,
                            display.labels  = display.labels,
                            headings        = headings,
-                           weights         = 
-                              if (identical(weights, NA)) NA else weights[gr_inds[[g]]],
+                           weights         = weights_gr,
                            rescale.weights = rescale.weights,
-                           ...             = ... )
+                           ...             = ...,
+                           skip_parse      = TRUE)
       
       if (!inherits(parse_info, "try-error") && !is.null(parse_info$df_name)) {
         attr(outlist[[g]], "data_info")$Data.frame <- parse_info$df_name
       }
       
-      if (exists("weights_str")) {
-        attr(outlist[[g]], "data_info")$Weights <- weights_str
-      }
-      
       if (!is.na(label(x))) {
         attr(outlist[[g]], "data_info")$Data.frame.label <- label(x)
+      }
+      
+      if (exists("weights_name")) {
+        attr(outlist[[g]], "data_info")$Weights <- weights_name
       }
       
       attr(outlist[[g]], "data_info")$Variable <- varname
@@ -265,7 +282,7 @@ freq <- function(x,
       }
       
       out[[length(out) + 1]] <- 
-        freq(x[[i]],
+        freq(x[i],
              round.digits     = round.digits,
              order            = order,
              style            = style,
@@ -303,9 +320,7 @@ freq <- function(x,
     }
     class(out) <- c("list", "summarytools")
     return(out)
-  }
-  
-  else {
+  } else {
     # Simple call (no iteration needed, or call from higher-level iteration)    
     if ("var" %in% names(match.call())) {
       dfname <- as.character(substitute(x))
@@ -330,10 +345,10 @@ freq <- function(x,
     if (!is.atomic(x)) {
       x <- try(as.vector(x), silent = TRUE)
       if (inherits(x, "try-error") || (!is.atomic(x) && !is.Date(x))) {
-        errmsg %+=% "argument x must be a vector or a factor"
+        errmsg %+=% "argument x must be a vector or factor"
       }
     }
-    
+    match.call()
     order_sign <- "+"
     errmsg <- c(errmsg, check_args(match.call(), list(...), "freq"))
     
@@ -394,7 +409,7 @@ freq <- function(x,
       freq_table <- table(x, useNA = "always")
     } else {
       # Weights are used
-      weights_string <- deparse(substitute(weights))
+      weights_name <- deparse(substitute(weights))
       
       # Subset weights when called from by()/stby() to match current data subset
       if (isTRUE(flag_by)) {
@@ -452,7 +467,9 @@ freq <- function(x,
         if (length(rows) < n_distinct(x)) {
           freq_table <- 
             c(freq_table[rows], 
-              "(Other)" = sum(freq_table[setdiff(na.omit(names(freq_table)), rows)]),
+              "(Other)" = sum(
+                freq_table[setdiff(na.omit(names(freq_table)), rows)]
+                ),
               tail(freq_table, 1))
         } else {
           freq_table <- c(freq_table[rows], tail(freq_table, 1))
@@ -541,7 +558,7 @@ freq <- function(x,
       Data.type <- ifelse(mode(x) %in% rownames(.keywords_context),
                           trs(mode(x)), mode(x))
     }
-    
+
     data_info <-
       list(
         Data.frame       = ifelse("df_name" %in% names(parse_info), 
@@ -556,13 +573,15 @@ freq <- function(x,
         Weights          = ifelse(
           identical(weights, NA), NA,
           ifelse(is.null(parse_info$df_name), 
-                 yes = weights_string,
+                 yes = weights_name,
                  no = sub(
                    pattern = paste0(parse_info$df_name,
                                     "$"), 
                    replacement = "",
-                   x = weights_string, 
+                   x = weights_name, 
                    fixed = TRUE))),
+        by_var           = if ("by_group" %in% names(parse_info))
+                                  parse_info$by_var else NA,
         Group            = ifelse("by_group" %in% names(parse_info),
                                   parse_info$by_group, NA),
         by_first         = ifelse("by_group" %in% names(parse_info), 

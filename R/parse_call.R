@@ -1,4 +1,4 @@
-#' Extract Data Information From Arguments Passed to Functions
+#' Extract Data Information From Arguments Passed to Functions (internal)
 #'
 #' Using sys.calls(), sys.frames() and match.call(), this utility function
 #' extracts and/or infers information about the data being processed.
@@ -6,11 +6,14 @@
 #' grouping information (when by() is used) are returned by the function which
 #' tries various methods to get this information.
 #'
-#' @param sys_calls Object created using \code{sys.calls()}.
-#' @param sys_frames Object created using \code{sys.frames()}.
-#' @param match_call Object created using \code{match.call()}.
-#' @param var Character. \dQuote{x} (default) and/or \dQuote{y} (the latter 
+#' @param var Character. \dQuote{x} (default) or \dQuote{y} (the latter 
 #'   being used only in \code{\link{ctable}}).
+#' @param df_name Logical.
+#' @param df_label Logical.
+#' @param var_name Logical.
+#' @param var_label Logical.
+# @param retain Logical. Flag to keep .p active (for iterative processing
+#   managed by a st function.)
 #' @param silent Logical. Hide console messages. \code{TRUE} by default.
 #' 
 #' @return A list consisting of one or many of the following items
@@ -40,561 +43,941 @@ parse_call <- function(mc,
                        silent    = TRUE) {
   
   sc <- sys.calls()
-      }
-    } else {
-      by_var <- deparse(calls$by$INDICES)
-    }
-
-    for (i in seq_along(by_var)) {
-      # Normalize variable name
-      if (grepl(re4, by_var[i], perl = TRUE)) {
-        df_nm   <- sub(re1, "\\1", by_var[i], perl = TRUE)
-        df_       <- get_object(df_nm, "data.frame")
-        if (!identical(df_, NA)) {
-          v_name <- sub(re1, "\\4", by_var[i], perl = TRUE)
-          if (v_name %in% colnames(df_)) {
-            by_var[i] <- paste(df_nm, v_name, sep = "$")
-          }
-        }
-      }
-      
-      if (grepl(re2, by_var[i], perl = TRUE)) {
-        df_nm <- sub(re2, "\\1", by_var[i], perl = TRUE)
-        df_   <- get_object(df_nm, "data.frame")
-        if (!identical(df_, NA)) {
-          var_number <- as.numeric(sub(re2, "\\4", by_var[i], perl = TRUE))
-          v_name <- colnames(df_)[var_number]
-          by_var[i] <- paste(df_nm, v_name, sep = "$")
-        }
-      }
-    }
   
-    # On first iteration, generate levels based on IND variables, and store
-    if (length(.st_env$byInfo) == 0) {
-      if (is.null(names(sys_frames[[pos$tapply]]$namelist)) ||
-          is.na(names(sys_frames[[pos$tapply]]$namelist)[1])) {
-        names(sys_frames[[pos$tapply]]$namelist) <- 
-          by_var #as.character(calls$by$INDICES)[-1]
+  on.exit(expr = {
+    if (.p$do_return) {
+      rc <- is_recyclable()
+      if (!rc) {
+        rm(list = ls(envir = .p), envir = .p)
       }
-      by_levels <- sys_frames[[pos$tapply]]$namelist
-      .st_env$byInfo$by_levels <- 
-        expand.grid(by_levels, stringsAsFactors = FALSE)
-      # Following line is possibly redundant
-      colnames(.st_env$byInfo$by_levels) <- by_var
-      .st_env$byInfo$iter <- 1
-    }
-   
-    # Populate by_group item
-    by_group <- 
-      paste(colnames(.st_env$byInfo$by_levels),
-            as.character(.st_env$byInfo$by_levels[.st_env$byInfo$iter, ]),
-            sep = " = ", collapse = ", ")
-    
-    # by_first and by_last are used by print.summarytools when printing objects
-    # passed by the by() function
-    if (.st_env$byInfo$iter == 1 && nrow(.st_env$byInfo$by_levels) == 1) {
-      by_first <- TRUE
-      by_last  <- TRUE
-      .st_env$byInfo <- list()
-    } else if (.st_env$byInfo$iter == 1) {
-      by_first <- TRUE
-      by_last  <- FALSE
-      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
-    } else if (.st_env$byInfo$iter == nrow(.st_env$byInfo$by_levels)) {
-      by_first <- FALSE
-      by_last  <- TRUE
-      .st_env$byInfo <- list()
     } else {
-      by_first <- FALSE
-      by_last <- FALSE
-      .st_env$byInfo$iter <- .st_env$byInfo$iter + 1
+      warning(paste("metadata extraction terminated unexpectedly;",
+                    "inspect results carefully"))
+      cleanup_output()
+      output <- c(.p$output, .p$by_info)
+      if (!is_recyclable()) {
+        rm(list = ls(envir = .p), envir = .p)
+      }
+      return(output)
     }
+  })
+
+  # Check if previous call's .p can be recycled (iteration)
+  if (is_recyclable()) {
+    incr_grp_iter()
+    return(c(.p$output, .p$by_info))
+  } else {
+    # Rebuild the .p environment
+    if (length(ls(envir = .p)) > 0) {
+      rm(list = ls(envir = .p), envir = .p)
+    }
+    .p$call       <- sc[[1]] # As a basis of comparison for iterated calls
+    .p$caller     <- caller
+    .p$calls      <- list() # Will be updated later
+    .p$do_return  <- FALSE  # Flag to see if there is premature exit
+    .p$output     <- list() # Output list
+    .p$pos        <- list() # Positions in the call stack
+    .p$silent     <- silent # Set to TRUE for debugging / try() calls)
+    .p$sf         <- sys.frames()
+    .p$var        <- var    # value of 'var' argument ("x", "y"...)
+    out_elem <- list(df_name = character(), df_label = character(),
+                     var_name = character(), var_label = character())
+    .p$output <- out_elem[as.logical(mget(names(out_elem)))]
+  }
     
-    upd_output("by_var",   by_var, force = (length(by_var) > 1))
-    upd_output("by_group", by_group)
-    upd_output("by_first", by_first)
-    upd_output("by_last",  by_last)
-    TRUE
+  # Get position of relevant calls in the stack
+  pos         <- list()
+  sc_head     <- lapply(sc, head, 1)
+  
+  pos$by      <- grep("^(st)?by\\(",       sc_head)
+  pos$with    <- grep("^(base::)?with\\(", sc_head)
+  pos$pipe    <- grep("^`%>%`\\(",  sc_head)
+  pos$piper   <- grep("^`%>>%`\\(", sc_head)
+  pos$expos   <- grep("^`%\\$%`\\(",sc_head)
+  pos$lapply  <- grep("^lapply",    sc_head)
+  pos$tapply  <- grep("^tapply",    sc_head)
+  pos$fun     <- grep(paste0("^", caller), sc_head)[1]
+  
+  if (is.na(pos$fun)) {
+    for (i in seq_along(sc)) {
+      if (grepl(caller, paste0(deparse(sc[[i]]), collapse = ""))) {
+        pos$fun <- i
+        break
+      }
+    }
   }
   
-  by_ctable_case <- function() {
-    if (!is.null(names(calls$by$data))) {
-      v_name <- c(deparse(calls$by$data$x), deparse(calls$by$data$y))
-    } else {
-      v_name <- as.character(calls$by$data[2:3])
+  pos <- pos[which(lengths(pos) > 0)]
+  
+  # Keep only relevant calls
+  calls <- list()
+  for (i in seq_along(pos)) {
+    calls[[names(pos)[i]]] <- sc[[pos[[i]]]]
+  }
+  
+  # store pos and calls to .p
+  .p$pos <- pos
+  .p$calls <- calls
+  
+  # Call "subroutines"
+  done <- FALSE
+  for (p in names(pos)) {
+    if (exists(f <- paste0("parse_", p), mode = "function"))
+      done <- do.call(f, list())
+    if (done) {
+      cleanup_output()
+      output <- c(.p$output, .p$by_info)
+      return(output)
     }
-    
-    if (!"with" %in% names(calls)) {
-      if (any(grepl("\\$", v_name))) {
-        df_nm    <- sub("^([\\w._]+)\\$.+$", "\\1", v_name[1], perl = TRUE)
-        df_nm[2] <- sub("^([\\w._]+)\\$.+$", "\\1", v_name[2], perl = TRUE)
-      }
-      
-      if (isTRUE(df_nm[1] == df_nm[2])) {
-        df_nm <- df_nm[1]
-        df_ <- get_object(df_nm, "data.frame")
-        if (!identical(df_, NA)) {
-          upd_output("df_name", df_nm)
-          upd_output("df_label", label(df_))
-        }
+  }
+  
+  # When all else fails, use deduction / elimination
+  done <- deduce_names()
+  if (!done)
+    message("Some object names could not be found")
+  cleanup_output()
+  return(c(.p$output, .p$by_info))
+}
+
+# parse_fun() ---------------------------------------
+# Call to the summarytools fn (freq, descr, ...)
+parse_fun <- function()  {
+  
+  done <- FALSE
+  call <- standardize(.p$calls$fun)
+  obj <- .p$sf[[.p$pos$fun]][[.p$var]]
+  
+  # Extract names from x argument
+  nms <- all.names(call[[.p$var]])
+  #nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
+  len <- length(call[[.p$var]])
+  
+  if (is.data.frame(obj)) {
+    if (len == 1) {
+      if (identical(call[[.p$var]], as.name("."))) {
+        done <- upd_output("var_name", colnames(obj))
+        if (ncol(obj) == 1)
+          upd_output("var_label", label(obj[[1]]))
       } else {
-        upd_output("df_name", NA_character_)
-        upd_output("df_label", NA_character_)
-      }
-    }
-    upd_output("var_name", v_name, force = TRUE)
-  }
-
-  get_object <- function(name, class) {
-    for (i in seq_along(sys_frames)) {
-      if (name %in% ls(sys_frames[[i]])) {
-        if (inherits(sys_frames[[i]][[name]], class)) {
-          return(sys_frames[[i]][[name]])
-        }
-      }
-    }
-    # fallback method
-    env <- pryr::where(name = name)
-    return(get(name, env, mode = "list"))
-  }
-
-  parse_data_str <- function(str) {
-    
-    if (grepl(re1, str, perl = TRUE)) {
-      df_nm <- sub(re1, "\\1", str, perl = TRUE)
-      df_   <- get_object(df_nm, "data.frame")
-      if (!identical(df_, NA)) {
-        upd_output("df_name", df_nm)
-        upd_output("df_label", label(df_))
-        v_name <- sub(re1, "\\4", str, perl = TRUE)
-        if (v_name %in% colnames(df_)) {
-          upd_output("var_name", v_name)
-          upd_output("var_label", label(df_[[v_name]]))
+        done <- upd_output("df_name",   deparse(call[[.p$var]]))
+        done <- upd_output("df_label",  label(obj))
+        done <- upd_output("var_name",  NA_character_)
+        done <- upd_output("var_label", NA_character_)
+        if (done)
           return(TRUE)
+      }
+    } else {
+      # x is data.frame, and call[[.p$var]] > 1
+      # quite possibly a native-pipe command.
+      # iterate over names of the call and extract objects
+      var_pos <- which(names(call) == .p$var) 
+      obj_components <- list()
+      var_candidates <- c()
+      
+      if (empty_na(.p$output$df_name)) {
+        for (nm in nms) {
+          obj_ <- dynGet(x = nm, ifnotfound = NULL, inherits = TRUE)
+          
+          if (inherits(obj_, "function"))
+            next
+          
+          else if (inherits(obj_, c("data.frame", "list")))
+            obj_components[[nm]] <- list(class   = class(obj_),
+                                         content = ls(obj_),
+                                         classes = lapply(obj_, class),
+                                         label   = label(obj_),
+                                         labels  = labls(obj_))
+          
+          else if (inherits(obj_, "matrix"))
+            obj_components[[nm]] <- list(class   = class(obj_),
+                                         content = colnames(obj_),
+                                         classes = mode(obj_))
+          
+          else if (is.null(obj_))
+            var_candidates %+=% nm
         }
-      }
-    } else if (grepl(re2, str, perl = TRUE)) {
-      df_nm   <- sub(re2, "\\1", str, perl = TRUE)
-      df_       <- get_object(df_nm, "data.frame")
-      if (!identical(df_, NA)) {
-        upd_output("df_name",  df_nm)
-        upd_output("df_label", label(df_))
-        var_number <- as.numeric(sub(re2, "\\4", str, perl = TRUE))
-        upd_output("var_name",  colnames(df_)[var_number])
-        upd_output("var_label", label(df_[[var_number]]))
-        return(TRUE)
-      }
-    } else if (grepl(re3, str, perl = TRUE)) {
-      obj_name <- sub(re3, "\\1", str, perl = TRUE)
-      obj_env <- try(pryr::where(obj_name))
-      if (!inherits(obj_env, "try-error")) {
-        obj <- get(obj_name, envir = obj_env)
-        if (is.data.frame(obj)) {
-          upd_output("df_name", obj_name)
-          upd_output("df_label", label(obj))
-          if (isTRUE(var_name)) {
-            obj2_name <- sub(re3, "\\2", str, perl = TRUE)
-            obj2      <- try(eval(parse(text = obj2_name), envir = obj), 
-                             silent = TRUE)
-            if (!inherits(obj2, "try-error") && is.atomic(obj2)) {
-              upd_output("var_name",  obj2_name)
-              upd_output("var_label", NA_character_)
+        
+        if (length(var_candidates) > 0) {
+          if (any(var_candidates %in% obj_components[[1]]$content)) {
+              done <- upd_output("df_name",  names(obj_components)[1])
+              done <- upd_output("df_label", 
+                                 obj_components[[nm]]$label %||%
+                                   NA_character_)
+              if (done)  return(TRUE)
+          }
+            
+          for (v in var_candidates) {
+            if (v %in% obj_components[[1]]$content) {
+              done <- upd_output("var_name", v)
+              done <- upd_output("var_label",
+                                 obj_components[[nm]]$labels[[v]] %||%
+                                   NA_character_)
+              if (done)  return(TRUE)
             }
           }
-        } else if (is.atomic(obj)) {
-          upd_output("var_name", obj_name)
-          upd_output("var_label", label(obj))
         }
-        return(TRUE)
       }
     }
-    upd_output("df_name",   NA_character_)
-    upd_output("var_name",  NA_character_)
-    upd_output("df_label",  NA_character_)
-    upd_output("var_label", NA_character_)
+    if (isTRUE(.p$do_return))
+      return(TRUE)
+  } else if (is.atomic(obj)) {
+    if (len == 1) {
+      if (all(c("x", "var") %in% names(call))) {
+        if (deparse(call[[.p$var]]) != ".") {
+          done <- upd_output("df_name", deparse(call[[.p$var]]))
+        }
+        try(upd_output("df_label", label(eval(call[[.p$var]]))),
+            silent = .p$silent)
+        if (length(call$var) == 1) {
+          done <- upd_output("var_name", deparse(call$var))
+          done <- upd_output("var_label", label(obj))
+        }
+      } else {
+        if ("x" %in% names(standardize(call)))
+        done <- upd_output("var_name",  deparse(call[[.p$var]]))
+        done <- upd_output("var_label", label(obj))
+        done <- upd_output("df_name",   NA_character_)
+        done <- upd_output("df_label",  NA_character_)
+      }
+    }
+  }
+  
+  if (done)
+    return(TRUE)
+  done <- parse_data_str(deparse(call[[.p$var]]))
+  return(done)
+}
+  
+# parse_by() ----------------------------------------------
+parse_by <- function() {
+  done <- FALSE
+  call <- standardize(.p$calls$by)
+  populate_by_info(call)
+  
+  try(.p$calls$lapply <- standardize(.p$calls$lapply[-4]), silent = .p$silent)
+  try(.p$calls$tapply <- standardize(.p$calls$tapply), silent = .p$silent)
+  
+  # treat special case of by() called on ctable, with ou without "with()"
+  if (length(call$data) > 1 && deparse(call$data[[1]]) == "list" &&
+      .p$caller == "ctable") {
+    done <- by_ctable_case(call)
+    if (done)  return(TRUE)
+  } else {
+    x <- .p$sf[[.p$pos$by]]$data
+    if (is.data.frame(x)) {
+      if (length(call$data) == 1) {
+        done <- upd_output("df_name", deparse(call$data))
+        done <- upd_output("df_label",
+                           label(get_object(deparse(call$data), "data.frame")))
+        if (done)  return(TRUE)
+      } else {
+        if (parse_data_str(deparse(call$data)))  return(TRUE)
+      }
+    } else if (is.atomic(x)) {
+      if (length(call$data) == 1) {
+        done <- upd_output("var_name", deparse(call$data))
+        done <- upd_output("var_label", label(x))
+        if (done)  return(TRUE)
+        if (!"with" %in% names(.p$calls)) {
+          done <- upd_output("df_name", NA_character_)
+          done <- upd_output("df_label", NA_character_)
+        }
+      } else {
+        x_str <- deparse(call$data)
+        done <- parse_data_str(x_str)
+      }
+    }
+  }
+  return(done)
+}
+
+# parse_with() --------------------------------------------
+parse_with <- function() {
+  done <- FALSE
+  call <- standardize(.p$calls$with)
+  call$expr <- standardize(call$expr)
+  
+  x <- .p$sf[[.p$pos$with]]$data
+  
+  if (is.data.frame(x)) {
+    if (length(call$data) == 1) {
+      df_name <- deparse(call$data)
+      if (df_name == "." && "expos" %in% names(.p$calls)) {
+        .p$calls$expos <- standardize(.p$calls$expos)
+        if (is.call(.p$calls$expos$rhs) && 
+            identical(standardize(.p$calls$expos$rhs),
+                      call$expr)) {
+          df_name <- .p$calls$expos$lhs
+          if (length(df_name) == 1) {
+            done <- upd_output("df_name",  deparse(df_name))
+          } else {
+            done <- upd_output("df_name",  NA_character_)
+          }
+        }
+      } else if (df_name == "." && "pipe" %in% names(.p$calls)) {
+        call <- standardize(.p$calls$pipe)
+        call$lhs <- standardize(call$lhs)
+        df_name <- get_lhs(call$lhs)
+        if (length(df_name) == 1) {
+          done <- upd_output("df_name",  deparse(df_name))
+        } else if (is.null(df_name)) {
+          done <- upd_output("df_name", deparse(call$lhs))
+        }
+      } else {
+        done <- upd_output("df_name", deparse(call$data))
+      }
+    } else {
+      done <- upd_output("df_name", 
+                         setdiff(as.character(call$data), .st_env$oper)[1])
+    }
+    done <- upd_output("df_label", label(x))
+    if (done)  return(TRUE)
+  }
+  
+  if ("x" %in% names(call$expr)) {
+    if (is.call(call$expr$x)) {
+      v_name <- c(x = deparse(standardize(call$expr$x)$x),
+                  y = deparse(standardize(call$expr$x)$y))
+    } else {
+      v_name <- c(x = deparse(call$expr$x),
+                  y = deparse(call$expr$y))
+    }
+    if (length(.p$var) == 1) {
+      done <- upd_output("var_name",  v_name[[.p$var]])
+      done <- upd_output("var_label", label(x[[v_name[[.p$var]]]]))
+    } else {
+      done <- upd_output("var_name", v_name, force = TRUE)
+      done <- upd_output("var_label", NA_character_)
+    }
+  } else if ("data" %in% names(call$expr)) {
+    call$expr$data <- standardize(call$expr$data)
+    if ("x" %in% names(call$expr$data)) {
+      v_name <- c(x = deparse(call$expr$data$x),
+                  y = deparse(call$expr$data$y))
+      if (length(.p$var) == 1) {
+        done <- upd_output("var_name",  v_name[[.p$var]])
+        done <- upd_output("var_label", label(x[[v_name[[.p$var]]]]))
+      } else {
+        done <- upd_output("var_name", v_name, force = TRUE)
+        done <- upd_output("var_label", NA_character_)
+      }
+    }
+  }
+  return(done)
+}
+
+# parse_pipe() (magrittr's) --------------------------------
+parse_pipe <- function() {
+  
+  done <- FALSE
+  call <- standardize(.p$calls$pipe)
+  
+  obj_expr <- get_lhs(call)
+  obj_name <- deparse(obj_expr)
+  obj_str  <- as.character(obj_expr)
+  
+  # We must avoid entering in an infinite loop here if we have
+  # e.g. freq(iris$Species) %>% print() ; in this case we dispatch
+  # directly to parse_data_str, returning FALSE if unsuccessful
+  if (length(obj_expr) > 1 && obj_expr[[1]] == .p$caller) {
+    if (length(obj_expr$x) > 1 && deparse(obj_expr$x) != ".") {
+      if (parse_data_str(deparse(obj_expr$x)))  return(TRUE)
+    }
     return(FALSE)
   }
   
-  # When pipe is used, this recursive function gets the "deepest" lhs
-  # that constitutes something other than a function call
-  get_lhs <- function(x) {
-    if (!is.null(names(x)) && "lhs" %in% names(x) && is.call(x$lhs)) {
-      x$lhs <- pryr::standardise_call(x$lhs)
-      return(get_lhs(x$lhs))
-    } else if (!is.null(names(x)) && "lhs" %in% names(x)) {
-      return(x$lhs)
-    } else {
-      return(x)
+  obj <- eval(obj_expr,
+              envir = .p$sf[[.p$pos$pipe]]$parent)
+  
+  if (is.data.frame(obj)) {
+    if ("var_name" %in% names(.p$output) && ncol(obj) == 1) {
+      done <- upd_output("var_name", names(obj))
+      done <- upd_output("var_label", label(obj[[1]]))
+      if (done)  return(TRUE)
     }
-  }
-  
-  get_last_x <- function(expr) {
-    if (is.call(expr) && "x" %in% names(pryr::standardise_call(expr))) {
-      get_last_x(pryr::standardise_call(expr)$x)
-    } else {
-      return(expr)
+    
+    done <- upd_output("df_label", as.character(label(obj)))
+    if (length(obj_str) == 1) {
+      done <- upd_output("df_name", obj_name)
+      if (done)  return(TRUE)
+    } else if (length(setdiff(obj_str, c(.p$caller, .st_env$oper))) == 1) {
+      done <- upd_output("df_name", 
+                         setdiff(obj_str, c(.p$caller, .st_env$oper)))
+    } else if (length(setdiff(obj_str, c(.p$caller, .st_env$oper))) == 2) {
+      done <- upd_output("df_name", setdiff(obj_str, .st_env$oper)[1])
+      done <- upd_output("var_name", setdiff(obj_str, .st_env$oper)[2])
     }
+  } else {
+    done <- parse_data_str(obj_name)
   }
+  if (done)  return(TRUE)
   
-  # Declare a few "constant" ---------------------------------------------------
-  oper <- c("$", "[", "[[", "<", ">", "<=", ">=", "==", ":", "%>%")
-  fn.env <- environment()
-  do_return <- FALSE
-  # regex 1 ; both names are there (df$name, df['name']), etc.
-  re1 <- paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?['\"]?",
-                "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$")
-  # regex 2 ; there is numeric indexing (df[[2]], df[ ,2], df[2])
-  re2 <- "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s)?(\\d+)\\]{1,2}(\\[.+)?$"
-  # regex 3 : fallback solution when only 1 name can be found / second group
-  #           can also be further decomposed if needed
-  re3 <- "^([a-zA-Z._][\\w.]*)[$[]*(.*?)$"
-  # re4 is like re1 but doesn't match df$name
-  re4 <- paste0("^([\\w.]+)(\\[{1,2})(.*\\,\\s)?['\"]?",
-                "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$")
-  
-  # Initialize output object
-  output <- list()
-  if (isTRUE(df_name))
-    output %+=% list(df_name   = character())
-  if (isTRUE(df_label))
-    output %+=% list(df_label  = character())
-  if (isTRUE(var_name))
-    output %+=% list(var_name  = character())
-  if (isTRUE(var_label))
-    output %+=% list(var_label = character())
-  
-  #  Make a list of all data items contained in the environments
-  ls_sys_frames <- lapply(sys_frames, ls)
-  funs_stack    <- lapply(sys_calls, head, 1)
-  names(ls_sys_frames) <- sub("summarytools::", "",
-                              as.character(unlist(funs_stack)))
-  
-  # Look for position of by() + tapply(), with() lapply() and %>% in sys.calls()
-  pos         <- list()
-  pos$by      <- which(funs_stack %in% c("by()", "stby()"))
-  pos$with    <- which(funs_stack %in% c("base::with()", "with()"))
-  pos$pipe    <- which(funs_stack == "`%>%`()")
-  pos$piper   <- which(funs_stack == "`%>>%`()")
-  pos$dollar  <- which(funs_stack == "`%$%`()")
-  pos$lapply  <- which(funs_stack == "lapply()")
-  pos$tapply  <- which(funs_stack == "tapply()")
-  pos$fun     <- which(grepl(paste0(caller, "()"), funs_stack))
-  
-  pos <- pos[-which(unlist(lapply(pos, length)) == 0)]
-  
-  if ("by" %in% names(pos)) {
-    output %+=% list(by_var   = character(),
-                     by_group = character(),
-                     by_first = logical(),
-                     by_last  = logical())
-  }
-  
-  # Generate standardized calls
-  calls <- list()
-  for (i in seq_along(pos)) {
-    calls[[names(pos)[i]]] <- sys_calls[[pos[[i]]]]
-  }
-
-  # in the call stack: by() ----------------------------------------------------  
-  if ("by" %in% names(calls)) {
-    calls$by <- pryr::standardise_call(calls$by)
-    try(calls$lapply <- pryr::standardise_call(calls$lapply[-4]), silent = TRUE)
-    try(calls$tapply <- pryr::standardise_call(calls$tapply), silent = TRUE)
-
-    populate_by_info()
-    # treat special case of by() called on ctable, with ou without "with()"
-    if (length(calls$by$data) > 1 && deparse(calls$by$data[[1]]) == "list"
-        #&& identical(names(calls$by$data), c("", "x", "y"))) {
-        && caller == "ctable") {
-      by_ctable_case()
-      if (isTRUE(do_return)) {
-        return(output)
+  # Move focus to rhs
+  if ("var_name" %in% names(.p$output)) {
+    rhs <- call$rhs
+    
+    if (is.call(rhs))  
+      rhs <- standardize(rhs)
+    
+    rhs_nms <- all.names(rhs)
+    if (.p$caller %in% rhs_nms && length(rhs_nms) > 1) {
+      rhs_args <- setdiff(rhs_nms, .p$caller)
+      if (length(rhs_args) == 1 && rhs_args %in% colnames(obj)) {
+        done <- upd_output("var_name", rhs_args)
+        done <- upd_output("var_label", label(obj[[rhs_args]]))
+        if (done)  return(TRUE)
       }
-    } else {
-      x <- sys_frames[[pos$by]]$data
-      if (is.data.frame(x)) {
-        if (length(calls$by$data) == 1) {
-          upd_output("df_name", deparse(calls$by$data))
-          upd_output("df_label",
-                     label(get_object(deparse(calls$by$data), "data.frame")))
-        } else {
-          parse_data_str(deparse(calls$by$data))
-        }
-      } else if (is.atomic(x)) {
-        if (length(calls$by$data) == 1) {
-          upd_output("var_name", deparse(calls$by$data))
-          upd_output("var_label", label(x))
-          if (!"with" %in% names(calls)) {
-            upd_output("df_name", NA_character_)
-            upd_output("df_label", NA_character_)
+    }
+    
+    if (is.call(rhs)) {
+      if (any(.p$var %in% names(rhs))) {
+        vname <- c()
+        labl <- c()
+        for (i in seq_along(.p$var)) {
+          if (.p$var[i] %in% names(rhs)) {
+            vname <- c(vname, deparse(rhs[[.p$var[i]]]))
           }
-        } else {
-          x_str <- deparse(calls$by$data)
-          parse_data_str(x_str)
+        }
+        done <- upd_output("var_name", vname)
+        if (done)  return(TRUE)
+      }
+    }
+  }
+  return(FALSE)
+}
+
+# parse_piper() -------------------------------------------
+parse_piper <- function() {
+  done <- FALSE
+  # Call recursive fn to hopefully get df_name
+  call     <- standardize(.p$calls$piper)
+  obj_expr <- get_last_x(call)
+  obj_str  <- as.character(obj_expr)
+  
+  obj <- try(eval(obj_expr,
+                  envir = .p$sf[[.p$pos$piper]]$envir),
+             silent = .p$silent)
+
+  if (is.data.frame(obj)) {
+    done <- upd_output("df_label", label(obj))
+    if (ncol(obj) == 1) {
+      done <- upd_output("var_name", colnames(obj))
+      done <- upd_output("var_label", label(obj[[1]]))
+      if (done)  return(TRUE)
+    }
+    
+    if (length(obj_str <- setdiff(obj_str, c(.p$caller, .st_env$oper))) == 1) {
+      done <- upd_output("df_name", obj_str)
+    } else if (length(obj_str) == 2) {
+      done <- upd_output("df_name", obj_str[1])
+      done <- upd_output("var_name", obj_str[2])
+    }
+    if (done)  return(TRUE)
+  } else {
+    # obj is not a df
+    obj_str <- setdiff(obj_str, c(.p$caller, .st_env$oper, ""))
+    if (length(obj_str) == 1) {
+      done <- upd_output("var_name", obj_str)
+      done <- upd_output("var_label", label(obj))
+    } else if (length(obj_str) == 2) {
+      obj_df <- try(get_object(obj_str[1], "data.frame"),
+                    silent = TRUE)
+      if (inherits(obj_df, "try-error"))
+        return(FALSE)
+      done <- upd_output("df_name", obj_str[1])
+      done <- upd_output("df_label", label(obj_df))
+      if (done)  return(TRUE)
+      if (grepl("[a-zA-Z]", obj_str[2])) {
+        done <- upd_output("var_name", obj_str[2])
+        done <- upd_output("var_label", label(obj_df[[obj_str[2]]]))
+        if (done)  return(TRUE)
+      }
+      if (grepl("^\\d+L?$", obj_str[2])) {
+        vnum <- as.integer(obj_str[2])
+        if (vnum <= ncol(obj_df)) {
+          done <- upd_output("var_name", colnames(obj_df)[vnum])
+          done <- upd_output("var_label", label(obj_df[[vnum]]))
         }
       }
     }
-    if (isTRUE(do_return)) {
-      return(output)
-    }
   }
+  return(done)
+}
+
+# parse_lapply() ------------------------------------------
+parse_lapply <- function() {
+  done <- FALSE
+  call <- standardize(.p$calls$lapply)
   
-  # in the call stack: with() --------------------------------------------------  
-  if ("with" %in% names(calls)) {
-    x <- sys_frames[[pos$with]]$data
-    calls$with <- pryr::standardise_call(calls$with)
-    calls$with$expr <- pryr::standardise_call(calls$with$expr)
-    if (is.data.frame(x)) {
-      if (length(calls$with$data) == 1) {
-        tmp_name <- deparse(calls$with$data)
-        if (tmp_name == "." && "dollar" %in% names(calls)) {
-          calls$dollar <- pryr::standardise_call(calls$dollar)
-          if (is.call(calls$dollar$rhs) && 
-              identical(pryr::standardise_call(calls$dollar$rhs), calls$with$expr)) {
-            tmp_name <- calls$dollar$lhs
-            if (length(tmp_name) == 1) {
-              upd_output("df_name",  deparse(tmp_name))
-            } else {
-              upd_output("df_name",  NA_character_)
-            }
-            upd_output("df_label", label(x))
-          }
-        } else if (tmp_name == "." && "pipe" %in% names(calls)) {
-          calls$pipe <- pryr::standardise_call(calls$pipe)
-          calls$pipe$lhs <- pryr::standardise_call(calls$pipe$lhs)
-          tmp_name <- get_lhs(calls$pipe$lhs)
-          if (length(tmp_name) == 1) {
-            upd_output("df_name",  deparse(tmp_name))
-          } else if (is.null(tmp_name)) {
-            upd_output("df_name", deparse(calls$pipe$lhs))
-          }
-        } else {
-          upd_output("df_name", deparse(calls$with$data))
+  iter <- .p$sf[[.p$pos$lapply]]$i
+  obj  <- .p$sf[[.p$pos$lapply]]$X[iter]
+  
+  if (is.atomic(obj[[1]])) {
+    v_name <- names(obj)
+    
+    # Find the data frame
+    df_nm <- setdiff(all.names(call$X), .st_env$oper)[1]
+    df_     <- get_object(df_nm, "data.frame")
+    if (identical(df_, NA)) {
+      env <- try(pryr::where(df_nm))
+      if (!inherits(env, "try-error")) {
+        df_ <- get(df_nm, envir = env)
+      }
+    }
+    if (is.data.frame(df_) && v_name %in% colnames(df_)) {
+      done <- upd_output("var_name",  paste(df_nm, v_name, sep = "$"))
+      done <- upd_output("var_label", label(df_[[v_name]]))
+      done <- upd_output("df_name",   NA_character_)
+      done <- upd_output("df_label",  NA_character_)
+    }
+  } else if (is.data.frame(obj[[1]])) {
+    df_nm <- names(obj)
+    done <- upd_output("df_name",   df_nm)
+    done <- upd_output("df_label",  label(obj))
+    done <- upd_output("var_name",  NA_character_)
+    done <- upd_output("var_label", NA_character_)
+  }
+  return(done)
+}
+  
+# deduce_names() ------------------------------------------
+deduce_names <- function() {
+  # Last strategy -- proceed by elimination from parent's match call
+  # - eliminate objects that are functions
+  # - hope to find a df or a variable that exists
+  # - if there is a df, hope there is only one other object left
+  nms <- setdiff(all.names(sys.calls()[[1]]), .p$caller)
+  call <- standardize(sys.calls()[[1]])
+  nms <- unique(c(nms, as.character(call[[.p$var]])))
+
+  nnames <- length(nms)
+  df_found <- !empty_na(.p$output$df_name)
+  
+  if (df_found)
+    obj_df <- get(.p$output$df_name)
+
+  candidates <- c()
+  cand_class <- c()
+  
+  for (nm in nms) {
+    obj_ <- try(get(nm), silent = .p$silent)
+    if (inherits(obj_, "try-error")) {
+      if (df_found) {
+        obj_ <- try(obj_df[[nm]], silent = .p$silent)
+        if (!inherits(obj_, "try-error") && !is.null(obj_)) {
+          candidates %+=% c(tested = nm)
+          cand_class %+=% class(obj_)[1]
+          names(cand_class)[length(cand_class)] <- nm
         }
+      } else candidates %+=% c(untested = nm)
+    } else if (is.data.frame(obj_)) {
+      cand_class %+=% "data.frame"
+      names(cand_class)[length(cand_class)] <- nm
+      if (isFALSE(df_found)) {
+        df_found <- TRUE
+        obj_df <- obj_
+        done <- upd_output("df_name", nm)
+        done <- upd_output("df_label", label(obj_df))
+        if (done)  return(TRUE)
+        nnames <- nnames - 1
       } else {
-        upd_output("df_name", setdiff(as.character(calls$with$data), oper)[1])
+        # We have a 2nd data frame; we'll simply ignore it, trusting 
+        # previous stages
+        nnames <- nnames - 1
       }
-      upd_output("df_label", label(x))
-      if (isTRUE(do_return)) {
-        return(output)
-      }
-      
-      if ("x" %in% names(calls$with$expr)) {
-        if (is.call(calls$with$expr$x)) {
-          v_name <- c(x = deparse(pryr::standardise_call(calls$with$expr$x)$x),
-                      y = deparse(pryr::standardise_call(calls$with$expr$x)$y))
-        } else {
-          v_name <- c(x = deparse(calls$with$expr$x),
-                      y = deparse(calls$with$expr$y))
-        }
-        if (length(var) == 1) {
-          upd_output("var_name",  v_name[[var]])
-          upd_output("var_label", label(x[[v_name[[var]]]]))
-        } else {
-          upd_output("var_name", v_name, force = TRUE)
-          upd_output("var_label", NA_character_)
-        }
-      } else if ("data" %in% names(calls$with$expr)) {
-        calls$with$expr$data <- pryr::standardise_call(calls$with$expr$data)
-        if ("x" %in% names(calls$with$expr$data)) {
-          v_name <- c(x = deparse(calls$with$expr$data$x),
-                      y = deparse(calls$with$expr$data$y))
-          if (length(var) == 1) {
-            upd_output("var_name",  v_name[[var]])
-            upd_output("var_label", label(x[[v_name[[var]]]]))
-          } else {
-            upd_output("var_name", v_name, force = TRUE)
-            upd_output("var_label", NA_character_)
-          }
-        }
-      }
-      if (isTRUE(do_return)) {
-        return(output)
-      }
-    }
-  }
-
-  # in the call stack: %>% -----------------------------------------------------
-  if ("pipe" %in% names(calls)) {
-    calls$pipe <- pryr::standardise_call(calls$pipe)
-    # obj_name <- deparse(calls$pipe$lhs)
-    # obj_name <- sub(paste0(caller, "\\((.+)\\)"), "\\1", obj_name)
-    obj_expr <- get_lhs(calls$pipe)
-    obj_name <- deparse(obj_expr)
-    obj_str  <- as.character(obj_expr)
-    obj      <- eval(obj_expr, 
-                     envir = sys_frames[[pos$pipe]]$parent)
-    if (is.data.frame(obj)) {
-      upd_output("df_label", label(obj))
-      if (ncol(obj) == 1) {
-        upd_output("var_name", names(obj))
-        upd_output("var_label", label(obj[[1]]))
-      }
-      if (length(setdiff(obj_str, c(caller, oper))) == 1) {
-        upd_output("df_name", setdiff(obj_str, c(caller, oper)))
-      } else if (length(setdiff(obj_str, c(caller, oper))) == 2) {
-        upd_output("df_name", setdiff(obj_str, oper)[1])
-        upd_output("var_name", setdiff(obj_str, oper)[2])
-      }
-    } else {
-      parse_data_str(obj_name)
-    }
-    if (isTRUE(do_return)) {
-      return(output)
-    }
-  }
-
-  # in the call stack: %>>% ----------------------------------------------------
-  if ("piper" %in% names(calls)) {
-    # Get "last x" to have dataframe name
-    x_expr   <- get_last_x(calls$piper)
-    #x_name   <- deparse(x_expr)
-    x_str    <- as.character(x_expr)
-    
-    # Get object to get to the variables
-    obj      <- eval(pryr::standardise_call(calls$piper)$x, 
-                     envir = sys_frames[[pos$piper]]$envir)
-    if (is.data.frame(obj)) {
-      upd_output("df_label", label(obj))
-      if (ncol(obj) == 1) {
-        upd_output("var_name", colnames(obj))
-        upd_output("var_label", label(obj[[1]]))
-      }
-      if (length(x_str <- setdiff(x_str, c(caller, oper))) == 1) {
-        upd_output("df_name", x_str)
-      } else if (length(x_str) == 2) {
-        upd_output("df_name", x_str[1])
-        upd_output("var_name", x_str[2])
-      }
-    } else {
-      # obj is a vector or factor
-      upd_output("var_label", label(obj))
-      if (length(x_str <- setdiff(x_str, c(caller, oper, ""))) == 1) {
-        upd_output("df_name", x_str)
-      } else if (length(x_str) == 2) {
-        upd_output("df_name", x_str[1])
-        vnum <- suppressWarnings(as.numeric(x_str[2]))
-        if (!is.na(vnum)) {
-          obj_df <- get_object(name = x_str[1], "data.frame")
-          if (vnum <= ncol(obj_df)) {
-            upd_output("var_name", colnames(obj_df)[vnum])
-          }
-        } else {
-          upd_output("var_name", x_str[2])
-        }
-      }
-    }
-    if (isTRUE(do_return)) {
-      return(output)
+    } else if (inherits(obj_, "function")) {
+      nnames <- nnames - 1
+    } else if (is.atomic(obj_)) {
+      candidates %+=% c(tested = nm)
+      cand_class %+=% class(obj_)[1]
+      names(cand_class)[length(cand_class)] <- nm
     }
   }
   
-  # in the call stack: lapply() ------------------------------------------------
-  if ("lapply" %in% names(calls)) {
-    try(calls$lapply <- pryr::standardise_call(calls$lapply[-4]))
-        
-    iter <- sys_frames[[pos$lapply]]$i
-    obj  <- sys_frames[[pos$lapply]]$X[iter]
+  # Work with what's left (tested and/or untested)
+  if (length(candidates) == 1 && names(candidates) == "tested") {
+    if (cand_class[[1]] != "data.frame") {
+      done <- upd_output("var_name", candidates[[1]])
+      if (df_found)
+        done <- upd_output("var_label", label(obj_df[[candidates[[1]]]]))
+      else
+        done <- upd_output("var_label", label(get(candidates[[1]])))
+      if (done)  return(TRUE)
+    }
+  } else {
+    if ("untested" %in% names(candidates)) {
+      for (i in which(names(candidates) == 'untested')) {
+        obj_ <- try(obj_df[[candidates[[i]]]], silent = .p$silent)
+        if (inherits(obj_, "try-error") || is.null(obj_))
+          names(candidates)[i] <- "discarded"
+        else
+          names(candidates)[i] <- "tested"
+      }
+    }
     
-    if (is.atomic(obj[[1]])) {
-      v_name <- names(obj)
+    # If there is only 1 tested, we keep it
+    if (table(candidates['tested'])[[1]] == 1) {
+      done <- upd_output("var_name", candidates[['tested']])
+      if (done)  return(TRUE)
+      if (isTRUE(df_found))
+        done <- upd_output("var_label", label(obj_df[[candidates[['tested']]]]))
+      if (done)  return(TRUE)
+    } else {
+      # At this stage we can't determine which variable is the right one
+      message("Unable to determine variable and/or df name")
+    }
+  }
+  return(FALSE)
+}
+
+## by_ctable_case() ---------------------------------------
+by_ctable_case <- function(call) {
+  done <- FALSE
+  if (!is.null(names(call$data))) {
+    v_name <- c(deparse(call$data$x), deparse(call$data$y))
+  } else {
+    v_name <- as.character(call$data[2:3])
+  }
+  
+  if (!"with" %in% names(.p$pos)) {
+    if (any(grepl("\\$", v_name))) {
+      df_nm    <- sub("^([\\w._]+)\\$.+$", "\\1", v_name[1], perl = TRUE)
+      df_nm[2] <- sub("^([\\w._]+)\\$.+$", "\\1", v_name[2], perl = TRUE)
+    }
+    
+    if (isTRUE(df_nm[1] == df_nm[2])) {
+      df_nm <- df_nm[1]
+      df_ <- get_object(df_nm, "data.frame")
+      if (!identical(df_, NA)) {
+        done <- upd_output("df_name", df_nm)
+        done <- upd_output("df_label", label(df_))
+      }
+    } else {
+      done <- upd_output("df_name", NA_character_)
+      done <- upd_output("df_label", NA_character_)
+    }
+  }
+  done <- upd_output("var_name", v_name, force = TRUE)
+  return(done)
+}
+
+# Utility functions ---------------------------------------
+## upd_output() -------------------------------------------
+upd_output <- function(item, value, force = FALSE) {
+  
+  if (isTRUE(force) || 
+      ( (length(.p$output[[item]]) == 0 || is.na(.p$output[[item]])) &&
+         length(value) == 1 && class(value) == class(.p$output[[item]])) ) {
+    
+    names(value) <- NULL
+    if (sum(value %in% c(".", NA)) == length(value))
+      value <- NA_character_
+    
+    .p$output[[item]] <- value
+    
+    # Check if output is ready to be returned
+    if (count_empty(.p$output, count.nas = FALSE) == 0)
+      .p$do_return <- TRUE
+  }
+  return(.p$do_return)
+}
+
+# parse_data_str() ----------------------------------------
+parse_data_str <- function(str) {
+  if (grepl(.st_env$re$two_names, str, perl = TRUE)) {
+    df_nm <- sub(.st_env$re$two_names, "\\1", str, perl = TRUE)
+    df_   <- get_object(df_nm, "data.frame")
+    if (!identical(df_, NA)) {
+      done <- upd_output("df_name", df_nm)
+      done <- upd_output("df_label", label(df_))
+      if (done)  return(TRUE)
       
-      # Find the data frame
-      df_nm <- setdiff(all.names(calls$lapply$X), oper)[1]
-      df_     <- get_object(df_nm, "data.frame")
-      if (identical(df_, NA)) {
-        env <- try(pryr::where(df_nm))
-        if (!inherits(env, "try-error")) {
-          df_ <- get(df_nm, envir = env)
-        }
+      v_name <- sub(.st_env$re$two_names, "\\4", str, perl = TRUE)
+      if (v_name %in% colnames(df_)) {
+        done <- upd_output("var_name", v_name)
+        done <- upd_output("var_label", label(df_[[v_name]]))
+        if (done)  return(TRUE)
       }
-      if (is.data.frame(df_) && v_name %in% colnames(df_)) {
-        upd_output("var_name",  paste(df_nm, v_name, sep = "$"))
-        upd_output("var_label", label(df_[[v_name]]))
-        upd_output("df_name",   NA_character_)
-        upd_output("df_label",  NA_character_)
-      }
-    } else if (is.data.frame(obj[[1]])) {
-      df_nm <- names(obj)
-      upd_output("df_name",   df_nm)
-      upd_output("df_label",  label(obj))
-      upd_output("var_name",  NA_character_)
+    }
+  } else if (grepl(.st_env$re$num_index, str, perl = TRUE)) {
+    df_nm <- sub(.st_env$re$num_index, "\\1", str, perl = TRUE)
+    df_   <- get_object(df_nm, "data.frame")
+    if (!identical(df_, NA)) {
+      done <- upd_output("df_name",  df_nm)
+      done <- upd_output("df_label", label(df_))
+      if (done)  return(TRUE)
+      
+      var_number <- as.numeric(sub(.st_env$re$num_index, "\\4", str,
+                                   perl = TRUE))
+      done <- upd_output("var_name",  colnames(df_)[var_number])
+      done <- upd_output("var_label", label(df_[[var_number]]))
+      if (done)  return(TRUE)
+    }
+  } else if (grepl(.st_env$re$neg_num_index, str, perl = TRUE)) {
+    df_nm <- sub(.st_env$re$neg_num_index, "\\1", str, perl = TRUE)
+    df_   <- get_object(df_nm, "data.frame")
+    if (!identical(df_, NA)) {
+      done <- upd_output("df_name", df_nm)
+      done <- upd_output("df_label", label(df_))
+      if (done)  return(TRUE)
+    }
+    
+    neg_index <- as.numeric(sub(.st_env$re$neg_num_index, "\\4", str,
+                                perl = TRUE))
+    # Check whether there is only 1 other variable
+    if (ncol(df_) == 2) {
+      upd_output("var_name", colnames(df_)[neg_index])
+      upd_output("var_label", label(df_[,neg_index]))
+    } else {
+      upd_output("var_name", NA_character_)
       upd_output("var_label", NA_character_)
     }
+    return(TRUE)
     
-    if (isTRUE(do_return)) {
-      return(output)
-    }
-  }  
-
-  if ("fun" %in% names(calls)) {
-    calls$fun <- pryr::standardise_call(calls$fun)
-    obj2 <- sys_frames[[pos$fun]][[var]]
-    if (is.data.frame(obj2)) {
-      if (length(calls$fun[[var]]) == 1) {
-        upd_output("df_name",   deparse(calls$fun[[var]]))
-        upd_output("df_label",  label(obj2))
-        upd_output("var_name",  NA_character_)
-        upd_output("var_label", NA_character_)
-      } else if (any(grepl("group_by", calls$fun))) {
-        grby_call <- pryr::standardise_call(calls$fun[[grep("group_by", calls$fun)]])
-        upd_output("df_name", deparse(grby_call$.data))
-        upd_output("df_label", label(obj2))
-        # v_name?
-        vname <- setdiff(all.names(calls$fun), 
-                         c(all.names(grby_call), caller))
-        upd_output("var_name", vname)
-        upd_output("var_label", label(obj2[vname]))
+  } else if (grepl(.st_env$re$fallback_1name, str, perl = TRUE)) {
+    obj_name <- sub(.st_env$re$fallback_1name, "\\1", str, perl = TRUE)
+    obj_env  <- try(pryr::where(obj_name), silent = .p$silent)
+    if (!inherits(obj_env, "try-error")) {
+      obj <- get(obj_name, envir = obj_env)
+      if (is.data.frame(obj)) {
+        done <- upd_output("df_name", obj_name)
+        done <- upd_output("df_label", label(obj))
+        if (done)  return(TRUE)
         
-      } else {
-        parse_data_str(paste(deparse(calls$fun[[var]]), collapse = " "))
-      }
-    } else if (is.atomic(obj2)) {
-      if (length(calls$fun[[var]]) == 1) {
-        if (all(c("x", "var") %in% names(calls[["fun"]]))) {
-          if (deparse(calls[["fun"]]$x) != ".") {
-            upd_output("df_name", deparse(calls[["fun"]]$x))
+        if ("var_name" %in% names(.p$output)) {
+          obj2_name <- sub(.st_env$re$fallback_1name, "\\2", str,
+                           perl = TRUE)
+          obj2      <- try(eval(parse(text = obj2_name), envir = obj), 
+                           silent = .p$silent)
+          if (!inherits(obj2, "try-error") && is.atomic(obj2)) {
+            done <- upd_output("var_name",  obj2_name)
+            done <- upd_output("var_label", NA_character_)
+            if (done)  return(TRUE)
           }
-          try(upd_output("df_label", label(eval(calls[["fun"]]$x))),
-              silent = TRUE)
-          if (length(calls[["fun"]]$var) == 1) {
-            upd_output("var_name", deparse(calls[["fun"]]$var))
-            upd_output("var_label", label(obj2))
-          } else {
-            if (exists("obj") && is.data.frame(obj)) {
-              v_ind <-
-                which(as.character(calls[["fun"]]$var) %in% colnames(obj))
-              if (length(v_ind) == 1) {
-                upd_output("var_name", as.character(calls[["fun"]]$var)[v_ind])
-              } else {
-                if (grepl(".+\\(.+\\)", deparse(calls[["fun"]]$var))) {
-                  upd_output("var_name", sub("^.+\\((.*?)\\)+$", "\\1", 
-                                             deparse(calls[["fun"]]$var)))
-                } else {
-                  upd_output("var_name", NA_character_)
-                }
-              }
-            }
-          }
-        } else {
-          upd_output("var_name",  deparse(calls$fun[[var]]))
-          upd_output("var_label", label(obj2))
-          upd_output("df_name",   NA_character_)
-          upd_output("df_label",  NA_character_)
         }
-      } else {
-        parse_data_str(deparse(calls$fun[[var]]))
+      } else if (is.atomic(obj)) {
+        done <- upd_output("var_name", obj_name)
+        done <- upd_output("var_label", label(obj))
+        if (done)  return(TRUE)
+      }
+    }
+  }
+  return(FALSE)
+}
+
+## populate_by_info() -------------------------------------
+populate_by_info <- function(call) {
+  # on avait by_levels et iter dans .st_env$byInfo, le reste dans output
+  # by_levels est devenu groups (+/- ... groups est une nouveauté pour les
+  # stby / by), et iter est pour parse_call seul
+  .p$by_info <- list(by_var   = character(),
+                     by_group = character(),
+                     by_first = logical(),
+                     by_last  = logical(),
+                     groups   = data.frame())
+  
+  .p$by_iter <- 0L # will not be part of output, keep it separate
+  
+  # More than one group var
+  if ("list" %in% all.names(call$INDICES)) {
+    by_var <- character()
+    for (i in seq_len(length(call$INDICES) - 1)) {
+      by_var[i]  <- deparse(call$INDICES[[i + 1]])
+    }
+  } else {
+    by_var <- deparse(call$INDICES)
+  }
+  
+  .p$by_info$by_var <- by_var
+  
+  # Normalize / validate variable name  
+  for (i in seq_along(by_var)) {
+    if (grepl(.st_env$re$two_names, by_var[i], perl = TRUE)) {
+      df_nm <- sub(.st_env$re$two_names, "\\1", by_var[i], perl = TRUE)
+      df_   <- get_object(df_nm, "data.frame")
+      if (!identical(df_, NA)) {
+        v_name <- sub(.st_env$re$two_names, "\\4", by_var[i], perl = TRUE)
+        if (v_name %in% colnames(df_)) {
+          .p$by_info$by_var[i] <- paste(df_nm, v_name, sep = "$")
+        }
+      }
+    } else if (grepl(.st_env$re$num_index, by_var[i], perl = TRUE)) {
+      df_nm <- sub(.st_env$re$num_index, "\\1", by_var[i], perl = TRUE)
+      df_   <- get_object(df_nm, "data.frame")
+      if (!identical(df_, NA)) {
+        var_number <- as.numeric(sub(.st_env$re$num_index, "\\4", by_var[i], 
+                                     perl = TRUE))
+        v_name <- colnames(df_)[var_number]
+        .p$by_info$by_var[i] <- paste(df_nm, v_name, sep = "$")
       }
     }
   }
   
-  empty_elements <- as.numeric(
-    which(vapply(output, function(x) {identical(x, NA_character_) || 
-        length(x) == 0}, TRUE))
-  )
-  
-  if (length(empty_elements) > 0) {
-    output <- output[-empty_elements]
+  # On first iteration, generate levels based on IND variables, and store
+  # groups df in output
+  if (.p$by_iter == 0) {
+      names(.p$sf[[.p$pos$tapply]]$namelist) <- .p$by_info$by_var
+    by_levels <- .p$sf[[.p$pos$tapply]]$namelist
+    groups <- expand.grid(by_levels, stringsAsFactors = FALSE)
+    colnames(groups) <- .p$by_info$by_var
+    
+    # update directly to avoid adding a layer of complexity to checks 
+    .p$by_info$groups <- groups
+    
+    return(incr_grp_iter())
+  } else {
+    warning(paste("problem encountered while extracting metadata;",
+                  "heading or group information could be missing or incorrect;",
+                  "inspect results carefully"))
+    return(incr_grp_iter())
   }
-  return(output)
+}
+
+## incr_grp_iter() ----------------------------------------
+incr_grp_iter <- function() {
+  
+  # st "internal" iteration in progress (e.g. descr.grouped_df)
+  # we only keep track of the number of retains left
+  # if (!is.null(.p$n_retain)) {
+  #   .p$n_retain <- .p$n_retain - 1L
+  #   return(.p$n_retain == 0L) # ret val not used for now
+  # }
+  
+  .p$by_iter <- .p$by_iter + 1L
+  
+  # Populate by_group item
+  .p$by_info$by_group <-
+    paste(colnames(.p$by_info$groups),
+          as.character(.p$by_info$groups[.p$by_iter, ]),
+          sep = " = ", collapse = ", ")
+  
+  .p$by_info$by_first <- .p$by_iter == 1L
+  .p$by_info$by_last  <- .p$by_iter == nrow(.p$by_info$groups)
+  
+  if (isTRUE(.p$by_info$by_last)) {
+    #.p$by_iter <- integer()
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+## cleanup_output() ---------------------------------------
+# remove redundant df_name and remove NA / empty elements
+cleanup_output <- function() {
+  
+  # re to remove redundant df_name
+  re <- paste0("^",.p$output$df_name, # starts with df_name
+               "[$[]*['\"]?",         # subsetting chars
+               "([\\w_.]+)",          # var_name (group 1)
+               "['\"]?\\]{0,2}",      # closing subsetting char(s)
+               "(.*)$")               # remainder of expression (gr. 2)
+  
+  # Remove (redundant) df_name
+  if (length(.p$output$df_name) == 1 && !is.na(.p$output$df_name)) {
+    
+    if ("var_name" %in% names(.p$output))
+      .p$output$var_name <- sub(pattern = re,
+                                replacement = "\\1\\2", 
+                                x = .p$output$var_name, perl = TRUE)
+    
+    if ("by_info" %in% names(.p)) {
+      .p$by_info$by_var   <- gsub(paste0(.p$output$df_name, "\\$"), "", 
+                                  .p$by_info$by_var)
+      .p$by_info$by_group <- gsub(paste0(.p$output$df_name, "\\$"), "", 
+                                  .p$by_info$by_group)
+      colnames(.p$by_info$groups) <- .p$by_info$by_var
+    }
+  }
+  
+  if ("by_info" %in% names(.p)) {
+    # Remove quotation marks
+    .p$by_info$by_var   <- gsub("['\"]", "", .p$by_info$by_var)
+    .p$by_info$by_group <- gsub("['\"]", "", .p$by_info$by_group)
+    colnames(.p$by_info$groups) <- .p$by_info$by_var
+    
+    # Special case where by_var has a function call, e.g.
+    # x > mean(x) -- we want to remove "x = "
+    # For now, we only deal with 1 grouping variable
+    #TODO: Add support for more grouping variables
+    re_fn <- "(.+\\b([\\w.]+)\\()(.+?) = (.+)$"
+    if (length(.p$by_info$by_var) == 1 &&
+        grepl(re_fn, .p$by_info$by_var, perl = TRUE)) {
+      # check that it is indeed a function call
+      f_nm <- sub(re_fn, "\\2", .p$by_info$by_var, perl = TRUE)
+      arg_nm <- sub(re_fn, "\\3", .p$by_info$by_var, perl = TRUE)
+      # check that arg_nm is the first parameter in the fn
+      if (exists(f_nm, mode = "function") &&
+          names(formals(f_nm))[1] == arg_nm) {
+        .p$by_info$by_var <- 
+          sub(re_fn, "\\1\\4", .p$by_info$by_var, perl = TRUE)
+        .p$by_info$by_group <- 
+          sub(re_fn, "\\1\\4", .p$by_info$by_group, perl = TRUE)
+        colnames(.p$by_info$groups) <- .p$by_info$by_var
+      }
+    }
+  }
+
+  # Remove quotation marks from df/var name
+  for (item in grep("_name", names(.p$output), value = TRUE))
+    .p$output[[item]] <- gsub("['\"]", "", .p$output[[item]])
+  
+  .p$output <- .p$output[which(!empty_na(.p$output))]
+}
+
+# Miscellaneous -------------------------------------------
+is_recyclable <- function() {
+  #isTRUE(.p$n_retain > 0) ||
+    ("call" %in% names(.p) &&
+    identical(.p$call, sys.calls()[[1]]) &&
+    any(c("by", "lapply", "tapply") %in% names(.p$pos)) &&
+    length(.p$output) > 0 &&
+    all(c("by_var", "by_first", "by_last", "by_group")
+        %in% names(.p$by_info)) &&
+    #!empty_na(.p$by_iter) &&
+    .p$by_iter < nrow(.p$by_info$groups))
+}
+
+# When pipe is used, this recursive function gets the "deepest" lhs
+# that constitutes something other than a function call
+get_lhs <- function(x) {
+  if (!is.null(names(x)) && "lhs" %in% names(x) && is.call(x$lhs)) {
+    x$lhs <- standardize(x$lhs)
+    return(get_lhs(x$lhs))
+  } else if (!is.null(names(x)) && "lhs" %in% names(x)) {
+    return(x$lhs)
+  } else {
+    return(x)
+  }
+}
+
+# Recursively seek "x" (piped calls)
+get_last_x <- function(expr) {
+  if (is.call(expr) && "x" %in% names(standardize(expr))) {
+    get_last_x(standardize(expr)$x)
+  } else {
+    return(expr)
+  }
+}
+
+get_object <- function(name, class) {
+  for (i in seq_along(.p$sf)) {
+    if (name %in% ls(.p$sf[[i]])) {
+      if (inherits(.p$sf[[i]][[name]], class)) {
+        return(.p$sf[[i]][[name]])
+      }
+    }
+  }
+  
+  # fallback method 1
+  env <- try(pryr::where(name = name), silent = TRUE)
+  if (!inherits(env, "try-error"))
+    return(get(name, env, mode = "list"))
+  
+  # fallback method 2
+  obj <- dynGet(x = name, inherits = TRUE, ifnotfound = NA)
+  if (inherits(obj, class))
+    return(obj)
+  
+  return(NA)
 }

@@ -92,8 +92,9 @@ view <- function(x,
     } else {
       # 1 Column several times - use cbind
       xx <- do.call(cbind, x)
-      class(xx)     <- class(x[[1]])
-      colnames(xx)  <- names(x)
+      class(xx)    <- class(x[[1]])
+      colnames(xx) <- vapply(x, function(k) attr(k, "data_info")$Group,
+                             character(1), USE.NAMES = FALSE)
     }
     
     attr(xx, "st_type")   <- "descr"
@@ -112,7 +113,6 @@ view <- function(x,
     
     # Remove NA items if any
     attr(xx, "data_info") <- attr(xx,"data_info")[!is.na(attr(xx, "data_info"))]
-    
     
     attr(xx, "format_info") <- attr(x[[1]], "format_info")
     attr(xx, "user_fmt")    <- attr(x[[1]], "user_fmt")
