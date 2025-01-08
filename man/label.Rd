@@ -3,31 +3,42 @@
 \name{label}
 \alias{label}
 \alias{label<-}
+\alias{labls}
 \title{Get or Set Variable or Data Frame Labels}
 \usage{
 label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
 label(x) <- value
+labls(x, all = TRUE, fallback = FALSE, simplify = FALSE)
 }
 \arguments{
 \item{x}{An R object to extract labels from.}
 
 \item{all}{Logical. When x is a data frame, setting this argument to
-\code{TRUE} will make the function return all variable labels. By default,
-its value is \code{FALSE}, so that if x is a data frame, it is the data
-frame's label that will be returned.}
+\code{TRUE} will make the function return all variable labels. By 
+default, its value is \code{FALSE}, so that if x is a data frame, it is
+the data frame's label itself that will be returned.}
 
-\item{fallback}{a logical value indicating if labels should fallback to
-object name(s). Defaults to \code{FALSE}.}
+\item{fallback}{a logical value indicating if labels (returned values) 
+should fallback to object name(s). Defaults to \code{FALSE}.}
 
-\item{simplify}{When x is a data frame and \code{all = TRUE}, coerce results
-to a vector and remove \code{NA}'s. Default is \code{FALSE}.}
+\item{simplify}{When x is a data frame and \code{all = TRUE}, coerce 
+results to a vector and remove \code{NA}'s. Default is \code{FALSE}.}
 
-\item{value}{String to be used as label. To clear existing labels, use \code{NA}
-or \code{NULL}.}
+\item{value}{String to be used as label. To clear existing labels, use
+\code{NA} or \code{NULL}.}
+}
+\value{
+A single character vector if \code{all = FALSE} (default),
+  or a named list if \code{all = TRUE} (named vector when using
+  \code{simplify = TRUE}.
 }
 \description{
 Assigns a label to a vector or data frame, or returns value stored 
 in the object's \code{label} attribute (or \code{NA} if none exists).
+}
+\details{
+The wrapper function \code{labls} was named that way to avoid conflicting
+ with base function \code{\link[base]{labels}}.
 }
 \note{
 Loosely based on Gergely Daróczi's \code{\link[rapportools]{label}} 

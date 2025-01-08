@@ -4,7 +4,7 @@
 \alias{stby}
 \title{Obtain Grouped Statistics With summarytools}
 \usage{
-stby(data, INDICES, FUN, ..., explicit.nas = FALSE, check.nas = !explicit.nas)
+stby(data, INDICES, FUN, ..., useNA = FALSE)
 }
 \arguments{
 \item{data}{an R object, normally a data frame, possibly a matrix.}
@@ -16,10 +16,8 @@ each of length \code{nrow(data)}.}
 
 \item{\dots}{Further arguments to FUN.}
 
-\item{explicit.nas}{Make NA a valid grouping value in INDICES variable(s).}
-
-\item{check.nas}{Logical. Check for NA values in INDICES. \code{TRUE} by
-default. Ignored if explicit.nas is \code{TRUE}.}
+\item{useNA}{Make NA a valid grouping value in INDICES variable(s).
+Set to \code{FALSE} explicitly to eliminate message.}
 }
 \value{
 An object of classes \dQuote{list} and \dQuote{summarytools},
@@ -33,19 +31,20 @@ optimize the results' display.
 When the grouping variable(s) contain NA values, the
   \code{base::\link[base]{by}} function (as well as summarytools 
   versions prior to 1.1.0) ignores corresponding groups. Version 1.1.0
-  allows setting \code{explicit.nas = TRUE} to make new groups using
+  allows setting \code{useNA = TRUE} to make new groups using
   NA values on the grouping variable(s), just as
   \code{dplyr::\link[dplyr]{group_by}} does.
   
-  When NA values are detected and `explicit.nas = FALSE`, a message is
-  displayed; to disable this message, set `check.nas = FALSE`.
+  When NA values are detected and \code{useNA = FALSE}, a message is
+  displayed; to disable this message, set \code{check.nas = FALSE}.
 }
 \examples{
 data("tobacco")
-with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
-with(tobacco, stby(data = smoker, INDICES = gender, explicit.nas = TRUE))
+with(tobacco, stby(data = BMI, INDICES = gender, FUN = descr,
+                   check.nas = FALSE))
+with(tobacco, stby(data = smoker, INDICES = gender, freq, useNA = TRUE))
 with(tobacco, stby(data = list(x = smoker, y = diseased),
-                   INDICES = gender, FUN = freq, explicit.nas = TRUE))
+                   INDICES = gender, FUN = ctable, useNA = TRUE))
                    
 }
 \seealso{

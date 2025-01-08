@@ -1,5 +1,3 @@
-^renv$
-^renv\.lock$
 ^docs$
 ^Meta$
 ^.*\.Rproj$
@@ -12,7 +10,7 @@
 ^TODO.txt$
 ^README.md$
 ^README.Rmd$
-^tests$
+^tests*$
 ^COPYING$
 ^inst/WORDLIST$
 vignettes/*.R$

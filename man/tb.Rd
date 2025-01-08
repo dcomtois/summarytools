@@ -15,20 +15,21 @@ tb(
 )
 }
 \arguments{
-\item{x}{a freq() or descr() output object.}
+\item{x}{a \code{freq()} or \code{descr()} output object.}
 
 \item{order}{Integer. Useful for grouped results produced with
 \code{\link{stby}} or \code{dplyr::group_by}. When set to \code{1}
- (default), the ordering is done using the grouping variables first. When
- set to \code{2}, the ordering is done according to the analytical 
+ (default), the ordering is done using the grouping variables first.
+ When set to \code{2}, the ordering is done according to the analytical 
  (not grouping) variable. When set to \code{3}, the same ordering
  as with \code{2} is used, but the analytical variable is placed in
- first position.}
+ first position. Depending on what function was used for grouping,
+ the results will be different in subtle ways. See \emph{Details}.}
 
 \item{na.rm}{Logical. Affects grouped \code{\link{freq}} objects only.
 Discard rows with \code{NA} values on at least one of the grouping
 variables. \code{FALSE} by default. (To exclude NA values on the main
-variable as well as the \emph{pct_valid} & \emph{pct_valid_cum}, use
+variable as well as \emph{pct_valid} & \emph{pct_valid_cum} columns, use
 \code{freq()}'s `report.nas` and `cumul` arguments.)}
 
 \item{drop.var.col}{Logical. For \code{\link{descr}} objects, drop the
@@ -43,12 +44,8 @@ proportions sum up to 1. Defaults to \code{TRUE}.}
 \item{fct.to.chr}{Logical. When grouped objects
 are created with \code{dplyr::\link[dplyr]{group_by}}, the resulting
 tibble will have factor columns when the grouping variable itself is
-a factor. To convert them to character, set this to TRUE. (When
-\code{st_by()} was used, factor grouping variables will come out as
-character.) Note that for factors having an explicit NA level, once
-converted to character, underlying NA values will become actual NAs
-\strong{unless the NA level has a label}.
-\code{FALSE} by default.}
+a factor. To convert them to character, set this to TRUE. See
+\emph{Details}.}
 
 \item{\dots}{For internal use only.}
 }
@@ -59,13 +56,29 @@ A \code{\link[tibble]{tibble}} which is constructed following the
 \description{
 Make a tidy dataset out of freq() or descr() outputs
 }
+\details{
+\code{stby}, which is based on and \code{by}, initially make the first
+  variable vary, keeping the other(s) constant. On the other hand,
+  \code{group_by} initially keeps the first grouping variable(s) constant,
+  making the last one vary. This will impact the ordering of the rows (and
+  as a result, the cumulative percent columns, if present).
+  
+  Also, keep in mind that while \code{group_by} shows \code{NA} groups by
+  default, \code{useNA = TRUE} must be used to achieve the same
+  results with \code{stby}.
+}
 \examples{
 
 tb(freq(iris$Species))
 tb(descr(iris, stats = "common"))
 
 data("tobacco")
-tb(stby(tobacco, tobacco$gender, descr, stats = "common"))
-tb(stby(tobacco, tobacco$gender, descr, stats = "fivenum"), order=3)
+tb(stby(tobacco, tobacco$gender, descr, stats = "fivenum",check.nas = FALSE), 
+   order=3)
+tb(stby(tobacco, tobacco$gender, descr, stats = "common", useNA = TRUE))
+
+# Compare stby() and group_by() groups' ordering
+tb(with(tobacco, stby(diseased, list(gender, smoker), freq, useNA = TRUE)))
+tobacco |> dplyr::group_by(gender, smoker) |> freq(diseased) |> tb()
 
 }

@@ -2,30 +2,30 @@
 % Please edit documentation in R/parse_call.R
 \name{parse_call}
 \alias{parse_call}
-\title{Extract Data Information From Arguments Passed to Functions}
+\title{Extract Data Information From Arguments Passed to Functions (internal)}
 \usage{
 parse_call(
-  sys_calls,
-  sys_frames,
-  match_call,
+  mc,
   var = "x",
-  silent = FALSE,
   df_name = TRUE,
   df_label = TRUE,
   var_name = TRUE,
   var_label = TRUE,
-  caller = ""
+  caller = "",
+  silent = TRUE
 )
 }
 \arguments{
-\item{sys_calls}{Object created using \code{sys.calls()}.}
-
-\item{sys_frames}{Object created using \code{sys.frames()}.}
-
-\item{match_call}{Object created using \code{match.call()}.}
-
-\item{var}{Character. \dQuote{x} (default) and/or \dQuote{y} (the latter 
+\item{var}{Character. \dQuote{x} (default) or \dQuote{y} (the latter 
 being used only in \code{\link{ctable}}).}
+
+\item{df_name}{Logical.}
+
+\item{df_label}{Logical.}
+
+\item{var_name}{Logical.}
+
+\item{var_label}{Logical.}
 
 \item{silent}{Logical. Hide console messages. \code{TRUE} by default.}
 }

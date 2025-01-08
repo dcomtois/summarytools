@@ -76,8 +76,8 @@ names.}
 
 \item{missing}{Text to display in NA cells. Defaults to \dQuote{}.}
 
-\item{na.val}{Character. For factors, consider this value as \code{NA}. Only
-valid if there are no other NA values.}
+\item{na.val}{Character. For factors, consider this value as \code{NA}.
+Ignored if there are actual NA values.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is
 \code{TRUE}.}

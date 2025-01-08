@@ -4,39 +4,40 @@
 \alias{descr}
 \title{Univariate Statistics for Numerical Data}
 \usage{
-descr(x,
-      var           = NULL, # provides support for pipe operators
-      stats         = ("all", "fivenum", "common", mean", "sd", "min", "q1",
-                       "med", "q3, "max", "mad", "iqr", "cv", "skewness",
-                       "kurtosis", "n", "n.valid", "pct.valid"),
-      na.rm         = TRUE,
-      round.digits  = 2,
-      transpose     = FALSE,
-      order         = c("sort", "preserve"),
-      style         = c("simple", "rmarkdown", "grid", "jira"),
-      plain.ascii   = TRUE,
-      justify       = c("r", "l", "c"),
-      headings      = TRUE,
-      display.labels = TRUE,
-      split.tables  = 100,
-      weights       = NA,
-      rescale.weights = FALSE,
-      ...)
+descr(
+  x,
+  var = NULL,
+  stats = st_options("descr.stats"),
+  na.rm = TRUE,
+  round.digits = st_options("round.digits"),
+  transpose = st_options("descr.transpose"),
+  order = "sort",
+  style = st_options("style"),
+  plain.ascii = st_options("plain.ascii"),
+  justify = "r",
+  headings = st_options("headings"),
+  display.labels = st_options("display.labels"),
+  split.tables = 100,
+  weights = NULL,
+  rescale.weights = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A numerical vector or a data frame.}
 
 \item{var}{Unquoted expression referring to a specific column in \code{x}.
 Provides support for piped function calls (e.g.
-\code{my_df \%>\% descr(my_var)}.}
+\code{my_df |> descr(my_var)}.}
 
 \item{stats}{Character. Which stats to produce. Either \dQuote{all} (default),
 \dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-\dQuote{n}, \dQuote{n.valid}, and \dQuote{pct.valid}. Can be set globally
-via \code{\link{st_options}}, option \dQuote{descr.stats}.}
+\dQuote{n.valid}, \dQuote{pct.valid}, and \dQuote{n}. Can be set globally
+via \code{\link{st_options}}, option \dQuote{descr.stats}. See 
+\emph{Details}.}
 
 \item{na.rm}{Logical. Argument to be passed to statistical functions. 
 Defaults to \code{TRUE}.}
@@ -79,7 +80,7 @@ section. Defaults to \code{TRUE}. Can be set globally with
 specifies how many characters wide a table can be. \code{100} by default.}
 
 \item{weights}{Numeric. Vector of weights having same length as \emph{x}.
-\code{NA} (default) indicates that no weights are used.}
+\code{NULL} (default) indicates that no weights are used.}
 
 \item{rescale.weights}{Logical. When set to \code{TRUE}, a global constant is
 apply to make the total count equal \code{nrow(x)}. \code{FALSE} by default.}
@@ -90,23 +91,36 @@ apply to make the total count equal \code{nrow(x)}. \code{FALSE} by default.}
 \value{
 An object having classes \dQuote{\emph{matrix}} and
   \dQuote{\emph{summarytools}} containing the statistics, with extra
-  attributes used by \code{\link{print}} method and \link{view} function.
+  attributes useful to other functions/methods.
 }
 \description{
-Calculates mean, sd, min, Q1*, median, Q3*, max, MAD, IQR*, CV, 
-skewness*, SE.skewness*, and kurtosis* on numerical vectors. (*) Not 
+Calculates mean, sd, min, Q1\*, median, Q3\*, max, MAD, IQR\*, CV, 
+skewness\*, SE.skewness\*, and kurtosis\* on numerical vectors. (\*) Not 
 available when using sampling weights.
+}
+\details{
+Since version 1.1, the \emph{stats} argument can be set in a more flexible
+  way; keywords (\emph{all}, \emph{common}, \emph{fivenum}) can be combined
+  with single statistics, or their \dQuote{negation}. For instance, using 
+  \code{stats = c("all", "-q1", "-q3")} would show
+  \strong{all except q1 and q3}.
+  
+  For further customization, you could redefine any preset in the
+  following manner: \code{.st_env$descr.stats$common <- c("mean", "sd", "n")}. 
+  \emph{Use caution when modifying \code{.st_env}, and reload the package
+  if errors ensue. Changes are temporary and will not persist across
+  R sessions.}
 }
 \examples{
 data("exams")
 
-# All stats for all numerical variabls
+# All stats (default behavior) for all numerical variables
 descr(exams)
 
-# Only common statistics
-descr(exams, stats = "common")
+# Show only "common" statistics, plus "n"
+descr(exams, stats = c("common", "n"))
 
-# Arbitrary selection of statistics, transposed
+# Selection of statistics, transposing the results
 descr(exams, stats = c("mean", "sd", "min", "max"), transpose = TRUE)
 
 # Rmarkdown-ready
@@ -114,10 +128,10 @@ descr(exams, plain.ascii = FALSE, style = "rmarkdown")
 
 # Grouped statistics
 data("tobacco")
-with(tobacco, stby(BMI, gender, descr))
+with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
 
-# Grouped statistics, transposed
-with(tobacco, stby(BMI, age.gr, descr, stats = "common", transpose = TRUE))
+# Grouped statistics in tidy table:
+with(tobacco, stby(BMI, age.gr, descr, stats = "common")) |> tb()
 
 \dontrun{
 # Show in Viewer (or browser if not in RStudio)
@@ -128,7 +142,6 @@ print(descr(exams),
       file = "descr_exams.html", 
       report.title = "BMI by Age Group",
       footnote = "<b>Schoolyear:</b> 2018-2019<br/><b>Semester:</b> Fall")
-
 }
 
 }

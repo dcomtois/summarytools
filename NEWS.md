@@ -1,6 +1,7 @@
 # summarytools 1.1.0
- - Optimized metadata extraction
- - Improved support for dplyr::group_by()
+- Optimized metadata extraction
+- Improved support for dplyr::group_by()
+- `labls()` wrapper added for `label(x, all = TRUE)`
 - In `stby()`
   + New parameter `useNA` adds a group for missing values in
     grouping variable(s); set to `FALSE` to avoid the message displayed
@@ -26,7 +27,7 @@
      excludes *Pct. Valid* from, *common* statistics.
    + Fix for *N* in header showing 1st group's size rather than global size.
    + Fix for weights not being applied correctly in by-group processing.
-
+   
 # summarytools 1.0.2 (2022-07-10)
  - Github-only release
  - Various fixes and minor improvements
