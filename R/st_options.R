@@ -69,6 +69,9 @@
 #'   \dQuote{grid} for \emph{R Markdown} documents.
 #' @param dfSummary.varnumbers Logical. In \code{\link{dfSummary}}, display
 #'   variable numbers in the first column. Defaults to \code{TRUE}.
+#' @param dfSummary.class Logical. Show data classes in Name column.
+#'   \code{TRUE} by default.
+#'   variable numbers in the first column. Defaults to \code{TRUE}.
 #' @param dfSummary.labels.col Logical. In \code{\link{dfSummary}}, display
 #'   variable labels Defaults to \code{TRUE}.
 #' @param dfSummary.valid.col Logical. In \code{\link{dfSummary}}, include
@@ -209,6 +212,7 @@ st_options <- function(option                 = NULL,
                        descr.silent           = FALSE,
                        dfSummary.style        = "multiline",
                        dfSummary.varnumbers   = TRUE,
+                       dfSummary.class        = TRUE,
                        dfSummary.labels.col   = TRUE,
                        dfSummary.valid.col    = TRUE,
                        dfSummary.na.col       = TRUE,
@@ -302,6 +306,7 @@ st_options <- function(option                 = NULL,
                    "descr.silent"           = FALSE,
                    "dfSummary.style"        = "multiline",
                    "dfSummary.varnumbers"   = TRUE,
+                   "dfSummary.class"        = TRUE,
                    "dfSummary.labels.col"   = TRUE,
                    "dfSummary.graph.col"    = TRUE,
                    "dfSummary.valid.col"    = TRUE,

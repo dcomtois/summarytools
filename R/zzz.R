@@ -46,6 +46,7 @@ utils::globalVariables(c("."))
                  "descr.silent"           = FALSE,
                  "dfSummary.style"        = "multiline",
                  "dfSummary.varnumbers"   = TRUE,
+                 "dfSummary.class"        = TRUE,
                  "dfSummary.labels.col"   = TRUE,
                  "dfSummary.graph.col"    = TRUE,
                  "dfSummary.valid.col"    = TRUE,

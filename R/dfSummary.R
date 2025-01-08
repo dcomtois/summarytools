@@ -10,6 +10,8 @@
 #' @param varnumbers Logical. Show variable numbers in the first column.
 #'   Defaults to \code{TRUE}. Can be set globally with \code{\link{st_options}},
 #'   option \dQuote{dfSummary.varnumbers}.
+#' @param class Logical. Show data classes in \emph{Variable} column.
+#'   \code{TRUE} by default.
 #' @param labels.col Logical. If \code{TRUE}, variable labels (as defined with
 #'   \pkg{rapportools}, \pkg{Hmisc} or \pkg{summarytools}' \code{label}
 #'   functions, among others) will be displayed. \code{TRUE} by default, but
@@ -172,12 +174,14 @@
 #' @keywords univar attribute classes category
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #' @importFrom dplyr n_distinct group_keys
+#' @importFrom tibble as_tibble
 #' @importFrom stats start end
 #' @importFrom grDevices dev.list dev.off
 #' @export
 dfSummary <- function(x,
                       round.digits     = 1,
                       varnumbers       = st_options("dfSummary.varnumbers"),
+                      class            = st_options("dfSummary.class"),
                       labels.col       = st_options("dfSummary.labels.col"),
                       valid.col        = st_options("dfSummary.valid.col"),
                       na.col           = st_options("dfSummary.na.col"),
@@ -229,6 +233,7 @@ dfSummary <- function(x,
       outlist[[g]] <- dfSummary(x = as_tibble(x[g_inds[[g]],]),
                                 round.digits        = round.digits,
                                 varnumbers          = varnumbers,
+                                class               = class,
                                 labels.col          = labels.col,
                                 valid.col           = valid.col,
                                 na.col              = na.col,
@@ -427,10 +432,14 @@ dfSummary <- function(x,
 
     output[i,1] <- i
 
-    output[i,2] <- paste0(names(x)[i], "\\\n[",
-                          paste(class(column_data), collapse = ", "),
-                          "]")
-
+    if (isTRUE(class)) {
+      output[i,2] <- paste0(names(x)[i], "\\\n[",
+                            paste(class(column_data), collapse = ", "),
+                            "]")
+    } else {
+      output[i,2] <- names(x)[i]
+    }
+    
     if (!is.list(column_data)) {
       # Check if column contains emails
       if (is.character(column_data)) {

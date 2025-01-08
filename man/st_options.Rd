@@ -31,6 +31,7 @@ st_options(
   descr.silent = FALSE,
   dfSummary.style = "multiline",
   dfSummary.varnumbers = TRUE,
+  dfSummary.class = TRUE,
   dfSummary.labels.col = TRUE,
   dfSummary.valid.col = TRUE,
   dfSummary.na.col = TRUE,
@@ -137,6 +138,10 @@ of \code{\link{descr}}. \code{FALSE} by default.}
 \dQuote{grid} for \emph{R Markdown} documents.}
 
 \item{dfSummary.varnumbers}{Logical. In \code{\link{dfSummary}}, display
+variable numbers in the first column. Defaults to \code{TRUE}.}
+
+\item{dfSummary.class}{Logical. Show data classes in Name column.
+\code{TRUE} by default.
 variable numbers in the first column. Defaults to \code{TRUE}.}
 
 \item{dfSummary.labels.col}{Logical. In \code{\link{dfSummary}}, display
