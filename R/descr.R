@@ -340,6 +340,9 @@ descr.default <- function(x,
     names(summar_funs) <- fun_names
     summar_funs <- summar_funs[which(fun_names %in% stats)]
 
+    # To avoid problems, (see issue #152) use generic colnames
+    xxnames <- colnames(xx)
+    colnames(xx) <- paste0("V", seq_along(xx))
     if (ncol(xx) > 1) {
       results <- suppressWarnings(
         xx %>% summarise_all(.funs = summar_funs) %>%
@@ -347,7 +350,8 @@ descr.default <- function(x,
           separate("variable", c("var", "stat"), sep = "_(?=[^_]*$)") %>%
           spread("var", "value")
       )
-      
+      colnames(xx) <- xxnames
+      colnames(results) <- c("stat", xxnames)
       if (identical(order, "preserve")) {
         results <- results[ ,c("stat", colnames(xx))]
       } else if (length(order) > 1) {
