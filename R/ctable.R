@@ -130,14 +130,14 @@ ctable <- function(x,
      stop("ctable() does not support group_by(); use stby() instead")
   }
 
-  # Adjustment for by() / syby()
+  # Adjustment for by() / syby() or when variables are piped into ctable
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
     y <- x[[2]]
     x <- x_tmp
-    flag_by <- TRUE
+    flag_parse_xy <- TRUE
   } else {
-    flag_by <- FALSE
+    flag_parse_xy <- FALSE
   }
   
   # Convert 1-column data frames into vectors
@@ -190,9 +190,11 @@ ctable <- function(x,
   }
 
   # Get x & y metadata from parsing function
-  if (isTRUE(flag_by)) {
+  if (isTRUE(flag_by) || isTRUE(flag_parse_xy)) {
     parse_info_x <- try(
-      parse_call(mc = match.call(), var = c("x", "y"), var_label = FALSE, 
+      parse_call(mc = match.call(),
+                 var = c("x", "y"),
+                 var_label = FALSE, 
                  caller = "ctable"),
       silent = TRUE)
     
@@ -239,12 +241,12 @@ ctable <- function(x,
   if ("dnn" %in% names(match.call())) {
     x_name <- dnn[1]
     y_name <- dnn[2]
-  } else if (!isTRUE(flag_by)) {
-    x_name <- na.omit(c(parse_info_x$var_name, deparse(dnn[[1]])))[1]
-    y_name <- na.omit(c(parse_info_y$var_name, deparse(dnn[[2]])))[1]
-  } else {
+  } else if (isTRUE(flag_by) || isTRUE(flag_parse_xy)) {
     x_name <- na.omit(c(parse_info_x$var_name[1], deparse(dnn[[1]])))[1]
     y_name <- na.omit(c(parse_info_x$var_name[2], deparse(dnn[[2]])))[1]
+  } else {
+    x_name <- na.omit(c(parse_info_x$var_name, deparse(dnn[[1]])))[1]
+    y_name <- na.omit(c(parse_info_y$var_name, deparse(dnn[[2]])))[1]
   }
 
   # Create xfreq table ---------------------------------------------------------
