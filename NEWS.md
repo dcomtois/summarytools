@@ -9,6 +9,7 @@
 - In `tb()`
   + Fix for broken proportions in freq tables
   + New parameters `fct.to.chr` and `recalculate` for freq tables
+  + Parameter `na.rm` deprecated
  - In `dfSummary()`: 
    + New parameter `class` allows switching off class reporting in *Variable*
      column.

@@ -399,15 +399,15 @@ check_args_tb <- function(mc) {
       !isTRUE(test_choice(pf$order, c(1, 2, 3)))) {
     errmsg %+=% "'order' must be one of 1, 2, or 3"
   }
-  
-  if ("na.rm" %in% names(mc) && 
-      !isTRUE(test_logical(pf$na.rm, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'na.rm' must be either TRUE or FALSE"
-  }
 
   if ("drop.val.col" %in% names(mc) && 
       !isTRUE(test_logical(pf$drop.val.col, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'drop.val.col' must be either TRUE or FALSE"
+  }
+  
+  if ("na.rm" %in% names(mc)) {
+    message("parameter na.rm is deprecated; use ",
+            "freq(..., report.nas = FALSE) instead")
   }
   
   return(errmsg)
