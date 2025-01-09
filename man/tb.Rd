@@ -7,7 +7,6 @@
 tb(
   x,
   order = 1,
-  na.rm = FALSE,
   drop.var.col = FALSE,
   recalculate = TRUE,
   fct.to.chr = FALSE,
@@ -25,12 +24,6 @@ tb(
  as with \code{2} is used, but the analytical variable is placed in
  first position. Depending on what function was used for grouping,
  the results will be different in subtle ways. See \emph{Details}.}
-
-\item{na.rm}{Logical. Affects grouped \code{\link{freq}} objects only.
-Discard rows with \code{NA} values on at least one of the grouping
-variables. \code{FALSE} by default. (To exclude NA values on the main
-variable as well as \emph{pct_valid} & \emph{pct_valid_cum} columns, use
-\code{freq()}'s `report.nas` and `cumul` arguments.)}
 
 \item{drop.var.col}{Logical. For \code{\link{descr}} objects, drop the
 \code{variable} column. This is possible only when statistics are

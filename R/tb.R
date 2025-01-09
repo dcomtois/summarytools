@@ -11,11 +11,6 @@
 #'   as with \code{2} is used, but the analytical variable is placed in
 #'   first position. Depending on what function was used for grouping,
 #'   the results will be different in subtle ways. See \emph{Details}.
-#' @param na.rm Logical. Affects grouped \code{\link{freq}} objects only.
-#'   Discard rows with \code{NA} values on at least one of the grouping
-#'   variables. \code{FALSE} by default. (To exclude NA values on the main
-#'   variable as well as \emph{pct_valid} & \emph{pct_valid_cum} columns, use
-#'   \code{freq()}'s `report.nas` and `cumul` arguments.)
 #' @param drop.var.col Logical. For \code{\link{descr}} objects, drop the
 #'   \code{variable} column. This is possible only when statistics are
 #'   produced for a single variable; when multiple variables are present,
@@ -61,7 +56,7 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_rows bind_cols
 #' @export
-tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb <- function(x, order = 1, drop.var.col = FALSE,
                recalculate = TRUE, fct.to.chr = FALSE, ...) {
   
   # For dispatched list elements having a NULL group
@@ -88,7 +83,7 @@ tb <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
 }
 
 #' @exportS3Method tb default
-tb.default <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb.default <- function(x, order = 1, drop.var.col = FALSE,
                        recalculate = TRUE, fct.to.chr = FALSE, ...) {
   
   st_type <- attr(x, "st_type")
@@ -100,13 +95,13 @@ tb.default <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   do.call(
     method, 
-    list(x = x, order = order, na.rm = na.rm, drop.var.col = drop.var.col,
+    list(x = x, order = order, drop.var.col = drop.var.col,
          recalculate = recalculate, fct.to.chr = fct.to.chr, ...)
   )
 }
 
 #' @exportS3Method tb summarytools
-tb.summarytools <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb.summarytools <- function(x, order = 1, drop.var.col = FALSE,
                             recalculate = TRUE, fct.to.chr = FALSE, ...) {
   
   st_type <- attr(x, "st_type")
@@ -118,24 +113,24 @@ tb.summarytools <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   do.call(
     method, 
-    list(x = x, order = order, na.rm = na.rm, drop.var.col = drop.var.col,
+    list(x = x, order = order, drop.var.col = drop.var.col,
          recalculate = recalculate, fct.to.chr = fct.to.chr, ...)
   )
 }
 
 
 #' @exportS3Method tb by
-tb.by <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb.by <- function(x, order = 1, drop.var.col = FALSE,
                   recalculate = TRUE, fct.to.chr = FALSE, ...) {
   do.call(
     tb.stby, 
-    list(x = x, order = order, na.rm = na.rm, drop.var.col = drop.var.col,
+    list(x = x, order = order, drop.var.col = drop.var.col,
          recalculate = recalculate, fct.to.chr = fct.to.chr, ...)
   )
 }
 
 #' @exportS3Method tb stby
-tb.stby <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb.stby <- function(x, order = 1, drop.var.col = FALSE,
                     recalculate = TRUE, fct.to.chr = FALSE, ...) {
 
   st_type <- attr(x[[1]], "st_type")
@@ -147,18 +142,15 @@ tb.stby <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   do.call(
     method, 
-    list(x = x, order = order, na.rm = na.rm, drop.var.col = drop.var.col,
+    list(x = x, order = order, drop.var.col = drop.var.col,
          recalculate = recalculate, fct.to.chr = fct.to.chr, ...)
   )
 }
 
 # Handles lists containing freq objects when freq() is called on a df 
 #' @exportS3Method tb list
-tb.list <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb.list <- function(x, order = 1, drop.var.col = FALSE,
                     recalculate = FALSE, fct.to.chr = TRUE, ...) {
-
-  if (isTRUE(na.rm))
-    message("na.rm is only applicable to by-group results")
 
   if (isTRUE(recalculate))
     message("recalculate is only applicable to by-group results")
@@ -177,7 +169,7 @@ tb.list <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   # Get first set of results
   gr_res <- do.call(tb_freq,
-                    list(x = x[[1]], order = 1, na.rm = FALSE,
+                    list(x = x[[1]], order = 1,
                          recalculate = FALSE, fct.to.chr = TRUE))
   
   colnames(gr_res)[1] <- "value"
@@ -189,7 +181,7 @@ tb.list <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   for (group in 2:length(x)) {
     gr_res <- do.call(tb_freq, 
-                      list(x = x[[group]], order = 1, na.rm = FALSE,
+                      list(x = x[[group]], order = 1,
                            recalculate = FALSE, fct.to.chr = TRUE))
     
     colnames(gr_res)[1] <- "value"
@@ -206,7 +198,7 @@ tb.list <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   return(output)
 }
 
-tb_stby_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb_stby_freq <- function(x, order = 1, drop.var.col = FALSE,
                          recalculate = TRUE, fct.to.chr = FALSE, ...)  {
 
   # initialise variables relevant only to stby() objects
@@ -239,7 +231,7 @@ tb_stby_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   
   # Dispatch to tb_freq
   grp_stats <- lapply(x, function(group) {
-    tb(group, fct.to.chr = TRUE)
+    tb(group, fct.to.chr = fct.to.chr)
   })
   
   # Eliminate null groups
@@ -255,13 +247,6 @@ tb_stby_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
 
   output <- dplyr::bind_rows(grp_stats)
   var_name <- colnames(output)[nb_gr_var + 1]
-  
-  # Remove rows having grouping vars = NA when na.rm = TRUE
-  if (isTRUE(na.rm)) {
-    na_rows <- which(rowSums(is.na(output[,1:nb_gr_var])) > 0)
-    if (length(na_rows) > 0)
-      output <- output[-na_rows,]
-  }
   
   # Adjust ordering of rows and columns ('order' arg)
   if (order %in% c(2,3)) {
@@ -342,7 +327,7 @@ tb_stby_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
   return(output)
 }
 
-tb_stby_descr <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb_stby_descr <- function(x, order = 1, drop.var.col = FALSE,
                           recalculate = NA, fct.to.chr = FALSE, ...) {
   
   grp_stats <- lapply(x, function(group) {
@@ -412,12 +397,9 @@ tb_stby_descr <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
 }
 
 # Single freq object -------------------------------------------------------
-tb_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
+tb_freq <- function(x, order = 1, drop.var.col = FALSE,
                     recalculate = FALSE, fct.to.chr = FALSE, ...) {
-  
-  if (isTRUE(na.rm))
-    message("na.rm ignored for single results; use freq(x, report.nas = FALSE)")
-  
+
   # Flags for columns to keep in the output
   report.nas <- attr(x, "format_info")$report.nas
   cumul      <- attr(x, "format_info")$cumul
@@ -510,7 +492,7 @@ tb_freq <- function(x, order = 1, na.rm = FALSE, drop.var.col = FALSE,
 }
 
 # Single descr object ------------------------------------------------------
-tb_descr <- function(x, order = 1,  na.rm = FALSE, drop.var.col = FALSE,
+tb_descr <- function(x, order = 1,  drop.var.col = FALSE,
                      recalculate = FALSE, fct.to.chr = FALSE, ...) {
   
   if (!isTRUE(attr(x, "data_info")$transposed)) {
