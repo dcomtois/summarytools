@@ -145,6 +145,13 @@ parse_fun <- function()  {
   
   done <- FALSE
   call <- standardize(.p$calls$fun)
+  
+  if (length(.p$var) > 1) {
+    #str <- paste0(deparse(.p$calls[[grep(.p$caller, .p$calls)[1]]]), collapse = "")
+    done <- parse_data_str(deparse(call))
+    return(done)
+  }
+  
   obj <- .p$sf[[.p$pos$fun]][[.p$var]]
   
   # Extract names from x argument
@@ -390,13 +397,14 @@ parse_pipe <- function() {
               envir = .p$sf[[.p$pos$pipe]]$parent)
   
   if (is.data.frame(obj)) {
-    if ("var_name" %in% names(.p$output) && ncol(obj) == 1) {
-      done <- upd_output("var_name", names(obj))
-      done <- upd_output("var_label", label(obj[[1]]))
+    obj_df <- obj
+    if ("var_name" %in% names(.p$output) && ncol(obj_df) == 1) {
+      done <- upd_output("var_name", colnames(obj_df))
+      done <- upd_output("var_label", label(obj_df[[1]]))
       if (done)  return(TRUE)
     }
     
-    done <- upd_output("df_label", as.character(label(obj)))
+    done <- upd_output("df_label", as.character(label(obj_df)))
     if (length(obj_str) == 1) {
       done <- upd_output("df_name", obj_name)
       if (done)  return(TRUE)
@@ -409,23 +417,32 @@ parse_pipe <- function() {
     }
   } else {
     done <- parse_data_str(obj_name)
+    obj_df <- NULL
   }
   if (done)  return(TRUE)
   
   # Move focus to rhs
   if ("var_name" %in% names(.p$output)) {
     rhs <- call$rhs
-    
     if (is.call(rhs))  
       rhs <- standardize(rhs)
     
     rhs_nms <- all.names(rhs)
     if (.p$caller %in% rhs_nms && length(rhs_nms) > 1) {
       rhs_args <- setdiff(rhs_nms, .p$caller)
-      if (length(rhs_args) == 1 && rhs_args %in% colnames(obj)) {
-        done <- upd_output("var_name", rhs_args)
-        done <- upd_output("var_label", label(obj[[rhs_args]]))
-        if (done)  return(TRUE)
+      if (length(rhs_args) == 1) {
+        if (rhs_args %in% colnames(obj_df)) {
+          done <- upd_output("var_name", rhs_args)
+          done <- upd_output("var_label", label(obj_df[[rhs_args]]))
+          if (done)  return(TRUE)
+        }
+      } else {
+        if (length(var_ind <- which(rhs_args %in% colnames(obj_df))) == 1) {
+          var_name <- rhs_args[[var_ind]]
+          done <- upd_output("var_name", var_name)
+          done <- upd_output("var_label", label(obj_df[[var_name]]))
+          if (done)  return(TRUE)
+        }
       }
     }
     
@@ -478,7 +495,7 @@ parse_piper <- function() {
     obj_str <- setdiff(obj_str, c(.p$caller, .st_env$oper, ""))
     if (length(obj_str) == 1) {
       done <- upd_output("var_name", obj_str)
-      done <- upd_output("var_label", label(obj))
+      done <- try(upd_output("var_label", label(obj)), silent = TRUE)
     } else if (length(obj_str) == 2) {
       obj_df <- try(get_object(obj_str[1], "data.frame"),
                     silent = TRUE)
@@ -548,8 +565,11 @@ deduce_names <- function() {
   # - if there is a df, hope there is only one other object left
   nms <- setdiff(all.names(sys.calls()[[1]]), .p$caller)
   call <- standardize(sys.calls()[[1]])
-  nms <- unique(c(nms, as.character(call[[.p$var]])))
-
+  
+  if (length(.p$var) == 1) {
+    nms <- unique(c(nms, as.character(call[[.p$var]])))
+  }
+  
   nnames <- length(nms)
   df_found <- !empty_na(.p$output$df_name)
   
@@ -571,8 +591,6 @@ deduce_names <- function() {
         }
       } else candidates %+=% c(untested = nm)
     } else if (is.data.frame(obj_)) {
-      cand_class %+=% "data.frame"
-      names(cand_class)[length(cand_class)] <- nm
       if (isFALSE(df_found)) {
         df_found <- TRUE
         obj_df <- obj_
@@ -581,8 +599,7 @@ deduce_names <- function() {
         if (done)  return(TRUE)
         nnames <- nnames - 1
       } else {
-        # We have a 2nd data frame; we'll simply ignore it, trusting 
-        # previous stages
+        # We had already found df_name, so we'll simply ignore it
         nnames <- nnames - 1
       }
     } else if (inherits(obj_, "function")) {
@@ -616,17 +633,27 @@ deduce_names <- function() {
     }
     
     # If there is only 1 tested, we keep it
-    if (table(candidates['tested'])[[1]] == 1) {
-      done <- upd_output("var_name", candidates[['tested']])
-      if (done)  return(TRUE)
-      if (isTRUE(df_found))
-        done <- upd_output("var_label", label(obj_df[[candidates[['tested']]]]))
-      if (done)  return(TRUE)
+    n_tested <- table(names(candidates))[['tested']]
+    if (n_tested == 1) {
+      var_name <- candidates[['tested']]
+      done <- upd_output("var_name", var_name)
+      done <- upd_output("var_label", label(obj_df[[var_name]]))
+      return(TRUE)
     } else {
-      # At this stage we can't determine which variable is the right one
-      message("Unable to determine variable and/or df name")
+      # More than one variable -- hopefully ctable
+      if (n_tested == 2 && length(.p$var) == 2) {
+        done <- upd_output(
+          "var_name",
+          unname(candidates[names(candidates) == "tested"]),
+          force = TRUE
+        )
+      }
     }
   }
+  if (done)  return(TRUE)
+  
+  # Set .p$do_return to TRUE to avoid warning (although there will be a msg)
+  .p$do_return <- TRUE
   return(FALSE)
 }
 
@@ -759,6 +786,31 @@ parse_data_str <- function(str) {
         done <- upd_output("var_name", obj_name)
         done <- upd_output("var_label", label(obj))
         if (done)  return(TRUE)
+      } else {
+        if (is.function(obj)) {
+          # Most probably something like descr(rnorm(10)) 
+          # First, confirm that function is a summarytools fn
+          if (!grepl("summarytools", 
+                     capture.output(pryr::where(obj_name))[1])) {
+            # See if only one of var_name & df_name is required, and
+            # use that slot and return
+            name_slots <- grep("_name", names(.p$output), value = TRUE)
+            if (length(name_slots) == 1) {
+              upd_output(name_slots, str, force = TRUE)
+              .p$do_return <- TRUE
+              return(TRUE)
+            } else {
+              # Get first element of evaluated str to determine which
+              # slot to use
+              if (is.data.frame(eval(str2expression(str))[1]))
+                upd_output("df_name", str, force = TRUE)
+              else
+                upd_output("var_name", str, force = TRUE)
+              .p$do_return <- TRUE
+              return(TRUE)
+            }
+          }
+        }
       }
     }
   }

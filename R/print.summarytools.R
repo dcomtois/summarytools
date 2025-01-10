@@ -1381,11 +1381,6 @@ print_descr <- function(x, method) {
     x <- round(x, format_info$digits)
     x <- do.call(format, append(format_args, list(x = quote(x))))
 
-    #if (!"Weights" %in% names(data_info)) {
-    #  row_ind <- which(trs("n.valid") == rownames(x))
-    #  x[row_ind, ] <- sub("\\.0+", "", x[row_ind, ])
-    #}
-
     main_sect %+=%
       paste(
         capture.output(
@@ -1416,27 +1411,36 @@ print_descr <- function(x, method) {
     }
 
     table_rows <- list()
+    
+    # Determine which cells are "n" or "n.valid" in order to remove digits
+    # This is much easier than editing pairlists after-the-fact
+    if ("Weights" %in% names(data_info)) {
+      hide_digits <- FALSE
+    } else {
+      if (isTRUE(data_info$transposed)) {
+        co_hide_ind <- which(colnames(x) %in% c(trs("n"), trs("n.valid")))
+        hide_digits <- quote(co %in% co_hide_ind)
+      } else {
+        ro_hide_ind <- which(rownames(x) %in% c(trs("n"), trs("n.valid")))  
+        hide_digits <- quote(ro %in% ro_hide_ind)
+      }
+    }
+    
     for (ro in seq_len(nrow(x))) {
       table_row <- list(tags$td(tags$strong(rownames(x)[ro])))
       for (co in seq_len(ncol(x))) {
-        # cell is NA
         if (is.na(x[ro,co])) {
           table_row %+=% list(tags$td(format_info$missing))
         } else {
-          # When not NA format cell content
           cell <- do.call(format, append(format_args, x = quote(x[ro,co])))
-          if ((rownames(x)[ro] == trs("n.valid") ||
-               colnames(x)[co] == trs("n.valid")) &&
-              !"Weights" %in% names(data_info)) {
+          # check for n and n.valid -- remove digits if applicable
+          if (eval(hide_digits)) {
             cell <- sub(paste0(format_info$decimal.mark, "0+$"), "", cell)
           }
           table_row %+=% list(tags$td(tags$span(cell)))
         }
-        # On last column, insert row to table_rows list
-        if (co == ncol(x)) {
-          table_rows %+=% list(tags$tr(table_row))
-        }
       }
+      table_rows %+=% list(tags$tr(table_row))
     }
 
     descr_table_html <-
