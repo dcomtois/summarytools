@@ -121,11 +121,12 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
   }
   
   # remove NULL elements (has side-effect of removing dim and dimnames)
-  for (col in seq_along(res)) {
-    if (is.null(res[[col]])) {
-      res[[col]]   <- NULL
-      groups <- groups[-col,]
-    }
+  non_null_ind <- which(!vapply(res, is.null, logical(1)))
+  if (length(non_null_ind)) {
+    atr <- attributes(res)
+    res <- res[non_null_ind]
+    attributes(res) <- atr[c("call", "class")]
+    groups <- groups[non_null_ind,]
   }
   
   # Set useNA as attribute; to be used by tb()
@@ -136,7 +137,8 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
   if (ncol(groups) == 1 && length(res) == length(groups[[1]])) {
     names(res) <- groups[[1]]
   } else {
-    names(res) <- sapply(res, function(gr) attr(gr, "data_info")$Group)
+    names(res) <- vapply(res, function(gr) attr(gr, "data_info")$Group,
+                         character(1))
   }
   #.e_reset()
   return(res)
