@@ -47,7 +47,8 @@ st_options(
   tmp.img.dir = NA_character_,
   subtitle.emphasis = TRUE,
   lang = "en",
-  use.x11 = TRUE
+  use.x11 = TRUE,
+  persist = TRUE
 )
 }
 \arguments{
