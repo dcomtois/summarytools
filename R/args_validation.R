@@ -103,32 +103,6 @@ check_args <- function(mc, dotArgs, caller) {
       errmsg %+=% "'cumul' must be either TRUE or FALSE"
     }
     
-    if ("na.val" %in% names(mc) && !is.null(pf$na.val)) {
-        varname <- pf$varname %||% "x"
-      if (length(pf$na.val) > 1) {
-        errmsg %+=% "'na.val' can only contain one value"
-      }
-      if (!is.factor(pf$x)) {
-        if (isFALSE(st_options("freq.silent")))
-          message("'na.val' only applies to factors & will be ignored for ",
-                  varname)
-      }
-      if (!isTRUE(test_character(pf$na.val, any.missing = FALSE))) {
-        errmsg %+=% "'na.val' must be character"
-      }
-      if (is.factor(pf$x)) {
-        if (!pf$na.val %in% levels(pf$x)) {
-          if (isFALSE(st_options("freq.silent")))
-            message(paste0("'", pf$na.val, "' is not a level of ",
-                           varname, " and will be ignored"))
-          pf$na.val <- NULL
-        } else if (anyNA(pf$x)) {
-          errmsg %+=% paste(varname, "contains NA values; 'na.val' is only",
-                            "valid in the absence of actual NA values")
-        }
-      }
-    }
-    
     if ("order" %in% names(mc)) {
       order <- switch(tolower(substr(sub("[+-]", "", pf$order), 1, 1)),
                       d = "default",
@@ -187,6 +161,30 @@ check_args <- function(mc, dotArgs, caller) {
         } 
       } else if (length(pf$rows) > 0 && max(table(pf$rows)) > 1) {
         warning("one or more elements in the rows argument appears more than once")
+      }
+    }
+    
+    if (!is.null(pf$na.val)) {
+      if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
+        errmsg %+=% "invalid na.val value; must be character of length 1"
+      }
+      if (is.factor(pf$x)) {
+        if (!pf$na.val %in% levels(pf$x)) {
+          pf$na.val <- NULL
+        } 
+      } else if (is.character(pf$x)) {
+        if (!pf$na.val %in% pf$x) {
+          pf$na.val <- NULL
+        }
+      }
+      if (anyNA(pf$x)) {
+        pf$na.val <- NULL
+        # show message only if noth NA's and na.val's are present
+        if (any(pf$x == (pf$na.val %||% st_options("na.val"))) && 
+            isFALSE(st_options("freq.silent")))
+          message(paste0("Some NA values were found in ",
+                         pf$varname %||% "x", 
+                         "; na.val will be ignored"))
       }
     }
   }
@@ -272,6 +270,30 @@ check_args <- function(mc, dotArgs, caller) {
             length(as.numeric(na.omit(unique(pf$y)))) != 2) {
           errmsg %+=% "'RR' can only be used with 2 x 2 tables"
         }
+      }
+    }
+    
+    if (!is.null(pf$na.val)) {
+      if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
+        errmsg %+=% "invalid na.val value; must be character of length 1"
+      }
+      if (is.factor(pf$x)) {
+        if (!pf$na.val %in% levels(pf$x) && !pf$na.val %in% pf$y) {
+          pf$na.val <- NULL
+        }
+      } else if (is.character(pf$x)) {
+        if (!pf$na.val %in% pf$x && !pf$na.val %in% pf$y) {
+          pf$na.val <- NULL
+        }
+      }
+      if (anyNA(pf$x) && anyNA(pf$y)) {
+        pf$na.val <- NULL
+        # show message only if noth NA's and na.val's are present
+        if (isFALSE(st_options("ctable.silent")) && 
+            (any(pf$x == (pf$na.val %||% st_options("na.val"))) || 
+             any(pf$y == (pf$na.val %||% st_options("na.val")))))
+          message(paste0("Some NA values were found in x and y",
+                         "; na.val will be ignored"))
       }
     }
   }
@@ -564,6 +586,11 @@ check_args_st_options <- function(mc) {
       !isTRUE(test_logical(pf$display.labels, 
                            len = 1, any.missing = FALSE))) {
     errmsg %+=% "'display.labels' must be either TRUE or FALSE"
+  }
+
+  if ("na.val" %in% names(mc) && !is.null(pf$na.val) &&
+      isFALSE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
+        errmsg %+=% "invalid na.val; must be character vector of length 1"
   }
   
   if ("bootstrap.css" %in% names(mc) &&

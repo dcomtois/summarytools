@@ -40,8 +40,9 @@
 #'   string is used, it will be used as a regular expression to filter row 
 #'   names.
 #' @param missing Text to display in NA cells. Defaults to \dQuote{}.
-#' @param na.val Character. For factors, consider this value as \code{NA}.
-#'   Ignored if there are actual NA values.
+#' @param na.val Character. For factors and character vectors, consider this
+#'   value as \code{NA}. Ignored if there are actual NA values or if it matches
+#'   no value / factor level in the data. \code{NULL} by default.
 #' @param display.type Logical. Should variable type be displayed? Default is
 #'   \code{TRUE}.
 #' @param display.labels Logical. Should variable / data frame labels be
@@ -129,7 +130,7 @@ freq <- function(x,
                  report.nas      = st_options("freq.report.nas"),
                  rows            = numeric(),
                  missing         = "",
-                 na.val          = NULL,
+                 na.val          = st_options("na.val"),
                  display.type    = TRUE,
                  display.labels  = st_options("display.labels"),
                  headings        = st_options("headings"),
@@ -375,9 +376,10 @@ freq <- function(x,
       x[is.nan(x)] <- NA
     }
     
-    # Replace values ~ na.val by NA
-    if (!is.null(na.val)) {
-      x[which(x == na.val)] <- NA
+    # Replace values == na.val by NA in factors & char vars
+    if (!is.null(na.val) && !anyNA(x) && 
+        inherits(x, c("factor", "character"))) {
+      x[which(x %in% na.val)] <- NA
       levels(x)[which(levels(x) == na.val)] <- NA
     }
     

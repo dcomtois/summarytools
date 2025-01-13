@@ -13,6 +13,7 @@ st_options(
   headings = TRUE,
   footnote = "default",
   display.labels = TRUE,
+  na.val = NULL,
   bootstrap.css = TRUE,
   custom.css = NA_character_,
   escape.pipe = FALSE,
@@ -82,6 +83,10 @@ provide a custom string. Applies only to \emph{html} outputs.}
 
 \item{display.labels}{Logical. \code{TRUE} by default. Set to \code{FALSE} to
 omit data frame and variable labels in the headings section.}
+
+\item{na.val}{Character. For factors and character vectors, consider this
+value as \code{NA}. Ignored if there are actual NA values or if it matches
+no value / factor level in the data. \code{NULL} by default.}
 
 \item{bootstrap.css}{Logical. Specifies whether to include 
 \emph{Bootstrap css} in \emph{html} reports' \emph{head} section.

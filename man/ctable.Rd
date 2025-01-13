@@ -17,6 +17,7 @@ ctable(
   headings = st_options("headings"),
   display.labels = st_options("display.labels"),
   split.tables = Inf,
+  na.val = st_options("na.val"),
   dnn = c(substitute(x), substitute(y)),
   chisq = FALSE,
   OR = FALSE,

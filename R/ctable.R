@@ -117,6 +117,7 @@ ctable <- function(x,
                    headings        = st_options("headings"),
                    display.labels  = st_options("display.labels"),
                    split.tables    = Inf,
+                   na.val          = st_options("na.val"),
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
                    OR              = FALSE,
@@ -249,6 +250,18 @@ ctable <- function(x,
     y_name <- na.omit(c(parse_info_y$var_name, deparse(dnn[[2]])))[1]
   }
 
+  # Replace values == na.val by NA in factors & char vars
+  if (!is.null(na.val)) {
+    if (inherits(x, c("factor", "character"))) {
+      x[which(x %in% na.val)] <- NA
+      levels(x)[which(levels(x) == na.val)] <- NA
+    }
+    if (inherits(y, c("factor", "character"))) {
+      y[which(y %in% na.val)] <- NA
+      levels(y)[which(levels(y) == na.val)] <- NA
+    }
+  }
+  
   # Create xfreq table ---------------------------------------------------------
   if (identical(NA, weights)) {
     freq_table <- table(x, y, useNA = useNA)
@@ -319,16 +332,30 @@ ctable <- function(x,
 
   # Change name of NA items to avoid potential problems when echoing to console
   if (NA %in% rownames(freq_table)) {
-    row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
-    if (prop != "n") {
-      row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
+    if (is.null(na.val)) {
+      row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
+      if (prop != "n") {
+        row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
+      }
+    } else {
+      row.names(freq_table)[is.na(row.names(freq_table))] <- na.val
+      if (prop != "n") {
+        row.names(prop_table)[is.na(row.names(prop_table))] <- na.val
+      }
     }
   }
 
   if (NA %in% colnames(freq_table)) {
-    colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
-    if (prop != "n") {
-      colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+    if (is.null(na.val)) {
+      colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+      if (prop != "n") {
+        colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+      }
+    } else {
+      colnames(freq_table)[is.na(colnames(freq_table))] <- na.val
+      if (prop != "n") {
+        colnames(prop_table)[is.na(colnames(prop_table))] <- na.val
+      }
     }
   }
 
