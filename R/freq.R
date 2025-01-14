@@ -170,10 +170,11 @@ freq <- function(x,
       varname <- setdiff(colnames(x), group_vars(x))
     }
 
-    parse_info <- try(
-      parse_call(mc = match.call(), df_name = TRUE, df_label = FALSE, 
-                 var_name = FALSE, var_label = FALSE, caller = "freq"),
-      silent = TRUE)
+    parse_info <- parse_call(mc = match.call(), 
+                             df_label = FALSE,
+                             var_name = FALSE,
+                             var_label = FALSE,
+                             caller = "freq")
     
     outlist  <- list()
     gr_ks    <- map_groups(group_keys(x))
@@ -261,13 +262,12 @@ freq <- function(x,
            !"var" %in% names(match.call())) {
     
     # Get information about x from parsing function
-    parse_info <- try(parse_call(mc = match.call(), 
-                                 var_name = FALSE, var_label = FALSE,
-                                 caller = "freq"),
-                      silent = TRUE)
+    parse_info <- parse_call(mc = match.call(), 
+                             var_name = FALSE,
+                             var_label = FALSE,
+                             caller = "freq")
     
-    if (inherits(parse_info, "try-error") || !length(parse_info)) {
-      parse_info <- list()
+    if (!"df_name" %in% names(parse_info) || is.na(parse_info$df_name)) {
       df_name <- deparse(substitute(x))
     } else {
       df_name <- parse_info$df_name
@@ -387,11 +387,8 @@ freq <- function(x,
     if ("skip_parse" %in% names(list(...))) {
       parse_info <- list()
     } else {
-      parse_info <- try(parse_call(mc = match.call(), 
-                                   caller = "freq"), silent = TRUE)
-      if (inherits(parse_info, "try-error")) {
-        parse_info <- list()
-      }
+      parse_info <- parse_call(mc = match.call(), 
+                               caller = "freq")
     }
     
     if (!("var_name" %in% names(parse_info)) && exists("varname")) {

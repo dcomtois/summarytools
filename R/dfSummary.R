@@ -219,11 +219,10 @@ dfSummary <- function(x,
   if (inherits(x, "grouped_df")) {
     
     # Get metadata for heading section
-    parse_info <- try(
-      parse_call(mc = match.call(),
-                 var_name  = FALSE, var_label = FALSE,
-                 caller = "dfSummary"),
-      silent = TRUE)
+    parse_info <- parse_call(mc = match.call(),
+                             var_name  = FALSE,
+                             var_label = FALSE,
+                             caller = "dfSummary")
 
     outlist <- list()
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
@@ -354,17 +353,10 @@ dfSummary <- function(x,
   if ("skip_parse" %in% names(match.call())) {
     parse_info <- list()
   } else {
-    
-    parse_info <- try(
-      parse_call(mc        =  match.call(),
-                 var_name  =  converted_to_df,
-                 var_label =  converted_to_df,
-                 caller    = "dfSummary"),
-      silent = TRUE)
-
-    if (inherits(parse_info, "try-error")) {
-      parse_info <- list()
-    }
+    parse_info <- parse_call(mc        =  match.call(),
+                             var_name  =  converted_to_df,
+                             var_label =  converted_to_df,
+                             caller    = "dfSummary")
   }
   
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {

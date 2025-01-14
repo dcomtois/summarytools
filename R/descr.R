@@ -267,17 +267,12 @@ descr.default <- function(x,
   if ("skip_parse" %in% names(list(...))) {
     parse_info <- list()
   } else {
-    parse_info <- try(
-      parse_call(mc        = match.call(),
-                 var_name  = (ncol(xx) == 1), 
-                 var_label = (ncol(xx) == 1), 
-                 caller    = "descr"),
-      silent = TRUE)
-    if (inherits(parse_info, "try-error")) {
-      parse_info <- list()
-    }
+    parse_info <- parse_call(mc        = match.call(),
+                             var_name  = (ncol(xx) == 1), 
+                             var_label = (ncol(xx) == 1),
+                             caller    = "descr")
   }
-  
+
   # Identify and exclude non-numerical columns from x
   col_to_remove <- which(!vapply(xx, is.numeric, logical(1)))
   
@@ -664,16 +659,10 @@ descr.grouped_df <- function(x,
     }
   }
 
-  parse_info <- try(
-    parse_call(mc = match.call(),
-               var_name  = (ncol(xx) == 1),
-               var_label = (ncol(xx) == 1),
-               caller = "descr"),
-    silent = TRUE)
-  
-  
-  if (inherits(parse_info, "try-error"))
-    parse_info <- list()
+  parse_info <- parse_call(mc = match.call(),
+                           var_name  = (ncol(xx) == 1),
+                           var_label = (ncol(xx) == 1),
+                           caller = "descr")
   
   # Prepare for iterations
   outlist  <- list()

@@ -192,12 +192,10 @@ ctable <- function(x,
 
   # Get x & y metadata from parsing function
   if (isTRUE(flag_by) || isTRUE(flag_parse_xy)) {
-    parse_info_x <- try(
-      parse_call(mc = match.call(),
-                 var = c("x", "y"),
-                 var_label = FALSE, 
-                 caller = "ctable"),
-      silent = TRUE)
+    parse_info_x <- parse_call(mc = match.call(),
+                               var = c("x", "y"),
+                               var_label = FALSE, 
+                               caller = "ctable")
     
     if (inherits(parse_info_x, "try-error")) {
       parse_info_x <- list()
@@ -210,19 +208,19 @@ ctable <- function(x,
       }
     }
   } else {
-    parse_info_x <- try(
-      parse_call(mc = match.call(), var = "x", var_label = FALSE,
-                 caller = "ctable"),
-      silent = TRUE)
+      parse_info_x <- parse_call(mc = match.call(),
+                                 var = "x",
+                                 var_label = FALSE,
+                                 caller = "ctable")
     
     if (inherits(parse_info_x, "try-error")) {
       parse_info_x <- list()
     }
     
-    parse_info_y <- try(
-      parse_call(mc = match.call(), var = "y", var_label = FALSE,
-                 caller = "ctable"),
-      silent = TRUE)
+    parse_info_y <- parse_call(mc = match.call(),
+                               var = "y",
+                               var_label = FALSE,
+                               caller = "ctable")
     
     if (inherits(parse_info_y, "try-error")) {
       parse_info_y <- list()
@@ -432,8 +430,6 @@ ctable <- function(x,
                           trs(mode(x)), mode(x))
   }  
   
-  
-
   # Determine data "type" for y, in a non-strict way
   if (all(c("ordered", "factor") %in% class(y))) {
     Data.type.y <- trs("factor.ordered")
