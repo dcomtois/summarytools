@@ -67,28 +67,39 @@
 # "Hideous hack" to avoid warning on check
 utils::globalVariables(c("."))
 
-# Declare global flag_by variable, (can be declared in check_args)
-# utils::globalVariables(c("flag_by"))
+# Define a null coalescing operator if not available
+if (getRversion() < "4.4.0") {
+  if (!requireNamespace("backports", quietly = TRUE) || 
+      !exists("%||%", where = asNamespace("backports"), inherits = FALSE)) {
+    `%||%` <- function(x, y) {
+      if (is.null(x)) y else x
+    }
+  } else {
+    `%||%` <- backports:::`%||%`
+  }
+}
 
 # summarytools global options
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
   
-  st_version <- utils::packageDescription(pkgname)$Version
+  st_version <- utils::packageDescription("summarytools")$Version
   st_opts <- getOption("summarytools")
   
   if (is.null(st_opts)) {
     st_options("reset")
-    st_version <- st_options("version")
   } else {
     # If options exist, compare versions
     if (is.null(st_opts$version) || st_opts$version != st_version) {
-      
-      message("summarytools has been updated; see news(package = ",
-              "'summarytools') to learn what has changed")
-      message("summarytools options now persist across sessions; to disable ",
-              "this feature, use st_options(persist = FALSE)")
-
+      message(
+        paste("summarytools", st_version, "has been installed\n",
+              "- Package options now persist across sessions;\n",
+              "  To disable this feature, use st_options(persist = FALSE)\n",
+              "- See news(package = \"summarytools\") to learn what else",
+              "has changed\n",
+              "This message appears only once")
+      )
+      st_options("reset")
     }
   }
 }
@@ -101,28 +112,5 @@ utils::globalVariables(c("."))
     packageStartupMessage("system might not have X11 capabilities; in case of ",
                           "errors when using dfSummary(), set ",
                           "st_options(use.x11 = FALSE)")
-  }
-}
-
-# Define a null coalescing operator if not available
-if (getRversion() < "4.1.0") {
-  if (!requireNamespace("backports", quietly = TRUE) || 
-      !"%||%" %in% getNamespaceExports("backports")) {
-    `%||%` <- function(x, y) {
-      if (is.null(x)) y else x
-    }
-  } else {
-    `%||%` <- backports::`%||%`
-  }
-}
-
-if (getRversion() < "4.4.0") {
-  if (!requireNamespace("backports", quietly = TRUE) || 
-      !"%||%" %in% getNamespaceExports("backports")) {
-    `%||%` <- function(x, y) {
-      if (is.null(x)) y else x
-    }
-  } else {
-    `%||%` <- backports::`%||%`
   }
 }
