@@ -168,23 +168,10 @@ check_args <- function(mc, dotArgs, caller) {
       if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
         errmsg %+=% "invalid na.val value; must be character of length 1"
       }
-      if (is.factor(pf$x)) {
-        if (!pf$na.val %in% levels(pf$x)) {
-          pf$na.val <- NULL
-        } 
-      } else if (is.character(pf$x)) {
-        if (!pf$na.val %in% pf$x) {
-          pf$na.val <- NULL
-        }
-      }
-      if (anyNA(pf$x)) {
+      if (anyNA(pf$x) ||
+          (is.factor(pf$x) && !pf$na.val %in% levels(pf$x)) ||
+          (is.character(pf$x) && !pf$na.val %in% pf$x)) {
         pf$na.val <- NULL
-        # show message only if noth NA's and na.val's are present
-        if (any(pf$x == (pf$na.val %||% st_options("na.val"))) && 
-            isFALSE(st_options("freq.silent")))
-          message(paste0("Some NA values were found in ",
-                         pf$varname %||% "x", 
-                         "; na.val will be ignored"))
       }
     }
   }
@@ -277,23 +264,15 @@ check_args <- function(mc, dotArgs, caller) {
       if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
         errmsg %+=% "invalid na.val value; must be character of length 1"
       }
-      if (is.factor(pf$x)) {
-        if (!pf$na.val %in% levels(pf$x) && !pf$na.val %in% pf$y) {
-          pf$na.val <- NULL
-        }
-      } else if (is.character(pf$x)) {
-        if (!pf$na.val %in% pf$x && !pf$na.val %in% pf$y) {
-          pf$na.val <- NULL
-        }
+      if (anyNA(pf$x) ||
+          (is.factor(pf$x) && !pf$na.val %in% levels(pf$x)) ||
+          (is.character(pf$x) && !pf$na.val %in% pf$x)) {
+          pf$na.val.x <- NULL
       }
-      if (anyNA(pf$x) && anyNA(pf$y)) {
-        pf$na.val <- NULL
-        # show message only if noth NA's and na.val's are present
-        if (isFALSE(st_options("ctable.silent")) && 
-            (any(pf$x == (pf$na.val %||% st_options("na.val"))) || 
-             any(pf$y == (pf$na.val %||% st_options("na.val")))))
-          message(paste0("Some NA values were found in x and y",
-                         "; na.val will be ignored"))
+      if (anyNA(pf$y) ||
+          (is.factor(pf$y) && !pf$na.val %in% levels(pf$y)) ||
+          (is.character(pf$y) && !pf$na.val %in% pf$y)) {
+        pf$na.val.y <- NULL
       }
     }
   }

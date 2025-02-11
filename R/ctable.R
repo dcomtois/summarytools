@@ -166,6 +166,10 @@ ctable <- function(x,
       errmsg %+=% "'y' must be a factor or an object coercible to a vector"
     }
   }
+  
+  # Duplicate na.val to facilitate args validation
+  na.val.x <- na.val
+  na.val.y <- na.val
 
   errmsg <- c(errmsg, check_args(match.call(), list(...), "ctable"))
   
@@ -249,14 +253,20 @@ ctable <- function(x,
   }
 
   # Replace values == na.val by NA in factors & char vars
-  if (!is.null(na.val)) {
-    if (inherits(x, c("factor", "character"))) {
-      x[which(x %in% na.val)] <- NA
-      levels(x)[which(levels(x) == na.val)] <- NA
+  if (!is.null(na.val.x)) {
+    if (is.factor(x)) {
+      x[which(x == na.val.x)] <- NA
+      levels(x)[which(levels(x) == na.val.x)] <- NA
+    } else if (is.character(x)) {
+      x[which(x == na.val.x)] <- NA
     }
-    if (inherits(y, c("factor", "character"))) {
-      y[which(y %in% na.val)] <- NA
-      levels(y)[which(levels(y) == na.val)] <- NA
+  }
+  if (!is.null(na.val.y)) {
+    if (is.factor(y)) {
+      y[which(x == na.val.y)] <- NA
+      levels(x)[which(levels(y) == na.val.y)] <- NA
+    } else if (is.character(y)) {
+      y[which(y == na.val.y)] <- NA
     }
   }
   
@@ -329,30 +339,30 @@ ctable <- function(x,
   }
 
   # Change name of NA items to avoid potential problems when echoing to console
-  if (NA %in% rownames(freq_table)) {
-    if (is.null(na.val)) {
-      row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
+  if (anyNA(rownames(freq_table))) {
+    if (is.null(na.val.x)) {
+      rownames(freq_table)[is.na(rownames(freq_table))] <- "<NA>"
       if (prop != "n") {
-        row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
+        rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
       }
     } else {
-      row.names(freq_table)[is.na(row.names(freq_table))] <- na.val
+      rownames(freq_table)[is.na(rownames(freq_table))] <- na.val.x
       if (prop != "n") {
-        row.names(prop_table)[is.na(row.names(prop_table))] <- na.val
+        rownames(prop_table)[is.na(rownames(prop_table))] <- na.val.x
       }
     }
   }
-
-  if (NA %in% colnames(freq_table)) {
-    if (is.null(na.val)) {
+  # repeat for column names
+  if (anyNA(colnames(freq_table))) {
+    if (is.null(na.val.y)) {
       colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
       if (prop != "n") {
         colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
       }
     } else {
-      colnames(freq_table)[is.na(colnames(freq_table))] <- na.val
+      colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
       if (prop != "n") {
-        colnames(prop_table)[is.na(colnames(prop_table))] <- na.val
+        colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
       }
     }
   }

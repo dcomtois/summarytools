@@ -377,10 +377,13 @@ freq <- function(x,
     }
     
     # Replace values == na.val by NA in factors & char vars
-    if (!is.null(na.val) && !anyNA(x) && 
-        inherits(x, c("factor", "character"))) {
-      x[which(x %in% na.val)] <- NA
-      levels(x)[which(levels(x) == na.val)] <- NA
+    if (!is.null(na.val)) {
+      if (is.factor(x)) {
+        x[which(x == na.val)] <- NA
+        levels(x)[which(levels(x) == na.val)] <- NA
+      } else if (is.character(na.val)) {
+        x[which(x == na.val)] <- NA
+      }
     }
     
     # Get information about x from parsing function
