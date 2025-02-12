@@ -43,6 +43,9 @@
 #'   \code{\link{st_options}}.
 #' @param justify String indicating alignment of columns; one of \dQuote{l}
 #'   (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.
+#' @param na.val Character. For factors and character vectors, consider this
+#'   value as \code{NA}. Ignored if there are actual NA values. \code{NULL}
+#'   by default.
 #' @param col.widths Numeric or character. Vector of column widths. If numeric,
 #'   values are assumed to be numbers of pixels. Otherwise, any CSS-supported
 #'   units can be used. \code{NA} by default, meaning widths are calculated
@@ -190,6 +193,7 @@ dfSummary <- function(x,
                       style            = st_options("dfSummary.style"),
                       plain.ascii      = st_options("plain.ascii"),
                       justify          = "l",
+                      na.val           = st_options("na.val"),                      
                       col.widths       = NA,
                       headings         = st_options("headings"),
                       display.labels   = st_options("display.labels"),
@@ -215,11 +219,10 @@ dfSummary <- function(x,
   if (inherits(x, "grouped_df")) {
     
     # Get metadata for heading section
-    parse_info <- try(
-      parse_call(mc = match.call(),
-                 var_name  = FALSE, var_label = FALSE,
-                 caller = "dfSummary"),
-      silent = TRUE)
+    parse_info <- parse_call(mc = match.call(),
+                             var_name  = FALSE,
+                             var_label = FALSE,
+                             caller = "dfSummary")
 
     outlist <- list()
     g_ks    <- map_groups(group_keys(x)) # map_groups is defined in helpers.R
@@ -238,6 +241,7 @@ dfSummary <- function(x,
                                 style               = style,
                                 plain.ascii         = plain.ascii,
                                 justify             = justify,
+                                na.val              = na.val,
                                 col.widths          = col.widths,
                                 headings            = headings,
                                 display.labels      = display.labels,
@@ -349,17 +353,10 @@ dfSummary <- function(x,
   if ("skip_parse" %in% names(match.call())) {
     parse_info <- list()
   } else {
-    
-    parse_info <- try(
-      parse_call(mc        =  match.call(),
-                 var_name  =  converted_to_df,
-                 var_label =  converted_to_df,
-                 caller    = "dfSummary"),
-      silent = TRUE)
-
-    if (inherits(parse_info, "try-error")) {
-      parse_info <- list()
-    }
+    parse_info <- parse_call(mc        =  match.call(),
+                             var_name  =  converted_to_df,
+                             var_label =  converted_to_df,
+                             caller    = "dfSummary")
   }
   
   if (!("df_name" %in% names(parse_info)) && exists("df_name")) {
@@ -412,7 +409,6 @@ dfSummary <- function(x,
 
   n_tot <- nrow(x)
 
-
   # iterate over columns of x --------------------------------------------------
 
   for (i in seq_len(ncol(x))) {
@@ -420,13 +416,19 @@ dfSummary <- function(x,
     # extract column data
 
     column_data <- x[[i]]
+    
+    # Replace values ~ na.val by NA in factors & char vars
+    if (!is.null(na.val) && !anyNA(column_data) && 
+        inherits(column_data, c("factor", "character"))) {
+      column_data[which(column_data == na.val)] <- NA
+      levels(column_data)[which(levels(column_data) == na.val)] <- NA
+    }
 
     # Calculate valid vs missing data info
     n_miss <- sum(is.na(column_data))
     n_valid <- ifelse(is.list(column_data),
                               sum(!is.na(column_data)),
                               n_tot - n_miss)
-    
     
     # Build content for first 3 columns of output data frame
     #   Column 1: Variable number

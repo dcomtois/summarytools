@@ -3,11 +3,11 @@
 #' Assigns a label to a vector or data frame, or returns value stored 
 #' in the object's \code{label} attribute (or \code{NA} if none exists).
 #' 
-#' @aliases label label<- labls
+#' @aliases label label<- llabel
 #' @usage 
 #' label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
 #' label(x) <- value
-#' labls(x, all = TRUE, fallback = FALSE, simplify = FALSE)
+#' llabel(x, all = TRUE, fallback = FALSE, simplify = FALSE)
 #' 
 #' @param x An R object to extract labels from.
 #' @param all Logical. When x is a data frame, setting this argument to
@@ -26,7 +26,7 @@
 #'   \code{simplify = TRUE}.
 #' 
 #' @details
-#'  The wrapper function \code{labls} was named that way to avoid conflicting
+#'  The wrapper function \code{llabel} was named that way to avoid conflicting
 #'  with base function \code{\link[base]{labels}}.
 #' 
 #' @author
@@ -123,9 +123,9 @@ label <- function(x, all = FALSE, fallback = FALSE, simplify = FALSE) {
 }
 
 #' @usage 
-#' labls(x, all = TRUE, fallback = FALSE, simplify = FALSE)
+#' llabel(x, all = TRUE, fallback = FALSE, simplify = FALSE)
 #' @export
-labls <- function(x, all = TRUE, fallback = FALSE, simplify = FALSE) {
+llabel <- function(x, all = TRUE, fallback = FALSE, simplify = FALSE) {
   label(x, all = all, fallback = fallback, simplify = simplify)
 } 
 

@@ -17,6 +17,7 @@ dfSummary(
   style = st_options("dfSummary.style"),
   plain.ascii = st_options("plain.ascii"),
   justify = "l",
+  na.val = st_options("na.val"),
   col.widths = NA,
   headings = st_options("headings"),
   display.labels = st_options("display.labels"),
@@ -82,6 +83,10 @@ markdown rendering. To change the default value globally, see
 
 \item{justify}{String indicating alignment of columns; one of \dQuote{l}
 (left) \dQuote{c} (center), or \dQuote{r} (right). Defaults to \dQuote{l}.}
+
+\item{na.val}{Character. For factors and character vectors, consider this
+value as \code{NA}. Ignored if there are actual NA values. \code{NULL}
+by default.}
 
 \item{col.widths}{Numeric or character. Vector of column widths. If numeric,
 values are assumed to be numbers of pixels. Otherwise, any CSS-supported

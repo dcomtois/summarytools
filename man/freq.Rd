@@ -17,7 +17,7 @@ freq(
   report.nas = st_options("freq.report.nas"),
   rows = numeric(),
   missing = "",
-  na.val = NULL,
+  na.val = st_options("na.val"),
   display.type = TRUE,
   display.labels = st_options("display.labels"),
   headings = st_options("headings"),
@@ -76,8 +76,9 @@ names.}
 
 \item{missing}{Text to display in NA cells. Defaults to \dQuote{}.}
 
-\item{na.val}{Character. For factors, consider this value as \code{NA}.
-Ignored if there are actual NA values.}
+\item{na.val}{Character. For factors and character vectors, consider this
+value as \code{NA}. Ignored if there are actual NA values or if it matches
+no value / factor level in the data. \code{NULL} by default.}
 
 \item{display.type}{Logical. Should variable type be displayed? Default is
 \code{TRUE}.}

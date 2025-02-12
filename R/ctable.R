@@ -37,6 +37,9 @@
 #'   \code{\link{st_options}}.
 #' @param split.tables Numeric. \code{\link[pander]{pander}} argument that 
 #'   specifies how many characters wide a table can be. \code{Inf} by default.
+#' @param na.val Character. For factors and character vectors, consider this
+#'   value as \code{NA}. Ignored if there are actual NA values or if it matches
+#'   no value / factor level in the data. \code{NULL} by default.
 #' @param dnn Character vector. Variable names to be used in output table. In
 #'   most cases, setting this parameter is not required as the names are 
 #'   automatically generated.
@@ -117,6 +120,7 @@ ctable <- function(x,
                    headings        = st_options("headings"),
                    display.labels  = st_options("display.labels"),
                    split.tables    = Inf,
+                   na.val          = st_options("na.val"),
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
                    OR              = FALSE,
@@ -125,11 +129,14 @@ ctable <- function(x,
                    rescale.weights = FALSE,
                    ...) {
 
+  # Initialize flag_by variable that will be set in check_args()
+  flag_by <- logical()
+  
   # Check for group_by()
   if (inherits(x, "grouped_df")) {
      stop("ctable() does not support group_by(); use stby() instead")
   }
-
+  
   # Adjustment for by() / syby() or when variables are piped into ctable
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
@@ -165,6 +172,10 @@ ctable <- function(x,
       errmsg %+=% "'y' must be a factor or an object coercible to a vector"
     }
   }
+  
+  # Duplicate na.val to facilitate args validation
+  na.val.x <- na.val
+  na.val.y <- na.val
 
   errmsg <- c(errmsg, check_args(match.call(), list(...), "ctable"))
   
@@ -191,12 +202,10 @@ ctable <- function(x,
 
   # Get x & y metadata from parsing function
   if (isTRUE(flag_by) || isTRUE(flag_parse_xy)) {
-    parse_info_x <- try(
-      parse_call(mc = match.call(),
-                 var = c("x", "y"),
-                 var_label = FALSE, 
-                 caller = "ctable"),
-      silent = TRUE)
+    parse_info_x <- parse_call(mc = match.call(),
+                               var = c("x", "y"),
+                               var_label = FALSE, 
+                               caller = "ctable")
     
     if (inherits(parse_info_x, "try-error")) {
       parse_info_x <- list()
@@ -209,19 +218,19 @@ ctable <- function(x,
       }
     }
   } else {
-    parse_info_x <- try(
-      parse_call(mc = match.call(), var = "x", var_label = FALSE,
-                 caller = "ctable"),
-      silent = TRUE)
+      parse_info_x <- parse_call(mc = match.call(),
+                                 var = "x",
+                                 var_label = FALSE,
+                                 caller = "ctable")
     
     if (inherits(parse_info_x, "try-error")) {
       parse_info_x <- list()
     }
     
-    parse_info_y <- try(
-      parse_call(mc = match.call(), var = "y", var_label = FALSE,
-                 caller = "ctable"),
-      silent = TRUE)
+    parse_info_y <- parse_call(mc = match.call(),
+                               var = "y",
+                               var_label = FALSE,
+                               caller = "ctable")
     
     if (inherits(parse_info_y, "try-error")) {
       parse_info_y <- list()
@@ -249,6 +258,24 @@ ctable <- function(x,
     y_name <- na.omit(c(parse_info_y$var_name, deparse(dnn[[2]])))[1]
   }
 
+  # Replace values == na.val by NA in factors & char vars
+  if (!is.null(na.val.x)) {
+    if (is.factor(x)) {
+      x[which(x == na.val.x)] <- NA
+      levels(x)[which(levels(x) == na.val.x)] <- NA
+    } else if (is.character(x)) {
+      x[which(x == na.val.x)] <- NA
+    }
+  }
+  if (!is.null(na.val.y)) {
+    if (is.factor(y)) {
+      y[which(x == na.val.y)] <- NA
+      levels(x)[which(levels(y) == na.val.y)] <- NA
+    } else if (is.character(y)) {
+      y[which(y == na.val.y)] <- NA
+    }
+  }
+  
   # Create xfreq table ---------------------------------------------------------
   if (identical(NA, weights)) {
     freq_table <- table(x, y, useNA = useNA)
@@ -318,17 +345,31 @@ ctable <- function(x,
   }
 
   # Change name of NA items to avoid potential problems when echoing to console
-  if (NA %in% rownames(freq_table)) {
-    row.names(freq_table)[is.na(row.names(freq_table))] <- "<NA>"
-    if (prop != "n") {
-      row.names(prop_table)[is.na(row.names(prop_table))] <- "<NA>"
+  if (anyNA(rownames(freq_table))) {
+    if (is.null(na.val.x)) {
+      rownames(freq_table)[is.na(rownames(freq_table))] <- "<NA>"
+      if (prop != "n") {
+        rownames(prop_table)[is.na(rownames(prop_table))] <- "<NA>"
+      }
+    } else {
+      rownames(freq_table)[is.na(rownames(freq_table))] <- na.val.x
+      if (prop != "n") {
+        rownames(prop_table)[is.na(rownames(prop_table))] <- na.val.x
+      }
     }
   }
-
-  if (NA %in% colnames(freq_table)) {
-    colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
-    if (prop != "n") {
-      colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+  # repeat for column names
+  if (anyNA(colnames(freq_table))) {
+    if (is.null(na.val.y)) {
+      colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+      if (prop != "n") {
+        colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+      }
+    } else {
+      colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+      if (prop != "n") {
+        colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+      }
     }
   }
 
@@ -405,8 +446,6 @@ ctable <- function(x,
                           trs(mode(x)), mode(x))
   }  
   
-  
-
   # Determine data "type" for y, in a non-strict way
   if (all(c("ordered", "factor") %in% class(y))) {
     Data.type.y <- trs("factor.ordered")

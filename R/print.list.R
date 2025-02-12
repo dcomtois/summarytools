@@ -50,6 +50,6 @@ print.list <- function(x,
          ...)
     
   } else {
-    NextMethod("print", x, ...)
+    NextMethod("print", x)
   }
 }

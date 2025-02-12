@@ -193,7 +193,7 @@ parse_fun <- function()  {
                                          content = ls(obj_),
                                          classes = lapply(obj_, class),
                                          label   = label(obj_),
-                                         labels  = labls(obj_))
+                                         labels  = label(obj_, all = TRUE))
           
           else if (inherits(obj_, "matrix"))
             obj_components[[nm]] <- list(class   = class(obj_),

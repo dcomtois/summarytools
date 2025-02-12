@@ -95,6 +95,7 @@ view <- function(x,
       class(xx)    <- class(x[[1]])
       colnames(xx) <- vapply(x, function(k) attr(k, "data_info")$Group,
                              character(1), USE.NAMES = FALSE)
+      colnames(xx) <- sub("^.+?= ", "", colnames(xx))
     }
     
     attr(xx, "st_type")   <- "descr"

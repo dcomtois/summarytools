@@ -22,6 +22,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(knitr)
+#`%||%` <- backports:::`%||%`
 opts_chunk$set(comment = NA,
                prompt  = FALSE,
                cache   = FALSE,
@@ -344,7 +345,7 @@ tobacco %$%  # Acts like with(tobacco, ...)
 <br/><br/>
 <a id="s-4"></a><a id="descr"></a>  
 
-# 4. Descriptive Statistics: descr()  
+# 4. Descriptive (Univariate) Statistics: descr()  
 
 `descr()` generates descriptive / univariate statistics, *i.e.* common central
 tendency statistics and measures of dispersion. It accepts single
@@ -411,27 +412,28 @@ view(dfSummary(iris))
 <img src="assets/dfSummary_in_RStudio_Viewer.png" width=100% style="border:0" />
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
-<td> Be careful to use `view()` and not `View()`. If you use the latter, results
-will be shown in the data viewer. 
+<td> Be careful to use `view()` (or `stview()`) and not `View()` with capital
+`V'. Otherwise, results will be shown in the data viewer. 
 
-Also, be mindful of the order in which
-the packages are loaded. Some packages redefine `view()` to point to `View()`;
-loading **summarytools** *after* these packages will ensure its own `view()`
-works properly. Otherwise, `stview()` is always there as a foolproof 
-alternative.</td></tr></table>
+Also, be mindful of the order in which the packages are loaded. Some packages
+redefine `view()` to point to `View()`; loading **summarytools** *after* these
+packages will ensure its own `view()` function works properly. Otherwise,
+`stview()` is always there as a foolproof alternative.</td></tr></table>
 
 
 ## 5.1 Using dfSummary() in R Markdown Documents
 
 When using `dfSummary()` in *R Markdown* documents, it is generally a good 
 idea to exclude a column or two to avoid margin overflow. Since the *Valid*
-and *Missing* columns are redundant, we can drop either one of them.
+and *Missing* columns are complementary (and therefore redundant), we can
+safely drop either one of them.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dfSummary(tobacco, 
           plain.ascii  = FALSE, 
           style        = "grid", 
           graph.magnif = 0.75, 
+          varnumbers   = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
 ```
@@ -452,10 +454,9 @@ the `warning` chunk option to `FALSE`: `{r chunk_name, results="asis", warning=F
 
 ## 5.2 Optional Statistics
 
-This feature has been requested several times since the package was
-released. Introduced in version 1.0.0, it provides control over which
-statistics to shown in the *Stats/Values* column. Namely, the third row,
-which displays `IQR (CV)`, can be modified to show any available
+Introduced in version 1.0.0 in response to feature requests, a mechanism
+provides control over which statistics to shown in the *Stats/Values* column.
+The third row, which displays `IQR (CV)`, can be modified to show any available
 statistics in R. An additional "slot" (unused by default) is also made
 available. To use this feature, define `dfSummary.custom.1` and/or
 `dfSummary.custom.2` using `st_options()` in the following way, encapsulating
@@ -494,16 +495,16 @@ print(
 
 
 If we had used `dfSummary.custom.2` instead of `dfSummary.custom.1`,
-a fourth row would have been added under the default `IQR (CV)` row.
+a fourth line would have been added under `IQR (CV)`.
 
 Note that instead of `round()`, it is possible to use the internal 
-`format_number()`, which ensures the number is formatted according to all
-specified arguments (rounding digits, decimal mark and thousands mark, etc.).
-The internal variable `round.digits` which contains the value of
-`st_options("round.digits")` can also be used. This is how the
-default `IQR (CV)` is defined -- here we set the first custom stat back
-to its default value and then display its definition (`formatR::tidy_source()`
-is used to format the expression):
+function `format_number()`, which will ensure correct formatting of numbers
+according to all specified arguments (rounding digits, decimal mark,
+big/small mark, etc.). The variable `round.digits`, which contains
+the value of `st_options("round.digits")` can also be used.
+
+This is how the default `IQR (CV)` is defined -- here we set the first custom
+stat back to its default value and then display its definition (`formatR::tidy_source()` is used to format the expression):
 
 ```{r, results='markup'}
 library(formatR)
@@ -544,7 +545,7 @@ is also possible to delete them with the following syntax (results not shown):
 
 ```{r, eval=FALSE}
 dfs <- dfSummary(iris)
-dfs$Variable <- NULL # This deletes the "Variable" column
+dfs$Variable <- NULL # This deletes the Variable column
 ```
 
 <br/>
@@ -664,7 +665,7 @@ iris$Species |>
 ```
 
 By definition, no total rows are part of *tidy* tables, and the row
-names are converted to a regular column. 
+names are turned into a regular column. 
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
 <td>When displaying *tibbles* using **rmarkdown**, the **knitr** chunk option
@@ -672,7 +673,8 @@ names are converted to a regular column.
 
 Not all tables generated by tb() are strictly speaking *tidy*; you can choose
 for instance to not recalculate proportions/valid proportions of grouped 
-freq outputs, using the `recalculate` argument, which is TRUE by default.
+freq outputs, using `recalculate = FALSE` (TRUE by default).
+
 
 ## 8.1 Tidy Split-Group Statistics
 
@@ -705,7 +707,7 @@ Note that percentages will be recalculated, unless setting `tb()`'s
 the *tidy* principles.
 
 ```{r, results='markup'}
-tobacco |> group_by(gender) |> freq(smoker) |> tb()
+tobacco |> dplyr::group_by(gender) |> freq(smoker) |> tb()
 ```
 
 For more details, see `?tb`.
@@ -745,7 +747,7 @@ stby(data    = iris,
 
 Using the `file` argument with `print()` or `view()` / `stview()`, we can
 write outputs to a file, be it *html*, *Rmd*, *md*, or just plain text
-(*txt*). The file extension is used by the package to determine the type of
+(*txt*). The file extension is used to determine the type of
 content to write out.
 
 ```{r, eval=FALSE}
@@ -762,9 +764,8 @@ option is to generate an *html* file and convert it to *PDF* using
 better results than *Pandoc* with `dfSummary()` output). 
 
 Another option is to create an *Rmd* document using *PDF* as the output
-format. See `vignette("rmarkdown", package = "summarytools")` for the details
-on how to proceed. There is a bit of tweaking to be done in order for the
-images to align properly.
+format. See `vignette("rmarkdown", package = "summarytools")` for details;
+some tweaking is necessary for the graphs to align properly.
 
 ## 9.1 Appending Output Files
 
@@ -796,6 +797,7 @@ The following options can be set globally with `st_options()`:
 | headings                      |    TRUE   | Formerly “omit.headings”                        |
 | footnote                      | “default” | Customize or set to NA to omit                  |
 | display.labels                |    TRUE   | Show variable / data frame labels in headings   |
+| na.val                        |    NULL   | Value to treat as NA in factor / char variables |
 | bootstrap.css <sup>(3)</sup>  |    TRUE   | Include Bootstrap 4 CSS in *html* output files  |
 | custom.css                    |      NA   | Path to your own CSS file                       |
 | escape.pipe                   |   FALSE   | Useful for some Pandoc conversions              |
@@ -862,13 +864,13 @@ st_options(style = 'rmarkdown',   # Set the value of one or several options
 
 When a **summarytools** object is created, its formatting attributes are
 stored within it. However, we can override most of them when using
-`print()` or `view()`.
+`print()` or `view()` / `stview()`.
 
 ## 11.1 Overriding Function-Specific Arguments
 
 The following table indicates what arguments can be used with `print()`
-or `view()` to override formatting attributes. Base R's `format()`
-function arguments can also be used (although they are not listed here).
+or `view()` / `stview()` to override formatting attributes. Base R's `format()`
+arguments can also be used (they are not listed here).
 
 
 | Argument                    | freq   | ctable | descr | dfSummary |
@@ -939,18 +941,14 @@ The logic for the evaluation of the various parameter values can be summarized
 as follows:
 
 - If an argument is explicitly supplied in the function call, it will have
-  precedence over any stored value for the parameter (stored values are the 
-  ones that are written to the object's attributes when using a core 
-  function, as well as the ones stored in **summarytools**' global options
-  list). 
+  precedence. 
 
-- If both a core function and the print or view function are called at once and
-  have conflicting parameter values, print/view has precedence (they always
-  win the argument!).
+- If both the core function and the `print()` / `view()` / `stview()` function
+  are called at once and have conflicting parameter values, the latter has
+  precedence (they always win the argument!).
 
-- if the parameter values cannot be found in the function calls, the stored
-  defaults (modified with `st_options()` or left as they are when
-  loading the package) will be applied.
+- If the parameter values cannot be found in the function calls, the stored
+  defaults (which can be modified with `st_options()`) will be applied.
 
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
@@ -1064,8 +1062,7 @@ in the cell, rather than the width of the image itself:
 
 CRAN policies are really strict when it comes to writing content in the user 
 directories, or anywhere outside *R's temporary zone* (for good reasons). So
-users need to set this temporary location themselves, therefore consenting to
-having content written outside *R*'s predefined temporary zone.
+users need to set this temporary location themselves.
 
 On Mac OS and Linux, using "/tmp" makes a lot of sense: it's a short path,
 and the directory is purged automatically. On Windows, there is no such
@@ -1126,7 +1123,7 @@ st_options(lang = "en")
 ## 15.2 Defining and Using Custom Terms
 
 Using the function `use_custom_lang()`, it is possible to add your own set of 
-translations or personalized terms. To achieve this, get the 
+translations or custom terms. To achieve this, get the 
 [csv template](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
 customize one, many or all of the +/- 70 terms, and call `use_custom_lang()`,
 giving it as sole argument the path to the edited *csv* template. Note that such
@@ -1138,7 +1135,7 @@ you should always have this *csv* file handy for future use.
 The `define_keywords()` makes it easy to change just one or a few terms.
 For instance, you might prefer using "N" or "Count" rather than "Freq" in the
 title row of `freq()` tables. Or you might want to generate a document which
-uses the tables' titles as heading sections.
+uses the tables' titles as sections titles.
 
 For this, call `define_keywords()` and feed it the term(s) you wish
 to modify (which can themselves be stored in predefined variables). Here,
@@ -1154,17 +1151,17 @@ freq(iris$Species)
 
 Calling `define_keywords()` without any arguments will bring up, on systems
 that support graphical devices (the vast majority, that is), a window from
-which we can edit all the terms we want. 
+which you can edit all terms. 
 
 <img src="assets/define_keywords.png" width=95% style="border:1;border-color:grey" />
 
 After closing the edit window, a dialogue box gives the option to save the
 newly created custom language to a *csv* file (even though we changed just
-a few keywords, the package considers the terms as a whole). We can later
-reload into memory the custom language file by calling
-`use_custom_lang("path-to-custom-language-file.csv")`.
+a few keywords, the package considers the terms as part of a whole "language").
+We can later reload into memory the custom language file by calling
+`use_custom_lang("language-file.csv")`.
 
-See `?define_keywords` for a list of all customizable terms in the package.
+See `?define_keywords` for a list of all customizable terms used in the package.
 
 To revert all changes, we can simply use `st_options(lang = "en")`. 
 

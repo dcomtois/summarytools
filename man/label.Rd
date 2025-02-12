@@ -3,12 +3,12 @@
 \name{label}
 \alias{label}
 \alias{label<-}
-\alias{labls}
+\alias{llabel}
 \title{Get or Set Variable or Data Frame Labels}
 \usage{
 label(x, all = FALSE, fallback = FALSE, simplify = FALSE)
 label(x) <- value
-labls(x, all = TRUE, fallback = FALSE, simplify = FALSE)
+llabel(x, all = TRUE, fallback = FALSE, simplify = FALSE)
 }
 \arguments{
 \item{x}{An R object to extract labels from.}
@@ -37,7 +37,7 @@ Assigns a label to a vector or data frame, or returns value stored
 in the object's \code{label} attribute (or \code{NA} if none exists).
 }
 \details{
-The wrapper function \code{labls} was named that way to avoid conflicting
+The wrapper function \code{llabel} was named that way to avoid conflicting
  with base function \code{\link[base]{labels}}.
 }
 \note{
