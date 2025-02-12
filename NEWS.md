@@ -1,7 +1,7 @@
 # summarytools 1.1.0
 - Optimized metadata extraction
 - Improved support for dplyr::group_by()
-- `labls()` wrapper added for `label(x, all = TRUE)`
+- `llabel()` wrapper added for `label(x, all = TRUE)`
 - In `stby()`
   + New parameter `useNA` adds a group for missing values in
     grouping variable(s); set to `FALSE` to avoid the message displayed
