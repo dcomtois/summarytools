@@ -378,11 +378,19 @@ freq <- function(x,
     
     # Replace values == na.val by NA in factors & char vars
     if (!is.null(na.val)) {
-      if (is.factor(x)) {
-        x[which(x == na.val)] <- NA
-        levels(x)[which(levels(x) == na.val)] <- NA
-      } else if (is.character(na.val)) {
-        x[which(x == na.val)] <- NA
+      if (is.factor(x) || is.character(x)) {
+        ind_na_val <- which(x == na.val)
+        
+        if (length(ind_na_val)) {
+          x[ind_na_val] <- NA
+          if (is.factor(x)) {
+            levels(x)[which(levels(x) == na.val)] <- NA
+          }
+        } else {
+          na.val <- NULL # na.val not found in x
+        }
+      } else {
+        na.val <- NULL # x not char nor factor
       }
     }
     
@@ -526,7 +534,7 @@ freq <- function(x,
     rownames(output)[rownames(output) == ""] <- 
       paste0("(", trs("empty.str"), ")")
     
-    # Change <NA> rowname with na.val if defined
+    # Change <NA> rowname with na.val if defined and used
     if (!is.null(na.val)) {
       rownames(output)[rownames(output) == "<NA>"] <- na.val 
     }
