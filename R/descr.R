@@ -329,8 +329,8 @@ descr.default <- function(x,
                         ~ dummy(.))  # placeholder for pct.valid
     
     fun_names <- c("mean", "sd", "min", "q1", "med", "q3", "max", "mad", "iqr",
-                   "cv", "skewness", "se.skewness", "kurtosis", "n",
-                   "n.valid", "pct.valid")
+                   "cv", "skewness", "se.skewness", "kurtosis", "n.valid",
+                   "n", "pct.valid")
     
     names(summar_funs) <- fun_names
     summar_funs <- summar_funs[which(fun_names %in% stats)]
