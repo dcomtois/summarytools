@@ -35,7 +35,7 @@ Provides support for piped function calls (e.g.
 \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-\dQuote{n.valid}, \dQuote{pct.valid}, and \dQuote{n}. Can be set globally
+\dQuote{n.valid}, \dQuote{n}, and \dQuote{pct.valid}. Can be set globally
 via \code{\link{st_options}}, option \dQuote{descr.stats}. See 
 \emph{Details}.}
 
