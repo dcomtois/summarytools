@@ -73,6 +73,10 @@ section. \code{TRUE} by default, can be changed globally with
 \item{split.tables}{Numeric. \code{\link[pander]{pander}} argument that 
 specifies how many characters wide a table can be. \code{Inf} by default.}
 
+\item{na.val}{Character. For factors and character vectors, consider this
+value as \code{NA}. Ignored if there are actual NA values or if it matches
+no value / factor level in the data. \code{NULL} by default.}
+
 \item{dnn}{Character vector. Variable names to be used in output table. In
 most cases, setting this parameter is not required as the names are 
 automatically generated.}

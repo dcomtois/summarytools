@@ -37,6 +37,9 @@
 #'   \code{\link{st_options}}.
 #' @param split.tables Numeric. \code{\link[pander]{pander}} argument that 
 #'   specifies how many characters wide a table can be. \code{Inf} by default.
+#' @param na.val Character. For factors and character vectors, consider this
+#'   value as \code{NA}. Ignored if there are actual NA values or if it matches
+#'   no value / factor level in the data. \code{NULL} by default.
 #' @param dnn Character vector. Variable names to be used in output table. In
 #'   most cases, setting this parameter is not required as the names are 
 #'   automatically generated.
@@ -126,11 +129,14 @@ ctable <- function(x,
                    rescale.weights = FALSE,
                    ...) {
 
+  # Initialize flag_by variable that will be set in check_args()
+  flag_by <- logical()
+  
   # Check for group_by()
   if (inherits(x, "grouped_df")) {
      stop("ctable() does not support group_by(); use stby() instead")
   }
-
+  
   # Adjustment for by() / syby() or when variables are piped into ctable
   if (length(dim(x)) == 2) {
     x_tmp <- x[[1]]
