@@ -245,8 +245,7 @@ st_options <- function(option                 = NULL,
                        tmp.img.dir            = NA_character_,
                        subtitle.emphasis      = TRUE,
                        lang                   = "en",
-                       use.x11                = TRUE,
-                       persist                = TRUE) {
+                       use.x11                = TRUE) {
   
   allOpts <- getOption("summarytools")
   
@@ -286,8 +285,6 @@ st_options <- function(option                 = NULL,
       stop("Cannot reset options and set them at the same time")
     }
     
-    # store existing value for "persist"
-    persist_ <- allOpts$persist %||% TRUE
     options("summarytools" = 
               list("style"                  = "simple",
                    "plain.ascii"            = TRUE,
@@ -339,15 +336,13 @@ st_options <- function(option                 = NULL,
                          collapse = "", sep = ""
                        )
                      ),
-                   "dfSummary.custom.2" = NA,
-                   "tmp.img.dir"        = NA_character_,
-                   "subtitle.emphasis"  = TRUE,
-                   "lang"               = "en",
-                   "use.x11"            = TRUE,
-                   "persist"            = persist_,
-                   "version"            = utils::packageVersion("summarytools")))
+                   "dfSummary.custom.2"     = NA,
+                   "tmp.img.dir"            = NA_character_,
+                   "subtitle.emphasis"      = TRUE,
+                   "lang"                   = "en",
+                   "use.x11"                = TRUE))
     
-    message("options set to their default values")
+    message("summarytools options have been reset")
     return(invisible())
   }
 
@@ -358,8 +353,8 @@ st_options <- function(option                 = NULL,
       stop("Cannot set more than one option at a time in the legacy way; ",
            "Use separate arguments for each option instead")
     }
-    if (!option %in% names(allOpts)[-length(allOpts)]) {
-      stop("Option ", option, " not recognized / not available")
+    if (!option %in% names(allOpts)) {
+      stop("Option ", option, "not recognized / not available")
     } else {
       allOpts[[option]] <- value
     }
@@ -367,7 +362,7 @@ st_options <- function(option                 = NULL,
     return(invisible())
   }
   
-  # Standard way of setting options -- st_options(option = value)    
+  # Regular way of setting options    
   for (o in setdiff(names(mc), c("", "option", "value",
                                  "dfSummary.custom.1", "dfSummary.custom.2"))) {
     allOpts[[o]] <- get(o)

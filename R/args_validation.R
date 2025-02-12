@@ -530,10 +530,6 @@ check_args_st_options <- function(mc) {
   pf <- parent.frame()
   errmsg <- character()
   
-  if ("version" %in% names(mc)) {
-    errmsg %+=% "cannot manually change package version"
-  }
-  
   if ("omit.headings" %in% names(mc)) {
     errmsg %+=% "'omit.headings' is deprecated; use 'headings' instead"
   }
@@ -742,11 +738,6 @@ check_args_st_options <- function(mc) {
   if ("use.x11" %in% names(mc) &&
       !isTRUE(test_logical(pf$use.x11, len = 1, any.missing = FALSE))) {
     errmsg %+=% "'use.x11' must be either TRUE or FALSE"
-  }
-  
-  if ("persist" %in% names(mc) &&
-      !isTRUE(test_logical(pf$persist, len = 1, any.missing = FALSE))) {
-    errmsg %+=% "'persist' must be either TRUE or FALSE"
   }
   
   return(errmsg)

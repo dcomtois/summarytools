@@ -82,26 +82,64 @@ if (getRversion() < "4.4.0") {
 # summarytools global options
 #' @importFrom utils data
 .onLoad <- function(libname, pkgname) {
-  
-  st_version <- utils::packageDescription("summarytools")$Version
-  st_opts <- getOption("summarytools")
-  
-  if (is.null(st_opts)) {
-    st_options("reset")
-  } else {
-    # If options exist, compare versions
-    if (is.null(st_opts$version) || st_opts$version != st_version) {
-      message(
-        paste("summarytools", st_version, "has been installed\n",
-              "- Package options now persist across sessions;\n",
-              "  To disable this feature, use st_options(persist = FALSE)\n",
-              "- See news(package = \"summarytools\") to learn what else",
-              "has changed\n",
-              "This message appears only once")
-      )
-      st_options("reset")
-    }
-  }
+  options(summarytools =
+            list("style"                  = "simple",
+                 "plain.ascii"            = TRUE,
+                 "round.digits"           = 2,
+                 "headings"               = TRUE,
+                 "footnote"               = "default",
+                 "display.labels"         = TRUE,
+                 "na.val"                 = NULL,
+                 "bootstrap.css"          = TRUE,
+                 "custom.css"             = NA,
+                 "escape.pipe"            = FALSE,
+                 "char.split"             = 12,
+                 "freq.cumul"             = TRUE,
+                 "freq.totals"            = TRUE,
+                 "freq.report.nas"        = TRUE,
+                 "freq.ignore.threshold"  = 25,
+                 "freq.silent"            = FALSE,
+                 "ctable.prop"            = "r",
+                 "ctable.totals"          = TRUE,
+                 "ctable.round.digits"    = 1,
+                 "ctable.silent"          = FALSE,
+                 "descr.stats"            = "all",
+                 "descr.transpose"        = FALSE,
+                 "descr.silent"           = FALSE,
+                 "dfSummary.style"        = "multiline",
+                 "dfSummary.varnumbers"   = TRUE,
+                 "dfSummary.class"        = TRUE,
+                 "dfSummary.labels.col"   = TRUE,
+                 "dfSummary.graph.col"    = TRUE,
+                 "dfSummary.valid.col"    = TRUE,
+                 "dfSummary.na.col"       = TRUE,
+                 "dfSummary.graph.magnif" = 1,
+                 "dfSummary.silent"       = FALSE,
+                 "dfSummary.custom.1"     = 
+                   expression(
+                     paste(
+                       paste0(
+                         trs("iqr"), " (", trs("cv"), ") : "
+                       ),
+                       format_number(
+                         IQR(column_data, na.rm = TRUE), round.digits
+                       ),
+                       " (",
+                       format_number(
+                         sd(column_data, na.rm = TRUE) /
+                           mean(column_data, na.rm = TRUE), round.digits
+                       ),
+                       ")",
+                       collapse = "", sep = ""
+                     )
+                   ),
+                 "dfSummary.custom.2"     = NA,
+                 "tmp.img.dir"            = NA_character_,
+                 "subtitle.emphasis"      = TRUE,
+                 "lang"                   = "en",
+                 "use.x11"                = TRUE))
+
+  return(invisible())
 }
 
 #' @importFrom utils packageDescription
@@ -114,3 +152,4 @@ if (getRversion() < "4.4.0") {
                           "st_options(use.x11 = FALSE)")
   }
 }
+
