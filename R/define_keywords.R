@@ -9,7 +9,7 @@
 #'   whether to save the edited values in a csv file for later use.
 #' @param file Character. Path and name of custom language file to be saved.
 #'   This comma delimited file can be reused by calling
-#'   \code{\link{use_custom_lang}}.
+#'   \code{\link{use_custom_lang}}. Must have \emph{.csv} extension.
 #'
 #' @details On systems with GUI capabilities, a window will pop-up when calling 
 #' \code{define_keywords()} without any parameters, allowing the modification 
@@ -130,6 +130,15 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
     return(invisible())
   }
   
+  # Validate file argument
+  if (!is.na(file)) {
+    filename <- normalizePath(file, mustWork = FALSE)
+    if (!isTRUE(check_path_for_output(filename, extension = "csv",
+                                      overwrite = TRUE))) {
+      stop("Invalid file name or extension (must be .csv)")
+    }
+  }
+
   if (st_options("lang") == "custom") {
     tr <- as.data.frame(t(.st_env$custom_lang), stringsAsFactors = FALSE)
   } else {
@@ -180,30 +189,92 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
   use_custom_lang(tr)
 
   if (!is.na(file)) {
-    filename <- normalizePath(file, mustWork = FALSE)
-    if (isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
     write.csv(x = tr,
               file = filename,
               row.names = FALSE, 
               fileEncoding = "utf-8")
     message("Custom language file written: ", filename)
-    } else {
-      warning("file name or path invalid")
-    }
   } else if (isTRUE(ask)) {
     filename <- ""
     filename_ok <- FALSE
+    dialog_error <- NA
     
-    if (interactive() && length(kw) == 1) {
+    if (interactive()) { # && length(kw) == 1) {
       
-      if (isTRUE(capabilities("tcltk")) && isTRUE(ask)) {
+      dialog_error <- TRUE
+      filename_ok  <- FALSE
+      
+      # Get file name under RStudio (tcltk dialogs behave inconsistently)
+      if (.Platform$GUI == "RStudio") {
+        resp <- try(
+          rstudioapi::showQuestion(
+            title = "Keywords Successfully Updated",
+            message = "Export language file for later user?",
+            ok = "Yes", cancel = "No"
+          ),
+          silent = TRUE)
+        if (!inherits(resp, "try-error")) {
+          dialog_error <- FALSE
+          if (isTRUE(resp)) {
+            while (!filename_ok) {
+              dir_name <- rstudioapi::selectDirectory(
+                caption = "Choose directory for custom language file"
+              )
+              if (is.null(dir_name)) {
+                # dialog cancelled
+                filename <- ""
+                filename_ok <- TRUE
+                message("Custom language file not saved")
+              } else {
+                filename <- rstudioapi::showPrompt(
+                  title = "Custom language file",
+                  message = "Enter file name, including extension (.csv)",
+                  default = "custom_lang.csv"
+                )
+                if (is.null(filename)) {
+                  # dialog cancelled -- validate cancel action
+                  filename <- ""
+                  filename_ok <- !rstudioapi::showQuestion(
+                    title = "Custom language file",
+                    message = "Invalid file name.",
+                    ok = "Retry",
+                    cancel = "Cancel"
+                  )
+                } else {
+                  filename <- normalizePath(
+                    paste(dir_name, filename, sep = .Platform$file.sep),
+                    mustWork = FALSE
+                  )
+                  if (!isTRUE(check_path_for_output(filename, 
+                                                    overwrite = TRUE))) {
+                    rv <- rstudioapi::showQuestion(
+                      title = "Custom language file", 
+                      message = "Invalid file name or location",
+                      ok = "Retry",
+                      cancel = "Cancel"
+                    )
+                    if (!rv) {
+                      # cancel confirmed
+                      filename <- ""
+                      filename_ok <- TRUE
+                    }
+                  } else {
+                    # Filename is valid
+                    filename_ok <- TRUE
+                  }
+                } 
+              }
+            } # while
+          } # save yes
+        }
+      } else if (isTRUE(capabilities("tcltk"))) {
         # tcltk capabilities: yes
         resp <- try(tk_messageBox(type = "yesno", 
                                   message = "Export language file for later use?",
                                   caption = "Keywords Successfully Updated"),
                     silent = TRUE)
-        if (inherits(resp, "try-error")) {
-          tcltk_error <- TRUE
+        if (!inherits(resp, "try-error")) {
+          dialog_error <- FALSE
         } else {
           if (resp == "yes") {
             while (!filename_ok) {
@@ -218,8 +289,8 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
                 filename <- normalizePath(filename, mustWork = FALSE)
                 if (!isTRUE(check_path_for_output(filename, overwrite = TRUE))) {
                   rv <- tk_messageBox(
-                    type = "okcancel", 
-                    message = "Invalid file name or location"
+                    type = "retrycancel", 
+                    message = "Invalid file name or location."
                   )
                   if (rv == "cancel") {
                     filename <- ""
@@ -231,6 +302,7 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
                 }
               } else {
                 # dialog "Save as..." was cancelled
+                message("Custom language file not saved")
                 filename_ok <- TRUE
               }
             }
@@ -239,7 +311,7 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
       }
       
       # tcltk capabilities: no, or attempt failed
-      if (isFALSE(capabilities("tcltk")) || exists("tcltk_error")) {
+      if (isFALSE(capabilities("tcltk")) || isTRUE(dialog_error)) {
         resp <- " "
         while (!resp %in% c("Y", "N", "")) {
           resp <- toupper(
@@ -255,7 +327,7 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
             if (filename != "" && 
                 (!isTRUE(check_path_for_output(filename, overwrite = TRUE)) || 
                  !grepl("\\.csv$", filename))) {
-              message("Invalid file location or extension (must be .csv)")
+              message("Invalid file name or extension (must be .csv)")
             } else {
               filename_ok <- TRUE # filename either "" or valid
             }
