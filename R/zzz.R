@@ -22,18 +22,18 @@
 .st_env$descr.stats <- list(
   all     = c("mean", "sd", "min", "q1", "med", "q3","max", "mad",
               "iqr", "cv", "skewness", "se.skewness", "kurtosis",
-              "n.valid", "pct.valid", "n"),
+              "n.valid", "n", "pct.valid"),
   common  = c("mean", "sd", "min", "med", "max",
-              "n.valid", "pct.valid", "n"),
+              "n.valid", "n", "pct.valid"),
   fivenum = c("min", "q1", "med", "q3", "max")
 )
 
 .st_env$descr.stats.valid <- list(
   no_wgts = c("mean", "sd", "min", "q1", "med", "q3","max", "mad", 
               "iqr", "cv", "skewness", "se.skewness", "kurtosis", 
-              "n.valid", "pct.valid", "n"),
+              "n.valid", "n", "pct.valid"),
   wgts = c("mean", "sd", "min", "med", "max", "mad", "cv", 
-           "n.valid", "pct.valid", "n")
+           "n.valid", "n", "pct.valid")
 )
 
 # most common operators -- used by parse_call()

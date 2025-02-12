@@ -13,7 +13,7 @@
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
 #'   \dQuote{q3}, \dQuote{max}, \dQuote{mad}, \dQuote{iqr}, \dQuote{cv},
 #'   \dQuote{skewness}, \dQuote{se.skewness}, \dQuote{kurtosis},
-#'   \dQuote{n.valid}, \dQuote{pct.valid}, and \dQuote{n}. Can be set globally
+#'   \dQuote{n.valid}, \dQuote{n}, and \dQuote{pct.valid}. Can be set globally
 #'   via \code{\link{st_options}}, option \dQuote{descr.stats}. See 
 #'   \emph{Details}.
 #' @param na.rm Logical. Argument to be passed to statistical functions. 
@@ -324,8 +324,8 @@ descr.default <- function(x,
                         ~ rapportools::skewness(., na.rm = na.rm),
                         ~ dummy(.), # placeholder for se.skewnes
                         ~ rapportools::kurtosis(., na.rm = na.rm),
-                        ~ n(), 
                         ~ rapportools::nvalid(., na.rm = na.rm),
+                        ~ n(),
                         ~ dummy(.))  # placeholder for pct.valid
     
     fun_names <- c("mean", "sd", "min", "q1", "med", "q3", "max", "mad", "iqr",
@@ -347,11 +347,6 @@ descr.default <- function(x,
       )
       colnames(xx) <- xxnames
       colnames(results) <- c("stat", xxnames)
-      if (identical(order, "preserve")) {
-        results <- results[ ,c("stat", colnames(xx))]
-      } else if (length(order) > 1) {
-        results <- results[ ,c("stat", order)]
-      }
       
       # Transform results into output object
       output <- as.data.frame(t(results[ ,-1]))
@@ -427,8 +422,8 @@ descr.default <- function(x,
                          max       = numeric(),
                          mad       = numeric(),
                          cv        = numeric(),
-                         n         = numeric(),
                          n.valid   = numeric(),
+                         n         = numeric(),
                          pct.valid = numeric())
     
     # Rescale weights if necessary
@@ -480,9 +475,9 @@ descr.default <- function(x,
           ifelse("mad" %in% stats, weightedMad(variable, weights_tmp, 
                                                 refine = TRUE, 
                                                 na.rm = na.rm), NA),
-          ifelse("cv" %in% stats, variable.sd/variable.mean, NA),
-          ifelse("n"  %in% stats, n, NA),
+          ifelse("cv"        %in% stats, variable.sd/variable.mean, NA),
           ifelse("n.valid"   %in% stats, n_valid, NA),
+          ifelse("n"         %in% stats, n, NA),
           ifelse("pct.valid" %in% stats, p_valid * 100, NA))
     }
     
@@ -494,6 +489,15 @@ descr.default <- function(x,
   }
   
   # Prepare output data -------------------------------------------------------
+  
+  # Apply order parameter (column ordering)
+  
+  if (identical(order, "sort")) {
+    output <- output[sort(rownames(output)), ]
+  } else if (length(order) > 1) {
+    results <- results[order, ]
+  }
+  
   # Keep and order required stats from output
   output <- output[ , stats, drop = FALSE]
   
