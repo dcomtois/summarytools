@@ -168,9 +168,11 @@ check_args <- function(mc, dotArgs, caller) {
       if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
         errmsg %+=% "invalid na.val value; must be character of length 1"
       }
-      if (anyNA(pf$x) ||
+      if ((nas_found <- anyNA(pf$x)) ||
           (is.factor(pf$x) && !pf$na.val %in% levels(pf$x)) ||
           (is.character(pf$x) && !pf$na.val %in% pf$x)) {
+        if (nas_found && !isTRUE(st_options("freq.silent")))
+          message("NA values detected - na.val will be ignored")
         pf$na.val <- NULL
       }
     }
