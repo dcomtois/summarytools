@@ -88,8 +88,9 @@ The package was developed with the following objectives in mind:
    SAS, SPSS, and Stata 
  - Offer flexibility in terms of output format & content  
  - Integrate well with commonly used software & tools for reporting
-   (the [RStudio](https://www.rstudio.com/products/rstudio/) IDE,
-   [Rmarkdown](https://rmarkdown.rstudio.com/), and 
+   (the [RStudio](https://posit.co/products/open-source/rstudio/) IDE,
+   [Rmarkdown](https://rmarkdown.rstudio.com/),
+   [Quarto](https://quarto.org/docs/get-started/), and 
    [knitr](https://yihui.org/knitr/)) while also allowing for standalone,
    simple report generation using any R interface
 
@@ -124,14 +125,15 @@ Results can be
      [pipeR](https://cran.r-project.org/package=pipeR) (`%>>%`) are fully
      supported; the native `|>` introduced in R 4.0 is supported as well and
      in most cases is a safer bet as far as objects' name searching goes.
-   + Default values for a good number of function parameters can be modified
+   + Default values for a good number of function arguments can be modified
      using `st_options()` to minimize redundancy in function calls 
    + **By-group processing** is easily achieved using the package's `stby()`
      function which is a slightly modified version of `base::by()`, but
      `dplyr::group_by()` is also supported 
    + [**Pander options**](http://rapporter.github.io/pander/) can be used to
      customize or enhance plain text and markdown tables 
-   + Base R's `format()` parameters are also supported; this can be used to set
+   + Base R's `format()` arguments are also supported by **summarytools**'
+     `print` method / `view()` function; this can be used to set a
      thousands separator or modify the decimal separator, among other
      possibilities (see `help("format")`)
    + [**Bootstrap CSS**](https://getbootstrap.com/) is used by default with
@@ -193,7 +195,7 @@ freq(iris$Species,
 While the output is much simplified, the syntax is not; I blame it on
 Tesler's [law of conservation of complexity](https://en.wikipedia.org/wiki/Law_of_conservation_of_complexity)!
 Thankfully, `st_options()` is there to accommodate everyone's preferences (see
-[section on package options](#st-options)).
+the [section on package options](#st-options)).
 
 <a id="multiple-freq-tables"></a>  
 
@@ -208,9 +210,7 @@ freq(tobacco)
 ```
 
 To avoid cluttering the results, *numerical* columns having more
-than 25 distinct values are ignored. This threshold of 
-25 can be changed by using `st_options()`; for example, to change it to 10,
-we'd use `st_options(freq.ignore.threshold = 10)`.
+than 25 distinct values are ignored. This threshold value can be changed via `st_options()` (example: `st_options(freq.ignore.threshold = 10)`).
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
 <td>The *tobacco* data frame contains simulated data and is
@@ -220,13 +220,13 @@ Both have French versions (*tabagisme*, *examens*).</td></tr></table>
 
 ## 2.4 Subsetting (Filtering) Frequency Tables
 
-The `rows` parameter allows subsetting frequency tables; we can
-use this parameter in different ways:
+The `rows` argument allows subsetting frequency tables; we can
+use it in different ways:
 
  - To filter rows by their order of appearance, we use a numerical vector;
-   `rows = 1:10` will show the frequencies for the first 10 values only. To
-   account for the frequencies of unshown values, the “(Other)” row is
-   automatically added 
+   `rows = 1:10` will show the frequencies for the first 10 values only. An
+   “(Other)” row is automatically added to account for the frequency of other
+   values
  - To filter rows by name, we can use either 
    + a character vector specifying all the row names we wish to keep   
    + a single character string, which will be used as a regular expression 
@@ -248,7 +248,7 @@ Instead of `"freq"`, we can use `"-freq"` to reverse the ordering and
 get results ranked from lowest to highest in frequency. 
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
-<td>Notice the "**(Other)**" row, which is automatically generated.</td></tr></table> 
+<td>Notice the "**(Other)**" row, which is automatically added</td></tr></table> 
 
 ## 2.5 Collapsible Sections
 
@@ -265,7 +265,7 @@ view(freq(tobacco), collapse = TRUE)
 <div style="width:100%; margin:0 auto; text-align:center">
 <a href="#s-2"><< 2. Frequency Tables: freq()</a> | 
 <a href="#header">TOC</a> | 
-<a href="#s-4">4. Descriptive Statistics: descr() >></a>
+<a href="#s-4">4. Descriptive (Univariate) Statistics: descr() >></a>
 </div>
 <br/><br/>
 <a id="s-3"></a><a id="ctable"></a> 
@@ -299,7 +299,7 @@ proportions altogether, use `prop = "n"`.
 
 ## 3.2 Minimal Cross-Tabulations
 
-By "switching off" all optional features, we get a simple “2 x 2” table:
+By "switching off" all optional features, we get a simple *2 x 2* table:
 
 ```{r}
 with(tobacco, 
@@ -356,9 +356,9 @@ are ignored, with a message to that effect.
 descr(iris)
 ```
 
-To turn off the variable-type messages, use `silent = TRUE`. It is possible to
-set that option globally, which we will do here, so it won't be
-displayed in the remaining of this vignette.
+To turn off the variable-type messages, use the package's `print()` method
+`silent = TRUE` parameter. It is possible to set that option globally,
+which we will do here, so it won't be displayed in the remaining portion of this vignette.
 
 ```{r}
 st_options(descr.silent = TRUE)
@@ -378,13 +378,21 @@ descr(iris,
 ```
 
 See `?descr` for a list of all available statistics. Special values 
-“all”, “fivenum”, and “common” are also valid. The default value is “all”, 
+“all”, “fivenum”, and “common” are also valid, and can be used in conjunction
+with specific statistics, to add or remove them. For example,
+`stats= c("common", "", "-pct.valid")` adds *N* to, and
+     excludes *Pct. Valid* from, *common* statistics. The default value is “all”, 
 and it can be modified using `st_options()`:
 
 ```{r, eval=FALSE}
 st_options(descr.stats = "common")
 ```
 
+keywords (*all*, *fivenum*, and 
+     *common*) can be used in conjunction with statistics, to add or
+     remove them. `stats= c("common", "n", "-pct.valid")` adds *N* to, and
+     excludes *Pct. Valid* from, *common* statistics.
+     
 <br/>
 <div style="width:100%; margin:0 auto; text-align:center">
 <a href="#s-4"><< 4. Descriptive Statistics with descr()</a> | 
@@ -432,18 +440,17 @@ safely drop either one of them.
 dfSummary(tobacco, 
           plain.ascii  = FALSE, 
           style        = "grid", 
-          graph.magnif = 0.75, 
+          graph.magnif = 0.82, 
           varnumbers   = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
 ```
 
-<img src="assets/dfSummary_md.png" width=100%/> 
-<br/>
+<!--<img src="assets/dfSummary_md.png" width=100%/> 
+<br/> -->
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
-*R Markdown* documents, except for _html_ rendering. The 
-explanation for this can be found [further below](#tmp-img-dir). 
+*R Markdown* documents, except for method "render". The explanation for this can be found [further below](#tmp-img-dir). 
 
 
 <table><tr><td>![](assets/exclamation-diamond.svg)</td>
@@ -488,7 +495,7 @@ print(
             style        = "multiline",
             plain.ascii  = FALSE,
             headings     = FALSE,
-            graph.magnif = .8),
+            graph.magnif = .82),
   method = "render"
 )
 ```
@@ -1045,11 +1052,13 @@ needed in order to display the *png* graphs properly:
   3 - `tmp.img.dir` must be defined and be at most 5 characters wide  
 
 Note that as of version 0.9.9, **setting `tmp.img.dir` is no longer required**
-**when using `method = "render"`** and can be left to `NA`. It is only 
-necessary to define it when a transitory markdown table must be created, as
-shown below. Note how narrow the *Graph* column is -- this is actually required, 
-since the width of the rendered column is determined by the number of characters
-in the cell, rather than the width of the image itself:
+**when using `method = "render"`**. It is only necessary when a transitory
+markdown output is created. 
+
+In *markdown* tables, *Pandoc* uses string lengths (number of characters in the
+cells) to set minimal column widths. A wide image can cause a column to expand as
+needed, but a narrow image won't make it "shrink". This is why it is important
+to keep the link / path as succinct as possible.
 
 ```
 +---------------+--------|----------------------+---------+
@@ -1101,6 +1110,11 @@ All output from the core functions will now use that language:
 freq(iris$Species)
 ```
 
+```{r, echo = FALSE}
+st_options(lang = "en")
+```
+
+
 ## 15.1 Non-UTF-8 Locales
 
 On most Windows systems, it is necessary to change the `LC_CTYPE` element of
@@ -1125,12 +1139,10 @@ st_options(lang = "en")
 Using the function `use_custom_lang()`, it is possible to add your own set of 
 translations or custom terms. To achieve this, get the 
 [csv template](https://raw.githubusercontent.com/dcomtois/summarytools/master/translations/language_template.csv),
-customize one, many or all of the +/- 70 terms, and call `use_custom_lang()`,
-giving it as sole argument the path to the edited *csv* template. Note that such
-custom language settings will not persist across R sessions. This means that
-you should always have this *csv* file handy for future use. 
+customize one, many or all of the +/- 80 terms, and call `use_custom_lang()`
+with the path to the edited *csv* template.
 
-## 15.3 Defining Only Specific Keywords
+## 15.3 Defining Specific Keywords
 
 The `define_keywords()` makes it easy to change just one or a few terms.
 For instance, you might prefer using "N" or "Count" rather than "Freq" in the
@@ -1156,14 +1168,14 @@ which you can edit all terms.
 <img src="assets/define_keywords.png" width=95% style="border:1;border-color:grey" />
 
 After closing the edit window, a dialogue box gives the option to save the
-newly created custom language to a *csv* file (even though we changed just
-a few keywords, the package considers the terms as part of a whole "language").
+newly created custom language to a *csv* file. (Even if we only modify one or
+two keywords, the package considers the terms as part of a whole "language").
 We can later reload into memory the custom language file by calling
 `use_custom_lang("language-file.csv")`.
 
-See `?define_keywords` for a list of all customizable terms used in the package.
+See `?define_keywords` for a list of all customizable terms.
 
-To revert all changes, we can simply use `st_options(lang = "en")`. 
+To revert all changes, simply use `st_options(lang = "en")`. 
 
 ## 15.4 Power-Tweaking Headings 
 
@@ -1192,7 +1204,7 @@ print(
 # 16. Vignette Setup  
 
 Knowing how this vignette is configured can help you get started with
-using **summarytools** in *R Markdown* documents.
+**summarytools** in *R Markdown*.
 
 ## 16.1 The YAML Section
 
@@ -1248,9 +1260,13 @@ st_css(main = TRUE, global = TRUE)
 # 17. Conclusion
 
 The package comes with no guarantees. It is a work in progress and
-feedback, as well as PayPal donations, are welcome. Please open an
-[issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
+feedback is welcome. Please open an [issue on GitHub](https://github.com/dcomtois/summarytools/issues) if you find a
 bug or wish to submit a feature request.
+
+**summarytools** is the result of **many** hours of work. If you find the
+package brings value to your work, please take a moment to make a small
+donation using this [Paypal link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url).
+
 
 ### Stay Up to Date
 
