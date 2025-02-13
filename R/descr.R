@@ -491,11 +491,10 @@ descr.default <- function(x,
   # Prepare output data -------------------------------------------------------
   
   # Apply order parameter (column ordering)
-  
   if (identical(order, "sort")) {
     output <- output[sort(rownames(output)), ]
   } else if (length(order) > 1) {
-    results <- results[order, ]
+    output <- output[order, ]
   }
   
   # Keep and order required stats from output
