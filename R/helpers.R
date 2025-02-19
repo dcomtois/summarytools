@@ -149,6 +149,49 @@ empty_na <- function(x) {
 # empty_na(c(NA, NaN))
 # empty_na(data.frame(a=c("", " ", "123"), b = c(character(3))))
 
+#' Remove Attributes to Get a Simplified Object
+#'
+#' Get rid of summarytools-specific attributes to get a simple data structure
+#' (matrix, array, ...), which can be easily manipulated.
+#'
+#' @param x An object with attributes
+#' @param except Character. A vector of attribute names to preserve. By default,
+#'   \dQuote{dim} and \dQuote{dimnames} are preserved.
+#' 
+#' @details
+#' If the object contains grouped results:
+#' \itemize{
+#'  \item The inner objects will lose their attributes
+#'  \item The \dQuote{stby} class will be replaced with \dQuote{by}
+#'  \item The \dQuote{dim} and \dQuote{dimnames} attributes will be set to
+#'    available relevant values, but expect slight differences between objects
+#'    created with \code{stby()} \emph{vs} \code{group_by()}.
+#' }
+#' 
+#' @examples
+#' data(tobacco)
+#' descr(tobacco) |> zap_attr()
+#' freq(tobacco$gender) |> zap_attr()
+#' @export
+zap_attr <- function(x, except = c("dim", "dimnames")) {
+  if (inherits(x, c("by", "stby"))) {
+    for (i in seq_along(x)) {
+      attributes(x[[i]]) <- attributes(x[[i]])[except]
+    }
+    class(x) <- "by"
+    
+    if (!"dim" %in% names(attributes(x)))
+      attr(x, "dim") <- length(x)
+    
+    if (!"dimnames" %in% names(attributes(x)))
+      dimnames(x) <- list(names(x))
+    
+  } else {
+    attributes(x) <- attributes(x)[except]
+  }
+  x
+}
+
 # Count_empty  (NA's / vectors of size 0) --------------------------------------
 #' @keywords internal
 count_empty <- function(x, count.nas = TRUE) {
