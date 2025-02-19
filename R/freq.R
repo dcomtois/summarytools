@@ -581,19 +581,19 @@ freq <- function(x,
       Data.type <- labelled_type
     } else if (is.ordered(x)) {
       Data.type <- trs("factor.ordered")
-    } else if ("factor" %in% class(x)) {
+    } else if (is.factor(x)) {
       Data.type <- trs("factor")
     } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { 
       Data.type <- trs("datetime")
-    } else if ("Date" %in% class(x)) {
+    } else if (is.Date(x)) {
       Data.type <- trs("date")
-    } else if ("logical" %in% class(x)) {
+    } else if (is.logical(x)) {
       Data.type <- trs("logical")
-    } else if ("character" %in% class(x)) {
+    } else if (is.character(x)) {
       Data.type <- trs("character")
-    } else if ("integer" %in% class(x)) {
+    } else if (is.integer(x)) {
       Data.type <- trs("integer")
-    } else if ("numeric" %in% class(x)) {
+    } else if (is.numeric(x)) {
       Data.type <- trs("numeric")
     } else {
       Data.type <- ifelse(mode(x) %in% rownames(.keywords_context),
