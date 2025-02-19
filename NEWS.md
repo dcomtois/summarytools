@@ -5,17 +5,20 @@
     when `NA`s are detected.
 - In `tb()`
   + Fix for broken proportions in freq tables
-  + New parameters `fct.to.chr` and `recalculate` for freq tables
+  + New parameters `fct.to.chr` and `recalculate` for `freq()` tables
   + Parameter `na.rm` deprecated
  - In `dfSummary()`: 
    + New parameter `class` allows switching off class reporting in *Variable*
      column.
- - In `freq()` & `ctable()`: 
-   + New parameter `na.val` allows specifying a value (factor level) that
+ - In `freq()`, `ctable()` and `dfSummary()`: 
+   + New parameter `na.val` allows specifying a value / factor level that
      is to be considered `NA`. In turn, the value "(Missing)" is no longer
-     considered missing by default; using `na.val = "(Missing)"`
-     will yield the same results.
+     considered missing by default (using `na.val = "(Missing)"`
+     will yield the same results).
    + Fix for weights not being applied correctly in by-group processing.
+   + **Labelled vectors** ("labelled" / "haven_labelled") are treated like
+     factors in `freq()`, and in `dfSummary()` when all values have a label.
+     Future versions will extend support to `ctable()`. 
  - In `descr()`: 
    + "n" (total number of observations, also displayed in heading) added to
      available statistics.
@@ -25,8 +28,7 @@
      excludes *Pct. Valid* from, *common* statistics.
    + Fix for *N* in header showing 1st group's size rather than global size.
    + Fix for weights not being applied correctly in by-group processing.
-- Optimized metadata extraction
-- Improved support for dplyr::group_by()
+- `define_keywords()` now uses RStudio's api for dialogs.
 - `llabel()` wrapper added for `label(x, all = TRUE)`
    
 # summarytools 1.0.2 (2022-07-10)
