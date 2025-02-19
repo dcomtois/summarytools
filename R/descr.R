@@ -352,9 +352,12 @@ descr.default <- function(x,
       output <- as.data.frame(t(results[ ,-1]))
       colnames(output) <- results$stat
     } else {
-      output <- xx %>% 
-        summarise_all(.funs = summar_funs, na.rm = na.rm) %>%
-        as.data.frame
+      # Suppress warnings for groups having 0 valid values
+      suppressWarnings({
+        output <- xx %>% 
+          summarise_all(.funs = summar_funs, na.rm = na.rm) %>%
+          as.data.frame
+      })
       rownames(output) <- parse_info$var_name %||% var_names
     }
 
@@ -371,12 +374,14 @@ descr.default <- function(x,
     }
     
     if ("pct.valid" %in% stats) {
-      output$pct.valid <- output$n.valid *100 / nrow(xx)
+      output$pct.valid <- output$n.valid * 100 / nrow(xx)
     }
     
     # Apply corrections where n.valid = 0
     zerows <- which(output$n.valid == 0)
-    output[zerows, setdiff(stats, "n.valid")] <- NA
+    if (length(zerows)) {
+      warning("no non-missing arguments to numerical functions")
+    }
     
   } else {
     
@@ -464,28 +469,33 @@ descr.default <- function(x,
       }
       
       # Calculate and insert stats into output dataframe
-      output[i, ] <-
-        c(ifelse("mean" %in% stats, variable.mean, NA),
-          ifelse("sd"   %in% stats, variable.sd, NA),
-          ifelse("min"  %in% stats, min(variable, na.rm = na.rm), NA),
-          ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, 
-                                                   refine = TRUE, 
-                                                   na.rm = na.rm), NA),
-          ifelse("max" %in% stats, max(variable, na.rm = na.rm), NA),
-          ifelse("mad" %in% stats, weightedMad(variable, weights_tmp, 
-                                                refine = TRUE, 
-                                                na.rm = na.rm), NA),
-          ifelse("cv"        %in% stats, variable.sd/variable.mean, NA),
-          ifelse("n.valid"   %in% stats, n_valid, NA),
-          ifelse("n"         %in% stats, n, NA),
-          ifelse("pct.valid" %in% stats, p_valid * 100, NA))
+      # (suppress repeated warnings when no non-missing data)
+      suppressWarnings({
+        output[i, ] <-
+          c(ifelse("mean" %in% stats, variable.mean, NA),
+            ifelse("sd"   %in% stats, variable.sd, NA),
+            ifelse("min"  %in% stats, min(variable, na.rm = na.rm), NA),
+            ifelse("med"  %in% stats, weightedMedian(variable, weights_tmp, 
+                                                     refine = TRUE, 
+                                                     na.rm = na.rm), NA),
+            ifelse("max" %in% stats, max(variable, na.rm = na.rm), NA),
+            ifelse("mad" %in% stats, weightedMad(variable, weights_tmp, 
+                                                  refine = TRUE, 
+                                                  na.rm = na.rm), NA),
+            ifelse("cv"        %in% stats, variable.sd/variable.mean, NA),
+            ifelse("n.valid"   %in% stats, n_valid, NA),
+            ifelse("n"         %in% stats, n, NA),
+            ifelse("pct.valid" %in% stats, p_valid * 100, NA))
+      })
     }
     
     rownames(output) <- var_names
     
     # Apply corrections where n.valid = 0
     zerows <- which(output$n.valid == 0)
-    output[zerows, setdiff(stats, "n.valid")] <- NA
+    if (length(zerows)) {
+      warning("no non-missing arguments to numerical functions")
+    }
   }
   
   # Prepare output data -------------------------------------------------------
