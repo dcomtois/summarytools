@@ -604,8 +604,11 @@ descr.default <- function(x,
   
   attr(output, "lang") <- st_options("lang")
   
-  if (!is.null(ignored))
-    attr(output, "ignored") <- ignored
+  if (!is.null(ignored)) {
+    if (length(ignored <- setdiff(ignored, data_info$by_var))) {
+      attr(output, "ignored") <- ignored
+    }
+  }
   
   return(output)
 }
