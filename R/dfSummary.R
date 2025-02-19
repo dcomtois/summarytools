@@ -297,6 +297,7 @@ dfSummary <- function(x,
   # Flag to replace colname when x is not a data frame
   converted_to_df <- FALSE
   if (!is.data.frame(x)) {
+    xclass <- class(x)
     xnames <- substitute(x)
     x <- try(as.data.frame(x))
 
@@ -332,18 +333,20 @@ dfSummary <- function(x,
   # Gather from additional arguments (...) those which will be used by format().
   # Most format arguments are actually recognized. Formatting arguments that are
   # neither in this list, neither recognized by pander, will be ignored.
-  for (fmt in c("big.mark", "small.mark", "decimal.mark", "scientific",
-                "small.interval", "big.interval", "nsmall", "digits")) {
-    if (fmt %in% names(dotArgs)) {
-      fmtArgs[fmt] <- dotArgs[fmt]
+  if (length(dotArgs)) {
+    for (fmt in c("big.mark", "small.mark", "decimal.mark", "scientific",
+                  "small.interval", "big.interval", "nsmall", "digits")) {
+      if (fmt %in% names(dotArgs)) {
+        fmtArgs[fmt] <- dotArgs[fmt]
+      }
+    }
+    
+    # Make sure fmtArgs has at least one element; digits is an arbitrary choice.
+    if (!"digits" %in% names(fmtArgs)) {
+      fmtArgs$digits <- getOption("digits")
     }
   }
-
-  # Make sure fmtArgs has at least one element; digits is an arbitrary choice.
-  if (!"digits" %in% names(fmtArgs)) {
-    fmtArgs$digits <- getOption("digits")
-  }
-
+  
   # Check for column labels ----------------------------------------------------
   if (isTRUE(labels.col) && length(label(x, all = TRUE)) == 0) {
     labels.col <- FALSE
@@ -353,9 +356,10 @@ dfSummary <- function(x,
   if ("skip_parse" %in% names(match.call())) {
     parse_info <- list()
   } else {
+    get_var_info <- isTRUE(converted_to_df) && !"list" %in% xclass
     parse_info <- parse_call(mc        =  match.call(),
-                             var_name  =  converted_to_df,
-                             var_label =  converted_to_df,
+                             var_name  =  get_var_info,
+                             var_label =  get_var_info,
                              caller    = "dfSummary")
   }
   
@@ -456,9 +460,11 @@ dfSummary <- function(x,
     output[i,1] <- i
 
     if (isTRUE(class)) {
-      output[i,2] <- paste0(names(x)[i], "\\\n[",
-                            paste(class(column_data), collapse = ", "),
-                            "]")
+      output[i,2] <- 
+        paste0(names(x)[i], "\\\n[",
+               paste(dcls <- class(column_data),
+                     collapse = ifelse(length(dcls) < 4, ",\\\n", ", ")),
+               "]")
     } else {
       output[i,2] <- names(x)[i]
     }
@@ -478,8 +484,10 @@ dfSummary <- function(x,
       # Add UPC/EAN info if applicable
       if (is.factor(column_data)) {
         barcode_type <- detect_barcode(as.character(column_data))
-      } else {
+      } else if (!inherits(column_data, "haven_labelled")) {
         barcode_type <- detect_barcode(column_data)
+      } else {
+        barcode_type <- FALSE
       }
   
       if (is.character(barcode_type)) {
