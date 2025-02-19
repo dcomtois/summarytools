@@ -349,7 +349,7 @@ freq <- function(x,
         errmsg %+=% "argument x must be a vector or factor"
       }
     }
-    match.call()
+    
     order_sign <- "+"
     errmsg <- c(errmsg, check_args(match.call(), list(...), "freq"))
     
@@ -374,6 +374,31 @@ freq <- function(x,
         message(paste(sum(is.nan(x)), "NaN value(s) converted to NA\n"))
       }
       x[is.nan(x)] <- NA
+    }
+    
+    # Convert labelled / haven_labelled to factor
+    if (inherits(x, c("labelled", "haven_labelled"))) {
+      lbls <- attr(x, "labels")
+      is_labelled <- TRUE
+      labelled_type <- paste(ifelse(is.character(x),
+                                    trs("character"),
+                                    trs("numeric")),
+                             "(labelled)")
+      x <- lbl_to_factor(x)
+      if (!is.null(na.val)) {
+        ind_tmp <- grep(paste0("^", na.val, " \\[.+\\]$"), levels(x))
+        if (length(ind_tmp) == 1) {
+          na.val <- levels(x)[ind_tmp]
+        } else {
+          na.val <- NULL
+          if (!isTRUE(st_options("freq.silent"))) {
+            message("na.val is not recognized and will be ignored")
+          }
+        }
+      }
+    } else {
+      is_labelled <- FALSE
+      labelled_type <- NA
     }
     
     # Replace values == na.val by NA in factors & char vars
@@ -552,7 +577,9 @@ freq <- function(x,
     attr(output, "date")    <- Sys.Date()
     
     # Determine data "type", in a non-strict way
-    if (all(c("ordered", "factor") %in% class(x))) {
+    if (is_labelled) {
+      Data.type <- labelled_type
+    } else if (is.ordered(x)) {
       Data.type <- trs("factor.ordered")
     } else if ("factor" %in% class(x)) {
       Data.type <- trs("factor")

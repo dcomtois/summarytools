@@ -470,6 +470,14 @@ dfSummary <- function(x,
     }
     
     if (!is.list(column_data)) {
+      
+      # For labelled vectors, if all values are labelled, convert to factor
+      if (inherits(column_data, c("haven_labelled", "labelled"))) {
+        if (all(column_data %in% as.vector(attr(column_data, "labels")))) {
+          column_data <- lbl_to_factor(column_data, num_pos = "before")
+        }
+      }
+
       # Check if column contains emails
       if (is.character(column_data)) {
         email_val <- detect_email(column_data)
@@ -484,7 +492,7 @@ dfSummary <- function(x,
       # Add UPC/EAN info if applicable
       if (is.factor(column_data)) {
         barcode_type <- detect_barcode(as.character(column_data))
-      } else if (!inherits(column_data, "haven_labelled")) {
+      } else if (!inherits(column_data, c("labelled", "haven_labelled"))) {
         barcode_type <- detect_barcode(column_data)
       } else {
         barcode_type <- FALSE

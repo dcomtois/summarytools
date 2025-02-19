@@ -1,7 +1,6 @@
 # smart_split ------------------------------------------------------------------
 # Smartly split variable names that are too long
 # ref: https://tinyurl.com/y7qv48z9
-#' @keywords internal
 smart_split <- function(str, maxlen) {
   re <- paste0("(?=.{1,", maxlen, "}(.*))",
                "(?=.*?[^\\W._].*?[\\W._].*?\\1)",
@@ -15,7 +14,6 @@ smart_split <- function(str, maxlen) {
 
 # %+=% -------------------------------------------------------------------------
 # infix to simplify append'ing
-#' @keywords internal
 `%+=%` <- function(.Variable_Name_, .New_Value_) {
   eval.parent(substitute(
     .Variable_Name_ <- append(.Variable_Name_, .New_Value_)
@@ -24,7 +22,6 @@ smart_split <- function(str, maxlen) {
 
 # unquote ----------------------------------------------------------------------
 # Remove quotation marks inside a string
-#' @keywords internal
 unquote <- function(x) {
   x <- sub("^\\'(.+)\\'$", "\\1", x)
   x <- sub('^\\"(.+)\\"$', "\\1", x)
@@ -33,7 +30,6 @@ unquote <- function(x) {
 
 # conv_non_ascii ---------------------------------------------------------------
 # Replace accentuated characters by their html decimal entity
-#' @keywords internal
 conv_non_ascii <- function(...) {
   out <- character()
   for (s in list(...)) {
@@ -53,7 +49,6 @@ conv_non_ascii <- function(...) {
 # ws_to_symbol -----------------------------------------------------------------
 # Replace leading and trailing white space in character vectors and factor
 # levels by the special character intToUtf8(183)
-#' @keywords internal
 ws_to_symbol <- function(x) {
   
   ws_symbol <- intToUtf8(183)
@@ -90,7 +85,6 @@ ws_to_symbol <- function(x) {
 
 # trs --------------------------------------------------------------------------
 # Shorcut function to get translation strings
-#' @keywords internal
 trs <- function(item, l = st_options("lang")) {
   l <- force(l)
   if (l != "custom") {
@@ -140,7 +134,6 @@ empty_na <- function(x) {
   }
 }
 
-
 # empty_na(list(NA, "", NaN, list("", "", " ")))
 # empty_na(list("", " ", character(), NULL))
 # empty_na("aaa")
@@ -148,6 +141,22 @@ empty_na <- function(x) {
 # empty_na(character())
 # empty_na(c(NA, NaN))
 # empty_na(data.frame(a=c("", " ", "123"), b = c(character(3))))
+
+# Turn labelled / haven_labelled into factor
+lbl_to_factor <- function(x, num_pos = "after") {
+  label <- attr(x, "label", exact = TRUE)
+  labels <- attr(x, "labels")
+  if (num_pos == "after")
+    names(labels) <- paste0(names(labels), " [", labels, "]")
+  else if (num_pos == "before")
+    names(labels) <- paste0("[", labels, "] ", names(labels))
+  x_vec <- as.vector(x)
+  extra_vals <- sort(setdiff(x_vec, labels))
+  names(extra_vals) <- sub("^(\\d+)$", "[\\1]", as.character(extra_vals))
+  labels2 <- c(labels, extra_vals)
+  res <- factor(x, levels = unname(labels2), labels = names(labels2))
+  structure(res, label = label)
+}
 
 #' Remove Attributes to Get a Simplified Object
 #'
