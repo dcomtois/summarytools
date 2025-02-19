@@ -409,12 +409,28 @@ dfSummary <- function(x,
 
   n_tot <- nrow(x)
 
+  # create progress bar if large object
+  if (interactive() && sink.number() == 0 &&
+      (isatty(stdout()) || .Platform$GUI == "RStudio")) {
+    pb <- txtProgressBar(min = 0, max = ncol(x), style = 3)
+  } else {
+    pb <- NA
+  }
+  
   # iterate over columns of x --------------------------------------------------
 
   for (i in seq_len(ncol(x))) {
 
     # extract column data
-
+    # cat("debug: column number:", i, "\n")
+    # update progress bar
+    if (!identical(pb, NA)) {
+      setTxtProgressBar(pb, i)
+      if (i == ncol(x)) {
+        cat("\n")
+      }
+    }
+    
     column_data <- x[[i]]
     
     # Replace values ~ na.val by NA in factors & char vars
