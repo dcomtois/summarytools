@@ -386,8 +386,6 @@ freq <- function(x,
           if (is.factor(x)) {
             levels(x)[which(levels(x) == na.val)] <- NA
           }
-        } else {
-          na.val <- NULL # na.val not found in x
         }
       } else {
         na.val <- NULL # x not char nor factor
@@ -443,6 +441,12 @@ freq <- function(x,
       }
     }
     
+    # If na.val is set and has 0 freq, remove it from the table
+    if (!is.null(na.val)) {
+      if (na.val %in% names(freq_table) && freq_table[[na.val]] == 0) {
+        freq_table <- freq_table[-which(names(freq_table) == na.val)]
+      }
+    }
     # Order by [-]freq if needed
     if (order == "freq") {
       nas_freq   <- tail(freq_table, 1)

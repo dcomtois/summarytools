@@ -421,7 +421,9 @@ dfSummary <- function(x,
     if (!is.null(na.val) && !anyNA(column_data) && 
         inherits(column_data, c("factor", "character"))) {
       column_data[which(column_data == na.val)] <- NA
-      levels(column_data)[which(levels(column_data) == na.val)] <- NA
+      if (is.factor(column_data)) {
+        levels(column_data)[which(levels(column_data) == na.val)] <- NA
+      }
     }
 
     # Calculate valid vs missing data info
