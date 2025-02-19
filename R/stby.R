@@ -47,10 +47,6 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
   if (!is.function(FUN))
     stop(paste(mc$FUN, "is not a function"))
   
-  #if (getNamespaceName(environment(FUN)) != "summarytools")
-  #  stop("stby only supports summarytools functions")
-  # getNamespaceName(environment(get(body(FUN)[[1]])))
-  
   dd <- as.data.frame(data)
 
   if (identical(FUN, summarytools::freq) && ncol(dd) > 1) 
@@ -65,20 +61,25 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
     IND <- INDICES
   }
   
-  # Retain classes & levels for the groups attribute
-  IND_classes <- lapply(IND, class)
-  if ("factor" %in% IND_classes) {
-    IND_levels <- vector("list", length(IND_classes))
-    for (i in seq_along(IND_classes)) {
-      if (IND_classes[[i]] == "factor")
-        IND_levels[[i]] <- levels(IND[[i]])
+  # Store original class & levels to restore later on
+  IND_orig_class <- lapply(IND, class)
+  IND_orig_levels <- vector("list", length(IND))
+  IND_orig_attr <- lapply(IND, attributes)
+  
+  for (i in seq_along(IND)) {
+    if (is.factor(IND[[i]])) {
+      IND_orig_levels[[i]] <- levels(IND[[i]])
     }
   }
   
   if (isTRUE(useNA)) {
     for (i in seq_along(IND)) {
-      if (anyNA(IND[[i]]))
+      if (anyNA(IND[[i]])) {
+        if (!inherits(IND[[i]], c("character", "factor"))) {
+          IND[[i]] <- as.factor(IND[[i]])
+        }
         IND[[i]] <- forcats::fct_na_value_to_level(IND[[i]], "NA")
+      }
     }
   } else if (missing(useNA)) {
     if (any(sapply(IND, anyNA)))
@@ -101,28 +102,49 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
   
   # remove df names if present (zzz$abc --> abc)
   colnames(groups) <- sub(".+\\$", "", colnames(groups))
+  names(dimnames(res)) <- sub(".+\\$", "", names(dimnames(res)))
   
   # Replace "NA" with actual NA to restore original classes
-  if (isTRUE(useNA))
-    for (col in seq_along(groups))
+  if (isTRUE(useNA)) {
+    for (col in seq_along(groups)) {
       groups[[col]][groups[[col]] == "NA"] <- NA
+    }
+  }
   
-  # Restore original classes
+  # Try to restore original classes & attributes
   for (i in seq_along(groups)) {
-    if (class(groups[[i]]) != IND_classes[[i]]) {
-      if (IND_classes[[i]] == "factor")
-        groups[[i]] <- factor(groups[[i]], levels = IND_levels[[i]])
-      else 
-        try(
-          groups[[i]] <- get(paste0("as.", IND_classes[[i]][1]))(groups[[i]]),
-          silent = TRUE
-        )
+    if (!identical(class(groups[[i]]), IND_orig_class[[i]])) {
+      if ("factor" %in% IND_orig_class[[i]]) {
+        try(groups[[i]] <- factor(groups[[i]], levels = IND_orig_levels[[i]],
+                                  ordered = "ordered" %in% IND_orig_class[[i]]),
+            silent = TRUE)
+      } else if ("Date" %in% IND_orig_class[[i]]) {
+        try(groups[[i]] <- as.Date(groups[[i]]), silent = TRUE)
+      } else if ("POSIXct" %in% IND_orig_class[[i]]) {
+        if ("tzone" %in% names(IND_orig_attr[[i]])) {
+          try(groups[[i]] <- as.POSIXct(groups[[i]], 
+                                        tz = IND_orig_attr[[i]]$tzone),
+              silent = TRUE)
+        } else {
+          try(groups[[i]] <- as.POSIXct(groups[[i]]), silent = TRUE)
+        }
+      } else {
+        safe_copy <- groups[[i]]
+        try({
+          attributes(groups[[i]]) <- IND_orig_attr[[i]]
+          class(groups[[i]]) <- IND_orig_class[[i]]
+        }, silent = TRUE)
+        
+        if (sum(is.na(groups[[i]])) != sum(is.na(safe_copy))) {
+          groups[[i]] <- safe_copy
+        }
+      }
     }
   }
   
   # remove NULL elements (has side-effect of removing dim and dimnames)
   non_null_ind <- which(!vapply(res, is.null, logical(1)))
-  if (length(non_null_ind)) {
+  if (length(non_null_ind) < length(res)) {
     atr <- attributes(res)
     res <- res[non_null_ind]
     attributes(res) <- atr[c("call", "class")]
@@ -140,6 +162,6 @@ stby <- function(data, INDICES, FUN, ..., useNA = FALSE) {
     names(res) <- vapply(res, function(gr) attr(gr, "data_info")$Group,
                          character(1))
   }
-  #.e_reset()
+  
   return(res)
 }
