@@ -386,7 +386,7 @@ ctable <- function(x,
 
   if (isTRUE(chisq)) {
     tmp.chisq <- chisq.test(freq_table_min)
-    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 2), 
+    tmp.chisq <- c(Chi.squared = round(tmp.chisq$statistic[[1]], 4), 
                    tmp.chisq$parameter, 
                    p.value = round(tmp.chisq$p.value, 4))
     attr(output, "chisq") <- tmp.chisq

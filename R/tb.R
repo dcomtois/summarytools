@@ -291,7 +291,7 @@ tb_stby_freq <- function(x, order = 1, drop.var.col = FALSE,
   
   # Restore factor state of variable if applicable
   if (!isTRUE(fct.to.chr) && 
-      attr(x[[1]], "data_info")$Data.type == "Factor") {
+      attr(x[[1]], "data_info")$Data.type == trs("factor")) {
     
     na_val <- attr(x[[1]], "format_info")$na.val %||% NA
     lev <- head(dimnames(x[[1]])[[1]], -1) # leave out "Total"
@@ -470,7 +470,7 @@ tb_freq <- function(x, order = 1, drop.var.col = FALSE,
   # Restore factor state of variable 
   # (unless called by tb_stby_freq)
   if (!isTRUE(fct.to.chr) && 
-      attr(x, "data_info")$Data.type == "Factor" &&
+      attr(x, "data_info")$Data.type == trs("factor") &&
       !"tb_stby_freq()" %in% lapply(sys.calls(), head, 1)) {
     if (na_val != "<NA>") {
       lev <- c(as.character(na.omit(output$value)),
