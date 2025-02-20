@@ -261,18 +261,18 @@ ctable <- function(x,
   # Replace values == na.val by NA in factors & char vars
   if (!is.null(na.val.x)) {
     if (is.factor(x)) {
-      x[which(x == na.val.x)] <- NA
-      levels(x)[which(levels(x) == na.val.x)] <- NA
+      x[x == na.val.x] <- NA
+      levels(x)[levels(x) == na.val.x] <- NA
     } else if (is.character(x)) {
-      x[which(x == na.val.x)] <- NA
+      x[x == na.val.x] <- NA
     }
   }
   if (!is.null(na.val.y)) {
     if (is.factor(y)) {
-      y[which(x == na.val.y)] <- NA
-      levels(x)[which(levels(y) == na.val.y)] <- NA
+      y[y == na.val.y] <- NA
+      levels(y)[levels(y) == na.val.y] <- NA
     } else if (is.character(y)) {
-      y[which(y == na.val.y)] <- NA
+      y[y == na.val.y] <- NA
     }
   }
   
@@ -366,9 +366,9 @@ ctable <- function(x,
         colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
       }
     } else {
-      colnames(freq_table)[is.na(colnames(freq_table))] <- "<NA>"
+      colnames(freq_table)[is.na(colnames(freq_table))] <- na.val.y
       if (prop != "n") {
-        colnames(prop_table)[is.na(colnames(prop_table))] <- "<NA>"
+        colnames(prop_table)[is.na(colnames(prop_table))] <- na.val.y
       }
     }
   }

@@ -153,11 +153,14 @@ parse_fun <- function()  {
   }
   
   obj <- .p$sf[[.p$pos$fun]][[.p$var]]
-  
   # Extract names from x argument
-  nms <- all.names(call[[.p$var]])
-  #nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
-  len <- length(call[[.p$var]])
+  #nms <- all.names(call[[.p$var]])
+  #len <- length(call[[.p$var]])
+  
+  # experimental, 2025-02
+  nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
+  nms <- setdiff(nms, c(.st_env$oper, ""))
+  len <- length(nms)
   
   if (is.data.frame(obj)) {
     if (len == 1) {
@@ -175,7 +178,7 @@ parse_fun <- function()  {
       }
     } else {
       # x is data.frame, and call[[.p$var]] > 1
-      # quite possibly a native-pipe command.
+      # possibly a native-pipe command.
       # iterate over names of the call and extract objects
       var_pos <- which(names(call) == .p$var) 
       obj_components <- list()
@@ -185,10 +188,7 @@ parse_fun <- function()  {
         for (nm in nms) {
           obj_ <- dynGet(x = nm, ifnotfound = NULL, inherits = TRUE)
           
-          if (inherits(obj_, "function"))
-            next
-          
-          else if (inherits(obj_, c("data.frame", "list")))
+          if (inherits(obj_, c("data.frame", "list")))
             obj_components[[nm]] <- list(class   = class(obj_),
                                          content = ls(obj_),
                                          classes = lapply(obj_, class),
@@ -200,17 +200,33 @@ parse_fun <- function()  {
                                          content = colnames(obj_),
                                          classes = mode(obj_))
           
-          else if (is.null(obj_))
+          else if (grepl("\\w", nm))
             var_candidates %+=% nm
         }
         
         if (length(var_candidates) > 0) {
           if (any(var_candidates %in% obj_components[[1]]$content)) {
+            # Check whether the class of the obj_components[[1]] is
+            # data.frame -- if not, the df might be in a list
+            if ("data.frame" %in% obj_components[[1]]$class) {
               done <- upd_output("df_name",  names(obj_components)[1])
               done <- upd_output("df_label", 
                                  obj_components[[nm]]$label %||%
                                    NA_character_)
-              if (done)  return(TRUE)
+            } else if ("list" %in% obj_components[[1]]$class) {
+              ind1 <- which(var_candidates %in% obj_components[[1]]$content)
+              #ind2 <- which(obj_components[[1]]$content == var_candidates[ind1])
+              obj_cl <- obj_components[[1]]$classes[[var_candidates[ind1]]]
+              if ("data.frame" %in% obj_cl) {
+                dfnm <- paste(names(obj_components)[[1]], var_candidates[ind1],
+                              sep = "$")
+                done <- upd_output("df_name", dfnm)
+                if (is.data.frame(obj))
+                  done <- upd_output("df_label", label(obj))
+              }
+            }
+            
+            if (done)  return(TRUE)
           }
             
           for (v in var_candidates) {
@@ -225,9 +241,12 @@ parse_fun <- function()  {
         }
       }
     }
+    
     if (isTRUE(.p$do_return))
       return(TRUE)
+    
   } else if (is.atomic(obj)) {
+    
     if (len == 1) {
       if (all(c("x", "var") %in% names(call))) {
         if (deparse(call[[.p$var]]) != ".") {
@@ -608,6 +627,9 @@ deduce_names <- function() {
       candidates %+=% c(tested = nm)
       cand_class %+=% class(obj_)[1]
       names(cand_class)[length(cand_class)] <- nm
+    } else if (is.list(obj_)) {
+      candidates %+=% c(tested = nm)
+      cand_class %+=% class(obj_)[1]
     }
   }
   
@@ -739,6 +761,25 @@ parse_data_str <- function(str) {
       done <- upd_output("var_name",  colnames(df_)[var_number])
       done <- upd_output("var_label", label(df_[[var_number]]))
       if (done)  return(TRUE)
+    } else {
+      # Possibly a list containing data frame(s)
+      # Try to get item name
+      obj_ <- get_object(df_nm, "list")
+      if (is.list(obj_)) {
+        list_nm <- df_nm
+        # get the index (number)
+        ind <- sub(.st_env$re$num_index, "\\4", str, perl = TRUE)
+        df_nm <- eval(parse(text = paste0("names(", list_nm, "[", ind, "])")))
+        if (df_nm != "") {
+          done <- upd_output("df_name",  paste(list_nm, df_nm, sep = "$"))
+          done <- upd_output("df_label", label(obj_[as.integer(ind)]))
+        } else {
+          # No name for the list element
+          done <- upd_output("df_name", str)
+          done <- upd_output("df_label", label(obj_[as.integer(ind)]))
+        }
+        if (done)  return(TRUE)
+      }
     }
   } else if (grepl(.st_env$re$neg_num_index, str, perl = TRUE)) {
     df_nm <- sub(.st_env$re$neg_num_index, "\\1", str, perl = TRUE)
@@ -1023,8 +1064,11 @@ get_object <- function(name, class) {
   
   # fallback method 1
   env <- try(pryr::where(name = name), silent = TRUE)
-  if (!inherits(env, "try-error"))
-    return(get(name, env, mode = "list"))
+  if (!inherits(env, "try-error")) {
+    obj <- get(name, env, mode = "list")
+    if (inherits(obj, class))
+      return(obj)
+  }
   
   # fallback method 2
   obj <- dynGet(x = name, inherits = TRUE, ifnotfound = NA)

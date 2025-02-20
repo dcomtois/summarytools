@@ -349,7 +349,7 @@ freq <- function(x,
         errmsg %+=% "argument x must be a vector or factor"
       }
     }
-    match.call()
+    
     order_sign <- "+"
     errmsg <- c(errmsg, check_args(match.call(), list(...), "freq"))
     
@@ -376,6 +376,31 @@ freq <- function(x,
       x[is.nan(x)] <- NA
     }
     
+    # Convert labelled / haven_labelled to factor
+    if (inherits(x, c("labelled", "haven_labelled"))) {
+      lbls <- attr(x, "labels")
+      is_labelled <- TRUE
+      labelled_type <- paste(ifelse(is.character(x),
+                                    trs("character"),
+                                    trs("numeric")),
+                             "(labelled)")
+      x <- lbl_to_factor(x)
+      if (!is.null(na.val)) {
+        ind_tmp <- grep(paste0("^", na.val, " \\[.+\\]$"), levels(x))
+        if (length(ind_tmp) == 1) {
+          na.val <- levels(x)[ind_tmp]
+        } else {
+          na.val <- NULL
+          if (!isTRUE(st_options("freq.silent"))) {
+            message("na.val is not recognized and will be ignored")
+          }
+        }
+      }
+    } else {
+      is_labelled <- FALSE
+      labelled_type <- NA
+    }
+    
     # Replace values == na.val by NA in factors & char vars
     if (!is.null(na.val)) {
       if (is.factor(x) || is.character(x)) {
@@ -386,8 +411,6 @@ freq <- function(x,
           if (is.factor(x)) {
             levels(x)[which(levels(x) == na.val)] <- NA
           }
-        } else {
-          na.val <- NULL # na.val not found in x
         }
       } else {
         na.val <- NULL # x not char nor factor
@@ -443,6 +466,12 @@ freq <- function(x,
       }
     }
     
+    # If na.val is set and has 0 freq, remove it from the table
+    if (!is.null(na.val)) {
+      if (na.val %in% names(freq_table) && freq_table[[na.val]] == 0) {
+        freq_table <- freq_table[-which(names(freq_table) == na.val)]
+      }
+    }
     # Order by [-]freq if needed
     if (order == "freq") {
       nas_freq   <- tail(freq_table, 1)
@@ -548,21 +577,23 @@ freq <- function(x,
     attr(output, "date")    <- Sys.Date()
     
     # Determine data "type", in a non-strict way
-    if (all(c("ordered", "factor") %in% class(x))) {
+    if (is_labelled) {
+      Data.type <- labelled_type
+    } else if (is.ordered(x)) {
       Data.type <- trs("factor.ordered")
-    } else if ("factor" %in% class(x)) {
+    } else if (is.factor(x)) {
       Data.type <- trs("factor")
     } else if (all(c("POSIXct", "POSIXt") %in% class(x))) { 
       Data.type <- trs("datetime")
-    } else if ("Date" %in% class(x)) {
+    } else if (is.Date(x)) {
       Data.type <- trs("date")
-    } else if ("logical" %in% class(x)) {
+    } else if (is.logical(x)) {
       Data.type <- trs("logical")
-    } else if ("character" %in% class(x)) {
+    } else if (is.character(x)) {
       Data.type <- trs("character")
-    } else if ("integer" %in% class(x)) {
+    } else if (is.integer(x)) {
       Data.type <- trs("integer")
-    } else if ("numeric" %in% class(x)) {
+    } else if (is.numeric(x)) {
       Data.type <- trs("numeric")
     } else {
       Data.type <- ifelse(mode(x) %in% rownames(.keywords_context),

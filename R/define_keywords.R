@@ -217,53 +217,52 @@ define_keywords <- function(..., ask = TRUE, file = NA) {
           dialog_error <- FALSE
           if (isTRUE(resp)) {
             while (!filename_ok) {
-              dir_name <- rstudioapi::selectDirectory(
-                caption = "Choose directory for custom language file"
+              filename <- rstudioapi::selectFile(
+                caption = "Save custom language file",
+                label = "Save",#Enter file name, including extension (.csv)",
+                path = getwd(),
+                filter = "CSV file (*.csv)",
+                existing = FALSE
               )
-              if (is.null(dir_name)) {
-                # dialog cancelled
+              if (is.null(filename)) {
+                # dialog cancelled -- validate cancel action
                 filename <- ""
                 filename_ok <- TRUE
-                message("Custom language file not saved")
               } else {
-                filename <- rstudioapi::showPrompt(
-                  title = "Custom language file",
-                  message = "Enter file name, including extension (.csv)",
-                  default = "custom_lang.csv"
-                )
-                if (is.null(filename)) {
-                  # dialog cancelled -- validate cancel action
-                  filename <- ""
-                  filename_ok <- !rstudioapi::showQuestion(
-                    title = "Custom language file",
-                    message = "Invalid file name.",
+                # make sure csv / txt extension is there
+                if (!grepl("\\.(csv|txt)$", filename)) {
+                  rv <- rstudioapi::showQuestion(
+                    title = "Save custom language file",
+                    message = "Invalid file extension (must be .csv)",
+                    ok = "Retry"
+                  )
+                  if (rv == "cancel") {
+                    filename <- ""
+                    filename_ok <- TRUE
+                  } else {
+                    filename_ok <- FALSE
+                    next
+                  }
+                }
+                filename <- normalizePath(filename, mustWork = FALSE)
+                if (!isTRUE(check_path_for_output(filename, 
+                                                  overwrite = TRUE))) {
+                  rv <- rstudioapi::showQuestion(
+                    title = "Custom language file", 
+                    message = "Invalid file name or location",
                     ok = "Retry",
                     cancel = "Cancel"
                   )
-                } else {
-                  filename <- normalizePath(
-                    paste(dir_name, filename, sep = .Platform$file.sep),
-                    mustWork = FALSE
-                  )
-                  if (!isTRUE(check_path_for_output(filename, 
-                                                    overwrite = TRUE))) {
-                    rv <- rstudioapi::showQuestion(
-                      title = "Custom language file", 
-                      message = "Invalid file name or location",
-                      ok = "Retry",
-                      cancel = "Cancel"
-                    )
-                    if (!rv) {
-                      # cancel confirmed
-                      filename <- ""
-                      filename_ok <- TRUE
-                    }
-                  } else {
-                    # Filename is valid
+                  if (!rv) {
+                    # cancel confirmed
+                    filename <- ""
                     filename_ok <- TRUE
                   }
-                } 
-              }
+                } else {
+                  # Filename is valid
+                  filename_ok <- TRUE
+                }
+              } 
             } # while
           } # save yes
         }

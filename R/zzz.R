@@ -44,7 +44,7 @@
 .st_env$re <-list(
   # 1) both names are there (df$name, df['name']), etc.
   two_names = paste0("^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?['\"]?",
-                     "([a-zA-Z._][\\w._]+)['\"]?\\]{0,2}(\\[.+)?$"),
+                     "([a-zA-Z._][\\w._]*)['\"]?\\]{0,2}(\\[.+)?$"),
   
   # 2) there is numeric indexing (df[[2]], df[ ,2], df[2])
   num_index = "^([\\w.]+)(\\$|\\[{1,2})(.*\\,\\s*)?(\\d+)\\]{1,2}(\\[.+)?$",

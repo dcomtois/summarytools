@@ -17,6 +17,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+```{r, echo=FALSE, results='asis'}
+summarytools::st_css(main = TRUE, global = TRUE)
+```
+
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(comment = NA, 
@@ -35,9 +39,6 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme so no ne
                                             # For other themes, using TRUE might be preferable.
 ```
 
-```{r, echo=FALSE}
-st_css(main = TRUE, global = TRUE)
-```
 
 # 1. Introduction
 
@@ -51,26 +52,11 @@ of the package's features, please see `vignette("introduction", "summarytools")`
 
 Every time we display **summarytools** objects with `print()`, `view()`,
 or `stview()`, we pick -- explicitly or not -- one of several display methods.
-Possible display methods are: *pander*, *render*, *viewer*, and *browser*. 
+Possible display methods are: *pander*, *render*, *viewer*, and *browser*. It
+is one of the parameters for `print.summarytools()` and `view()` 
+(alias: `stview()`).
 
-:::infobox
-**Disambiguation**  
-
-To avoid any confusion, here is a small digression on the word *method*. 
-It is a broad term which is also used in the OOP (object oriented programming) 
-lexicon to describe a special kind of function that is linked to a specific 
-class of objects. In R, the `print()` function is called a *generic* function.
-It is generic because it takes and handles many type of objects as an input.
-According to the class (or classes) of the object, it will dispatch the object
-to the particular *print method* dedicated to its class. In that sense, the
-`print.summarytools()` function *is itself a method*: objects of class
-"summarytools" are being dispatched to it by the
-**generic `print()` function**.
-:::
-
-In this document, the term *method* refers to the *display* method -- **not**
-the *OOP* concept. It is one of the parameters for `print.summarytools()`,
-`view()`, and `stview()`. Since methods *viewer* and *browser* are mostly
+Since methods *viewer* and *browser* are mostly
 meant for interactive work and rely on the same underlying code as *render*,
 we will assume for the purpose of this document that there are really only two
 methods: *pander* and *render*.
@@ -87,7 +73,7 @@ on this very useful package).
 
 <table><tr><td>![](assets/lightbulb.svg)</td>
 <td>When we use any of the *viewer*, *browser*, or *render* methods, the 
-package rather uses **htmltools** to generate results; any specified *styles*
+package uses **htmltools** to generate results; any specified *styles*
 are thus ignored.
 </td></tr></table> 
 
@@ -98,13 +84,13 @@ Available styles are the ones supported by **pander**:
 - simple (default, used mainly in R console)  
 - rmarkdown (used by all core functions except `dfSummary()`)  
 - grid (mainly used with `dfSummary()`)  
-- multiline (can be used with `dfSummary()` if you want ASCII graphs only)  
-- jira (recent addition, not thoroughly tested)  
+- multiline (can be used with `dfSummary()` if you use *ascii* graphs only)  
+- jira (more recent addition, not thoroughly tested)  
 
 
 ## 1.2 General Guidelines  
 
-**Always** set **results='asis'** either explicitly on a chunk-by-chunk bases
+**Always** set **results='asis'** either explicitly on a chunk-by-chunk basis
 or by including `opts_chunk$set(results = 'asis')` in your setup chunk.
 
 Also, don't forget to specify **`plain.ascii = FALSE`** in all function calls
@@ -115,12 +101,11 @@ using the *pander* method. It is advised to set this option, as well as the
 st_options(plain.ascii = FALSE, style = "rmarkdown")
 ```
 
-or include `st_options(plain.ascii = FALSE)` in
-your setup chunk.  
-
 <table><tr><td>![](assets/exclamation-diamond.svg)</td>
 <td>If you get repeated, unhelpful warnings, use chunk options `message = FALSE` 
-and/or `warning = FALSE`.
+and/or `warning = FALSE`. Another option is to use the argument `silent = TRUE`
+to the `print()` method or `view()` / `stview()` functions. See `?st_options`
+to set this globally for individual functions.
 </td></tr></table> 
 
 The following table indicates which method / style is better suited for each 
@@ -136,8 +121,8 @@ The following table indicates which method / style is better suited for each
 **Recommended Style When Using *pander* method** 
 
 For `freq()`, `descr()`, and `ctable()`, _rmarkdown_ style is recommended.
-For `dfSummary()`, _grid_ is recommended. Note that 'multiline' can also
-be used, but only ASCII graphs will be displayed.
+For `dfSummary()`, _grid_ is recommended. Note that _multiline_ can also
+be used, but only _ascii_ graphs will be displayed.
  
 Starting with `freq()`, we'll now review the recommended methods and styles to 
 get satisfying results in *R Markdown* documents. 
@@ -146,16 +131,23 @@ get satisfying results in *R Markdown* documents.
 
 # 2. Using freq() in R Markdown
 
-`freq()` is best used with `style = 'rmarkdown'; html rendering is also 
-possible.
+`freq()` is best used with method "pander" (default), `style = "rmarkdown"`;
+*html* rendering is also possible.
 
 ## 2.1 Pander Style for freq()
 
-With `method="pander"`, "rmarkdown" is the easy winner.
+With `method = "pander"`, `style = "rmarkdown"` is the easy winner. Since 
+"pander" is the default method, you can usually omit the call to
+`print()`. But to make things as clear as possible, we'll include it here.
+
 
 ```{r}
-freq(tobacco$gender, plain.ascii = FALSE, style = 'rmarkdown')
+print(freq(tobacco$gender, 
+           plain.ascii = FALSE, 
+           style = "rmarkdown"),
+      method = "pander")
 ```
+
 
 ## 2.2 HTML Rendering for freq()  
 
@@ -163,13 +155,13 @@ There are rarely any problems when using the *render* method to display
 `freq()` results.
 
 ```{r}
-print(freq(tobacco$gender), method = 'render')
+print(freq(tobacco$gender), method = "render")
 ```
 
-If you find the table too large, you can use `table.classes = 'st-small'`:
+If you find the table is too large, you can use `table.classes = "st-small"`:
 
 ```{r, message=FALSE}
-print(descr(tobacco), method = 'render', table.classes = 'st-small')
+print(descr(tobacco), method = "render", table.classes = "st-small")
 ```
 
 --------------------------------------------------------------------------------
@@ -180,15 +172,15 @@ print(descr(tobacco), method = 'render', table.classes = 'st-small')
 
 ## 3.1 Rmarkdown Style for ctable()  
 
-Tables with heading spanning over 2 rows are not fully supported in markdown 
-(yet), but the result is getting close to acceptable. This, however, is not
+Tables with multi-row headings are not fully supported in *markdown* 
+(yet), but the result is close to acceptable. This, however, is not
 true for all themes. That is why the rendering method is preferred.
 
 ```{r}
 ctable(tobacco$gender, 
        tobacco$smoker,
        plain.ascii = FALSE, 
-       style = 'rmarkdown')
+       style = "rmarkdown")
 ```
 
 
@@ -197,7 +189,7 @@ ctable(tobacco$gender,
 For best results, use this method.
 
 ```{r ctable_html}
-print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
+print(ctable(tobacco$gender, tobacco$smoker), method = "render")
 ```
 
 --------------------------------------------------------------------------------
@@ -205,23 +197,24 @@ print(ctable(tobacco$gender, tobacco$smoker), method = 'render')
 <a href="#top">Back to top</a>
  
 # 4. Using descr() in R Markdown 
-`descr()` gives good results with both `style = 'rmarkdown'` and HTML rendering.
+`descr()` gives good results with both `style = "rmarkdown"` and *html*
+rendering.
 
 ## 4.1 Rmarkdown Style for descr()  
 ```{r}
-descr(tobacco, plain.ascii = FALSE, style = 'rmarkdown')
+descr(tobacco, plain.ascii = FALSE, style = "rmarkdown")
 ```
 
 ## 4.2 HTML Rendering for descr()  
 
-We'll use table.classes = 'st-small' to show how it affects the table's size,
+We'll use `table.classes = "st-small"` to show how it affects the table's size,
 compared to the `freq()` table rendered earlier.
 
 We'll also use `message = FALSE` as chunk option to avoid the message saying
 that non-numerical variables have been ignored.
 
 ```{r, message=FALSE}
-print(descr(tobacco), method = 'render', table.classes = 'st-small')
+print(descr(tobacco), method = "render", table.classes = "st-small")
 ```
  
 --------------------------------------------------------------------------------
@@ -238,20 +231,22 @@ carefully the value of the `graph.magnif` parameter.
 
 Don't forget to specify `plain.ascii = FALSE` (or set it as a global
 option with `st_options(plain.ascii = FALSE)`), or you won't get good results.
-(Note that to avoid problems when uploading the package, the following is
-an imagine, not the actual rendering from this piece of code. This is because
-CRAN doesn't allow the writing in /tmp or any other directory, except in R's
-temp directory, for good reasons.)
+
+(Note: The following output is an image (screenshot). This is because CRAN
+doesn't allow writing in "/tmp" or any directory other than R's temp directory,
+which would pose problems in terms of column widths. The introductory vignette
+explains this issue in more details.)
 
 ```{r dfs_grid, eval=FALSE}
 dfSummary(tobacco, 
           plain.ascii  = FALSE,
-          style        = 'grid',
+          style        = "grid",
           graph.magnif = 0.75,
           varnumbers = FALSE,
           valid.col    = FALSE,
           tmp.img.dir  = "/tmp")
 ```
+
 
 <img src="assets/dfSummary_md.png" width=100%/>
 
@@ -265,7 +260,7 @@ print(dfSummary(tobacco,
                 varnumbers   = FALSE, 
                 valid.col    = FALSE, 
                 graph.magnif = 0.75),
-      method = 'render')
+      method = "render")
 ```
 
 ## 4.3 Managing Lengthy dfSummary() Outputs in R Markdown Documents
@@ -285,9 +280,8 @@ print(dfSummary(tobacco,
 
 
 <table><tr><td>![](assets/exclamation-diamond.svg)</td>
-<td>Some users reported getting repeated X11 warnings; those can easily be
-avoided by using the following chunk expression:
-`{r, results="asis", warning=FALSE}`.
+<td>Some users reported getting lots of X11 warnings; those can easily be
+turned off by using this chunk expression: `{r, results="asis", warning=FALSE}`.
 </td></tr></table> 
 
 <a href="#top">Back to top</a>
@@ -299,7 +293,7 @@ avoided by using the following chunk expression:
 
 As explained in the introductory vignette, `tb()` can be used to convert
 **summarytools** objects created with `freq()` and `descr()` to simple
-*tibbles* that packages specialized in table formatting will be able
+*tibbles*, which packages specialized in table formatting will be able
 to process. This is particularly helpful with `stby` objects:
 
 ```{r}
@@ -327,9 +321,9 @@ stby(iris, iris$Species, descr, stats = "fivenum") |>
 
 # 6. Including dfSummaries in PDF Documents 
 
-Here is a recipe for including fully formatted data frame summaries in pdf
-documents. There is some work involved, but following the instructions given
-here should give the expected results.
+Here is a recipe for including fully formatted data frame summaries in *pdf*
+documents. There is some work involved, but carefully following the instructions
+given here should give the expected results.
 
 There are basically two parts to this: first, you must create a preamble *tex*
 file. Second, you must indicate in the *YAML* section of your document where to
@@ -357,12 +351,11 @@ location is also up to you. I suggest you put it in the same location as your
 *Rmd* file.
 
 Along with the `graph.magnif` parameter for `dfSummary()`, you might need to
-adjust the 0.5 value used as `raisebox` parameter in the preamble.
+adjust the `0.5` value used as `raisebox` parameter in the preamble.
 
 ### The YAML Section
 
-Your document should start with a *YAML* header like this one, supposing the
-preamble *tex* file is in the same location as your *Rmd* document :
+Your document should start with a *YAML* header like this one:
 
 ```
 ---
@@ -377,7 +370,8 @@ output:
 ```
 
 If you need to customize the content of the preamble, then your header will
-look something like this:
+look something like this (assuming it is in the same directory as your *Rmd*
+document):
 
 ```
 ---
@@ -426,11 +420,11 @@ dfSummary(tobacco)
 
 ### Remarks
 
-Since we redefined the $\LaTeX$ command `includegraphics`, all images included using
-`[](some-image.png)` will be impacted. In some cases this will likely be
-problematic. Eventually we will find a more robust solution without such
-undesired side-effects. If you are well versed in $\LaTeX$  and think you can
-solve this problem, please get in touch.
+Since we redefined the $\LaTeX$ command `includegraphics`, all images included
+using `[](some-image.png)` will be impacted. In some cases, this could pose
+a problem. Eventually, we hope to find a more robust solution, without
+such side-effects. (If you are well versed in $\LaTeX$ and think you can
+solve this problem, please get in touch.)
 
 --------------------------------------------------------------------------------
 
@@ -491,11 +485,12 @@ st_options(bootstrap.css     = FALSE,       # Already part of the theme
 ```
 ````
  
-Finally, **summarytools CSS** has been included in the following manner:
+Finally, **summarytools CSS** has been included in the following manner, before
+the setup chunck:
 
 ````
-```{r, echo=FALSE}`r ''`
-st_css(main = TRUE, global = TRUE)
+```{r, echo=FALSE, results='asis'}`r ''`
+summarytools::st_css(main = TRUE, global = TRUE)
 ```
 ````
 
