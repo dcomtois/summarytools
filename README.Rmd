@@ -34,7 +34,7 @@ Love **summarytools**? Share the love, [buy me a coffee!](https://buymeacoffee.c
 
 <a href="https://buymeacoffee.com/dcomtois"><img src="img/bmc_qr.png" width="100" height="100"/></a>
 
-![package-collage](img/collage.png)
+![](img/collage.png)
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for data
 cleaning, exploring, and simple reporting. The package was developed with the

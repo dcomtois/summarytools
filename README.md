@@ -20,10 +20,7 @@ coffee!](https://buymeacoffee.com/dcomtois)
 
 <a href="https://buymeacoffee.com/dcomtois"><img src="img/bmc_qr.png" width="100" height="100"/></a>
 
-<figure>
-<img src="img/collage.png" alt="package-collage" />
-<figcaption aria-hidden="true">package-collage</figcaption>
-</figure>
+![](img/collage.png)
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for
 data cleaning, exploring, and simple reporting. The package was
