@@ -83,9 +83,9 @@ kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) |>
 
 The package was developed with the following objectives in mind:
 
- - Provide a coherent set of easy-to-use descriptive functions that are
-   akin to those included in commercial statistical software suites such as
-   SAS, SPSS, and Stata 
+ - Provide a coherent set of easy-to-use descriptive functions
+   akin to those included in commercial statistical software suites such
+   as SAS, SPSS, and Stata 
  - Offer flexibility in terms of output format & content  
  - Integrate well with commonly used software & tools for reporting
    (the [RStudio](https://posit.co/products/open-source/rstudio/) IDE,
