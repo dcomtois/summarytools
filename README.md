@@ -1,10 +1,15 @@
 
-<!-- badges -->
+<!-- badges: start -->
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/summarytools)](https://cran.r-project.org/package=summarytools)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/summarytools)](https://CRAN.R-project.org/package=summarytools)
 [![](https://cranlogs.r-pkg.org/badges/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/summarytools)](http://cran.rstudio.com/web/packages/summarytools/index.html)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/PayPal-Donate-blue" alt="PayPal donate button"/></a></span>
+
+<!-- badges: end -->
+
+⁠
 
 # Summarytools 1.1 is out!
 
