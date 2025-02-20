@@ -25,9 +25,15 @@ st_options(plain.ascii = FALSE,
 library(kableExtra)
 ```
 
+# Summarytools 1.1 is out! 
 
+<a href="#latest">Check out what's new.</a>
 
-# Summarytools 1.1 is out! ![package-logo](img/logo.png){width=100px, height=125px}
+Love **summarytools**? Share the love, [buy me a coffee!](https://buymeacoffee.com/dcomtois)
+
+<a href="https://buymeacoffee.com/dcomtois"><img src="img/bmc_qr.png" width="100" height="100"/></a>
+
+![package-collage](img/collage.png)
 
 **summarytools** is a an [*R*](https://www.r-project.org) package for data
 cleaning, exploring, and simple reporting. The package was developed with the
@@ -45,19 +51,9 @@ following objectives in mind:
     simple report generation using any R interface
 
 On a more personal level, I simply wish to share with the R community and the
-scientific community at large the functions I first developed for myself, and
-soon realized would benefit others who are facing similar challenges when 
+scientific community at large the functions I first developed for myself, but
+realized would benefit others who are facing similar challenges when 
 dealing daily with (often messy) data.
-
-## Please Support *summarytools*' Development
-
-If **summarytools** brings value to your work, please consider making a
-donation. I put in a huge amount of time on this project, and got loads of
-positive feedback, but very few (less than 20) donations. No matter the amount,
-I always appreciate the gesture. Plus, I'll add your name to the list of 
-supporters [further below](#supporters).
-
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
 
 # Package Documentation
 
@@ -93,7 +89,7 @@ repositories, such as [dtupdate](https://github.com/hrbrmstr/dtupdate) and
 [Drat](https://dirk.eddelbuettel.com/code/drat.html).
 
 ```{r, eval=FALSE}
-install.packages("remotes")        # Using devtools is also possible
+install.packages("remotes")        # Using devtools or pak is also possible
 library(remotes)
 install_github("rapporter/pander") # Strongly recommended
 install_github("dcomtois/summarytools", build_vignettes = TRUE)
@@ -108,27 +104,37 @@ the plus side, they can be easier to install on some systems.
 install.packages("summarytools")
 ```
 
-# Latest Changes
+# <a id="latest"></a>Latest Changes
 
-- Version 1.1 introduces a few significant improvements, aside from the bug
+- Version 1.1.0 introduced a few significant improvements, aside from the bug
   fixes.
 
-  - 
+  - In `stby()`, the `useNA` parameter can be used to generate additional
+    groupings for observations where the grouping variable(s) are `NA`
+  - Labelled vectors from **haven** & **labelled** are treated like factors
+    by `freq()` (always) and `dfSummary()` (only when all values have labels;
+    this is to avoid generating factors with countless numerical levels).
+  - `descr()` is more flexible with the stats parameters; you can for instance 
+    use `stats = c("all", -"kurtosis")` if you need everything except kurtosis
+  - The helper function `zap_attr()` turns results into simple matrices,
+    adding an alternative to `tb()` when you need to work further with the
+    results
+  - A new `na.val` parameter was added to `freq()`, `ctable()` and
+    `dfSummary()`, which allows treating a particular character value or
+    factor level as `NA`. One common instance would be "" (empty string) for
+    character vectors.
+  - Sampling weights were a bit buggy with by-groups, and so was `tb()` with
+    `freq()` results. This is now a thing of the past. 
+  - See the package's NEWS for more details: `news(package="summarytools")`
+  
+- In `dfSummary()` since 1.0.1:
 
--   In `dfSummary()`:
-
-    -   It is now possible to control which statistics to show in the *Freqs /
+    -   It is possible to control which statistics to show in the *Freqs /
         Values* column (see `help("st_options", "summarytools")` for examples)  
     -   In *html* outputs, tables are better aligned horizontally
         (categories \>\> counts \>\> charts); if misalignment occurs, adjusting
         `graph.magnif` should resolve it
     -   List-type columns and `Inf` values are handled properly
-
--   In `descr()` and `ctable()` several display glitches were corrected
-
--   Selected heading elements can be totally omitted on an individual basis
-
--   Improved functionality for customized terms / translations
 
 For more details, see `vignette("introduction", "summarytools")` as well as
 `news(package = "summarytools")`.
@@ -137,22 +143,12 @@ For more details, see `vignette("introduction", "summarytools")` as well as
 
 ### <a id="required-mac-os"></a>Required Software on Mac OS
 
-[**Magick++**](https://imagemagick.org/Magick++/)
+- [**XQuartz**](https://www.xquartz.org/)
+- [**Magick++**](https://imagemagick.org/Magick++/) 
 
-Open a terminal window and enter the following:
-
-`brew install imagemagick@6`
-
-If you do not have **brew** installed, simply enter this command in the
-terminal:
-
-`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-
-[**XQuartz**](https://www.xquartz.org/)
-
-If you're using Mac OS X version 10.8 (Mountain Lion) or more recent versions,
-you'll need to download the *.dmg* image from
-[xquartz.org](https://www.xquartz.org/) and add it to your Applications folder.
+Magick++ can be installed using 
+[Homebrew](https://formulae.brew.sh/formula/imagemagick) or 
+[Macports](https://ports.macports.org/port/ImageMagick/).
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
@@ -193,8 +189,9 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial (16.04).
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-# <a id="supporters"></a>Supporters
+## Supporting *summarytools*' Development
 
+# <a id="supporters"></a>Supporters
 A big thanks to the following people who made donations:
 
 -   Ashirwad Barnwal  
@@ -207,11 +204,12 @@ A big thanks to the following people who made donations:
 -   Roger Hilfiker
 -   Stefano Lav
 
-**summarytools** is the result of **many** hours of work. If you find the
-package brings value to your work, please take a moment to make a small
-donation now.
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="210" height="40"/></a>
+If **summarytools** brings value to your work, please consider making a
+donation. It will bring a smile to my face and boost my productivity! [Buy me a coffee](https://buymeacoffee.com/dcomtois),
+or use the [PayPal link]("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"). Thanks!
+
+<a href="https://buymeacoffee.com/dcomtois"><img src="img/bmc_qr.png" width="100" height="100" style="justify: center"/></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url"><img src="img/paypal-blue.svg" width="170" height="30"/></a>
 
 The package comes with no guarantees. It is a work in progress and feedback is
 always welcome. Please open an [issue on
