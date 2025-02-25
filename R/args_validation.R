@@ -27,8 +27,7 @@ check_args <- function(mc, dotArgs, caller) {
   
   # Arguments common to all functions ------------------------------------------
   if (is.null(pf$x)) {
-    tmp_x_name <- deparse(substitute(x, env = parent.frame()))
-    errmsg %+=% paste(tmp_x_name, "is either NULL or does not exist")
+    errmsg %+=% "x is either NULL or does not exist"
   }
   
   if ("round.digits" %in% names(mc) && 
@@ -212,8 +211,7 @@ check_args <- function(mc, dotArgs, caller) {
   # ctable-specific arguments --------------------------------------------------
   if (caller == "ctable") {
     if (is.null(pf$y)) {
-      tmp_y_name <- deparse(substitute(y, env = parent.frame()))
-      errmsg %+=% paste(tmp_y_name, "is either NULL or does not exist")
+      errmsg %+=% "y is either NULL or does not exist"
     }
     
     if ("prop" %in% names(mc)) {
