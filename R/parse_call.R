@@ -158,9 +158,12 @@ parse_fun <- function()  {
   #len <- length(call[[.p$var]])
   
   # experimental, 2025-02
-  nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]]))) |>
-    setdiff(c(.st_env$oper, "", "summarytools", "::", "TRUE", "FALSE", .p$caller)) |>
-    grep("::", x = _, fixed = TRUE, invert = TRUE, value = TRUE)
+  nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
+  nms <- setdiff(
+    nms,
+    c(.st_env$oper, "", "summarytools", "::", "TRUE", "FALSE", .p$caller)
+    )
+  nms <- grep(pattern = "::", x = nms, fixed = TRUE, invert = TRUE, value = TRUE)
   len <- length(nms)
   
   if (is.data.frame(obj)) {

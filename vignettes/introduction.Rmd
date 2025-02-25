@@ -22,7 +22,6 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(knitr)
-#`%||%` <- backports:::`%||%`
 opts_chunk$set(comment = NA,
                prompt  = FALSE,
                cache   = FALSE,
@@ -73,9 +72,9 @@ txt <- data.frame(
             "at a glance"))
 )
 
-kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) |>
-  kable_classic(full_width = FALSE, position = "left") |>
-  column_spec(1, extra_css = "vertical-align:top") |>
+kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
+  kable_paper(full_width = FALSE, position = "left") %>%
+  column_spec(1, extra_css = "vertical-align:top") %>%
   column_spec(2, extra_css = "vertical-align:top")
 ```
 
@@ -336,7 +335,7 @@ tobacco %$%  # Acts like with(tobacco, ...)
          chisq = TRUE,
          OR    = TRUE,
          RR    = TRUE,
-         headings = FALSE) |>
+         headings = FALSE) %>%
   print(method = "render")
 ```
 
@@ -450,8 +449,8 @@ dfSummary(tobacco,
           tmp.img.dir  = "/tmp")
 ```
 
-<!--<img src="assets/dfSummary_md.png" width=100%/> 
-<br/> -->
+<img src="assets/dfSummary_md.png" width=100%/> 
+<br/>
 
 **The `tmp.img.dir` parameter is mandatory** when generating *dfSummaries* in
 *R Markdown* documents, except for method "render". The explanation for this can be found [further below](#tmp-img-dir). 
@@ -637,8 +636,8 @@ recommended:
 ```{r, eval=FALSE}
 library(dplyr)
 tobacco$gender %<>% forcats::fct_na_value_to_level()
-tobacco |> 
-  group_by(gender) |> 
+tobacco %>%
+  group_by(gender) %>% 
   descr(stats = "fivenum")
 ```
 
@@ -646,7 +645,7 @@ tobacco |>
 suppressPackageStartupMessages(library(dplyr))
 library(magrittr)
 tobacco$gender %<>% forcats::fct_na_value_to_level("(Missing)")
-tobacco |> group_by(gender) |> descr(stats = "fivenum")
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
 
 <br/>
@@ -666,14 +665,14 @@ results into "tidy" tables with the use of the `tb()` function (think of
 
 ```{r, results='markup'}
 library(magrittr)
-iris |>
-  descr(stats = "common") |>
-  tb() |>
+iris %>%
+  descr(stats = "common") %>%
+  tb() %>%
   knitr::kable()
 
-iris$Species |> 
-  freq(cumul = FALSE, report.nas = FALSE) |> 
-  tb() |>
+iris$Species %>% 
+  freq(cumul = FALSE, report.nas = FALSE) %>% 
+  tb() %>%
   knitr::kable()
 ```
 
@@ -700,19 +699,19 @@ grouped_descr <- stby(data    = exams,
                       FUN     = descr,
                       stats   = "common")
 
-grouped_descr |> tb()
+grouped_descr %>% tb()
 ```
 
 The `order` parameter controls row ordering:
 ```{r, results='markup'}
-grouped_descr |> tb(order = 2)
+grouped_descr %>% tb(order = 2)
 ```
 
 Setting `order = 3` changes the order of the sort variables exactly as with
 `order = 2`, but it also reorders the columns:
 
 ```{r, results='markup'}
-grouped_descr |> tb(order = 3)
+grouped_descr %>% tb(order = 3)
 ```
 
 Note that percentages will be recalculated, unless setting `tb()`'s 
@@ -720,7 +719,7 @@ Note that percentages will be recalculated, unless setting `tb()`'s
 the *tidy* principles.
 
 ```{r, results='markup'}
-tobacco |> dplyr::group_by(gender) |> freq(smoker) |> tb()
+tobacco %>% dplyr::group_by(gender) %>% freq(smoker) %>% tb()
 ```
 
 For more details, see `?tb`.
@@ -741,9 +740,9 @@ library(magrittr)
 stby(data    = iris, 
      INDICES = iris$Species, 
      FUN     = descr, 
-     stats   = "fivenum") |>
-  tb(order = 3) |>
-  kable(format = "html", digits = 2) |>
+     stats   = "fivenum") %>%
+  tb(order = 3) %>%
+  kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 
@@ -777,8 +776,8 @@ option is to generate an *html* file and convert it to *PDF* using
 better results than *Pandoc* with `dfSummary()` output). 
 
 Another option is to create an *Rmd* document using *PDF* as the output
-format. See `vignette("rmarkdown", package = "summarytools")` for details;
-some tweaking is necessary for the graphs to align properly.
+format. See `vignette("rmarkdown", package = "summarytools")` for the details
+on how to proceed.
 
 ## 9.1 Appending Output Files
 
@@ -1271,7 +1270,7 @@ bug or wish to submit a feature request.
 
 **summarytools** is the result of many hours of work. If it
 brings value to your work, please consider making a small
-donation using this [Paypal link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url).
+donation using this [Paypal link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HMN3QJR7UMT7S&item_name=Help+scientists,+data+scientists+and+analysts+around+the+globe&currency_code=CAD&source=url), or [buy me a coffee](https://buymeacoffee.com/dcomtois).
 
 
 ### Stay Up to Date

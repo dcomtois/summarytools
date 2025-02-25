@@ -72,9 +72,9 @@ txt <- data.frame(
             "at a glance"))
 )
 
-kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) |>
-  kable_paper(full_width = FALSE, position = "left") |>
-  column_spec(1, extra_css = "vertical-align:top") |>
+kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
+  kable_paper(full_width = FALSE, position = "left") %>%
+  column_spec(1, extra_css = "vertical-align:top") %>%
   column_spec(2, extra_css = "vertical-align:top")
 ```
 
@@ -331,7 +331,7 @@ tobacco %$%  # Acts like with(tobacco, ...)
          chisq = TRUE,
          OR    = TRUE,
          RR    = TRUE,
-         headings = FALSE) |>
+         headings = FALSE) %>%
   print(method = "render")
 ```
 
@@ -623,8 +623,8 @@ warning suggesting the use of `forcats::fct_na_value_to_level` to make
 ```{r, eval=FALSE}
 library(dplyr)
 tobacco$gender %<>% forcats::fct_na_value_to_level()
-tobacco |> 
-  group_by(gender) |> 
+tobacco %>%
+  group_by(gender) %>% 
   descr(stats = "fivenum")
 ```
 
@@ -632,7 +632,7 @@ tobacco |>
 suppressPackageStartupMessages(library(dplyr))
 library(magrittr)
 tobacco$gender %<>% forcats::fct_na_value_to_level("(Missing)")
-tobacco |> group_by(gender) |> descr(stats = "fivenum")
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 ```
 
 <br/>
@@ -652,14 +652,14 @@ results into "tidy" tables with the use of the `tb()` function (think of
 
 ```{r, results='markup'}
 library(magrittr)
-iris |>
-  descr(stats = "common") |>
-  tb() |>
+iris %>%
+  descr(stats = "common") %>%
+  tb() %>%
   knitr::kable()
 
-iris$Species |> 
-  freq(cumul = FALSE, report.nas = FALSE) |> 
-  tb() |>
+iris$Species %>% 
+  freq(cumul = FALSE, report.nas = FALSE) %>% 
+  tb() %>%
   knitr::kable()
 ```
 
@@ -685,19 +685,19 @@ grouped_descr <- stby(data    = exams,
                       FUN     = descr,
                       stats   = "common")
 
-grouped_descr |> tb()
+grouped_descr %>% tb()
 ```
 
 The `order` parameter controls row ordering:
 ```{r, results='markup'}
-grouped_descr |> tb(order = 2)
+grouped_descr %>% tb(order = 2)
 ```
 
 Setting `order = 3` changes the order of the sort variables exactly as with
 `order = 2`, but it also reorders the columns:
 
 ```{r, results='markup'}
-grouped_descr |> tb(order = 3)
+grouped_descr %>% tb(order = 3)
 ```
 
 Note that percentages will be recalculated, unless setting `tb()`'s 
@@ -705,7 +705,7 @@ Note that percentages will be recalculated, unless setting `tb()`'s
 the *tidy* principles.
 
 ```{r, results='markup'}
-tobacco |> group_by(gender) |> freq(smoker) |> tb()
+tobacco %>% group_by(gender) %>% freq(smoker) %>% tb()
 ```
 
 For more details, see `?tb`.
@@ -726,9 +726,9 @@ library(magrittr)
 stby(data    = iris, 
      INDICES = iris$Species, 
      FUN     = descr, 
-     stats   = "fivenum") |>
-  tb(order = 3) |>
-  kable(format = "html", digits = 2) |>
+     stats   = "fivenum") %>%
+  tb(order = 3) %>%
+  kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 

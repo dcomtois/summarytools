@@ -299,18 +299,18 @@ to process. This is particularly helpful with `stby` objects:
 ```{r}
 library(kableExtra)
 library(magrittr)
-stby(iris, iris$Species, descr, stats = "fivenum") |>
-  tb() |>
-  kable(format = "html", digits = 2) |>
+stby(iris, iris$Species, descr, stats = "fivenum") %>%
+  tb() %>%
+  kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 
 Using `tb(order = 3)` flips the order of the grouping variable(s) and the
 reported variable(s):
 ```{r}
-stby(iris, iris$Species, descr, stats = "fivenum") |>
-  tb(order = 3) |>
-  kable(format = "html", digits = 2) |>
+stby(iris, iris$Species, descr, stats = "fivenum") %>%
+  tb(order = 3) %>%
+  kable(format = "html", digits = 2) %>%
   collapse_rows(columns = 1, valign = "top")
 ```
 

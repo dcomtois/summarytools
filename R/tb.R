@@ -51,7 +51,10 @@
 #' 
 #' # Compare stby() and group_by() groups' ordering
 #' tb(with(tobacco, stby(diseased, list(gender, smoker), freq, useNA = TRUE)))
+#' 
+#' \dontrun{
 #' tobacco |> dplyr::group_by(gender, smoker) |> freq(diseased) |> tb()
+#' }
 #'
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_rows bind_cols

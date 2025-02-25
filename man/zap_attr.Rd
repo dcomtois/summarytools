@@ -28,6 +28,6 @@ If the object contains grouped results:
 }
 \examples{
 data(tobacco)
-descr(tobacco) |> zap_attr()
-freq(tobacco$gender) |> zap_attr()
+zap_attr(descr(tobacco))
+zap_attr(freq(tobacco$gender))
 }

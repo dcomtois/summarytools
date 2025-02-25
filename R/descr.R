@@ -7,7 +7,7 @@
 #' @param x A numerical vector or a data frame.
 #' @param var Unquoted expression referring to a specific column in \code{x}.
 #'   Provides support for piped function calls (e.g.
-#'   \code{my_df |> descr(my_var)}.    
+#'   \code{my_df |> descr(my_var)}.
 #' @param stats Character. Which stats to produce. Either \dQuote{all} (default),
 #'   \dQuote{fivenum}, \dQuote{common} (see \emph{Details}), or a selection of :
 #'   \dQuote{mean}, \dQuote{sd}, \dQuote{min}, \dQuote{q1}, \dQuote{med},
@@ -90,7 +90,7 @@
 #' with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
 #'
 #' # Grouped statistics in tidy table:
-#' with(tobacco, stby(BMI, age.gr, descr, stats = "common")) |> tb()
+#' tb(with(tobacco, stby(BMI, age.gr, descr, stats = "common")))
 #'
 #' \dontrun{
 #' # Show in Viewer (or browser if not in RStudio)
