@@ -501,7 +501,7 @@ descr.default <- function(x,
   
   # Apply order parameter (column ordering)
   if (identical(order, "sort")) {
-    output <- output[sort(rownames(output)), ]
+    output <- output[sort(rownames(output)), , drop = FALSE]
   } else if (length(order) > 1) {
     output <- output[order, ]
   }
