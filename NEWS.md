@@ -1,3 +1,12 @@
+# summarytools 1.1.1 (2025-02-25)
+- In `dfSummary()`
+  + Fix for labelled frequencies with NA's
+- In `descr()`
+  + Fix for variable misalignment when more than 10 vars present
+  + Fix for results with only 1 statistic
+- Fix for warning message "NULL is NULL"
+- Fix for parse_call warning
+
 # summarytools 1.1.0 (2025-02-12)
 - In `stby()`
   + New parameter `useNA` adds a group for missing values in
