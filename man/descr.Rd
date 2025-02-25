@@ -131,7 +131,7 @@ data("tobacco")
 with(tobacco, stby(BMI, gender, descr, check.nas = FALSE))
 
 # Grouped statistics in tidy table:
-with(tobacco, stby(BMI, age.gr, descr, stats = "common")) |> tb()
+tb(with(tobacco, stby(BMI, age.gr, descr, stats = "common")))
 
 \dontrun{
 # Show in Viewer (or browser if not in RStudio)

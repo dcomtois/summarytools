@@ -179,8 +179,8 @@ lbl_to_factor <- function(x, num_pos = "after") {
 #' 
 #' @examples
 #' data(tobacco)
-#' descr(tobacco) |> zap_attr()
-#' freq(tobacco$gender) |> zap_attr()
+#' zap_attr(descr(tobacco))
+#' zap_attr(freq(tobacco$gender))
 #' @export
 zap_attr <- function(x, except = c("dim", "dimnames")) {
   if (inherits(x, c("by", "stby"))) {
