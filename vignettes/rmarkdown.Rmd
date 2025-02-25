@@ -280,8 +280,9 @@ print(dfSummary(tobacco,
 
 
 <table><tr><td>![](assets/exclamation-diamond.svg)</td>
-<td>Some users reported getting lots of X11 warnings; those can easily be
-turned off by using this chunk expression: `{r, results="asis", warning=FALSE}`.
+<td>Some users reported getting repeated X11 warnings; those can easily be
+avoided by using the following chunk expression:
+`{r, results="asis", warning=FALSE}`.
 </td></tr></table> 
 
 <a href="#top">Back to top</a>
