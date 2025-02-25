@@ -440,7 +440,7 @@ idea to exclude a column or two to avoid margin overflow. Since the *Valid*
 and *Missing* columns are complementary (and therefore redundant), we can
 safely drop either one of them.
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 dfSummary(tobacco, 
           plain.ascii  = FALSE, 
           style        = "grid", 
