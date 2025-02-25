@@ -181,8 +181,7 @@ descr.default <- function(x,
   errmsg <- character()  # problems with arguments will be stored here
   
   if (is.null(x)) {
-    tmp_x_name <- deparse(substitute(x))
-    stop(tmp_x_name, " is either NULL or does not exist")
+    stop("x is either NULL or does not exist")
   }
   
   if (ncol(xx) == 1 && !is.numeric(xx[[1]])) {
