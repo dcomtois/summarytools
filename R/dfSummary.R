@@ -473,7 +473,8 @@ dfSummary <- function(x,
       
       # For labelled vectors, if all values are labelled, convert to factor
       if (inherits(column_data, c("haven_labelled", "labelled"))) {
-        if (all(column_data %in% as.vector(attr(column_data, "labels")))) {
+        if (all(na.omit(column_data) %in% 
+            as.vector(attr(column_data, "labels")))) {
           column_data <- lbl_to_factor(column_data, num_pos = "before")
         }
       }
