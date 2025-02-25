@@ -336,7 +336,7 @@ descr.default <- function(x,
 
     # To avoid problems, (see issue #152) use generic colnames
     xxnames <- colnames(xx)
-    colnames(xx) <- paste0("V", seq_along(xx))
+    colnames(xx) <- paste0("V", sprintf("%05d", seq_along(xx)))
     if (ncol(xx) > 1) {
       results <- suppressWarnings(
         xx %>% summarise_all(.funs = summar_funs) %>%
