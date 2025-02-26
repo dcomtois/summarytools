@@ -214,6 +214,9 @@ dfSummary <- function(x,
     clear_null_device <- FALSE
   }
 
+  # Initialize variable that can be changed in lbl_to_factor
+  flag_tagged_na <- FALSE
+  
   # Make recursive calls when function is invoked on split-group data using
   # dplyr::group_by()
   if (inherits(x, "grouped_df")) {
@@ -681,7 +684,11 @@ dfSummary <- function(x,
   if (clear_null_device) {
     try(dev.off(), silent = TRUE)
   }
-
+  if (flag_tagged_na) {
+    message("Tagged NA values were detected in ", flag_tagged_na, "variables ",
+            "and will be reported as regular NA. Use haven::as_factor() to ",
+            "treat them as valid values")
+  }    
   return(output)
 }
 

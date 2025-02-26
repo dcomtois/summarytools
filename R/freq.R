@@ -138,8 +138,11 @@ freq <- function(x,
                  rescale.weights = FALSE,
                  ...) {
 
-  # Initialize flag_by variable that will be set in check_args()
+  # Initialize variable that will be set in check_args()
   flag_by <- logical()
+  
+  # Initialize variable that can be changed in lbl_to_factor
+  flag_tagged_na <- FALSE
   
   if (is.call(x))
     x <- eval(x, parent.frame())
@@ -660,7 +663,10 @@ freq <- function(x,
       attr(output, "user_fmt") <- user_fmt
     
     attr(output, "lang") <- st_options("lang")
-    
+    if (flag_tagged_na) {
+      message("Tagged NA values were detected and will be reported as regular ",
+              "NA; use haven::as_factor() to treat them as valid values")
+    }    
     return(output)
   }
 }
