@@ -146,6 +146,17 @@ empty_na <- function(x) {
 lbl_to_factor <- function(x, num_pos = "after") {
   label <- attr(x, "label", exact = TRUE)
   labels <- attr(x, "labels")
+  
+  # check and remove tagged na's (should be supported in the future)
+  if (length(na_lev_ind <- which(is.na(labels))) >= 1) {
+    labels <- labels[-na_lev_ind]
+    if (any(haven::is_tagged_na(x))) {
+      assign("flag_tagged_na", value = parent.frame()$flag_tagged_na + 1,
+             envir = parent.frame())
+      x[is.na(x)] <- NA
+    }
+  }
+  
   if (num_pos == "after")
     names(labels) <- paste0(names(labels), " [", labels, "]")
   else if (num_pos == "before")
