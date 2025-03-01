@@ -685,7 +685,7 @@ dfSummary <- function(x,
     try(dev.off(), silent = TRUE)
   }
   if (flag_tagged_na) {
-    message("Tagged NA values were detected in ", flag_tagged_na, "variables ",
+    message("Tagged NA values were detected in ", flag_tagged_na, " variables ",
             "and will be reported as regular NA. Use haven::as_factor() to ",
             "treat them as valid values")
   }    
