@@ -157,10 +157,15 @@ lbl_to_factor <- function(x, num_pos = "after") {
     }
   }
   
+  if (!length(labels)) {
+    return(as.vector(x))
+  }
+  
   if (num_pos == "after")
     names(labels) <- paste0(names(labels), " [", labels, "]")
   else if (num_pos == "before")
     names(labels) <- paste0("[", labels, "] ", names(labels))
+
   x_vec <- as.vector(x)
   extra_vals <- sort(setdiff(x_vec, labels))
   names(extra_vals) <- sub("^(\\d+)$", "[\\1]", as.character(extra_vals))
