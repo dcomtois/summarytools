@@ -265,6 +265,15 @@ check_args <- function(mc, dotArgs, caller) {
       }
     }
     
+    if ("rev" %in% names(mc) &&
+        !isTRUE(
+          test_character(pf$rev, any.missing = FALSE, len = 1,
+                         pattern = "^(r|c|b|n|rows?|columns?|both|none)$"))
+    ) {
+      errmsg %+=% "'rev' must be one of 'rows', 'columns', 'both', or 'none'"
+      
+    }
+    
     if (!is.null(pf$na.val)) {
       if (!isTRUE(test_character(pf$na.val, any.missing = FALSE, len = 1))) {
         errmsg %+=% "invalid na.val value; must be character of length 1"
