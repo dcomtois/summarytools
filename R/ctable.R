@@ -51,6 +51,10 @@
 #'   called \emph{relative risk} with 95% confidence interval, or specify
 #'   confidence level explicitly (\emph{e.g.} \code{.90}). CI's are 
 #'   calculated using Wald's method of normal approximation.
+#' @param rev Character. Dimension(s) to reverse for calculation
+#'   of risk/odds ratios. One of \dQuote{rows} / \dQuote{r}, \dQuote{columns} /
+#'   \dQuote{c}, \dQuote{both} / \dQuote{b}, or \dQuote{none} / \dQuote{n} 
+#'   (default). See \emph{details}.
 #' @param weights Numeric. Vector of weights; must have the same length as
 #'   \code{x}.
 #' @param rescale.weights Logical. When \code{TRUE}, a global constant is
@@ -59,10 +63,26 @@
 #' @param \dots Additional arguments passed to \code{\link[pander]{pander}} or
 #'   \code{\link[base]{format}}.
 #'
+#' @details
+#' For risk ratios and odds ratios, the expected structure of the contingency
+#' table is as follows (using \dQuote{No} as reference):
+#' 
+#' \preformatted{
+#'              Outcome
+#'  Exposure      Yes     No
+#'   Yes          a       b
+#'   No           c       d
+#' }
+#'
+#' The \emph{rev} parameter allows for different structures; use either one of
+#' \dQuote{rows}, \dQuote{columns}, or \dQuote{both} to indicate which 
+#' dimension(s) to reverse in order to match that structure. This does
+#' \emph{not} affect display.
+#'  
 #' @return A list containing two matrices, \emph{cross_table} and 
 #'   \emph{proportions}. The \emph{print} method takes care of assembling 
-#'   figures from those matrices into a single table. The returned object is
-#'   of classes \dQuote{\emph{summarytools}} and \dQuote{\emph{list}}, unless 
+#'   figures from those matrices into a single table. The returned object has
+#'   classes \dQuote{\emph{summarytools}} and \dQuote{\emph{list}}, unless 
 #'   \code{\link[summarytools]{stby}} is used, in which case we have an
 #'   object of class \dQuote{\emph{stby}}. 
 #'   
@@ -76,14 +96,14 @@
 #' ctable(tobacco$gender, tobacco$smoker)
 #' 
 #' # Use with() to simplify syntax
-#' with(tobacco, ctable(smoker, diseased))
+#' with(tobacco, ctable(gender, smoker))
 #'
 #' # Show column proportions, without totals
 #' with(tobacco, ctable(smoker, diseased, prop = "c", totals = FALSE))
 #' 
 #' # Simple 2 x 2 table with odds ratio and risk ratio
-#' with(tobacco, ctable(gender, smoker, totals = FALSE, headings = FALSE, prop = "n",
-#'                      OR = TRUE, RR = TRUE))
+#' with(tobacco, ctable(smoker, diseased, totals = FALSE, headings = FALSE,
+#'                      prop = "r", OR = TRUE, RR = TRUE))
 #' 
 #' # Grouped cross-tabulations
 #' with(tobacco, stby(data = list(x = smoker, y = diseased), 
@@ -121,6 +141,7 @@ ctable <- function(x,
                    display.labels  = st_options("display.labels"),
                    split.tables    = Inf,
                    na.val          = st_options("na.val"),
+                   rev             = "none",
                    dnn             = c(substitute(x), substitute(y)),
                    chisq           = FALSE,
                    OR              = FALSE,
@@ -358,6 +379,7 @@ ctable <- function(x,
       }
     }
   }
+  
   # repeat for column names
   if (anyNA(colnames(freq_table))) {
     if (is.null(na.val.y)) {
@@ -392,9 +414,21 @@ ctable <- function(x,
     attr(output, "chisq") <- tmp.chisq
   }
   
-  if (!isFALSE(OR) || !isFALSE(RR)) {
+  if (OR || RR) {
     if (identical(as.numeric(dim(freq_table_min)), c(2,2))) {
-      if (!isFALSE(OR)) {
+      
+      # Apply rev parameter
+      if (!missing("rev")) {
+        if (grepl("^(r|row)", rev)) {
+          freq_table_min <- freq_table_min[2:1,]
+        } else if (grepl("^(c|col)", rev)) {
+          freq_table_min <- freq_table_min[,2:1]
+        } else if (grepl("^(b|both)", rev)) {
+          freq_table_min <- freq_table_min[2:1,2:1]
+        }
+      }
+        
+      if (OR) {
         or <- prod(freq_table_min[c(1,4)]) / prod(freq_table_min[c(2,3)])
         se <- sqrt(sum(1/freq_table_min))
         attr(output, "OR") <- c(or,
@@ -405,7 +439,7 @@ ctable <- function(x,
         attr(output, "OR-level") <- OR
       }
       
-      if (!isFALSE(RR)) {
+      if (RR) {
         rr <- (freq_table_min[1] / sum(freq_table_min[c(1,3)])) / 
           (freq_table_min[2] / sum(freq_table_min[c(2,4)]))
         se <- sqrt(sum(1/freq_table_min[1], 

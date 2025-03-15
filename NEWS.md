@@ -1,6 +1,8 @@
 # summarytools 1.1.2 (2025-03-13)
 - Fixed error in `freq()` and `dfSummary()` with tagged NA values (haven/labelled) 
 - Removed native pipes to avoid any R version dependency issues
+- In `ctable()`, parameter "rev" was added to change the reference row / col
+  when calculating risk ratio & odds ratio.
 
 # summarytools 1.1.1 (2025-02-25)
 - In `dfSummary()`
