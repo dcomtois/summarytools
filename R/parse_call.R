@@ -147,15 +147,25 @@ parse_fun <- function()  {
   call <- standardize(.p$calls$fun)
   
   if (length(.p$var) > 1) {
-    #str <- paste0(deparse(.p$calls[[grep(.p$caller, .p$calls)[1]]]), collapse = "")
     done <- parse_data_str(deparse(call))
     return(done)
   }
   
+  # case of get(...)  
+  if (grepl("^get\\(", deparse(call[[.p$var]]))) {
+    obj_ <- try(eval(call[[.p$var]]), silent = TRUE)
+    if (is.data.frame(obj_)) {
+      df_name <- dynGet(x = deparse(call[[.p$var]][[2]]),
+                        ifnotfound = NULL, inherits = TRUE)
+      if (is.character(df_name) && length(df_name) == 1L) { 
+        done <- upd_output("df_name",  df_name)
+        done <- upd_output("df_label", label(obj_) %||% NA_character_)
+        if (done)  return(TRUE)
+      }
+    }
+  }
+  
   obj <- try(.p$sf[[.p$pos$fun]][[.p$var]], silent = TRUE)
-  # Extract names from x argument
-  #nms <- all.names(call[[.p$var]])
-  #len <- length(call[[.p$var]])
   
   # experimental, 2025-02
   nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
