@@ -1,3 +1,9 @@
+# summarytools 1.1.3 (2025-03-26)
+- Fixed an error with `dfSummary()` when looping over a list of
+  data frames and using `get()`
+- Fixed recursion error occuring when calling functions
+  while the package is not loaded
+  
 # summarytools 1.1.2 (2025-03-13)
 - Fixed error in `freq()` and `dfSummary()` with tagged NA values (haven/labelled) 
 - Removed native pipes to avoid any R version dependency issues
