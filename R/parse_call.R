@@ -96,7 +96,7 @@ parse_call <- function(mc,
   pos$expos   <- grep("^`%\\$%`\\(",sc_head)
   pos$lapply  <- grep("^lapply",    sc_head)
   pos$tapply  <- grep("^tapply",    sc_head)
-  pos$fun     <- grep(paste0("^", caller), sc_head)[1]
+  pos$fun     <- grep(paste0("^(summarytools::)?", caller), sc_head)[1]
   
   if (is.na(pos$fun)) {
     for (i in seq_along(sc)) {
@@ -165,9 +165,7 @@ parse_fun <- function()  {
     }
   }
   
-  obj <- try(.p$sf[[.p$pos$fun]][[.p$var]], silent = TRUE)
-  
-  # experimental, 2025-02
+  # Identify names in the fn call
   nms <- unique(c(all.names(call[[.p$var]]), as.character(call[[.p$var]])))
   nms <- setdiff(
     nms,
@@ -175,6 +173,8 @@ parse_fun <- function()  {
     )
   nms <- grep(pattern = "::", x = nms, fixed = TRUE, invert = TRUE, value = TRUE)
   len <- length(nms)
+  
+  obj <- try(.p$sf[[.p$pos$fun]][[.p$var]], silent = TRUE)
   
   if (is.data.frame(obj)) {
     if (len == 1) {
