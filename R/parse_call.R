@@ -279,6 +279,22 @@ parse_fun <- function()  {
         done <- upd_output("df_name",   NA_character_)
         done <- upd_output("df_label",  NA_character_)
       }
+    } else if (len == 2L && !"var" %in% names(call)) {
+      
+      # Check whether 2nd name is a string var containing a column name
+      obj <- try(get(nms[[1]]), silent = TRUE)
+      if (inherits(x = obj, what = c("list", "data.frame"))) {
+        done <- upd_output("df_name", nms[[1]])
+        done <- upd_output("df_label", label(obj))
+        
+        if (!done && exists(nms[[2]])) {
+          tmp_name <- get(nms[[2]])
+          if (tmp_name %in% colnames(obj)) {
+            done <- upd_output("var_name", tmp_name)
+            done <- upd_output("var_label", label(obj[[tmp_name]]))
+          }
+        }
+      }
     }
   }
   
