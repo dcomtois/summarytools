@@ -1,7 +1,7 @@
 Package: summarytools
 Type: Package
 Title: Tools to Quickly and Neatly Summarize Data
-Version: 1.1.3
+Version: 1.1.4
 Authors@R: person("Dominic", "Comtois", email = "dominic.comtois@gmail.com", 
   role = c("aut", "cre"))
 Author: Dominic Comtois [aut, cre]
