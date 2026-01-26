@@ -1,7 +1,10 @@
+# summarytools 1.1.5 (2026-01-27)
+- Removed pryr dependency (affects `what.is()` output)
+- Fixed errors with function calls parsing
+
 # summarytools 1.1.4 (2025-04-17)
 - Fix for variables containing column names generating warnings
   (e.g. `var <- "Species" ; freq(iris[[var]])`)
-  
 
 # summarytools 1.1.3 (2025-03-26)
 - Fixed an error with `dfSummary()` when looping over a list of

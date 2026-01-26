@@ -268,12 +268,11 @@ pctvalid <- function(x, round.digits = 1) {
 }
 
 classes <- function(x) {
-    vapply(x, class, "", USE.NAMES = FALSE)
+  vapply(x, class, "", USE.NAMES = FALSE)
 }
 
 # Standardize call, possibly nested (based on pryr::standardise_call)
 standardize <- function(call, env = parent.frame()) {
-  
   if (!is.call(call)) {
     return(call)
   }
