@@ -18,3 +18,4 @@ vignettes/*.html$
 ^doc$
 ^misc$
 ^tests$
+^\.DS_Store$
