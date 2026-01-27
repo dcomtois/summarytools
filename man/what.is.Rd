@@ -22,8 +22,6 @@ A list with following elements:
   \item{extensive.is}{A character vector of all the 
     \emph{identifier functions.} (starting with \dQuote{is.}) that yield 
     \code{TRUE} when used with \code{x} as argument.}
-  \item{function.type}{When x is a function, results of 
-  \code{\link[pryr]{ftype}} are added.}
 }
 }
 \description{
@@ -46,8 +44,7 @@ what.is(what.is)
 \seealso{
 \code{\link{class}}, \code{\link{typeof}}, \code{\link{mode}},
 \code{\link{storage.mode}}, \code{\link{dim}}, \code{\link{length}},
-\code{\link{is.object}}, \code{\link[pryr]{otype}},
-\code{\link{object.size}}, \code{\link[pryr]{ftype}}
+\code{\link{is.object}}, \code{\link{object.size}}
 }
 \author{
 Dominic Comtois, \email{dominic.comtois@gmail.com}

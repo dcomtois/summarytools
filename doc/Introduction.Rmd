@@ -133,7 +133,7 @@ Results can be
      `ctable()` behave similarly. 
    + Parameter `na.val` allows treating a special value as `NA` in `freq()`,
      `ctable()` and `dfSummary()` (feature introduced in version 1.1.0). 
-   + [**Pander options**](http://rapporter.github.io/pander/) can be used to
+   + [**Pander options**](https://rapporter.github.io/pander/) can be used to
      customize or enhance plain text and markdown tables 
    + Base R's `format()` arguments are also supported by **summarytools**'
      `print` method / `view()` function; this can be used to set a
