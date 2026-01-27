@@ -20,8 +20,6 @@
 #'   \item{extensive.is}{A character vector of all the 
 #'     \emph{identifier functions.} (starting with \dQuote{is.}) that yield 
 #'     \code{TRUE} when used with \code{x} as argument.}
-#'   \item{function.type}{When x is a function, results of 
-#'   \code{\link[pryr]{ftype}} are added.}
 #' }
 #' @author Dominic Comtois, \email{dominic.comtois@@gmail.com}
 #'
@@ -34,14 +32,12 @@
 #'
 #' @seealso \code{\link{class}}, \code{\link{typeof}}, \code{\link{mode}},
 #' \code{\link{storage.mode}}, \code{\link{dim}}, \code{\link{length}},
-#' \code{\link{is.object}}, \code{\link[pryr]{otype}},
-#' \code{\link{object.size}}, \code{\link[pryr]{ftype}}
+#' \code{\link{is.object}}, \code{\link{object.size}}
 #'
 #' @keywords attribute classes utilities
 #'
 #' @importFrom utils methods object.size setTxtProgressBar txtProgressBar
 #' @importFrom methods is
-#' @importFrom pryr ftype otype
 #' @export
 what.is <- function(x, ...) {
 
@@ -60,14 +56,28 @@ what.is <- function(x, ...) {
   options(warn = -1)
   on.exit(options(op))
 
+  {
+    if (!is.object(x)) {
+      "base"
+    }
+    else if (!isS4(x)) {
+      "S3"
+    }
+    else if (!is(x, "refClass")) {
+      "S4"
+    }
+    else {
+      "RC"
+    }
+  }
   # Part 1. Data Properties - class, typeof, mode, storage.mode
   properties <- 
     data.frame(
       property = c("class", "typeof", "mode", "storage.mode", "dim", "length",
-                   "is.object","object.type","object.size"),
+                   "is.object","object.size"),
       value = c(paste(class(x),collapse=" "), typeof(x), mode(x), 
                 storage.mode(x), paste(dim(x), collapse = " x "), length(x),
-                is.object(x), pryr::otype(x), paste(object.size(x), "Bytes")),
+                is.object(x), paste(object.size(x), "Bytes")),
       stringsAsFactors = FALSE)
   
   
@@ -112,20 +122,11 @@ what.is <- function(x, ...) {
   }
   if (!identical(pb, NA))
     close(pb)
-  
-  # Part 4. Get info on the type of object - S3, S4, attributes / slots
-
-  if(is.function(x)) {
-  	function.type <- pryr::ftype(x)
-  } else {
-    function.type <- NULL
-  }
 
   output <- list()
   output$properties         <- properties
   output$attributes.lengths <- attributes.lengths
   output$extensive.is       <- extensive.is
-  output$function.type      <- function.type
 
   return(output)
 }

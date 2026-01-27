@@ -71,11 +71,6 @@ tb <- function(x, order = 1, drop.var.col = FALSE,
          "'stby', 'by' and 'list' containing grouped summarytools results")
   }
   
-  #mc <- match.call()
-  #obj_names <- extract_names(mc, parent.env())
-  #if (isTRUE(rc))
-  #  on.exit(on.exit({cat("clearing .st_env$mc"); .st_env$mc <- list()}))
-  
   errmsg <- check_args_tb(match.call())
   
   if (length(errmsg) > 0) {
