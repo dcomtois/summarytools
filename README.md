@@ -142,9 +142,14 @@ install.packages("summarytools")
 For more details, see `vignette("introduction", "summarytools")` as well
 as `news(package = "summarytools")`.
 
-# Additional Software Installations
+# Optional Software Installations
 
-### <a id="required-mac-os"></a>Required Software on Mac OS
+The `magick` package is optional. When it is available, `dfSummary()` uses it
+to trim graph images and remove their white background. If it is unavailable,
+graphs are still generated from the base R PNG device, so installing
+`summarytools` does not require the system-level Magick++ development library.
+
+### <a id="required-mac-os"></a>Optional Software on Mac OS
 
 - [**XQuartz**](https://www.xquartz.org/)
 - [**Magick++**](https://imagemagick.org/Magick++/)
@@ -155,14 +160,14 @@ Magick++ can be installed using
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-### <a id="required-debian"></a>Required Software for Debian / Ubuntu / Linux Mint
+### <a id="required-debian"></a>Optional Software for Debian / Ubuntu / Linux Mint
 
 [**Magick++**](https://imagemagick.org/Magick++/)  
 `sudo apt install libmagick++-dev`
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-### <a id="required-older-ubuntu"></a>Required Software for Older Ubuntu Versions
+### <a id="required-older-ubuntu"></a>Optional Software for Older Ubuntu Versions
 
 This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 (16.04).
@@ -175,14 +180,14 @@ This applies only if you are using Ubuntu Trusty (14.04) or Xenial
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-### <a id="required-fedora"></a>Required Software for Fedora / Red Had / CentOS
+### <a id="required-fedora"></a>Optional Software for Fedora / Red Had / CentOS
 
 [**Magick++**](https://imagemagick.org/Magick++/)  
 `sudo yum install ImageMagick-c++-devel`
 
 <a href="#installing-from-github">Back to installation instructions</a>
 
-### <a id="required-solaris"></a>Required Software for Solaris
+### <a id="required-solaris"></a>Optional Software for Solaris
 
 [**Magick++**](https://imagemagick.org/Magick++/)
 

@@ -1405,11 +1405,10 @@ align_numbers_dfs <- function(counts, props) {
 #' @importFrom base64enc base64encode
 #' @importFrom graphics barplot hist par text plot.new
 #' @importFrom grDevices dev.off nclass.Sturges png
-#' @importFrom magick image_read image_trim image_border image_write
-#'             image_transparent
 #' @keywords internal
 encode_graph <- function(data, graph_type, graph.magnif = 1,
                          pandoc = FALSE, emails = FALSE) {
+  has_magick <- requireNamespace("magick", quietly = TRUE)
   devtype <- switch(.st_env$sysname,
                     Windows = "windows",
                     Linux   = "Xlib",
@@ -1455,8 +1454,11 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     }
 
     dev.off()
-    ii <- image_read(png_loc)
-    ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
+    if (has_magick) {
+      ii <- magick::image_read(png_loc)
+      ii <- magick::image_border(magick::image_trim(ii),
+                                 color = "white", geometry = "6x4")
+    }
 
   } else if (graph_type == "barplot") {
 
@@ -1490,17 +1492,26 @@ encode_graph <- function(data, graph_type, graph.magnif = 1,
     }
 
     dev.off()
-    ii <- image_read(png_loc)
-    ii <- image_border(image_trim(ii), color = "white", geometry = "6x4")
+    if (has_magick) {
+      ii <- magick::image_read(png_loc)
+      ii <- magick::image_border(magick::image_trim(ii),
+                                 color = "white", geometry = "6x4")
+    }
   }
 
   if (isTRUE(pandoc)) {
     png_path <- generate_png_path(parent.frame(2)$tmp.img.dir)
-    image_write(image_transparent(ii, 'white'),
-                path = png_path)
+    if (has_magick) {
+      magick::image_write(magick::image_transparent(ii, "white"),
+                          path = png_path)
+    } else {
+      file.copy(png_loc, png_path, overwrite = TRUE)
+    }
     return(png_path)
   } else {
-    image_write(image_transparent(ii, 'white'), png_loc)
+    if (has_magick) {
+      magick::image_write(magick::image_transparent(ii, "white"), png_loc)
+    }
     img_txt <- base64encode(readBin(con = png_loc, what = "raw",
                                     n = file.info(png_loc)[["size"]]))
     return(paste0('<img style="border:none;background-color:transparent;',
